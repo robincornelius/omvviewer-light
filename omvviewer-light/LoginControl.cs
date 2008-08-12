@@ -6,6 +6,7 @@
 
 using System;
 using libsecondlife;
+using System.IO;
 
 namespace omvviewerlight
 {	
@@ -15,6 +16,21 @@ namespace omvviewerlight
 		string logbuffer;
 		bool newdata;
 		
+		~LoginControl()
+		{
+			FileInfo f = new FileInfo("Mytext.txt");
+			StreamWriter w = f.CreateText();
+			w.WriteLine(entry_first.Text);
+			w.WriteLine(entry_last.Text);
+			if(this.checkbutton_rememberpass.Active)
+			{
+				w.WriteLine("store_pass");
+				w.WriteLine(entry_pass.Text);
+			}
+			w.Close();
+			
+		}
+		
 		public LoginControl()
 		{
 			this.Build();
@@ -22,8 +38,32 @@ namespace omvviewerlight
 			MainClass.client.Network.OnDisconnected += new libsecondlife.NetworkManager.DisconnectedCallback(onDisconnected);
 			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
 			libsecondlife.Logger.OnLogMessage += new libsecondlife.Logger.LogCallback(onLogMessage);
-		}  
-				
+			this.entry_pass.Visibility=false;
+			
+			// SUper dirty hack
+			// todo WRITE A PROPER FILE HANDLIER
+			// MAY BE A NICE XML FORMAT OPTION
+			try
+			{			
+				StreamReader s = File.OpenText("Mytext.txt");			
+				entry_first.Text=s.ReadLine();
+				entry_last.Text=s.ReadLine();
+				string x;
+				x=s.ReadLine();
+				if(x=="store_pass")
+				{
+					entry_pass.Text=s.ReadLine();
+					this.checkbutton_rememberpass.Active=true;
+
+				}
+				s.Close();
+			
+			}
+			catch(IOException e)
+			{
+			
+			}
+		}	
 		void onConnected(object sender)
 		{
 			

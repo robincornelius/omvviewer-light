@@ -18,8 +18,41 @@ namespace omvviewerlight
 		public TeleportTo()
 		{
 			this.Build();		
+			GLib.Timeout.Add(1000,OnTimeout);
+			MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
+			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
+
 		}
 
+		void onLogin(LoginStatus login, string message)
+		{
+			if(MainClass.client.Network.Connected)
+			{
+				this.spinbutton_x.Value=MainClass.client.Self.SimPosition.X;
+				this.spinbutton_y.Value=MainClass.client.Self.SimPosition.Y;
+				this.spinbutton_z.Value=MainClass.client.Self.SimPosition.Z;
+				this.entry_simname.Text=MainClass.client.Network.CurrentSim.Name;		
+			}
+		}
+		
+		void onTeleport(string Message, libsecondlife.AgentManager.TeleportStatus status,libsecondlife.AgentManager.TeleportFlags flags)
+		{
+			this.spinbutton_x.Value=MainClass.client.Self.SimPosition.X;
+			this.spinbutton_y.Value=MainClass.client.Self.SimPosition.Y;
+			this.spinbutton_z.Value=MainClass.client.Self.SimPosition.Z;
+			this.entry_simname.Text=MainClass.client.Network.CurrentSim.Name;
+		}
+		
+	    bool OnTimeout()
+		{
+			if(MainClass.client.Network.Connected)
+			{
+				this.label_current.Text="Current Location: "+MainClass.client.Network.CurrentSim.Name+" "+MainClass.client.Self.SimPosition;
+			}
+			
+			return true;
+		}
+		
 		protected virtual void OnButtonTeleportActivated (object sender, System.EventArgs e)
 		{
 		}

@@ -234,7 +234,7 @@ namespace omvviewerlight {
             // Container child vbox6.Gtk.Box+BoxChild
             this.combobox_grid = Gtk.ComboBox.NewText();
             this.combobox_grid.AppendText(Mono.Unix.Catalog.GetString("Agni"));
-            this.combobox_grid.AppendText(Mono.Unix.Catalog.GetString("Atidi"));
+            this.combobox_grid.AppendText(Mono.Unix.Catalog.GetString("Aditi"));
             this.combobox_grid.AppendText(Mono.Unix.Catalog.GetString("Local"));
             this.combobox_grid.AppendText(Mono.Unix.Catalog.GetString("Custom"));
             this.combobox_grid.Name = "combobox_grid";

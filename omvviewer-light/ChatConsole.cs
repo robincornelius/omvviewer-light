@@ -65,7 +65,6 @@ namespace omvviewerlight
 			im_key=target;
 		}
 
-
 		void dosetup()
 		{
 			this.Build();
