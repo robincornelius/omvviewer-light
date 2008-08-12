@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using Gtk;
 using libsecondlife;
+using libsecondlife;
 using omvviewerlight;
 
 public partial class MainWindow: Gtk.Window
@@ -40,8 +41,17 @@ public partial class MainWindow: Gtk.Window
 		MainClass.client.Self.OnBalanceUpdated += new libsecondlife.AgentManager.BalanceCallback(onBalance);
 		//MainClass.client.Parcels.OnSimParcelsDownloaded += new libsecondlife.ParcelManager.SimParcelsDownloaded(onParcels);
 		MainClass.client.Parcels.OnParcelProperties += new libsecondlife.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
+		MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
 		GLib.Timeout.Add(10000,OnUpdateStatus);
 	}
+	
+	
+	void onTeleport(string Message, libsecondlife.AgentManager.TeleportStatus status,libsecondlife.AgentManager.TeleportFlags flags)
+    {
+		
+			
+	}
+			
 	
 	void onParcelProperties(Parcel parcel, ParcelManager.ParcelResult result, int sequenceID, bool snapSelection)
 	{

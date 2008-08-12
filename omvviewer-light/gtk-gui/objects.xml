@@ -15,4 +15,8 @@
     <itemgroups />
     <signals />
   </object>
+  <object type="omvviewerlight.TeleportTo" palette-category="omvviewer-light" allow-children="false" base-type="Gtk.Bin">
+    <itemgroups />
+    <signals />
+  </object>
 </objects>

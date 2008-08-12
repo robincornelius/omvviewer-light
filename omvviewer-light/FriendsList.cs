@@ -67,6 +67,8 @@ namespace omvviewerlight
 		
 		bool myfunc(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
 		{			
+			try
+			{
 			string id =(string)store.GetValue(iter,2);
 			LLUUID lid=(LLUUID)id;
 		
@@ -80,7 +82,12 @@ namespace omvviewerlight
 			{
 				store.SetValue(iter,0,finfo.IsOnline);
 			}
-			
+			}
+			catch (Exception e)
+			{
+				Console.Write("Fucking excpetion in friends myfunc!\n");
+		
+			}
 			return false;
 		}
 		

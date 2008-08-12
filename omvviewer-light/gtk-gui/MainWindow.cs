@@ -32,6 +32,12 @@ public partial class MainWindow {
     
     private Gtk.Label label6;
     
+    private Gtk.HBox hbox6;
+    
+    private omvviewerlight.TeleportTo teleportto1;
+    
+    private Gtk.Label label7;
+    
     private Gtk.Statusbar statusbar1;
     
     protected virtual void Build() {
@@ -63,7 +69,7 @@ public partial class MainWindow {
         this.notebook = new Gtk.Notebook();
         this.notebook.CanFocus = true;
         this.notebook.Name = "notebook";
-        this.notebook.CurrentPage = 0;
+        this.notebook.CurrentPage = 2;
         // Container child notebook.Gtk.Notebook+NotebookChild
         this.logincontrol5 = new omvviewerlight.LoginControl();
         this.logincontrol5.Events = ((Gdk.EventMask)(256));
@@ -113,18 +119,40 @@ public partial class MainWindow {
         this.label6.LabelProp = Mono.Unix.Catalog.GetString("page2");
         this.notebook.SetTabLabel(this.hbox5, this.label6);
         this.label6.ShowAll();
-        this.vbox6.Add(this.notebook);
-        Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.vbox6[this.notebook]));
+        // Container child notebook.Gtk.Notebook+NotebookChild
+        this.hbox6 = new Gtk.HBox();
+        this.hbox6.Name = "hbox6";
+        this.hbox6.Spacing = 6;
+        // Container child hbox6.Gtk.Box+BoxChild
+        this.teleportto1 = new omvviewerlight.TeleportTo();
+        this.teleportto1.Events = ((Gdk.EventMask)(256));
+        this.teleportto1.Name = "teleportto1";
+        this.hbox6.Add(this.teleportto1);
+        Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.hbox6[this.teleportto1]));
         w9.Position = 1;
+        w9.Expand = false;
+        w9.Fill = false;
+        this.notebook.Add(this.hbox6);
+        Gtk.Notebook.NotebookChild w10 = ((Gtk.Notebook.NotebookChild)(this.notebook[this.hbox6]));
+        w10.Position = 2;
+        // Notebook tab
+        this.label7 = new Gtk.Label();
+        this.label7.Name = "label7";
+        this.label7.LabelProp = Mono.Unix.Catalog.GetString("page3");
+        this.notebook.SetTabLabel(this.hbox6, this.label7);
+        this.label7.ShowAll();
+        this.vbox6.Add(this.notebook);
+        Gtk.Box.BoxChild w11 = ((Gtk.Box.BoxChild)(this.vbox6[this.notebook]));
+        w11.Position = 1;
         // Container child vbox6.Gtk.Box+BoxChild
         this.statusbar1 = new Gtk.Statusbar();
         this.statusbar1.Name = "statusbar1";
         this.statusbar1.Spacing = 6;
         this.vbox6.Add(this.statusbar1);
-        Gtk.Box.BoxChild w10 = ((Gtk.Box.BoxChild)(this.vbox6[this.statusbar1]));
-        w10.Position = 3;
-        w10.Expand = false;
-        w10.Fill = false;
+        Gtk.Box.BoxChild w12 = ((Gtk.Box.BoxChild)(this.vbox6[this.statusbar1]));
+        w12.Position = 3;
+        w12.Expand = false;
+        w12.Fill = false;
         this.Add(this.vbox6);
         if ((this.Child != null)) {
             this.Child.ShowAll();
