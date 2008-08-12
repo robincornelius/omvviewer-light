@@ -70,10 +70,29 @@ namespace omvviewerlight
 		{
 			if(button_login.Label=="Login")
 			{
+				LoginParams login;
+				login=MainClass.client.Network.DefaultLoginParams(entry_first.Text,entry_last.Text,entry_pass.Text,"omvviewer-light","1.0");
+				
 				this.textview_log.Buffer.Clear();
-				button_login.Label="Logout";
-				MainClass.client.Network.Login(this.entry_first.Text, this.entry_last.Text, this.entry_pass.Text, "My First Bot", "Your name");
-			}
+				button_login.Label="Logout";			
+				if(this.combobox_grid.ActiveText=="Agni")
+				      login.URI="https://login.agni.lindenlab.com/cgi-bin/login.cgi";
+				
+				if(this.combobox_grid.ActiveText=="Aditi")
+				      login.URI="https://login.aditi.lindenlab.com/cgi-bin/login.cgi";
+				                                                  			                                                  
+				if(this.combobox_grid.ActiveText=="Local")
+				      login.URI="http://127.0.0.1:9000";
+				
+				if(this.combobox_grid.ActiveText=="Custom")
+				      login.URI=this.entry_loginuri.Text;
+	
+				                                                 
+				MainClass.client.Network.Login(login);
+					                               
+					
+
+}
 			else
 			{
 				MainClass.client.Network.Logout();
