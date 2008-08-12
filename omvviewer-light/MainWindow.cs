@@ -17,6 +17,9 @@ public partial class MainWindow: Gtk.Window
 	Gtk.Label status_location;
 	Gtk.Label status_balance;
 	Gtk.Label status_parcel;
+	string status_parcel_tool_text;
+	string status_parcel_text;
+		
 	
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
@@ -33,10 +36,52 @@ public partial class MainWindow: Gtk.Window
 		this.statusbar1.ShowAll();
 		
 		MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
-	
+		MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
+		MainClass.client.Self.OnBalanceUpdated += new libsecondlife.AgentManager.BalanceCallback(onBalance);
+		//MainClass.client.Parcels.OnSimParcelsDownloaded += new libsecondlife.ParcelManager.SimParcelsDownloaded(onParcels);
+		MainClass.client.Parcels.OnParcelProperties += new libsecondlife.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
 		GLib.Timeout.Add(10000,OnUpdateStatus);
 	}
 	
+	void onParcelProperties(Parcel parcel, ParcelManager.ParcelResult result, int sequenceID, bool snapSelection)
+	{
+	
+		string owner;
+		
+		//if(!MainClass.av_names.TryGetValue(parcel.OwnerID,out owner))
+		   owner="Unknown";
+		
+		string size;
+		size=parcel.Area.ToString();
+		
+		int primscount=parcel.OwnerPrims+parcel.OtherPrims+parcel.GroupPrims;
+		string prims;
+		prims=primscount.ToString()+" of "+parcel.TotalPrims.ToString();
+		
+		status_parcel_text="Parcel :"+parcel.Name;
+		status_parcel_tool_text=parcel.Name+"\nOwner :"+owner+"\nSize: "+size+"\nPrims :"+prims;
+	}
+	
+	void onParcels(Simulator sim, InternalDictionary<int,Parcel>sim_parcels,int [,] ParcelMap)
+	{
+			
+	}
+		                                                
+	void onBalance(int balance)
+	{
+			status_balance.Text="L$"+MainClass.client.Self.Balance.ToString();
+			//status_location.QueueDraw();	
+	}
+	
+	void onLogin(LoginStatus login, string message)
+	{
+		if(login==LoginStatus.Success)
+		{			
+			MainClass.client.Self.RequestBalance();
+			//MainClass.client.Parcels.RequestAllSimParcels(MainClass.client.Network.CurrentSim);
+			OnUpdateStatus();
+		}
+	}
 	
 	bool OnUpdateStatus()
 	{
@@ -45,7 +90,8 @@ public partial class MainWindow: Gtk.Window
 			status_location.Text="Location: "+MainClass.client.Network.CurrentSim.Name+MainClass.client.Self.SimPosition.ToString();	
 			status_location.TooltipText="Here we\ngo";
 			status_balance.Text="L$"+MainClass.client.Self.Balance.ToString();
-			//status_parcel.Text="Parcel :"+MainClass.client
+			status_parcel.Text=status_parcel_text;
+			status_parcel.TooltipText=status_parcel_tool_text;
 			status_location.QueueDraw();
 		}		
 		return true;
