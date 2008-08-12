@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using Gtk;
 using libsecondlife;
-using libsecondlife;
 using omvviewerlight;
 
 public partial class MainWindow: Gtk.Window
@@ -17,10 +16,7 @@ public partial class MainWindow: Gtk.Window
 	
 	Gtk.Label status_location;
 	Gtk.Label status_balance;
-	Gtk.Label status_parcel;
-	string status_parcel_tool_text;
-	string status_parcel_text;
-		
+	Gtk.Label status_parcel;		
 	
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
@@ -47,15 +43,17 @@ public partial class MainWindow: Gtk.Window
 	
 	
 	void onTeleport(string Message, libsecondlife.AgentManager.TeleportStatus status,libsecondlife.AgentManager.TeleportFlags flags)
-    {
-		
-			
+    {		
+		Gtk.Application.Invoke(delegate {						
+			status_location.Text="Location: "+MainClass.client.Network.CurrentSim.Name+MainClass.client.Self.SimPosition.ToString();	
+		});
 	}
 			
 	
 	void onParcelProperties(Parcel parcel, ParcelManager.ParcelResult result, int sequenceID, bool snapSelection)
 	{
-	
+		Gtk.Application.Invoke(delegate {						
+
 		string owner;
 		
 		//if(!MainClass.av_names.TryGetValue(parcel.OwnerID,out owner))
@@ -68,8 +66,10 @@ public partial class MainWindow: Gtk.Window
 		string prims;
 		prims=primscount.ToString()+" of "+parcel.TotalPrims.ToString();
 		
-		status_parcel_text="Parcel :"+parcel.Name;
-		status_parcel_tool_text=parcel.Name+"\nOwner :"+owner+"\nSize: "+size+"\nPrims :"+prims;
+		status_parcel.Text="Parcel :"+parcel.Name;
+		status_parcel.TooltipText=parcel.Name+"\nOwner :"+owner+"\nSize: "+size+"\nPrims :"+prims;
+		
+		});
 	}
 	
 	void onParcels(Simulator sim, InternalDictionary<int,Parcel>sim_parcels,int [,] ParcelMap)
@@ -79,8 +79,9 @@ public partial class MainWindow: Gtk.Window
 		                                                
 	void onBalance(int balance)
 	{
+			Gtk.Application.Invoke(delegate {
 			status_balance.Text="L$"+MainClass.client.Self.Balance.ToString();
-			//status_location.QueueDraw();	
+		});
 	}
 	
 	void onLogin(LoginStatus login, string message)
@@ -89,7 +90,9 @@ public partial class MainWindow: Gtk.Window
 		{			
 			MainClass.client.Self.RequestBalance();
 			//MainClass.client.Parcels.RequestAllSimParcels(MainClass.client.Network.CurrentSim);
-			OnUpdateStatus();
+			Gtk.Application.Invoke(delegate {						
+				OnUpdateStatus();
+			});
 		}
 	}
 	
@@ -97,11 +100,6 @@ public partial class MainWindow: Gtk.Window
 	{
 		if(MainClass.client.Network.Connected)
 		{
-			status_location.Text="Location: "+MainClass.client.Network.CurrentSim.Name+MainClass.client.Self.SimPosition.ToString();	
-			status_location.TooltipText="Here we\ngo";
-			status_balance.Text="L$"+MainClass.client.Self.Balance.ToString();
-			status_parcel.Text=status_parcel_text;
-			status_parcel.TooltipText=status_parcel_tool_text;
 			status_location.QueueDraw();
 		}		
 		return true;
@@ -123,8 +121,10 @@ public partial class MainWindow: Gtk.Window
 		{
 			Widget lable=new Gtk.Label(MainClass.av_names[target]);
 			ChatConsole imc=new ChatConsole(target);
-			notebook.InsertPage(imc,lable,notebook.Page);
-			active_ims.Add(target);
+			Gtk.Application.Invoke(delegate {						
+				notebook.InsertPage(imc,lable,notebook.Page);
+				active_ims.Add(target);
+			});
 		}		
 				
 	}
@@ -138,8 +138,12 @@ public partial class MainWindow: Gtk.Window
 			{
 				Widget lable=new Gtk.Label("Group: "+im.FromAgentName);
 				ChatConsole imc=new ChatConsole(im.IMSessionID);
-				notebook.InsertPage(imc,lable,notebook.Page);
-				active_ims.Add(im.IMSessionID);				
+										
+				Gtk.Application.Invoke(delegate {											
+					notebook.InsertPage(imc,lable,notebook.Page);
+					active_ims.Add(im.IMSessionID);				
+				});
+			
 			}
 			
 			return;
@@ -150,9 +154,12 @@ public partial class MainWindow: Gtk.Window
 		{
 			Widget lable=new Gtk.Label(im.FromAgentName);
 			ChatConsole imc=new ChatConsole(im);
-			notebook.InsertPage(imc,lable,notebook.Page);
-			active_ims.Add(im.FromAgentID);
+						
+			Gtk.Application.Invoke(delegate {						
+				notebook.InsertPage(imc,lable,notebook.Page);
+				active_ims.Add(im.FromAgentID);
+			});
 		}		
-		}
+	}
 
 }

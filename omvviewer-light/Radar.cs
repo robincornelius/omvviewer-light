@@ -33,17 +33,9 @@ namespace omvviewerlight
 			MainClass.client.Self.OnChat += new libsecondlife.AgentManager.ChatCallback(onChat);
 			
 			store.SetSortColumnId(2,Gtk.SortType.Ascending);
-
-			GLib.Timeout.Add(5000,onIdle);
-		
+	
 		}
-				
-		bool onIdle()
-		{
-				store.Foreach(myfunc);
-				return true;
-		}
-		
+						
 		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
 		{
 			if(!avs.ContainsKey(update.LocalID))
@@ -51,7 +43,9 @@ namespace omvviewerlight
 				//avs_pos[update.LocalID]=update.Position;
 				// I will assume libsl has done the business here for me and the avatar contains
 				// the details i need
-				//store.Foreach(myfunc);
+				Gtk.Application.Invoke(delegate {										
+					store.Foreach(myfunc);
+				});
 			}
 		}
 		
@@ -66,7 +60,9 @@ namespace omvviewerlight
 				pos=MainClass.client.Self.RelativePosition-avatar.Position;
 				double dist;
 				dist=Math.Sqrt(pos.X*pos.X+pos.Y+pos.Y+pos.Z+pos.Z);
-				store.AppendValues(false,avs[avatar.LocalID].Name,dist.ToString(),avatar.LocalID);
+				Gtk.Application.Invoke(delegate {									
+					store.AppendValues(false,avs[avatar.LocalID].Name,dist.ToString(),avatar.LocalID);
+				});
 			}
 
 		}
@@ -76,7 +72,9 @@ namespace omvviewerlight
 			if(avs.ContainsKey(objectID))
 			{
 				avs.Remove(objectID);
-				//store.Foreach(myfunc);
+				Gtk.Application.Invoke(delegate {						
+					store.Foreach(myfunc);
+				});
 			}
 		}
 		

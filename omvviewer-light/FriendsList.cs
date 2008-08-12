@@ -28,24 +28,35 @@ namespace omvviewerlight
 			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);			
 			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);		
 			MainClass.client.Friends.OnFriendOnline += new libsecondlife.FriendsManager.FriendOnlineEvent(onFriendOnline);
-			MainClass.client.Friends.OnFriendOffline += new libsecondlife.FriendsManager.FriendOfflineEvent(onFriendOffline);
+			MainClass.client.Friends.OnFriendOffline += new libsecondlife.FriendsManager.FriendOfflineEvent(onFriendOffline);			
 		}	
-	
+		
 		void onLogin(LoginStatus status,string message)
 		{
 			if(LoginStatus.Success==status)
+			{
+				Gtk.Application.Invoke(delegate {
+				store.Clear();
 				populate_list();
+				store.Foreach(myfunc);
+				});
+			}
 		}
 		
 		void onFriendOnline(FriendInfo friend)
 		{
 			//Untill i can find a better way to access the store directly
+			Gtk.Application.Invoke(delegate {			
 				store.Foreach(myfunc);
+			});
+		
 		}
 		
 		void onFriendOffline(FriendInfo friend)
 		{
+			Gtk.Application.Invoke(delegate {			
 				store.Foreach(myfunc);
+			});	
 		}
 		
 		void populate_list()		
@@ -55,20 +66,19 @@ namespace omvviewerlight
 				store.AppendValues (friend.IsOnline,friend.Name,friend.UUID.ToString());
 			});
 		}
-		
-		
+			
 		void onAvatarNames(Dictionary<LLUUID, string> names)
 		{	
 			Console.Write("OnAvatarNames\n");
 			MainClass.av_names=names;
-			store.Foreach(myfunc);
-			treeview_friends.QueueDraw();
+			Gtk.Application.Invoke(delegate {			
+				store.Foreach(myfunc);
+			});	
+
 		}
 		
 		bool myfunc(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
 		{			
-			try
-			{
 			string id =(string)store.GetValue(iter,2);
 			LLUUID lid=(LLUUID)id;
 		
@@ -81,12 +91,6 @@ namespace omvviewerlight
 			if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 			{
 				store.SetValue(iter,0,finfo.IsOnline);
-			}
-			}
-			catch (Exception e)
-			{
-				Console.Write("Fucking excpetion in friends myfunc!\n");
-		
 			}
 			return false;
 		}

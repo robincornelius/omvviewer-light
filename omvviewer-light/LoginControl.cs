@@ -11,6 +11,9 @@ namespace omvviewerlight
 {	
 	public partial class LoginControl : Gtk.Bin
 	{
+
+		string logbuffer;
+		bool newdata;
 		
 		public LoginControl()
 		{
@@ -18,10 +21,9 @@ namespace omvviewerlight
 			MainClass.client.Network.OnConnected += new libsecondlife.NetworkManager.ConnectedCallback(onConnected);
 			MainClass.client.Network.OnDisconnected += new libsecondlife.NetworkManager.DisconnectedCallback(onDisconnected);
 			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
-			//libsecondlife.Logger.OnLogMessage += new libsecondlife.Logger.LogCallback(onLogMessage);
-			
+			libsecondlife.Logger.OnLogMessage += new libsecondlife.Logger.LogCallback(onLogMessage);
 		}  
-		
+				
 		void onConnected(object sender)
 		{
 			
@@ -30,7 +32,10 @@ namespace omvviewerlight
 		
 		void onDisconnected(libsecondlife.NetworkManager.DisconnectType reason, string message)
 		{
-			this.button_login.Label="Login";
+			Gtk.Application.Invoke(delegate {
+				this.button_login.Label="Login";
+			    });			
+			
 		}
 		
 		/// <summary>Called any time the login status changes, will eventually
@@ -39,17 +44,26 @@ namespace omvviewerlight
 		{
 			this.textview_loginmsg.Buffer.Text=message;	
 			if(LoginStatus.Failed==login)
-				this.button_login.Label="Login";		
-			
-			if(LoginStatus.Success==login)
-				MainClass.client.Appearance.SetPreviousAppearance(false);
+				Gtk.Application.Invoke(delegate {
+					this.button_login.Label="Login";
+			    });			
+	
+			//This can take ages, should be threaded
+			//if(LoginStatus.Success==login)
+				//MainClass.client.Appearance.SetPreviousAppearance(false);
 		
 		}
 
 		void onLogMessage(object obj, libsecondlife.Helpers.LogLevel level)
 		{
 			if(level >= libsecondlife.Helpers.LogLevel.Warning)
-				this.textview_log.Buffer.InsertAtCursor(obj.ToString()+"\n");
+			{
+				Gtk.Application.Invoke(delegate {
+					this.textview_log.Buffer.InsertAtCursor(obj.ToString()+"\n");
+					this.textview_log.ScrollMarkOnscreen(textview_log.Buffer.InsertMark);
+				});			
+			}				
+			
 		}
 		
 		protected virtual void OnButton1Clicked (object sender, System.EventArgs e)

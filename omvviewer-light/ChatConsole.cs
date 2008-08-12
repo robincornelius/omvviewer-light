@@ -11,7 +11,6 @@ using Gtk;
 namespace omvviewerlight
 {
 	
-	
 	public partial class ChatConsole : Gtk.Bin
 	{
 			Gdk.Color col_red = new Gdk.Color(255,0,0);
@@ -111,16 +110,20 @@ namespace omvviewerlight
 			
 			string buffer;
 			TextIter iter;
+	
+			Gtk.Application.Invoke(delegate {						
 			
-			iter=textview_chat.Buffer.EndIter;
-			buffer=im.FromAgentName+": ";
-			textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold);
-			
-			buffer=im.Message+"\n";
-			textview_chat.Buffer.InsertWithTags(ref iter,buffer,avchat);
-			
-			textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
-		}
+				iter=textview_chat.Buffer.EndIter;
+				buffer=im.FromAgentName+": ";
+				textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold);
+				
+				buffer=im.Message+"\n";
+				textview_chat.Buffer.InsertWithTags(ref iter,buffer,avchat);
+				
+				textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
+			});	
+	
+			}
 			                                       
 		void onChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourcetype,string fromName, LLUUID id, LLUUID ownerid, LLVector3 position)
 		{
@@ -143,28 +146,34 @@ namespace omvviewerlight
 
 			if(sourcetype==ChatSourceType.Agent)
 			{
+				Gtk.Application.Invoke(delegate {						
 				
-				iter=textview_chat.Buffer.EndIter;
-				buffer=fromName;
-				textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold);
+					iter=textview_chat.Buffer.EndIter;
+					buffer=fromName;
+					textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold);
 
-				iter=textview_chat.Buffer.EndIter;
-				buffer=message+"\n";
-				textview_chat.Buffer.InsertWithTags(ref iter,buffer,avchat);
-				textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
+					iter=textview_chat.Buffer.EndIter;
+					buffer=message+"\n";
+					textview_chat.Buffer.InsertWithTags(ref iter,buffer,avchat);
+					textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
+					
+				});
 				return;
 			}
 
 			if(type==ChatType.OwnerSay)
 			{
-				iter=textview_chat.Buffer.EndIter;
-				buffer=fromName;
-				textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold,ownerobjectchat);
+				Gtk.Application.Invoke(delegate {						
 
-				iter=textview_chat.Buffer.EndIter;
-				buffer=message+"\n";
-				textview_chat.Buffer.InsertWithTags(ref iter,buffer,ownerobjectchat);
-				textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
+					iter=textview_chat.Buffer.EndIter;
+					buffer=fromName;
+					textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold,ownerobjectchat);
+
+					iter=textview_chat.Buffer.EndIter;
+					buffer=message+"\n";
+					textview_chat.Buffer.InsertWithTags(ref iter,buffer,ownerobjectchat);
+					textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
+				});
 				return;
 				
 				
@@ -172,28 +181,32 @@ namespace omvviewerlight
 			
 			if(sourcetype==ChatSourceType.Object)
 			{
-				
-				iter=textview_chat.Buffer.EndIter;
-				buffer=fromName;
-				textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold,objectchat);
+				Gtk.Application.Invoke(delegate {						
+					iter=textview_chat.Buffer.EndIter;
+					buffer=fromName;
+					textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold,objectchat);
 
-				iter=textview_chat.Buffer.EndIter;
-				buffer=message+"\n";
-				textview_chat.Buffer.InsertWithTags(ref iter,buffer,objectchat);
-				textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
+					iter=textview_chat.Buffer.EndIter;
+					buffer=message+"\n";
+					textview_chat.Buffer.InsertWithTags(ref iter,buffer,objectchat);
+					textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
+					});
 				return;
 			}
 
 			if(sourcetype==ChatSourceType.System)
 			{
-				iter=textview_chat.Buffer.EndIter;
-				buffer=fromName;
-				textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold,systemchat);
+				Gtk.Application.Invoke(delegate {						
 
-				iter=textview_chat.Buffer.EndIter;
-				buffer=message+"\n";
-				textview_chat.Buffer.InsertWithTags(ref iter,buffer,systemchat);
-				textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);				
+					iter=textview_chat.Buffer.EndIter;
+					buffer=fromName;
+					textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold,systemchat);
+
+					iter=textview_chat.Buffer.EndIter;
+					buffer=message+"\n";
+					textview_chat.Buffer.InsertWithTags(ref iter,buffer,systemchat);
+					textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);				
+				});
 				return;
 			}
 			
