@@ -222,6 +222,26 @@ namespace omvviewerlight
 				return;
 			}
 			
+			if(this.im_session_id!=libsecondlife.LLUUID.Zero)
+			{
+
+				string buffer;
+				TextIter iter;
+	
+				MainClass.client.Self.InstantMessageGroup(im_session_id,entry_chat.Text);
+
+				iter=textview_chat.Buffer.EndIter;
+				buffer=MainClass.client.Self.Name+": ";
+				textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold);
+			
+				buffer=entry_chat.Text+"\n";
+				textview_chat.Buffer.InsertWithTags(ref iter,buffer,avchat);
+
+				
+				this.entry_chat.Text="";			
+				return;
+			}
+			
 			ChatType type=libsecondlife.ChatType.Normal;
 			if(this.combobox_say_type.ActiveText=="Say")
 				type=libsecondlife.ChatType.Normal;

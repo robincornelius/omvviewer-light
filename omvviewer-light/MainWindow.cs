@@ -63,6 +63,8 @@ public partial class MainWindow: Gtk.Window
 	             
 	void onIM(InstantMessage im, Simulator sim)
 	{
+		InstantMessage im;
+		
 		// don't do this yet
 		if(im.GroupIM==true)
 		{
