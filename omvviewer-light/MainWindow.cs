@@ -14,10 +14,29 @@ public partial class MainWindow: Gtk.Window
 	public List<libsecondlife.LLUUID>active_ims = new List<libsecondlife.LLUUID>();
 	public List<libsecondlife.LLUUID>active_groups_ims = new List<libsecondlife.LLUUID>();
 	
+	Gtk.Label status_location;
+	
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
+		
+		status_location=new Gtk.Label("Location: Unknown (0,0,0)");
+		this.statusbar1.PackStart(status_location);
+		this.statusbar1.ShowAll();
 		MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
+	
+		GLib.Timeout.Add(10000,OnUpdateStatus);
+	}
+	
+	
+	bool OnUpdateStatus()
+	{
+		if(MainClass.client.Network.Connected)
+		{
+			status_location.Text="Location: "+MainClass.client.Network.CurrentSim.Name+MainClass.client.Self.SimPosition.ToString();	
+			status_location.QueueDraw();
+		}		
+		return true;
 	}
 	
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
