@@ -184,6 +184,7 @@ namespace omvviewerlight {
             this.checkbutton_onlinestatus.Clicked += new System.EventHandler(this.OnCheckbuttonOnlinestatusClicked);
             this.checkbutton_map.Clicked += new System.EventHandler(this.OnCheckbuttonMapClicked);
             this.checkbutton_modobjects.Clicked += new System.EventHandler(this.OnCheckbuttonModobjectsClicked);
+            this.button_IM.Clicked += new System.EventHandler(this.OnButtonIMClicked);
         }
     }
 }

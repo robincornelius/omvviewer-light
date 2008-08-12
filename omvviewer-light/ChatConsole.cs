@@ -24,41 +24,50 @@ namespace omvviewerlight
 		    Gtk.TextTag ownerobjectchat;
 			
 		LLUUID im_key=libsecondlife.LLUUID.Zero;
+		LLUUID im_session_id=libsecondlife.LLUUID.Zero;
 		
 		~ChatConsole()
 		{
 			if(im_key!=libsecondlife.LLUUID.Zero)
 				if(MainClass.win.active_ims.Contains(im_key))
 					MainClass.win.active_ims.Remove(im_key);	
+		
+			if(im_session_id!=libsecondlife.LLUUID.Zero)
+				if(MainClass.win.active_groups_ims.Contains(im_key))
+					MainClass.win.active_groups_ims.Remove(im_key);	
+		
 		}
 		
 		public ChatConsole()
 		{
-			this.Build();
-			bold=new Gtk.TextTag("bold");
-			avchat=new Gtk.TextTag("avchat");
-			objectchat=new Gtk.TextTag("objectchat");
-			systemchat=new Gtk.TextTag("systemchat");
-			ownerobjectchat=new Gtk.TextTag("ownerobjectchat");
-			
-			bold.Weight=Pango.Weight.Bold;
-		
-			objectchat.ForegroundGdk=col_green;
-			
-			ownerobjectchat.ForegroundGdk=col_blue;
-			
-			systemchat.Weight=Pango.Weight.Ultrabold;
-			systemchat.ForegroundGdk=col_red;
-			
-			textview_chat.Buffer.TagTable.Add(bold);
-			textview_chat.Buffer.TagTable.Add(avchat);
-			textview_chat.Buffer.TagTable.Add(systemchat);
-			textview_chat.Buffer.TagTable.Add(objectchat);
-			textview_chat.Buffer.TagTable.Add(ownerobjectchat);
+			dosetup();
 			MainClass.client.Self.OnChat += new libsecondlife.AgentManager.ChatCallback(onChat);			
 		}
-				
+
+		
 		public ChatConsole(InstantMessage im)
+		{
+			dosetup();
+			MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
+			if(im.GroupIM)
+			{
+				this.im_session_id=im.IMSessionID;
+			}
+			else
+			{
+				im_key=im.FromAgentID;				
+			}
+		}
+
+		public ChatConsole(LLUUID target)
+		{
+			dosetup();
+			MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
+			im_key=target;
+		}
+
+
+		void dosetup()
 		{
 			this.Build();
 			bold=new Gtk.TextTag("bold");
@@ -81,17 +90,24 @@ namespace omvviewerlight
 			textview_chat.Buffer.TagTable.Add(systemchat);
 			textview_chat.Buffer.TagTable.Add(objectchat);
 			textview_chat.Buffer.TagTable.Add(ownerobjectchat);
-			//MainClass.client.Self.OnChat += new libsecondlife.AgentManager.ChatCallback(onChat);			
-			MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
-			im_key=im.FromAgentID;
+			
+			
 		}
 		
 		void onIM(InstantMessage im, Simulator sim)
 		{
 			//Not group IM ignore messages not destine for im_key
-			
-			if(im.FromAgentID!=this.im_key)
-				return;
+
+			if(im.GroupIM==true)
+			{
+				if(im.IMSessionID!=this.im_session_id)
+					return;
+			}
+			else
+			{
+				if(im.FromAgentID!=this.im_key)
+					return;
+			}
 			
 			string buffer;
 			TextIter iter;

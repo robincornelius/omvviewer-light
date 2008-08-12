@@ -56,12 +56,11 @@ namespace omvviewerlight
 			});
 		}
 		
-		Dictionary<LLUUID, string> av_names;		
 		
 		void onAvatarNames(Dictionary<LLUUID, string> names)
 		{	
 			Console.Write("OnAvatarNames\n");
-			av_names=names;
+			MainClass.av_names=names;
 			store.Foreach(myfunc);
 			treeview_friends.QueueDraw();
 		}
@@ -71,9 +70,9 @@ namespace omvviewerlight
 			string id =(string)store.GetValue(iter,2);
 			LLUUID lid=(LLUUID)id;
 		
-			if(av_names!=null)
+			if(MainClass.av_names!=null)
 			{			
-				store.SetValue(iter,1,av_names[lid]);
+				store.SetValue(iter,1,MainClass.av_names[lid]);
 			}
 			
 			FriendInfo finfo;
@@ -160,6 +159,22 @@ namespace omvviewerlight
 				}
 			}
 		
+		}
+
+		protected virtual void OnButtonIMClicked (object sender, System.EventArgs e)
+		{
+			//beter work out who we have selected
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			
+			if(treeview_friends.Selection.GetSelected(out mod,out iter))			
+			{
+				//ALL i want is a fucking UUID
+				string id=(string)mod.GetValue(iter,2);
+				LLUUID lid=(LLUUID)id;
+				MainClass.win.startIM(lid);
+			}
 		}
 		
 	}

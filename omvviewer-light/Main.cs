@@ -4,6 +4,7 @@
 // To change standard headers go to Edit->Preferences->Coding->Standard Headers
 //
 using System;
+using System.Collections.Generic;
 using Gtk;
 using libsecondlife;
 
@@ -14,6 +15,8 @@ namespace omvviewerlight
 
 		public static SecondLife client;
 		public static MainWindow win;
+		public static Dictionary<LLUUID, string> av_names;		
+
 		
 		public static void Main (string[] args)
 		{
