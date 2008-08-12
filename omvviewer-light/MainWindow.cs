@@ -15,14 +15,23 @@ public partial class MainWindow: Gtk.Window
 	public List<libsecondlife.LLUUID>active_groups_ims = new List<libsecondlife.LLUUID>();
 	
 	Gtk.Label status_location;
+	Gtk.Label status_balance;
+	Gtk.Label status_parcel;
 	
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
 		
 		status_location=new Gtk.Label("Location: Unknown (0,0,0)");
+		status_balance=new Gtk.Label("$L?");
+		status_parcel=new Gtk.Label("Parcel: Unknown");
+		
 		this.statusbar1.PackStart(status_location);
+		this.statusbar1.PackStart(status_parcel);
+		this.statusbar1.PackStart(status_balance);
+
 		this.statusbar1.ShowAll();
+		
 		MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
 	
 		GLib.Timeout.Add(10000,OnUpdateStatus);
@@ -34,6 +43,9 @@ public partial class MainWindow: Gtk.Window
 		if(MainClass.client.Network.Connected)
 		{
 			status_location.Text="Location: "+MainClass.client.Network.CurrentSim.Name+MainClass.client.Self.SimPosition.ToString();	
+			status_location.TooltipText="Here we\ngo";
+			status_balance.Text="L$"+MainClass.client.Self.Balance.ToString();
+			//status_parcel.Text="Parcel :"+MainClass.client
 			status_location.QueueDraw();
 		}		
 		return true;
@@ -62,9 +74,7 @@ public partial class MainWindow: Gtk.Window
 	}
 	             
 	void onIM(InstantMessage im, Simulator sim)
-	{
-		InstantMessage im;
-		
+	{		
 		// don't do this yet
 		if(im.GroupIM==true)
 		{
