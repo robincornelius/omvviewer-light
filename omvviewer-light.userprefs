@@ -1,0 +1,26 @@
+﻿<UserCombinePreferences version="1.0" filename="/home/robin/libsecondlife/omvviewer-light/omvviewer-light.mds">
+  <Files>
+    <File name="Welcome" />
+    <File name="omvviewer-light/Main.cs" line="24" column="4" />
+    <File name="omvviewer-light/LoginControl.cs" line="36" column="3" />
+    <File name="omvviewer-light/MainWindow.cs" line="46" column="4" />
+    <File name="omvviewer-light/FriendsList.cs" line="6" column="1" />
+    <File name="omvviewer-light/ChatConsole.cs" line="187" column="3" />
+  </Files>
+  <Views>
+    <ViewMemento id="ProjectPad">
+      <Node expanded="True">
+        <Node name="omvviewer-light" expanded="True">
+          <Node name="ChatConsole.cs" selected="True" />
+        </Node>
+      </Node>
+    </ViewMemento>
+    <ViewMemento id="ClassPad">
+      <Node expanded="True" />
+    </ViewMemento>
+  </Views>
+  <Properties>
+    <Property key="ActiveWindow" value="/home/robin/libsecondlife/omvviewer-light/omvviewer-light/ChatConsole.cs" />
+    <Property key="ActiveConfiguration" value="Debug" />
+  </Properties>
+</UserCombinePreferences>

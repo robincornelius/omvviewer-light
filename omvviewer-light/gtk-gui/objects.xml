@@ -1,0 +1,18 @@
+<objects>
+  <object type="omvviewerlight.LoginControl" palette-category="omvviewer-light" allow-children="false" base-type="Gtk.Bin">
+    <itemgroups />
+    <signals />
+  </object>
+  <object type="omvviewerlight.FriendsList" palette-category="omvviewer-light" allow-children="false" base-type="Gtk.Bin">
+    <itemgroups />
+    <signals />
+  </object>
+  <object type="omvviewerlight.ChatConsole" palette-category="omvviewer-light" allow-children="false" base-type="Gtk.Bin">
+    <itemgroups />
+    <signals />
+  </object>
+  <object type="omvviewerlight.Radar" palette-category="omvviewer-light" allow-children="false" base-type="Gtk.Bin">
+    <itemgroups />
+    <signals />
+  </object>
+</objects>
