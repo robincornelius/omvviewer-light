@@ -23,8 +23,6 @@ namespace omvviewerlight {
         
         private Gtk.Label label5;
         
-        private Gtk.Label label4;
-        
         protected virtual void Build() {
             Stetic.Gui.Initialize(this);
             // Widget omvviewerlight.Search
@@ -59,15 +57,6 @@ namespace omvviewerlight {
             this.label5.LabelProp = Mono.Unix.Catalog.GetString("Places");
             this.notebook1.SetTabLabel(this.placessearch1, this.label5);
             this.label5.ShowAll();
-            // Notebook tab
-            Gtk.Label w3 = new Gtk.Label();
-            w3.Visible = true;
-            this.notebook1.Add(w3);
-            this.label4 = new Gtk.Label();
-            this.label4.Name = "label4";
-            this.label4.LabelProp = Mono.Unix.Catalog.GetString("Events");
-            this.notebook1.SetTabLabel(w3, this.label4);
-            this.label4.ShowAll();
             this.Add(this.notebook1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
