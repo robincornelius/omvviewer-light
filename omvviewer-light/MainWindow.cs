@@ -30,6 +30,8 @@ public partial class MainWindow: Gtk.Window
 		this.statusbar1.PackStart(status_location);
 		this.statusbar1.PackStart(status_parcel);
 		this.statusbar1.PackStart(status_balance);
+
+		this.Title="Omvviewer-light";
 		
 		//this.doicons();
 		

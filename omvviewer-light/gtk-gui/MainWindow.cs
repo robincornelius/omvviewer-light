@@ -32,7 +32,7 @@ public partial class MainWindow {
     
     private Gtk.Label label6;
     
-    private Gtk.HBox hbox8;
+    private Gtk.HBox hbox4;
     
     private Gtk.VBox vbox15;
     
@@ -48,11 +48,11 @@ public partial class MainWindow {
     
     private omvviewerlight.TeleportTo teleportto1;
     
-    private Gtk.Label label10;
+    private Gtk.Label label7;
     
     private omvviewerlight.Search search1;
     
-    private Gtk.Label label18;
+    private Gtk.Label label10;
     
     private Gtk.Statusbar statusbar1;
     
@@ -136,10 +136,10 @@ public partial class MainWindow {
         this.notebook.SetTabLabel(this.hbox5, this.label6);
         this.label6.ShowAll();
         // Container child notebook.Gtk.Notebook+NotebookChild
-        this.hbox8 = new Gtk.HBox();
-        this.hbox8.Name = "hbox8";
-        this.hbox8.Spacing = 6;
-        // Container child hbox8.Gtk.Box+BoxChild
+        this.hbox4 = new Gtk.HBox();
+        this.hbox4.Name = "hbox4";
+        this.hbox4.Spacing = 6;
+        // Container child hbox4.Gtk.Box+BoxChild
         this.vbox15 = new Gtk.VBox();
         this.vbox15.Name = "vbox15";
         this.vbox15.Spacing = 6;
@@ -194,20 +194,20 @@ public partial class MainWindow {
         this.vbox15.Add(this.hbox10);
         Gtk.Box.BoxChild w14 = ((Gtk.Box.BoxChild)(this.vbox15[this.hbox10]));
         w14.Position = 0;
-        this.hbox8.Add(this.vbox15);
-        Gtk.Box.BoxChild w15 = ((Gtk.Box.BoxChild)(this.hbox8[this.vbox15]));
+        this.hbox4.Add(this.vbox15);
+        Gtk.Box.BoxChild w15 = ((Gtk.Box.BoxChild)(this.hbox4[this.vbox15]));
         w15.Position = 0;
         w15.Expand = false;
         w15.Fill = false;
-        this.notebook.Add(this.hbox8);
-        Gtk.Notebook.NotebookChild w16 = ((Gtk.Notebook.NotebookChild)(this.notebook[this.hbox8]));
+        this.notebook.Add(this.hbox4);
+        Gtk.Notebook.NotebookChild w16 = ((Gtk.Notebook.NotebookChild)(this.notebook[this.hbox4]));
         w16.Position = 2;
         // Notebook tab
-        this.label10 = new Gtk.Label();
-        this.label10.Name = "label10";
-        this.label10.LabelProp = Mono.Unix.Catalog.GetString("TP");
-        this.notebook.SetTabLabel(this.hbox8, this.label10);
-        this.label10.ShowAll();
+        this.label7 = new Gtk.Label();
+        this.label7.Name = "label7";
+        this.label7.LabelProp = Mono.Unix.Catalog.GetString("TP");
+        this.notebook.SetTabLabel(this.hbox4, this.label7);
+        this.label7.ShowAll();
         // Container child notebook.Gtk.Notebook+NotebookChild
         this.search1 = new omvviewerlight.Search();
         this.search1.Events = ((Gdk.EventMask)(256));
@@ -216,11 +216,11 @@ public partial class MainWindow {
         Gtk.Notebook.NotebookChild w17 = ((Gtk.Notebook.NotebookChild)(this.notebook[this.search1]));
         w17.Position = 3;
         // Notebook tab
-        this.label18 = new Gtk.Label();
-        this.label18.Name = "label18";
-        this.label18.LabelProp = Mono.Unix.Catalog.GetString("Search");
-        this.notebook.SetTabLabel(this.search1, this.label18);
-        this.label18.ShowAll();
+        this.label10 = new Gtk.Label();
+        this.label10.Name = "label10";
+        this.label10.LabelProp = Mono.Unix.Catalog.GetString("Search");
+        this.notebook.SetTabLabel(this.search1, this.label10);
+        this.label10.ShowAll();
         this.vbox6.Add(this.notebook);
         Gtk.Box.BoxChild w18 = ((Gtk.Box.BoxChild)(this.vbox6[this.notebook]));
         w18.Position = 1;
