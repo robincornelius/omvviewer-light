@@ -33,6 +33,8 @@ public partial class MainWindow: Gtk.Window
 		this.statusbar1.ShowAll();
 		
 		MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
+		MainClass.client.Self.OnGroupChatJoin += new libsecondlife.AgentManager.GroupChatJoined(onGroupChatJoined);
+		
 		MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
 		MainClass.client.Self.OnBalanceUpdated += new libsecondlife.AgentManager.BalanceCallback(onBalance);
 		//MainClass.client.Parcels.OnSimParcelsDownloaded += new libsecondlife.ParcelManager.SimParcelsDownloaded(onParcels);
@@ -128,7 +130,30 @@ public partial class MainWindow: Gtk.Window
 		}		
 				
 	}
-	             
+	    
+	
+    void onGroupChatJoined(LLUUID groupChatSessionID, LLUUID tmpSessionID, bool success)
+	{
+			Console.Write("Group chat joined ID :"+groupChatSessionID.ToString()+"\n");
+
+		    string name;
+		
+		    if(!active_ims.Contains(groupChatSessionID))
+			{
+				Widget lable=new Gtk.Label("Group: ");
+				
+			    ChatConsole imc=new ChatConsole(groupChatSessionID);
+										
+				Gtk.Application.Invoke(delegate {											
+					notebook.InsertPage(imc,lable,notebook.Page);
+					active_ims.Add(groupChatSessionID);				
+				});
+			
+			}
+
+		
+	}
+	
 	void onIM(InstantMessage im, Simulator sim)
 	{		
 		
@@ -136,38 +161,74 @@ public partial class MainWindow: Gtk.Window
 			Console.Write("Group is :"+im.GroupIM.ToString()+"\n");
 			Console.Write("ID is :"+im.FromAgentID.ToString()+"\n");
 			
-		
 		// don't do this yet
 		if(im.GroupIM==true)
 		{		
-			//MainClass.client.Self.GroupChatSessions.TryGetValue(
-			
-			if(!active_ims.Contains(im.IMSessionID))
+			List <LLUUID> uidlist;
+			if(MainClass.client.Self.GroupChatSessions.TryGetValue(im.FromAgentID,out uidlist))
 			{
-				Widget lable=new Gtk.Label("Group: "+im.FromAgentName);
-				ChatConsole imc=new ChatConsole(im.IMSessionID);
-										
-				Gtk.Application.Invoke(delegate {											
-					notebook.InsertPage(imc,lable,notebook.Page);
-					active_ims.Add(im.IMSessionID);				
-				});
-			
+				Console.Write("That got us :-\n");
+				foreach(LLUUID id in uidlist)
+				{
+					Console.Write("ID is "+id.ToString()+"\n");
+				}
 			}
+		    else
+		    {
+					Console.Write("And the cupboard was bare\n");
+		    }
+			
+			MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
+				              
+			return;
+	/*		
 			
 			return;
+			 */		
 		}
 		
 		
 		if(!active_ims.Contains(im.FromAgentID))
 		{
-			Widget lable=new Gtk.Label(im.FromAgentName);
+			Gtk.Application.Invoke(delegate {						
+
+		    Gtk.Image image=new Gtk.Image("close.xpm");
+			image.SetSizeRequest(16,16);
+			Gtk.Label lable=new Gtk.Label(im.FromAgentName);
+			Gtk.Button button=new Gtk.Button(image);
+			Gtk.HBox box=new Gtk.HBox();
+			box.PackStart(button);
+			box.PackStart(lable);
+				
+			box.ShowAll();
+	
+				
+			button.Clicked += new EventHandler(clickclosed);
+			
 			ChatConsole imc=new ChatConsole(im);
 						
-			Gtk.Application.Invoke(delegate {						
-				notebook.InsertPage(imc,lable,notebook.Page);
+				notebook.InsertPage(imc,(Gtk.Widget)box,-1); 
+				notebook.ShowAll();
 				active_ims.Add(im.FromAgentID);
 			});
-		}		
-	}
+		}
+		
+	}	
+
+		void clickclosed(object obj, EventArgs args)
+		{
+		    /// Urrrg
+		    // The button is in a hbox in a tab of a notebook page in a notebook in a chatwidget
+		    int pageno=1;
+		    pageno=notebook.PageNum((Gtk.Widget)obj);
+		    ChatConsole cs=(ChatConsole)notebook.GetNthPage(pageno);
+
+		if(cs.im_key!=libsecondlife.LLUUID.Zero)
+				if(MainClass.win.active_ims.Contains(cs.im_key))
+					MainClass.win.active_ims.Remove(cs.im_key);	
+		
+			notebook.RemovePage(pageno);
+		}
+
 
 }

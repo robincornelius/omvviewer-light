@@ -37,6 +37,7 @@
     <File name="gtk-gui/omvviewerlight.Search.cs" subtype="Code" buildaction="Compile" />
     <File name="Searchs.cs" subtype="Code" buildaction="Compile" />
     <File name="gtk-gui/omvviewerlight.Searches.cs" subtype="Code" buildaction="Compile" />
+    <File name="close.xpm" subtype="Code" buildaction="FileCopy" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />

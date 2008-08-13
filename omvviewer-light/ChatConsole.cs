@@ -22,8 +22,8 @@ namespace omvviewerlight
 		    Gtk.TextTag systemchat;
 		    Gtk.TextTag ownerobjectchat;
 			
-		LLUUID im_key=libsecondlife.LLUUID.Zero;
-		LLUUID im_session_id=libsecondlife.LLUUID.Zero;
+		public LLUUID im_key=libsecondlife.LLUUID.Zero;
+		public LLUUID im_session_id=libsecondlife.LLUUID.Zero;
 		
 		~ChatConsole()
 		{
@@ -96,8 +96,6 @@ namespace omvviewerlight
 		{
 			//Not group IM ignore messages not destine for im_key
 
-				
-			
 			if(im.GroupIM==true)
 			{
 				if(im.IMSessionID!=this.im_session_id)
