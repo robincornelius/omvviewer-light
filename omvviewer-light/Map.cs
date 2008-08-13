@@ -106,7 +106,7 @@ namespace omvviewerlight
 		{
 			int tx,ty;
 			tx=(int)pos.X;
-			ty=(int)pos.Y;
+			ty=(int)(255.0-pos.Y);
 			
 			tx=tx-3;
 			ty=ty-3;
@@ -116,7 +116,13 @@ namespace omvviewerlight
 			
 			if(ty>251)
 			   ty=251;
-				
+			
+			if(tx<0)
+				tx=0;
+			
+			if(ty<0)
+				ty=0;
+			
 			for(int x=tx;x<tx+5;x++)
 			{
 				for(int y=ty;y<ty+5;y++)
@@ -198,6 +204,20 @@ namespace omvviewerlight
             }
 
 			
+		}
+
+		protected virtual void OnImageButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+
+			Console.Write("Click "+args.Event.X.ToString()+","+args.Event.Y.ToString()+"\n");
+			// Ah fuck it it does not get the events
+			
+		
+		}
+
+		protected virtual void OnEventbox1ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+			//this stupid thing gets events but autosizes even though i said no
 		}
 	}
 }
