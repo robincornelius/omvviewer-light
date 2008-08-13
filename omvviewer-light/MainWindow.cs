@@ -42,10 +42,24 @@ public partial class MainWindow: Gtk.Window
 		//MainClass.client.Parcels.OnSimParcelsDownloaded += new libsecondlife.ParcelManager.SimParcelsDownloaded(onParcels);
 		MainClass.client.Parcels.OnParcelProperties += new libsecondlife.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
 		MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
+		MainClass.client.Network.OnDisconnected += new libsecondlife.NetworkManager.DisconnectedCallback(onDisconnect);
 		GLib.Timeout.Add(10000,OnUpdateStatus);
 	}
 	
-	
+	void onDisconnect(libsecondlife.NetworkManager.DisconnectType Reason,string msg)	                                       
+    {
+		Gtk.Application.Invoke(delegate {						
+			if(status_icons!=null)
+				status_icons.Destroy();
+
+			status_location.Text="Location: Unknown (0,0,0)";
+			status_balance.Text="$L?";
+			status_parcel.Text="Parcel: Unknown";
+			
+		
+		});
+	}
+			
 	void onTeleport(string Message, libsecondlife.AgentManager.TeleportStatus status,libsecondlife.AgentManager.TeleportFlags flags)
     {		
 		Gtk.Application.Invoke(delegate {						
@@ -55,8 +69,10 @@ public partial class MainWindow: Gtk.Window
 			
 	void doicons(Parcel parcel)
 	{
+		
 		if(status_icons!=null)
 			status_icons.Destroy();
+
 		status_icons=new Gtk.HBox();		
 		this.statusbar1.PackStart(status_icons);
 		
@@ -78,7 +94,7 @@ public partial class MainWindow: Gtk.Window
 			status_icons.PackStart(myimage);				
 		}
 
-		if((parcel.Flags &libsecondlife.Parcel.ParcelFlags.CreateObjects)==libsecondlife.Parcel.ParcelFlags.CreateObjects)
+		if((parcel.Flags & libsecondlife.Parcel.ParcelFlags.CreateObjects)!=libsecondlife.Parcel.ParcelFlags.CreateObjects)
 		{
 			Gtk.Image myimage=new Gtk.Image("status_no_build.tga");
 			status_icons.PackStart(myimage);				

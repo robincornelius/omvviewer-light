@@ -69,8 +69,11 @@ namespace omvviewerlight
 		
 		void drawavs()
 		{
+			if(basemap==null)
+					return;
+			
 			Gtk.Application.Invoke(delegate {						
-
+				
 			Gdk.Pixbuf buf=(Gdk.Pixbuf)basemap.Pixbuf.Clone();
 			
 			showme(buf,MainClass.client.Self.SimPosition,255,0,0);				
