@@ -104,7 +104,7 @@
               </packing>
             </child>
             <child>
-              <widget class="Gtk.HBox" id="hbox4">
+              <widget class="Gtk.HBox" id="hbox8">
                 <property name="MemberName" />
                 <property name="Spacing">6</property>
                 <child>
@@ -197,7 +197,7 @@
               </packing>
             </child>
             <child>
-              <widget class="Gtk.Label" id="label7">
+              <widget class="Gtk.Label" id="label10">
                 <property name="MemberName" />
                 <property name="LabelProp" translatable="yes">TP</property>
               </widget>
@@ -215,7 +215,7 @@
               </packing>
             </child>
             <child>
-              <widget class="Gtk.Label" id="label10">
+              <widget class="Gtk.Label" id="label18">
                 <property name="MemberName" />
                 <property name="LabelProp" translatable="yes">Search</property>
               </widget>

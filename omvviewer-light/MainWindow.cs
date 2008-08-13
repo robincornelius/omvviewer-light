@@ -45,6 +45,7 @@ public partial class MainWindow: Gtk.Window
 		MainClass.client.Parcels.OnParcelProperties += new libsecondlife.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
 		MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
 		MainClass.client.Network.OnDisconnected += new libsecondlife.NetworkManager.DisconnectedCallback(onDisconnect);
+		
 		GLib.Timeout.Add(10000,OnUpdateStatus);
 	}
 	
@@ -181,13 +182,33 @@ public partial class MainWindow: Gtk.Window
 	{
 	}		
 
+	
+	Gtk.Widget makeimwindowtab(string name)
+	{
+		
+		    Gtk.Image image=new Gtk.Image("close.xpm");
+			image.SetSizeRequest(16,16);
+			Gtk.Label lable=new Gtk.Label(name);
+			Gtk.Button button=new Gtk.Button(image);
+			Gtk.HBox box=new Gtk.HBox();
+			box.PackStart(button);
+			box.PackStart(lable);
+				
+			box.ShowAll();
+		
+		    button.Clicked += new EventHandler(clickclosed);
+		
+		   return box;
+	}
+	
 	public void startIM(LLUUID target)
 	{
 		if(!active_ims.Contains(target))
 		{
-			Widget lable=new Gtk.Label(MainClass.av_names[target]);
-			ChatConsole imc=new ChatConsole(target);
-			Gtk.Application.Invoke(delegate {						
+			
+			Gtk.Application.Invoke(delegate {		
+				Gtk.Widget lable=makeimwindowtab(MainClass.av_names[target]);
+				ChatConsole imc=new ChatConsole(target);
 				notebook.InsertPage(imc,lable,notebook.Page);
 				active_ims.Add(target);
 			});
@@ -200,32 +221,21 @@ public partial class MainWindow: Gtk.Window
 			Console.Write("Session is :"+im.IMSessionID.ToString()+"\n");
 			Console.Write("Group is :"+im.GroupIM.ToString()+"\n");
 			Console.Write("ID is :"+im.FromAgentID.ToString()+"\n");
-			
+		
+		
+		//this.UrgencyHint=true;
+		
 		if(im.GroupIM==true)
 		{		
-		if(!active_ims.Contains(im.IMSessionID))
-		{
-
-			Gtk.Application.Invoke(delegate {						
-
-		    Gtk.Image image=new Gtk.Image("close.xpm");
-			image.SetSizeRequest(16,16);
-			Gtk.Label lable=new Gtk.Label(im.FromAgentName);
-			Gtk.Button button=new Gtk.Button(image);
-			Gtk.HBox box=new Gtk.HBox();
-			box.PackStart(button);
-			box.PackStart(lable);
-				
-			box.ShowAll();
-	
-			button.Clicked += new EventHandler(clickclosed);
-			
-			ChatConsole imc=new ChatConsole(im);
-						
-				notebook.InsertPage(imc,(Gtk.Widget)box,-1); 
-				notebook.ShowAll();
-				active_ims.Add(im.IMSessionID);
-			});
+			if(!active_ims.Contains(im.IMSessionID))
+			{
+				Gtk.Application.Invoke(delegate {	
+					Gtk.Widget lable=makeimwindowtab("Group :"+im.FromAgentName);
+					ChatConsole imc=new ChatConsole(im);
+					notebook.InsertPage(imc,lable,-1); 
+					notebook.ShowAll();
+					active_ims.Add(im.IMSessionID);
+				});
 			}
 			return;
 		}
@@ -234,22 +244,11 @@ public partial class MainWindow: Gtk.Window
 		{
 			Gtk.Application.Invoke(delegate {						
 
-		    Gtk.Image image=new Gtk.Image("close.xpm");
-			image.SetSizeRequest(16,16);
-			Gtk.Label lable=new Gtk.Label(im.FromAgentName);
-			Gtk.Button button=new Gtk.Button(image);
-			Gtk.HBox box=new Gtk.HBox();
-			box.PackStart(button);
-			box.PackStart(lable);
-				
-			box.ShowAll();
-	
-				
-			button.Clicked += new EventHandler(clickclosed);
+				Gtk.Widget lable=makeimwindowtab(im.FromAgentName);
 			
-			ChatConsole imc=new ChatConsole(im);
+				ChatConsole imc=new ChatConsole(im);
 						
-				notebook.InsertPage(imc,(Gtk.Widget)box,-1); 
+				notebook.InsertPage(imc,lable,-1); 
 				notebook.ShowAll();
 				active_ims.Add(im.FromAgentID);
 			});
