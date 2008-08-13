@@ -121,7 +121,8 @@ namespace omvviewerlight
 		{
 			if(button_login.Label=="Login")
 			{
-				
+				this.textview_loginmsg.Buffer.SetText("Connecting to login server...");
+				this.textview_loginmsg.QueueDraw();
 				//LoginParams login;
 				login=MainClass.client.Network.DefaultLoginParams(entry_first.Text,entry_last.Text,entry_pass.Text,"omvviewer-light","1.0");
 				
