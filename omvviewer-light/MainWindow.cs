@@ -131,9 +131,17 @@ public partial class MainWindow: Gtk.Window
 	             
 	void onIM(InstantMessage im, Simulator sim)
 	{		
+		
+			Console.Write("Session is :"+im.IMSessionID.ToString()+"\n");
+			Console.Write("Group is :"+im.GroupIM.ToString()+"\n");
+			Console.Write("ID is :"+im.FromAgentID.ToString()+"\n");
+			
+		
 		// don't do this yet
 		if(im.GroupIM==true)
-		{
+		{		
+			//MainClass.client.Self.GroupChatSessions.TryGetValue(
+			
 			if(!active_ims.Contains(im.IMSessionID))
 			{
 				Widget lable=new Gtk.Label("Group: "+im.FromAgentName);

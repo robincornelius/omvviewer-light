@@ -96,6 +96,8 @@ namespace omvviewerlight
 		{
 			//Not group IM ignore messages not destine for im_key
 
+				
+			
 			if(im.GroupIM==true)
 			{
 				if(im.IMSessionID!=this.im_session_id)
@@ -240,6 +242,7 @@ namespace omvviewerlight
 				string buffer;
 				TextIter iter;
 	
+				
 				MainClass.client.Self.InstantMessageGroup(im_session_id,entry_chat.Text);
 
 				iter=textview_chat.Buffer.EndIter;

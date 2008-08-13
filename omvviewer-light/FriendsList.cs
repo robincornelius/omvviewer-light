@@ -84,7 +84,11 @@ namespace omvviewerlight
 		
 			if(MainClass.av_names!=null)
 			{			
-				store.SetValue(iter,1,MainClass.av_names[lid]);
+				string name;
+				if(MainClass.av_names.TryGetValue(lid,out name))
+				{
+					store.SetValue(iter,1,name);
+				}
 			}
 			
 			FriendInfo finfo;
