@@ -191,6 +191,20 @@ namespace omvviewerlight
 				MainClass.win.startIM(lid);
 			}
 		}
+
+		protected virtual void OnButtonTeleportClicked (object sender, System.EventArgs e)
+		{
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(treeview_friends.Selection.GetSelected(out mod,out iter))			
+			{
+				string id=(string)mod.GetValue(iter,2);
+				LLUUID lid=(LLUUID)id;
+				MainClass.client.Self.SendTeleportLure(lid);
+			}
+
+		}
 		
 	}
 }
