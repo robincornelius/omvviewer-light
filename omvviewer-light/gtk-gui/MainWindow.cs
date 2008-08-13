@@ -85,7 +85,7 @@ public partial class MainWindow {
         this.notebook = new Gtk.Notebook();
         this.notebook.CanFocus = true;
         this.notebook.Name = "notebook";
-        this.notebook.CurrentPage = 2;
+        this.notebook.CurrentPage = 0;
         // Container child notebook.Gtk.Notebook+NotebookChild
         this.logincontrol5 = new omvviewerlight.LoginControl();
         this.logincontrol5.Events = ((Gdk.EventMask)(256));
@@ -226,6 +226,7 @@ public partial class MainWindow {
         w18.Position = 1;
         // Container child vbox6.Gtk.Box+BoxChild
         this.statusbar1 = new Gtk.Statusbar();
+        this.statusbar1.HeightRequest = 20;
         this.statusbar1.Name = "statusbar1";
         this.statusbar1.Spacing = 6;
         this.vbox6.Add(this.statusbar1);

@@ -75,6 +75,8 @@ namespace omvviewerlight {
             this.vbox1.Add(this.vbox2);
             Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox1[this.vbox2]));
             w5.Position = 1;
+            w5.Expand = false;
+            w5.Fill = false;
             this.Add(this.vbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();

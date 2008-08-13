@@ -17,6 +17,7 @@ public partial class MainWindow: Gtk.Window
 	Gtk.Label status_location;
 	Gtk.Label status_balance;
 	Gtk.Label status_parcel;		
+	Gtk.HBox status_icons;
 	
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
@@ -29,7 +30,9 @@ public partial class MainWindow: Gtk.Window
 		this.statusbar1.PackStart(status_location);
 		this.statusbar1.PackStart(status_parcel);
 		this.statusbar1.PackStart(status_balance);
-
+		
+		//this.doicons();
+		
 		this.statusbar1.ShowAll();
 		
 		MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
@@ -50,6 +53,44 @@ public partial class MainWindow: Gtk.Window
 		});
 	}
 			
+	void doicons(Parcel parcel)
+	{
+		if(status_icons!=null)
+			status_icons.Destroy();
+		status_icons=new Gtk.HBox();		
+		this.statusbar1.PackStart(status_icons);
+		
+		
+		
+		
+		if(parcel.Flags!=libsecondlife.Parcel.ParcelFlags.AllowFly)
+		{
+			Gtk.Image myimage=new Gtk.Image("status_no_fly.tga");
+			status_icons.PackStart(myimage);
+		}
+	
+		if(parcel.Flags==libsecondlife.Parcel.ParcelFlags.RestrictPushObject)
+		{
+			Gtk.Image myimage=new Gtk.Image("status_no_push.tga");
+			status_icons.PackStart(myimage);				
+		}
+
+		if(parcel.Flags != libsecondlife.Parcel.ParcelFlags.AllowOtherScripts)
+		{
+			Gtk.Image myimage=new Gtk.Image("status_no_scripts.tga");
+			status_icons.PackStart(myimage);				
+		}
+
+		if(parcel.Flags != libsecondlife.Parcel.ParcelFlags.CreateObjects)
+		{
+			Gtk.Image myimage=new Gtk.Image("status_no_build.tga");
+			status_icons.PackStart(myimage);				
+		}
+		
+		
+		status_icons.ShowAll();
+		
+	}
 	
 	void onParcelProperties(Parcel parcel, ParcelManager.ParcelResult result, int sequenceID, bool snapSelection)
 	{
@@ -65,11 +106,20 @@ public partial class MainWindow: Gtk.Window
 		
 		int primscount=parcel.OwnerPrims+parcel.OtherPrims+parcel.GroupPrims;
 		string prims;
-		prims=primscount.ToString()+" of "+parcel.TotalPrims.ToString();
+		prims=primscount.ToString()+ "of "+	parcel.MaxPrims;
+					
+		status_parcel.Text=parcel.Name;
+		status_parcel.TooltipText=
+				parcel.Name
+					+"\nOwner :"+owner
+					+"\nGroup :"+parcel.GroupID.ToString()
+					+"\nSize: "+size.ToString()	
+					+"\nPrims :"+prims.ToString()
+					+"\nTraffic: "+parcel.Dwell.ToString()
+					+"\nArea: "+parcel.Area.ToString();
+	
 		
-		status_parcel.Text="Parcel :"+parcel.Name;
-		status_parcel.TooltipText=parcel.Name+"\nOwner :"+owner+"\nSize: "+size+"\nPrims :"+prims;
-		
+			doicons(parcel);
 		});
 	}
 	

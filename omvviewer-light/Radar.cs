@@ -31,11 +31,19 @@ namespace omvviewerlight
 			MainClass.client.Objects.OnObjectUpdated += new libsecondlife.ObjectManager.ObjectUpdatedCallback(onUpdate);
 		
 			MainClass.client.Self.OnChat += new libsecondlife.AgentManager.ChatCallback(onChat);
-			
+			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
 			store.SetSortColumnId(2,Gtk.SortType.Ascending);
 	
 		}
 						
+		void onLogin(LoginStatus status,string message)
+		{
+			if(status==LoginStatus.Success)
+				Gtk.Application.Invoke(delegate {										
+				store.Clear();
+				});			
+		}
+		
 		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
 		{
 			if(!avs.ContainsKey(update.LocalID))
