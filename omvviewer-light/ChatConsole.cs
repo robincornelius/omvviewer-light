@@ -51,13 +51,33 @@ namespace omvviewerlight
 			if(im.GroupIM)
 			{
 				this.im_session_id=im.IMSessionID;
+				im_key=LLUUID.Zero;			
+				MainClass.client.Self.OnGroupChatJoin += new libsecondlife.AgentManager.GroupChatJoined(onGroupChatJoin);
+				MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
 			}
 			else
 			{
 				im_key=im.FromAgentID;				
 			}
+			
+			onIM(im,null); //yea, i forgot this, need to display text from first IM, lol
+				
 		}
 
+		void onGroupChatJoin(LLUUID groupChatSessionID, LLUUID tmpSessionID, bool success)
+		{
+			string buffer="Joined group chat\n";
+			TextIter iter;
+	
+			Gtk.Application.Invoke(delegate {						
+			
+				iter=textview_chat.Buffer.EndIter;
+				textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold);
+								
+				textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
+			});
+		}	
+		
 		public ChatConsole(LLUUID target)
 		{
 			dosetup();
@@ -103,7 +123,7 @@ namespace omvviewerlight
 			}
 			else
 			{
-				if(im.FromAgentID!=this.im_key)
+				if(im.FromAgentID!=this.im_key && im.IMSessionID!=this.im_session_id)
 					return;
 			}
 			
