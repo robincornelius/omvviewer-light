@@ -209,7 +209,7 @@ public partial class MainWindow: Gtk.Window
 			Gtk.Application.Invoke(delegate {		
 				Gtk.Widget lable=makeimwindowtab(MainClass.av_names[target]);
 				ChatConsole imc=new ChatConsole(target);
-				notebook.InsertPage(imc,lable,notebook.Page);
+				notebook.InsertPage(imc,lable,-1);
 				active_ims.Add(target);
 			});
 		}		
@@ -260,11 +260,13 @@ public partial class MainWindow: Gtk.Window
 		{
 		    /// Urrrg
 		    // The button is in a hbox in a tab of a notebook page in a notebook in a chatwidget
+		    
+		
 		    int pageno=1;
-		    pageno=notebook.PageNum((Gtk.Widget)obj);
+		    pageno=notebook.PageNum(((Gtk.Widget)obj).Parent.Parent.Parent);
 		    ChatConsole cs=(ChatConsole)notebook.GetNthPage(pageno);
 
-		if(cs.im_key!=libsecondlife.LLUUID.Zero)
+		    if(cs.im_key!=libsecondlife.LLUUID.Zero)
 				if(MainClass.win.active_ims.Contains(cs.im_key))
 					MainClass.win.active_ims.Remove(cs.im_key);	
 		
