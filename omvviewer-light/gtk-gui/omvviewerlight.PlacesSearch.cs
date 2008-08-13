@@ -23,13 +23,19 @@ namespace omvviewerlight {
         
         private Gtk.Button button_search;
         
+        private Gtk.HBox hbox2;
+        
         private Gtk.ScrolledWindow GtkScrolledWindow;
         
         private Gtk.TreeView treeview1;
         
-        private Gtk.HBox hbox2;
+        private Gtk.VBox vbox2;
         
-        private Gtk.Button button2;
+        private Gtk.CheckButton checkbutton_mature;
+        
+        private Gtk.HBox hbox3;
+        
+        private Gtk.Button button_TP;
         
         protected virtual void Build() {
             Stetic.Gui.Initialize(this);
@@ -79,44 +85,73 @@ namespace omvviewerlight {
             w4.Expand = false;
             w4.Fill = false;
             // Container child vbox1.Gtk.Box+BoxChild
+            this.hbox2 = new Gtk.HBox();
+            this.hbox2.Name = "hbox2";
+            this.hbox2.Spacing = 6;
+            // Container child hbox2.Gtk.Box+BoxChild
             this.GtkScrolledWindow = new Gtk.ScrolledWindow();
             this.GtkScrolledWindow.Name = "GtkScrolledWindow";
             this.GtkScrolledWindow.ShadowType = ((Gtk.ShadowType)(1));
             // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
             this.treeview1 = new Gtk.TreeView();
+            this.treeview1.WidthRequest = 400;
             this.treeview1.CanFocus = true;
             this.treeview1.Name = "treeview1";
             this.treeview1.HeadersClickable = true;
             this.GtkScrolledWindow.Add(this.treeview1);
-            this.vbox1.Add(this.GtkScrolledWindow);
-            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.vbox1[this.GtkScrolledWindow]));
-            w6.Position = 1;
-            // Container child vbox1.Gtk.Box+BoxChild
-            this.hbox2 = new Gtk.HBox();
-            this.hbox2.Name = "hbox2";
-            this.hbox2.Spacing = 6;
+            this.hbox2.Add(this.GtkScrolledWindow);
+            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox2[this.GtkScrolledWindow]));
+            w6.Position = 0;
             // Container child hbox2.Gtk.Box+BoxChild
-            this.button2 = new Gtk.Button();
-            this.button2.CanFocus = true;
-            this.button2.Name = "button2";
-            this.button2.UseUnderline = true;
-            this.button2.Label = Mono.Unix.Catalog.GetString("button2");
-            this.hbox2.Add(this.button2);
-            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.hbox2[this.button2]));
+            this.vbox2 = new Gtk.VBox();
+            this.vbox2.Name = "vbox2";
+            this.vbox2.Spacing = 6;
+            // Container child vbox2.Gtk.Box+BoxChild
+            this.checkbutton_mature = new Gtk.CheckButton();
+            this.checkbutton_mature.CanFocus = true;
+            this.checkbutton_mature.Name = "checkbutton_mature";
+            this.checkbutton_mature.Label = Mono.Unix.Catalog.GetString("Enable Mature");
+            this.checkbutton_mature.Active = true;
+            this.checkbutton_mature.DrawIndicator = true;
+            this.checkbutton_mature.UseUnderline = true;
+            this.vbox2.Add(this.checkbutton_mature);
+            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.vbox2[this.checkbutton_mature]));
             w7.Position = 0;
             w7.Expand = false;
             w7.Fill = false;
+            this.hbox2.Add(this.vbox2);
+            Gtk.Box.BoxChild w8 = ((Gtk.Box.BoxChild)(this.hbox2[this.vbox2]));
+            w8.Position = 1;
             this.vbox1.Add(this.hbox2);
-            Gtk.Box.BoxChild w8 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
-            w8.Position = 2;
-            w8.Expand = false;
-            w8.Fill = false;
+            Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
+            w9.Position = 1;
+            // Container child vbox1.Gtk.Box+BoxChild
+            this.hbox3 = new Gtk.HBox();
+            this.hbox3.Name = "hbox3";
+            this.hbox3.Spacing = 6;
+            // Container child hbox3.Gtk.Box+BoxChild
+            this.button_TP = new Gtk.Button();
+            this.button_TP.CanFocus = true;
+            this.button_TP.Name = "button_TP";
+            this.button_TP.UseUnderline = true;
+            this.button_TP.Label = Mono.Unix.Catalog.GetString("Teleport");
+            this.hbox3.Add(this.button_TP);
+            Gtk.Box.BoxChild w10 = ((Gtk.Box.BoxChild)(this.hbox3[this.button_TP]));
+            w10.Position = 0;
+            w10.Expand = false;
+            w10.Fill = false;
+            this.vbox1.Add(this.hbox3);
+            Gtk.Box.BoxChild w11 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox3]));
+            w11.Position = 2;
+            w11.Expand = false;
+            w11.Fill = false;
             this.Add(this.vbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
             }
             this.Show();
             this.button_search.Clicked += new System.EventHandler(this.OnButtonSearchClicked);
+            this.button_TP.Clicked += new System.EventHandler(this.OnButtonTPClicked);
         }
     }
 }
