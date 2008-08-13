@@ -100,7 +100,7 @@ public partial class MainWindow: Gtk.Window
 	
 	bool OnUpdateStatus()
 	{
-		if(MainClass.client.Network.Connected)
+		if(MainClass.client.Network.LoginStatusCode==LoginStatus.Success)
 		{
 			status_location.Text="Location: "+MainClass.client.Network.CurrentSim.Name+MainClass.client.Self.SimPosition.ToString();	
 		}		

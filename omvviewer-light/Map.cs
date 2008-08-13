@@ -6,9 +6,12 @@
 
 using System;
 using System.Net;
+using System.Collections.Generic;
 using libsecondlife;
 using omvviewerlight;
 using System.Drawing;
+using Gdk;
+using Gtk;
 
 namespace omvviewerlight
 {
@@ -16,16 +19,134 @@ namespace omvviewerlight
 	{
 		private const String MAP_IMG_URL = "http://secondlife.com/apps/mapapi/grid/map_image/";
 		private const int GRID_Y_OFFSET = 1279;
+
+		private Dictionary<uint, Avatar> avs = new Dictionary<uint, Avatar>();
 		
 		Gtk.Image mMapImage;		
+		Gtk.Image basemap;
+		int rowstride;
+		int channels;
+		int width;
+		int height;
 		
 		public Map()
 		{
 			this.Build();
-	//		MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
 			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
+			MainClass.client.Network.OnCurrentSimChanged += new libsecondlife.NetworkManager.CurrentSimChangedCallback(onNewSim);
+			MainClass.client.Objects.OnNewAvatar += new libsecondlife.ObjectManager.NewAvatarCallback(onNewAvatar);
+			MainClass.client.Objects.OnObjectKilled += new libsecondlife.ObjectManager.KillObjectCallback(onKillObject);
+			MainClass.client.Objects.OnObjectUpdated += new libsecondlife.ObjectManager.ObjectUpdatedCallback(onUpdate);
+
+		}
+		
+		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
+		{
+			if(avs.ContainsKey(update.LocalID))
+			{
+				drawavs();
+			}
+		}
+		
+		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
+		{
+			if(!avs.ContainsKey(avatar.LocalID))
+			{
+				avs.Add(avatar.LocalID,avatar);	
+				drawavs();			
+			}
+		}
+
+		void onKillObject(Simulator simulator, uint objectID)
+		{
+			if(avs.ContainsKey(objectID))
+			{
+				avs.Remove(objectID);
+				drawavs();
+			}
 			
-			//this.image.SetFromPixmap
+		}
+		
+		void drawavs()
+		{
+			Gtk.Application.Invoke(delegate {						
+
+			
+			Gdk.Pixbuf buf=(Gdk.Pixbuf)basemap.Pixbuf.Clone();
+			
+			showme(buf,MainClass.client.Self.SimPosition,255,0,0);				
+			
+			foreach(KeyValuePair<uint, Avatar> kvp in avs)
+			{
+					if(kvp.Value.LocalID!=MainClass.client.Self.LocalID)
+						showme(buf,kvp.Value.Position,0,255,0);
+			}
+
+				image.Pixbuf=buf;
+				image.QueueDraw();
+			});
+			
+		}
+		
+
+		
+		void onNewSim(Simulator last)
+	    {
+			Gtk.Application.Invoke(delegate {		
+
+			if(MainClass.client.Network.LoginStatusCode==LoginStatus.Success)
+				{
+					getmap();
+					drawavs();
+				}				
+			});
+		}
+			
+		unsafe void showme(Gdk.Pixbuf buf,LLVector3 pos,int R,int G,int B)
+		{
+			int tx,ty;
+			tx=(int)pos.X;
+			ty=(int)pos.Y;
+			
+			tx=tx-3;
+			ty=ty-3;
+			
+			if(tx>251)
+				tx=251;
+			
+			if(ty>251)
+			   ty=251;
+				
+			for(int x=tx;x<tx+5;x++)
+			{
+				for(int y=ty;y<ty+5;y++)
+				{	
+					drawxy(buf,x,y,R,G,B);	
+				}
+				
+			}
+				
+			
+		}
+		
+		unsafe void drawxy(Gdk.Pixbuf buf,int x,int y,int R,int G,int B)
+		{
+			
+			sbyte * pixels=(sbyte *)buf.Pixels;
+			sbyte * p;			
+			
+			if(x<0 || x>width)
+				return;
+			
+			if(y<0 || y>height)
+				return;
+			
+			p=pixels+(y*rowstride)+(x* channels);
+		
+			p[0]=(sbyte)R;
+			p[1]=(sbyte)G;
+			p[2]=(sbyte)B;
+		
 		}
 		
 		void onLogin(LoginStatus login, string message)
@@ -35,7 +156,7 @@ namespace omvviewerlight
 				if(login==LoginStatus.Success)
 				{
 					getmap();
-					image.Pixbuf=mMapImage.Pixbuf;
+					drawavs();
 				}
 			});
 		}
@@ -57,9 +178,16 @@ namespace omvviewerlight
                 request.Timeout = 5000;
                 request.ReadWriteTimeout = 20000;
 				response = (HttpWebResponse)request.GetResponse();
-				Gtk.Image image;
-				image=new Gtk.Image(response.GetResponseStream());
-				mMapImage=image;
+				basemap=new Gtk.Image(response.GetResponseStream());
+
+				image.Pixbuf=(Gdk.Pixbuf)basemap.Pixbuf.Clone();
+
+				rowstride=basemap.Pixbuf.Rowstride;
+				channels=basemap.Pixbuf.NChannels;
+				width=basemap.Pixbuf.Width;
+				height=basemap.Pixbuf.Height;
+				
+				
 				//return System.Drawing.Image.FromStream(response.GetResponseStream());
 				
             }

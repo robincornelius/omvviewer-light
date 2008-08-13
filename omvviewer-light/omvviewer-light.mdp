@@ -4,13 +4,13 @@
       <Output directory="bin/Debug" assembly="omvviewer-light" />
       <Build debugmode="True" target="Exe" />
       <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
-      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" definesymbols="DEBUG" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="True" generateoverflowchecks="True" mainclass="" definesymbols="DEBUG" generatexmldocumentation="False" win32Icon="." ctype="CSharpCompilerParameters" />
     </Configuration>
     <Configuration name="Release" ctype="DotNetProjectConfiguration">
       <Output directory="bin/Release" assembly="omvviewer-light" />
       <Build debugmode="False" target="Exe" />
       <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
-      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="True" generateoverflowchecks="True" mainclass="" generatexmldocumentation="False" win32Icon="." ctype="CSharpCompilerParameters" />
     </Configuration>
   </Configurations>
   <Contents>
@@ -37,7 +37,7 @@
     <File name="gtk-gui/omvviewerlight.Search.cs" subtype="Code" buildaction="Compile" />
     <File name="Searchs.cs" subtype="Code" buildaction="Compile" />
     <File name="gtk-gui/omvviewerlight.Searches.cs" subtype="Code" buildaction="Compile" />
-    <File name="close.xpm" subtype="Code" buildaction="FileCopy" />
+    <File name="close.xpm" subtype="Code" buildaction="EmbedAsResource" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
@@ -51,7 +51,7 @@
     <ProjectReference type="Assembly" localcopy="True" refto="log4net.dll" />
     <ProjectReference type="Gac" localcopy="True" refto="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   </References>
-  <GtkDesignInfo gtkVersion="2.12.1">
+  <GtkDesignInfo isWidgetLibrary="True" gtkVersion="2.12.1">
     <ExportedWidgets>
       <Widget>omvviewerlight.LoginControl</Widget>
       <Widget>omvviewerlight.FriendsList</Widget>
