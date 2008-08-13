@@ -515,6 +515,7 @@ Custom</property>
                         <property name="CanFocus">True</property>
                         <property name="Editable">False</property>
                         <property name="Text" translatable="yes" />
+                        <property name="WrapMode">Word</property>
                       </widget>
                     </child>
                   </widget>
@@ -804,6 +805,7 @@ Custom</property>
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="ShowScrollbars">True</property>
+                <property name="Editable">False</property>
                 <property name="Text" translatable="yes" />
                 <property name="WrapMode">Word</property>
               </widget>

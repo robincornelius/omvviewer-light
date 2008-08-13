@@ -84,7 +84,11 @@ namespace omvviewerlight
         /// return LoginStatus.Success or LoginStatus.Failure</summary>
 		void onLogin(LoginStatus login, string message)
 		{
-			this.textview_loginmsg.Buffer.Text=message;	
+			Gtk.Application.Invoke(delegate {
+				this.textview_loginmsg.Buffer.Text=message;	
+				this.textview_loginmsg.QueueDraw();
+			});
+			
 			if(LoginStatus.Failed==login)
 				Gtk.Application.Invoke(delegate {
 					this.button_login.Label="Login";
