@@ -42,6 +42,7 @@ namespace omvviewerlight {
             this.textview_chat = new Gtk.TextView();
             this.textview_chat.CanFocus = true;
             this.textview_chat.Name = "textview_chat";
+            this.textview_chat.Editable = false;
             this.textview_chat.WrapMode = ((Gtk.WrapMode)(2));
             this.GtkScrolledWindow.Add(this.textview_chat);
             this.vbox1.Add(this.GtkScrolledWindow);

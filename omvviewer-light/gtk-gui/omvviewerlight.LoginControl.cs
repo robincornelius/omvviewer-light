@@ -279,6 +279,7 @@ namespace omvviewerlight {
             this.textview_loginmsg.CanFocus = true;
             this.textview_loginmsg.Name = "textview_loginmsg";
             this.textview_loginmsg.Editable = false;
+            this.textview_loginmsg.WrapMode = ((Gtk.WrapMode)(2));
             this.GtkAlignment.Add(this.textview_loginmsg);
             this.frame1.Add(this.GtkAlignment);
             this.GtkLabel2 = new Gtk.Label();
