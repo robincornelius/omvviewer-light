@@ -17,6 +17,8 @@ namespace omvviewerlight
 		private const String MAP_IMG_URL = "http://secondlife.com/apps/mapapi/grid/map_image/";
 		private const int GRID_Y_OFFSET = 1279;
 		
+		Gtk.Image mMapImage;		
+		
 		public Map()
 		{
 			this.Build();
@@ -29,18 +31,16 @@ namespace omvviewerlight
 		void onLogin(LoginStatus login, string message)
 		{
 			Gtk.Application.Invoke(delegate {		
-			//savemap();
-			
+				
+				if(login==LoginStatus.Success)
+				{
+					getmap();
+					image.Pixbuf=mMapImage.Pixbuf;
+				}
 			});
 		}
-		
-		public void savemap()
-		{
-			System.Drawing.Image mMapImage=getmap();
-			mMapImage.Save("map.jpg");
-		}
-		
-		System.Drawing.Image getmap()
+				
+		void getmap()
 		{
 			  HttpWebRequest request = null;
               HttpWebResponse response = null;
@@ -57,13 +57,16 @@ namespace omvviewerlight
                 request.Timeout = 5000;
                 request.ReadWriteTimeout = 20000;
 				response = (HttpWebResponse)request.GetResponse();
-				return System.Drawing.Image.FromStream(response.GetResponseStream());
+				Gtk.Image image;
+				image=new Gtk.Image(response.GetResponseStream());
+				mMapImage=image;
+				//return System.Drawing.Image.FromStream(response.GetResponseStream());
 				
             }
             catch (Exception ex)
             {
                 //MessageBox.Show(ex.ToString(), "Error Downloading Web Map Image");
-                return null;
+                return;
             }
 
 			
