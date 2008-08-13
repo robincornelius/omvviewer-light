@@ -510,7 +510,7 @@ Custom</property>
                     <child>
                       <widget class="Gtk.TextView" id="textview_loginmsg">
                         <property name="MemberName" />
-                        <property name="HeightRequest">20</property>
+                        <property name="HeightRequest">30</property>
                         <property name="CanFocus">True</property>
                         <property name="Editable">False</property>
                         <property name="Text" translatable="yes" />
@@ -551,7 +551,7 @@ Custom</property>
                         <child>
                           <widget class="Gtk.TextView" id="textview_log">
                             <property name="MemberName" />
-                            <property name="HeightRequest">300</property>
+                            <property name="HeightRequest">290</property>
                             <property name="CanFocus">True</property>
                             <property name="ShowScrollbars">True</property>
                             <property name="Editable">False</property>
@@ -601,6 +601,7 @@ Custom</property>
             <child>
               <widget class="Gtk.TreeView" id="treeview_friends">
                 <property name="MemberName" />
+                <property name="WidthRequest">225</property>
                 <property name="CanFocus">True</property>
                 <property name="ShowScrollbars">True</property>
                 <property name="HeadersClickable">True</property>
@@ -674,6 +675,53 @@ Custom</property>
                     <property name="Fill">False</property>
                   </packing>
                 </child>
+                <child>
+                  <widget class="Gtk.HBox" id="hbox1">
+                    <property name="MemberName" />
+                    <property name="Homogeneous">True</property>
+                    <property name="Spacing">6</property>
+                    <child>
+                      <widget class="Gtk.Button" id="button_IM">
+                        <property name="MemberName" />
+                        <property name="WidthRequest">70</property>
+                        <property name="CanFocus">True</property>
+                        <property name="Type">TextOnly</property>
+                        <property name="Label" translatable="yes">IM</property>
+                        <property name="UseUnderline">True</property>
+                        <signal name="Clicked" handler="OnButtonIMClicked" />
+                      </widget>
+                      <packing>
+                        <property name="Position">0</property>
+                        <property name="AutoSize">True</property>
+                        <property name="Expand">False</property>
+                        <property name="Fill">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="Gtk.Button" id="button_teleport">
+                        <property name="MemberName" />
+                        <property name="WidthRequest">80</property>
+                        <property name="CanFocus">True</property>
+                        <property name="Type">TextOnly</property>
+                        <property name="Label" translatable="yes">Teleport</property>
+                        <property name="UseUnderline">True</property>
+                        <signal name="Clicked" handler="OnButtonTeleportClicked" />
+                      </widget>
+                      <packing>
+                        <property name="Position">1</property>
+                        <property name="AutoSize">True</property>
+                        <property name="Expand">False</property>
+                        <property name="Fill">False</property>
+                      </packing>
+                    </child>
+                  </widget>
+                  <packing>
+                    <property name="Position">3</property>
+                    <property name="AutoSize">True</property>
+                    <property name="Expand">False</property>
+                    <property name="Fill">False</property>
+                  </packing>
+                </child>
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -688,23 +736,6 @@ Custom</property>
                 <property name="Homogeneous">True</property>
                 <property name="Spacing">6</property>
                 <child>
-                  <widget class="Gtk.Button" id="button_IM">
-                    <property name="MemberName" />
-                    <property name="WidthRequest">70</property>
-                    <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
-                    <property name="Label" translatable="yes">IM</property>
-                    <property name="UseUnderline">True</property>
-                    <signal name="Clicked" handler="OnButtonIMClicked" />
-                  </widget>
-                  <packing>
-                    <property name="Position">0</property>
-                    <property name="AutoSize">True</property>
-                    <property name="Expand">False</property>
-                    <property name="Fill">False</property>
-                  </packing>
-                </child>
-                <child>
                   <widget class="Gtk.Button" id="button_profile">
                     <property name="MemberName" />
                     <property name="WidthRequest">70</property>
@@ -715,24 +746,7 @@ Custom</property>
                     <property name="UseUnderline">True</property>
                   </widget>
                   <packing>
-                    <property name="Position">1</property>
-                    <property name="AutoSize">True</property>
-                    <property name="Expand">False</property>
-                    <property name="Fill">False</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="Gtk.Button" id="button_teleport">
-                    <property name="MemberName" />
-                    <property name="WidthRequest">80</property>
-                    <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
-                    <property name="Label" translatable="yes">Teleport</property>
-                    <property name="UseUnderline">True</property>
-                    <signal name="Clicked" handler="OnButtonTeleportClicked" />
-                  </widget>
-                  <packing>
-                    <property name="Position">2</property>
+                    <property name="Position">0</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
@@ -749,7 +763,7 @@ Custom</property>
                     <property name="UseUnderline">True</property>
                   </widget>
                   <packing>
-                    <property name="Position">3</property>
+                    <property name="Position">1</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
@@ -856,6 +870,7 @@ Shout</property>
             <child>
               <widget class="Gtk.TreeView" id="treeview_radar">
                 <property name="MemberName" />
+                <property name="WidthRequest">200</property>
                 <property name="CanFocus">True</property>
                 <property name="ShowScrollbars">True</property>
                 <property name="HeadersClickable">True</property>

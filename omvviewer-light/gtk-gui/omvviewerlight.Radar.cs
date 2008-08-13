@@ -40,6 +40,7 @@ namespace omvviewerlight {
             this.GtkScrolledWindow.ShadowType = ((Gtk.ShadowType)(1));
             // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
             this.treeview_radar = new Gtk.TreeView();
+            this.treeview_radar.WidthRequest = 200;
             this.treeview_radar.CanFocus = true;
             this.treeview_radar.Name = "treeview_radar";
             this.treeview_radar.HeadersClickable = true;
