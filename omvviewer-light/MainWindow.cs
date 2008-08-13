@@ -60,28 +60,25 @@ public partial class MainWindow: Gtk.Window
 		status_icons=new Gtk.HBox();		
 		this.statusbar1.PackStart(status_icons);
 		
-		
-		
-		
-		if(parcel.Flags!=libsecondlife.Parcel.ParcelFlags.AllowFly)
+		if((parcel.Flags & libsecondlife.Parcel.ParcelFlags.AllowFly) != libsecondlife.Parcel.ParcelFlags.AllowFly )
 		{
 			Gtk.Image myimage=new Gtk.Image("status_no_fly.tga");
 			status_icons.PackStart(myimage);
 		}
 	
-		if(parcel.Flags==libsecondlife.Parcel.ParcelFlags.RestrictPushObject)
+		if((parcel.Flags & libsecondlife.Parcel.ParcelFlags.RestrictPushObject)==libsecondlife.Parcel.ParcelFlags.RestrictPushObject)
 		{
 			Gtk.Image myimage=new Gtk.Image("status_no_push.tga");
 			status_icons.PackStart(myimage);				
 		}
 
-		if(parcel.Flags != libsecondlife.Parcel.ParcelFlags.AllowOtherScripts)
+		if((parcel.Flags & libsecondlife.Parcel.ParcelFlags.AllowOtherScripts)!=libsecondlife.Parcel.ParcelFlags.AllowOtherScripts)
 		{
 			Gtk.Image myimage=new Gtk.Image("status_no_scripts.tga");
 			status_icons.PackStart(myimage);				
 		}
 
-		if(parcel.Flags != libsecondlife.Parcel.ParcelFlags.CreateObjects)
+		if((parcel.Flags &libsecondlife.Parcel.ParcelFlags.CreateObjects)==libsecondlife.Parcel.ParcelFlags.CreateObjects)
 		{
 			Gtk.Image myimage=new Gtk.Image("status_no_build.tga");
 			status_icons.PackStart(myimage);				
