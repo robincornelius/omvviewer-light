@@ -23,7 +23,7 @@ namespace omvviewerlight {
         
         private Gtk.HBox hbox2;
         
-        private Gtk.Button button1;
+        private Gtk.Button button_im;
         
         private Gtk.Button button2;
         
@@ -60,13 +60,13 @@ namespace omvviewerlight {
             this.hbox2.Name = "hbox2";
             this.hbox2.Spacing = 6;
             // Container child hbox2.Gtk.Box+BoxChild
-            this.button1 = new Gtk.Button();
-            this.button1.CanFocus = true;
-            this.button1.Name = "button1";
-            this.button1.UseUnderline = true;
-            this.button1.Label = Mono.Unix.Catalog.GetString("button1");
-            this.hbox2.Add(this.button1);
-            Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.hbox2[this.button1]));
+            this.button_im = new Gtk.Button();
+            this.button_im.CanFocus = true;
+            this.button_im.Name = "button_im";
+            this.button_im.UseUnderline = true;
+            this.button_im.Label = Mono.Unix.Catalog.GetString("IM");
+            this.hbox2.Add(this.button_im);
+            Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.hbox2[this.button_im]));
             w3.Position = 0;
             w3.Expand = false;
             w3.Fill = false;
@@ -105,6 +105,7 @@ namespace omvviewerlight {
                 this.Child.ShowAll();
             }
             this.Show();
+            this.button_im.Clicked += new System.EventHandler(this.OnButtonImClicked);
         }
     }
 }

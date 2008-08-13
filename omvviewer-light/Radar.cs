@@ -126,6 +126,23 @@ namespace omvviewerlight
 			}
 					
 		}
+
+		protected virtual void OnButtonImClicked (object sender, System.EventArgs e)
+		{
+			//beter work out who we have selected
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;			
+			
+			if(this.treeview_radar.Selection.GetSelected(out mod,out iter))			
+			{
+				//ALL i want is a fucking UUID
+				string id=(string)mod.GetValue(iter,2);
+				LLUUID lid=(LLUUID)id;
+				MainClass.win.startIM(lid);
+			}
+	
+		
+		}
 		
 	}
 }

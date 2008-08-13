@@ -26,7 +26,7 @@ namespace omvviewerlight
 
 		void onLogin(LoginStatus login, string message)
 		{
-			if(MainClass.client.Network.Connected)
+			if(login==libsecondlife.LoginStatus.Success)
 			{
 				this.spinbutton_x.Value=MainClass.client.Self.SimPosition.X;
 				this.spinbutton_y.Value=MainClass.client.Self.SimPosition.Y;
@@ -45,7 +45,7 @@ namespace omvviewerlight
 		
 	    bool OnTimeout()
 		{
-			if(MainClass.client.Network.Connected)
+			if(MainClass.client.Network.LoginStatusCode==libsecondlife.LoginStatus.Success)
 			{
 				this.label_current.Text="Current Location: "+MainClass.client.Network.CurrentSim.Name+" "+MainClass.client.Self.SimPosition;
 			}

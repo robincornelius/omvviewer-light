@@ -5,6 +5,7 @@
 //
 
 using System;
+using System.Threading;
 using libsecondlife;
 using System.IO;
 
@@ -15,6 +16,7 @@ namespace omvviewerlight
 
 		string logbuffer;
 		bool newdata;
+		LoginParams login;
 		
 		~LoginControl()
 		{
@@ -106,11 +108,17 @@ namespace omvviewerlight
 			
 		}
 		
+		void loginthread()
+		{
+				MainClass.client.Network.Login(login);
+		}
+		
 		protected virtual void OnButton1Clicked (object sender, System.EventArgs e)
 		{
 			if(button_login.Label=="Login")
 			{
-				LoginParams login;
+				
+				//LoginParams login;
 				login=MainClass.client.Network.DefaultLoginParams(entry_first.Text,entry_last.Text,entry_pass.Text,"omvviewer-light","1.0");
 				
 				this.textview_log.Buffer.Clear();
@@ -126,11 +134,10 @@ namespace omvviewerlight
 				
 				if(this.combobox_grid.ActiveText=="Custom")
 				      login.URI=this.entry_loginuri.Text;
-	
-				                                                 
-				MainClass.client.Network.Login(login);
-					                               
-					
+	                                                 
+				Thread loginRunner= new Thread(new ThreadStart(this.loginthread));                               
+				
+				loginRunner.Start();
 
 }
 			else

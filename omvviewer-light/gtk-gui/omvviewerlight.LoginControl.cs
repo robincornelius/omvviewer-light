@@ -275,7 +275,7 @@ namespace omvviewerlight {
             this.GtkAlignment.LeftPadding = ((uint)(12));
             // Container child GtkAlignment.Gtk.Container+ContainerChild
             this.textview_loginmsg = new Gtk.TextView();
-            this.textview_loginmsg.HeightRequest = 10;
+            this.textview_loginmsg.HeightRequest = 20;
             this.textview_loginmsg.CanFocus = true;
             this.textview_loginmsg.Name = "textview_loginmsg";
             this.textview_loginmsg.Editable = false;
@@ -303,7 +303,7 @@ namespace omvviewerlight {
             this.GtkScrolledWindow1.ShadowType = ((Gtk.ShadowType)(1));
             // Container child GtkScrolledWindow1.Gtk.Container+ContainerChild
             this.textview_log = new Gtk.TextView();
-            this.textview_log.HeightRequest = 350;
+            this.textview_log.HeightRequest = 300;
             this.textview_log.CanFocus = true;
             this.textview_log.Name = "textview_log";
             this.textview_log.Editable = false;
