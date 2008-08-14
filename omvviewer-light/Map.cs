@@ -28,7 +28,11 @@ namespace omvviewerlight
 		int channels;
 		int width;
 		int height;
-		
+		Gtk.Image avatar=new Gtk.Image("map_avatar_8.tga");
+		Gtk.Image avatar_me=new Gtk.Image("map_avatar_me_8.tga");
+		Gtk.Image avatar_above=new Gtk.Image("map_avatar_above_8.tga");
+		Gtk.Image avatar_below=new Gtk.Image("map_avatar_below_8.tga");
+
 		public Map()
 		{
 			this.Build();
@@ -75,17 +79,48 @@ namespace omvviewerlight
 			Gtk.Application.Invoke(delegate {						
 				
 			Gdk.Pixbuf buf=(Gdk.Pixbuf)basemap.Pixbuf.Clone();
-			
-			showme(buf,MainClass.client.Self.SimPosition,255,0,0);				
-			
+				
+		//	Console.Write("Drawing me\n");
+			showme(buf,avatar_me.Pixbuf,MainClass.client.Self.SimPosition);				
+				
+			int myz=(int)MainClass.client.Self.SimPosition.Z;
+				
+				
 			foreach(KeyValuePair<uint, Avatar> kvp in avs)
 			{
 					if(kvp.Value.LocalID!=MainClass.client.Self.LocalID)
-						showme(buf,kvp.Value.Position,0,255,0);
+					{
+
+						//showme(buf,avatar_me.Pixbuf,kvp.Value.Position);				
+						
+						if(kvp.Value.Position.Z-myz>5)
+						{	
+							//Console.Write("Drawing above\n");
+
+							showme(buf,avatar_above.Pixbuf,kvp.Value.Position);
+						
+						}						
+						else if(kvp.Value.Position.Z-myz<-5)
+						{	
+						//Console.Write("Drawing below\n");
+		
+							showme(buf,avatar_below.Pixbuf,kvp.Value.Position);
+				
+						}						
+						else
+						{
+						//				Console.Write("Drawing lelve\n");
+
+							showme(buf,avatar.Pixbuf,kvp.Value.Position);
+						}
+													
+					}
 			}
 
+	//			Console.Write("Update donw refresh\n");
 				image.Pixbuf=buf;
 				image.QueueDraw();
+//				Console.Write("Finished\n");
 			});
 			
 		}
@@ -110,36 +145,75 @@ namespace omvviewerlight
 			});
 		}
 			
-		unsafe void showme(Gdk.Pixbuf buf,LLVector3 pos,int R,int G,int B)
+		unsafe void showme(Gdk.Pixbuf buf,Gdk.Pixbuf src,LLVector3 pos)
 		{
 			int tx,ty;
 			tx=(int)pos.X;
 			ty=(int)(255.0-pos.Y);
 			
-			tx=tx-3;
-			ty=ty-3;
+			tx=tx-4;
+			ty=ty-4;
 			
-			if(tx>251)
-				tx=251;
+			if(tx>245)
+				tx=245;
 			
-			if(ty>251)
-			   ty=251;
+			if(ty>245)
+			   ty=245;
 			
 			if(tx<0)
-				tx=0;
+				tx=8;
 			
 			if(ty<0)
-				ty=0;
+				ty=8;
 			
-			for(int x=tx;x<tx+5;x++)
+			mergedrawxy(buf,src,tx,ty);
+						
+		}
+
+		unsafe void mergedrawxy(Gdk.Pixbuf bufdest,Gdk.Pixbuf src,int x,int y)
+		{
+			sbyte * pixels=(sbyte *)bufdest.Pixels;
+			sbyte * spixels=(sbyte *)src.Pixels;
+			sbyte * p;			
+			sbyte * ps;			
+			
+			int srcwidth=src.Width;
+			int srcheight=src.Height;
+			int srcrowsstride=src.Rowstride;
+			int schannels=src.NChannels;
+			
+			if(x<0 || x>width)
+				return;
+			
+			if(y<0 || y>height)
+				return;
+					
+			for(int sx=0;sx<srcwidth;sx++)
 			{
-				for(int y=ty;y<ty+5;y++)
-				{	
-					drawxy(buf,x,y,R,G,B);	
+				for(int sy=0;sy<srcheight;sy++)
+				{				
+					ps=spixels+((sy)*srcrowsstride)+((sx)* schannels);
+					p=pixels+((sy+y)*rowstride)+((sx+x)* channels);
+					
+					int xx;
+					xx=ps[3];
+					if(ps[3]!=0) //Alpha merge
+					{
+						p[0]=ps[0];
+						p[1]=ps[1];
+						p[2]=ps[2];
+						}
+
 				}
 				
 			}
-				
+			
+			
+			
+			//Console.Write("Chans is "+src.NChannels.ToString()+"\n");
+			
+			
+			
 			
 		}
 		
@@ -171,6 +245,8 @@ namespace omvviewerlight
 				{
 					getmap();
 					drawavs();
+					this.label1.Text=MainClass.client.Network.CurrentSim.Name;
+
 				}
 			});
 		}
