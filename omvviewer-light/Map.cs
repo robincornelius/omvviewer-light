@@ -100,7 +100,13 @@ namespace omvviewerlight
 				{
 					getmap();
 					drawavs();
-				}				
+					this.label1.Text=MainClass.client.Network.CurrentSim.Name;
+				}
+				else
+				{
+					this.label1.Text="No location";
+					
+				}
 			});
 		}
 			

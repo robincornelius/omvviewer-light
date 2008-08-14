@@ -41,6 +41,15 @@ public partial class MainWindow: Gtk.Window
 		this.statusbar1.PackStart(status_balance);
 
 		this.Title="Omvviewer-light";
+	
+		// Fuck stupid notebook tabs and monodeveop have to do it myself
+		Search s=new Search();
+		this.addtabwithicon("status_search_btn.png","Search",s);
+		
+		Location t=new Location();
+		this.addtabwithicon("icon_place.tga","Location",t);
+	
+		
 		
 		//this.doicons();
 		
@@ -56,6 +65,22 @@ public partial class MainWindow: Gtk.Window
 		MainClass.client.Network.OnDisconnected += new libsecondlife.NetworkManager.DisconnectedCallback(onDisconnect);
 		
 		GLib.Timeout.Add(10000,OnUpdateStatus);
+	}
+	
+	void addtabwithicon(string filename,string label,Gtk.Widget contents)
+	{
+			Gtk.Image image=new Gtk.Image(filename);
+		    image.SetSizeRequest(16,16);
+			Gtk.Label lable=new Gtk.Label(label);
+		    Gtk.HBox box=new Gtk.HBox();
+			box.PackStart(image);
+			box.PackStart(lable);
+			box.SetChildPacking(image,false,false,0,PackType.Start);
+		    box.ShowAll();
+		    notebook.InsertPage(contents,box,-1);
+		    notebook.ShowAll();
+
+		
 	}
 	
 	void onDisconnect(libsecondlife.NetworkManager.DisconnectType Reason,string msg)	                                       
@@ -204,7 +229,6 @@ public partial class MainWindow: Gtk.Window
 	
 	void makeimwindow(string name,ChatConsole cs)
 	{
-		
 		    Gtk.Image image=new Gtk.Image("closebox.tga");
 		    image.SetSizeRequest(16,16);
 			Gtk.Label lable=new Gtk.Label(name);

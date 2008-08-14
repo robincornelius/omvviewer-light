@@ -20,7 +20,7 @@ namespace omvviewerlight
 		public Searches()
 		{
 			this.Build();
-			
+					
 			store= new Gtk.ListStore (typeof(bool),typeof(string),typeof(LLUUID));
 			
 			treeview1.AppendColumn("Online",new Gtk.CellRendererToggle(),"active",0);
