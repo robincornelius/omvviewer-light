@@ -41,9 +41,10 @@ public partial class MainWindow: Gtk.Window
 		this.statusbar1.PackStart(status_balance);
 
 		this.Title="Omvviewer-light";
-	
+		this.SetIconFromFile("viewericon.xpm");
+		
 		// Fuck stupid notebook tabs and monodeveop have to do it myself
-		ChatConsole c=new ChatConsole();
+		ChatLayout c=new ChatLayout();
 		this.addtabwithicon("icn_voice-pvtfocus.tga","Chat",c);
 		
 		Location t=new Location();
@@ -51,11 +52,9 @@ public partial class MainWindow: Gtk.Window
 			
 		Search s=new Search();
 		this.addtabwithicon("status_search_btn.png","Search",s);
-		
-		
-			
-		
-		 
+
+		ObjectsLayout o=new ObjectsLayout();
+		this.addtabwithicon("item_object.tga","Objects",o);
 		
 		//this.doicons();
 		

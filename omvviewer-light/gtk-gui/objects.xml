@@ -39,4 +39,12 @@
     <itemgroups />
     <signals />
   </object>
+  <object type="omvviewerlight.ChatLayout" palette-category="omvviewer-light" allow-children="false" base-type="Gtk.Bin">
+    <itemgroups />
+    <signals />
+  </object>
+  <object type="omvviewerlight.ObjectsLayout" palette-category="omvviewer-light" allow-children="false" base-type="Gtk.Bin">
+    <itemgroups />
+    <signals />
+  </object>
 </objects>

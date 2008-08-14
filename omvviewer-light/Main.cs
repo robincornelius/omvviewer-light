@@ -22,7 +22,7 @@ namespace omvviewerlight
 		{
 			// Now boot the libsecondlife layer so it is global to our namespace
 			client = new SecondLife();
-			
+			av_names=new Dictionary<LLUUID, string>(); 
 			Application.Init ();
 			win = new MainWindow ();
 			win.Show ();
