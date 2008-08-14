@@ -15,7 +15,8 @@ public partial class MainWindow: Gtk.Window
 	public List<libsecondlife.LLUUID>active_groups_ims = new List<libsecondlife.LLUUID>();
 	
 	Gtk.Label status_location;
-	Gtk.Label status_balance;
+	Gtk.HBox status_balance;
+	Gtk.Label status_balance_lable;
 	Gtk.Label status_parcel;		
 	Gtk.HBox status_icons;
 	
@@ -24,7 +25,15 @@ public partial class MainWindow: Gtk.Window
 		Build ();
 		
 		status_location=new Gtk.Label("Location: Unknown (0,0,0)");
-		status_balance=new Gtk.Label("$L?");
+		
+		status_balance=new Gtk.HBox();
+		status_balance_lable=new Gtk.Label("?");
+		Gtk.Image balicon=new Gtk.Image("status_money.tga");
+		status_balance.PackStart(balicon);
+		status_balance.PackStart(status_balance_lable);
+		status_balance.SetChildPacking(balicon,false,false,0,PackType.Start);
+		status_balance.SetChildPacking(status_balance_lable,false,false,0,PackType.Start);
+		
 		status_parcel=new Gtk.Label("Parcel: Unknown");
 		
 		this.statusbar1.PackStart(status_location);
@@ -56,7 +65,7 @@ public partial class MainWindow: Gtk.Window
 				status_icons.Destroy();
 
 			status_location.Text="Location: Unknown (0,0,0)";
-			status_balance.Text="$L?";
+			status_balance_lable.Text="$L?";
 			status_parcel.Text="Parcel: Unknown";
 			
 		
@@ -83,24 +92,31 @@ public partial class MainWindow: Gtk.Window
 		{
 			Gtk.Image myimage=new Gtk.Image("status_no_fly.tga");
 			status_icons.PackStart(myimage);
+			status_icons.SetChildPacking(myimage,false,false,0,PackType.Start);
 		}
 	
 		if((parcel.Flags & libsecondlife.Parcel.ParcelFlags.RestrictPushObject)==libsecondlife.Parcel.ParcelFlags.RestrictPushObject)
 		{
 			Gtk.Image myimage=new Gtk.Image("status_no_push.tga");
 			status_icons.PackStart(myimage);				
+			status_icons.SetChildPacking(myimage,false,false,0,PackType.Start);
+
 		}
 
 		if((parcel.Flags & libsecondlife.Parcel.ParcelFlags.AllowOtherScripts)!=libsecondlife.Parcel.ParcelFlags.AllowOtherScripts)
 		{
 			Gtk.Image myimage=new Gtk.Image("status_no_scripts.tga");
 			status_icons.PackStart(myimage);				
+			status_icons.SetChildPacking(myimage,false,false,0,PackType.Start);
+		
 		}
 
 		if((parcel.Flags & libsecondlife.Parcel.ParcelFlags.CreateObjects)!=libsecondlife.Parcel.ParcelFlags.CreateObjects)
 		{
 			Gtk.Image myimage=new Gtk.Image("status_no_build.tga");
 			status_icons.PackStart(myimage);				
+			status_icons.SetChildPacking(myimage,false,false,0,PackType.Start);
+
 		}
 		
 		
@@ -112,11 +128,14 @@ public partial class MainWindow: Gtk.Window
 	{
 		Gtk.Application.Invoke(delegate {						
 
-		string owner;
+		string owner="Unknown";
+		if(!MainClass.av_names.TryGetValue(parcel.OwnerID,out owner))
+				owner="Unknown";
 		
-		//if(!MainClass.av_names.TryGetValue(parcel.OwnerID,out owner))
-		   owner="Unknown";
-		
+		string group="Unknown";
+		if(!MainClass.av_names.TryGetValue(parcel.GroupID,out group))
+			group="Unknown";	
+				
 		string size;
 		size=parcel.Area.ToString();
 		
@@ -128,7 +147,7 @@ public partial class MainWindow: Gtk.Window
 		status_parcel.TooltipText=
 				parcel.Name
 					+"\nOwner :"+owner
-					+"\nGroup :"+parcel.GroupID.ToString()
+					+"\nGroup :"+group
 					+"\nSize: "+size.ToString()	
 					+"\nPrims :"+prims.ToString()
 					+"\nTraffic: "+parcel.Dwell.ToString()
@@ -147,7 +166,7 @@ public partial class MainWindow: Gtk.Window
 	void onBalance(int balance)
 	{
 			Gtk.Application.Invoke(delegate {
-			status_balance.Text="L$"+MainClass.client.Self.Balance.ToString();
+			status_balance_lable.Text="L$"+MainClass.client.Self.Balance.ToString();
 		});
 	}
 	
@@ -183,23 +202,27 @@ public partial class MainWindow: Gtk.Window
 	}		
 
 	
-	Gtk.Widget makeimwindowtab(string name)
+	void makeimwindow(string name,ChatConsole cs)
 	{
 		
-		    Gtk.Image image=new Gtk.Image("close.xpm");
-			image.SetSizeRequest(16,16);
+		    Gtk.Image image=new Gtk.Image("closebox.tga");
+		    image.SetSizeRequest(16,16);
 			Gtk.Label lable=new Gtk.Label(name);
 			Gtk.Button button=new Gtk.Button(image);
-			Gtk.HBox box=new Gtk.HBox();
+            button.SetSizeRequest(16,16);
+		    Gtk.HBox box=new Gtk.HBox();
 			box.PackStart(button);
 			box.PackStart(lable);
-				
-			box.ShowAll();
+			box.SetChildPacking(image,false,false,0,PackType.Start);
 		
-		    button.Clicked += new EventHandler(clickclosed);
+		    box.ShowAll();
+		    notebook.InsertPage(cs,box,-1);
+		    notebook.ShowAll();
 		
-		   return box;
+		button.Clicked += new EventHandler(cs.clickclosed);
+
 	}
+	
 	
 	public void startIM(LLUUID target)
 	{
@@ -207,9 +230,8 @@ public partial class MainWindow: Gtk.Window
 		{
 			
 			Gtk.Application.Invoke(delegate {		
-				Gtk.Widget lable=makeimwindowtab(MainClass.av_names[target]);
 				ChatConsole imc=new ChatConsole(target);
-				notebook.InsertPage(imc,lable,-1);
+				makeimwindow(MainClass.av_names[target],imc);
 				active_ims.Add(target);
 			});
 		}		
@@ -230,10 +252,13 @@ public partial class MainWindow: Gtk.Window
 			if(!active_ims.Contains(im.IMSessionID))
 			{
 				Gtk.Application.Invoke(delegate {	
-					Gtk.Widget lable=makeimwindowtab("Group :"+im.FromAgentName);
 					ChatConsole imc=new ChatConsole(im);
-					notebook.InsertPage(imc,lable,-1); 
-					notebook.ShowAll();
+					LLUUID key;
+					string lable="Unknown";
+					
+					MainClass.av_names.TryGetValue(im.IMSessionID,out lable);
+					makeimwindow(lable,imc);
+	
 					active_ims.Add(im.IMSessionID);
 				});
 			}
@@ -243,35 +268,12 @@ public partial class MainWindow: Gtk.Window
 		if(!active_ims.Contains(im.FromAgentID) && !active_ims.Contains(im.IMSessionID))
 		{
 			Gtk.Application.Invoke(delegate {						
-
-				Gtk.Widget lable=makeimwindowtab(im.FromAgentName);
-			
 				ChatConsole imc=new ChatConsole(im);
-						
-				notebook.InsertPage(imc,lable,-1); 
-				notebook.ShowAll();
+				makeimwindow("Group :"+im.FromAgentName,imc);
 				active_ims.Add(im.FromAgentID);
 			});
 		}
 		
 	}	
-
-		void clickclosed(object obj, EventArgs args)
-		{
-		    /// Urrrg
-		    // The button is in a hbox in a tab of a notebook page in a notebook in a chatwidget
-		    
-		
-		    int pageno=1;
-		    pageno=notebook.PageNum(((Gtk.Widget)obj).Parent.Parent.Parent);
-		    ChatConsole cs=(ChatConsole)notebook.GetNthPage(pageno);
-
-		    if(cs.im_key!=libsecondlife.LLUUID.Zero)
-				if(MainClass.win.active_ims.Contains(cs.im_key))
-					MainClass.win.active_ims.Remove(cs.im_key);	
-		
-			notebook.RemovePage(pageno);
-		}
-
 
 }

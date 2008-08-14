@@ -25,6 +25,8 @@ namespace omvviewerlight
 		public LLUUID im_key=libsecondlife.LLUUID.Zero;
 		public LLUUID im_session_id=libsecondlife.LLUUID.Zero;
 		
+	
+	
 		~ChatConsole()
 		{
 			if(im_key!=libsecondlife.LLUUID.Zero)
@@ -111,6 +113,25 @@ namespace omvviewerlight
 			
 			
 		}
+
+		public void clickclosed(object obj, EventArgs args)
+		{
+		    int pageno=1;
+			Gtk.Notebook nb;
+			nb =(Gtk.Notebook)this.Parent;
+			pageno=nb.PageNum((Gtk.Widget)this);
+
+		    if(im_key!=libsecondlife.LLUUID.Zero)
+				if(MainClass.win.active_ims.Contains(im_key))
+					MainClass.win.active_ims.Remove(im_key);	
+			
+			if(im_session_id!=libsecondlife.LLUUID.Zero)
+				if(MainClass.win.active_ims.Contains(im_session_id))
+					MainClass.win.active_ims.Remove(im_session_id);	
+		
+			nb.RemovePage(pageno);
+		}
+		
 		
 		void onIM(InstantMessage im, Simulator sim)
 		{
