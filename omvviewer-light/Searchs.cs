@@ -48,6 +48,7 @@ namespace omvviewerlight
 			                                            	                                         	
 		protected virtual void OnButton1Clicked (object sender, System.EventArgs e)
 		{
+			store.Clear();
 			queryid=LLUUID.Random();
 			libsecondlife.DirectoryManager.DirFindFlags findFlags;
 			findFlags=libsecondlife.DirectoryManager.DirFindFlags.People;

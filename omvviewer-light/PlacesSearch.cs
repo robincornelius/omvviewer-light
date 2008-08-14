@@ -55,6 +55,7 @@ namespace omvviewerlight
 				
 		protected virtual void OnButtonSearchClicked (object sender, System.EventArgs e)
 		{
+			store.Clear();
 			libsecondlife.DirectoryManager.DirFindFlags flags;
 			flags=libsecondlife.DirectoryManager.DirFindFlags.NameSort;
 			
