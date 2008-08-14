@@ -34,8 +34,19 @@ namespace omvviewerlight
 			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
 			store.SetSortColumnId(2,Gtk.SortType.Ascending);
 	
+			MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
 		}
-						
+		
+		void onTeleport(string Message, libsecondlife.AgentManager.TeleportStatus status,libsecondlife.AgentManager.TeleportFlags flags)
+	    {
+			if(status==libsecondlife.AgentManager.TeleportStatus.Finished)
+			{
+				Gtk.Application.Invoke(delegate {										
+					store.Clear();
+				});
+			}
+	    }
+		
 		void onLogin(LoginStatus status,string message)
 		{
 			if(status==LoginStatus.Success)

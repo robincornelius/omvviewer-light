@@ -13,11 +13,53 @@ namespace omvviewerlight {
     
     public partial class ObjectsLayout {
         
+        private Gtk.HBox hbox1;
+        
+        private Gtk.VBox vbox2;
+        
+        private Gtk.ScrolledWindow GtkScrolledWindow;
+        
+        private Gtk.TreeView treeview1;
+        
+        private Gtk.VBox vbox1;
+        
         protected virtual void Build() {
             Stetic.Gui.Initialize(this);
             // Widget omvviewerlight.ObjectsLayout
             Stetic.BinContainer.Attach(this);
             this.Name = "omvviewerlight.ObjectsLayout";
+            // Container child omvviewerlight.ObjectsLayout.Gtk.Container+ContainerChild
+            this.hbox1 = new Gtk.HBox();
+            this.hbox1.Name = "hbox1";
+            this.hbox1.Spacing = 6;
+            // Container child hbox1.Gtk.Box+BoxChild
+            this.vbox2 = new Gtk.VBox();
+            this.vbox2.Name = "vbox2";
+            this.vbox2.Spacing = 6;
+            // Container child vbox2.Gtk.Box+BoxChild
+            this.GtkScrolledWindow = new Gtk.ScrolledWindow();
+            this.GtkScrolledWindow.Name = "GtkScrolledWindow";
+            this.GtkScrolledWindow.ShadowType = ((Gtk.ShadowType)(1));
+            // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+            this.treeview1 = new Gtk.TreeView();
+            this.treeview1.CanFocus = true;
+            this.treeview1.Name = "treeview1";
+            this.treeview1.HeadersClickable = true;
+            this.GtkScrolledWindow.Add(this.treeview1);
+            this.vbox2.Add(this.GtkScrolledWindow);
+            Gtk.Box.BoxChild w2 = ((Gtk.Box.BoxChild)(this.vbox2[this.GtkScrolledWindow]));
+            w2.Position = 1;
+            this.hbox1.Add(this.vbox2);
+            Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox2]));
+            w3.Position = 0;
+            // Container child hbox1.Gtk.Box+BoxChild
+            this.vbox1 = new Gtk.VBox();
+            this.vbox1.Name = "vbox1";
+            this.vbox1.Spacing = 6;
+            this.hbox1.Add(this.vbox1);
+            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox1]));
+            w4.Position = 1;
+            this.Add(this.hbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
             }

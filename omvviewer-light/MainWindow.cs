@@ -95,7 +95,7 @@ public partial class MainWindow: Gtk.Window
 				status_icons.Destroy();
 
 			status_location.Text="Location: Unknown (0,0,0)";
-			status_balance_lable.Text="$L?";
+			status_balance_lable.Text="?";
 			status_parcel.Text="Parcel: Unknown";
 			
 		
@@ -196,7 +196,7 @@ public partial class MainWindow: Gtk.Window
 	void onBalance(int balance)
 	{
 			Gtk.Application.Invoke(delegate {
-			status_balance_lable.Text="L$"+MainClass.client.Self.Balance.ToString();
+			status_balance_lable.Text=MainClass.client.Self.Balance.ToString();
 		});
 	}
 	

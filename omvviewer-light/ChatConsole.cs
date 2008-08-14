@@ -24,7 +24,7 @@ namespace omvviewerlight
 			
 		public LLUUID im_key=libsecondlife.LLUUID.Zero;
 		public LLUUID im_session_id=libsecondlife.LLUUID.Zero;
-		
+		bool typing;
 	
 	
 		~ChatConsole()
@@ -136,7 +136,7 @@ namespace omvviewerlight
 		void onIM(InstantMessage im, Simulator sim)
 		{
 			//Not group IM ignore messages not destine for im_key
-
+			
 			if(im.GroupIM==true)
 			{
 				if(im.IMSessionID!=this.im_session_id)
@@ -146,6 +146,13 @@ namespace omvviewerlight
 			{
 				if(im.FromAgentID!=this.im_key && im.IMSessionID!=this.im_session_id)
 					return;
+			}
+
+			// Is this a typing message
+			
+			if(im.Message=="Typing")
+			{
+				return;
 			}
 			
 			string buffer;
