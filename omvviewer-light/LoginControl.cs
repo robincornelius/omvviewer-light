@@ -95,8 +95,8 @@ namespace omvviewerlight
 			    });			
 	
 			//This can take ages, should be threaded
-			//if(LoginStatus.Success==login)
-				//MainClass.client.Appearance.SetPreviousAppearance(false);
+			if(LoginStatus.Success==login)
+				MainClass.client.Appearance.SetPreviousAppearance(false);
 		
 		}
 
