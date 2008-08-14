@@ -283,10 +283,12 @@ public partial class MainWindow: Gtk.Window
 				Gtk.Application.Invoke(delegate {	
 					ChatConsole imc=new ChatConsole(im);
 					LLUUID key;
-					string lable="Unknown";
+					string lable;
 					
-					MainClass.av_names.TryGetValue(im.IMSessionID,out lable);
-					makeimwindow(lable,imc);
+					if(!MainClass.av_names.TryGetValue(im.IMSessionID,out lable))
+						lable="Unknown :";
+					
+					   makeimwindow(lable,imc);
 	
 					active_ims.Add(im.IMSessionID);
 				});
@@ -298,7 +300,12 @@ public partial class MainWindow: Gtk.Window
 		{
 			Gtk.Application.Invoke(delegate {						
 				ChatConsole imc=new ChatConsole(im);
-				makeimwindow("Group :"+im.FromAgentName,imc);
+				string groupname;
+				
+				if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(im.IMSessionID,out groupname))
+					groupname="Unknown group: ";
+
+				makeimwindow(groupname,imc);
 				active_ims.Add(im.FromAgentID);
 			});
 		}

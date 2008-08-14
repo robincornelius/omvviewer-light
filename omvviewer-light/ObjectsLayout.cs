@@ -11,7 +11,6 @@ using libsecondlife;
 namespace omvviewerlight
 {
 	
-	
 	public partial class ObjectsLayout : Gtk.Bin
 	{
 	
@@ -31,7 +30,9 @@ namespace omvviewerlight
 			MainClass.client.Objects.OnObjectKilled += new libsecondlife.ObjectManager.KillObjectCallback(onKillObject);
 			MainClass.client.Objects.OnObjectUpdated += new libsecondlife.ObjectManager.ObjectUpdatedCallback(onUpdate);
 			MainClass.client.Objects.OnNewPrim += new libsecondlife.ObjectManager.NewPrimCallback(onNewPrim);
-		
+			
+			
+			
 		}
 		
 		
