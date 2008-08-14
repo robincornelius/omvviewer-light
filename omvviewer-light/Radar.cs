@@ -69,7 +69,9 @@ namespace omvviewerlight
 				double dist;
 				dist=Math.Sqrt(pos.X*pos.X+pos.Y+pos.Y+pos.Z+pos.Z);
 				Gtk.Application.Invoke(delegate {									
-					store.AppendValues(false,avs[avatar.LocalID].Name,dist.ToString(),avatar.LocalID);
+				Avatar av;
+				if(avs.TryGetValue(avatar.LocalID,out av))
+						store.AppendValues(false,av.Name,dist.ToString(),avatar.LocalID);
 				});
 			}
 

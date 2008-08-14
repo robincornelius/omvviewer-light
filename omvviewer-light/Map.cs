@@ -155,13 +155,13 @@ namespace omvviewerlight
 			ty=ty-4;
 			
 			if(tx>245)
-				tx=245;
+				tx=247;
 			
 			if(ty>245)
-			   ty=245;
+			   ty=247;
 			
 			if(tx<0)
-				tx=8;
+				tx=0;
 			
 			if(ty<0)
 				ty=8;
