@@ -22,16 +22,6 @@ public partial class MainWindow {
     
     private Gtk.Label label8;
     
-    private Gtk.HBox hbox5;
-    
-    private omvviewerlight.FriendsList friendslist1;
-    
-    private omvviewerlight.ChatConsole chatconsole1;
-    
-    private omvviewerlight.Radar radar1;
-    
-    private Gtk.Label label6;
-    
     private Gtk.Statusbar statusbar1;
     
     protected virtual void Build() {
@@ -63,7 +53,7 @@ public partial class MainWindow {
         this.notebook = new Gtk.Notebook();
         this.notebook.CanFocus = true;
         this.notebook.Name = "notebook";
-        this.notebook.CurrentPage = 1;
+        this.notebook.CurrentPage = 0;
         // Container child notebook.Gtk.Notebook+NotebookChild
         this.logincontrol5 = new omvviewerlight.LoginControl();
         this.logincontrol5.Events = ((Gdk.EventMask)(256));
@@ -75,57 +65,19 @@ public partial class MainWindow {
         this.label8.LabelProp = Mono.Unix.Catalog.GetString("Login");
         this.notebook.SetTabLabel(this.logincontrol5, this.label8);
         this.label8.ShowAll();
-        // Container child notebook.Gtk.Notebook+NotebookChild
-        this.hbox5 = new Gtk.HBox();
-        this.hbox5.Name = "hbox5";
-        this.hbox5.Spacing = 6;
-        // Container child hbox5.Gtk.Box+BoxChild
-        this.friendslist1 = new omvviewerlight.FriendsList();
-        this.friendslist1.Events = ((Gdk.EventMask)(256));
-        this.friendslist1.Name = "friendslist1";
-        this.hbox5.Add(this.friendslist1);
-        Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.hbox5[this.friendslist1]));
-        w5.Position = 0;
-        w5.Expand = false;
-        w5.Fill = false;
-        // Container child hbox5.Gtk.Box+BoxChild
-        this.chatconsole1 = new omvviewerlight.ChatConsole();
-        this.chatconsole1.Events = ((Gdk.EventMask)(256));
-        this.chatconsole1.Name = "chatconsole1";
-        this.hbox5.Add(this.chatconsole1);
-        Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox5[this.chatconsole1]));
-        w6.Position = 1;
-        // Container child hbox5.Gtk.Box+BoxChild
-        this.radar1 = new omvviewerlight.Radar();
-        this.radar1.Events = ((Gdk.EventMask)(256));
-        this.radar1.Name = "radar1";
-        this.hbox5.Add(this.radar1);
-        Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.hbox5[this.radar1]));
-        w7.Position = 2;
-        w7.Expand = false;
-        w7.Fill = false;
-        this.notebook.Add(this.hbox5);
-        Gtk.Notebook.NotebookChild w8 = ((Gtk.Notebook.NotebookChild)(this.notebook[this.hbox5]));
-        w8.Position = 1;
-        // Notebook tab
-        this.label6 = new Gtk.Label();
-        this.label6.Name = "label6";
-        this.label6.LabelProp = Mono.Unix.Catalog.GetString("Chat");
-        this.notebook.SetTabLabel(this.hbox5, this.label6);
-        this.label6.ShowAll();
         this.vbox6.Add(this.notebook);
-        Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.vbox6[this.notebook]));
-        w9.Position = 1;
+        Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox6[this.notebook]));
+        w5.Position = 1;
         // Container child vbox6.Gtk.Box+BoxChild
         this.statusbar1 = new Gtk.Statusbar();
         this.statusbar1.HeightRequest = 20;
         this.statusbar1.Name = "statusbar1";
         this.statusbar1.Spacing = 6;
         this.vbox6.Add(this.statusbar1);
-        Gtk.Box.BoxChild w10 = ((Gtk.Box.BoxChild)(this.vbox6[this.statusbar1]));
-        w10.Position = 3;
-        w10.Expand = false;
-        w10.Fill = false;
+        Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.vbox6[this.statusbar1]));
+        w6.Position = 3;
+        w6.Expand = false;
+        w6.Fill = false;
         this.Add(this.vbox6);
         if ((this.Child != null)) {
             this.Child.ShowAll();

@@ -40,6 +40,7 @@ namespace omvviewerlight {
             this.Name = "omvviewerlight.Searches";
             // Container child omvviewerlight.Searches.Gtk.Container+ContainerChild
             this.vbox1 = new Gtk.VBox();
+            this.vbox1.Name = "vbox1";
             this.vbox1.Spacing = 6;
             // Container child vbox1.Gtk.Box+BoxChild
             this.hbox1 = new Gtk.HBox();
