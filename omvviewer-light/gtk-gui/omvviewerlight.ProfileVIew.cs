@@ -94,15 +94,17 @@ namespace omvviewerlight {
         protected virtual void Build() {
             Stetic.Gui.Initialize(this);
             // Widget omvviewerlight.ProfileVIew
+            this.WidthRequest = 410;
             this.HeightRequest = 450;
             this.Name = "omvviewerlight.ProfileVIew";
             this.Title = Mono.Unix.Catalog.GetString("ProfileVIew");
             this.WindowPosition = ((Gtk.WindowPosition)(4));
             // Container child omvviewerlight.ProfileVIew.Gtk.Container+ContainerChild
             this.notebook1 = new Gtk.Notebook();
+            this.notebook1.WidthRequest = 160;
             this.notebook1.CanFocus = true;
             this.notebook1.Name = "notebook1";
-            this.notebook1.CurrentPage = 0;
+            this.notebook1.CurrentPage = 2;
             // Container child notebook1.Gtk.Notebook+NotebookChild
             this.vbox1 = new Gtk.VBox();
             this.vbox1.Name = "vbox1";
@@ -453,7 +455,7 @@ namespace omvviewerlight {
             if ((this.Child != null)) {
                 this.Child.ShowAll();
             }
-            this.DefaultWidth = 422;
+            this.DefaultWidth = 427;
             this.DefaultHeight = 491;
             this.Show();
         }

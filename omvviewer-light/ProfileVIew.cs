@@ -47,7 +47,15 @@ namespace omvviewerlight
 	
 		void onPickInfo(LLUUID pick,ProfilePick info)
 		{
+			
 			//Arrrrrrrrgggggg
+			aPick tpick= new aPick(info.SnapshotID,info.Name,info.Desc,info.Name,info.SimName,info.PosGlobal);
+			Gtk.Label lable=new Gtk.Label(info.Name.Substring(0,10));
+			this.ShowAll();
+			
+			this.notebook_picks.InsertPage(tpick,lable,-1);
+			this.notebook_picks.ShowAll();
+
 		}
 		
 		void onPicks(LLUUID avatar, Dictionary<LLUUID,string> picks)
@@ -104,7 +112,9 @@ namespace omvviewerlight
 		
 		unsafe void onGotImage(ImageDownload image,AssetTexture asset)
 		{
-						
+	
+		Gtk.Application.Invoke(delegate {	
+				
 			if(asset.AssetID==this.firstlife_pic)
 				Console.Write("Downloaded first life pic\n");
 				              
@@ -122,7 +132,9 @@ namespace omvviewerlight
 					int channels=4;
 					int rowstride=width*channels;
 					int length = asset.Image.Red.Length;
-					
+
+					//AssetTexture asset;
+						
 					byte[] data = asset.Image.ExportRaw();
 					
 					Console.Write("W "+width.ToString()+" H "+height.ToString()+"\n");
@@ -132,17 +144,27 @@ namespace omvviewerlight
 					
 					sbyte * pixels=(sbyte *)buf.Pixels;
 					
-					for(int x=0;x<width*height;x=x+4)
+						int dest=0;
+						
+					for(int x=0;x<(width*height*4);x=x+5)
 					{
-						pixels[x]=(sbyte)data[x];
-					}
-					this.image7.Pixbuf=buf;	
+						pixels[dest]=(sbyte)data[x];
+						pixels[dest+1]=(sbyte)data[x+1];
+						pixels[dest+2]=(sbyte)data[x+2];
+						pixels[dest+3]=(sbyte)data[x+3];
+						dest=dest+4;
+						
+						}
+
+					this.image7.Pixbuf=buf;
 				}
 				else
 				{
 					Console.Write("Failed to decode\n");
-				}
+				}			
 			}
+			});
+				
 		}
 		
 		void onAvatarProperties(LLUUID id,libsecondlife.Avatar.AvatarProperties props)

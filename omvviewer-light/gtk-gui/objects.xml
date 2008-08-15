@@ -47,4 +47,8 @@
     <itemgroups />
     <signals />
   </object>
+  <object type="omvviewerlight.aPick" palette-category="omvviewer-light" allow-children="false" base-type="Gtk.Bin">
+    <itemgroups />
+    <signals />
+  </object>
 </objects>
