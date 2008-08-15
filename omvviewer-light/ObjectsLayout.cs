@@ -16,21 +16,12 @@ namespace omvviewerlight
 	
 		Gtk.ListStore store;	
         Dictionary<LLUUID, Primitive> PrimsWaiting = new Dictionary<LLUUID, Primitive>();
-
-		// The issue is that newprim, killand update all run from the simulator
-		// and are indexed by (sim local) localIDs
-		// GetObjectProperties is asset info and this comes from the aset server
-		// referenced by (global) ObjectIDs
-
-		// Its useful to keep an index of localids to Primitives and a map between localIDs and ObjectIDs
 		Dictionary<uint,Primitive> objects= new Dictionary<uint,Primitive>(); 
-		Dictionary<uint,LLUUID> objects_index= new Dictionary<uint,LLUUID>(); 
-		Dictionary<LLUUID,uint> objects_index_rev= new Dictionary<LLUUID,uint>(); 
 
 		public ObjectsLayout()
 		{
 			this.Build();
-			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(uint));
+			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(LLUUID));
 			treeview1.AppendColumn("Name",new Gtk.CellRendererText(),"text",0);
 			treeview1.AppendColumn("Desc.",new Gtk.CellRendererText(),"text",1);
 			treeview1.AppendColumn("ID",new Gtk.CellRendererText(),"text",2);
@@ -41,12 +32,12 @@ namespace omvviewerlight
 
 		bool myfunc(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
 		{
-			uint key=(uint)store.GetValue(iter,2);			
-			if(objects.ContainsKey(key))
+			LLUUID key=(LLUUID)store.GetValue(iter,2);			
+			if(PrimsWaiting.ContainsKey(key))
 			{
-				store.SetValue(iter,0,objects[key].Properties.Name);
-				store.SetValue(iter,1,objects[key].Properties.Description);
-				store.SetValue(iter,2,objects[key].Properties.ObjectID.ToString());
+				store.SetValue(iter,0,PrimsWaiting[key].Properties.Name);
+				store.SetValue(iter,1,PrimsWaiting[key].Properties.Description);
+				store.SetValue(iter,2,PrimsWaiting[key].Properties.ObjectID.ToString());
 			}
 			return true;
 		}
@@ -96,7 +87,7 @@ namespace omvviewerlight
                 Primitive prim;
                 if (PrimsWaiting.TryGetValue(properties.ObjectID, out prim)) {
                     prim.Properties = properties;
-					store.AppendValues(prim.Properties.Name,prim.Properties.Description,prim.LocalID);
+					store.AppendValues(prim.Properties.Name,prim.Properties.Description,prim.Properties.ObjectID);
 					Gtk.Application.Invoke(delegate {										
 						store.Foreach(myfunc);
 				});
@@ -108,6 +99,104 @@ namespace omvviewerlight
                    // AllPropertiesReceived.Set();
             }
         }
+
+		protected virtual void OnTreeview1CursorChanged (object sender, System.EventArgs e)
+		{
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(treeview1.Selection.GetSelected(out mod,out iter))			
+			{
+				LLUUID id=(LLUUID)mod.GetValue(iter,2);
+		
+				Primitive prim;
+				if(PrimsWaiting.TryGetValue(id,out prim))
+				{
+					this.label_name.Text=prim.Properties.Name;
+					this.label_desc.Text=prim.Properties.Description;
+					
+					string name;
+					if(MainClass.av_names.TryGetValue(prim.Properties.OwnerID,out name))
+					   this.label_owner.Text=name;
+					else
+						this.label_owner.Text="Unknown";
+				
+					string group="Unknown";
+					if(!MainClass.av_names.TryGetValue(prim.Properties.GroupID,out group))
+						group="Unknown";	
+					
+					this.label_group.Text=group;
+					
+					switch(prim.Properties.SaleType)
+					{
+					case (byte)libsecondlife.SaleType.Not: 
+						this.label_forsale.Text="Not for sale";
+						break;
+				
+					case (byte)libsecondlife.SaleType.Contents: 
+						this.label_forsale.Text="Contents for $L"+prim.Properties.SalePrice.ToString();
+						break;
+
+					case (byte)libsecondlife.SaleType.Copy: 
+						this.label_forsale.Text="Copy for $L"+prim.Properties.SalePrice.ToString();	
+						break;
+					
+					case (byte)libsecondlife.SaleType.Original: 
+						this.label_forsale.Text="Original for $L"+prim.Properties.SalePrice.ToString();	
+						break;	
+					}
+					
+					if(prim.Properties.SaleType ==  (byte)libsecondlife.SaleType.Not)
+					{
+						this.button_buy.Sensitive=false;
+					}
+					else
+					{
+						this.button_buy.Sensitive=true;						
+					}
+					
+					if((prim.Flags & libsecondlife.LLObject.ObjectFlags.Touch) == libsecondlife.LLObject.ObjectFlags.Touch)
+					{
+						this.button_touch.Sensitive=true;
+					}
+					else
+					{
+						this.button_touch.Sensitive=false;
+					}
+					
+					if((prim.Flags & libsecondlife.LLObject.ObjectFlags.Money) == libsecondlife.LLObject.ObjectFlags.Money)
+					{
+						this.button_pay.Sensitive=true;
+					}
+					else
+					{
+						this.button_pay.Sensitive=false;
+					}
+				}
+			
+			}
+		}
+
+		protected virtual void OnButtonPayClicked (object sender, System.EventArgs e)
+		{
+
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(treeview1.Selection.GetSelected(out mod,out iter))			
+			{
+				LLUUID id=(LLUUID)mod.GetValue(iter,2);
+				Primitive prim;
+				
+				if(PrimsWaiting.TryGetValue(id,out prim))
+				{
+					PayWindow pay=new PayWindow(prim,0);
+					pay.Modal=true;
+					pay.Show();
+				}
+				
+			}
+		}
 
 		
 	}

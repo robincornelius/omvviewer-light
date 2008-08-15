@@ -69,8 +69,12 @@ namespace omvviewerlight
 			
 		void onAvatarNames(Dictionary<LLUUID, string> names)
 		{	
-			Console.Write("OnAvatarNames\n");
-			MainClass.av_names=names;
+			foreach(KeyValuePair<LLUUID,string> name in names)
+			{
+				if(!MainClass.av_names.ContainsKey(name.Key))
+					MainClass.av_names.Add(name.Key,name.Value);		
+			}
+			
 			Gtk.Application.Invoke(delegate {			
 				store.Foreach(myfunc);
 			});	
