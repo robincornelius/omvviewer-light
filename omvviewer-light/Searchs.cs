@@ -74,5 +74,20 @@ namespace omvviewerlight
 			}
 
 		}
+
+		protected virtual void OnButtonPayClicked (object sender, System.EventArgs e)
+		{
+
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(treeview1.Selection.GetSelected(out mod,out iter))			
+			{
+				string id=(string)mod.GetValue(iter,2);
+				LLUUID lid=(LLUUID)id;
+						
+				PayWindow pay=new PayWindow(id,0);
+			}		
+		}
 	}
 }

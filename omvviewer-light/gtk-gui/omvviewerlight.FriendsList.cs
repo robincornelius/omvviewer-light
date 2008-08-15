@@ -170,7 +170,6 @@ namespace omvviewerlight {
             // Container child hbox3.Gtk.Box+BoxChild
             this.button_pay = new Gtk.Button();
             this.button_pay.WidthRequest = 80;
-            this.button_pay.Sensitive = false;
             this.button_pay.CanFocus = true;
             this.button_pay.Name = "button_pay";
             this.button_pay.UseUnderline = true;
@@ -201,6 +200,7 @@ namespace omvviewerlight {
             this.checkbutton_modobjects.Clicked += new System.EventHandler(this.OnCheckbuttonModobjectsClicked);
             this.button_IM.Clicked += new System.EventHandler(this.OnButtonIMClicked);
             this.button_teleport.Clicked += new System.EventHandler(this.OnButtonTeleportClicked);
+            this.button_pay.Clicked += new System.EventHandler(this.OnButtonPayClicked);
         }
     }
 }

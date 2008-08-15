@@ -33,6 +33,8 @@ namespace omvviewerlight {
         
         private Gtk.Button button3;
         
+        private Gtk.Button button_pay;
+        
         protected virtual void Build() {
             Stetic.Gui.Initialize(this);
             // Widget omvviewerlight.Searches
@@ -119,11 +121,22 @@ namespace omvviewerlight {
             w8.Position = 1;
             w8.Expand = false;
             w8.Fill = false;
-            this.vbox1.Add(this.hbox2);
-            Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
+            // Container child hbox2.Gtk.Box+BoxChild
+            this.button_pay = new Gtk.Button();
+            this.button_pay.CanFocus = true;
+            this.button_pay.Name = "button_pay";
+            this.button_pay.UseUnderline = true;
+            this.button_pay.Label = Mono.Unix.Catalog.GetString("Pay");
+            this.hbox2.Add(this.button_pay);
+            Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.hbox2[this.button_pay]));
             w9.Position = 2;
             w9.Expand = false;
             w9.Fill = false;
+            this.vbox1.Add(this.hbox2);
+            Gtk.Box.BoxChild w10 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
+            w10.Position = 2;
+            w10.Expand = false;
+            w10.Fill = false;
             this.Add(this.vbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
@@ -131,6 +144,7 @@ namespace omvviewerlight {
             this.Show();
             this.button1.Clicked += new System.EventHandler(this.OnButton1Clicked);
             this.button2.Clicked += new System.EventHandler(this.OnButton2Clicked);
+            this.button_pay.Clicked += new System.EventHandler(this.OnButtonPayClicked);
         }
     }
 }

@@ -25,6 +25,8 @@ namespace omvviewerlight {
         
         private Gtk.Button button_im;
         
+        private Gtk.Button button_pay;
+        
         protected virtual void Build() {
             Stetic.Gui.Initialize(this);
             // Widget omvviewerlight.Radar
@@ -67,22 +69,34 @@ namespace omvviewerlight {
             w3.Position = 0;
             w3.Expand = false;
             w3.Fill = false;
-            this.vbox2.Add(this.hbox2);
-            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.vbox2[this.hbox2]));
-            w4.Position = 0;
+            // Container child hbox2.Gtk.Box+BoxChild
+            this.button_pay = new Gtk.Button();
+            this.button_pay.CanFocus = true;
+            this.button_pay.Name = "button_pay";
+            this.button_pay.UseUnderline = true;
+            this.button_pay.Label = Mono.Unix.Catalog.GetString("Pay");
+            this.hbox2.Add(this.button_pay);
+            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox2[this.button_pay]));
+            w4.Position = 1;
             w4.Expand = false;
             w4.Fill = false;
-            this.vbox1.Add(this.vbox2);
-            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox1[this.vbox2]));
-            w5.Position = 1;
+            this.vbox2.Add(this.hbox2);
+            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox2[this.hbox2]));
+            w5.Position = 0;
             w5.Expand = false;
             w5.Fill = false;
+            this.vbox1.Add(this.vbox2);
+            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.vbox1[this.vbox2]));
+            w6.Position = 1;
+            w6.Expand = false;
+            w6.Fill = false;
             this.Add(this.vbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
             }
             this.Show();
             this.button_im.Clicked += new System.EventHandler(this.OnButtonImClicked);
+            this.button_pay.Clicked += new System.EventHandler(this.OnButtonPayClicked);
         }
     }
 }
