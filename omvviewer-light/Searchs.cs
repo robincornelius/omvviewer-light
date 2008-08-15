@@ -83,9 +83,7 @@ namespace omvviewerlight
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				string id=(string)mod.GetValue(iter,2);
-				LLUUID lid=(LLUUID)id;
-						
+				LLUUID id=(LLUUID)mod.GetValue(iter,2);			
 				PayWindow pay=new PayWindow(id,0);
 			}		
 		}

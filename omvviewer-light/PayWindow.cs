@@ -124,6 +124,8 @@ namespace omvviewerlight
 				MainClass.client.Self.GiveObjectMoney(object_key,amount,object_name);
 			else
 				MainClass.client.Self.GiveAvatarMoney(this.resident_key,amount);
+		
+			this.Destroy();
 		}
 	}
 }
