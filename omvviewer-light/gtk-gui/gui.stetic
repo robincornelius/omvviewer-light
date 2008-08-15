@@ -2071,4 +2071,12 @@ Resident Michelle2 Zenovka
       </widget>
     </child>
   </widget>
+  <widget class="Gtk.Window" id="omvviewerlight.ProfileVIew" design-size="400 300">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">ProfileVIew</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
 </stetic-interface>
