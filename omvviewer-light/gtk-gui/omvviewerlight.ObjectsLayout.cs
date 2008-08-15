@@ -23,6 +23,14 @@ namespace omvviewerlight {
         
         private Gtk.VBox vbox1;
         
+        private Gtk.HBox hbox2;
+        
+        private Gtk.Label label1;
+        
+        private Gtk.Entry entry1;
+        
+        private Gtk.Button button_search;
+        
         protected virtual void Build() {
             Stetic.Gui.Initialize(this);
             // Widget omvviewerlight.ObjectsLayout
@@ -38,6 +46,7 @@ namespace omvviewerlight {
             this.vbox2.Spacing = 6;
             // Container child vbox2.Gtk.Box+BoxChild
             this.GtkScrolledWindow = new Gtk.ScrolledWindow();
+            this.GtkScrolledWindow.WidthRequest = 350;
             this.GtkScrolledWindow.Name = "GtkScrolledWindow";
             this.GtkScrolledWindow.ShadowType = ((Gtk.ShadowType)(1));
             // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
@@ -56,14 +65,53 @@ namespace omvviewerlight {
             this.vbox1 = new Gtk.VBox();
             this.vbox1.Name = "vbox1";
             this.vbox1.Spacing = 6;
+            // Container child vbox1.Gtk.Box+BoxChild
+            this.hbox2 = new Gtk.HBox();
+            this.hbox2.Name = "hbox2";
+            this.hbox2.Spacing = 6;
+            // Container child hbox2.Gtk.Box+BoxChild
+            this.label1 = new Gtk.Label();
+            this.label1.Name = "label1";
+            this.label1.LabelProp = Mono.Unix.Catalog.GetString("Search radius (m)");
+            this.hbox2.Add(this.label1);
+            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox2[this.label1]));
+            w4.Position = 0;
+            w4.Expand = false;
+            w4.Fill = false;
+            // Container child hbox2.Gtk.Box+BoxChild
+            this.entry1 = new Gtk.Entry();
+            this.entry1.CanFocus = true;
+            this.entry1.Name = "entry1";
+            this.entry1.IsEditable = true;
+            this.entry1.InvisibleChar = '●';
+            this.hbox2.Add(this.entry1);
+            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.hbox2[this.entry1]));
+            w5.Position = 1;
+            // Container child hbox2.Gtk.Box+BoxChild
+            this.button_search = new Gtk.Button();
+            this.button_search.CanFocus = true;
+            this.button_search.Name = "button_search";
+            this.button_search.UseUnderline = true;
+            this.button_search.Label = Mono.Unix.Catalog.GetString("Search");
+            this.hbox2.Add(this.button_search);
+            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox2[this.button_search]));
+            w6.Position = 2;
+            w6.Expand = false;
+            w6.Fill = false;
+            this.vbox1.Add(this.hbox2);
+            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
+            w7.Position = 0;
+            w7.Expand = false;
+            w7.Fill = false;
             this.hbox1.Add(this.vbox1);
-            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox1]));
-            w4.Position = 1;
+            Gtk.Box.BoxChild w8 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox1]));
+            w8.Position = 1;
             this.Add(this.hbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
             }
             this.Show();
+            this.button_search.Clicked += new System.EventHandler(this.OnButtonSearchClicked);
         }
     }
 }

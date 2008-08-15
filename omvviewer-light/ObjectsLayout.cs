@@ -15,9 +15,18 @@ namespace omvviewerlight
 	{
 	
 		Gtk.ListStore store;	
-	    //List<uint> avs = new List<uint>();
+        Dictionary<LLUUID, Primitive> PrimsWaiting = new Dictionary<LLUUID, Primitive>();
+
+		// The issue is that newprim, killand update all run from the simulator
+		// and are indexed by (sim local) localIDs
+		// GetObjectProperties is asset info and this comes from the aset server
+		// referenced by (global) ObjectIDs
+
+		// Its useful to keep an index of localids to Primitives and a map between localIDs and ObjectIDs
 		Dictionary<uint,Primitive> objects= new Dictionary<uint,Primitive>(); 
-			
+		Dictionary<uint,LLUUID> objects_index= new Dictionary<uint,LLUUID>(); 
+		Dictionary<LLUUID,uint> objects_index_rev= new Dictionary<LLUUID,uint>(); 
+
 		public ObjectsLayout()
 		{
 			this.Build();
@@ -27,73 +36,79 @@ namespace omvviewerlight
 			treeview1.AppendColumn("ID",new Gtk.CellRendererText(),"text",2);
 			treeview1.Model=store;
 
-			MainClass.client.Objects.OnObjectKilled += new libsecondlife.ObjectManager.KillObjectCallback(onKillObject);
-			MainClass.client.Objects.OnObjectUpdated += new libsecondlife.ObjectManager.ObjectUpdatedCallback(onUpdate);
-			MainClass.client.Objects.OnNewPrim += new libsecondlife.ObjectManager.NewPrimCallback(onNewPrim);
-			
-			
-			
-		}
-		
-		
-		void onNewPrim(Simulator sim, Primitive prim,ulong RegionHandle,ushort timedilation)
-	    {
-			if(prim.ParentID!=0)
-				return;
-			
-		Gtk.Application.Invoke(delegate {										
-		
-			if(!objects.ContainsKey(prim.LocalID))
-			{
-				store.AppendValues(prim.PropertiesFamily.Name,prim.PropertiesFamily.Description,prim.LocalID);
-				objects.Add(prim.LocalID,prim);
-				}
-			});		
-		}
-		
-		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
-		{
-			//ObjectUpdate update;
-			if(objects.ContainsKey(update.LocalID))
-			{
-				//avs_pos[update.LocalID]=update.Position;
-				// I will assume libsl has done the business here for me and the avatar contains
-				// the details i need
-				Gtk.Application.Invoke(delegate {										
-					//avs.Add(update.LocalID);
-					//MainClass.client.
-					//store.AppendValues(update.
-					//store.Foreach(myfunc);
-				});
-			}
-		}
-		
-		bool myfunc(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
-		{
-			uint key=(uint)store.GetValue(iter,3);			
-			if(!objects.ContainsKey(key))
-			{
-				store.Remove(ref iter);
-			}
-			else
-			{
-				//Update stuff here	
-			}
-			
-			return true;
-		}
-		
-		void onKillObject(Simulator simulator, uint objectID)
-		{
-			if(objects.ContainsKey(objectID))
-			{
-				objects.Remove(objectID);
-				Gtk.Application.Invoke(delegate {						
-					store.Foreach(myfunc);
-				});
-			}
+			MainClass.client.Objects.OnObjectProperties += new libsecondlife.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
 		}
 
-	
+		bool myfunc(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
+		{
+			uint key=(uint)store.GetValue(iter,2);			
+			if(objects.ContainsKey(key))
+			{
+				store.SetValue(iter,0,objects[key].Properties.Name);
+				store.SetValue(iter,1,objects[key].Properties.Description);
+				store.SetValue(iter,2,objects[key].Properties.ObjectID.ToString());
+			}
+			return true;
+		}
+
+		protected virtual void OnButtonSearchClicked (object sender, System.EventArgs e)
+		{
+			int radius;
+			int.TryParse(this.entry1.Text,out radius);
+			
+			// *** get current location ***
+            LLVector3 location = MainClass.client.Self.SimPosition;
+
+            // *** find all objects in radius ***
+            List<Primitive> prims = MainClass.client.Network.CurrentSim.ObjectsPrimitives.FindAll(
+                delegate(Primitive prim) {
+                    LLVector3 pos = prim.Position;
+                    return ((prim.ParentID == 0) && (pos != LLVector3.Zero) && (LLVector3.Dist(pos, location) < radius));
+                }
+            );
+			
+			RequestObjectProperties(prims, 250);
+			
+		}
+		
+        private void RequestObjectProperties(List<Primitive> objects, int msPerRequest)
+        {
+            // Create an array of the local IDs of all the prims we are requesting properties for
+            uint[] localids = new uint[objects.Count];
+
+            lock (PrimsWaiting) {
+                PrimsWaiting.Clear();
+
+                for (int i = 0; i < objects.Count; ++i) {
+                    localids[i] = objects[i].LocalID;
+                    PrimsWaiting.Add(objects[i].ID, objects[i]);
+                }
+            }
+
+            MainClass.client.Objects.SelectObjects(MainClass.client.Network.CurrentSim, localids);
+
+            //return AllPropertiesReceived.WaitOne(2000 + msPerRequest * objects.Count, false);
+        }
+
+		void Objects_OnObjectProperties(Simulator simulator, LLObject.ObjectProperties properties)
+        {
+            lock (PrimsWaiting) {
+                Primitive prim;
+                if (PrimsWaiting.TryGetValue(properties.ObjectID, out prim)) {
+                    prim.Properties = properties;
+					store.AppendValues(prim.Properties.Name,prim.Properties.Description,prim.LocalID);
+					Gtk.Application.Invoke(delegate {										
+						store.Foreach(myfunc);
+				});
+				
+				}
+              //  PrimsWaiting.Remove(properties.ObjectID);
+
+                //if (PrimsWaiting.Count == 0)
+                   // AllPropertiesReceived.Set();
+            }
+        }
+
+		
 	}
 }
