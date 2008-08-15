@@ -2,13 +2,15 @@
   <Files>
     <File name="Welcome" />
     <File name="omvviewer-light/Main.cs" line="24" column="4" />
-    <File name="omvviewer-light/FriendsList.cs" line="78" column="37" />
-    <File name="omvviewer-light/ProfileVIew.cs" line="51" column="6" />
+    <File name="omvviewer-light/ProfileVIew.cs" line="138" column="7" />
+    <File name="omvviewer-light/FriendsList.cs" line="26" column="4" />
+    <File name="omvviewer-light/Map.cs" line="187" column="42" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
+          <Node name="References" expanded="True" />
           <Node name="ProfileVIew.cs" selected="True" />
         </Node>
       </Node>

@@ -19,14 +19,22 @@ namespace omvviewerlight
 		LLUUID firstlife_pic;
 		LLUUID partner_key;
 		LLUUID resident;
+		
+		Gtk.ListStore store;		
+		
+		
 		public ProfileVIew(LLUUID key) : 
 				base(Gtk.WindowType.Toplevel)
 		{
 			this.Build();
+					
 			MainClass.client.Avatars.OnAvatarProperties += new libsecondlife.AvatarManager.AvatarPropertiesCallback(onAvatarProperties);
 			MainClass.client.Avatars.RequestAvatarProperties(key);
 			MainClass.client.Assets.OnImageReceived += new libsecondlife.AssetManager.ImageReceivedCallback(onGotImage);
 			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(on_avnames);
+			MainClass.client.Avatars.OnAvatarPicks += new libsecondlife.AvatarManager.AvatarPicksCallback(onPicks);
+			MainClass.client.Avatars.OnPickInfo += new libsecondlife.AvatarManager.PickInfoCallback(onPickInfo);
+			MainClass.client.Avatars.RequestAvatarPicks(key);
 			resident=key;
 			
 			this.label_born.Text="";
@@ -36,9 +44,25 @@ namespace omvviewerlight
 			this.label_pay.Text="";
 			this.label_status.Text="";	
 		}
+	
+		void onPickInfo(LLUUID pick,ProfilePick info)
+		{
+			//Arrrrrrrrgggggg
+		}
 		
-		void on_avnames(Dictionary<LLUUID, string> names)
+		void onPicks(LLUUID avatar, Dictionary<LLUUID,string> picks)
 	    {
+			Gtk.Application.Invoke(delegate {	
+				foreach(KeyValuePair<LLUUID,string> pick in picks)
+				{	
+					//this.notebook_picks.InsertPage(
+					MainClass.client.Avatars.RequestPickInfo(resident,pick.Key);
+				}
+			});
+		}
+			                                                   
+		void on_avnames(Dictionary<LLUUID, string> names)
+			{
 			//what the hell, lets cache them to the program store if we find them
 			//Possible to do, move this type of stuff more global
 			Console.Write("Got new names \n");
@@ -78,9 +102,9 @@ namespace omvviewerlight
 				
 		}		
 		
-		void onGotImage(ImageDownload image,AssetTexture asset)
+		unsafe void onGotImage(ImageDownload image,AssetTexture asset)
 		{
-			
+						
 			if(asset.AssetID==this.firstlife_pic)
 				Console.Write("Downloaded first life pic\n");
 				              
@@ -89,6 +113,7 @@ namespace omvviewerlight
 				Console.Write("Downloaded profile pic\n");
 				if(asset.Decode())
 				{
+					
 					Console.Write("Decoded\n");
 					Console.Write("Channels : "+asset.Image.Channels.ToString()+"\n");
 					//Console.Write("Length "+asset.Image.Blue.GetLength().ToString()+"\n");
@@ -98,17 +123,20 @@ namespace omvviewerlight
 					int rowstride=width*channels;
 					int length = asset.Image.Red.Length;
 					
-					byte[] data = new byte[height*width*channels];
+					byte[] data = asset.Image.ExportRaw();
 					
-					for(int x=0;x<length;x=x+4)
+					Console.Write("W "+width.ToString()+" H "+height.ToString()+"\n");
+			
+					//Gdk.Pixbuf buf=new Gdk.Pixbuf(data,true,8,width,height,rowstride);
+					Gdk.Pixbuf buf = new Gdk.Pixbuf(Gdk.Colorspace.Rgb,true,8,width,height);
+					
+					sbyte * pixels=(sbyte *)buf.Pixels;
+					
+					for(int x=0;x<width*height;x=x+4)
 					{
-						data[x]=asset.Image.Red[x];
-						data[x+1]=asset.Image.Green[x+1];
-						data[x+2]=asset.Image.Blue[x+2];
-						data[x+3]=asset.Image.Alpha[x+3];
+						pixels[x]=(sbyte)data[x];
 					}
-						
-								
+					this.image7.Pixbuf=buf;	
 				}
 				else
 				{
@@ -176,7 +204,7 @@ namespace omvviewerlight
 						this.label_partner.Text="Waiting....";
 					}
 				}					
-						
+										
 			});
 			}	
 	}

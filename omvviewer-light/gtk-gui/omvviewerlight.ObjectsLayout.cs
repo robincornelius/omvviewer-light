@@ -128,7 +128,9 @@ namespace omvviewerlight {
             this.entry1 = new Gtk.Entry();
             this.entry1.CanFocus = true;
             this.entry1.Name = "entry1";
+            this.entry1.Text = Mono.Unix.Catalog.GetString("25");
             this.entry1.IsEditable = true;
+            this.entry1.MaxLength = 3;
             this.entry1.InvisibleChar = '●';
             this.hbox2.Add(this.entry1);
             Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.hbox2[this.entry1]));
