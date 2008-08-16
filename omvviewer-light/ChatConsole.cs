@@ -185,7 +185,7 @@ namespace omvviewerlight
 				TextMark mark=new TextMark("xyz",true);
 				textview_chat.Buffer.AddMark(mark,textview_chat.Buffer.EndIter);
 				textview_chat.ScrollMarkOnscreen(mark);
-				
+				textview_chat.Buffer.DeleteMark("xyz");
 			});	
 	
 			}
@@ -224,6 +224,7 @@ namespace omvviewerlight
 					TextMark mark=new TextMark("xyz",true);
 					textview_chat.Buffer.AddMark(mark,textview_chat.Buffer.EndIter);
 					textview_chat.ScrollMarkOnscreen(mark);
+					textview_chat.Buffer.DeleteMark("xyz");
 	
 				});
 				return;
@@ -244,6 +245,7 @@ namespace omvviewerlight
 					TextMark mark=new TextMark("xyz",true);
 					textview_chat.Buffer.AddMark(mark,textview_chat.Buffer.EndIter);
 					textview_chat.ScrollMarkOnscreen(mark);
+					textview_chat.Buffer.DeleteMark("xyz");
 
 				});
 				return;
