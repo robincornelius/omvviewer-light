@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using libsecondlife;
 
 namespace omvviewerlight
@@ -31,6 +32,7 @@ namespace omvviewerlight
 			this.Build();
 	
 			picks_waiting=new List<LLUUID>();
+			resident=key;
 			
 			MainClass.client.Avatars.OnAvatarProperties += new libsecondlife.AvatarManager.AvatarPropertiesCallback(onAvatarProperties);
 			MainClass.client.Avatars.RequestAvatarProperties(key);
@@ -39,7 +41,6 @@ namespace omvviewerlight
 			MainClass.client.Avatars.OnAvatarPicks += new libsecondlife.AvatarManager.AvatarPicksCallback(onPicks);
 			MainClass.client.Avatars.OnPickInfo += new libsecondlife.AvatarManager.PickInfoCallback(onPickInfo);
 			MainClass.client.Avatars.RequestAvatarPicks(key);
-			resident=key;
 			
 			this.label_born.Text="";
 			this.label_identified.Text="";
@@ -69,6 +70,9 @@ namespace omvviewerlight
 		
 		void onPicks(LLUUID avatar, Dictionary<LLUUID,string> picks)
 	    {
+			if(avatar!=	resident)
+				return;
+		
 			Gtk.Application.Invoke(delegate {	
 				foreach(KeyValuePair<LLUUID,string> pick in picks)
 				{	
@@ -123,6 +127,12 @@ namespace omvviewerlight
 		unsafe void onGotImage(ImageDownload image,AssetTexture asset)
 		{
 	
+			if(!image.Success)
+			{
+				Console.Write("Failed to download image\n");
+				return;
+			}
+			
 		Gtk.Application.Invoke(delegate {	
 				
 			if(asset.AssetID==this.firstlife_pic)
@@ -132,8 +142,13 @@ namespace omvviewerlight
 			{
 				Console.Write("Downloaded profile pic\n");
 				if(asset.Decode())
-				{
+					{
+					//AssetTexture asset;
+				
+					Gdk.Pixbuf buf=new Gdk.Pixbuf(asset.Image.ExportTGA());
+					File.WriteAllBytes(image.ID.ToString() + ".tga", asset.Image.ExportTGA());
 					
+					/*
 					Console.Write("Decoded\n");
 					Console.Write("Channels : "+asset.Image.Channels.ToString()+"\n");
 					//Console.Write("Length "+asset.Image.Blue.GetLength().ToString()+"\n");
@@ -159,13 +174,15 @@ namespace omvviewerlight
 						
 					for(int x=0;x<(width*height*4);x=x+4)
 					{
+						Console.Write(data[x].ToString()+"\n");
 						pixels[x]=(sbyte)data[x];
 						pixels[x+1]=(sbyte)data[x];
 						pixels[x+2]=(sbyte)data[x];
-						pixels[x+3]=(sbyte)data[x];							
+						pixels[x+3]=(sbyte)data[x];												
 						}
-
-					this.image7.Pixbuf=buf;
+						 */
+					
+						this.image7.Pixbuf=buf;
 				}
 				else
 				{
@@ -178,6 +195,9 @@ namespace omvviewerlight
 		
 		void onAvatarProperties(LLUUID id,libsecondlife.Avatar.AvatarProperties props)
 		{
+			if(id!=	resident)
+				return;
+
 			//libsecondlife.Avatar.AvatarProperties props;
 		Gtk.Application.Invoke(delegate {
 				
@@ -208,10 +228,10 @@ namespace omvviewerlight
 				firstlife_pic=props.FirstLifeImage;
 						
 				if(profile_pic!=LLUUID.Zero)
-					MainClass.client.Assets.RequestImage(profile_pic,ImageType.Normal);	
+					MainClass.client.Assets.RequestImage(profile_pic,ImageType.Normal,1013000.0f, 0);	
 				
 				if(firstlife_pic!=LLUUID.Zero)
-					MainClass.client.Assets.RequestImage(firstlife_pic,ImageType.Normal);
+					MainClass.client.Assets.RequestImage(firstlife_pic,ImageType.Normal,1013000.0f, 0);
 				
 				if(MainClass.av_names.ContainsKey(id))
 				{

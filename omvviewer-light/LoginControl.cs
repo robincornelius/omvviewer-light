@@ -99,6 +99,7 @@ namespace omvviewerlight
 			{
 				Thread loginRunner= new Thread(new ThreadStart(this.appearencethread));                               
 				MainClass.client.Groups.RequestCurrentGroups();
+				MainClass.client.Self.RetrieveInstantMessages();
 			}		
 		}
 

@@ -273,7 +273,8 @@ public partial class MainWindow: Gtk.Window
 		    box.ShowAll();
 		    notebook.InsertPage(cs,box,-1);
 		    notebook.ShowAll();
-		
+		cs.tabLabel=lable;
+		cs.kicknames();
 		button.Clicked += new EventHandler(cs.clickclosed);
 
 	}
@@ -307,7 +308,7 @@ public partial class MainWindow: Gtk.Window
 					string lable;
 					
 					if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(im.IMSessionID,out lable))
-						lable="Unknown :";
+						lable="Waiting...";
 							
 					   makeimwindow(lable,imc,true);
 	
@@ -324,7 +325,7 @@ public partial class MainWindow: Gtk.Window
 				string name;
 
 				if(!MainClass.av_names.TryGetValue(im.FromAgentID,out name))
-					name="Unknown: ";
+					name="Waiting...";
 				
 			
 				makeimwindow(name,imc,false);

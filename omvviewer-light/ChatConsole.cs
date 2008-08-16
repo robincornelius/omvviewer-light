@@ -5,6 +5,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using libsecondlife;
 using Gtk;
 
@@ -21,9 +22,20 @@ namespace omvviewerlight
 		    Gtk.TextTag systemchat;
 		    Gtk.TextTag ownerobjectchat;
 			
+		public Gtk.Label tabLabel;
 		public LLUUID im_key=libsecondlife.LLUUID.Zero;
 		public LLUUID im_session_id=libsecondlife.LLUUID.Zero;
 		bool typing;
+		
+		public void kicknames()
+		{
+			if(im_key!=LLUUID.Zero)
+				MainClass.client.Avatars.RequestAvatarName(im_key);
+			
+			if(im_session_id!=LLUUID.Zero)
+				MainClass.client.Groups.RequestGroupName(im_session_id);
+
+		}
 		
 		~ChatConsole()
 		{
@@ -54,10 +66,14 @@ namespace omvviewerlight
 				im_key=LLUUID.Zero;			
 				MainClass.client.Self.OnGroupChatJoin += new libsecondlife.AgentManager.GroupChatJoined(onGroupChatJoin);
 				MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
+				MainClass.client.Groups.OnGroupNames += new libsecondlife.GroupManager.GroupNamesCallback(onGroupNames);
+				MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);
+				
 			}
 			else
 			{
 				im_key=im.FromAgentID;				
+				MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);
 			}
 			
 			onIM(im,null); //yea, i forgot this, need to display text from first IM, lol
@@ -82,6 +98,8 @@ namespace omvviewerlight
 		{
 			dosetup();
 			MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
+			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);
+			
 			im_key=target;
 		}
 
@@ -164,8 +182,10 @@ namespace omvviewerlight
 				
 				buffer=im.Message+"\n";
 				textview_chat.Buffer.InsertWithTags(ref iter,buffer,avchat);
+				TextMark mark=new TextMark("xyz",true);
+				textview_chat.Buffer.AddMark(mark,textview_chat.Buffer.EndIter);
+				textview_chat.ScrollMarkOnscreen(mark);
 				
-				textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
 			});	
 	
 			}
@@ -200,8 +220,11 @@ namespace omvviewerlight
 					iter=textview_chat.Buffer.EndIter;
 					buffer=message+"\n";
 					textview_chat.Buffer.InsertWithTags(ref iter,buffer,avchat);
-					textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
-					
+					//textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
+					TextMark mark=new TextMark("xyz",true);
+					textview_chat.Buffer.AddMark(mark,textview_chat.Buffer.EndIter);
+					textview_chat.ScrollMarkOnscreen(mark);
+	
 				});
 				return;
 			}
@@ -217,7 +240,11 @@ namespace omvviewerlight
 					iter=textview_chat.Buffer.EndIter;
 					buffer=message+"\n";
 					textview_chat.Buffer.InsertWithTags(ref iter,buffer,ownerobjectchat);
-					textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
+					//textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
+					TextMark mark=new TextMark("xyz",true);
+					textview_chat.Buffer.AddMark(mark,textview_chat.Buffer.EndIter);
+					textview_chat.ScrollMarkOnscreen(mark);
+
 				});
 				return;
 				
@@ -281,23 +308,8 @@ namespace omvviewerlight
 			}
 			
 			if(this.im_session_id!=libsecondlife.LLUUID.Zero)
-			{
-
-				string buffer;
-				TextIter iter;
-	
-				
+			{				
 				MainClass.client.Self.InstantMessageGroup(im_session_id,entry_chat.Text);
-
-				iter=textview_chat.Buffer.EndIter;
-				buffer=MainClass.client.Self.Name+": ";
-				textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold);
-			
-				buffer=entry_chat.Text+"\n";
-				textview_chat.Buffer.InsertWithTags(ref iter,buffer,avchat);
-
-				
-				this.entry_chat.Text="";			
 				return;
 			}
 			
@@ -326,5 +338,54 @@ namespace omvviewerlight
 			this.entry_chat.Text="";
 			
 		}
+		
+		void onAvatarNames(Dictionary <LLUUID,string>names)
+		{
+			if(this.im_key==LLUUID.Zero)
+				return; //I DONT CARE 
+			
+			foreach(KeyValuePair <LLUUID,string> kvp in names)
+			{
+				if(!MainClass.av_names.ContainsKey(kvp.Key))
+				{
+					MainClass.av_names.Add(kvp.Key,kvp.Value);
+				}
+			}	
+			
+			Gtk.Application.Invoke(delegate {						
+			
+				if(this.tabLabel.Text=="Waiting...")
+				{
+					string name;
+					if(MainClass.av_names.TryGetValue(this.im_key,out name))
+					{
+						tabLabel.Text=name;
+						tabLabel.QueueDraw();
+					}
+				}
+			});
+		}
+		
+		void onGroupNames(Dictionary <LLUUID,string>groups)
+	    {
+			
+			if(this.im_key!=LLUUID.Zero)
+				return;
+			string group;
+			Gtk.Application.Invoke(delegate {											
+				if(MainClass.client.Groups.GroupName2KeyCache.TryGetValue(this.im_session_id,out group))
+				{
+					if(this.tabLabel.Text=="Waiting...")
+					{
+						tabLabel.Text=group;
+						tabLabel.QueueDraw();
+						
+					}				
+				}			
+			});
+
+			}
+		
+
 	}
 }
