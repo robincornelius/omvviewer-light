@@ -22,12 +22,16 @@ namespace omvviewerlight
 		
 		Gtk.ListStore store;		
 		
+		List <LLUUID>picks_waiting;
+		
 		
 		public ProfileVIew(LLUUID key) : 
 				base(Gtk.WindowType.Toplevel)
 		{
 			this.Build();
-					
+	
+			picks_waiting=new List<LLUUID>();
+			
 			MainClass.client.Avatars.OnAvatarProperties += new libsecondlife.AvatarManager.AvatarPropertiesCallback(onAvatarProperties);
 			MainClass.client.Avatars.RequestAvatarProperties(key);
 			MainClass.client.Assets.OnImageReceived += new libsecondlife.AssetManager.ImageReceivedCallback(onGotImage);
@@ -47,15 +51,20 @@ namespace omvviewerlight
 	
 		void onPickInfo(LLUUID pick,ProfilePick info)
 		{
+			if(!this.picks_waiting.Contains(pick))
+				return;
 			
-			//Arrrrrrrrgggggg
-			aPick tpick= new aPick(info.SnapshotID,info.Name,info.Desc,info.Name,info.SimName,info.PosGlobal);
-			Gtk.Label lable=new Gtk.Label(info.Name.Substring(0,10));
-			this.ShowAll();
+			picks_waiting.Remove(pick);
+			   
+			Gtk.Application.Invoke(delegate {	
 			
-			this.notebook_picks.InsertPage(tpick,lable,-1);
-			this.notebook_picks.ShowAll();
-
+				aPick tpick= new aPick(info.SnapshotID,info.Name,info.Desc,info.Name,info.SimName,info.PosGlobal);
+				Gtk.Label lable=new Gtk.Label(info.Name.Substring(0,info.Name.Length>10?10:info.Name.Length));
+				this.ShowAll();
+				
+				this.notebook_picks.InsertPage(tpick,lable,-1);
+				this.notebook_picks.ShowAll();
+			});
 		}
 		
 		void onPicks(LLUUID avatar, Dictionary<LLUUID,string> picks)
@@ -64,6 +73,7 @@ namespace omvviewerlight
 				foreach(KeyValuePair<LLUUID,string> pick in picks)
 				{	
 					//this.notebook_picks.InsertPage(
+					this.picks_waiting.Add(pick.Key);
 					MainClass.client.Avatars.RequestPickInfo(resident,pick.Key);
 				}
 			});
