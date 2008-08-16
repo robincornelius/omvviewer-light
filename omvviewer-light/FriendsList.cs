@@ -7,24 +7,30 @@
 using System;
 using System.Collections.Generic;
 using libsecondlife;
+using Gtk;
 
 namespace omvviewerlight
 {			
 	public partial class FriendsList : Gtk.Bin
 	{
-		Gtk.ListStore store;		
+		Gtk.ListStore store;
+		Gdk.Pixbuf online_img;
+		Gdk.Pixbuf offline_img;
 		
 		public FriendsList()
 		{
-
+		
 			Console.Write("Building friends list window\n");
 			this.Build();
-			store= new Gtk.ListStore (typeof(bool),typeof(string),typeof(string));
+			store= new Gtk.ListStore (typeof(Gdk.Pixbuf),typeof(string),typeof(string));
 			
-			treeview_friends.AppendColumn("Online",new Gtk.CellRendererToggle(),"active",0);
+			treeview_friends.AppendColumn("Online",new CellRendererPixbuf(),"pixbuf",0);
 			treeview_friends.AppendColumn("Name",new Gtk.CellRendererText(),"text",1);		
 			treeview_friends.Model=store;
 			
+			online_img=new Gdk.Pixbuf("icon_avatar_online.tga");
+			online_img=new Gdk.Pixbuf("icon_avatar_offline.tga");
+				
 			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);			
 			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);		
 			MainClass.client.Friends.OnFriendOnline += new libsecondlife.FriendsManager.FriendOnlineEvent(onFriendOnline);
@@ -63,7 +69,7 @@ namespace omvviewerlight
 		{
 			MainClass.client.Friends.FriendList.ForEach(delegate(FriendInfo friend)
 			{
-				store.AppendValues (friend.IsOnline,friend.Name,friend.UUID.ToString());
+				store.AppendValues (friend.IsOnline?online_img:offline_img,friend.Name,friend.UUID.ToString());
 			});
 		}
 			
@@ -98,7 +104,7 @@ namespace omvviewerlight
 			FriendInfo finfo;
 			if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 			{
-				store.SetValue(iter,0,finfo.IsOnline);
+				store.SetValue(iter,0,finfo.IsOnline?new Gdk.Pixbuf("icon_avatar_online.tga"):new Gdk.Pixbuf("icon_avatar_offline.tga"));
 			}
 			return false;
 		}

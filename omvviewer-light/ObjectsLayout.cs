@@ -29,8 +29,8 @@ namespace omvviewerlight
 		    this.label_desc.Text="";
 			this.label_forsale.Text="";
 			this.label_group.Text="";
-			this.label_name="";
-			this.label_owner="";
+			this.label_name.Text="";
+			this.label_owner.Text="";
 
 			MainClass.client.Objects.OnObjectProperties += new libsecondlife.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
 		}

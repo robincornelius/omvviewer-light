@@ -10,7 +10,6 @@ using Gtk;
 
 namespace omvviewerlight
 {
-	
 	public partial class ChatConsole : Gtk.Bin
 	{
 			Gdk.Color col_red = new Gdk.Color(255,0,0);
@@ -25,8 +24,7 @@ namespace omvviewerlight
 		public LLUUID im_key=libsecondlife.LLUUID.Zero;
 		public LLUUID im_session_id=libsecondlife.LLUUID.Zero;
 		bool typing;
-	
-	
+		
 		~ChatConsole()
 		{
 			if(im_key!=libsecondlife.LLUUID.Zero)
@@ -150,7 +148,7 @@ namespace omvviewerlight
 
 			// Is this a typing message
 			
-			if(im.Message=="Typing")
+			if(im.Message=="typing")
 			{
 				return;
 			}

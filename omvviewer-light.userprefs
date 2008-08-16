@@ -1,17 +1,14 @@
 ﻿<UserCombinePreferences version="1.0" filename="/home/robin/libsecondlife/omvviewer-light/omvviewer-light.mds">
   <Files>
     <File name="Welcome" />
-    <File name="omvviewer-light/Main.cs" line="24" column="4" />
-    <File name="omvviewer-light/ProfileVIew.cs" line="138" column="7" />
-    <File name="omvviewer-light/FriendsList.cs" line="26" column="4" />
-    <File name="omvviewer-light/Map.cs" line="187" column="42" />
+    <File name="omvviewer-light/MainWindow.cs" line="32" column="24" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
-          <Node name="References" expanded="True" />
-          <Node name="ProfileVIew.cs" selected="True" />
+          <Node name="UserInterface" expanded="True" />
+          <Node name="MainWindow.cs" selected="True" />
         </Node>
       </Node>
     </ViewMemento>
@@ -20,7 +17,7 @@
     </ViewMemento>
   </Views>
   <Properties>
-    <Property key="ActiveWindow" value="/home/robin/libsecondlife/omvviewer-light/omvviewer-light/ProfileVIew.cs" />
+    <Property key="ActiveWindow" value="/home/robin/libsecondlife/omvviewer-light/omvviewer-light/MainWindow.cs" />
     <Property key="ActiveConfiguration" value="Debug" />
   </Properties>
 </UserCombinePreferences>

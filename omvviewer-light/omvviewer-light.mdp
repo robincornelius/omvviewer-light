@@ -59,7 +59,6 @@
     <File name="gtk-gui/omvviewerlight.PayWindow.cs" subtype="Code" buildaction="Compile" />
     <File name="ProfileVIew.cs" subtype="Code" buildaction="Compile" />
     <File name="gtk-gui/omvviewerlight.ProfileVIew.cs" subtype="Code" buildaction="Compile" />
-    <File name="gtk-gui/omvviewerlight.ProfileView2.cs" subtype="Code" buildaction="Compile" />
     <File name="aPick.cs" subtype="Code" buildaction="Compile" />
     <File name="gtk-gui/omvviewerlight.aPick.cs" subtype="Code" buildaction="Compile" />
     <File name="map_home.tga" subtype="Code" buildaction="FileCopy" DeployService.UseProjectRelativePath="True" />

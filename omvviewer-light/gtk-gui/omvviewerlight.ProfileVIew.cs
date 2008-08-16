@@ -83,11 +83,7 @@ namespace omvviewerlight {
         
         private Gtk.Notebook notebook_picks;
         
-        private Gtk.Label label5;
-        
         private Gtk.HBox hbox5;
-        
-        private Gtk.Button button1;
         
         private Gtk.Label label4;
         
@@ -107,6 +103,7 @@ namespace omvviewerlight {
             this.notebook1.CurrentPage = 2;
             // Container child notebook1.Gtk.Notebook+NotebookChild
             this.vbox1 = new Gtk.VBox();
+            this.vbox1.Name = "vbox1";
             this.vbox1.Spacing = 6;
             // Container child vbox1.Gtk.Box+BoxChild
             this.label_name = new Gtk.Label();
@@ -407,43 +404,23 @@ namespace omvviewerlight {
             this.notebook_picks = new Gtk.Notebook();
             this.notebook_picks.CanFocus = true;
             this.notebook_picks.Name = "notebook_picks";
-            this.notebook_picks.CurrentPage = 0;
+            this.notebook_picks.CurrentPage = -1;
             this.notebook_picks.TabPos = ((Gtk.PositionType)(0));
-            // Notebook tab
-            Gtk.Label w38 = new Gtk.Label();
-            w38.Visible = true;
-            this.notebook_picks.Add(w38);
-            this.label5 = new Gtk.Label();
-            this.label5.Name = "label5";
-            this.label5.LabelProp = Mono.Unix.Catalog.GetString("page1");
-            this.notebook_picks.SetTabLabel(w38, this.label5);
-            this.label5.ShowAll();
             this.vbox5.Add(this.notebook_picks);
-            Gtk.Box.BoxChild w39 = ((Gtk.Box.BoxChild)(this.vbox5[this.notebook_picks]));
-            w39.Position = 0;
+            Gtk.Box.BoxChild w38 = ((Gtk.Box.BoxChild)(this.vbox5[this.notebook_picks]));
+            w38.Position = 0;
+            w38.Expand = false;
+            w38.Fill = false;
             // Container child vbox5.Gtk.Box+BoxChild
             this.hbox5 = new Gtk.HBox();
             this.hbox5.Name = "hbox5";
             this.hbox5.Spacing = 6;
-            // Container child hbox5.Gtk.Box+BoxChild
-            this.button1 = new Gtk.Button();
-            this.button1.CanFocus = true;
-            this.button1.Name = "button1";
-            this.button1.UseUnderline = true;
-            this.button1.Label = Mono.Unix.Catalog.GetString("button1");
-            this.hbox5.Add(this.button1);
-            Gtk.Box.BoxChild w40 = ((Gtk.Box.BoxChild)(this.hbox5[this.button1]));
-            w40.Position = 0;
-            w40.Expand = false;
-            w40.Fill = false;
             this.vbox5.Add(this.hbox5);
-            Gtk.Box.BoxChild w41 = ((Gtk.Box.BoxChild)(this.vbox5[this.hbox5]));
-            w41.Position = 1;
-            w41.Expand = false;
-            w41.Fill = false;
+            Gtk.Box.BoxChild w39 = ((Gtk.Box.BoxChild)(this.vbox5[this.hbox5]));
+            w39.Position = 1;
             this.notebook1.Add(this.vbox5);
-            Gtk.Notebook.NotebookChild w42 = ((Gtk.Notebook.NotebookChild)(this.notebook1[this.vbox5]));
-            w42.Position = 2;
+            Gtk.Notebook.NotebookChild w40 = ((Gtk.Notebook.NotebookChild)(this.notebook1[this.vbox5]));
+            w40.Position = 2;
             // Notebook tab
             this.label4 = new Gtk.Label();
             this.label4.Name = "label4";

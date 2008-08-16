@@ -19,10 +19,25 @@ public partial class MainWindow: Gtk.Window
 	Gtk.Label status_balance_lable;
 	Gtk.Label status_parcel;		
 	Gtk.HBox status_icons;
+	bool notifyon;
+	
+	void onState(object o,WindowStateEventArgs args)
+	{
+		Console.Write("STATE CHANGE "+args.Event.ChangedMask.ToString()+"\n");
+		this.UrgencyHint=false;
+	}
+	
+	void onMap(object o,MapEventArgs args)
+	{
+		this.UrgencyHint=false;		
+	}
 	
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
+		
+		this.WindowStateEvent +=new WindowStateEventHandler(onState);
+		this.MapEvent += new MapEventHandler(onMap);
 		
 		status_location=new Gtk.Label("Location: Unknown (0,0,0)");
 		
@@ -279,13 +294,8 @@ public partial class MainWindow: Gtk.Window
 	}
 	   	
 	void onIM(InstantMessage im, Simulator sim)
-	{		
-			Console.Write("Session is :"+im.IMSessionID.ToString()+"\n");
-			Console.Write("Group is :"+im.GroupIM.ToString()+"\n");
-			Console.Write("ID is :"+im.FromAgentID.ToString()+"\n");
-		
-		
-		//this.UrgencyHint=true;
+	{				
+		this.UrgencyHint=true;
 		
 		if(im.GroupIM==true)
 		{		
@@ -296,9 +306,9 @@ public partial class MainWindow: Gtk.Window
 					LLUUID key;
 					string lable;
 					
-					if(!MainClass.av_names.TryGetValue(im.IMSessionID,out lable))
+					if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(im.IMSessionID,out lable))
 						lable="Unknown :";
-					
+							
 					   makeimwindow(lable,imc,true);
 	
 					active_ims.Add(im.IMSessionID);
@@ -311,12 +321,13 @@ public partial class MainWindow: Gtk.Window
 		{
 			Gtk.Application.Invoke(delegate {						
 				ChatConsole imc=new ChatConsole(im);
-				string groupname;
-				
-				if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(im.IMSessionID,out groupname))
-					groupname="Unknown group: ";
+				string name;
 
-				makeimwindow(groupname,imc,false);
+				if(!MainClass.av_names.TryGetValue(im.FromAgentID,out name))
+					name="Unknown: ";
+				
+			
+				makeimwindow(name,imc,false);
 				active_ims.Add(im.FromAgentID);
 			});
 		}

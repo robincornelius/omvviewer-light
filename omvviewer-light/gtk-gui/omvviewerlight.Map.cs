@@ -28,6 +28,7 @@ namespace omvviewerlight {
             this.Name = "omvviewerlight.Map";
             // Container child omvviewerlight.Map.Gtk.Container+ContainerChild
             this.vbox1 = new Gtk.VBox();
+            this.vbox1.Name = "vbox1";
             this.vbox1.Spacing = 6;
             // Container child vbox1.Gtk.Box+BoxChild
             this.label1 = new Gtk.Label();
