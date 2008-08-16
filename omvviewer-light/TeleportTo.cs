@@ -64,14 +64,20 @@ namespace omvviewerlight
 			pos.X=(float)this.spinbutton_x.Value;
 			pos.Y=(float)this.spinbutton_y.Value;
 			pos.Z=(float)this.spinbutton_z.Value;
+			TeleportProgress tp = new TeleportProgress();
+			tp.Show();
+			tp.teleport(entry_simname.Text,pos);
 			
-			MainClass.client.Self.Teleport(entry_simname.Text,pos);	
+			//MainClass.client.Self.Teleport(entry_simname.Text,pos);	
 		
 		}
 
 		protected virtual void OnButtonTphomeClicked (object sender, System.EventArgs e)
 		{
-			MainClass.client.Self.GoHome();
+			//MainClass.client.Self.GoHome();
+			TeleportProgress tp = new TeleportProgress();
+			tp.Show();
+			tp.teleporthome();
 		}
 	}
 }

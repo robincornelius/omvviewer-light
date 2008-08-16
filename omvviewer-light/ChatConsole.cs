@@ -103,6 +103,20 @@ namespace omvviewerlight
 			im_key=target;
 		}
 
+		public ChatConsole(LLUUID target,bool igroup)
+		{
+			dosetup();
+			MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
+			im_key=LLUUID.Zero;			
+			MainClass.client.Self.OnGroupChatJoin += new libsecondlife.AgentManager.GroupChatJoined(onGroupChatJoin);
+			MainClass.client.Self.RequestJoinGroupChat(target);
+			MainClass.client.Groups.OnGroupNames += new libsecondlife.GroupManager.GroupNamesCallback(onGroupNames);
+			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);
+
+			im_session_id=target;
+		}
+		
+		
 		void dosetup()
 		{
 			this.Build();
@@ -312,6 +326,7 @@ namespace omvviewerlight
 			if(this.im_session_id!=libsecondlife.LLUUID.Zero)
 			{				
 				MainClass.client.Self.InstantMessageGroup(im_session_id,entry_chat.Text);
+				this.entry_chat.Text="";
 				return;
 			}
 			

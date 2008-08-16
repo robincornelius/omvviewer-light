@@ -28,13 +28,15 @@ namespace omvviewerlight
 
 		protected virtual void OnButtonTeleportClicked (object sender, System.EventArgs e)
 		{
-			LLVector3 tp=new LLVector3();
-			tp.X=(int)(picpos.X)&0x0000FF;
-			tp.Y=(int)(picpos.Y)&0x0000FF;
-			tp.Z=(int)(picpos.Z)&0x0000FF;
+			LLVector3 pos=new LLVector3();
+			pos.X=(int)(picpos.X)&0x0000FF;
+			pos.Y=(int)(picpos.Y)&0x0000FF;
+			pos.Z=(int)(picpos.Z)&0x0000FF;
 			
-			MainClass.client.Self.Teleport(sim,tp);
-			
+			TeleportProgress tp = new TeleportProgress();
+			tp.Show();
+			tp.teleport(sim,pos);
+					
 		}
 	}
 }

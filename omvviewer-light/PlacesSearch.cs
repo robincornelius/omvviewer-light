@@ -89,10 +89,10 @@ namespace omvviewerlight
 				pos.X=((int)x)&0x0000FF;
 				pos.Y=((int)y)&0x0000FF;
 				pos.Z=((int)z);
-				
-				
-				
-				MainClass.client.Self.Teleport(sim,pos);
+								
+				TeleportProgress tp = new TeleportProgress();
+				tp.Show();
+				tp.teleport(sim,pos);
 			}
 		}
 				

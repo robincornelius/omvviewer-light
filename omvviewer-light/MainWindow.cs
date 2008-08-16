@@ -71,6 +71,8 @@ public partial class MainWindow: Gtk.Window
 		ObjectsLayout o=new ObjectsLayout();
 		this.addtabwithicon("item_object.tga","Objects",o);
 		
+		Groups g = new Groups();
+		this.addtabwithicon("icn_voice-groupfocus.tga","Groups",g);
 		//this.doicons();
 		
 		this.statusbar1.ShowAll();
@@ -279,6 +281,23 @@ public partial class MainWindow: Gtk.Window
 
 	}
 	
+	public void startGroupIM(LLUUID id)
+	{
+		if(!active_ims.Contains(id))
+		{
+			ChatConsole imc=new ChatConsole(id,true);
+			LLUUID key;
+			string lable;
+					
+			if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(id,out lable))
+				lable="Waiting...";
+							
+			makeimwindow(lable,imc,true);
+	
+			active_ims.Add(id);
+		
+		}
+	}
 	
 	public void startIM(LLUUID target)
 	{
