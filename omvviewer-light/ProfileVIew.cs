@@ -134,6 +134,7 @@ namespace omvviewerlight
 					int length = asset.Image.Red.Length;
 
 					//AssetTexture asset;
+					//asset.Image.
 						
 					byte[] data = asset.Image.ExportRaw();
 					
@@ -146,14 +147,12 @@ namespace omvviewerlight
 					
 						int dest=0;
 						
-					for(int x=0;x<(width*height*4);x=x+5)
+					for(int x=0;x<(width*height*4);x=x+4)
 					{
-						pixels[dest]=(sbyte)data[x];
-						pixels[dest+1]=(sbyte)data[x+1];
-						pixels[dest+2]=(sbyte)data[x+2];
-						pixels[dest+3]=(sbyte)data[x+3];
-						dest=dest+4;
-						
+						pixels[x]=(sbyte)data[x];
+						pixels[x+1]=(sbyte)data[x];
+						pixels[x+2]=(sbyte)data[x];
+						pixels[x+3]=(sbyte)data[x];							
 						}
 
 					this.image7.Pixbuf=buf;

@@ -972,14 +972,44 @@ Shout</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="Gtk.Button" id="button_teleport">
+                      <widget class="Gtk.HBox" id="hbox2">
                         <property name="MemberName" />
-                        <property name="CanFocus">True</property>
-                        <property name="Type">TextOnly</property>
-                        <property name="Label" translatable="yes">Teleport</property>
-                        <property name="UseUnderline">True</property>
-                        <signal name="Activated" handler="OnButtonTeleportActivated" />
-                        <signal name="Clicked" handler="OnButtonTeleportClicked" />
+                        <property name="Homogeneous">True</property>
+                        <property name="Spacing">6</property>
+                        <child>
+                          <widget class="Gtk.Button" id="button_teleport">
+                            <property name="MemberName" />
+                            <property name="CanFocus">True</property>
+                            <property name="Type">TextOnly</property>
+                            <property name="Label" translatable="yes">Teleport</property>
+                            <property name="UseUnderline">True</property>
+                            <signal name="Activated" handler="OnButtonTeleportActivated" />
+                            <signal name="Clicked" handler="OnButtonTeleportClicked" />
+                          </widget>
+                          <packing>
+                            <property name="Position">0</property>
+                            <property name="AutoSize">True</property>
+                            <property name="Expand">False</property>
+                            <property name="Fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="Gtk.Button" id="button_tphome">
+                            <property name="MemberName" />
+                            <property name="CanFocus">True</property>
+                            <property name="Type">TextAndIcon</property>
+                            <property name="Icon">file:./map_home.tga</property>
+                            <property name="Label" translatable="yes">Go Home</property>
+                            <property name="UseUnderline">True</property>
+                            <signal name="Clicked" handler="OnButtonTphomeClicked" />
+                          </widget>
+                          <packing>
+                            <property name="Position">1</property>
+                            <property name="AutoSize">True</property>
+                            <property name="Expand">False</property>
+                            <property name="Fill">False</property>
+                          </packing>
+                        </child>
                       </widget>
                       <packing>
                         <property name="Position">3</property>
@@ -1405,7 +1435,7 @@ Shout</property>
         <property name="MemberName" />
         <property name="Spacing">6</property>
         <child>
-          <widget class="Gtk.VBox" id="vbox2">
+          <widget class="Gtk.VBox" id="vbox4">
             <property name="MemberName" />
             <property name="Spacing">6</property>
             <child>
@@ -1528,6 +1558,7 @@ Shout</property>
                     <property name="ShowScrollbars">True</property>
                     <property name="HeadersClickable">True</property>
                     <signal name="CursorChanged" handler="OnTreeview1CursorChanged" />
+                    <signal name="UnselectAll" handler="OnTreeview1UnselectAll" />
                   </widget>
                 </child>
               </widget>
@@ -1616,6 +1647,7 @@ Shout</property>
                     <property name="Type">TextOnly</property>
                     <property name="Label" translatable="yes">Touch</property>
                     <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="OnButtonTouchClicked" />
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -1632,6 +1664,7 @@ Shout</property>
                     <property name="Type">TextOnly</property>
                     <property name="Label" translatable="yes">Sit on</property>
                     <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="OnButtonSitonClicked" />
                   </widget>
                   <packing>
                     <property name="Position">1</property>
@@ -1648,6 +1681,7 @@ Shout</property>
                     <property name="Type">TextOnly</property>
                     <property name="Label" translatable="yes">Look at</property>
                     <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="OnButtonLookatClicked" />
                   </widget>
                   <packing>
                     <property name="Position">2</property>

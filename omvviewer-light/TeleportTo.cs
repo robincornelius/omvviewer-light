@@ -68,5 +68,10 @@ namespace omvviewerlight
 			MainClass.client.Self.Teleport(entry_simname.Text,pos);	
 		
 		}
+
+		protected virtual void OnButtonTphomeClicked (object sender, System.EventArgs e)
+		{
+			MainClass.client.Self.GoHome();
+		}
 	}
 }

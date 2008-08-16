@@ -109,7 +109,6 @@ namespace omvviewerlight {
             w3.Position = 0;
             // Container child hbox1.Gtk.Box+BoxChild
             this.vbox1 = new Gtk.VBox();
-            this.vbox1.Name = "vbox1";
             this.vbox1.Spacing = 6;
             // Container child vbox1.Gtk.Box+BoxChild
             this.hbox2 = new Gtk.HBox();
@@ -403,7 +402,11 @@ namespace omvviewerlight {
             }
             this.Show();
             this.treeview1.CursorChanged += new System.EventHandler(this.OnTreeview1CursorChanged);
+            this.treeview1.UnselectAll += new Gtk.UnselectAllHandler(this.OnTreeview1UnselectAll);
             this.button_search.Clicked += new System.EventHandler(this.OnButtonSearchClicked);
+            this.button_touch.Clicked += new System.EventHandler(this.OnButtonTouchClicked);
+            this.button_siton.Clicked += new System.EventHandler(this.OnButtonSitonClicked);
+            this.button_lookat.Clicked += new System.EventHandler(this.OnButtonLookatClicked);
             this.button_pay.Clicked += new System.EventHandler(this.OnButtonPayClicked);
         }
     }

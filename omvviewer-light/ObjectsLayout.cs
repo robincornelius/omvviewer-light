@@ -26,6 +26,11 @@ namespace omvviewerlight
 			treeview1.AppendColumn("Desc.",new Gtk.CellRendererText(),"text",1);
 			treeview1.AppendColumn("ID",new Gtk.CellRendererText(),"text",2);
 			treeview1.Model=store;
+		    this.label_desc.Text="";
+			this.label_forsale.Text="";
+			this.label_group.Text="";
+			this.label_name="";
+			this.label_owner="";
 
 			MainClass.client.Objects.OnObjectProperties += new libsecondlife.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
 		}
@@ -104,7 +109,10 @@ namespace omvviewerlight
 		{
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
-			
+
+			this.button_lookat.Sensitive=true;
+			this.button_siton.Sensitive=true;
+						
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
 				LLUUID id=(LLUUID)mod.GetValue(iter,2);
@@ -196,6 +204,67 @@ namespace omvviewerlight
 				}
 				
 			}
+		}
+
+		protected virtual void OnButtonTouchClicked (object sender, System.EventArgs e)
+		{
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(treeview1.Selection.GetSelected(out mod,out iter))			
+			{
+				LLUUID id=(LLUUID)mod.GetValue(iter,2);
+				Primitive prim;
+				
+				if(PrimsWaiting.TryGetValue(id,out prim))
+				{
+					MainClass.client.Self.Touch(prim.LocalID);
+				}
+			}
+		}
+
+		protected virtual void OnButtonSitonClicked (object sender, System.EventArgs e)
+		{
+		Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(treeview1.Selection.GetSelected(out mod,out iter))			
+			{
+				LLUUID id=(LLUUID)mod.GetValue(iter,2);
+				Primitive prim;
+				
+				if(PrimsWaiting.TryGetValue(id,out prim))
+				{
+					//MainClass.client.Self.sit
+				}
+			}
+		
+		}
+
+		protected virtual void OnButtonLookatClicked (object sender, System.EventArgs e)
+		{
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(treeview1.Selection.GetSelected(out mod,out iter))			
+			{
+				LLUUID id=(LLUUID)mod.GetValue(iter,2);
+				Primitive prim;
+				
+				if(PrimsWaiting.TryGetValue(id,out prim))
+				{
+					//MainClass.client.Self.poi
+				}
+			}
+		}
+
+		protected virtual void OnTreeview1UnselectAll (object o, Gtk.UnselectAllArgs args)
+		{
+			Console.Write("UNSELECT\n");
+			//Might need to clean these on a timer
+			this.button_lookat.Sensitive=false;
+			this.button_siton.Sensitive=false;
+
 		}
 
 		

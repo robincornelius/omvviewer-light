@@ -47,7 +47,11 @@ namespace omvviewerlight {
         
         private Gtk.SpinButton spinbutton_z;
         
+        private Gtk.HBox hbox2;
+        
         private Gtk.Button button_teleport;
+        
+        private Gtk.Button button_tphome;
         
         private Gtk.Label GtkLabel1;
         
@@ -204,16 +208,52 @@ namespace omvviewerlight {
             w13.Expand = false;
             w13.Fill = false;
             // Container child vbox5.Gtk.Box+BoxChild
+            this.hbox2 = new Gtk.HBox();
+            this.hbox2.Name = "hbox2";
+            this.hbox2.Homogeneous = true;
+            this.hbox2.Spacing = 6;
+            // Container child hbox2.Gtk.Box+BoxChild
             this.button_teleport = new Gtk.Button();
             this.button_teleport.CanFocus = true;
             this.button_teleport.Name = "button_teleport";
             this.button_teleport.UseUnderline = true;
             this.button_teleport.Label = Mono.Unix.Catalog.GetString("Teleport");
-            this.vbox5.Add(this.button_teleport);
-            Gtk.Box.BoxChild w14 = ((Gtk.Box.BoxChild)(this.vbox5[this.button_teleport]));
-            w14.Position = 3;
+            this.hbox2.Add(this.button_teleport);
+            Gtk.Box.BoxChild w14 = ((Gtk.Box.BoxChild)(this.hbox2[this.button_teleport]));
+            w14.Position = 0;
             w14.Expand = false;
             w14.Fill = false;
+            // Container child hbox2.Gtk.Box+BoxChild
+            this.button_tphome = new Gtk.Button();
+            this.button_tphome.CanFocus = true;
+            this.button_tphome.Name = "button_tphome";
+            this.button_tphome.UseUnderline = true;
+            // Container child button_tphome.Gtk.Container+ContainerChild
+            Gtk.Alignment w15 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            Gtk.HBox w16 = new Gtk.HBox();
+            w16.Spacing = 2;
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Image w17 = new Gtk.Image();
+            w17.Pixbuf = new Gdk.Pixbuf(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "./map_home.tga"));
+            w16.Add(w17);
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Label w19 = new Gtk.Label();
+            w19.LabelProp = Mono.Unix.Catalog.GetString("Go Home");
+            w19.UseUnderline = true;
+            w16.Add(w19);
+            w15.Add(w16);
+            this.button_tphome.Add(w15);
+            this.hbox2.Add(this.button_tphome);
+            Gtk.Box.BoxChild w23 = ((Gtk.Box.BoxChild)(this.hbox2[this.button_tphome]));
+            w23.Position = 1;
+            w23.Expand = false;
+            w23.Fill = false;
+            this.vbox5.Add(this.hbox2);
+            Gtk.Box.BoxChild w24 = ((Gtk.Box.BoxChild)(this.vbox5[this.hbox2]));
+            w24.Position = 3;
+            w24.Expand = false;
+            w24.Fill = false;
             this.GtkAlignment.Add(this.vbox5);
             this.frame1.Add(this.GtkAlignment);
             this.GtkLabel1 = new Gtk.Label();
@@ -222,10 +262,10 @@ namespace omvviewerlight {
             this.GtkLabel1.UseMarkup = true;
             this.frame1.LabelWidget = this.GtkLabel1;
             this.vbox2.Add(this.frame1);
-            Gtk.Box.BoxChild w17 = ((Gtk.Box.BoxChild)(this.vbox2[this.frame1]));
-            w17.Position = 1;
-            w17.Expand = false;
-            w17.Fill = false;
+            Gtk.Box.BoxChild w27 = ((Gtk.Box.BoxChild)(this.vbox2[this.frame1]));
+            w27.Position = 1;
+            w27.Expand = false;
+            w27.Fill = false;
             this.Add(this.vbox2);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
@@ -233,6 +273,7 @@ namespace omvviewerlight {
             this.Show();
             this.button_teleport.Activated += new System.EventHandler(this.OnButtonTeleportActivated);
             this.button_teleport.Clicked += new System.EventHandler(this.OnButtonTeleportClicked);
+            this.button_tphome.Clicked += new System.EventHandler(this.OnButtonTphomeClicked);
         }
     }
 }

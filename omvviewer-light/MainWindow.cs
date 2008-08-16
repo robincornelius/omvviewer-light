@@ -232,17 +232,28 @@ public partial class MainWindow: Gtk.Window
 	}		
 
 	
-	void makeimwindow(string name,ChatConsole cs)
+	void makeimwindow(string name,ChatConsole cs,bool group)
 	{
-		    Gtk.Image image=new Gtk.Image("closebox.tga");
-		    image.SetSizeRequest(16,16);
-			Gtk.Label lable=new Gtk.Label(name);
-			Gtk.Button button=new Gtk.Button(image);
-            button.SetSizeRequest(16,16);
+		Gtk.Image image=new Gtk.Image("closebox.tga");
+		image.HeightRequest=16;
+		image.WidthRequest=16;
+		
+		Gtk.Image icon;
+		
+		if(group)
+			icon=new Gtk.Image("icon_group.tga");
+		else
+			icon=new Gtk.Image("icn_voice-groupfocus.tga");
+		
+		image.SetSizeRequest(16,16);
+		Gtk.Label lable=new Gtk.Label(name);
+		Gtk.Button button=new Gtk.Button(image);
+        button.SetSizeRequest(16,16);
 		    Gtk.HBox box=new Gtk.HBox();
-			box.PackStart(button);
+			box.PackStart(icon);
 			box.PackStart(lable);
-			box.SetChildPacking(image,false,false,0,PackType.Start);
+		    box.PackStart(button);
+		    box.SetChildPacking(image,false,false,0,PackType.Start);
 		
 		    box.ShowAll();
 		    notebook.InsertPage(cs,box,-1);
@@ -260,7 +271,7 @@ public partial class MainWindow: Gtk.Window
 			
 			Gtk.Application.Invoke(delegate {		
 				ChatConsole imc=new ChatConsole(target);
-				makeimwindow(MainClass.av_names[target],imc);
+				makeimwindow(MainClass.av_names[target],imc,false);
 				active_ims.Add(target);
 			});
 		}		
@@ -288,7 +299,7 @@ public partial class MainWindow: Gtk.Window
 					if(!MainClass.av_names.TryGetValue(im.IMSessionID,out lable))
 						lable="Unknown :";
 					
-					   makeimwindow(lable,imc);
+					   makeimwindow(lable,imc,true);
 	
 					active_ims.Add(im.IMSessionID);
 				});
@@ -305,7 +316,7 @@ public partial class MainWindow: Gtk.Window
 				if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(im.IMSessionID,out groupname))
 					groupname="Unknown group: ";
 
-				makeimwindow(groupname,imc);
+				makeimwindow(groupname,imc,false);
 				active_ims.Add(im.FromAgentID);
 			});
 		}
