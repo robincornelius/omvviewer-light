@@ -33,8 +33,71 @@ namespace omvviewerlight
 			this.label_owner.Text="";
 
 			MainClass.client.Objects.OnObjectProperties += new libsecondlife.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
+			MainClass.client.Groups.OnGroupNames += new libsecondlife.GroupManager.GroupNamesCallback(onGroupNames);
+			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);
 		}
 
+		void onAvatarNames(Dictionary <LLUUID,string>names)
+		{
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			foreach(KeyValuePair <LLUUID,string> kvp in names)
+			{
+				if(!MainClass.av_names.ContainsKey(kvp.Key))
+				{
+					MainClass.av_names.Add(kvp.Key,kvp.Value);
+				}
+			}
+			
+			if(treeview1.Selection.GetSelected(out mod,out iter))			
+			{
+				LLUUID id=(LLUUID)mod.GetValue(iter,2);
+				Primitive prim;
+				
+				if(PrimsWaiting.TryGetValue(id,out prim))
+				{
+					string name;;
+					if(MainClass.av_names.TryGetValue(prim.OwnerID,out name))
+					{
+						Gtk.Application.Invoke(delegate {						
+							this.label_owner.Text=name;
+						});
+					}			
+					
+				}
+			}
+			
+			
+		}
+		
+		void onGroupNames(Dictionary <LLUUID,string>groups)
+	    {
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(treeview1.Selection.GetSelected(out mod,out iter))			
+			{
+				LLUUID id=(LLUUID)mod.GetValue(iter,2);
+				Primitive prim;
+				
+				if(PrimsWaiting.TryGetValue(id,out prim))
+				{
+			
+					string group;;
+					if(MainClass.client.Groups.GroupName2KeyCache.TryGetValue(prim.Properties.GroupID,out group))
+					{
+						Gtk.Application.Invoke(delegate {						
+							this.label_group.Text=group;
+						});
+					}			
+					
+				}
+			}
+			
+		}
+				
+			
 		bool myfunc(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
 		{
 			LLUUID key=(LLUUID)store.GetValue(iter,2);			
@@ -51,7 +114,7 @@ namespace omvviewerlight
 		{
 			int radius;
 			int.TryParse(this.entry1.Text,out radius);
-			
+			store.Clear();
 			// *** get current location ***
             LLVector3 location = MainClass.client.Self.SimPosition;
 
@@ -124,14 +187,20 @@ namespace omvviewerlight
 					this.label_desc.Text=prim.Properties.Description;
 					
 					string name;
-					if(MainClass.av_names.TryGetValue(prim.Properties.OwnerID,out name))
-					   this.label_owner.Text=name;
+					if(MainClass.av_names.TryGetValue(prim.OwnerID,out name))
+					{
+						this.label_owner.Text=name;
+						MainClass.client.Avatars.RequestAvatarName(prim.OwnerID);
+					}
 					else
-						this.label_owner.Text="Unknown";
+						this.label_owner.Text="Waiting...";
 				
-					string group="Unknown";
-					if(!MainClass.av_names.TryGetValue(prim.Properties.GroupID,out group))
-						group="Unknown";	
+					string group;
+					if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(prim.Properties.GroupID,out group))
+					{
+						MainClass.client.Groups.RequestGroupName(prim.Properties.GroupID);
+						group="Waiting...";	
+					}
 					
 					this.label_group.Text=group;
 					
