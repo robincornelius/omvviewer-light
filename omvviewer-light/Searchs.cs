@@ -41,6 +41,8 @@ namespace omvviewerlight
 			foreach(libsecondlife.DirectoryManager.AgentSearchData person in people)
 			{
 					store.AppendValues (person.Online,person.FirstName+" "+person.LastName,person.AgentID);		
+					if(!MainClass.av_names.ContainsKey(person.AgentID))
+						MainClass.av_names.Add(person.AgentID,person.FirstName+" "+person.LastName);
 			}
 		
 			});
@@ -85,7 +87,21 @@ namespace omvviewerlight
 			{
 				LLUUID id=(LLUUID)mod.GetValue(iter,2);			
 				PayWindow pay=new PayWindow(id,0);
+				pay.Show();
 			}		
+		}
+
+		protected virtual void OnButtonProfileClicked (object sender, System.EventArgs e)
+		{
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(treeview1.Selection.GetSelected(out mod,out iter))			
+			{
+				LLUUID id=(LLUUID)mod.GetValue(iter,2);			
+				ProfileVIew p=new ProfileVIew(id);
+				p.Show();
+			}				
 		}
 	}
 }

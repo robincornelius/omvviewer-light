@@ -754,7 +754,20 @@ Shout</property>
                   </packing>
                 </child>
                 <child>
-                  <placeholder />
+                  <widget class="Gtk.Button" id="button_profile">
+                    <property name="MemberName" />
+                    <property name="CanFocus">True</property>
+                    <property name="Type">TextOnly</property>
+                    <property name="Label" translatable="yes">Profile</property>
+                    <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="OnButtonProfileClicked" />
+                  </widget>
+                  <packing>
+                    <property name="Position">2</property>
+                    <property name="AutoSize">True</property>
+                    <property name="Expand">False</property>
+                    <property name="Fill">False</property>
+                  </packing>
                 </child>
               </widget>
               <packing>
@@ -1227,12 +1240,13 @@ Shout</property>
               </packing>
             </child>
             <child>
-              <widget class="Gtk.Button" id="button3">
+              <widget class="Gtk.Button" id="button_profile">
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="Type">TextOnly</property>
                 <property name="Label" translatable="yes">Profile</property>
                 <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="OnButtonProfileClicked" />
               </widget>
               <packing>
                 <property name="Position">1</property>

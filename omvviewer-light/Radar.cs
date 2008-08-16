@@ -156,13 +156,13 @@ namespace omvviewerlight
 			
 			if(this.treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
-				//ALL i want is a fucking UUID
-				string id=(string)mod.GetValue(iter,2);
-				LLUUID lid=(LLUUID)id;
-				MainClass.win.startIM(lid);
-			}
-	
-		
+				uint localid=(uint)mod.GetValue(iter,3);
+				Avatar avatar;
+				if(avs.TryGetValue(localid,out avatar))
+				{
+					MainClass.win.startIM(avatar.ID);
+				}
+			}		
 		}
 
 		protected virtual void OnButtonPayClicked (object sender, System.EventArgs e)
@@ -173,11 +173,34 @@ namespace omvviewerlight
 			
 			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
-				string id=(string)mod.GetValue(iter,2);
-				LLUUID lid=(LLUUID)id;
+				uint localid=(uint)mod.GetValue(iter,3);
+				Avatar avatar;
+				if(avs.TryGetValue(localid,out avatar))
+				{
+					PayWindow pay=new PayWindow(avatar.ID,0);
+					pay.Show();
+				}
 						
-				PayWindow pay=new PayWindow(id,0);
 			}		
+		}
+
+		protected virtual void OnButtonProfileClicked (object sender, System.EventArgs e)
+		{
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
+			{
+				uint localid=(uint)mod.GetValue(iter,3);
+				Avatar avatar;
+				if(avs.TryGetValue(localid,out avatar))
+				{
+					ProfileVIew p = new ProfileVIew(avatar.ID);
+					p.Show();
+				}
+						
+			}		
+
 		}
 		
 	}

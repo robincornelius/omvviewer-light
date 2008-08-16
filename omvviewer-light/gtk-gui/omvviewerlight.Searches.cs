@@ -31,7 +31,7 @@ namespace omvviewerlight {
         
         private Gtk.Button button2;
         
-        private Gtk.Button button3;
+        private Gtk.Button button_profile;
         
         private Gtk.Button button_pay;
         
@@ -111,13 +111,13 @@ namespace omvviewerlight {
             w7.Expand = false;
             w7.Fill = false;
             // Container child hbox2.Gtk.Box+BoxChild
-            this.button3 = new Gtk.Button();
-            this.button3.CanFocus = true;
-            this.button3.Name = "button3";
-            this.button3.UseUnderline = true;
-            this.button3.Label = Mono.Unix.Catalog.GetString("Profile");
-            this.hbox2.Add(this.button3);
-            Gtk.Box.BoxChild w8 = ((Gtk.Box.BoxChild)(this.hbox2[this.button3]));
+            this.button_profile = new Gtk.Button();
+            this.button_profile.CanFocus = true;
+            this.button_profile.Name = "button_profile";
+            this.button_profile.UseUnderline = true;
+            this.button_profile.Label = Mono.Unix.Catalog.GetString("Profile");
+            this.hbox2.Add(this.button_profile);
+            Gtk.Box.BoxChild w8 = ((Gtk.Box.BoxChild)(this.hbox2[this.button_profile]));
             w8.Position = 1;
             w8.Expand = false;
             w8.Fill = false;
@@ -144,6 +144,7 @@ namespace omvviewerlight {
             this.Show();
             this.button1.Clicked += new System.EventHandler(this.OnButton1Clicked);
             this.button2.Clicked += new System.EventHandler(this.OnButton2Clicked);
+            this.button_profile.Clicked += new System.EventHandler(this.OnButtonProfileClicked);
             this.button_pay.Clicked += new System.EventHandler(this.OnButtonPayClicked);
         }
     }

@@ -58,7 +58,7 @@ namespace omvviewerlight
 				if(PrimsWaiting.TryGetValue(id,out prim))
 				{
 					string name;;
-					if(MainClass.av_names.TryGetValue(prim.OwnerID,out name))
+					if(MainClass.av_names.TryGetValue(prim.Properties.OwnerID,out name))
 					{
 						Gtk.Application.Invoke(delegate {						
 							this.label_owner.Text=name;
@@ -187,14 +187,16 @@ namespace omvviewerlight
 					this.label_desc.Text=prim.Properties.Description;
 					
 					string name;
-					if(MainClass.av_names.TryGetValue(prim.OwnerID,out name))
+					if(MainClass.av_names.TryGetValue(prim.Properties.OwnerID,out name))
 					{
 						this.label_owner.Text=name;
-						MainClass.client.Avatars.RequestAvatarName(prim.OwnerID);
 					}
 					else
+					{
+						Console.Write("Requesting name for key "+prim.Properties.OwnerID.ToString()+"\n");
+						MainClass.client.Avatars.RequestAvatarName(prim.Properties.OwnerID);
 						this.label_owner.Text="Waiting...";
-				
+					}
 					string group;
 					if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(prim.Properties.GroupID,out group))
 					{

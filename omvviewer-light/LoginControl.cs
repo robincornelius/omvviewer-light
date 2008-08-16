@@ -96,8 +96,10 @@ namespace omvviewerlight
 	
 			//This can take ages, should be threaded
 			if(LoginStatus.Success==login)
-				MainClass.client.Appearance.SetPreviousAppearance(false);
-		
+			{
+				Thread loginRunner= new Thread(new ThreadStart(this.appearencethread));                               
+				MainClass.client.Groups.RequestCurrentGroups();
+			}		
 		}
 
 		void onLogMessage(object obj, libsecondlife.Helpers.LogLevel level)
@@ -116,6 +118,12 @@ namespace omvviewerlight
 		{
 				MainClass.client.Network.Login(login);
 		}
+		
+		void appearencethread()
+		{
+				MainClass.client.Appearance.SetPreviousAppearance(false);
+		}
+		
 		
 		protected virtual void OnButton1Clicked (object sender, System.EventArgs e)
 		{

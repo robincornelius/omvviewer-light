@@ -27,6 +27,8 @@ namespace omvviewerlight {
         
         private Gtk.Button button_pay;
         
+        private Gtk.Button button_profile;
+        
         protected virtual void Build() {
             Stetic.Gui.Initialize(this);
             // Widget omvviewerlight.Radar
@@ -80,16 +82,27 @@ namespace omvviewerlight {
             w4.Position = 1;
             w4.Expand = false;
             w4.Fill = false;
-            this.vbox2.Add(this.hbox2);
-            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox2[this.hbox2]));
-            w5.Position = 0;
+            // Container child hbox2.Gtk.Box+BoxChild
+            this.button_profile = new Gtk.Button();
+            this.button_profile.CanFocus = true;
+            this.button_profile.Name = "button_profile";
+            this.button_profile.UseUnderline = true;
+            this.button_profile.Label = Mono.Unix.Catalog.GetString("Profile");
+            this.hbox2.Add(this.button_profile);
+            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.hbox2[this.button_profile]));
+            w5.Position = 2;
             w5.Expand = false;
             w5.Fill = false;
-            this.vbox1.Add(this.vbox2);
-            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.vbox1[this.vbox2]));
-            w6.Position = 1;
+            this.vbox2.Add(this.hbox2);
+            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.vbox2[this.hbox2]));
+            w6.Position = 0;
             w6.Expand = false;
             w6.Fill = false;
+            this.vbox1.Add(this.vbox2);
+            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.vbox1[this.vbox2]));
+            w7.Position = 1;
+            w7.Expand = false;
+            w7.Fill = false;
             this.Add(this.vbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
@@ -97,6 +110,7 @@ namespace omvviewerlight {
             this.Show();
             this.button_im.Clicked += new System.EventHandler(this.OnButtonImClicked);
             this.button_pay.Clicked += new System.EventHandler(this.OnButtonPayClicked);
+            this.button_profile.Clicked += new System.EventHandler(this.OnButtonProfileClicked);
         }
     }
 }

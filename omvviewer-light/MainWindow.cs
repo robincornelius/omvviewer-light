@@ -284,7 +284,7 @@ public partial class MainWindow: Gtk.Window
 		if(!active_ims.Contains(target))
 		{
 			
-			Gtk.Application.Invoke(delegate {		
+			Gtk.Application.Invoke(delegate {						
 				ChatConsole imc=new ChatConsole(target);
 				makeimwindow(MainClass.av_names[target],imc,false);
 				active_ims.Add(target);
