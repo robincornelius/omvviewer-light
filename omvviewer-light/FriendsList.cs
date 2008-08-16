@@ -143,6 +143,15 @@ namespace omvviewerlight
 				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 				{
 					finfo.CanSeeMeOnline=this.checkbutton_onlinestatus.Active;
+
+					FriendRights rights=getrights(finfo);
+
+					if(finfo.CanSeeMeOnline)
+						rights|=FriendRights.CanSeeOnline;
+					else
+						rights&=~FriendRights.CanSeeOnline;
+				
+					MainClass.client.Friends.GrantRights(lid,rights);
 				}
 			}
 			
@@ -150,7 +159,7 @@ namespace omvviewerlight
 
 		protected virtual void OnCheckbuttonMapClicked (object sender, System.EventArgs e)
 		{
-	Gtk.TreeModel mod;
+			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
 			
 			if(treeview_friends.Selection.GetSelected(out mod,out iter))			
@@ -162,6 +171,15 @@ namespace omvviewerlight
 				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 				{
 					finfo.CanSeeMeOnMap=this.checkbutton_map.Active;
+					FriendRights rights=getrights(finfo);
+
+					if(finfo.CanSeeMeOnMap)
+						rights|=FriendRights.CanSeeOnMap;
+					else
+						rights&=~FriendRights.CanSeeOnMap;
+
+					MainClass.client.Friends.GrantRights(lid,rights);
+						
 				}
 			}
 				
@@ -181,11 +199,37 @@ namespace omvviewerlight
 				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 				{
 					finfo.CanModifyMyObjects=this.checkbutton_modobjects.Active;
+					FriendRights rights=getrights(finfo);
+
+					if(finfo.CanModifyMyObjects)
+						rights|=FriendRights.CanModifyObjects;
+					else
+						rights&=~FriendRights.CanModifyObjects;
+	
+					MainClass.client.Friends.GrantRights(lid,rights);
+	
 				}
 			}
 		
 		}
 
+		FriendRights getrights(FriendInfo finfo)
+		{
+			FriendRights rights=new FriendRights();
+			rights=0;
+			
+			if(finfo.CanModifyMyObjects)
+				rights|=FriendRights.CanModifyObjects;
+			
+			if(finfo.CanSeeMeOnMap)
+				rights|=FriendRights.CanSeeOnMap;
+			
+			if(finfo.CanSeeMeOnline)
+				rights|=FriendRights.CanSeeOnline;
+
+			return rights;
+		}
+		
 		protected virtual void OnButtonIMClicked (object sender, System.EventArgs e)
 		{
 			//beter work out who we have selected

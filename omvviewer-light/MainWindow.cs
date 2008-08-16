@@ -38,6 +38,8 @@ public partial class MainWindow: Gtk.Window
 		
 		this.WindowStateEvent +=new WindowStateEventHandler(onState);
 		this.MapEvent += new MapEventHandler(onMap);
+
+		
 		
 		status_location=new Gtk.Label("Location: Unknown (0,0,0)");
 		
@@ -86,9 +88,19 @@ public partial class MainWindow: Gtk.Window
 		MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
 		MainClass.client.Network.OnDisconnected += new libsecondlife.NetworkManager.DisconnectedCallback(onDisconnect);
 		
+		MainClass.client.Friends.OnFriendshipOffered += new libsecondlife.FriendsManager.FriendshipOfferedEvent(onFriendship);
+		
 		GLib.Timeout.Add(10000,OnUpdateStatus);
 	}
 	
+	void onFriendship(LLUUID agentID,string agentname,LLUUID sessionid)
+	{
+		Gtk.Application.Invoke(delegate {						
+			
+			
+		});			
+	}
+			
 	void addtabwithicon(string filename,string label,Gtk.Widget contents)
 	{
 			Gtk.Image image=new Gtk.Image(filename);

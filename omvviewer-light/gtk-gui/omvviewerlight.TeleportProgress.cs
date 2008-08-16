@@ -83,6 +83,7 @@ namespace omvviewerlight {
             // Container child vbox3.Gtk.Box+BoxChild
             this.progressbar1 = new Gtk.ProgressBar();
             this.progressbar1.Name = "progressbar1";
+            this.progressbar1.Fraction = 0.00999999999999991;
             this.progressbar1.PulseStep = 1;
             this.vbox3.Add(this.progressbar1);
             Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox3[this.progressbar1]));
@@ -92,7 +93,7 @@ namespace omvviewerlight {
             // Container child vbox3.Gtk.Box+BoxChild
             this.label_info = new Gtk.Label();
             this.label_info.Name = "label_info";
-            this.label_info.LabelProp = Mono.Unix.Catalog.GetString("info");
+            this.label_info.LabelProp = "";
             this.vbox3.Add(this.label_info);
             Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.vbox3[this.label_info]));
             w6.Position = 2;
