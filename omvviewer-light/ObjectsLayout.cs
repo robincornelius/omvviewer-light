@@ -35,7 +35,7 @@ namespace omvviewerlight
 			MainClass.client.Groups.OnGroupNames += new libsecondlife.GroupManager.GroupNamesCallback(onGroupNames);
 			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);
 		}
-
+		
 		void onAvatarNames(Dictionary <LLUUID,string>names)
 		{
 			Gtk.TreeModel mod;

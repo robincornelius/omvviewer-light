@@ -35,6 +35,31 @@ namespace omvviewerlight
 			store.SetSortColumnId(2,Gtk.SortType.Ascending);
 	
 			MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
+
+			this.store.SetSortFunc(2,sort_llvector3);
+		
+		}
+		
+		
+			
+		
+		int sort_llvector3(Gtk.TreeModel model,Gtk.TreeIter a,Gtk.TreeIter b)
+		{
+
+			string distAs=(string)store.GetValue(a,2);			
+			string distBs=(string)store.GetValue(b,2);			
+			float distA,distB;
+			
+			float.TryParse(distAs,out distA);
+			float.TryParse(distBs,out distB);
+
+			if(distA>distB)
+				return 1;
+			
+			if(distA<distB)
+				return 0;
+			
+			return 0;
 		}
 		
 		void onTeleport(string Message, libsecondlife.AgentManager.TeleportStatus status,libsecondlife.AgentManager.TeleportFlags flags)
@@ -82,7 +107,7 @@ namespace omvviewerlight
 				Gtk.Application.Invoke(delegate {									
 				Avatar av;
 				if(avs.TryGetValue(avatar.LocalID,out av))
-						store.AppendValues("",av.Name,dist.ToString(),avatar.LocalID);
+						store.AppendValues("",av.Name,MainClass.cleandistance(dist.ToString(),1),avatar.LocalID);
 				});
 			}
 
@@ -113,7 +138,7 @@ namespace omvviewerlight
 				pos=MainClass.client.Self.RelativePosition-(LLVector3)avs[key].Position;
 				double dist;
 				dist=Math.Sqrt(pos.X*pos.X+pos.Y+pos.Y+pos.Z+pos.Z);
-				store.SetValue(iter,2,dist.ToString());
+				store.SetValue(iter,2,MainClass.cleandistance(dist.ToString(),1));
 		
 					if(av_typing.ContainsKey(avs[key].ID))
 					{

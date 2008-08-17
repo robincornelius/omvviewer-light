@@ -131,8 +131,8 @@ namespace omvviewerlight
 			{
 					if(activepage!=1)
 				
-					
-				this.tabLabel.ModifyFg(type,col);					
+				if(tabLabel!=null)	
+							this.tabLabel.ModifyFg(type,col);					
 				return;
 						
 			}

@@ -170,7 +170,7 @@ public partial class MainWindow: Gtk.Window
 	void onTeleport(string Message, libsecondlife.AgentManager.TeleportStatus status,libsecondlife.AgentManager.TeleportFlags flags)
     {		
 		Gtk.Application.Invoke(delegate {						
-			status_location.Text="Location: "+MainClass.client.Network.CurrentSim.Name+MainClass.client.Self.SimPosition.ToString();	
+			status_location.Text="Location: "+MainClass.client.Network.CurrentSim.Name+MainClass.prettyvector(MainClass.client.Self.SimPosition,2);	
 		});
 	}
 			
@@ -276,7 +276,7 @@ public partial class MainWindow: Gtk.Window
 	{
 		if(MainClass.client.Network.LoginStatusCode==LoginStatus.Success)
 		{
-			status_location.Text="Location: "+MainClass.client.Network.CurrentSim.Name+MainClass.client.Self.SimPosition.ToString();	
+			status_location.Text="Location: "+MainClass.client.Network.CurrentSim.Name+MainClass.prettyvector(MainClass.client.Self.SimPosition,2);	
 		}		
 		return true;
 	}
