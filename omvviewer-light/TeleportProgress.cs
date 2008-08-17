@@ -18,6 +18,7 @@ namespace omvviewerlight
 		
 		string tpsim;
 		LLVector3 tppos;
+		
 		public TeleportProgress() : 
 				base(Gtk.WindowType.Toplevel)
 		{
@@ -39,10 +40,11 @@ namespace omvviewerlight
 				this.tppos=pos;
 				this.tpsim=sim;
 				this.QueueDraw();
+				Thread tpRunner= new Thread(new ThreadStart(this.tpthread));   			
+				tpRunner.Start();
 			});
 	
-			Thread tpRunner= new Thread(new ThreadStart(this.tpthread));   			
-			tpRunner.Start();
+			
 		}
 		
 		void tpthread()
@@ -78,12 +80,14 @@ namespace omvviewerlight
 			{
 					progressbar1.Fraction=1.0;
 					this.button_close.Sensitive=true;
+					this.label_info.Text="Teleport Cancelled";
 			}
 
 			if(libsecondlife.AgentManager.TeleportStatus.Failed==status)
 			{
 					progressbar1.Fraction=1.0;
 					this.button_close.Sensitive=true;
+					this.label_info.Text="Teleport FAILED, sorry";
 			}
 
 				

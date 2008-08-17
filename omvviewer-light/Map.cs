@@ -7,6 +7,7 @@
 using System;
 using System.Net;
 using System.Collections.Generic;
+using System.Threading;
 using libsecondlife;
 using omvviewerlight;
 using System.Drawing;
@@ -34,6 +35,7 @@ namespace omvviewerlight
 
 		public Map()
 		{
+
 			this.Build();
 			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
 			MainClass.client.Network.OnCurrentSimChanged += new libsecondlife.NetworkManager.CurrentSimChangedCallback(onNewSim);
@@ -41,7 +43,7 @@ namespace omvviewerlight
 			MainClass.client.Objects.OnObjectKilled += new libsecondlife.ObjectManager.KillObjectCallback(onKillObject);
 			MainClass.client.Objects.OnObjectUpdated += new libsecondlife.ObjectManager.ObjectUpdatedCallback(onUpdate);
 			MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
-
+			
 		}
 
 		void onTeleport(string Message, libsecondlife.AgentManager.TeleportStatus status,libsecondlife.AgentManager.TeleportFlags flags)
@@ -144,7 +146,6 @@ namespace omvviewerlight
 			if(MainClass.client.Network.LoginStatusCode==LoginStatus.Success)
 				{
 					getmap();
-					drawavs();
 					this.label1.Text=MainClass.client.Network.CurrentSim.Name;
 				}
 				else
@@ -225,7 +226,6 @@ namespace omvviewerlight
 				if(login==LoginStatus.Success)
 				{
 					getmap();
-					drawavs();
 					this.label1.Text=MainClass.client.Network.CurrentSim.Name;
 
 				}
@@ -233,6 +233,19 @@ namespace omvviewerlight
 		}
 				
 		void getmap()
+		{
+			Gtk.Application.Invoke(delegate {		
+					
+			//this.image = new Gtk.Image("trying.tga");
+			Gdk.Pixbuf pb= new Gdk.Pixbuf("trying.tga");
+			this.image.Pixbuf=pb;
+			Thread mapdownload= new Thread(new ThreadStart(this.getmap_threaded));                               
+			mapdownload.Start();
+			});
+			
+		}
+		
+		void getmap_threaded()
 		{
 			  HttpWebRequest request = null;
               HttpWebResponse response = null;
@@ -249,6 +262,9 @@ namespace omvviewerlight
                 request.Timeout = 5000;
                 request.ReadWriteTimeout = 20000;
 				response = (HttpWebResponse)request.GetResponse();
+
+				Gtk.Application.Invoke(delegate {		
+					
 				basemap=new Gtk.Image(response.GetResponseStream());
 
 				image.Pixbuf=(Gdk.Pixbuf)basemap.Pixbuf.Clone();
@@ -257,8 +273,9 @@ namespace omvviewerlight
 				channels=basemap.Pixbuf.NChannels;
 				width=basemap.Pixbuf.Width;
 				height=basemap.Pixbuf.Height;
-				
-				
+				drawavs();			
+				});			
+					return;
 				//return System.Drawing.Image.FromStream(response.GetResponseStream());
 				
             }
@@ -266,7 +283,7 @@ namespace omvviewerlight
             {
 				Gtk.MessageDialog msg = new Gtk.MessageDialog(MainClass.win,DialogFlags.Modal,MessageType.Error,ButtonsType.Ok,"Error Downloading Web Map Image");
 				msg.Show();
-				return;
+				return ;
             }
 
 			

@@ -139,7 +139,8 @@ namespace omvviewerlight
 			if(asset.AssetID==this.profile_pic)
 			{
 				Console.Write("Downloaded profile pic\n");
-					
+					try
+					{
 					File.WriteAllBytes(image.ID.ToString() + ".jp2", image.AssetData);
                             Console.WriteLine("Wrote JPEG2000 image " + image.ID.ToString() + ".jp2");
 
@@ -152,7 +153,12 @@ namespace omvviewerlight
 					Gdk.Pixbuf buf=new Gdk.Pixbuf(tgaFile);
 					Console.Write("Decoded\n");
 					this.image7.Pixbuf=buf;
-			}
+					}
+					catch(Exception e)
+					{
+						
+					}
+				}
 			});
 				
 		}

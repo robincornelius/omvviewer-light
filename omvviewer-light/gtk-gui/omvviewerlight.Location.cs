@@ -68,6 +68,8 @@ namespace omvviewerlight {
             this.hbox1.Add(this.radar1);
             Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox1[this.radar1]));
             w4.Position = 1;
+            w4.Expand = false;
+            w4.Fill = false;
             this.Add(this.hbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();

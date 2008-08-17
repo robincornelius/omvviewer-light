@@ -29,8 +29,6 @@ namespace omvviewerlight {
         
         private Gtk.HBox hbox4;
         
-        private Gtk.Button button_abort;
-        
         private Gtk.Button button_close;
         
         protected virtual void Build() {
@@ -80,6 +78,7 @@ namespace omvviewerlight {
             w4.Position = 0;
             w4.Expand = false;
             w4.Fill = false;
+            w4.Padding = ((uint)(8));
             // Container child vbox3.Gtk.Box+BoxChild
             this.progressbar1 = new Gtk.ProgressBar();
             this.progressbar1.Name = "progressbar1";
@@ -102,19 +101,8 @@ namespace omvviewerlight {
             // Container child vbox3.Gtk.Box+BoxChild
             this.hbox4 = new Gtk.HBox();
             this.hbox4.Name = "hbox4";
+            this.hbox4.Homogeneous = true;
             this.hbox4.Spacing = 6;
-            // Container child hbox4.Gtk.Box+BoxChild
-            this.button_abort = new Gtk.Button();
-            this.button_abort.Sensitive = false;
-            this.button_abort.CanFocus = true;
-            this.button_abort.Name = "button_abort";
-            this.button_abort.UseUnderline = true;
-            this.button_abort.Label = Mono.Unix.Catalog.GetString("Abort");
-            this.hbox4.Add(this.button_abort);
-            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_abort]));
-            w7.Position = 0;
-            w7.Expand = false;
-            w7.Fill = false;
             // Container child hbox4.Gtk.Box+BoxChild
             this.button_close = new Gtk.Button();
             this.button_close.Sensitive = false;
@@ -123,23 +111,22 @@ namespace omvviewerlight {
             this.button_close.UseUnderline = true;
             this.button_close.Label = Mono.Unix.Catalog.GetString("Close");
             this.hbox4.Add(this.button_close);
-            Gtk.Box.BoxChild w8 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_close]));
-            w8.Position = 1;
+            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_close]));
+            w7.Position = 0;
+            w7.Expand = false;
+            w7.Fill = false;
+            this.vbox3.Add(this.hbox4);
+            Gtk.Box.BoxChild w8 = ((Gtk.Box.BoxChild)(this.vbox3[this.hbox4]));
+            w8.Position = 3;
             w8.Expand = false;
             w8.Fill = false;
-            this.vbox3.Add(this.hbox4);
-            Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.vbox3[this.hbox4]));
-            w9.Position = 3;
-            w9.Expand = false;
-            w9.Fill = false;
             this.Add(this.vbox3);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
             }
-            this.DefaultWidth = 400;
-            this.DefaultHeight = 128;
+            this.DefaultWidth = 416;
+            this.DefaultHeight = 137;
             this.Show();
-            this.button_abort.Clicked += new System.EventHandler(this.OnButtonAbortClicked);
             this.button_close.Clicked += new System.EventHandler(this.OnButtonCloseClicked);
         }
     }

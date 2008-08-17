@@ -178,6 +178,8 @@ namespace omvviewerlight
 				//LoginParams login;
 				login=MainClass.client.Network.DefaultLoginParams(entry_first.Text,entry_last.Text,entry_pass.Text,"omvviewer-light","1.0");
 				
+				//login.Start="home";
+				
 				this.textview_log.Buffer.Clear();
 				button_login.Label="Logout";			
 				if(this.combobox_grid.ActiveText=="Agni")

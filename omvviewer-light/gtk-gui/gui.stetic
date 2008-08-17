@@ -218,14 +218,39 @@
             <property name="MemberName" />
             <property name="Spacing">6</property>
             <child>
-              <widget class="Gtk.CheckButton" id="checkbutton_rememberpass">
+              <widget class="Gtk.HBox" id="hbox2">
                 <property name="MemberName" />
-                <property name="CanFocus">True</property>
-                <property name="Label" translatable="yes">Remember password</property>
-                <property name="DrawIndicator">True</property>
-                <property name="HasLabel">True</property>
-                <property name="UseUnderline">True</property>
-                <signal name="Clicked" handler="OnCheckbuttonRememberpassClicked" />
+                <property name="Spacing">6</property>
+                <child>
+                  <widget class="Gtk.CheckButton" id="checkbutton_rememberpass">
+                    <property name="MemberName" />
+                    <property name="CanFocus">True</property>
+                    <property name="Label" translatable="yes">Remember password</property>
+                    <property name="DrawIndicator">True</property>
+                    <property name="HasLabel">True</property>
+                    <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="OnCheckbuttonRememberpassClicked" />
+                  </widget>
+                  <packing>
+                    <property name="Position">0</property>
+                    <property name="AutoSize">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="Gtk.CheckButton" id="checkbutton_lastlocation">
+                    <property name="MemberName" />
+                    <property name="CanFocus">True</property>
+                    <property name="Label" translatable="yes">Login to last location</property>
+                    <property name="Active">True</property>
+                    <property name="DrawIndicator">True</property>
+                    <property name="HasLabel">True</property>
+                    <property name="UseUnderline">True</property>
+                  </widget>
+                  <packing>
+                    <property name="Position">1</property>
+                    <property name="AutoSize">True</property>
+                  </packing>
+                </child>
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -235,7 +260,7 @@
               </packing>
             </child>
             <child>
-              <widget class="Gtk.HBox" id="hbox2">
+              <widget class="Gtk.HBox" id="hbox3">
                 <property name="MemberName" />
                 <property name="Spacing">6</property>
                 <child>
@@ -1519,6 +1544,8 @@ Shout</property>
           <packing>
             <property name="Position">1</property>
             <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
           </packing>
         </child>
       </widget>
@@ -2773,7 +2800,7 @@ Resident Michelle2 Zenovka
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Window" id="omvviewerlight.TeleportProgress" design-size="400 128">
+  <widget class="Gtk.Window" id="omvviewerlight.TeleportProgress" design-size="416 137">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Teleport Progress</property>
     <property name="WindowPosition">Center</property>
@@ -2828,6 +2855,7 @@ Resident Michelle2 Zenovka
             <property name="AutoSize">True</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
+            <property name="Padding">8</property>
           </packing>
         </child>
         <child>
@@ -2858,24 +2886,8 @@ Resident Michelle2 Zenovka
         <child>
           <widget class="Gtk.HBox" id="hbox4">
             <property name="MemberName" />
+            <property name="Homogeneous">True</property>
             <property name="Spacing">6</property>
-            <child>
-              <widget class="Gtk.Button" id="button_abort">
-                <property name="MemberName" />
-                <property name="Sensitive">False</property>
-                <property name="CanFocus">True</property>
-                <property name="Type">TextOnly</property>
-                <property name="Label" translatable="yes">Abort</property>
-                <property name="UseUnderline">True</property>
-                <signal name="Clicked" handler="OnButtonAbortClicked" />
-              </widget>
-              <packing>
-                <property name="Position">0</property>
-                <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
-              </packing>
-            </child>
             <child>
               <widget class="Gtk.Button" id="button_close">
                 <property name="MemberName" />
@@ -2887,14 +2899,11 @@ Resident Michelle2 Zenovka
                 <signal name="Clicked" handler="OnButtonCloseClicked" />
               </widget>
               <packing>
-                <property name="Position">1</property>
+                <property name="Position">0</property>
                 <property name="AutoSize">True</property>
                 <property name="Expand">False</property>
                 <property name="Fill">False</property>
               </packing>
-            </child>
-            <child>
-              <placeholder />
             </child>
           </widget>
           <packing>
