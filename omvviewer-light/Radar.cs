@@ -82,7 +82,7 @@ namespace omvviewerlight
 				Gtk.Application.Invoke(delegate {									
 				Avatar av;
 				if(avs.TryGetValue(avatar.LocalID,out av))
-						store.AppendValues(false,av.Name,dist.ToString(),avatar.LocalID);
+						store.AppendValues("",av.Name,dist.ToString(),avatar.LocalID);
 				});
 			}
 

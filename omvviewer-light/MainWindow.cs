@@ -19,23 +19,24 @@ public partial class MainWindow: Gtk.Window
 	Gtk.Label status_balance_lable;
 	Gtk.Label status_parcel;		
 	Gtk.HBox status_icons;
-	bool windowvisible;
+	public bool windowvisible;
+	public uint currentpage=0;
 
 	void onState(object o,WindowStateEventArgs args)
 	{
-		Console.Write("STATE CHANGE "+args.Event.ChangedMask.ToString()+"\n");
-		
 		
 		Gdk.EventWindowState ews = args.Event; 
 		Gdk.WindowState newWs = ews.NewWindowState; 
 		if(newWs == Gdk.WindowState.Iconified)
 		{
 			windowvisible=false;
+			Console.Write("VISIBLE IS FALSE\n");
 		}
 		else
 		{
 			windowvisible=true;
 			this.UrgencyHint=false;
+			Console.Write("VISIBLE IS TRUE\n");
 		}
 		
 	}
@@ -94,8 +95,38 @@ public partial class MainWindow: Gtk.Window
 		MainClass.client.Network.OnDisconnected += new libsecondlife.NetworkManager.DisconnectedCallback(onDisconnect);
 		
 		MainClass.client.Friends.OnFriendshipOffered += new libsecondlife.FriendsManager.FriendshipOfferedEvent(onFriendship);
+		//this.notebook.ChangeCurrentPage += new ChangeCurrentPageHandler(onPageChage);
+		this.notebook.SelectPage+= new SelectPageHandler(onPageChange);
+		this.notebook.ChangeCurrentPage += new ChangeCurrentPageHandler(onChangeCurrentPage);
+		this.notebook.SwitchPage += new SwitchPageHandler(onSwitchPage);
 		
 		GLib.Timeout.Add(10000,OnUpdateStatus);
+		
+		
+	
+		
+	}
+	
+	void onSwitchPage(object o, SwitchPageArgs args)
+	{
+		Console.Write("Switch Page\n");
+		Gtk.NotebookPage x=args.Page;
+	}
+	
+	void onChangeCurrentPage(object o, ChangeCurrentPageArgs args)
+	{
+		Console.Write("OFFSET = "+args.Offset.ToString()+"\n");
+	}
+	
+	void onPageChange(object o,SelectPageArgs args)
+	{
+		Console.Write("Page change\n");
+			
+	}
+	
+	public Gtk.Notebook getnotebook()
+	{
+		return this.notebook;
 	}
 	
 	void onFriendship(LLUUID agentID,string agentname,LLUUID sessionid)
@@ -290,8 +321,12 @@ public partial class MainWindow: Gtk.Window
 		cs.tabLabel=lable;
 		cs.kicknames();
 		button.Clicked += new EventHandler(cs.clickclosed);
+		this.notebook.SwitchPage += new SwitchPageHandler(cs.onSwitchPage);
+		
 
 	}
+	
+	
 	
 	public void startGroupIM(LLUUID id)
 	{

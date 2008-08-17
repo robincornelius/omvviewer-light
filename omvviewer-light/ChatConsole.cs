@@ -38,6 +38,8 @@ namespace omvviewerlight
 		
 		~ChatConsole()
 		{
+			MainClass.win.getnotebook().SwitchPage -= new SwitchPageHandler(onSwitchPage);
+			
 			if(im_key!=libsecondlife.LLUUID.Zero)
 				if(MainClass.win.active_ims.Contains(im_key))
 					MainClass.win.active_ims.Remove(im_key);	
@@ -67,7 +69,7 @@ namespace omvviewerlight
 				MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
 				MainClass.client.Groups.OnGroupNames += new libsecondlife.GroupManager.GroupNamesCallback(onGroupNames);
 				MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);
-				
+			
 			}
 			else
 			{
@@ -78,7 +80,22 @@ namespace omvviewerlight
 			onIM(im,null); //yea, i forgot this, need to display text from first IM, lol
 				
 		}
-
+		
+		public void onSwitchPage(object o, SwitchPageArgs args)
+		{
+	 
+		
+			    int thispage=MainClass.win.getnotebook().PageNum(this);
+			  if(thispage==args.PageNum)
+			{
+			    Gdk.Color col = new Gdk.Color(0,0,0);
+				Gtk.StateType type = new Gtk.StateType();
+				type|=Gtk.StateType.Active;			
+				this.tabLabel.ModifyFg(type,col);				
+			}
+		}
+		
+				
 		void onGroupChatJoin(LLUUID groupChatSessionID, LLUUID tmpSessionID, bool success)
 		{
 			
@@ -99,16 +116,35 @@ namespace omvviewerlight
 		
 		public void redtab()
 		{
+					
+			Gtk.Application.Invoke(delegate {	
+			Gdk.Color col = new Gdk.Color(255,0,0);
+			Gtk.StateType type = new Gtk.StateType();			
+			type|=Gtk.StateType.Active;	
+				
 			
-		//	if(!this.Visible)
+			int activepage=MainClass.win.getnotebook().CurrentPage;
+			int thispage=MainClass.win.getnotebook().PageNum(this);
+			Console.Write(activepage.ToString()+" : "+thispage.ToString()+"\n");
+			int index=-1;
+			if(thispage==-1)
 			{
-				Gtk.Application.Invoke(delegate {	
-				Gdk.Color col = new Gdk.Color(255,0,0);
-				Gtk.StateType type = new Gtk.StateType();
-				type=Gtk.StateType.Normal;
-				this.tabLabel.ModifyFg(type,col);
-				});
-			}	
+					if(activepage!=1)
+				
+					
+				this.tabLabel.ModifyFg(type,col);					
+				return;
+						
+			}
+			else
+			{
+				
+				this.tabLabel.ModifyFg(type,col);					
+				return;
+				}
+				
+				
+			});
 		}
 		
 		public ChatConsole(LLUUID target)
@@ -233,7 +269,9 @@ namespace omvviewerlight
 				return; //WTF???? why do i get empty messages
 			
 			redtab();
-				
+			
+			if(!MainClass.win.windowvisible)
+				MainClass.win.UrgencyHint=true;
 			
 			string buffer;
 			TextIter iter;
@@ -425,6 +463,6 @@ namespace omvviewerlight
 
 			}
 		
-
+					
 	}
 }

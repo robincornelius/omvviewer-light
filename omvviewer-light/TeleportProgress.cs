@@ -43,8 +43,6 @@ namespace omvviewerlight
 				Thread tpRunner= new Thread(new ThreadStart(this.tpthread));   			
 				tpRunner.Start();
 			});
-	
-			
 		}
 		
 		void tpthread()
