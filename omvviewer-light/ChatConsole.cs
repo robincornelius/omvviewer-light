@@ -25,7 +25,6 @@ namespace omvviewerlight
 		public Gtk.Label tabLabel;
 		public LLUUID im_key=libsecondlife.LLUUID.Zero;
 		public LLUUID im_session_id=libsecondlife.LLUUID.Zero;
-		bool typing;
 		
 		public void kicknames()
 		{

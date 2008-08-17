@@ -53,6 +53,10 @@ namespace omvviewerlight {
         
         private Gtk.Entry entry_loginuri;
         
+        private Gtk.VBox vbox7;
+        
+        private Gtk.ProgressBar progressbar2;
+        
         private Gtk.Frame frame1;
         
         private Gtk.Alignment GtkAlignment;
@@ -260,11 +264,27 @@ namespace omvviewerlight {
             w17.Position = 1;
             w17.Expand = false;
             w17.Fill = false;
-            this.vbox5.Add(this.hbox2);
-            Gtk.Box.BoxChild w18 = ((Gtk.Box.BoxChild)(this.vbox5[this.hbox2]));
-            w18.Position = 1;
+            // Container child hbox2.Gtk.Box+BoxChild
+            this.vbox7 = new Gtk.VBox();
+            this.vbox7.Name = "vbox7";
+            this.vbox7.Spacing = 6;
+            // Container child vbox7.Gtk.Box+BoxChild
+            this.progressbar2 = new Gtk.ProgressBar();
+            this.progressbar2.Name = "progressbar2";
+            this.vbox7.Add(this.progressbar2);
+            Gtk.Box.BoxChild w18 = ((Gtk.Box.BoxChild)(this.vbox7[this.progressbar2]));
+            w18.Position = 0;
             w18.Expand = false;
             w18.Fill = false;
+            this.hbox2.Add(this.vbox7);
+            Gtk.Box.BoxChild w19 = ((Gtk.Box.BoxChild)(this.hbox2[this.vbox7]));
+            w19.PackType = ((Gtk.PackType)(1));
+            w19.Position = 2;
+            this.vbox5.Add(this.hbox2);
+            Gtk.Box.BoxChild w20 = ((Gtk.Box.BoxChild)(this.vbox5[this.hbox2]));
+            w20.Position = 1;
+            w20.Expand = false;
+            w20.Fill = false;
             // Container child vbox5.Gtk.Box+BoxChild
             this.frame1 = new Gtk.Frame();
             this.frame1.Name = "frame1";
@@ -288,8 +308,8 @@ namespace omvviewerlight {
             this.GtkLabel2.UseMarkup = true;
             this.frame1.LabelWidget = this.GtkLabel2;
             this.vbox5.Add(this.frame1);
-            Gtk.Box.BoxChild w21 = ((Gtk.Box.BoxChild)(this.vbox5[this.frame1]));
-            w21.Position = 2;
+            Gtk.Box.BoxChild w23 = ((Gtk.Box.BoxChild)(this.vbox5[this.frame1]));
+            w23.Position = 2;
             // Container child vbox5.Gtk.Box+BoxChild
             this.frame2 = new Gtk.Frame();
             this.frame2.Name = "frame2";
@@ -318,11 +338,11 @@ namespace omvviewerlight {
             this.GtkLabel3.UseMarkup = true;
             this.frame2.LabelWidget = this.GtkLabel3;
             this.vbox5.Add(this.frame2);
-            Gtk.Box.BoxChild w25 = ((Gtk.Box.BoxChild)(this.vbox5[this.frame2]));
-            w25.Position = 3;
+            Gtk.Box.BoxChild w27 = ((Gtk.Box.BoxChild)(this.vbox5[this.frame2]));
+            w27.Position = 3;
             this.vbox1.Add(this.vbox5);
-            Gtk.Box.BoxChild w26 = ((Gtk.Box.BoxChild)(this.vbox1[this.vbox5]));
-            w26.Position = 1;
+            Gtk.Box.BoxChild w28 = ((Gtk.Box.BoxChild)(this.vbox1[this.vbox5]));
+            w28.Position = 1;
             this.Add(this.vbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();

@@ -269,9 +269,8 @@ namespace omvviewerlight
 			if(treeview_friends.Selection.GetSelected(out mod,out iter))			
 			{
 				string id=(string)mod.GetValue(iter,2);
-				LLUUID lid=(LLUUID)id;
-						
 				PayWindow pay=new PayWindow(id,0);
+				pay.Show();
 			}
 		}
 

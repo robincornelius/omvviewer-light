@@ -22,7 +22,6 @@ namespace omvviewerlight
 
 		private Dictionary<uint, Avatar> avs = new Dictionary<uint, Avatar>();
 		
-		Gtk.Image mMapImage;		
 		Gtk.Image basemap;
 		int rowstride;
 		int channels;
@@ -206,8 +205,6 @@ namespace omvviewerlight
 					ps=spixels+((sy)*srcrowsstride)+((sx)* schannels);
 					p=pixels+((sy+y)*rowstride)+((sx+x)* channels);
 					
-					int xx;
-					xx=ps[3];
 					if(ps[3]!=0) //Alpha merge
 					{
 						p[0]=ps[0];
@@ -218,34 +215,7 @@ namespace omvviewerlight
 				}
 				
 			}
-			
-			
-			
-			//Console.Write("Chans is "+src.NChannels.ToString()+"\n");
-			
-			
-			
-			
-		}
-		
-		unsafe void drawxy(Gdk.Pixbuf buf,int x,int y,int R,int G,int B)
-		{
-			
-			sbyte * pixels=(sbyte *)buf.Pixels;
-			sbyte * p;			
-			
-			if(x<0 || x>width)
-				return;
-			
-			if(y<0 || y>height)
-				return;
-			
-			p=pixels+(y*rowstride)+(x* channels);
-		
-			p[0]=(sbyte)R;
-			p[1]=(sbyte)G;
-			p[2]=(sbyte)B;
-		
+					
 		}
 		
 		void onLogin(LoginStatus login, string message)
@@ -292,10 +262,11 @@ namespace omvviewerlight
 				//return System.Drawing.Image.FromStream(response.GetResponseStream());
 				
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                //MessageBox.Show(ex.ToString(), "Error Downloading Web Map Image");
-                return;
+				Gtk.MessageDialog msg = new Gtk.MessageDialog(MainClass.win,DialogFlags.Modal,MessageType.Error,ButtonsType.Ok,"Error Downloading Web Map Image");
+				msg.Show();
+				return;
             }
 
 			

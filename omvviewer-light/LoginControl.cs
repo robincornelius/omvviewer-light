@@ -13,10 +13,9 @@ namespace omvviewerlight
 {	
 	public partial class LoginControl : Gtk.Bin
 	{
-
-		string logbuffer;
-		bool newdata;
 		LoginParams login;
+		
+		bool trying;
 		
 		~LoginControl()
 		{
@@ -33,12 +32,14 @@ namespace omvviewerlight
 			
 		}
 		
+		
 		public LoginControl()
 		{
 			this.Build();
 			MainClass.client.Network.OnConnected += new libsecondlife.NetworkManager.ConnectedCallback(onConnected);
 			MainClass.client.Network.OnDisconnected += new libsecondlife.NetworkManager.DisconnectedCallback(onDisconnected);
 			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
+			MainClass.client.Network.OnEventQueueRunning += new libsecondlife.NetworkManager.EventQueueRunningCallback(onEventQueue);
 			libsecondlife.Logger.OnLogMessage += new libsecondlife.Logger.LogCallback(onLogMessage);
 			this.entry_pass.Visibility=false;
 			
@@ -65,11 +66,43 @@ namespace omvviewerlight
 			{
 			
 			}
+			
+			
 		}	
+		
+		void onEventQueue(Simulator sim)
+		{
+			Console.Write("Event queue runnimg\n");
+			if(sim.ID==MainClass.client.Network.CurrentSim.ID)
+			{
+				Console.Write("FOR CURRENT SIM\n");
+				this.trying=false;
+				Thread loginRunner= new Thread(new ThreadStart(this.appearencethread));                               
+				loginRunner.Start();
+			}
+			
+			
+		}
+		
+		bool OnPulseProgress()
+		{
+			if(trying==true)
+			{
+				this.progressbar2.Pulse();
+				progressbar2.QueueDraw();
+			}			
+			else
+			{
+				this.progressbar2.Fraction=1.0;
+				return false;
+			}	
+			
+			return true;
+		}
+		
 		void onConnected(object sender)
 		{
-			
-			
+			Console.Write("Connected to simulator\n");
 		}
 		
 		void onDisconnected(libsecondlife.NetworkManager.DisconnectType reason, string message)
@@ -92,15 +125,17 @@ namespace omvviewerlight
 			if(LoginStatus.Failed==login)
 				Gtk.Application.Invoke(delegate {
 					this.button_login.Label="Login";
+					this.trying=false;
 			    });			
 	
 			//This can take ages, should be threaded
 			if(LoginStatus.Success==login)
 			{
-				Thread loginRunner= new Thread(new ThreadStart(this.appearencethread));                               
-				MainClass.client.Groups.RequestCurrentGroups();
-				MainClass.client.Self.RetrieveInstantMessages();
-				loginRunner.Start();
+				Console.Write("Login status login\n");
+			//	Thread loginRunner= new Thread(new ThreadStart(this.appearencethread));                               
+			//	MainClass.client.Groups.RequestCurrentGroups();
+			//	MainClass.client.Self.RetrieveInstantMessages();
+			//	loginRunner.Start();
 			}		
 		}
 
@@ -111,6 +146,7 @@ namespace omvviewerlight
 				Gtk.Application.Invoke(delegate {
 					this.textview_log.Buffer.InsertAtCursor(obj.ToString()+"\n");
 					this.textview_log.ScrollMarkOnscreen(textview_log.Buffer.InsertMark);
+					this.textview_log.QueueDraw();
 				});			
 			}				
 			
@@ -118,20 +154,26 @@ namespace omvviewerlight
 		
 		void loginthread()
 		{
-				MainClass.client.Network.Login(login);
+			Console.Write("Login thread go\n");
+			MainClass.client.Network.Login(login);
 		}
 		
 		void appearencethread()
 		{
-				MainClass.client.Appearance.SetPreviousAppearance(false);
+			Console.Write("Appearence thread go\n");
+			MainClass.client.Groups.RequestCurrentGroups();
+			MainClass.client.Self.RetrieveInstantMessages();		
+			MainClass.client.Appearance.SetPreviousAppearance(false);
 		}
-		
 		
 		protected virtual void OnButton1Clicked (object sender, System.EventArgs e)
 		{
 			if(button_login.Label=="Login")
 			{
-				this.textview_loginmsg.Buffer.SetText("Connecting to login server...");
+				trying=true;
+				GLib.Timeout.Add(100,OnPulseProgress);
+				
+				this.textview_loginmsg.Buffer.Text="Connecting to login server...";
 				this.textview_loginmsg.QueueDraw();
 				//LoginParams login;
 				login=MainClass.client.Network.DefaultLoginParams(entry_first.Text,entry_last.Text,entry_pass.Text,"omvviewer-light","1.0");
@@ -157,6 +199,7 @@ namespace omvviewerlight
 }
 			else
 			{
+				trying=false;
 				MainClass.client.Network.Logout();
 			}
 		}

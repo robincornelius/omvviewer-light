@@ -16,7 +16,6 @@ namespace omvviewerlight
 	public partial class TeleportProgress : Gtk.Window
 	{
 		
-		int count;
 		string tpsim;
 		LLVector3 tppos;
 		public TeleportProgress() : 
@@ -24,7 +23,6 @@ namespace omvviewerlight
 		{
 			this.Build();
 			MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
-			count=0;
 		}
 		
 		public void teleporthome()

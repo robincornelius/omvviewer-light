@@ -22,10 +22,7 @@ namespace omvviewerlight
 		LLUUID partner_key;
 		LLUUID resident;
 		
-		Gtk.ListStore store;		
-		
 		List <LLUUID>picks_waiting;
-		
 		
 		public ProfileVIew(LLUUID key) : 
 				base(Gtk.WindowType.Toplevel)

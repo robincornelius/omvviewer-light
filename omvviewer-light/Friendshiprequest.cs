@@ -13,7 +13,6 @@ namespace omvviewerlight
 	
 	public partial class Friendshiprequest : Gtk.Window
 	{
-		string name;
 		LLUUID agent;
 		LLUUID session;
 		public Friendshiprequest(LLUUID agentID,string agentname,LLUUID sessionid) : 
@@ -21,7 +20,6 @@ namespace omvviewerlight
 		{
 			this.Build();
 			this.label_info.Text=agentname+" has offered friendship Press \"accept\" to accept this or press \"reject\" to declin the request";
-			name=agentname;
 			session=sessionid;
 			agent=agentID;
 		}

@@ -19,8 +19,7 @@ public partial class MainWindow: Gtk.Window
 	Gtk.Label status_balance_lable;
 	Gtk.Label status_parcel;		
 	Gtk.HBox status_icons;
-	bool notifyon;
-	
+
 	void onState(object o,WindowStateEventArgs args)
 	{
 		Console.Write("STATE CHANGE "+args.Event.ChangedMask.ToString()+"\n");
@@ -216,12 +215,7 @@ public partial class MainWindow: Gtk.Window
 			doicons(parcel);
 		});
 	}
-	
-	void onParcels(Simulator sim, InternalDictionary<int,Parcel>sim_parcels,int [,] ParcelMap)
-	{
-			
-	}
-		                                                
+			                                                
 	void onBalance(int balance)
 	{
 			Gtk.Application.Invoke(delegate {
@@ -298,7 +292,6 @@ public partial class MainWindow: Gtk.Window
 		if(!active_ims.Contains(id))
 		{
 			ChatConsole imc=new ChatConsole(id,true);
-			LLUUID key;
 			string lable;
 					
 			if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(id,out lable))
@@ -335,7 +328,6 @@ public partial class MainWindow: Gtk.Window
 			{
 				Gtk.Application.Invoke(delegate {	
 					ChatConsole imc=new ChatConsole(im);
-					LLUUID key;
 					string lable;
 					
 					if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(im.IMSessionID,out lable))

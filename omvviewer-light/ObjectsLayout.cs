@@ -16,7 +16,6 @@ namespace omvviewerlight
 	
 		Gtk.ListStore store;	
         Dictionary<LLUUID, Primitive> PrimsWaiting = new Dictionary<LLUUID, Primitive>();
-		Dictionary<uint,Primitive> objects= new Dictionary<uint,Primitive>(); 
 
 		public ObjectsLayout()
 		{
