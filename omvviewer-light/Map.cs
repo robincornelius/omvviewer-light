@@ -124,8 +124,7 @@ namespace omvviewerlight
 						//				Console.Write("Drawing lelve\n");
 
 							showme(buf,avatar.Pixbuf,kvp.Value.Position);
-						}
-													
+						}								
 					}
 			}
 

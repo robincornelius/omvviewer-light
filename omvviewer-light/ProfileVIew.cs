@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using libsecondlife;
+using libsecondlife.Imaging;
 
 namespace omvviewerlight
 {
@@ -141,53 +142,19 @@ namespace omvviewerlight
 			if(asset.AssetID==this.profile_pic)
 			{
 				Console.Write("Downloaded profile pic\n");
-				if(asset.Decode())
-					{
-					//AssetTexture asset;
-				
-					Gdk.Pixbuf buf=new Gdk.Pixbuf(asset.Image.ExportTGA());
-					File.WriteAllBytes(image.ID.ToString() + ".tga", asset.Image.ExportTGA());
 					
-					/*
-					Console.Write("Decoded\n");
-					Console.Write("Channels : "+asset.Image.Channels.ToString()+"\n");
-					//Console.Write("Length "+asset.Image.Blue.GetLength().ToString()+"\n");
-					int height =asset.Image.Height;
-					int width = asset.Image.Width;
-					int channels=4;
-					int rowstride=width*channels;
-					int length = asset.Image.Red.Length;
+					File.WriteAllBytes(image.ID.ToString() + ".jp2", image.AssetData);
+                            Console.WriteLine("Wrote JPEG2000 image " + image.ID.ToString() + ".jp2");
 
-					//AssetTexture asset;
-					//asset.Image.
-						
-					byte[] data = asset.Image.ExportRaw();
+                            ManagedImage imgData;
+                            OpenJPEG.DecodeToImage(image.AssetData, out imgData);
+                            byte[] tgaFile = imgData.ExportTGA();
+                            File.WriteAllBytes(image.ID.ToString() + ".tga", tgaFile);
+                            Console.WriteLine("Wrote TGA image " + image.ID.ToString() + ".tga");					
 					
-					Console.Write("W "+width.ToString()+" H "+height.ToString()+"\n");
-			
-					//Gdk.Pixbuf buf=new Gdk.Pixbuf(data,true,8,width,height,rowstride);
-					Gdk.Pixbuf buf = new Gdk.Pixbuf(Gdk.Colorspace.Rgb,true,8,width,height);
-					
-					sbyte * pixels=(sbyte *)buf.Pixels;
-					
-						int dest=0;
-						
-					for(int x=0;x<(width*height*4);x=x+4)
-					{
-						Console.Write(data[x].ToString()+"\n");
-						pixels[x]=(sbyte)data[x];
-						pixels[x+1]=(sbyte)data[x];
-						pixels[x+2]=(sbyte)data[x];
-						pixels[x+3]=(sbyte)data[x];												
-						}
-						 */
-					
-						this.image7.Pixbuf=buf;
-				}
-				else
-				{
-					Console.Write("Failed to decode\n");
-				}			
+					Gdk.Pixbuf buf=new Gdk.Pixbuf(tgaFile);
+					Console.Write("Decoded\n");
+					this.image7.Pixbuf=buf;
 			}
 			});
 				
