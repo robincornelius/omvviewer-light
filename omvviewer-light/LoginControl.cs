@@ -66,22 +66,14 @@ namespace omvviewerlight
 			{
 			
 			}
-			
-			
 		}	
 		
 		void onEventQueue(Simulator sim)
 		{
-			Console.Write("Event queue runnimg\n");
 			if(sim.ID==MainClass.client.Network.CurrentSim.ID)
 			{
-				Console.Write("FOR CURRENT SIM\n");
 				this.trying=false;
-				Thread loginRunner= new Thread(new ThreadStart(this.appearencethread));                               
-				loginRunner.Start();
-			}
-			
-			
+			}	
 		}
 		
 		bool OnPulseProgress()
@@ -132,10 +124,10 @@ namespace omvviewerlight
 			if(LoginStatus.Success==login)
 			{
 				Console.Write("Login status login\n");
-			//	Thread loginRunner= new Thread(new ThreadStart(this.appearencethread));                               
-			//	MainClass.client.Groups.RequestCurrentGroups();
-			//	MainClass.client.Self.RetrieveInstantMessages();
-			//	loginRunner.Start();
+				Thread loginRunner= new Thread(new ThreadStart(this.appearencethread));                               
+				MainClass.client.Groups.RequestCurrentGroups();
+				MainClass.client.Self.RetrieveInstantMessages();
+				loginRunner.Start();
 			}		
 		}
 

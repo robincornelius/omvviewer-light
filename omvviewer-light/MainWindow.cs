@@ -19,26 +19,32 @@ public partial class MainWindow: Gtk.Window
 	Gtk.Label status_balance_lable;
 	Gtk.Label status_parcel;		
 	Gtk.HBox status_icons;
+	bool windowvisible;
 
 	void onState(object o,WindowStateEventArgs args)
 	{
 		Console.Write("STATE CHANGE "+args.Event.ChangedMask.ToString()+"\n");
-		this.UrgencyHint=false;
+		
+		
+		Gdk.EventWindowState ews = args.Event; 
+		Gdk.WindowState newWs = ews.NewWindowState; 
+		if(newWs == Gdk.WindowState.Iconified)
+		{
+			windowvisible=false;
+		}
+		else
+		{
+			windowvisible=true;
+			this.UrgencyHint=false;
+		}
+		
 	}
-	
-	void onMap(object o,MapEventArgs args)
-	{
-		this.UrgencyHint=false;		
-	}
-	
+		
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
 		
-		this.WindowStateEvent +=new WindowStateEventHandler(onState);
-		this.MapEvent += new MapEventHandler(onMap);
-
-		
+		this.WindowStateEvent +=new WindowStateEventHandler(onState);	
 		
 		status_location=new Gtk.Label("Location: Unknown (0,0,0)");
 		
@@ -320,7 +326,8 @@ public partial class MainWindow: Gtk.Window
 	   	
 	void onIM(InstantMessage im, Simulator sim)
 	{				
-		this.UrgencyHint=true;
+		if(!windowvisible)
+			this.UrgencyHint=true;
 		
 		if(im.GroupIM==true)
 		{		

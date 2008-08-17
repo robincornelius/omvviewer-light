@@ -1,13 +1,14 @@
-﻿<UserCombinePreferences version="1.0" filename="/home/robin/libsecondlife/omvviewer-light/omvviewer-light.mds">
+﻿<UserCombinePreferences version="1.0" filename="/home/robin/omvviewer-light/omvviewer-light.mds">
   <Files>
-    <File name="Welcome" />
-    <File name="omvviewer-light/ProfileVIew.cs" line="183" column="8" />
+    <File name="omvviewer-light/MainWindow.cs" line="47" column="64" />
+    <File name="omvviewer-light/ChatConsole.cs" line="106" column="42" />
+    <File name="omvviewer-light/TeleportProgress.cs" line="86" column="32" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
-          <Node name="ProfileVIew.cs" selected="True" />
+          <Node name="TeleportProgress.cs" selected="True" />
         </Node>
       </Node>
     </ViewMemento>
@@ -16,7 +17,7 @@
     </ViewMemento>
   </Views>
   <Properties>
-    <Property key="ActiveWindow" value="/home/robin/libsecondlife/omvviewer-light/omvviewer-light/ProfileVIew.cs" />
+    <Property key="ActiveWindow" value="/home/robin/omvviewer-light/omvviewer-light/TeleportProgress.cs" />
     <Property key="ActiveConfiguration" value="Debug" />
   </Properties>
 </UserCombinePreferences>

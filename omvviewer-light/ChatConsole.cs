@@ -81,6 +81,10 @@ namespace omvviewerlight
 
 		void onGroupChatJoin(LLUUID groupChatSessionID, LLUUID tmpSessionID, bool success)
 		{
+			
+			if(groupChatSessionID!=this.im_session_id)
+				return;
+			
 			string buffer="Joined group chat\n";
 			TextIter iter;
 	
@@ -93,11 +97,25 @@ namespace omvviewerlight
 			});
 		}	
 		
+		public void redtab()
+		{
+			
+		//	if(!this.Visible)
+			{
+				Gtk.Application.Invoke(delegate {	
+				Gdk.Color col = new Gdk.Color(255,0,0);
+				Gtk.StateType type = new Gtk.StateType();
+				type=Gtk.StateType.Normal;
+				this.tabLabel.ModifyFg(type,col);
+				});
+			}	
+		}
+		
 		public ChatConsole(LLUUID target)
 		{
 			dosetup();
 			MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
-			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);
+			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);		
 			
 			im_key=target;
 		}
@@ -184,6 +202,8 @@ namespace omvviewerlight
 				return;
 			}
 			
+			redtab();
+			
 			string buffer;
 			TextIter iter;
 	
@@ -211,6 +231,9 @@ namespace omvviewerlight
 
 			if(message=="")
 				return; //WTF???? why do i get empty messages
+			
+			redtab();
+				
 			
 			string buffer;
 			TextIter iter;

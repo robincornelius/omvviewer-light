@@ -49,6 +49,18 @@ namespace omvviewerlight
 		
 		void tpthread()
 		{
+			GridRegion region;
+			if(!MainClass.client.Grid.GetGridRegion(tpsim,libsecondlife.GridLayerType.Objects, out region))
+			{
+				Gtk.Application.Invoke(delegate {
+					this.button_close.Sensitive=true;
+					this.label_info.Text="No such region :"+tpsim;
+					this.progressbar1.Fraction=1.0;
+					return;
+				});
+				
+			}
+			//GetGridRegion
 			MainClass.client.Self.Teleport(tpsim,tppos);				
 		}
 		
@@ -72,7 +84,7 @@ namespace omvviewerlight
 			if(libsecondlife.AgentManager.TeleportStatus.Finished==status)
 			{
 					progressbar1.Fraction=1.0;
-					GLib.Timeout.Add(1000,closewindow);
+					//GLib.Timeout.Add(1000,closewindow);
 					this.button_close.Sensitive=true;
 			}
 
