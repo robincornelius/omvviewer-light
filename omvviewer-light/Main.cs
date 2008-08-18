@@ -7,20 +7,40 @@ using System;
 using System.Collections.Generic;
 using Gtk;
 using libsecondlife;
+using System.Runtime.InteropServices;
+
 
 namespace omvviewerlight
 {
 	class MainClass
 	{
+        [DllImport("Kernel32")]
+            private static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+            static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
 		public static SecondLife client;
 		public static MainWindow win;
-		public static Dictionary<LLUUID, string> av_names;		
+		public static Dictionary<LLUUID, string> av_names;
 
-		
 		public static void Main (string[] args)
 		{
 			// Now boot the libsecondlife layer so it is global to our namespace
+            System.IO.StreamWriter aStreamWriter;
+             
+            aStreamWriter = new System.IO.StreamWriter("log.txt");
+
+            try
+            {
+                IntPtr hWnd = GetConsoleWindow();
+                ShowWindow(hWnd, 0);
+            }
+            catch(Exception e)
+            {
+
+            }
+
 			client = new SecondLife();
 			av_names=new Dictionary<LLUUID, string>(); 
 			Application.Init ();

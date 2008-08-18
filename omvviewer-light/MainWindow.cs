@@ -44,6 +44,8 @@ public partial class MainWindow: Gtk.Window
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
+
+
 		
 		this.WindowStateEvent +=new WindowStateEventHandler(onState);	
 		
@@ -101,10 +103,8 @@ public partial class MainWindow: Gtk.Window
 		this.notebook.SwitchPage += new SwitchPageHandler(onSwitchPage);
 		
 		GLib.Timeout.Add(10000,OnUpdateStatus);
-		
-		
-	
-		
+
+  	
 	}
 	
 	void onSwitchPage(object o, SwitchPageArgs args)
@@ -239,15 +239,18 @@ public partial class MainWindow: Gtk.Window
 		prims=primscount.ToString()+ "of "+	parcel.MaxPrims;
 					
 		status_parcel.Text=parcel.Name;
-		status_parcel.TooltipText=
+        string tooltext;        
+		tooltext=
 				parcel.Name
 					+"\nOwner :"+owner
 					+"\nGroup :"+group
 					+"\nSize: "+size.ToString()	
-					+"\nPrims :"+prims.ToString()
+				    +"\nPrims :"+prims.ToString()
 					+"\nTraffic: "+parcel.Dwell.ToString()
 					+"\nArea: "+parcel.Area.ToString();
-	
+
+        Tooltips tooltips1 = new Tooltips();
+        tooltips1.SetTip(status_parcel, tooltext, null);
 		
 			doicons(parcel);
 		});

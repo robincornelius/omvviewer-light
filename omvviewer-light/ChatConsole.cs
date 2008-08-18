@@ -251,9 +251,8 @@ namespace omvviewerlight
 				
 				buffer=im.Message+"\n";
 				textview_chat.Buffer.InsertWithTags(ref iter,buffer,avchat);
-				TextMark mark=new TextMark("xyz",true);
-				textview_chat.Buffer.AddMark(mark,textview_chat.Buffer.EndIter);
-				textview_chat.ScrollMarkOnscreen(mark);
+                TextMark mark=textview_chat.Buffer.CreateMark("xyz", textview_chat.Buffer.EndIter, true);
+                textview_chat.ScrollMarkOnscreen(mark);
 				textview_chat.Buffer.DeleteMark("xyz");
 			});	
 	
@@ -294,10 +293,8 @@ namespace omvviewerlight
 					iter=textview_chat.Buffer.EndIter;
 					buffer=message+"\n";
 					textview_chat.Buffer.InsertWithTags(ref iter,buffer,avchat);
-					//textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
-					TextMark mark=new TextMark("xyz",true);
-					textview_chat.Buffer.AddMark(mark,textview_chat.Buffer.EndIter);
-					textview_chat.ScrollMarkOnscreen(mark);
+                    TextMark mark = textview_chat.Buffer.CreateMark("xyz", textview_chat.Buffer.EndIter, true);
+                    textview_chat.ScrollMarkOnscreen(mark);
 					textview_chat.Buffer.DeleteMark("xyz");
 	
 				});
@@ -315,16 +312,12 @@ namespace omvviewerlight
 					iter=textview_chat.Buffer.EndIter;
 					buffer=message+"\n";
 					textview_chat.Buffer.InsertWithTags(ref iter,buffer,ownerobjectchat);
-					//textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
-					TextMark mark=new TextMark("xyz",true);
-					textview_chat.Buffer.AddMark(mark,textview_chat.Buffer.EndIter);
+                    TextMark mark = textview_chat.Buffer.CreateMark("xyz", textview_chat.Buffer.EndIter, true);
 					textview_chat.ScrollMarkOnscreen(mark);
 					textview_chat.Buffer.DeleteMark("xyz");
 
 				});
-				return;
-				
-				
+				return;		
 			}
 			
 			if(sourcetype==ChatSourceType.Object)
