@@ -12,8 +12,7 @@ using libsecondlife.Imaging;
 
 namespace omvviewerlight
 {
-	
-	
+
 	public partial class ProfileVIew : Gtk.Window
 	{
 		
@@ -46,6 +45,11 @@ namespace omvviewerlight
 		    this.label_partner.Text="";
 			this.label_pay.Text="";
 			this.label_status.Text="";	
+			Gdk.Pixbuf buf=new Gdk.Pixbuf("trying.tga");
+			this.image3.Pixbuf=buf.ScaleSimple(128,128,Gdk.InterpType.Bilinear);
+			
+			this.image7.Pixbuf=buf.ScaleSimple(128,128,Gdk.InterpType.Bilinear);
+			
 		}
 	
 		void onPickInfo(LLUUID pick,ProfilePick info)
@@ -131,32 +135,47 @@ namespace omvviewerlight
 				return;
 			}
 			
-		Gtk.Application.Invoke(delegate {	
+			Gtk.Application.Invoke(delegate {	
 				
 			if(asset.AssetID==this.firstlife_pic)
-				Console.Write("Downloaded first life pic\n");
-				              
-			if(asset.AssetID==this.profile_pic)
 			{
-				Console.Write("Downloaded profile pic\n");
-					try
-					{
-					File.WriteAllBytes(image.ID.ToString() + ".jp2", image.AssetData);
-                            Console.WriteLine("Wrote JPEG2000 image " + image.ID.ToString() + ".jp2");
+				Console.Write("Downloaded first life pic\n");
+				try
+					{	    
+						ManagedImage imgData;
+						OpenJPEG.DecodeToImage(image.AssetData, out imgData);
+						byte[] tgaFile = imgData.ExportTGA();
+    				
+						Gdk.Pixbuf buf=new Gdk.Pixbuf(tgaFile);
+						Console.Write("Decoded\n");
+						this.image3.Pixbuf=buf;
+						this.image3.Pixbuf=this.image3.Pixbuf.ScaleSimple(128,128,Gdk.InterpType.Bilinear);
 
-                            ManagedImage imgData;
-                            OpenJPEG.DecodeToImage(image.AssetData, out imgData);
-                            byte[] tgaFile = imgData.ExportTGA();
-                            File.WriteAllBytes(image.ID.ToString() + ".tga", tgaFile);
-                            Console.WriteLine("Wrote TGA image " + image.ID.ToString() + ".tga");					
-					
-					Gdk.Pixbuf buf=new Gdk.Pixbuf(tgaFile);
-					Console.Write("Decoded\n");
-					this.image7.Pixbuf=buf;
 					}
 					catch(Exception e)
 					{
-						
+						Console.Write("\n*****************\n"+e.Message+"\n");	
+					}				
+				}	
+			
+			if(asset.AssetID==this.profile_pic)
+			{
+				Console.Write("Downloaded profile pic\n");
+				try
+					{	    
+						ManagedImage imgData;
+						OpenJPEG.DecodeToImage(image.AssetData, out imgData);
+						byte[] tgaFile = imgData.ExportTGA();
+    				
+						Gdk.Pixbuf buf=new Gdk.Pixbuf(tgaFile);
+						Console.Write("Decoded\n");
+						this.image7.Pixbuf=buf;
+						this.image7.Pixbuf=this.image7.Pixbuf.ScaleSimple(128,128,Gdk.InterpType.Bilinear);
+
+					}
+					catch(Exception e)
+					{
+						Console.Write("\n*****************\n"+e.Message+"\n");	
 					}
 				}
 			});
