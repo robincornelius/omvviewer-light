@@ -90,6 +90,8 @@ public partial class MainWindow: Gtk.Window
 		
 	void onScriptDialogue(string message,string objectName,LLUUID imageID,LLUUID objectID,string FirstName,string lastName,int chatChannel,List <string> buttons)
 	{
+		ScriptDialogue d= new ScriptDialogue(message,objectName,imageID,objectID,FirstName,lastName,chatChannel,buttons);
+		d.Show();
 		//TODO
 	}
 	
