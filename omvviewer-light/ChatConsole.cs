@@ -266,8 +266,19 @@ namespace omvviewerlight
 
 			if(message=="")
 				return; //WTF???? why do i get empty messages
+
+			Gtk.Application.Invoke(delegate {						
 			
-			redtab();
+			if(!this.Visible)
+			{
+				MainClass.win.trayIcon.Blinking=true;
+				MainClass.win.UrgencyHint=true;
+				Gdk.Color col = new Gdk.Color(255,0,0);
+				Gtk.StateType xtype = new Gtk.StateType();			
+				xtype|=Gtk.StateType.Active;	
+				this.tabLabel.ModifyFg(xtype,col);									
+			}
+	        });
 			
 			if(!MainClass.win.windowvisible)
 				MainClass.win.UrgencyHint=true;

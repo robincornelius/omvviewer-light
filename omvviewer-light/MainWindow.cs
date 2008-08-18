@@ -21,6 +21,7 @@ public partial class MainWindow: Gtk.Window
 	Gtk.HBox status_icons;
 	public bool windowvisible;
 	public uint currentpage=0;
+	public StatusIcon trayIcon;
 
 	void onState(object o,WindowStateEventArgs args)
 	{
@@ -45,6 +46,11 @@ public partial class MainWindow: Gtk.Window
 	{
 		Build ();
 
+			trayIcon = new StatusIcon(new Gdk.Pixbuf("viewericon.xpm"));
+			trayIcon.Visible=true;
+			trayIcon.Tooltip="Hello World";
+			trayIcon.Activate+= delegate{Visible=!Visible;};
+			trayIcon.Activate+= delegate{trayIcon.Blinking=false;};
 
 		
 		this.WindowStateEvent +=new WindowStateEventHandler(onState);	
@@ -363,10 +369,16 @@ public partial class MainWindow: Gtk.Window
 	}
 	   	
 	void onIM(InstantMessage im, Simulator sim)
-	{				
-		if(!windowvisible)
-			this.UrgencyHint=true;
+	{	
+		Gtk.Application.Invoke(delegate {	
 		
+		if(!this.Visible)
+		{
+			trayIcon.Blinking=true;
+			this.UrgencyHint=true;
+		}
+	        });
+			
 		if(im.GroupIM==true)
 		{		
 			if(!active_ims.Contains(im.IMSessionID))
