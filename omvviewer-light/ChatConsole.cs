@@ -269,7 +269,7 @@ namespace omvviewerlight
 
 			Gtk.Application.Invoke(delegate {						
 			
-			if(!this.Visible)
+			if(!MainClass.win.Visible)
 			{
 				MainClass.win.trayIcon.Blinking=true;
 				MainClass.win.UrgencyHint=true;
@@ -277,11 +277,11 @@ namespace omvviewerlight
 				Gtk.StateType xtype = new Gtk.StateType();			
 				xtype|=Gtk.StateType.Active;	
 				this.tabLabel.ModifyFg(xtype,col);									
-			}
-	        });
-			
-			if(!MainClass.win.windowvisible)
 				MainClass.win.UrgencyHint=true;
+				MainClass.win.trayIcon.Blinking=true;
+
+				}
+	        });
 			
 			string buffer;
 			TextIter iter;

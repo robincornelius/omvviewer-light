@@ -19,41 +19,20 @@ public partial class MainWindow: Gtk.Window
 	Gtk.Label status_balance_lable;
 	Gtk.Label status_parcel;		
 	Gtk.HBox status_icons;
-	public bool windowvisible;
 	public uint currentpage=0;
 	public StatusIcon trayIcon;
 
-	void onState(object o,WindowStateEventArgs args)
-	{
-		
-		Gdk.EventWindowState ews = args.Event; 
-		Gdk.WindowState newWs = ews.NewWindowState; 
-		if(newWs == Gdk.WindowState.Iconified)
-		{
-			windowvisible=false;
-			Console.Write("VISIBLE IS FALSE\n");
-		}
-		else
-		{
-			windowvisible=true;
-			this.UrgencyHint=false;
-			Console.Write("VISIBLE IS TRUE\n");
-		}
-		
-	}
-		
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
 
-			trayIcon = new StatusIcon(new Gdk.Pixbuf("viewericon.xpm"));
-			trayIcon.Visible=true;
-			trayIcon.Tooltip="Hello World";
-			trayIcon.Activate+= delegate{Visible=!Visible;};
-			trayIcon.Activate+= delegate{trayIcon.Blinking=false;};
+		trayIcon = new StatusIcon(new Gdk.Pixbuf("viewericon.xpm"));
+		trayIcon.Visible=true;
+		trayIcon.Tooltip="Hello World";
+		trayIcon.Activate+= delegate{Visible=!Visible;};
 
+		trayIcon.Activate+= delegate{trayIcon.Blinking=false;};
 		
-		this.WindowStateEvent +=new WindowStateEventHandler(onState);	
 		
 		status_location=new Gtk.Label("Location: Unknown (0,0,0)");
 		
@@ -97,37 +76,96 @@ public partial class MainWindow: Gtk.Window
 		
 		MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
 		MainClass.client.Self.OnBalanceUpdated += new libsecondlife.AgentManager.BalanceCallback(onBalance);
-		//MainClass.client.Parcels.OnSimParcelsDownloaded += new libsecondlife.ParcelManager.SimParcelsDownloaded(onParcels);
 		MainClass.client.Parcels.OnParcelProperties += new libsecondlife.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
 		MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
 		MainClass.client.Network.OnDisconnected += new libsecondlife.NetworkManager.DisconnectedCallback(onDisconnect);
 		
 		MainClass.client.Friends.OnFriendshipOffered += new libsecondlife.FriendsManager.FriendshipOfferedEvent(onFriendship);
-		//this.notebook.ChangeCurrentPage += new ChangeCurrentPageHandler(onPageChage);
-		this.notebook.SelectPage+= new SelectPageHandler(onPageChange);
-		this.notebook.ChangeCurrentPage += new ChangeCurrentPageHandler(onChangeCurrentPage);
-		this.notebook.SwitchPage += new SwitchPageHandler(onSwitchPage);
+		MainClass.client.Self.OnAlertMessage += new libsecondlife.AgentManager.AlertMessage(onAlertMessage);
+		MainClass.client.Self.OnScriptQuestion += new libsecondlife.AgentManager.ScriptQuestionCallback(onScriptCallback);
+		MainClass.client.Self.OnScriptDialog +=new libsecondlife.AgentManager.ScriptDialogCallback(onScriptDialogue);
 		
-		GLib.Timeout.Add(10000,OnUpdateStatus);
+		GLib.Timeout.Add(10000,OnUpdateStatus); 
+	}
+		
+	void onScriptDialogue(string message,string objectName,LLUUID imageID,LLUUID objectID,string FirstName,string lastName,int chatChannel,List <string> buttons)
+	{
+		//TODO
+	}
+	
+	void onAlertMessage(string message)
+	{
+		Gtk.Application.Invoke(delegate {						
+			string msg;
+			msg="<b>ALERT FROM SECONDLIFE<b>\n"+message;
+			MessageDialog md= new Gtk.MessageDialog(this,DialogFlags.Modal,MessageType.Info,ButtonsType.Close,true,msg);
+			ResponseType result=(ResponseType)md.Run();			
+		});	
+	}
+	
+	void onScriptCallback(Simulator sim,LLUUID taskID,LLUUID itemID,string objectName,string objectOwner,libsecondlife.ScriptPermission questions)
+	{
+		string message;
+	
+		ScriptPermission x;
+		
+		switch(questions)
+		{
+		case ScriptPermission.Attach:
+			message="Attach to you";
+			break;
+		case ScriptPermission.ChangeJoints:
+			message="Change joints";
+			break;
+		case ScriptPermission.ChangeLinks:
+			message="Change links";
+			break;
+		case ScriptPermission.ChangePermissions:
+			message="<b>Change permissions<b>";
+			break;
+		case ScriptPermission.ControlCamera:
+			message="Control your camera";
+			break;
+		case ScriptPermission.Debit:
+			message="<b>BE ABLE TO TAKE YOUR MONEY<b>";
+			break;
+		case ScriptPermission.ReleaseOwnership:
+			message="Release ownership";
+			break;
+		case ScriptPermission.RemapControls:
+			message="Remap controls";
+			break;
+		case ScriptPermission.TakeControls:
+			message="Take controls";
+			break;
+		case ScriptPermission.TrackCamera:
+			message="Track camera";
+			break;
+		case ScriptPermission.TriggerAnimation:
+			message="Trigger animations";
+			break;
+		default:
+			message="I HAVE NO IDEA";
+			return;
+			break;
+		}
 
-  	
-	}
-	
-	void onSwitchPage(object o, SwitchPageArgs args)
-	{
-		Console.Write("Switch Page\n");
-		Gtk.NotebookPage x=args.Page;
-	}
-	
-	void onChangeCurrentPage(object o, ChangeCurrentPageArgs args)
-	{
-		Console.Write("OFFSET = "+args.Offset.ToString()+"\n");
-	}
-	
-	void onPageChange(object o,SelectPageArgs args)
-	{
-		Console.Write("Page change\n");
+		Gtk.Application.Invoke(delegate {						
+			string msg;
+			msg="The object : "+objectName+"Owner by :"+objectOwner+"Would like to \n"+message+"\n Would you like to allow this?";
+			MessageDialog md= new Gtk.MessageDialog(this,DialogFlags.Modal,MessageType.Question,ButtonsType.YesNo,true,msg);
+			ResponseType result=(ResponseType)md.Run();
+			if(result==ResponseType.Yes)
+			{
+				MainClass.client.Self.ScriptQuestionReply(sim,itemID,taskID,questions);
+			}
+			else
+			{
+				MainClass.client.Self.ScriptQuestionReply(sim,itemID,taskID,ScriptPermission.None);
+			}
+			md.Destroy();
 			
+		});
 	}
 	
 	public Gtk.Notebook getnotebook()
@@ -138,8 +176,20 @@ public partial class MainWindow: Gtk.Window
 	void onFriendship(LLUUID agentID,string agentname,LLUUID sessionid)
 	{
 		Gtk.Application.Invoke(delegate {						
-			
-			
+		
+			string msg;
+			msg="You have recieved a friendship request from "+agentname+"\n They would like to become your friend \n do you want to accept?";
+			MessageDialog md= new Gtk.MessageDialog(this,DialogFlags.Modal,MessageType.Question,ButtonsType.YesNo,true,msg);
+			ResponseType result=(ResponseType)md.Run();
+			if(result==ResponseType.Yes)
+			{
+				MainClass.client.Friends.AcceptFriendship(agentID,sessionid);
+			}
+			else
+			{
+				MainClass.client.Friends.DeclineFriendship(agentID,sessionid);
+			}
+			md.Destroy();
 		});			
 	}
 			

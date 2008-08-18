@@ -10,7 +10,6 @@ using libsecondlife;
 namespace omvviewerlight
 {
 
-	
 	public partial class aPick : Gtk.Bin
 	{
 		LLVector3d picpos;
@@ -24,6 +23,7 @@ namespace omvviewerlight
 			this.textview1.Buffer.Text=desc;
 			sim=simname;
 			picpos=pos;
+			TryGetImage pic=new TryGetImage(this.image2,image);
 		}
 
 		protected virtual void OnButtonTeleportClicked (object sender, System.EventArgs e)

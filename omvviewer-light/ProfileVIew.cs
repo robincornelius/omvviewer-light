@@ -52,7 +52,7 @@ namespace omvviewerlight
 		}
 	
 		void onPickInfo(LLUUID pick,ProfilePick info)
-		{
+		{				
 			if(!this.picks_waiting.Contains(pick))
 				return;
 			
@@ -125,74 +125,15 @@ namespace omvviewerlight
 				
 		}		
 		
-		/*
-		unsafe void onGotImage(ImageDownload image,AssetTexture asset)
-		{
-	
-			if(!image.Success)
-			{
-				Console.Write("Failed to download image\n");
-				return;
-			}
-			
-			Gtk.Application.Invoke(delegate {	
-				
-			if(asset.AssetID==this.firstlife_pic)
-			{
-				Console.Write("Downloaded first life pic\n");
-				try
-					{	    
-						ManagedImage imgData;
-						OpenJPEG.DecodeToImage(image.AssetData, out imgData);
-						byte[] tgaFile = imgData.ExportTGA();
-    				
-						Gdk.Pixbuf buf=new Gdk.Pixbuf(tgaFile);
-						Console.Write("Decoded\n");
-						this.image3.Pixbuf=buf;
-						this.image3.Pixbuf=this.image3.Pixbuf.ScaleSimple(128,128,Gdk.InterpType.Bilinear);
-
-					}
-					catch(Exception e)
-					{
-						Console.Write("\n*****************\n"+e.Message+"\n");	
-					}				
-				}	
-			
-			if(asset.AssetID==this.profile_pic)
-			{
-				Console.Write("Downloaded profile pic\n");
-				try
-					{	    
-						ManagedImage imgData;
-						OpenJPEG.DecodeToImage(image.AssetData, out imgData);
-						byte[] tgaFile = imgData.ExportTGA();
-    				
-						Gdk.Pixbuf buf=new Gdk.Pixbuf(tgaFile);
-						Console.Write("Decoded\n");
-						this.image7.Pixbuf=buf;
-						this.image7.Pixbuf=this.image7.Pixbuf.ScaleSimple(128,128,Gdk.InterpType.Bilinear);
-
-					}
-					catch(Exception e)
-					{
-						Console.Write("\n*****************\n"+e.Message+"\n");	
-					}
-				}
-			});
-				
-		}
-		*/
-		
 		void onAvatarProperties(LLUUID id,libsecondlife.Avatar.AvatarProperties props)
 		{
 			if(id!=	resident)
 				return;
 
-			//libsecondlife.Avatar.AvatarProperties props;
-		Gtk.Application.Invoke(delegate {
+			Gtk.Application.Invoke(delegate {
 				
 			this.label_born.Text=props.BornOn;
-			//this.label_partner.Text=props.Partner;
+
 			partner_key=props.Partner;
 			
 			if(props.Online)
@@ -212,38 +153,37 @@ namespace omvviewerlight
 			
 			this.textview2.Buffer.Text=props.AboutText;
 				
-			    this.textview3.Buffer.Text=props.FirstLifeText;
+			this.textview3.Buffer.Text=props.FirstLifeText;
 				
-				profile_pic=props.ProfileImage;
-				firstlife_pic=props.FirstLifeImage;
+			profile_pic=props.ProfileImage;
+			firstlife_pic=props.FirstLifeImage;
 
-				TryGetImage getter= new TryGetImage(this.image7,profile_pic);
-				TryGetImage getter2= new TryGetImage(this.image3,firstlife_pic);
+			TryGetImage getter= new TryGetImage(this.image7,profile_pic);
+			TryGetImage getter2= new TryGetImage(this.image3,firstlife_pic);
 							
-				if(MainClass.av_names.ContainsKey(id))
+			if(MainClass.av_names.ContainsKey(id))
+			{
+				this.label_name.Text=MainClass.av_names[id];
+			}
+			else
+			{
+				MainClass.client.Avatars.RequestAvatarName(id);
+				this.label_name.Text="Waiting....";
+			}
+						
+			if(props.Partner!=LLUUID.Zero)
+			{	
+				if(MainClass.av_names.ContainsKey(partner_key))
 				{
-					this.label_name.Text=MainClass.av_names[id];
+					this.label_partner.Text=MainClass.av_names[partner_key];
 				}
 				else
 				{
-					MainClass.client.Avatars.RequestAvatarName(id);
-					this.label_name.Text="Waiting....";
+					MainClass.client.Avatars.RequestAvatarName(partner_key);
+					this.label_partner.Text="Waiting....";
 				}
-						
-				if(props.Partner!=LLUUID.Zero)
-				{	
-				    if(MainClass.av_names.ContainsKey(partner_key))
-					{
-						this.label_partner.Text=MainClass.av_names[partner_key];
-					}
-					else
-					{
-						MainClass.client.Avatars.RequestAvatarName(partner_key);
-						this.label_partner.Text="Waiting....";
-					}
-				}					
-										
-			});
-			}	
+			}														
+		});
+		}	
 	}
 }
