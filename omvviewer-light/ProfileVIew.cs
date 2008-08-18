@@ -33,7 +33,6 @@ namespace omvviewerlight
 			
 			MainClass.client.Avatars.OnAvatarProperties += new libsecondlife.AvatarManager.AvatarPropertiesCallback(onAvatarProperties);
 			MainClass.client.Avatars.RequestAvatarProperties(key);
-			MainClass.client.Assets.OnImageReceived += new libsecondlife.AssetManager.ImageReceivedCallback(onGotImage);
 			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(on_avnames);
 			MainClass.client.Avatars.OnAvatarPicks += new libsecondlife.AvatarManager.AvatarPicksCallback(onPicks);
 			MainClass.client.Avatars.OnPickInfo += new libsecondlife.AvatarManager.PickInfoCallback(onPickInfo);
@@ -126,6 +125,7 @@ namespace omvviewerlight
 				
 		}		
 		
+		/*
 		unsafe void onGotImage(ImageDownload image,AssetTexture asset)
 		{
 	
@@ -181,6 +181,7 @@ namespace omvviewerlight
 			});
 				
 		}
+		*/
 		
 		void onAvatarProperties(LLUUID id,libsecondlife.Avatar.AvatarProperties props)
 		{
@@ -215,13 +216,10 @@ namespace omvviewerlight
 				
 				profile_pic=props.ProfileImage;
 				firstlife_pic=props.FirstLifeImage;
-						
-				if(profile_pic!=LLUUID.Zero)
-					MainClass.client.Assets.RequestImage(profile_pic,ImageType.Normal,1013000.0f, 0);	
-				
-				if(firstlife_pic!=LLUUID.Zero)
-					MainClass.client.Assets.RequestImage(firstlife_pic,ImageType.Normal,1013000.0f, 0);
-				
+
+				TryGetImage getter= new TryGetImage(this.image7,profile_pic);
+				TryGetImage getter2= new TryGetImage(this.image3,firstlife_pic);
+							
 				if(MainClass.av_names.ContainsKey(id))
 				{
 					this.label_name.Text=MainClass.av_names[id];
