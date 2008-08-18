@@ -61,8 +61,12 @@ namespace omvviewerlight {
             this.vbox1.Spacing = 6;
             // Container child vbox1.Gtk.Box+BoxChild
             this.label1 = new Gtk.Label();
+            this.label1.WidthRequest = 398;
+            this.label1.HeightRequest = 105;
             this.label1.Name = "label1";
             this.label1.LabelProp = Mono.Unix.Catalog.GetString("label1");
+            this.label1.Wrap = true;
+            this.label1.Justify = ((Gtk.Justification)(2));
             this.vbox1.Add(this.label1);
             Gtk.Box.BoxChild w1 = ((Gtk.Box.BoxChild)(this.vbox1[this.label1]));
             w1.Position = 0;
@@ -108,7 +112,7 @@ namespace omvviewerlight {
             w4.Fill = false;
             this.vbox1.Add(this.hbox3);
             Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox3]));
-            w5.Position = 2;
+            w5.Position = 1;
             w5.Expand = false;
             w5.Fill = false;
             // Container child vbox1.Gtk.Box+BoxChild
@@ -151,7 +155,7 @@ namespace omvviewerlight {
             w8.Fill = false;
             this.vbox1.Add(this.hbox2);
             Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
-            w9.Position = 3;
+            w9.Position = 2;
             w9.Expand = false;
             w9.Fill = false;
             // Container child vbox1.Gtk.Box+BoxChild
@@ -194,7 +198,7 @@ namespace omvviewerlight {
             w12.Fill = false;
             this.vbox1.Add(this.hbox1);
             Gtk.Box.BoxChild w13 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
-            w13.Position = 4;
+            w13.Position = 3;
             w13.Expand = false;
             w13.Fill = false;
             // Container child vbox1.Gtk.Box+BoxChild
@@ -237,14 +241,14 @@ namespace omvviewerlight {
             w16.Fill = false;
             this.vbox1.Add(this.hbox4);
             Gtk.Box.BoxChild w17 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox4]));
-            w17.Position = 5;
+            w17.Position = 4;
             w17.Expand = false;
             w17.Fill = false;
             this.Add(this.vbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
             }
-            this.DefaultWidth = 400;
+            this.DefaultWidth = 431;
             this.DefaultHeight = 300;
             this.Show();
         }

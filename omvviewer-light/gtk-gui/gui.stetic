@@ -2984,7 +2984,7 @@ Resident Michelle2 Zenovka
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Window" id="omvviewerlight.ScriptDialogue" design-size="400 300">
+  <widget class="Gtk.Window" id="omvviewerlight.ScriptDialogue" design-size="431 300">
     <property name="MemberName" />
     <property name="Title" translatable="yes">ScriptDialogue</property>
     <property name="WindowPosition">CenterOnParent</property>
@@ -2995,7 +2995,11 @@ Resident Michelle2 Zenovka
         <child>
           <widget class="Gtk.Label" id="label1">
             <property name="MemberName" />
+            <property name="WidthRequest">398</property>
+            <property name="HeightRequest">105</property>
             <property name="LabelProp" translatable="yes">label1</property>
+            <property name="Wrap">True</property>
+            <property name="Justify">Center</property>
           </widget>
           <packing>
             <property name="Position">0</property>
@@ -3003,9 +3007,6 @@ Resident Michelle2 Zenovka
             <property name="Expand">False</property>
             <property name="Fill">False</property>
           </packing>
-        </child>
-        <child>
-          <placeholder />
         </child>
         <child>
           <widget class="Gtk.HBox" id="hbox3">
@@ -3059,7 +3060,7 @@ Resident Michelle2 Zenovka
             </child>
           </widget>
           <packing>
-            <property name="Position">2</property>
+            <property name="Position">1</property>
             <property name="AutoSize">True</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
@@ -3117,7 +3118,7 @@ Resident Michelle2 Zenovka
             </child>
           </widget>
           <packing>
-            <property name="Position">3</property>
+            <property name="Position">2</property>
             <property name="AutoSize">True</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
@@ -3175,7 +3176,7 @@ Resident Michelle2 Zenovka
             </child>
           </widget>
           <packing>
-            <property name="Position">4</property>
+            <property name="Position">3</property>
             <property name="AutoSize">True</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
@@ -3233,7 +3234,7 @@ Resident Michelle2 Zenovka
             </child>
           </widget>
           <packing>
-            <property name="Position">5</property>
+            <property name="Position">4</property>
             <property name="AutoSize">True</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>

@@ -60,6 +60,7 @@ namespace omvviewerlight
 			Gtk.Button thebut=(Gtk.Button)o;
 			//thebut.Label;
 			MainClass.client.Self.Chat(thebut.Label,channel,ChatType.Normal);
+			this.Destroy();
 		}
 	}
 }
