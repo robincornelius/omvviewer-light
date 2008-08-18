@@ -361,6 +361,7 @@ namespace omvviewerlight {
             this.label2.ShowAll();
             // Container child notebook1.Gtk.Notebook+NotebookChild
             this.vbox2 = new Gtk.VBox();
+            this.vbox2.Name = "vbox2";
             this.vbox2.Spacing = 6;
             // Container child vbox2.Gtk.Box+BoxChild
             this.image3 = new Gtk.Image();

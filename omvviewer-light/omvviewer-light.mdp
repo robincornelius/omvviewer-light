@@ -71,6 +71,8 @@
     <File name="TryGetImage.cs" subtype="Code" buildaction="Compile" />
     <File name="ScriptDialogue.cs" subtype="Code" buildaction="Compile" />
     <File name="gtk-gui/omvviewerlight.ScriptDialogue.cs" subtype="Code" buildaction="Compile" />
+    <File name="GroupInfo.cs" subtype="Code" buildaction="Compile" />
+    <File name="gtk-gui/omvviewerlight.GroupInfo.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />

@@ -9,11 +9,8 @@ using System.Collections.Generic;
 using libsecondlife;
 using Gtk;
 
-
 namespace omvviewerlight
 {
-	
-	
 	public partial class Groups : Gtk.Bin
 	{
 	
@@ -62,6 +59,19 @@ namespace omvviewerlight
 			{
 				Group group=(Group)mod.GetValue(iter,1);
 				MainClass.win.startGroupIM(group.ID);
+			}
+		}
+
+		protected virtual void OnButtonInfoClicked (object sender, System.EventArgs e)
+		{
+		    Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(treeview1.Selection.GetSelected(out mod,out iter))			
+			{
+				Group group=(Group)mod.GetValue(iter,1);
+				GroupInfo info=new GroupInfo(group);
+				info.Show();
 			}
 		}
 	}

@@ -25,6 +25,8 @@ namespace omvviewerlight {
         
         private Gtk.Button button_groupim;
         
+        private Gtk.Button button_info;
+        
         private Gtk.VBox vbox2;
         
         protected virtual void Build() {
@@ -68,26 +70,39 @@ namespace omvviewerlight {
             w3.Position = 0;
             w3.Expand = false;
             w3.Fill = false;
-            this.vbox1.Add(this.hbox2);
-            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
+            // Container child hbox2.Gtk.Box+BoxChild
+            this.button_info = new Gtk.Button();
+            this.button_info.CanFocus = true;
+            this.button_info.Name = "button_info";
+            this.button_info.UseUnderline = true;
+            this.button_info.Label = Mono.Unix.Catalog.GetString("Group Info");
+            this.hbox2.Add(this.button_info);
+            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox2[this.button_info]));
             w4.Position = 1;
             w4.Expand = false;
             w4.Fill = false;
+            this.vbox1.Add(this.hbox2);
+            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
+            w5.Position = 1;
+            w5.Expand = false;
+            w5.Fill = false;
             this.hbox1.Add(this.vbox1);
-            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox1]));
-            w5.Position = 0;
+            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox1]));
+            w6.Position = 0;
             // Container child hbox1.Gtk.Box+BoxChild
             this.vbox2 = new Gtk.VBox();
+            this.vbox2.Name = "vbox2";
             this.vbox2.Spacing = 6;
             this.hbox1.Add(this.vbox2);
-            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox2]));
-            w6.Position = 1;
+            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox2]));
+            w7.Position = 1;
             this.Add(this.hbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
             }
             this.Show();
             this.button_groupim.Clicked += new System.EventHandler(this.OnButtonGroupimClicked);
+            this.button_info.Clicked += new System.EventHandler(this.OnButtonInfoClicked);
         }
     }
 }
