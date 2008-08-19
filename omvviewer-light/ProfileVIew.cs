@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using libsecondlife;
-using libsecondlife.Imaging;
+using libsecondlife;
 
 namespace omvviewerlight
 {

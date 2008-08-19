@@ -35,7 +35,7 @@ namespace omvviewerlight
 
 		public Map()
 		{
-
+           
 			this.Build();
 			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
 			MainClass.client.Network.OnCurrentSimChanged += new libsecondlife.NetworkManager.CurrentSimChangedCallback(onNewSim);

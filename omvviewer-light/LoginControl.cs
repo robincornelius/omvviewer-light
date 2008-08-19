@@ -125,12 +125,15 @@ namespace omvviewerlight
 			//This can take ages, should be threaded
 			if(LoginStatus.Success==login)
 			{
-				Console.Write("Login status login\n");
-				Thread loginRunner= new Thread(new ThreadStart(this.appearencethread));                               
+				Console.Write("Login status login\n");                          
 				MainClass.client.Groups.RequestCurrentGroups();
 				MainClass.client.Self.RetrieveInstantMessages();
-				loginRunner.Start();
-			}		
+                Gtk.Application.Invoke(delegate
+                {
+                    Thread loginRunner = new Thread(new ThreadStart(this.appearencethread));
+                    loginRunner.Start();
+                });
+              }		
 		}
 
 		void onLogMessage(object obj, libsecondlife.Helpers.LogLevel level)

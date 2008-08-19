@@ -18,9 +18,9 @@ namespace omvviewerlight
 		public TeleportTo()
 		{
 			this.Build();		
-			GLib.Timeout.Add(1000,OnTimeout);
-			MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
-			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
+			//GLib.Timeout.Add(1000,OnTimeout);
+			//MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
+			//MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
 
 		}
 
@@ -81,7 +81,7 @@ namespace omvviewerlight
 
 		protected virtual void OnButtonTphomeClicked (object sender, System.EventArgs e)
 		{
-			//MainClass.client.Self.GoHome();
+		//	MainClass.client.Self.GoHome();
 			TeleportProgress tp = new TeleportProgress();
 			tp.Show();
 			tp.teleporthome();

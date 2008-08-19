@@ -19,6 +19,7 @@ namespace omvviewerlight
 		
 		public Groups()
 		{
+   
 			this.Build();
 			store= new Gtk.ListStore (typeof(string),typeof(Group));			
 			treeview1.AppendColumn("Group",new CellRendererText(),"text",0);
