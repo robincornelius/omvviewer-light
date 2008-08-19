@@ -276,8 +276,9 @@ namespace omvviewerlight
 				MainClass.win.UrgencyHint=true;
 				Gdk.Color col = new Gdk.Color(255,0,0);
 				Gtk.StateType xtype = new Gtk.StateType();			
-				xtype|=Gtk.StateType.Active;	
-				this.tabLabel.ModifyFg(xtype,col);									
+				xtype|=Gtk.StateType.Active;
+	            if(this.tabLabel!=null) // Problem this is not set yet so is null and will never go red
+				    this.tabLabel.ModifyFg(xtype,col);									
 				MainClass.win.UrgencyHint=true;
 				MainClass.win.trayIcon.Blinking=true;
 

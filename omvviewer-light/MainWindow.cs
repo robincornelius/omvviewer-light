@@ -55,7 +55,7 @@ public partial class MainWindow: Gtk.Window
 		
 		// Fuck stupid notebook tabs and monodeveop have to do it myself
 		ChatLayout c=new ChatLayout();
-		this.addtabwithicon("icn_voice-pvtfocus.tga","Chat",c);
+        this.addtabwithicon("icn_voice-pvtfocus.tga","Chat",c);
 		
 		Location t=new Location();
 		this.addtabwithicon("icon_place.tga","Location",t);
@@ -198,20 +198,19 @@ public partial class MainWindow: Gtk.Window
 		});			
 	}
 			
-	void addtabwithicon(string filename,string label,Gtk.Widget contents)
+	Gtk.Label addtabwithicon(string filename,string label,Gtk.Widget contents)
 	{
-			Gtk.Image image=new Gtk.Image(filename);
-		    image.SetSizeRequest(16,16);
-			Gtk.Label lable=new Gtk.Label(label);
-		    Gtk.HBox box=new Gtk.HBox();
-			box.PackStart(image);
-			box.PackStart(lable);
-			box.SetChildPacking(image,false,false,0,PackType.Start);
-		    box.ShowAll();
-		    notebook.InsertPage(contents,box,-1);
-		    notebook.ShowAll();
-
-		
+		Gtk.Image image=new Gtk.Image(filename);
+		image.SetSizeRequest(16,16);
+		Gtk.Label lable=new Gtk.Label(label);
+		Gtk.HBox box=new Gtk.HBox();
+		box.PackStart(image);
+		box.PackStart(lable);
+		box.SetChildPacking(image,false,false,0,PackType.Start);
+		box.ShowAll();
+		notebook.InsertPage(contents,box,-1);
+	    notebook.ShowAll();
+        return lable;		
 	}
 	
 	void onDisconnect(libsecondlife.NetworkManager.DisconnectType Reason,string msg)	                                       
@@ -223,8 +222,7 @@ public partial class MainWindow: Gtk.Window
 			status_location.Text="Location: Unknown (0,0,0)";
 			status_balance_lable.Text="?";
 			status_parcel.Text="Parcel: Unknown";
-			
-		
+
 		});
 	}
 			

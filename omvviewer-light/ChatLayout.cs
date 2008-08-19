@@ -8,11 +8,8 @@ using System;
 
 namespace omvviewerlight
 {
-	
-	
 	public partial class ChatLayout : Gtk.Bin
-	{
-		
+	{		
 		public ChatLayout()
 		{
 			this.Build();
