@@ -1,21 +1,17 @@
 ﻿<UserCombinePreferences version="1.0" filename="/home/robin/libsecondlife/omvviewer-light/omvviewer-light.mds">
   <Files>
     <File name="Welcome" />
-    <File name="omvviewer-light/MainWindow.cs" line="47" column="1" />
-    <File name="omvviewer-light/ChatConsole.cs" line="106" column="1" />
-    <File name="omvviewer-light/TeleportProgress.cs" line="86" column="32" />
-    <File name="omvviewer-light/GroupInfo.cs" line="1" column="1" />
+    <File name="omvviewer-light/TeleportProgress.cs" line="109" column="1" />
+    <File name="omvviewer-light/GroupInfo.cs" line="71" column="43" />
+    <File name="omvviewer-light/Groups.cs" line="15" column="3" />
+    <File name="omvviewer-light/FriendsList.cs" line="101" column="2" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
-      <Node expanded="True">
-        <Node name="omvviewer-light" expanded="True">
-          <Node name="GroupInfo.cs" selected="True" />
-        </Node>
-      </Node>
+      <Node />
     </ViewMemento>
     <ViewMemento id="ClassPad">
-      <Node expanded="True" />
+      <Node />
     </ViewMemento>
   </Views>
   <Properties>

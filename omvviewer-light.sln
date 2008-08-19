@@ -1,0 +1,19 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "omvviewer-light", "omvviewer-light\omvviewer-light.csproj", "{11CC1B79-6496-49D0-BCCE-9B3C366D3668}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{11CC1B79-6496-49D0-BCCE-9B3C366D3668}.Debug.ActiveCfg = Debug
+		{11CC1B79-6496-49D0-BCCE-9B3C366D3668}.Debug.Build.0 = Debug
+		{11CC1B79-6496-49D0-BCCE-9B3C366D3668}.Release.ActiveCfg = Release
+		{11CC1B79-6496-49D0-BCCE-9B3C366D3668}.Release.Build.0 = Release
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+EndGlobal

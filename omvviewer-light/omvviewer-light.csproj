@@ -1,0 +1,129 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{11CC1B79-6496-49D0-BCCE-9B3C366D3668}</ProjectGuid>
+    <RootNamespace>
+    </RootNamespace>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputType>Exe</OutputType>
+    <AssemblyName>omvviewer-light</AssemblyName>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <RootNamespace>
+    </RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DefineConstants>DEBUG</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <ApplicationIcon>.</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputType>Exe</OutputType>
+    <AssemblyName>omvviewer-light</AssemblyName>
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>false</DebugSymbols>
+    <RootNamespace>
+    </RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DefineConstants>
+    </DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <ApplicationIcon>.</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="System" />
+    <Reference Include="Mono.Posix" />
+    <Reference Include="libsecondlife, Version=0.5.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>libsecondlife.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821">
+      <HintPath>log4net.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="gtk-gui\gui.stetic">
+      <LogicalName>gui.stetic</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="gtk-gui\objects.xml">
+      <LogicalName>objects.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="closebox.tga" />
+    <EmbeddedResource Include="status_health.tga" />
+    <EmbeddedResource Include="status_money.tga" />
+    <EmbeddedResource Include="status_no_build.tga" />
+    <EmbeddedResource Include="status_no_fly.tga" />
+    <EmbeddedResource Include="status_no_push.tga" />
+    <EmbeddedResource Include="status_no_scripts.tga" />
+    <EmbeddedResource Include="status_no_voice.tga" />
+    <EmbeddedResource Include="status_script_debug.tga" />
+    <EmbeddedResource Include="status_voice.tga" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="gtk-gui\generated.cs" />
+    <Compile Include="MainWindow.cs" />
+    <Compile Include="gtk-gui\MainWindow.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="LoginControl.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.LoginControl.cs" />
+    <Compile Include="FriendsList.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.FriendsList.cs" />
+    <Compile Include="ChatConsole.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.ChatConsole.cs" />
+    <Compile Include="Radar.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.Radar.cs" />
+    <Compile Include="TeleportTo.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.TeleportTo.cs" />
+    <Compile Include="Map.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.Map.cs" />
+    <Compile Include="Search.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.Search.cs" />
+    <Compile Include="Searchs.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.Searches.cs" />
+    <Compile Include="PlacesSearch.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.PlacesSearch.cs" />
+    <Compile Include="Location.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.Location.cs" />
+    <Compile Include="ChatLayout.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.ChatLayout.cs" />
+    <Compile Include="ObjectsLayout.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.ObjectsLayout.cs" />
+    <Compile Include="PayWindow.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.PayWindow.cs" />
+    <Compile Include="ProfileVIew.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.ProfileVIew.cs" />
+    <Compile Include="aPick.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.aPick.cs" />
+    <Compile Include="Groups.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.Groups.cs" />
+    <Compile Include="TeleportProgress.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.TeleportProgress.cs" />
+    <Compile Include="Friendshiprequest.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.Friendshiprequest.cs" />
+    <Compile Include="TryGetImage.cs" />
+    <Compile Include="ScriptDialogue.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.ScriptDialogue.cs" />
+    <Compile Include="GroupInfo.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.GroupInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="map_home.tga">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>
