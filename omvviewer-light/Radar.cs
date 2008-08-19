@@ -130,8 +130,18 @@ namespace omvviewerlight
 			
 			if(!avs.ContainsKey(key))
 			{
-				store.Remove(ref iter);
-			}
+                try
+                {
+                    store.Remove(ref iter);
+                }
+                catch(Exception e)
+                {
+                    Console.Write("************ ERROR *****************\n");
+                    Console.Write("Radar through an exception on store.Remove()\n");
+                    Console.Write(e.Message + "\n");
+                    Console.Write(e.StackTrace + "\n");
+                }
+            }
 			else
 			{
 				LLVector3 pos;

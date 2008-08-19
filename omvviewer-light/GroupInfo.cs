@@ -116,14 +116,13 @@ namespace omvviewerlight
 		void onAvatarNames(Dictionary<LLUUID, string> names)
 		{	
 
-			lock(MainClass.av_names)
+			
+			foreach(KeyValuePair<LLUUID,string> name in names)
 			{
-				foreach(KeyValuePair<LLUUID,string> name in names)
-				{
-					if(!MainClass.av_names.ContainsKey(name.Key))
-						MainClass.av_names.Add(name.Key,name.Value);		
-				}
+				if(!MainClass.av_names.ContainsKey(name.Key))
+					MainClass.av_names.Add(name.Key,name.Value);		
 			}
+			
 			Gtk.Application.Invoke(delegate {			
 
 				if(this.label_foundedby.Text=="Waiting...")

@@ -26,22 +26,29 @@ namespace omvviewerlight
 
 		void onLogin(LoginStatus login, string message)
 		{
-			if(login==libsecondlife.LoginStatus.Success)
-			{
-				this.spinbutton_x.Value=MainClass.client.Self.SimPosition.X;
-				this.spinbutton_y.Value=MainClass.client.Self.SimPosition.Y;
-				this.spinbutton_z.Value=MainClass.client.Self.SimPosition.Z;
-				this.entry_simname.Text=MainClass.client.Network.CurrentSim.Name;		
-			}
+            Gtk.Application.Invoke(delegate
+            {
+
+                if (login == libsecondlife.LoginStatus.Success)
+                {
+                    this.spinbutton_x.Value = MainClass.client.Self.SimPosition.X;
+                    this.spinbutton_y.Value = MainClass.client.Self.SimPosition.Y;
+                    this.spinbutton_z.Value = MainClass.client.Self.SimPosition.Z;
+                    this.entry_simname.Text = MainClass.client.Network.CurrentSim.Name;
+                }
+            });
 		}
 		
 		void onTeleport(string Message, libsecondlife.AgentManager.TeleportStatus status,libsecondlife.AgentManager.TeleportFlags flags)
 		{
-			this.spinbutton_x.Value=MainClass.client.Self.SimPosition.X;
-			this.spinbutton_y.Value=MainClass.client.Self.SimPosition.Y;
-			this.spinbutton_z.Value=MainClass.client.Self.SimPosition.Z;
-			this.entry_simname.Text=MainClass.client.Network.CurrentSim.Name;
-		}
+            Gtk.Application.Invoke(delegate
+            {
+                this.spinbutton_x.Value = MainClass.client.Self.SimPosition.X;
+                this.spinbutton_y.Value = MainClass.client.Self.SimPosition.Y;
+                this.spinbutton_z.Value = MainClass.client.Self.SimPosition.Z;
+                this.entry_simname.Text = MainClass.client.Network.CurrentSim.Name;
+            });
+            }
 		
 	    bool OnTimeout()
 		{
