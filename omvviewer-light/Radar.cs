@@ -19,6 +19,7 @@ namespace omvviewerlight
 			
 		public Radar()
 		{
+ 
 			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(uint));
 			this.Build();
 			treeview_radar.AppendColumn("",new Gtk.CellRendererText(),"text",0);
@@ -39,10 +40,7 @@ namespace omvviewerlight
 			this.store.SetSortFunc(2,sort_llvector3);
 		
 		}
-		
-		
 			
-		
 		int sort_llvector3(Gtk.TreeModel model,Gtk.TreeIter a,Gtk.TreeIter b)
 		{
 
@@ -84,9 +82,6 @@ namespace omvviewerlight
 		{
 			if(!avs.ContainsKey(update.LocalID))
 			{
-				//avs_pos[update.LocalID]=update.Position;
-				// I will assume libsl has done the business here for me and the avatar contains
-				// the details i need
 				Gtk.Application.Invoke(delegate {										
 					store.Foreach(myfunc);
 				});
@@ -95,8 +90,9 @@ namespace omvviewerlight
 		
 		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
 		{
-			if(!avs.ContainsKey(avatar.LocalID))
-			{
+            Gtk.Application.Invoke(delegate {		
+			    if(!avs.ContainsKey(avatar.LocalID))
+			    {
 				avs.Add(avatar.LocalID,avatar);
 				//avs_pos.Add(avatar.LocalID,avatar.Position);
 
@@ -104,43 +100,33 @@ namespace omvviewerlight
 				pos=MainClass.client.Self.RelativePosition-avatar.Position;
 				double dist;
 				dist=Math.Sqrt(pos.X*pos.X+pos.Y+pos.Y+pos.Z+pos.Z);
-				Gtk.Application.Invoke(delegate {									
+											
 				Avatar av;
 				if(avs.TryGetValue(avatar.LocalID,out av))
-						store.AppendValues("",av.Name,MainClass.cleandistance(dist.ToString(),1),avatar.LocalID);
-				});
-			}
-
+				    store.AppendValues("",av.Name,MainClass.cleandistance(dist.ToString(),1),avatar.LocalID);
+				
+			    }
+            });
 		}
 		
 		void onKillObject(Simulator simulator, uint objectID)
 		{
-			if(avs.ContainsKey(objectID))
-			{
-				avs.Remove(objectID);
-				Gtk.Application.Invoke(delegate {						
+            Gtk.Application.Invoke(delegate {	
+			    if(avs.ContainsKey(objectID))
+			    {
+				    avs.Remove(objectID);				
 					store.Foreach(myfunc);
-				});
-			}
+			    }
+            });
 		}
 		
 		bool myfunc(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
 		{
-			uint key=(uint)store.GetValue(iter,3);			
-			
+			uint key=(uint)store.GetValue(iter,3);
+            return false;
 			if(!avs.ContainsKey(key))
-			{
-                try
-                {
+			{      
                     store.Remove(ref iter);
-                }
-                catch(Exception e)
-                {
-                    Console.Write("************ ERROR *****************\n");
-                    Console.Write("Radar through an exception on store.Remove()\n");
-                    Console.Write(e.Message + "\n");
-                    Console.Write(e.StackTrace + "\n");
-                }
             }
 			else
 			{
@@ -168,19 +154,20 @@ namespace omvviewerlight
 		
 		void onChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourcetype,string fromName, LLUUID id, LLUUID ownerid, LLVector3 position)
 		{
-		
-			if(type==ChatType.StartTyping)
-			{
-				if(!av_typing.ContainsKey(id))
-					av_typing.Add(id,true);
-			}
-			
-			if(type==ChatType.StopTyping)
-			{
-				if(av_typing.ContainsKey(id))
-					   av_typing.Remove(id);
-			}
-					
+            Gtk.Application.Invoke(delegate
+            {
+                if (type == ChatType.StartTyping)
+                {
+                    if (!av_typing.ContainsKey(id))
+                        av_typing.Add(id, true);
+                }
+
+                if (type == ChatType.StopTyping)
+                {
+                    if (av_typing.ContainsKey(id))
+                        av_typing.Remove(id);
+                }
+            });			
 		}
 
 		protected virtual void OnButtonImClicked (object sender, System.EventArgs e)

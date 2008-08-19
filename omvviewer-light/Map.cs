@@ -265,19 +265,17 @@ namespace omvviewerlight
 
 				Gtk.Application.Invoke(delegate {		
 					
-				basemap=new Gtk.Image(response.GetResponseStream());
+				    basemap=new Gtk.Image(response.GetResponseStream());
+				    image.Pixbuf=(Gdk.Pixbuf)basemap.Pixbuf.Clone();
+				    rowstride=basemap.Pixbuf.Rowstride;
+				    channels=basemap.Pixbuf.NChannels;
+				    width=basemap.Pixbuf.Width;
+				    height=basemap.Pixbuf.Height;		
+				});
 
-				image.Pixbuf=(Gdk.Pixbuf)basemap.Pixbuf.Clone();
-
-				rowstride=basemap.Pixbuf.Rowstride;
-				channels=basemap.Pixbuf.NChannels;
-				width=basemap.Pixbuf.Width;
-				height=basemap.Pixbuf.Height;
-				drawavs();			
-				});			
-					return;
-				//return System.Drawing.Image.FromStream(response.GetResponseStream());
-				
+                drawavs(); //already deligated inside	
+				return;
+					
             }
             catch (Exception e)
             {

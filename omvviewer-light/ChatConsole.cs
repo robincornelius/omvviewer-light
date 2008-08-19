@@ -237,13 +237,14 @@ namespace omvviewerlight
 			{
 				return;
 			}
+            Gtk.Application.Invoke(delegate
+            {		
+			    redtab();
 			
-			redtab();
-			
-			string buffer;
-			TextIter iter;
+			    string buffer;
+			    TextIter iter;
 	
-			Gtk.Application.Invoke(delegate {						
+							
 			
 				iter=textview_chat.Buffer.EndIter;
 				buffer=im.FromAgentName+": ";

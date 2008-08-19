@@ -19,7 +19,7 @@ namespace omvviewerlight
 		
 		public FriendsList()
 		{
-		
+		    
 			Console.Write("Building friends list window\n");
 			this.Build();
 			store= new Gtk.ListStore (typeof(Gdk.Pixbuf),typeof(string),typeof(string));
@@ -29,7 +29,7 @@ namespace omvviewerlight
 			treeview_friends.Model=store;
 			
 			online_img=new Gdk.Pixbuf("icon_avatar_online.tga");
-			online_img=new Gdk.Pixbuf("icon_avatar_offline.tga");
+			offline_img=new Gdk.Pixbuf("icon_avatar_offline.tga");
 				
 			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);			
 			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);		
