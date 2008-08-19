@@ -40,8 +40,10 @@ namespace omvviewerlight
 			MainClass.client.Network.OnDisconnected += new libsecondlife.NetworkManager.DisconnectedCallback(onDisconnected);
 			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
 			MainClass.client.Network.OnEventQueueRunning += new libsecondlife.NetworkManager.EventQueueRunningCallback(onEventQueue);
-			libsecondlife.Logger.OnLogMessage += new libsecondlife.Logger.LogCallback(onLogMessage);
-			this.entry_pass.Visibility=false;
+           
+            libsecondlife.Logger.OnLogMessage += new libsecondlife.Logger.LogCallback(onLogMessage);
+           
+                this.entry_pass.Visibility=false;
 			
 			// SUper dirty hack
 			// todo WRITE A PROPER FILE HANDLIER

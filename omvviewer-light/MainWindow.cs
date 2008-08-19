@@ -24,8 +24,8 @@ public partial class MainWindow: Gtk.Window
 
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
-		Build ();
-
+        Build();
+       
 		trayIcon = new StatusIcon(new Gdk.Pixbuf("viewericon.xpm"));
 		trayIcon.Visible=true;
 		trayIcon.Tooltip="Hello World";
