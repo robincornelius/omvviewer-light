@@ -101,10 +101,9 @@ namespace omvviewerlight
 		
 		public void onSwitchPage(object o, SwitchPageArgs args)
 		{
-	 
-		
-			    int thispage=MainClass.win.getnotebook().PageNum(this);
-			  if(thispage==args.PageNum)
+			//If we switch to *this* page then remove a possible red tab lable
+			int thispage=MainClass.win.getnotebook().PageNum(this);
+			if(thispage==args.PageNum)
 			{
 			    Gdk.Color col = new Gdk.Color(0,0,0);
 				Gtk.StateType type = new Gtk.StateType();
@@ -113,10 +112,8 @@ namespace omvviewerlight
 			}
 		}
 		
-				
 		void onGroupChatJoin(LLUUID groupChatSessionID, LLUUID tmpSessionID, bool success)
 		{
-			
 			if(groupChatSessionID!=this.im_session_id)
 				return;
 			
@@ -124,44 +121,28 @@ namespace omvviewerlight
 			TextIter iter;
 	
 			Gtk.Application.Invoke(delegate {						
-			
 				iter=textview_chat.Buffer.EndIter;
-				textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold);
-								
+				textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold);						
 				textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
 			});
 		}	
 		
 		public void redtab()
 		{
-					
 			Gtk.Application.Invoke(delegate {	
-			Gdk.Color col = new Gdk.Color(255,0,0);
-			Gtk.StateType type = new Gtk.StateType();			
-			type|=Gtk.StateType.Active;	
-				
-			
-			int activepage=MainClass.win.getnotebook().CurrentPage;
-			int thispage=MainClass.win.getnotebook().PageNum(this);
-			Console.Write(activepage.ToString()+" : "+thispage.ToString()+"\n");
-			int index=-1;
-			if(thispage==-1)
-			{
-					if(activepage!=1)
-				
-				if(tabLabel!=null)	
-							this.tabLabel.ModifyFg(type,col);					
-				return;
-						
-			}
-			else
-			{
-				
-				this.tabLabel.ModifyFg(type,col);					
-				return;
-				}
-				
-				
+				Gdk.Color col = new Gdk.Color(255,0,0);
+				Gtk.StateType type = new Gtk.StateType();			
+				type|=Gtk.StateType.Active;	
+					
+				int activepage=MainClass.win.getnotebook().CurrentPage;
+				int thispage=MainClass.win.getnotebook().PageNum(this);
+				Console.Write(activepage.ToString()+" : "+thispage.ToString()+"\n");
+				int index=-1;
+				if(thispage!=-1) //Chat console is not a direct child so throws -1 IM's are to give a vaid return
+				{				
+					this.tabLabel.ModifyFg(type,col);					
+					return;
+				}	
 			});
 		}
 		
@@ -261,9 +242,7 @@ namespace omvviewerlight
 			
 			    string buffer;
 			    TextIter iter;
-	
-							
-			
+		
 				iter=textview_chat.Buffer.EndIter;
 				buffer=im.FromAgentName+": ";
 				textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold);
@@ -284,7 +263,7 @@ namespace omvviewerlight
 				return;
 
 			if(message=="")
-				return; //WTF???? why do i get empty messages
+				return; //WTF???? why do i get empty messages which are not the above types
 
 			Gtk.Application.Invoke(delegate {						
 			
@@ -295,8 +274,7 @@ namespace omvviewerlight
 				Gdk.Color col = new Gdk.Color(255,0,0);
 				Gtk.StateType xtype = new Gtk.StateType();			
 				xtype|=Gtk.StateType.Active;
-	            if(this.tabLabel!=null) // Problem this is not set yet so is null and will never go red
-				    this.tabLabel.ModifyFg(xtype,col);									
+				MainClass.win.chat_tab_lable.ModifyFg(xtype,col);									
 				MainClass.win.UrgencyHint=true;
 				MainClass.win.trayIcon.Blinking=true;
 

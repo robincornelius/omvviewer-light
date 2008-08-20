@@ -37,6 +37,8 @@ public partial class MainWindow: Gtk.Window
 	Gtk.Label status_balance_lable;
 	Gtk.Label status_parcel;		
 	Gtk.HBox status_icons;
+	public Gtk.Label chat_tab_lable;// Uber lazy fudge
+	
 	public uint currentpage=0;
 	public StatusIcon trayIcon;
 
@@ -72,7 +74,7 @@ public partial class MainWindow: Gtk.Window
 		
 		// Fuck stupid notebook tabs and monodeveop have to do it myself
 		ChatLayout c=new ChatLayout();
-        this.addtabwithicon("icn_voice-pvtfocus.tga","Chat",c);
+        chat_tab_lable=this.addtabwithicon("icn_voice-pvtfocus.tga","Chat",c);
 		
 		Location t=new Location();
 		this.addtabwithicon("icon_place.tga","Location",t);
