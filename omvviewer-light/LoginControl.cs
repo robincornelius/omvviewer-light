@@ -120,7 +120,8 @@ namespace omvviewerlight
 		{
 			Gtk.Application.Invoke(delegate {
 				this.button_login.Label="Login";
-			    });			
+				this.enablebuttons();
+			});			
 			
 		}
 		
@@ -137,6 +138,7 @@ namespace omvviewerlight
 				Gtk.Application.Invoke(delegate {
 					this.button_login.Label="Login";
 					this.trying=false;
+					this.enablebuttons();
 			    });			
 	
 			//This can take ages, should be threaded
@@ -184,13 +186,14 @@ namespace omvviewerlight
 		{
 			if(button_login.Label=="Login")
 			{
+				this.disablebuttons();
 				trying=true;
 				GLib.Timeout.Add(100,OnPulseProgress);
 				
 				this.textview_loginmsg.Buffer.Text="Connecting to login server...";
 				this.textview_loginmsg.QueueDraw();
 				//LoginParams login;
-		
+			
 				login=MainClass.client.Network.DefaultLoginParams(entry_first.Text,entry_last.Text,entry_pass.Text,"omvviewer","2.0");
                 try
                 {
@@ -201,6 +204,16 @@ namespace omvviewerlight
                 {
                 }
 
+				if(this.checkbutton_lastlocation.Active)
+				{
+					login.Start="last";
+				}
+				else
+				{
+					login.Start="home";
+				}
+				
+				
 				this.textview_log.Buffer.Clear();
 				button_login.Label="Logout";			
 				if(this.combobox_grid.ActiveText=="Agni")
@@ -230,5 +243,28 @@ namespace omvviewerlight
 		protected virtual void OnCheckbuttonRememberpassClicked (object sender, System.EventArgs e)
 		{
 		}
+
+		void disablebuttons()
+		{
+			this.entry_first.Sensitive=false;
+			this.entry_last.Sensitive=false;
+			this.entry_loginuri.Sensitive=false;
+			this.entry_pass.Sensitive=false;
+			this.combobox_grid.Sensitive=false;
+			this.checkbutton_rememberpass.Sensitive=false;
+			this.checkbutton_lastlocation.Sensitive=false;			
+		}
+		
+		void enablebuttons()
+		{			
+			this.entry_first.Sensitive=true;
+			this.entry_last.Sensitive=true;
+			this.entry_loginuri.Sensitive=true;
+			this.entry_pass.Sensitive=true;
+			this.combobox_grid.Sensitive=true;	
+			this.checkbutton_rememberpass.Sensitive=true;
+			this.checkbutton_lastlocation.Sensitive=true;			
+		}
+	
 	}
 }

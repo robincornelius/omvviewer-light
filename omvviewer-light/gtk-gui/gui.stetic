@@ -399,7 +399,7 @@ Custom</property>
                   </widget>
                 </child>
                 <child>
-                  <widget class="Gtk.Label" id="GtkLabel2">
+                  <widget class="Gtk.Label" id="GtkLabel3">
                     <property name="MemberName" />
                     <property name="LabelProp" translatable="yes">&lt;b&gt;Login message&lt;/b&gt;</property>
                     <property name="UseMarkup">True</property>
@@ -444,7 +444,7 @@ Custom</property>
                   </widget>
                 </child>
                 <child>
-                  <widget class="Gtk.Label" id="GtkLabel3">
+                  <widget class="Gtk.Label" id="GtkLabel4">
                     <property name="MemberName" />
                     <property name="LabelProp" translatable="yes">&lt;b&gt;Debug log&lt;/b&gt;</property>
                     <property name="UseMarkup">True</property>

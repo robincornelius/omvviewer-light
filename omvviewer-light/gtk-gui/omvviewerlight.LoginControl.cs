@@ -67,7 +67,7 @@ namespace omvviewerlight {
         
         private Gtk.TextView textview_loginmsg;
         
-        private Gtk.Label GtkLabel2;
+        private Gtk.Label GtkLabel3;
         
         private Gtk.Frame frame2;
         
@@ -77,7 +77,7 @@ namespace omvviewerlight {
         
         private Gtk.TextView textview_log;
         
-        private Gtk.Label GtkLabel3;
+        private Gtk.Label GtkLabel4;
         
         protected virtual void Build() {
             Stetic.Gui.Initialize(this);
@@ -324,11 +324,11 @@ namespace omvviewerlight {
             this.textview_loginmsg.WrapMode = ((Gtk.WrapMode)(2));
             this.GtkAlignment.Add(this.textview_loginmsg);
             this.frame1.Add(this.GtkAlignment);
-            this.GtkLabel2 = new Gtk.Label();
-            this.GtkLabel2.Name = "GtkLabel2";
-            this.GtkLabel2.LabelProp = Mono.Unix.Catalog.GetString("<b>Login message</b>");
-            this.GtkLabel2.UseMarkup = true;
-            this.frame1.LabelWidget = this.GtkLabel2;
+            this.GtkLabel3 = new Gtk.Label();
+            this.GtkLabel3.Name = "GtkLabel3";
+            this.GtkLabel3.LabelProp = Mono.Unix.Catalog.GetString("<b>Login message</b>");
+            this.GtkLabel3.UseMarkup = true;
+            this.frame1.LabelWidget = this.GtkLabel3;
             this.vbox5.Add(this.frame1);
             Gtk.Box.BoxChild w25 = ((Gtk.Box.BoxChild)(this.vbox5[this.frame1]));
             w25.Position = 2;
@@ -354,11 +354,11 @@ namespace omvviewerlight {
             this.GtkScrolledWindow1.Add(this.textview_log);
             this.GtkAlignment1.Add(this.GtkScrolledWindow1);
             this.frame2.Add(this.GtkAlignment1);
-            this.GtkLabel3 = new Gtk.Label();
-            this.GtkLabel3.Name = "GtkLabel3";
-            this.GtkLabel3.LabelProp = Mono.Unix.Catalog.GetString("<b>Debug log</b>");
-            this.GtkLabel3.UseMarkup = true;
-            this.frame2.LabelWidget = this.GtkLabel3;
+            this.GtkLabel4 = new Gtk.Label();
+            this.GtkLabel4.Name = "GtkLabel4";
+            this.GtkLabel4.LabelProp = Mono.Unix.Catalog.GetString("<b>Debug log</b>");
+            this.GtkLabel4.UseMarkup = true;
+            this.frame2.LabelWidget = this.GtkLabel4;
             this.vbox5.Add(this.frame2);
             Gtk.Box.BoxChild w29 = ((Gtk.Box.BoxChild)(this.vbox5[this.frame2]));
             w29.Position = 3;
