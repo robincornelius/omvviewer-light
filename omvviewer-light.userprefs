@@ -1,7 +1,8 @@
 ﻿<UserCombinePreferences version="1.0" filename="/home/robin/libsecondlife/omvviewer-light/omvviewer-light.mds">
   <Files>
     <File name="Welcome" />
-    <File name="omvviewer-light/Inventory.cs" line="15" column="3" />
+    <File name="omvviewer-light/Inventory.cs" line="72" column="4" />
+    <File name="omvviewer-light/FriendsList.cs" line="62" column="3" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">

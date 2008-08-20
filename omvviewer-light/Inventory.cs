@@ -26,6 +26,8 @@ using System;
 using System.Threading;
 using libsecondlife;
 using System.Collections.Generic;
+using Gdk;
+using Gtk;
 
 namespace omvviewerlight
 {
@@ -35,62 +37,82 @@ namespace omvviewerlight
 		String[] SearchFolders = { "" };
 		//initialize our list to store the folder contents
         LLUUID inventoryItems;
-		Gtk.TreeStore inventory = new Gtk.TreeStore (typeof (string), typeof (LLUUID));		
+		Gtk.TreeStore inventory = new Gtk.TreeStore (typeof(Gdk.Pixbuf),typeof (string), typeof (LLUUID));		
+		Gdk.Pixbuf folder_closed = new Gdk.Pixbuf("inv_folder_plain_closed.tga");
+		Gdk.Pixbuf folder_open = new Gdk.Pixbuf("inv_folder_plain_open.tga");
+		Gdk.Pixbuf item_landmark = new Gdk.Pixbuf("inv_item_landmark.tga");
+		Gdk.Pixbuf item_animation = new Gdk.Pixbuf("inv_item_animation.tga");
+		Gdk.Pixbuf item_clothing = new Gdk.Pixbuf("inv_item_clothing.tga");
 		
 		public Inventory()
 		{
-			this.Build();
-	
-			treeview_inv.AppendColumn("Name",new  Gtk.CellRendererText(),"text",0);
+			this.Build();		
+			treeview_inv.AppendColumn("",new CellRendererPixbuf(),"pixbuf",0);
+			treeview_inv.AppendColumn("Name",new  Gtk.CellRendererText(),"text",1);
 			treeview_inv.Model=inventory;
-
+			this.treeview_inv.RowExpanded += new Gtk.RowExpandedHandler(onRowExpanded);
+			this.treeview_inv.RowCollapsed += new Gtk.RowCollapsedHandler(onRowCollapsed);
+			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);		
+				
+		}
+	
+		void onLogin(LoginStatus status,string message)
+		{
+			if(LoginStatus.Success==status)
+			{
+				Gtk.Application.Invoke(delegate {
+					inventory.Clear();
+					Gtk.TreeIter iter = inventory.AppendValues(folder_closed,"Inventory", MainClass.client.Inventory.Store.RootFolder.UUID);
+					inventory.AppendValues(iter,folder_closed, "Waiting...", MainClass.client.Inventory.Store.RootFolder.UUID);		
+				});
+			}
+		}
+				
+		void onRowCollapsed(object o,Gtk.RowCollapsedArgs args)
+		{
+			LLUUID key=(LLUUID)this.inventory.GetValue(args.Iter,2);
+			inventory.SetValue(args.Iter,0,folder_closed);
 		}
 
-		protected virtual void OnButtonGetinvClicked (object sender, System.EventArgs e)
+		void onRowExpanded(object o,Gtk.RowExpandedArgs args)
 		{
-            inventory.Clear();
-            Thread InvRunner = new Thread(new ThreadStart(this.gogetinv));
-            InvRunner.Start();
-		}
-
-        void gogetinv()
-        {
-           
-
-            Gtk.Application.Invoke(delegate
-            {
-                    Gtk.TreeIter iter = inventory.AppendValues("My Crap", MainClass.client.Inventory.Store.RootFolder.UUID);
-          
-                
-                    recurseinv(MainClass.client.Inventory.Store.RootFolder.UUID, iter);
-             
-       
-                iter = inventory.AppendValues("Derfault crap", MainClass.client.Inventory.Store.LibraryFolder.UUID);
-                recurseinv(MainClass.client.Inventory.Store.LibraryFolder.UUID, iter);
-            });
-
-            
-
-
-        }
-		
-		void recurseinv(LLUUID target,Gtk.TreeIter iter)
-		{
-            MainClass.client.Inventory.RequestFolderContents(target, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate);
-		    List<InventoryBase> myObjects  =MainClass.client.Inventory.FolderContents(target,MainClass.client.Self.AgentID,true,true,InventorySortOrder.ByDate,30000);
-
-            if (myObjects == null)
-                return;
+			LLUUID key=(LLUUID)this.inventory.GetValue(args.Iter,2);
+			inventory.SetValue(args.Iter,0,folder_open);
+			Console.Write("Expanding to id :"+key.ToString());
+			MainClass.client.Inventory.RequestFolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate);
+			List<InventoryBase> myObjects  =MainClass.client.Inventory.FolderContents(key,MainClass.client.Self.AgentID,true,true,InventorySortOrder.ByDate,30000);
+					
+			if (myObjects == null)
+				return;
 
 			foreach (InventoryBase item in myObjects)
-            {
-               // Gtk.Application.Invoke(delegate
-              //  {
-                    Gtk.TreeIter iter2 = inventory.AppendValues(iter, item.Name, item.UUID);
-               // });
-                recurseinv(item.UUID,iter2);
+			{
+				Gdk.Pixbuf buf=getprettyicon(item);
+				Gtk.TreeIter iter2 = inventory.AppendValues(args.Iter,buf, item.Name, item.UUID);
+
+				if (item is InventoryFolder)
+				{
+					inventory.AppendValues(iter2, folder_closed,"Waiting...", item.UUID);	
+				}
+				
 			}				
 		}
 		
+		Gdk.Pixbuf getprettyicon(InventoryBase item)
+		{
+			if (item is InventoryFolder)
+				return this.folder_closed;
+					
+			if(item is libsecondlife.InventoryLandmark)
+				return this.item_landmark;
+			
+			if(item is libsecondlife.InventoryAnimation)
+				return this.item_animation;
+			
+			if(item is libsecondlife.InventoryWearable)
+				return this.item_clothing;
+			
+			return folder_closed;
+		}		
 	}
 }

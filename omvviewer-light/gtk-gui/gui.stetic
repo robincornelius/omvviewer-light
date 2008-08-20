@@ -3591,7 +3591,6 @@ Resident Michelle2 Zenovka
                 <property name="Type">TextOnly</property>
                 <property name="Label" translatable="yes">button1</property>
                 <property name="UseUnderline">True</property>
-                <signal name="Clicked" handler="OnButtonGetinvClicked" />
               </widget>
               <packing>
                 <property name="Position">0</property>

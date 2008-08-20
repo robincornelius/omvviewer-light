@@ -79,7 +79,6 @@ namespace omvviewerlight {
                 this.Child.ShowAll();
             }
             this.Show();
-            this.button_getinv.Clicked += new System.EventHandler(this.OnButtonGetinvClicked);
         }
     }
 }
