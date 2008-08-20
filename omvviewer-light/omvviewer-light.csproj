@@ -165,6 +165,9 @@
     <Compile Include="gtk-gui\omvviewerlight.GroupInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Artwork-licence.txt" />
+    <Content Include="GNU-GPLv3.txt" />
+    <Content Include="libsecondlife-licence.txt" />
     <Content Include="map_home.tga">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
