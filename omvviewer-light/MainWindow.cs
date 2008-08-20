@@ -31,9 +31,8 @@ public partial class MainWindow: Gtk.Window
 		trayIcon.Tooltip="Hello World";
 		trayIcon.Activate+= delegate{Visible=!Visible;};
 
-		trayIcon.Activate+= delegate{trayIcon.Blinking=false;};
-		
-		
+        trayIcon.Activate += delegate { trayIcon.Blinking = false; this.UrgencyHint = false; };
+				
 		status_location=new Gtk.Label("Location: Unknown (0,0,0)");
 		
 		status_balance=new Gtk.HBox();
@@ -89,9 +88,14 @@ public partial class MainWindow: Gtk.Window
 		MainClass.client.Self.OnScriptQuestion += new libsecondlife.AgentManager.ScriptQuestionCallback(onScriptCallback);
 		MainClass.client.Self.OnScriptDialog +=new libsecondlife.AgentManager.ScriptDialogCallback(onScriptDialogue);
 		
+        this.WindowStateEvent += delegate { if (this.Visible) { trayIcon.Blinking = false; this.UrgencyHint = false; };};
+         
+
 		GLib.Timeout.Add(10000,OnUpdateStatus); 
 	}
-		
+
+    
+    
 	void onScriptDialogue(string message,string objectName,LLUUID imageID,LLUUID objectID,string FirstName,string lastName,int chatChannel,List <string> buttons)
 	{
         Gtk.Application.Invoke(delegate

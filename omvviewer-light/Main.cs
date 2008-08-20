@@ -47,13 +47,19 @@ namespace omvviewerlight
 			Application.Init ();
 			win = new MainWindow ();
 			win.Show ();
+            win.DeleteEvent += delete_event;
 
-				
 			Application.Run ();
 			
-			if(client.Network.Connected)
-				client.Network.Logout();
 		}
+
+        static void delete_event(object obj, DeleteEventArgs args)
+        {
+            if(client.Network.Connected)
+                client.Network.Logout();
+      
+        }
+
 
 		public static string cleandistance(string dist,int dp)
 		{			
