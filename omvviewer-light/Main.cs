@@ -26,6 +26,7 @@ namespace omvviewerlight
 		
 		public static void Main (string[] args)
 		{
+			
 			// Now boot the libsecondlife layer so it is global to our namespace
             System.IO.StreamWriter aStreamWriter;
              

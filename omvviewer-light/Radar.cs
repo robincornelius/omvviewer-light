@@ -37,21 +37,9 @@ namespace omvviewerlight
 	
 			MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
 
-			this.store.SetSortFunc(2,sort_llvector3);
-            GLib.Timeout.Add(1000, onTimeout);
-		
+			this.store.SetSortFunc(2,sort_llvector3);	
 		}
-
-        bool onTimeout()
-        {
-            lock(store)
-            {
-                store.Foreach(myfunc);
-            }
-
-            return true;
-        }
-			
+		
 		int sort_llvector3(Gtk.TreeModel model,Gtk.TreeIter a,Gtk.TreeIter b)
 		{
 
@@ -97,12 +85,12 @@ namespace omvviewerlight
 		
 		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
 		{
-		//	if(!avs.ContainsKey(update.LocalID))
-		//	{
-		//		Gtk.Application.Invoke(delegate {										
-		//			store.Foreach(myfunc);
-		//		});
-		//	}
+			if(!avs.ContainsKey(update.LocalID))
+			{
+				Gtk.Application.Invoke(delegate {										
+					store.Foreach(myfunc);
+				});
+			}
 		}
 		
 		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
@@ -121,14 +109,11 @@ namespace omvviewerlight
  
             Gtk.Application.Invoke(delegate 
             {		
-			    if(!avs.ContainsKey(avatar.LocalID))
-			    {
-				    LLVector3 pos;
-			    	pos=MainClass.client.Self.RelativePosition-avatar.Position;
-				    double dist;
-				    dist=Math.Sqrt(pos.X*pos.X+pos.Y+pos.Y+pos.Z+pos.Z);						
-				    store.AppendValues("",av.Name,MainClass.cleandistance(dist.ToString(),1),avatar.LocalID);
-			    }
+				LLVector3 pos;
+			    pos=MainClass.client.Self.RelativePosition-avatar.Position;
+				double dist;
+				dist=Math.Sqrt(pos.X*pos.X+pos.Y+pos.Y+pos.Z+pos.Z);						
+				store.AppendValues("",av.Name,MainClass.cleandistance(dist.ToString(),1),avatar.LocalID);
             });
 		}
 		
@@ -137,8 +122,14 @@ namespace omvviewerlight
             lock (avs)
             {
                 if(avs.ContainsKey(objectID))
-			        avs.Remove(objectID);
-            }
+				{
+					avs.Remove(objectID);
+				}
+			}
+			
+			Gtk.Application.Invoke(delegate {										
+				store.Foreach(myfunc);
+			});	
 		}
 		
 		bool myfunc(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)

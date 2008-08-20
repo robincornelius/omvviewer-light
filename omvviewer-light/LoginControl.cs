@@ -31,8 +31,7 @@ namespace omvviewerlight
 			w.Close();
 			
 		}
-		
-		
+				
 		public LoginControl()
 		{
 			this.Build();
@@ -173,9 +172,11 @@ namespace omvviewerlight
 				this.textview_loginmsg.Buffer.Text="Connecting to login server...";
 				this.textview_loginmsg.QueueDraw();
 				//LoginParams login;
-				login=MainClass.client.Network.DefaultLoginParams(entry_first.Text,entry_last.Text,entry_pass.Text,"omvviewer-light","1.0");
-				
-				//login.Start="home";
+		
+				login=MainClass.client.Network.DefaultLoginParams(entry_first.Text,entry_last.Text,entry_pass.Text,"omvviewer","2.0");
+				StreamReader s = File.OpenText("MyMac.txt");			
+				if(s!=null)
+					login.MAC=s.ReadLine();
 				
 				this.textview_log.Buffer.Clear();
 				button_login.Label="Logout";			

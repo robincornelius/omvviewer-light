@@ -34,16 +34,14 @@ namespace omvviewerlight
 		Gtk.Image avatar_below=new Gtk.Image("map_avatar_below_8.tga");
 
 		public Map()
-		{
-           
+		{           
 			this.Build();
 			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
 			MainClass.client.Network.OnCurrentSimChanged += new libsecondlife.NetworkManager.CurrentSimChangedCallback(onNewSim);
 			MainClass.client.Objects.OnNewAvatar += new libsecondlife.ObjectManager.NewAvatarCallback(onNewAvatar);
 			MainClass.client.Objects.OnObjectKilled += new libsecondlife.ObjectManager.KillObjectCallback(onKillObject);
 			MainClass.client.Objects.OnObjectUpdated += new libsecondlife.ObjectManager.ObjectUpdatedCallback(onUpdate);
-			MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
-			
+			MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);	
 		}
 
 		void onTeleport(string Message, libsecondlife.AgentManager.TeleportStatus status,libsecondlife.AgentManager.TeleportFlags flags)
@@ -52,15 +50,16 @@ namespace omvviewerlight
 			{
 				Gtk.Application.Invoke(delegate {										
 					avs.Clear();
+					drawavs();
 				});
 			}
 	    }
-		
-		
+				
 		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
 		{
 			if(avs.ContainsKey(update.LocalID))
 			{
+				Console.Write("OnUpdateAvatar\n");
 				drawavs();
 			}
 		}
@@ -91,48 +90,28 @@ namespace omvviewerlight
 			
 			Gtk.Application.Invoke(delegate {						
 				
-			Gdk.Pixbuf buf=(Gdk.Pixbuf)basemap.Pixbuf.Clone();
-				
-		//	Console.Write("Drawing me\n");
-			showme(buf,avatar_me.Pixbuf,MainClass.client.Self.SimPosition);				
-				
-			int myz=(int)MainClass.client.Self.SimPosition.Z;
-				
-				
-			foreach(KeyValuePair<uint, Avatar> kvp in avs)
-			{
-					if(kvp.Value.LocalID!=MainClass.client.Self.LocalID)
-					{
-
-						//showme(buf,avatar_me.Pixbuf,kvp.Value.Position);				
-						
-						if(kvp.Value.Position.Z-myz>5)
-						{	
-							//Console.Write("Drawing above\n");
-
-							showme(buf,avatar_above.Pixbuf,kvp.Value.Position);
-						
-						}						
-						else if(kvp.Value.Position.Z-myz<-5)
-						{	
-						//Console.Write("Drawing below\n");
-		
-							showme(buf,avatar_below.Pixbuf,kvp.Value.Position);
-				
-						}						
-						else
+				Gdk.Pixbuf buf=(Gdk.Pixbuf)basemap.Pixbuf.Clone();
+					
+				showme(buf,avatar_me.Pixbuf,MainClass.client.Self.SimPosition);				
+					
+				int myz=(int)MainClass.client.Self.SimPosition.Z;
+									
+				foreach(KeyValuePair<uint, Avatar> kvp in avs)
+				{
+						if(kvp.Value.LocalID!=MainClass.client.Self.LocalID)
 						{
-						//				Console.Write("Drawing lelve\n");
+						
+							if(kvp.Value.Position.Z-myz>5)
+								showme(buf,avatar_above.Pixbuf,kvp.Value.Position);
+							else if(kvp.Value.Position.Z-myz<-5)
+								showme(buf,avatar_below.Pixbuf,kvp.Value.Position);
+							else
+								showme(buf,avatar.Pixbuf,kvp.Value.Position);
+						}
+				}
 
-							showme(buf,avatar.Pixbuf,kvp.Value.Position);
-						}								
-					}
-			}
-
-	//			Console.Write("Update donw refresh\n");
 				image.Pixbuf=buf;
 				image.QueueDraw();
-//				Console.Write("Finished\n");
 			});
 			
 		}
@@ -156,7 +135,7 @@ namespace omvviewerlight
 			});
 		}
 			
-		unsafe void showme(Gdk.Pixbuf buf,Gdk.Pixbuf src,LLVector3 pos)
+		void showme(Gdk.Pixbuf buf,Gdk.Pixbuf src,LLVector3 pos)
 		{
 			int tx,ty;
 			tx=(int)pos.X;
@@ -211,12 +190,9 @@ namespace omvviewerlight
 						p[0]=ps[0];
 						p[1]=ps[1];
 						p[2]=ps[2];
-						}
-
+					}
 				}
-				
-			}
-					
+			}	
 		}
 		
 		void onLogin(LoginStatus login, string message)
@@ -227,7 +203,7 @@ namespace omvviewerlight
 				{
 					getmap();
 					this.label1.Text=MainClass.client.Network.CurrentSim.Name;
-
+					drawavs();
 				}
 			});
 		}
@@ -235,8 +211,6 @@ namespace omvviewerlight
 		void getmap()
 		{
 			Gtk.Application.Invoke(delegate {		
-					
-			//this.image = new Gtk.Image("trying.tga");
 			Gdk.Pixbuf pb= new Gdk.Pixbuf("trying.tga");
 			this.image.Pixbuf=pb;
 			Thread mapdownload= new Thread(new ThreadStart(this.getmap_threaded));                               
@@ -282,23 +256,7 @@ namespace omvviewerlight
 				Gtk.MessageDialog msg = new Gtk.MessageDialog(MainClass.win,DialogFlags.Modal,MessageType.Error,ButtonsType.Ok,"Error Downloading Web Map Image");
 				msg.Show();
 				return ;
-            }
-
-			
-		}
-
-		protected virtual void OnImageButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
-		{
-
-			Console.Write("Click "+args.Event.X.ToString()+","+args.Event.Y.ToString()+"\n");
-			// Ah fuck it it does not get the events
-			
-		
-		}
-
-		protected virtual void OnEventbox1ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
-		{
-			//this stupid thing gets events but autosizes even though i said no
+            }	
 		}
 	}
 }

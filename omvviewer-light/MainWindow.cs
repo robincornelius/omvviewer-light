@@ -69,6 +69,10 @@ public partial class MainWindow: Gtk.Window
 		Groups g = new Groups();
 		this.addtabwithicon("icn_voice-groupfocus.tga","Groups",g);
 		//this.doicons();
+				
+		omvviewerlight.Inventory i = new omvviewerlight.Inventory();
+		this.addtabwithicon("inv_folder_plain_open.tga","Inventory",i);
+		//this.doicons();
 		
 		this.statusbar1.ShowAll();
 		
@@ -95,7 +99,6 @@ public partial class MainWindow: Gtk.Window
             ScriptDialogue d = new ScriptDialogue(message, objectName, imageID, objectID, FirstName, lastName, chatChannel, buttons);
             d.Show();
         });
-		//TODO
 	}
 	
 	void onAlertMessage(string message)

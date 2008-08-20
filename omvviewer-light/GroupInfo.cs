@@ -15,7 +15,6 @@ namespace omvviewerlight
 	
 	public partial class GroupInfo : Gtk.Window
 	{
-		
 		Gtk.ListStore store_members;		
 		LLUUID groupkey;
 		LLUUID founder_key;
@@ -28,11 +27,11 @@ namespace omvviewerlight
 			groupkey=group.ID;
 			
 			store_members = new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(LLUUID));			
-
-			
+		
 			treeview_members.AppendColumn("Member name",new CellRendererText(),"text",0);
 			treeview_members.AppendColumn("Title",new CellRendererText(),"text",1);
 			treeview_members.AppendColumn("Last login",new CellRendererText(),"text",2);
+		
 			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);			
 				
 			treeview_members.Model=store_members;
@@ -54,7 +53,8 @@ namespace omvviewerlight
 			if(MainClass.av_names.TryGetValue(group.FounderID,out name))
 			{
 				this.label_name.Text="Founded by "+MainClass.av_names[group.FounderID];
-			}		
+			}
+			
 		}
 		
 		void onGroupTitles(Dictionary <LLUUID,libsecondlife.GroupTitle> titles)
@@ -75,8 +75,10 @@ namespace omvviewerlight
 			});
 		}
 		
-		void onGroupMembers(Dictionary <LLUUID,GroupMember> members)
+		void onGroupMembers(Dictionary <LLUUID,GroupMember> members)		
 		{
+			lock(store_members)
+			{
 
 			foreach(KeyValuePair <LLUUID,GroupMember> member in members)
 			{
@@ -88,11 +90,10 @@ namespace omvviewerlight
 				}
 					
 				Gtk.Application.Invoke(delegate {	
-					this.store_members.AppendValues(name,member.Value.Title,member.Value.OnlineStatus,member.Value.ID);
-			 });
+						this.store_members.AppendValues(name,member.Value.Title,member.Value.OnlineStatus,member.Value.ID);
+				});
 			}
-			
-			
+			}
 		}
 		
 		void onGroupProfile(GroupProfile group)
@@ -115,45 +116,34 @@ namespace omvviewerlight
 		
 		void onAvatarNames(Dictionary<LLUUID, string> names)
 		{	
-
 			
 			foreach(KeyValuePair<LLUUID,string> name in names)
 			{
 				if(!MainClass.av_names.ContainsKey(name.Key))
 					MainClass.av_names.Add(name.Key,name.Value);		
-			}
-			
-			Gtk.Application.Invoke(delegate {			
+			}			
 
-				if(this.label_foundedby.Text=="Waiting...")
-				{
-					string name;
-					if(MainClass.av_names.TryGetValue(this.founder_key,out name))
-					{
-						this.label_active_title.Text="Founded by "+name;
-					}
-				}
-			});
-			
-			Gtk.Application.Invoke(delegate {			
-				this.store_members.Foreach(myfunc_members);
-			});	
-			
+			Gtk.Application.Invoke(delegate {	
+				lock(store_members){					
+					this.store_members.Foreach(myfunc_members);
+			}
+		});
+		
 		}
 
 		bool myfunc_members(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
 		{			
+			bool stillwaiting;
 			string name=(string)store_members.GetValue(iter,0);
-			if(name=="Waiting...")
+			LLUUID id =(LLUUID)store_members.GetValue(iter,3);
+			string member_name;
+			if(MainClass.av_names.TryGetValue(id,out member_name))
 			{
-				LLUUID id =(LLUUID)store_members.GetValue(iter,3);
-				string member_name;
-				if(MainClass.av_names.TryGetValue(id,out member_name))
-				{
-					store_members.SetValue(iter,0,member_name);
-				}
+				store_members.SetValue(iter,0,member_name);
 			}
-				return true;
+				return false;
 		}
+		
+		
 	}
 }
