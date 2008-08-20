@@ -56,6 +56,7 @@ namespace omvviewerlight
                 IntPtr hWnd = GetConsoleWindow();
                 ShowWindow(hWnd, 0);
                 hiddenconsole = true;
+           
             }
             catch(Exception e)
             {
