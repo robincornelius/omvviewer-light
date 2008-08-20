@@ -174,10 +174,15 @@ namespace omvviewerlight
 				//LoginParams login;
 		
 				login=MainClass.client.Network.DefaultLoginParams(entry_first.Text,entry_last.Text,entry_pass.Text,"omvviewer","2.0");
-				StreamReader s = File.OpenText("MyMac.txt");			
-				if(s!=null)
-					login.MAC=s.ReadLine();
-				
+                try
+                {
+                    StreamReader s = File.OpenText("MyMac.txt");
+                    login.MAC = s.ReadLine();
+                }
+                catch(Exception ee)
+                {
+                }
+
 				this.textview_log.Buffer.Clear();
 				button_login.Label="Logout";			
 				if(this.combobox_grid.ActiveText=="Agni")
