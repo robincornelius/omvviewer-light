@@ -342,8 +342,10 @@ public partial class MainWindow: Gtk.Window
 					+"\nArea: "+parcel.Area.ToString();
 
         Tooltips tooltips1 = new Tooltips();
-        tooltips1.SetTip(status_parcel, tooltext, null);
-		
+        tooltips1.SetTip(this.statusbar1, tooltext, null);
+        tooltips1.Enable();
+       
+      
 			doicons(parcel);
 		});
 	}

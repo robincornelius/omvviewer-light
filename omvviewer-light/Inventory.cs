@@ -34,10 +34,12 @@ namespace omvviewerlight
 
 	public partial class Inventory : Gtk.Bin
 	{
+        Gtk.Menu menu_landmark = new Menu();
+       
 		String[] SearchFolders = { "" };
 		//initialize our list to store the folder contents
         LLUUID inventoryItems;
-		Gtk.TreeStore inventory = new Gtk.TreeStore (typeof(Gdk.Pixbuf),typeof (string), typeof (LLUUID));		
+		Gtk.TreeStore inventory = new Gtk.TreeStore (typeof(Gdk.Pixbuf),typeof (string), typeof (LLUUID),typeof(InventoryBase));		
 		Gdk.Pixbuf folder_closed = new Gdk.Pixbuf("inv_folder_plain_closed.tga");
 		Gdk.Pixbuf folder_open = new Gdk.Pixbuf("inv_folder_plain_open.tga");
 		Gdk.Pixbuf item_landmark = new Gdk.Pixbuf("inv_item_landmark.tga");
@@ -73,9 +75,54 @@ namespace omvviewerlight
 			treeview_inv.Model=inventory;
 			this.treeview_inv.RowExpanded += new Gtk.RowExpandedHandler(onRowExpanded);
 			this.treeview_inv.RowCollapsed += new Gtk.RowCollapsedHandler(onRowCollapsed);
-			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);		
-				
+			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
+            Console.Write("YAYAYAYAYAYAY\n");
+            this.treeview_inv.ButtonPressEvent += new ButtonPressEventHandler(treeview_inv_ButtonPressEvent);
+
+            Gtk.MenuItem menupunkt = new MenuItem("Teleport to Landmark");
+            Gtk.Label x = new Gtk.Label("Landmark options");
+            this.menu_landmark.Append(x);
+            this.menu_landmark.Append(menupunkt);
+            menupunkt.ButtonPressEvent += new ButtonPressEventHandler(Teleporttolandmark);        
 		}
+
+        void Teleporttolandmark(object o, ButtonPressEventArgs args)
+        {
+            Gtk.TreeModel mod;
+            Gtk.TreeIter iter;
+            this.treeview_inv.Selection.GetSelected(out mod, out iter);
+            TeleportProgress tp = new TeleportProgress();
+            InventoryLandmark item = (InventoryLandmark)mod.GetValue(iter, 3);
+            MainClass.client.Self.Teleport(item.UUID);
+        }
+
+      
+
+        [GLib.ConnectBefore]
+        void treeview_inv_ButtonPressEvent(object o, ButtonPressEventArgs args)
+        {
+            Console.Write("Button pressed and it is "+args.Event.Button.ToString()+"\n");
+            if (args.Event.Button == 3)//Fuck this should be a define
+            {
+                // Do the context sensitive stuff here
+                // Detect type of asset selected and show an approprate menu
+                // maybe
+                Gtk.TreeModel mod;
+			    Gtk.TreeIter iter;
+
+                if (this.treeview_inv.Selection.GetSelected(out mod, out iter))
+                {   if(mod.GetValue(iter,3)!=null)
+                    {
+                        InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+                        if(item is InventoryLandmark)
+                        {
+                            menu_landmark.Popup();
+                            menu_landmark.ShowAll();
+                        }
+                    }
+                }
+            }
+        }
 	
 		void onLogin(LoginStatus status,string message)
 		{
@@ -84,7 +131,7 @@ namespace omvviewerlight
 				Gtk.Application.Invoke(delegate {
 					inventory.Clear();
 					Gtk.TreeIter iter = inventory.AppendValues(folder_closed,"Inventory", MainClass.client.Inventory.Store.RootFolder.UUID);
-					inventory.AppendValues(iter,folder_closed, "Waiting...", MainClass.client.Inventory.Store.RootFolder.UUID);		
+					inventory.AppendValues(iter,folder_closed, "Waiting...", MainClass.client.Inventory.Store.RootFolder.UUID,null);		
 				});
 			}
 		}
@@ -118,11 +165,11 @@ namespace omvviewerlight
 			foreach (InventoryBase item in myObjects)
 			{
 				Gdk.Pixbuf buf=getprettyicon(item);
-				Gtk.TreeIter iter2 = inventory.AppendValues(args.Iter,buf, item.Name, item.UUID);
+				Gtk.TreeIter iter2 = inventory.AppendValues(args.Iter,buf, item.Name, item.UUID,item);
 
 				if (item is InventoryFolder)
 				{
-					inventory.AppendValues(iter2, item_object,"Waiting...", item.UUID);	
+					inventory.AppendValues(iter2, item_object,"Waiting...", item.UUID,item);	
 				}
 				
 			}
