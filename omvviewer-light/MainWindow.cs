@@ -42,6 +42,12 @@ public partial class MainWindow: Gtk.Window
 	public uint currentpage=0;
 	public StatusIcon trayIcon;
 
+    ~MainWindow()
+    {
+        this.trayIcon.Visible = false;
+        this.trayIcon.Dispose();
+    }
+
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
         Build();
