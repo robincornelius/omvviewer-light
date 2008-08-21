@@ -92,12 +92,12 @@ namespace omvviewerlight
             Gtk.TreeIter iter;
             this.treeview_inv.Selection.GetSelected(out mod, out iter);
             TeleportProgress tp = new TeleportProgress();
+            tp.Show();
             InventoryLandmark item = (InventoryLandmark)mod.GetValue(iter, 3);
-            MainClass.client.Self.Teleport(item.UUID);
+            MainClass.client.Self.Teleport(item.AssetUUID);
         }
 
       
-
         [GLib.ConnectBefore]
         void treeview_inv_ButtonPressEvent(object o, ButtonPressEventArgs args)
         {
