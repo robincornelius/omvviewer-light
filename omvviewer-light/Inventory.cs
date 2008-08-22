@@ -77,7 +77,6 @@ namespace omvviewerlight
 			this.treeview_inv.RowExpanded += new Gtk.RowExpandedHandler(onRowExpanded);
 			this.treeview_inv.RowCollapsed += new Gtk.RowCollapsedHandler(onRowCollapsed);
 			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
-            Console.Write("YAYAYAYAYAYAY\n");
             this.treeview_inv.ButtonPressEvent += new ButtonPressEventHandler(treeview_inv_ButtonPressEvent);
 
 
@@ -95,7 +94,7 @@ namespace omvviewerlight
 			this.menu_item.Append(menu_delete);
 			this.menu_item.Append(menu_give);
 			this.menu_item.Append(menu_delete);
-			
+		
             menupunkt.ButtonPressEvent += new ButtonPressEventHandler(Teleporttolandmark);        
 			menu_give.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
 			menu_delete.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
@@ -142,9 +141,16 @@ namespace omvviewerlight
 			
 		}
 		
-		void ongiveasset2(LLUUID id,LLUUID asset,string item_name)
+		void ongiveasset2(LLUUID id,LLUUID asset,string item_name,string user_name)
 		{
-			MainClass.client.Inventory.GiveItem(asset,item_name,AssetType.Landmark,id,false);
+			MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.Modal,MessageType.Question,ButtonsType.YesNo,"Are you sure you wish to give\n"+item_name+"to "+user_name);
+			ResponseType result=(ResponseType)md.Run();	
+			md.Destroy();
+			
+			if(result==ResponseType.Yes)
+			{
+				MainClass.client.Inventory.GiveItem(asset,item_name,AssetType.Landmark,id,false);
+			}
 		}
 		
         void Inventory_OnTaskItemReceived(LLUUID itemID, LLUUID folderID, LLUUID creatorID, LLUUID assetID, InventoryType type)

@@ -19,7 +19,7 @@ namespace omvviewerlight
 		
 		Gtk.ListStore store;
 		
-		public delegate void UserSelected(LLUUID id,LLUUID asset,string item_name);
+		public delegate void UserSelected(LLUUID id,LLUUID asset,string item_name,string user_name);
  
         // Define an Event based on the above Delegate
         public event UserSelected UserSel;
@@ -50,23 +50,11 @@ namespace omvviewerlight
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
 			
-			MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.Modal,MessageType.Question,ButtonsType.YesNo,"Are you sure you wish to give\n"+item_name+"to "+user_name);
-			ResponseType result=(ResponseType)md.Run();	
-			if(result==ResponseType.No)
-			{
-				md.Destroy();
-				this.Destroy();
-				return;
-			}
-
-			md.Destroy();
-			
-			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
 				LLUUID id=(LLUUID)mod.GetValue(iter,1);
 				if(UserSel!=null)
-					UserSel(id,asset,item_name);
+					UserSel(id,asset,item_name,user_name);
 			}
 			
 			this.Destroy();
