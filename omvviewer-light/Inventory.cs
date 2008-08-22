@@ -35,7 +35,8 @@ namespace omvviewerlight
 	public partial class Inventory : Gtk.Bin
 	{
         Gtk.Menu menu_landmark = new Menu();
-       
+        Gtk.Menu menu_item = new Menu();
+		
 		String[] SearchFolders = { "" };
 		//initialize our list to store the folder contents
         LLUUID inventoryItems;
@@ -90,17 +91,45 @@ namespace omvviewerlight
 			Gtk.MenuItem menu_delete = new MenuItem("Delete item");
             this.menu_landmark.Append(menupunkt);
 			this.menu_landmark.Append(menu_give);
+			this.menu_landmark.Append(menu_delete);
+			this.menu_item.Append(menu_delete);
+			this.menu_item.Append(menu_give);
+			this.menu_item.Append(menu_delete);
 			
             menupunkt.ButtonPressEvent += new ButtonPressEventHandler(Teleporttolandmark);        
 			menu_give.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
+			menu_delete.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
+			
 		}
-
+		
+		void ondeleteasset(object o, ButtonPressEventArgs args)
+		{
+			Gtk.TreeModel mod;
+            Gtk.TreeIter iter;
+            this.treeview_inv.Selection.GetSelected(out mod, out iter);
+            InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+			
+			if(item is InventoryItem)
+			{			
+				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.Modal,MessageType.Question,ButtonsType.YesNo,"Are you sure you wish to delete\n"+((InventoryItem)item).Name+"to ");
+				ResponseType result=(ResponseType)md.Run();	
+				if(result==ResponseType.Yes)
+				{
+					md.Destroy();
+					MainClass.client.Inventory.RemoveItem(item.UUID);
+					return;
+				}
+					md.Destroy();
+								
+			}
+		}
+		
 		void ongiveasset(object o, ButtonPressEventArgs args)
 		{
 			Gtk.TreeModel mod;
             Gtk.TreeIter iter;
             this.treeview_inv.Selection.GetSelected(out mod, out iter);
-            InventoryBase item = (InventoryLandmark)mod.GetValue(iter, 3);
+            InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
 			NamePicker np = new NamePicker();
 			
 			if(item is InventoryItem)

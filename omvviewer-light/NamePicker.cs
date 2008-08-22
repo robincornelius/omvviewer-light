@@ -54,9 +54,13 @@ namespace omvviewerlight
 			ResponseType result=(ResponseType)md.Run();	
 			if(result==ResponseType.No)
 			{
+				md.Destroy();
 				this.Destroy();
 				return;
 			}
+
+			md.Destroy();
+			
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
