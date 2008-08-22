@@ -56,6 +56,9 @@ namespace omvviewerlight
 			if(query!=queryid)
 					return;
 
+            if (people.Count == 0)
+                return;
+
 			foreach(libsecondlife.DirectoryManager.AgentSearchData person in people)
 			{
 					store.AppendValues (person.Online,person.FirstName+" "+person.LastName,person.AgentID);		

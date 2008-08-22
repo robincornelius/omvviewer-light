@@ -52,6 +52,7 @@ public partial class MainWindow: Gtk.Window
 	{
         Build();
        
+            
 		trayIcon = new StatusIcon(new Gdk.Pixbuf("viewericon.xpm"));
 		trayIcon.Visible=true;
 		trayIcon.Tooltip="Hello World";
@@ -81,6 +82,8 @@ public partial class MainWindow: Gtk.Window
 		// Fuck stupid notebook tabs and monodeveop have to do it myself
 		ChatLayout c=new ChatLayout();
         chat_tab_lable=this.addtabwithicon("icn_voice-pvtfocus.tga","Chat",c);
+        c.passontablable(chat_tab_lable);
+        this.notebook.SwitchPage += new SwitchPageHandler(c.onSwitchPage);
 		
 		Location t=new Location();
 		this.addtabwithicon("icon_place.tga","Location",t);
@@ -115,13 +118,9 @@ public partial class MainWindow: Gtk.Window
 		MainClass.client.Self.OnScriptDialog +=new libsecondlife.AgentManager.ScriptDialogCallback(onScriptDialogue);
 		
         this.WindowStateEvent += delegate { if (this.Visible) { trayIcon.Blinking = false; this.UrgencyHint = false; };};
-         
-
-		GLib.Timeout.Add(10000,OnUpdateStatus); 
+   	GLib.Timeout.Add(10000,OnUpdateStatus); 
 	}
 
-    
-    
 	void onScriptDialogue(string message,string objectName,LLUUID imageID,LLUUID objectID,string FirstName,string lastName,int chatChannel,List <string> buttons)
 	{
         Gtk.Application.Invoke(delegate

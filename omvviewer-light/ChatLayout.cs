@@ -23,6 +23,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 //
 
 using System;
+using Gtk;
 
 namespace omvviewerlight
 {
@@ -32,5 +33,16 @@ namespace omvviewerlight
 		{
 			this.Build();
 		}
+
+        public void passontablable(Gtk.Label tablable)
+        {
+            this.chatconsole1.tabLabel = tablable;
+        }
+
+        public void onSwitchPage(object o, SwitchPageArgs args)
+        {
+            this.chatconsole1.onSwitchPage(o, args);
+
+        }
 	}
 }

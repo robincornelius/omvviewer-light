@@ -77,7 +77,6 @@ namespace omvviewerlight
 		{
 			if(avs.ContainsKey(update.LocalID))
 			{
-				Console.Write("OnUpdateAvatar\n");
 				drawavs();
 			}
 		}

@@ -58,6 +58,7 @@ namespace omvviewerlight
 		
 		~ChatConsole()
 		{
+            
 			MainClass.win.getnotebook().SwitchPage -= new SwitchPageHandler(onSwitchPage);
 			
 			if(im_key!=libsecondlife.LLUUID.Zero)
@@ -79,7 +80,7 @@ namespace omvviewerlight
             this.im_key = LLUUID.Zero;
 			MainClass.client.Self.OnChat += new libsecondlife.AgentManager.ChatCallback(onChat);
             MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
-
+           // MainClass.win.getnotebook().SwitchPage += new SwitchPageHandler(onSwitchPage);
 		}
 
 		
@@ -95,28 +96,42 @@ namespace omvviewerlight
 				MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
 				MainClass.client.Groups.OnGroupNames += new libsecondlife.GroupManager.GroupNamesCallback(onGroupNames);
 				MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);
-			
+             //   MainClass.win.getnotebook().SwitchPage += new SwitchPageHandler(onSwitchPage);
 			}
 			else
 			{
 				im_key=im.FromAgentID;				
 				MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);
 			}
-			
-			onIM(im,null); //yea, i forgot this, need to display text from first IM, lol
-				
+            // Pass the message on to the chat system as the event will not have been triggered as its
+            // only just registered.
+			onIM(im,null);
 		}
 		
 		public void onSwitchPage(object o, SwitchPageArgs args)
 		{
 			//If we switch to *this* page then remove a possible red tab lable
 			int thispage=MainClass.win.getnotebook().PageNum(this);
+
+            if (thispage == -1)
+            {
+                if(this.Parent!=null)
+                    thispage = MainClass.win.getnotebook().PageNum(this.Parent);
+            }
+
+            if (thispage == -1)
+                thispage = 1; //FUCKING PARENT CHAT WINDOW STUFF
+
+            Console.Write("On switch page " + thispage.ToString() + ":" + args.PageNum.ToString());
 			if(thispage==args.PageNum)
 			{
+                Console.Write("Setting color to black\n");
+
 			    Gdk.Color col = new Gdk.Color(0,0,0);
 				Gtk.StateType type = new Gtk.StateType();
-				type|=Gtk.StateType.Active;			
-				this.tabLabel.ModifyFg(type,col);				
+				type|=Gtk.StateType.Active;
+			    if(this.tabLabel!=null)
+				    this.tabLabel.ModifyFg(type,col);				
 			}
 		}
 		
@@ -145,10 +160,34 @@ namespace omvviewerlight
 				int activepage=MainClass.win.getnotebook().CurrentPage;
 				int thispage=MainClass.win.getnotebook().PageNum(this);
 				Console.Write(activepage.ToString()+" : "+thispage.ToString()+"\n");
-				int index=-1;
-				if(thispage!=-1) //Chat console is not a direct child so throws -1 IM's are to give a vaid return
-				{				
-					this.tabLabel.ModifyFg(type,col);					
+
+                Console.Write("Red tab test " + activepage.ToString() + ":" + thispage.ToString() + "\n");
+
+                if (thispage == -1)
+                {
+                    if(this.Parent!=null)
+                        thispage = MainClass.win.getnotebook().PageNum(this.Parent);
+
+                    Console.Write("Tried to get parent we are now on :"+thispage.ToString()+"\n");
+                }
+
+                if (thispage == -1 && this.tabLabel != null)
+                {
+                    //I'm guessing that we are the chat window and the fucking parent operators are still not working
+                     if(activepage!=1)
+                     {
+                        Console.Write("Assuming chat so going to red that one\n");
+                         this.tabLabel.ModifyFg(type, col);
+                     }
+                }
+                  
+				if(thispage!=-1)
+				{
+                    Console.Write("Got an index\n");
+
+                    if(activepage!=thispage)
+                        if(this.tabLabel!=null)
+					        this.tabLabel.ModifyFg(type,col);					
 					return;
 				}	
 			});
@@ -249,6 +288,8 @@ namespace omvviewerlight
 
             Console.Write("IM FROM " + im.FromAgentID + " : " + im.FromAgentName + " : " + im.IMSessionID + "\n");
 
+            redtab();
+            windownotify();
 
             // Is this from an object?
             //null session ID
@@ -272,19 +313,11 @@ namespace omvviewerlight
                         buffer = " "+im.Message + "\n";
                         textview_chat.Buffer.InsertWithTags(ref iter, buffer, objectIMchat);
                         textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
-                        if (!MainClass.win.Visible)
-                        {
-                            MainClass.win.trayIcon.Blinking = true;
-                            MainClass.win.UrgencyHint = true;
-                            Gdk.Color col = new Gdk.Color(255, 0, 0);
-                            Gtk.StateType xtype = new Gtk.StateType();
-                            xtype |= Gtk.StateType.Active;
-                            MainClass.win.chat_tab_lable.ModifyFg(xtype, col);
-                            MainClass.win.UrgencyHint = true;
-                            MainClass.win.trayIcon.Blinking = true;
-
-                        }
+                    
                     });
+                    
+                  
+
                     return;
 
 
@@ -294,11 +327,9 @@ namespace omvviewerlight
             }
            
 
-
-
             Gtk.Application.Invoke(delegate
-            {		
-			    redtab();
+            {
+               
 			
 			    string buffer;
 			    TextIter iter;
@@ -325,21 +356,10 @@ namespace omvviewerlight
 			if(message=="")
 				return; //WTF???? why do i get empty messages which are not the above types
 
-			Gtk.Application.Invoke(delegate {						
-			
-			if(!MainClass.win.Visible)
-			{
-				MainClass.win.trayIcon.Blinking=true;
-				MainClass.win.UrgencyHint=true;
-				Gdk.Color col = new Gdk.Color(255,0,0);
-				Gtk.StateType xtype = new Gtk.StateType();			
-				xtype|=Gtk.StateType.Active;
-				MainClass.win.chat_tab_lable.ModifyFg(xtype,col);									
-				MainClass.win.UrgencyHint=true;
-				MainClass.win.trayIcon.Blinking=true;
 
-				}
-	        });
+            redtab();
+            windownotify();
+
 			
 			string buffer;
 			TextIter iter;
@@ -354,68 +374,31 @@ namespace omvviewerlight
 			if(sourcetype==ChatSourceType.Agent)
 			{
 				Gtk.Application.Invoke(delegate {						
-				
-					iter=textview_chat.Buffer.EndIter;
-					buffer=fromName;
-					textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold);
-
-					iter=textview_chat.Buffer.EndIter;
-					buffer=message+"\n";
-					textview_chat.Buffer.InsertWithTags(ref iter,buffer,avchat);
-                    TextMark mark = textview_chat.Buffer.CreateMark("xyz", textview_chat.Buffer.EndIter, true);
-                    textview_chat.ScrollMarkOnscreen(mark);
-					textview_chat.Buffer.DeleteMark("xyz");
-	
+                    displaychat(message, fromName, avchat, bold);	
 				});
 				return;
 			}
 
 			if(type==ChatType.OwnerSay)
 			{
-				Gtk.Application.Invoke(delegate {						
-
-					iter=textview_chat.Buffer.EndIter;
-					buffer=fromName;
-					textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold,ownerobjectchat);
-
-					iter=textview_chat.Buffer.EndIter;
-					buffer=message+"\n";
-					textview_chat.Buffer.InsertWithTags(ref iter,buffer,ownerobjectchat);
-                    TextMark mark = textview_chat.Buffer.CreateMark("xyz", textview_chat.Buffer.EndIter, true);
-					textview_chat.ScrollMarkOnscreen(mark);
-					textview_chat.Buffer.DeleteMark("xyz");
-
+				Gtk.Application.Invoke(delegate {
+                    displaychat(message, fromName, ownerobjectchat, ownerobjectchat);
 				});
 				return;		
 			}
 			
 			if(sourcetype==ChatSourceType.Object)
 			{
-				Gtk.Application.Invoke(delegate {						
-					iter=textview_chat.Buffer.EndIter;
-					buffer=fromName;
-					textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold,objectchat);
-
-					iter=textview_chat.Buffer.EndIter;
-					buffer=message+"\n";
-					textview_chat.Buffer.InsertWithTags(ref iter,buffer,objectchat);
-					textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
+				Gtk.Application.Invoke(delegate {
+                    displaychat(message, fromName, objectchat, objectchat);
 					});
 				return;
 			}
 
 			if(sourcetype==ChatSourceType.System)
 			{
-				Gtk.Application.Invoke(delegate {						
-
-					iter=textview_chat.Buffer.EndIter;
-					buffer=fromName;
-					textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold,systemchat);
-
-					iter=textview_chat.Buffer.EndIter;
-					buffer=message+"\n";
-					textview_chat.Buffer.InsertWithTags(ref iter,buffer,systemchat);
-					textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);				
+				Gtk.Application.Invoke(delegate {
+                    displaychat(message, fromName, systemchat, systemchat);		
 				});
 				return;
 			}
@@ -469,14 +452,78 @@ namespace omvviewerlight
 				pos=this.entry_chat.Text.IndexOf(" ");
 				string substr=this.entry_chat.Text.Substring(1,pos);
 				Console.Write("Saying on channle :"+substr+"\n");
-				channel = int.Parse(substr);
-			}
+                try
+                {
+				    channel = int.Parse(substr);
+                }
+                catch(Exception ee)
+                {
+                    channel=0;
+                }
+            }
 			
-			MainClass.client.Self.Chat(this.entry_chat.Text+"\n",channel,type);
+			MainClass.client.Self.Chat(this.entry_chat.Text,channel,type);
 			
 			this.entry_chat.Text="";
 			
 		}
+
+      
+        void windownotify()
+        {
+            Gtk.Application.Invoke(delegate
+            {
+                if (!MainClass.win.Visible)
+                {
+                    MainClass.win.trayIcon.Blinking = true;
+                    MainClass.win.UrgencyHint = true;
+                    MainClass.win.trayIcon.Blinking = true;
+
+                }
+            });
+
+        }
+
+        void displaychat(string message, string name, TextTag message_tag, TextTag name_tag)
+        {
+            string buffer;
+            TextIter iter;
+            
+            bool emote = false;
+
+            if (message.Length > 3)
+                if (message.Substring(0, 3) == "/me")
+                    emote=true;
+
+            if (emote == false)
+            {
+                iter = textview_chat.Buffer.EndIter;
+                buffer = name;
+                textview_chat.Buffer.InsertWithTags(ref iter, buffer, name_tag);
+                iter = textview_chat.Buffer.EndIter;
+                buffer = message + "\n";
+                textview_chat.Buffer.InsertWithTags(ref iter, buffer, message_tag);
+                TextMark mark = textview_chat.Buffer.CreateMark("xyz", textview_chat.Buffer.EndIter, true);
+                textview_chat.ScrollMarkOnscreen(mark);
+                textview_chat.Buffer.DeleteMark("xyz");
+            }
+            else
+            {
+                if (message.Length < 3)
+                    return;
+
+                message = message.Substring(3, message.Length-3);
+                iter = textview_chat.Buffer.EndIter;
+                buffer = name+message + "\n";
+                textview_chat.Buffer.InsertWithTags(ref iter, buffer, message_tag);
+                TextMark mark = textview_chat.Buffer.CreateMark("xyz", textview_chat.Buffer.EndIter, true);
+                textview_chat.ScrollMarkOnscreen(mark);
+                textview_chat.Buffer.DeleteMark("xyz");
+
+            }
+
+        }
+
 		
 		void onAvatarNames(Dictionary <LLUUID,string>names)
 		{
