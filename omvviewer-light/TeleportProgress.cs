@@ -36,6 +36,7 @@ namespace omvviewerlight
 		
 		string tpsim;
 		LLVector3 tppos;
+		LLUUID landmark;
 		
 		public TeleportProgress() : 
 				base(Gtk.WindowType.Toplevel)
@@ -44,9 +45,20 @@ namespace omvviewerlight
 			MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
 		}
 		
+		public void teleportassetid(LLUUID asset)
+		{
+			landmark=asset;
+			Thread tpRunner= new Thread(new ThreadStart(this.tptolandmark));   			
+			tpRunner.Start();
+		}
+		                                      
+		
 		public void teleporthome()
 		{
-			MainClass.client.Self.GoHome();
+			 Thread tpRunner= new Thread(new ThreadStart(this.gohomethread));   			
+ 			 tpRunner.Start();
+			
+			//MainClass.client.Self.GoHome();
 			
 		}
 
@@ -58,13 +70,15 @@ namespace omvviewerlight
 				this.tppos=pos;
 				this.tpsim=sim;
 				this.QueueDraw();
-				Thread tpRunner= new Thread(new ThreadStart(this.tpthread));   			
-				tpRunner.Start();
 			});
+				
+			    Thread tpRunner= new Thread(new ThreadStart(this.tpthread));   			
+				tpRunner.Start();
 		}
 		
 		void tpthread()
 		{
+			Thread.Sleep(1000);
 			GridRegion region;
 			if(!MainClass.client.Grid.GetGridRegion(tpsim,libsecondlife.GridLayerType.Objects, out region))
 			{
@@ -78,6 +92,20 @@ namespace omvviewerlight
 			}
 			//GetGridRegion
 			MainClass.client.Self.Teleport(tpsim,tppos);				
+		}
+		
+		void tptolandmark()		
+		{
+			   Thread.Sleep(1000);
+			   MainClass.client.Self.Teleport(landmark);
+			
+		}
+		
+		void gohomethread()
+		{
+			Thread.Sleep(1000);
+		    MainClass.client.Self.GoHome();
+			
 		}
 		
 		void onTeleport(string Message, libsecondlife.AgentManager.TeleportStatus status,libsecondlife.AgentManager.TeleportFlags flags)

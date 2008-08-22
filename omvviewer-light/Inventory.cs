@@ -138,7 +138,8 @@ namespace omvviewerlight
             TeleportProgress tp = new TeleportProgress();
             tp.Show();
             InventoryLandmark item = (InventoryLandmark)mod.GetValue(iter, 3);
-            MainClass.client.Self.Teleport(item.AssetUUID);
+			tp.teleportassetid(item.AssetUUID);
+			//MainClass.client.Self.Teleport(item.AssetUUID);
         }
 
       
@@ -307,6 +308,35 @@ namespace omvviewerlight
                 return this.item_callingcard;
          
 			return item_object;
-		}		
+		}
+
+		protected virtual void OnTreeviewInvCursorChanged (object sender, System.EventArgs e)
+		{
+			
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(this.treeview_inv.Selection.GetSelected(out mod,out iter))			
+			{
+				 if(mod.GetValue(iter,3)!=null)
+                 {
+					InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+					this.label_name.Text=item.Name;
+					
+					if(item is InventoryObject)
+					{
+						this.label_createdby.Text=((InventoryObject)item).CreatorID.ToString();
+						this.label_aquired.Text=((InventoryObject)item).CreationDate.ToString();
+						this.checkbutton_copy.Active=libsecondlife.PermissionMask.Copy==(((InventoryObject)item).Permissions.OwnerMask&libsecondlife.PermissionMask.Copy);
+						this.checkbutton_mod.Active=libsecondlife.PermissionMask.Modify==(((InventoryObject)item).Permissions.OwnerMask&libsecondlife.PermissionMask.Modify);
+						this.checkbutton_trans.Active=libsecondlife.PermissionMask.Transfer==(((InventoryObject)item).Permissions.OwnerMask&libsecondlife.PermissionMask.Transfer);
+						
+			
+					}
+		
+				 }
+			}
+		}
+		
 	}
 }

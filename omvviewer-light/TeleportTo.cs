@@ -59,6 +59,7 @@ namespace omvviewerlight
 		
 		void onTeleport(string Message, libsecondlife.AgentManager.TeleportStatus status,libsecondlife.AgentManager.TeleportFlags flags)
 		{
+			if(status==libsecondlife.AgentManager.TeleportStatus.Finished)
             Gtk.Application.Invoke(delegate
             {
                 this.spinbutton_x.Value = MainClass.client.Self.SimPosition.X;

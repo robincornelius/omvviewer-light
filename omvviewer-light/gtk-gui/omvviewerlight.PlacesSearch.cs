@@ -23,6 +23,8 @@ namespace omvviewerlight {
         
         private Gtk.Button button_search;
         
+        private Gtk.Label label_info;
+        
         private Gtk.HBox hbox2;
         
         private Gtk.ScrolledWindow GtkScrolledWindow;
@@ -85,6 +87,16 @@ namespace omvviewerlight {
             w4.Expand = false;
             w4.Fill = false;
             // Container child vbox1.Gtk.Box+BoxChild
+            this.label_info = new Gtk.Label();
+            this.label_info.Name = "label_info";
+            this.label_info.Xalign = 0F;
+            this.label_info.LabelProp = Mono.Unix.Catalog.GetString("Type in a name and press search to begin");
+            this.vbox1.Add(this.label_info);
+            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox1[this.label_info]));
+            w5.Position = 1;
+            w5.Expand = false;
+            w5.Fill = false;
+            // Container child vbox1.Gtk.Box+BoxChild
             this.hbox2 = new Gtk.HBox();
             this.hbox2.Name = "hbox2";
             this.hbox2.Spacing = 6;
@@ -100,8 +112,8 @@ namespace omvviewerlight {
             this.treeview1.HeadersClickable = true;
             this.GtkScrolledWindow.Add(this.treeview1);
             this.hbox2.Add(this.GtkScrolledWindow);
-            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox2[this.GtkScrolledWindow]));
-            w6.Position = 0;
+            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.hbox2[this.GtkScrolledWindow]));
+            w7.Position = 0;
             // Container child hbox2.Gtk.Box+BoxChild
             this.vbox2 = new Gtk.VBox();
             this.vbox2.Name = "vbox2";
@@ -115,16 +127,16 @@ namespace omvviewerlight {
             this.checkbutton_mature.DrawIndicator = true;
             this.checkbutton_mature.UseUnderline = true;
             this.vbox2.Add(this.checkbutton_mature);
-            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.vbox2[this.checkbutton_mature]));
-            w7.Position = 0;
-            w7.Expand = false;
-            w7.Fill = false;
+            Gtk.Box.BoxChild w8 = ((Gtk.Box.BoxChild)(this.vbox2[this.checkbutton_mature]));
+            w8.Position = 0;
+            w8.Expand = false;
+            w8.Fill = false;
             this.hbox2.Add(this.vbox2);
-            Gtk.Box.BoxChild w8 = ((Gtk.Box.BoxChild)(this.hbox2[this.vbox2]));
-            w8.Position = 1;
-            this.vbox1.Add(this.hbox2);
-            Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
+            Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.hbox2[this.vbox2]));
             w9.Position = 1;
+            this.vbox1.Add(this.hbox2);
+            Gtk.Box.BoxChild w10 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
+            w10.Position = 2;
             // Container child vbox1.Gtk.Box+BoxChild
             this.hbox3 = new Gtk.HBox();
             this.hbox3.Name = "hbox3";
@@ -136,15 +148,15 @@ namespace omvviewerlight {
             this.button_TP.UseUnderline = true;
             this.button_TP.Label = Mono.Unix.Catalog.GetString("Teleport");
             this.hbox3.Add(this.button_TP);
-            Gtk.Box.BoxChild w10 = ((Gtk.Box.BoxChild)(this.hbox3[this.button_TP]));
-            w10.Position = 0;
-            w10.Expand = false;
-            w10.Fill = false;
-            this.vbox1.Add(this.hbox3);
-            Gtk.Box.BoxChild w11 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox3]));
-            w11.Position = 2;
+            Gtk.Box.BoxChild w11 = ((Gtk.Box.BoxChild)(this.hbox3[this.button_TP]));
+            w11.Position = 0;
             w11.Expand = false;
             w11.Fill = false;
+            this.vbox1.Add(this.hbox3);
+            Gtk.Box.BoxChild w12 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox3]));
+            w12.Position = 3;
+            w12.Expand = false;
+            w12.Fill = false;
             this.Add(this.vbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();

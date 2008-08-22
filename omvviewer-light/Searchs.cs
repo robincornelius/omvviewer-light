@@ -45,20 +45,24 @@ namespace omvviewerlight
 			treeview1.AppendColumn("Name",new Gtk.CellRendererText(),"text",1);		
 			store.SetSortColumnId(1,Gtk.SortType.Ascending);
 			treeview1.Model=store;
-			
 			MainClass.client.Directory.OnDirPeopleReply += new libsecondlife.DirectoryManager.DirPeopleReplyCallback(onFindPeople);
 		}
 
 		void onFindPeople(LLUUID query,List <libsecondlife.DirectoryManager.AgentSearchData> people)
 		{
-			Gtk.Application.Invoke(delegate {
-			
 			if(query!=queryid)
 					return;
+			
+	
+			Gtk.Application.Invoke(delegate {
+			
 
-            if (people.Count == 0)
+			this.label_info.Text="Search returned "+people.Count.ToString()+" results";
+			
+		     if (people.Count == 0)
                 return;
 
+				
 			foreach(libsecondlife.DirectoryManager.AgentSearchData person in people)
 			{
 					store.AppendValues (person.Online,person.FirstName+" "+person.LastName,person.AgentID);		
@@ -72,6 +76,8 @@ namespace omvviewerlight
 		protected virtual void OnButton1Clicked (object sender, System.EventArgs e)
 		{
 			store.Clear();
+			this.label_info.Text="Searching..........";
+		
 			queryid=LLUUID.Random();
 			libsecondlife.DirectoryManager.DirFindFlags findFlags;
 			findFlags=libsecondlife.DirectoryManager.DirFindFlags.People;

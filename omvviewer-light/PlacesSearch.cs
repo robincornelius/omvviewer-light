@@ -59,10 +59,13 @@ namespace omvviewerlight
 				
 			void onPlaces(LLUUID query,List <libsecondlife.DirectoryManager.PlacesSearchData> matchedplaces)
 			{
-				Gtk.Application.Invoke(delegate {
-
 				if(query!=queryid)
 					return;
+			
+				Gtk.Application.Invoke(delegate {
+
+				this.label_info.Text="Search returned "+matchedplaces.Count.ToString()+" results";
+	    
 
 				foreach(libsecondlife.DirectoryManager.PlacesSearchData place in matchedplaces)
 				{	
@@ -76,6 +79,8 @@ namespace omvviewerlight
 		protected virtual void OnButtonSearchClicked (object sender, System.EventArgs e)
 		{
 			store.Clear();
+			this.label_info.Text="Searching..........";
+			
 			libsecondlife.DirectoryManager.DirFindFlags flags;
 			flags=libsecondlife.DirectoryManager.DirFindFlags.NameSort;
 			

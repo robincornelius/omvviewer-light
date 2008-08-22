@@ -123,7 +123,6 @@ namespace omvviewerlight {
             w5.Fill = false;
             // Container child vbox5.Gtk.Box+BoxChild
             this.hbox4 = new Gtk.HBox();
-            this.hbox4.Name = "hbox4";
             this.hbox4.Homogeneous = true;
             this.hbox4.Spacing = 6;
             // Container child hbox4.Gtk.Box+BoxChild
@@ -190,7 +189,7 @@ namespace omvviewerlight {
             w11.Expand = false;
             w11.Fill = false;
             // Container child hbox5.Gtk.Box+BoxChild
-            this.spinbutton_z = new Gtk.SpinButton(0, 255, 1);
+            this.spinbutton_z = new Gtk.SpinButton(0, 4096, 1);
             this.spinbutton_z.CanFocus = true;
             this.spinbutton_z.Name = "spinbutton_z";
             this.spinbutton_z.Adjustment.PageIncrement = 10;
