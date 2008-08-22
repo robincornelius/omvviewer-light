@@ -86,10 +86,38 @@ namespace omvviewerlight
             MainClass.client.Inventory.OnTaskInventoryReply += new InventoryManager.TaskInventoryReplyCallback(Inventory_OnTaskInventoryReply);
             MainClass.client.Inventory.OnTaskItemReceived += new InventoryManager.TaskItemReceivedCallback(Inventory_OnTaskItemReceived);
             Gtk.MenuItem menupunkt = new MenuItem("Teleport to Landmark");
+			Gtk.MenuItem menu_give = new MenuItem("Give to user");
+			Gtk.MenuItem menu_delete = new MenuItem("Delete item");
             this.menu_landmark.Append(menupunkt);
+			this.menu_landmark.Append(menu_give);
+			
             menupunkt.ButtonPressEvent += new ButtonPressEventHandler(Teleporttolandmark);        
+			menu_give.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
 		}
 
+		void ongiveasset(object o, ButtonPressEventArgs args)
+		{
+			Gtk.TreeModel mod;
+            Gtk.TreeIter iter;
+            this.treeview_inv.Selection.GetSelected(out mod, out iter);
+            InventoryBase item = (InventoryLandmark)mod.GetValue(iter, 3);
+			NamePicker np = new NamePicker();
+			
+			if(item is InventoryItem)
+				np.item_name=((InventoryLandmark)item).Name;
+					
+			np.asset=item.UUID;
+			
+			np.UserSel += new NamePicker.UserSelected(ongiveasset2);
+			np.Show();
+			
+		}
+		
+		void ongiveasset2(LLUUID id,LLUUID asset,string item_name)
+		{
+			MainClass.client.Inventory.GiveItem(asset,item_name,AssetType.Landmark,id,false);
+		}
+		
         void Inventory_OnTaskItemReceived(LLUUID itemID, LLUUID folderID, LLUUID creatorID, LLUUID assetID, InventoryType type)
         {
         }
@@ -323,13 +351,13 @@ namespace omvviewerlight
 					InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
 					this.label_name.Text=item.Name;
 					
-					if(item is InventoryObject)
+					if(item is InventoryItem)
 					{
-						this.label_createdby.Text=((InventoryObject)item).CreatorID.ToString();
-						this.label_aquired.Text=((InventoryObject)item).CreationDate.ToString();
-						this.checkbutton_copy.Active=libsecondlife.PermissionMask.Copy==(((InventoryObject)item).Permissions.OwnerMask&libsecondlife.PermissionMask.Copy);
-						this.checkbutton_mod.Active=libsecondlife.PermissionMask.Modify==(((InventoryObject)item).Permissions.OwnerMask&libsecondlife.PermissionMask.Modify);
-						this.checkbutton_trans.Active=libsecondlife.PermissionMask.Transfer==(((InventoryObject)item).Permissions.OwnerMask&libsecondlife.PermissionMask.Transfer);
+						this.label_createdby.Text=((InventoryItem)item).CreatorID.ToString();
+						this.label_aquired.Text=((InventoryItem)item).CreationDate.ToString();
+						this.checkbutton_copy.Active=libsecondlife.PermissionMask.Copy==(((InventoryItem)item).Permissions.OwnerMask&libsecondlife.PermissionMask.Copy);
+						this.checkbutton_mod.Active=libsecondlife.PermissionMask.Modify==(((InventoryItem)item).Permissions.OwnerMask&libsecondlife.PermissionMask.Modify);
+						this.checkbutton_trans.Active=libsecondlife.PermissionMask.Transfer==(((InventoryItem)item).Permissions.OwnerMask&libsecondlife.PermissionMask.Transfer);
 						
 			
 					}

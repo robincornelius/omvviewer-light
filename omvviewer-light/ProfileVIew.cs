@@ -26,7 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using libsecondlife;
-using libsecondlife;
+
 
 namespace omvviewerlight
 {

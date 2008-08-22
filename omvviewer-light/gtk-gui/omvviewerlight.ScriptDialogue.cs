@@ -203,6 +203,7 @@ namespace omvviewerlight {
             w13.Fill = false;
             // Container child vbox1.Gtk.Box+BoxChild
             this.hbox4 = new Gtk.HBox();
+            this.hbox4.Name = "hbox4";
             this.hbox4.Homogeneous = true;
             this.hbox4.Spacing = 6;
             // Container child hbox4.Gtk.Box+BoxChild
