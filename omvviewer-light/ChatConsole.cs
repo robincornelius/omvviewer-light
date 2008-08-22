@@ -65,9 +65,11 @@ namespace omvviewerlight
 					MainClass.win.active_ims.Remove(im_key);	
 		
 			if(im_session_id!=libsecondlife.LLUUID.Zero)
-				if(MainClass.win.active_groups_ims.Contains(im_key))
-					MainClass.win.active_groups_ims.Remove(im_key);	
-		
+                if (MainClass.win.active_groups_ims.Contains(im_session_id))
+                {
+                    MainClass.win.active_groups_ims.Remove(im_session_id);
+                    MainClass.client.Self.RequestLeaveGroupChat(im_session_id);
+                }
 		}
 		
 		public ChatConsole()
