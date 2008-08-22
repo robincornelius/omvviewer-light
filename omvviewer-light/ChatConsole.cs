@@ -37,8 +37,10 @@ namespace omvviewerlight
 		    Gtk.TextTag bold;
 		    Gtk.TextTag avchat;
 		    Gtk.TextTag objectchat;
-		    Gtk.TextTag systemchat;
+            Gtk.TextTag objectIMchat;
+            Gtk.TextTag systemchat;
 		    Gtk.TextTag ownerobjectchat;
+
 			
 		public Gtk.Label tabLabel;
 		public LLUUID im_key=libsecondlife.LLUUID.Zero;
@@ -71,7 +73,11 @@ namespace omvviewerlight
 		public ChatConsole()
 		{
 			dosetup();
-			MainClass.client.Self.OnChat += new libsecondlife.AgentManager.ChatCallback(onChat);			
+            this.im_session_id = LLUUID.Zero;
+            this.im_key = LLUUID.Zero;
+			MainClass.client.Self.OnChat += new libsecondlife.AgentManager.ChatCallback(onChat);
+            MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
+
 		}
 
 		
@@ -177,6 +183,8 @@ namespace omvviewerlight
 			objectchat=new Gtk.TextTag("objectchat");
 			systemchat=new Gtk.TextTag("systemchat");
 			ownerobjectchat=new Gtk.TextTag("ownerobjectchat");
+            objectIMchat = new Gtk.TextTag("objectIMchat");
+
 			
 			bold.Weight=Pango.Weight.Bold;
 		
@@ -236,6 +244,56 @@ namespace omvviewerlight
 			{
 				return;
 			}
+
+            Console.Write("IM FROM " + im.FromAgentID + " : " + im.FromAgentName + " : " + im.IMSessionID + "\n");
+
+
+            // Is this from an object?
+            //null session ID
+
+            if (im.IMSessionID == LLUUID.Zero)
+            {
+                //Its an object message, display in chat not IM
+                if ((this.im_key == LLUUID.Zero) && (this.im_session_id ==LLUUID.Zero))
+                {
+                    // We are the chat console not an IM tab
+                    Gtk.Application.Invoke(delegate
+                    {
+                        Gtk.TextIter iter;
+                        string buffer;
+
+                        iter = textview_chat.Buffer.EndIter;
+                        buffer = im.FromAgentName;
+                        textview_chat.Buffer.InsertWithTags(ref iter, buffer, bold, objectIMchat);
+
+                        iter = textview_chat.Buffer.EndIter;
+                        buffer = " "+im.Message + "\n";
+                        textview_chat.Buffer.InsertWithTags(ref iter, buffer, objectIMchat);
+                        textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
+                        if (!MainClass.win.Visible)
+                        {
+                            MainClass.win.trayIcon.Blinking = true;
+                            MainClass.win.UrgencyHint = true;
+                            Gdk.Color col = new Gdk.Color(255, 0, 0);
+                            Gtk.StateType xtype = new Gtk.StateType();
+                            xtype |= Gtk.StateType.Active;
+                            MainClass.win.chat_tab_lable.ModifyFg(xtype, col);
+                            MainClass.win.UrgencyHint = true;
+                            MainClass.win.trayIcon.Blinking = true;
+
+                        }
+                    });
+                    return;
+
+
+                }
+
+
+            }
+           
+
+
+
             Gtk.Application.Invoke(delegate
             {		
 			    redtab();

@@ -79,12 +79,56 @@ namespace omvviewerlight
             Console.Write("YAYAYAYAYAYAY\n");
             this.treeview_inv.ButtonPressEvent += new ButtonPressEventHandler(treeview_inv_ButtonPressEvent);
 
+
+            MainClass.client.Inventory.OnItemReceived += new InventoryManager.ItemReceivedCallback(Inventory_OnItemReceived);
+            MainClass.client.Inventory.OnObjectOffered += new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
+            MainClass.client.Inventory.OnFolderUpdated += new InventoryManager.FolderUpdatedCallback(Inventory_OnFolderUpdated);
+            MainClass.client.Inventory.OnTaskInventoryReply += new InventoryManager.TaskInventoryReplyCallback(Inventory_OnTaskInventoryReply);
+            MainClass.client.Inventory.OnTaskItemReceived += new InventoryManager.TaskItemReceivedCallback(Inventory_OnTaskItemReceived);
             Gtk.MenuItem menupunkt = new MenuItem("Teleport to Landmark");
-            Gtk.Label x = new Gtk.Label("Landmark options");
-            this.menu_landmark.Append(x);
             this.menu_landmark.Append(menupunkt);
             menupunkt.ButtonPressEvent += new ButtonPressEventHandler(Teleporttolandmark);        
 		}
+
+        void Inventory_OnTaskItemReceived(LLUUID itemID, LLUUID folderID, LLUUID creatorID, LLUUID assetID, InventoryType type)
+        {
+        }
+
+        void Inventory_OnTaskInventoryReply(LLUUID itemID, short serial, string assetFilename)
+        {
+        }
+
+        void Inventory_OnFolderUpdated(LLUUID folderID)
+        {
+        }
+
+        bool Inventory_OnObjectOffered(InstantMessage offerDetails, AssetType type, LLUUID objectID, bool fromTask)
+        {
+            string msg = "";
+
+            if (!fromTask)
+                msg = "The user "+offerDetails.FromAgentName + " has offered you\n" + offerDetails.Message + "\n Which is a " + type.ToString() + "\nPress Yes to accept or no to decline";
+            else
+                msg = "The object "+offerDetails.FromAgentName + " has offered you\n" + offerDetails.Message + "\n Which is a " + type.ToString() + "\nPress Yes to accept or no to decline";
+          
+            Gtk.MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.Modal, MessageType.Other, ButtonsType.YesNo, false, msg);
+            ResponseType result = (ResponseType)md.Run();
+
+            if (result == ResponseType.Yes)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+     
+        }
+
+        void Inventory_OnItemReceived(InventoryItem item)
+        {
+        }
 
         void Teleporttolandmark(object o, ButtonPressEventArgs args)
         {
