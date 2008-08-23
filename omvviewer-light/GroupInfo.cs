@@ -49,9 +49,7 @@ namespace omvviewerlight
 			treeview_members.AppendColumn("Member name",new CellRendererText(),"text",0);
 			treeview_members.AppendColumn("Title",new CellRendererText(),"text",1);
 			treeview_members.AppendColumn("Last login",new CellRendererText(),"text",2);
-		
-			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);			
-				
+			
 			treeview_members.Model=store_members;
 				
 			MainClass.client.Groups.OnGroupProfile += new libsecondlife.GroupManager.GroupProfileCallback(onGroupProfile);
@@ -95,22 +93,10 @@ namespace omvviewerlight
 		
 		void onGroupMembers(Dictionary <LLUUID,GroupMember> members)		
 		{
-			lock(store_members)
-			{
-
 			foreach(KeyValuePair <LLUUID,GroupMember> member in members)
 			{
-				string name;
-				if(!MainClass.av_names.TryGetValue(member.Value.ID,out name))
-				{
-					name="Waiting...";
-					MainClass.client.Avatars.RequestAvatarName(member.Value.ID);
-				}
-					
-				Gtk.Application.Invoke(delegate {	
-						this.store_members.AppendValues(name,member.Value.Title,member.Value.OnlineStatus,member.Value.ID);
-				});
-			}
+				AsyncNameUpdate ud=new AsyncNameUpdate(member.Value.ID,null);  
+				ud.onNameCallBack += delegate(string namex){store_members.AppendValues(namex,member.Value.Title,member.Value.OnlineStatus,member.Value.ID);};
 			}
 		}
 		
@@ -132,23 +118,6 @@ namespace omvviewerlight
 			});
 		}
 		
-		void onAvatarNames(Dictionary<LLUUID, string> names)
-		{	
-			
-			foreach(KeyValuePair<LLUUID,string> name in names)
-			{
-				if(!MainClass.av_names.ContainsKey(name.Key))
-					MainClass.av_names.Add(name.Key,name.Value);		
-			}			
-
-			Gtk.Application.Invoke(delegate {	
-				lock(store_members){					
-					this.store_members.Foreach(myfunc_members);
-			}
-		});
-		
-		}
-
 		bool myfunc_members(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
 		{			
 			bool stillwaiting;

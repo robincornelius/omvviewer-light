@@ -1846,6 +1846,7 @@ Shout</property>
                     <property name="Type">TextOnly</property>
                     <property name="Label" translatable="yes">Take</property>
                     <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="OnButtonTakeClicked" />
                   </widget>
                   <packing>
                     <property name="Position">1</property>
@@ -1862,6 +1863,7 @@ Shout</property>
                     <property name="Type">TextOnly</property>
                     <property name="Label" translatable="yes">Take copy</property>
                     <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="OnButtonTakeCopyClicked" />
                   </widget>
                   <packing>
                     <property name="Position">2</property>

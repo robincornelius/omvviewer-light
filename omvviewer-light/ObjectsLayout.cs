@@ -355,6 +355,41 @@ namespace omvviewerlight
 
 		}
 
+		protected virtual void OnButtonTakeClicked (object sender, System.EventArgs e)
+		{
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(treeview1.Selection.GetSelected(out mod,out iter))			
+			{
+				LLUUID id=(LLUUID)mod.GetValue(iter,2);
+				Primitive prim;
+				
+				if(PrimsWaiting.TryGetValue(id,out prim))
+				{
+					MainClass.client.Inventory.RequestDeRezToInventory(prim.LocalID);
+				}
+			}
+		}
+
+		protected virtual void OnButtonTakeCopyClicked (object sender, System.EventArgs e)
+		{
+			
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(treeview1.Selection.GetSelected(out mod,out iter))			
+			{
+				LLUUID id=(LLUUID)mod.GetValue(iter,2);
+				Primitive prim;
+				
+				if(PrimsWaiting.TryGetValue(id,out prim))
+				{
+					
+				}
+			}
+		}
+
 		
 	}
 }

@@ -409,6 +409,8 @@ namespace omvviewerlight {
             this.button_siton.Clicked += new System.EventHandler(this.OnButtonSitonClicked);
             this.button_lookat.Clicked += new System.EventHandler(this.OnButtonLookatClicked);
             this.button_pay.Clicked += new System.EventHandler(this.OnButtonPayClicked);
+            this.button_take.Clicked += new System.EventHandler(this.OnButtonTakeClicked);
+            this.button_take_copy.Clicked += new System.EventHandler(this.OnButtonTakeCopyClicked);
         }
     }
 }

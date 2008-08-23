@@ -46,16 +46,6 @@ namespace omvviewerlight
 		public LLUUID im_key=libsecondlife.LLUUID.Zero;
 		public LLUUID im_session_id=libsecondlife.LLUUID.Zero;
 		
-		public void kicknames()
-		{
-			if(im_key!=LLUUID.Zero)
-				MainClass.client.Avatars.RequestAvatarName(im_key);
-			
-			if(im_session_id!=LLUUID.Zero)
-				MainClass.client.Groups.RequestGroupName(im_session_id);
-
-		}
-		
 		~ChatConsole()
 		{
             
@@ -80,7 +70,6 @@ namespace omvviewerlight
             this.im_key = LLUUID.Zero;
 			MainClass.client.Self.OnChat += new libsecondlife.AgentManager.ChatCallback(onChat);
             MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
-           // MainClass.win.getnotebook().SwitchPage += new SwitchPageHandler(onSwitchPage);
 		}
 
 		
@@ -94,16 +83,13 @@ namespace omvviewerlight
 				im_key=LLUUID.Zero;			
 				MainClass.client.Self.OnGroupChatJoin += new libsecondlife.AgentManager.GroupChatJoined(onGroupChatJoin);
 				MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
-				MainClass.client.Groups.OnGroupNames += new libsecondlife.GroupManager.GroupNamesCallback(onGroupNames);
-				MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);
-             //   MainClass.win.getnotebook().SwitchPage += new SwitchPageHandler(onSwitchPage);
 			}
 			else
 			{
 				im_key=im.FromAgentID;				
-				MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);
 			}
-            // Pass the message on to the chat system as the event will not have been triggered as its
+
+			// Pass the message on to the chat system as the event will not have been triggered as its
             // only just registered.
 			onIM(im,null);
 		}
@@ -196,9 +182,7 @@ namespace omvviewerlight
 		public ChatConsole(LLUUID target)
 		{
 			dosetup();
-			MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
-			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);		
-			
+			MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);			
 			im_key=target;
 		}
 
@@ -207,11 +191,7 @@ namespace omvviewerlight
 			dosetup();
 			MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
 			im_key=LLUUID.Zero;			
-			MainClass.client.Self.OnGroupChatJoin += new libsecondlife.AgentManager.GroupChatJoined(onGroupChatJoin);
 			MainClass.client.Self.RequestJoinGroupChat(target);
-			MainClass.client.Groups.OnGroupNames += new libsecondlife.GroupManager.GroupNamesCallback(onGroupNames);
-			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);
-
 			im_session_id=target;
 		}
 		
@@ -540,56 +520,6 @@ namespace omvviewerlight
 
             }
 
-        }
-
-		
-		void onAvatarNames(Dictionary <LLUUID,string>names)
-		{
-			if(this.im_key==LLUUID.Zero)
-				return; //I DONT CARE 
-			
-			foreach(KeyValuePair <LLUUID,string> kvp in names)
-			{
-				if(!MainClass.av_names.ContainsKey(kvp.Key))
-				{
-					MainClass.av_names.Add(kvp.Key,kvp.Value);
-				}
-			}	
-			
-			Gtk.Application.Invoke(delegate {						
-			
-				if(this.tabLabel.Text=="Waiting...")
-				{
-					string name;
-					if(MainClass.av_names.TryGetValue(this.im_key,out name))
-					{
-						tabLabel.Text=name;
-						tabLabel.QueueDraw();
-					}
-				}
-			});
-		}
-		
-		void onGroupNames(Dictionary <LLUUID,string>groups)
-	    {
-			
-			if(this.im_key!=LLUUID.Zero)
-				return;
-			string group;
-			Gtk.Application.Invoke(delegate {											
-				if(MainClass.client.Groups.GroupName2KeyCache.TryGetValue(this.im_session_id,out group))
-				{
-					if(this.tabLabel.Text=="Waiting...")
-					{
-						tabLabel.Text=group;
-						tabLabel.QueueDraw();
-						
-					}				
-				}			
-			});
-
-			}
-		
-					
+        }					
 	}
 }

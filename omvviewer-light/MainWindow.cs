@@ -190,7 +190,7 @@ public partial class MainWindow: Gtk.Window
 		Gtk.Application.Invoke(delegate {						
 			string msg;
 			msg="The object : "+objectName+"Owner by :"+objectOwner+"Would like to \n"+message+"\n Would you like to allow this?";
-			MessageDialog md= new Gtk.MessageDialog(this,DialogFlags.Modal,MessageType.Question,ButtonsType.YesNo,true,msg);
+			MessageDialog md= new Gtk.MessageDialog(this,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,true,msg);
 			ResponseType result=(ResponseType)md.Run();
 			if(result==ResponseType.Yes)
 			{
@@ -216,7 +216,7 @@ public partial class MainWindow: Gtk.Window
 		
 			string msg;
 			msg="You have recieved a friendship request from "+agentname+"\n They would like to become your friend \n do you want to accept?";
-			MessageDialog md= new Gtk.MessageDialog(this,DialogFlags.Modal,MessageType.Question,ButtonsType.YesNo,true,msg);
+			MessageDialog md= new Gtk.MessageDialog(this,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,true,msg);
 			ResponseType result=(ResponseType)md.Run();
 			if(result==ResponseType.Yes)
 			{
@@ -327,7 +327,7 @@ public partial class MainWindow: Gtk.Window
 		
 		int primscount=parcel.OwnerPrims+parcel.OtherPrims+parcel.GroupPrims;
 		string prims;
-		prims=primscount.ToString()+ "of "+	parcel.MaxPrims;
+		prims=primscount.ToString()+ " of "+	parcel.MaxPrims;
 					
 		status_parcel.Text=parcel.Name;
         string tooltext;        
@@ -337,7 +337,7 @@ public partial class MainWindow: Gtk.Window
 					+"\nGroup :"+group
 					+"\nSize: "+size.ToString()	
 				    +"\nPrims :"+prims.ToString()
-					+"\nTraffic: "+parcel.Dwell.ToString()
+					+"\nTraffic: "+parcel.Dwell.ToString("%0.2f")
 					+"\nArea: "+parcel.Area.ToString();
 
         Tooltips tooltips1 = new Tooltips();
@@ -388,7 +388,7 @@ public partial class MainWindow: Gtk.Window
 	}		
 
 	
-	void makeimwindow(string name,ChatConsole cs,bool group)
+	void makeimwindow(string name,ChatConsole cs,bool group,LLUUID target)
 	{
 		Gtk.Image image=new Gtk.Image("closebox.tga");
 		image.HeightRequest=16;
@@ -415,7 +415,16 @@ public partial class MainWindow: Gtk.Window
 		    notebook.InsertPage(cs,box,-1);
 		    notebook.ShowAll();
 		cs.tabLabel=lable;
-		cs.kicknames();
+		//cs.kicknames();
+		AsyncNameUpdate ud;
+		
+		if(group)
+			ud=new AsyncNameUpdate(null,target);
+		else		
+			ud=new AsyncNameUpdate(target,null);
+		
+		ud.onNameCallBack += delegate(string namex){cs.tabLabel.Text=namex;};
+		
 		button.Clicked += new EventHandler(cs.clickclosed);
 		this.notebook.SwitchPage += new SwitchPageHandler(cs.onSwitchPage);
 		
@@ -434,7 +443,7 @@ public partial class MainWindow: Gtk.Window
 			if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(id,out lable))
 				lable="Waiting...";
 							
-			makeimwindow(lable,imc,true);
+			makeimwindow(lable,imc,true,id);
 	
 			active_ims.Add(id);
 		
@@ -448,7 +457,7 @@ public partial class MainWindow: Gtk.Window
 			
 			Gtk.Application.Invoke(delegate {						
 				ChatConsole imc=new ChatConsole(target);
-				makeimwindow(MainClass.av_names[target],imc,false);
+				makeimwindow(MainClass.av_names[target],imc,false,target);
 				active_ims.Add(target);
 			});
 		}		
@@ -506,7 +515,7 @@ public partial class MainWindow: Gtk.Window
 					if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(im.IMSessionID,out lable))
 						lable="Waiting...";
 							
-					   makeimwindow(lable,imc,true);
+					   makeimwindow(lable,imc,true,im.IMSessionID);
 	
 					active_ims.Add(im.IMSessionID);
 				});
@@ -524,7 +533,7 @@ public partial class MainWindow: Gtk.Window
 					name="Waiting...";
 				
 			
-				makeimwindow(name,imc,false);
+				makeimwindow(name,imc,false,im.FromAgentID);
 				active_ims.Add(im.FromAgentID);
 			});
 		}

@@ -1,19 +1,17 @@
 ﻿<UserCombinePreferences version="1.0" filename="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light.mds">
   <Files>
     <File name="Welcome" />
-    <File name="omvviewer-light/Inventory.cs" line="172" column="1" />
-    <File name="omvviewer-light/FriendsList.cs" line="137" column="44" />
-    <File name="omvviewer-light/NamePicker.cs" line="22" column="93" />
-    <File name="omvviewer-light/ProfileVIew.cs" line="29" column="1" />
-    <File name="omvviewer-light/Groups.cs" line="93" column="17" />
+    <File name="omvviewer-light/Inventory.cs" line="119" column="49" />
     <File name="omvviewer-light/aPick.cs" line="44" column="37" />
-    <File name="omvviewer-light/MainWindow.cs" line="138" column="46" />
+    <File name="omvviewer-light/LoginControl.cs" line="155" column="5" />
+    <File name="omvviewer-light/ChatConsole.cs" line="26" column="34" />
+    <File name="omvviewer-light/MainWindow.cs" line="466" column="70" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
-          <Node name="MainWindow.cs" selected="True" />
+          <Node name="LoginControl.cs" selected="True" />
         </Node>
       </Node>
     </ViewMemento>
@@ -22,7 +20,7 @@
     </ViewMemento>
   </Views>
   <Properties>
-    <Property key="ActiveWindow" value="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light/MainWindow.cs" />
+    <Property key="ActiveWindow" value="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light/LoginControl.cs" />
     <Property key="ActiveConfiguration" value="Debug" />
   </Properties>
 </UserCombinePreferences>
