@@ -68,6 +68,9 @@ namespace omvviewerlight
         Gdk.Pixbuf folder_callingcard = new Gdk.Pixbuf("inv_folder_callingcard.tga");
         Gdk.Pixbuf folder_clothing = new Gdk.Pixbuf("inv_folder_clothing.tga");
 
+	
+		
+		
 		public Inventory()
 		{
 			this.Build();		
@@ -85,7 +88,9 @@ namespace omvviewerlight
             MainClass.client.Inventory.OnFolderUpdated += new InventoryManager.FolderUpdatedCallback(Inventory_OnFolderUpdated);
             MainClass.client.Inventory.OnTaskInventoryReply += new InventoryManager.TaskInventoryReplyCallback(Inventory_OnTaskInventoryReply);
             MainClass.client.Inventory.OnTaskItemReceived += new InventoryManager.TaskItemReceivedCallback(Inventory_OnTaskItemReceived);
-            Gtk.MenuItem menupunkt = new MenuItem("Teleport to Landmark");
+		
+			
+			Gtk.MenuItem menupunkt = new MenuItem("Teleport to Landmark");
 			Gtk.MenuItem menu_give = new MenuItem("Give to user");
 			Gtk.MenuItem menu_delete = new MenuItem("Delete item");
             this.menu_landmark.Append(menupunkt);
@@ -163,28 +168,46 @@ namespace omvviewerlight
 
         void Inventory_OnFolderUpdated(LLUUID folderID)
         {
-        }
+			Gtk.TreeIter iter;
+			inventory.GetIterFirst(out iter);
+		}
 
         bool Inventory_OnObjectOffered(InstantMessage offerDetails, AssetType type, LLUUID objectID, bool fromTask)
         {
-            string msg = "";
+			
+			AutoResetEvent ObjectOfferEvent = new AutoResetEvent(false);
+			ResponseType object_offer_result=ResponseType.Yes;
 
+            string msg = "";
+			ResponseType result;
             if (!fromTask)
                 msg = "The user "+offerDetails.FromAgentName + " has offered you\n" + offerDetails.Message + "\n Which is a " + type.ToString() + "\nPress Yes to accept or no to decline";
             else
                 msg = "The object "+offerDetails.FromAgentName + " has offered you\n" + offerDetails.Message + "\n Which is a " + type.ToString() + "\nPress Yes to accept or no to decline";
-          
-            Gtk.MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.Modal, MessageType.Other, ButtonsType.YesNo, false, msg);
-            ResponseType result = (ResponseType)md.Run();
 
-            if (result == ResponseType.Yes)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+			
+			Application.Invoke(delegate {			
+					ObjectOfferEvent.Reset();
+
+					Gtk.MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.Modal, MessageType.Other, ButtonsType.YesNo, false, msg);
+				
+					result = (ResponseType)md.Run();
+					object_offer_result=result;
+				    md.Destroy();
+					ObjectOfferEvent.Set();
+			});
+			
+			
+		    ObjectOfferEvent.WaitOne(1000*3600,false);
+	
+           if (object_offer_result == ResponseType.Yes)
+		   {
+				return true;
+		   }
+		   else
+			{
+					return false;
+				}			
 
      
         }

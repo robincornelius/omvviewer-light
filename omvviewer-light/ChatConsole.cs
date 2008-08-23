@@ -278,6 +278,7 @@ namespace omvviewerlight
 				if(im.FromAgentID!=this.im_key && im.IMSessionID!=this.im_session_id)
 					return;
 			}
+			
 
 			// Is this a typing message
 			
@@ -286,6 +287,23 @@ namespace omvviewerlight
 				return;
 			}
 
+			if(im.Dialog!=null)
+				Console.Write("**** DIALOGUE RESPONSE ****\n"+im.Dialog.ToString()+"\n");
+			
+			//Reject some IMs that we handle else where
+			
+			if(im.Dialog==libsecondlife.InstantMessageDialog.InventoryOffered)
+				return;
+			
+			if(im.Dialog==libsecondlife.InstantMessageDialog.TaskInventoryOffered)
+				return;
+			
+			if(im.Dialog==libsecondlife.InstantMessageDialog.InventoryAccepted)
+				return;
+				
+			if(im.Dialog==libsecondlife.InstantMessageDialog.InventoryAccepted)
+				return;
+				
             Console.Write("IM FROM " + im.FromAgentID + " : " + im.FromAgentName + " : " + im.IMSessionID + "\n");
 
             redtab();

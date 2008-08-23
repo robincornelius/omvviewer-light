@@ -457,6 +457,32 @@ public partial class MainWindow: Gtk.Window
 	   	
 	void onIM(InstantMessage im, Simulator sim)
 	{	
+		if(im.Dialog==libsecondlife.InstantMessageDialog.InventoryOffered)
+			return;
+			
+		if(im.Dialog==libsecondlife.InstantMessageDialog.TaskInventoryOffered)
+			return;
+		
+		if(im.Dialog==libsecondlife.InstantMessageDialog.InventoryAccepted)
+		{
+			Gtk.Application.Invoke(delegate {	
+				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.Modal,MessageType.Info,ButtonsType.Ok,im.FromAgentName+" accepted your inventory offer");
+				ResponseType result=(ResponseType)md.Run();
+				md.Destroy();
+			});
+			return;
+		}
+		
+		if(im.Dialog==libsecondlife.InstantMessageDialog.InventoryAccepted)
+		{
+			Gtk.Application.Invoke(delegate {	
+				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.Modal,MessageType.Info,ButtonsType.Ok,im.FromAgentName+" accepted your inventory offer");
+				ResponseType result=(ResponseType)md.Run();
+				md.Destroy();
+			});
+		}
+
+		
 		Gtk.Application.Invoke(delegate {	
 		
 		if(!this.Visible)
