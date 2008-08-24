@@ -41,10 +41,12 @@ namespace omvviewerlight
 		public static SecondLife client;
 		public static MainWindow win;
 		public static Dictionary<LLUUID, string> av_names;
+		public static AVNameCache name_cache;
 		
 		public static void Main (string[] args)
 		{
 
+			
             bool hiddenconsole = false;
 			// Now boot the libsecondlife layer so it is global to our namespace
             System.IO.StreamWriter aStreamWriter;
@@ -68,6 +70,7 @@ namespace omvviewerlight
             {
                 client = new SecondLife();
                 av_names = new Dictionary<LLUUID, string>();
+				name_cache=new AVNameCache();
                 Application.Init();
                 win = new MainWindow();
                 win.Show();

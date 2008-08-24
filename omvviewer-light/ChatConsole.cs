@@ -48,19 +48,8 @@ namespace omvviewerlight
 		
 		~ChatConsole()
 		{
-            
-			MainClass.win.getnotebook().SwitchPage -= new SwitchPageHandler(onSwitchPage);
-			
-			if(im_key!=libsecondlife.LLUUID.Zero)
-				if(MainClass.win.active_ims.Contains(im_key))
-					MainClass.win.active_ims.Remove(im_key);	
-		
-			if(im_session_id!=libsecondlife.LLUUID.Zero)
-                if (MainClass.win.active_groups_ims.Contains(im_session_id))
-                {
-                    MainClass.win.active_groups_ims.Remove(im_session_id);
-                    MainClass.client.Self.RequestLeaveGroupChat(im_session_id);
-                }
+           
+					Console.Write("*!*!*!*!*!*!*!*! ALL CLEAN ON CHAT !*!*!*!*!*!*!*\n|");
 		}
 		
 		public ChatConsole()
@@ -71,6 +60,7 @@ namespace omvviewerlight
 			MainClass.client.Self.OnChat += new libsecondlife.AgentManager.ChatCallback(onChat);
             MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
 		}
+
 
 		
 		public ChatConsole(InstantMessage im)
@@ -221,9 +211,10 @@ namespace omvviewerlight
 			textview_chat.Buffer.TagTable.Add(systemchat);
 			textview_chat.Buffer.TagTable.Add(objectchat);
 			textview_chat.Buffer.TagTable.Add(ownerobjectchat);
-			
-			
+			Console.Write("**** CHAT CONSOLE SETUP ****\n");
+
 		}
+
 
 		public void clickclosed(object obj, EventArgs args)
 		{
@@ -238,9 +229,23 @@ namespace omvviewerlight
 			
 			if(im_session_id!=libsecondlife.LLUUID.Zero)
 				if(MainClass.win.active_ims.Contains(im_session_id))
-					MainClass.win.active_ims.Remove(im_session_id);	
-		
+					MainClass.client.Self.RequestLeaveGroupChat(im_session_id);		
+			
+			Console.Write("ref count is "+this.RefCount.ToString()+"\n");
 			nb.RemovePage(pageno);
+			Console.Write("ref count is "+this.RefCount.ToString()+"\n");
+			
+			MainClass.client.Self.OnChat -= new libsecondlife.AgentManager.ChatCallback(onChat);
+            MainClass.client.Self.OnInstantMessage -= new libsecondlife.AgentManager.InstantMessageCallback(onIM);
+			MainClass.client.Self.OnGroupChatJoin -= new libsecondlife.AgentManager.GroupChatJoined(onGroupChatJoin);
+			
+			Console.Write("Trying to destroy chat window\n");
+			
+			 MainClass.win.getnotebook().SwitchPage -=  new SwitchPageHandler(onSwitchPage);
+			
+				Console.Write("ref count is "+this.RefCount.ToString()+"\n");
+			this.Destroy();
+		
 		}
 		
 		

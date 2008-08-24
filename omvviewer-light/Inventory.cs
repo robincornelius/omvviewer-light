@@ -417,7 +417,8 @@ namespace omvviewerlight
 						this.checkbutton_mod.Active=libsecondlife.PermissionMask.Modify==(((InventoryItem)item).Permissions.OwnerMask&libsecondlife.PermissionMask.Modify);
 						this.checkbutton_trans.Active=libsecondlife.PermissionMask.Transfer==(((InventoryItem)item).Permissions.OwnerMask&libsecondlife.PermissionMask.Transfer);
 						
-						AsyncNameUpdate ud=new AsyncNameUpdate(((InventoryItem)item).CreatorID.ToString(),null);
+		
+						AsyncNameUpdate ud=new AsyncNameUpdate(((InventoryItem)item).CreatorID.ToString(),false);
 						ud.onNameCallBack += delegate(string name){this.label_createdby.Text=name;};
 
 			

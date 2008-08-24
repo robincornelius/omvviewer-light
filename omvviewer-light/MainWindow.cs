@@ -116,11 +116,20 @@ public partial class MainWindow: Gtk.Window
 		MainClass.client.Self.OnAlertMessage += new libsecondlife.AgentManager.AlertMessage(onAlertMessage);
 		MainClass.client.Self.OnScriptQuestion += new libsecondlife.AgentManager.ScriptQuestionCallback(onScriptCallback);
 		MainClass.client.Self.OnScriptDialog +=new libsecondlife.AgentManager.ScriptDialogCallback(onScriptDialogue);
+		MainClass.client.Self.OnGroupChatLeft += new libsecondlife.AgentManager.GroupChatLeft(onLeaveGroupChat);
 		
         this.WindowStateEvent += delegate { if (this.Visible) { trayIcon.Blinking = false; this.UrgencyHint = false; };};
    	GLib.Timeout.Add(10000,OnUpdateStatus); 
 	}
 
+	void onLeaveGroupChat(LLUUID session_id)
+	{
+		Console.Write("Left group chat for session "+session_id.ToString()+"\n");
+		if(MainClass.win.active_groups_ims.Contains(session_id))
+		   MainClass.win.active_groups_ims.Remove(session_id);
+		
+	}
+	
 	void onScriptDialogue(string message,string objectName,LLUUID imageID,LLUUID objectID,string FirstName,string lastName,int chatChannel,List <string> buttons)
 	{
         Gtk.Application.Invoke(delegate
@@ -419,9 +428,9 @@ public partial class MainWindow: Gtk.Window
 		AsyncNameUpdate ud;
 		
 		if(group)
-			ud=new AsyncNameUpdate(null,target);
+			ud=new AsyncNameUpdate(target,true);
 		else		
-			ud=new AsyncNameUpdate(target,null);
+			ud=new AsyncNameUpdate(target,false);
 		
 		ud.onNameCallBack += delegate(string namex){cs.tabLabel.Text=namex;};
 		
@@ -491,6 +500,17 @@ public partial class MainWindow: Gtk.Window
 			});
 		}
 
+		if(im.Dialog==libsecondlife.InstantMessageDialog.GroupNotice)
+		{
+			//Hmm need to handle this differently than a standard IM
+			Gtk.Application.Invoke(delegate {	
+				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Info,ButtonsType.Ok,"GROUP NOTICE\nFrom:"+im.FromAgentName+"\n"+im.Message);
+				ResponseType result=(ResponseType)md.Run();
+				md.Destroy();
+				return;
+			});
+			
+		}
 		
 		Gtk.Application.Invoke(delegate {	
 		

@@ -18,6 +18,7 @@ namespace omvviewerlight
 	{
 		LLUUID av_target;
 		LLUUID group_target;
+		List <LLUUID>getting;
 		
 		public delegate void NameCallBack(string name);
         public event NameCallBack onNameCallBack;
@@ -36,42 +37,42 @@ namespace omvviewerlight
 			MainClass.client.Groups.OnGroupNames -= new libsecondlife.GroupManager.GroupNamesCallback(onGroupNames);
 			MainClass.client.Avatars.OnAvatarNames -= new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);
 		}
-
 		
-		public AsyncNameUpdate(LLUUID av,LLUUID group)
+		public AsyncNameUpdate(LLUUID key,bool group)
 		{
-			av_target=av;
-			group_target=group;
-			AsyncNameUpdate_init();
-			if(av!=null)
-				try_update_name_lable(av);
 			
-			if(group_target!=null)
-				try_update_group_lable(group);
+			//Console.Write("New AsyncName Update for "+key.ToString()_" group mode = "+group.ToString()+"\n");
+			
+			if(group==true)
+			{
+				group_target=key;
+				av_target=null;
+			}			
+			else
+			{
+				av_target=key;
+				group_target=null;
+			}
+			
+			AsyncNameUpdate_init();
+
+			if(!group)
+				try_update_name_lable(key);
+			
+			if(group)
+				try_update_group_lable(key);
 		}
 		
 		void onAvatarNames(Dictionary <LLUUID,string>names)
 		{
-			foreach(KeyValuePair <LLUUID,string> kvp in names)
-			{
-				if(!MainClass.av_names.ContainsKey(kvp.Key))
-				{
-					MainClass.av_names.Add(kvp.Key,kvp.Value);
-				}
-
-				if(kvp.Key==av_target)
-					try_update_name_lable(av_target);
-			}	
+			if(names.ContainsKey(av_target))
+			   try_update_name_lable(av_target);
 		}
 		
 		void onGroupNames(Dictionary <LLUUID,string>groups)
 	    {
-			
-			foreach(KeyValuePair <LLUUID,string> kvp in groups)
-			{
-				if(kvp.Key==group_target)
-					try_update_group_lable(group_target);
-			}	
+			if(groups.ContainsKey(group_target))
+			   try_update_group_lable(group_target);	   
 		}
 		
 		void try_update_name_lable(LLUUID key)
@@ -87,7 +88,7 @@ namespace omvviewerlight
 			}
 			else
 			{		
-					MainClass.client.Avatars.RequestAvatarName(key);
+				MainClass.name_cache.reqname(key);			
 			}
 		}
 		

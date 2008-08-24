@@ -93,9 +93,12 @@ namespace omvviewerlight
 		
 		void onGroupMembers(Dictionary <LLUUID,GroupMember> members)		
 		{
+			List<LLUUID> names = new List<LLUUID>(members.Keys);
+			MainClass.name_cache.reqnames(names);
+			
 			foreach(KeyValuePair <LLUUID,GroupMember> member in members)
 			{
-				AsyncNameUpdate ud=new AsyncNameUpdate(member.Value.ID,null);  
+				AsyncNameUpdate ud=new AsyncNameUpdate(member.Value.ID,false);  
 				ud.onNameCallBack += delegate(string namex){store_members.AppendValues(namex,member.Value.Title,member.Value.OnlineStatus,member.Value.ID);};
 			}
 		}
