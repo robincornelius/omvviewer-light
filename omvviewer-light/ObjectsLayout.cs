@@ -282,6 +282,7 @@ namespace omvviewerlight
 				if(PrimsWaiting.TryGetValue(id,out prim))
 				{
 					//MainClass.client.Self.sit
+					MainClass.client.Self.RequestSit(prim.ID,LLVector3.Zero);
 				}
 			}
 		

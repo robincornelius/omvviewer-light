@@ -31,6 +31,7 @@ namespace omvviewerlight {
             this.WindowPosition = ((Gtk.WindowPosition)(4));
             // Container child omvviewerlight.Friendshiprequest.Gtk.Container+ContainerChild
             this.vbox1 = new Gtk.VBox();
+            this.vbox1.Name = "vbox1";
             this.vbox1.Spacing = 6;
             // Container child vbox1.Gtk.Box+BoxChild
             this.label_info = new Gtk.Label();
