@@ -40,7 +40,7 @@ namespace omvviewerlight
 
 		public static SecondLife client;
 		public static MainWindow win;
-		public static Dictionary<LLUUID, string> av_names;
+
 		public static AVNameCache name_cache;
 		
 		public static void Main (string[] args)
@@ -69,7 +69,7 @@ namespace omvviewerlight
             try
             {
                 client = new SecondLife();
-                av_names = new Dictionary<LLUUID, string>();
+              
 				name_cache=new AVNameCache();
                 Application.Init();
                 win = new MainWindow();

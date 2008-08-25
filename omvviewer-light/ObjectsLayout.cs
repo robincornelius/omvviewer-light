@@ -51,43 +51,9 @@ namespace omvviewerlight
 
 			MainClass.client.Objects.OnObjectProperties += new libsecondlife.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
 			MainClass.client.Groups.OnGroupNames += new libsecondlife.GroupManager.GroupNamesCallback(onGroupNames);
-			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);
+
 		}
-		
-		void onAvatarNames(Dictionary <LLUUID,string>names)
-		{
-			Gtk.TreeModel mod;
-			Gtk.TreeIter iter;
 			
-			foreach(KeyValuePair <LLUUID,string> kvp in names)
-			{
-				if(!MainClass.av_names.ContainsKey(kvp.Key))
-				{
-					MainClass.av_names.Add(kvp.Key,kvp.Value);
-				}
-			}
-			
-			if(treeview1.Selection.GetSelected(out mod,out iter))			
-			{
-				LLUUID id=(LLUUID)mod.GetValue(iter,2);
-				Primitive prim;
-				
-				if(PrimsWaiting.TryGetValue(id,out prim))
-				{
-					string name;;
-					if(MainClass.av_names.TryGetValue(prim.Properties.OwnerID,out name))
-					{
-						Gtk.Application.Invoke(delegate {						
-							this.label_owner.Text=name;
-						});
-					}			
-					
-				}
-			}
-			
-			
-		}
-		
 		void onGroupNames(Dictionary <LLUUID,string>groups)
 	    {
 			Gtk.TreeModel mod;
@@ -202,18 +168,10 @@ namespace omvviewerlight
 				{
 					this.label_name.Text=prim.Properties.Name;
 					this.label_desc.Text=prim.Properties.Description;
+									
+					AsyncNameUpdate ud=new AsyncNameUpdate(prim.Properties.OwnerID,false);  
+					ud.onNameCallBack += delegate(string namex,object[] values){label_owner.Text=namex;};
 					
-					string name;
-					if(MainClass.av_names.TryGetValue(prim.Properties.OwnerID,out name))
-					{
-						this.label_owner.Text=name;
-					}
-					else
-					{
-						Console.Write("Requesting name for key "+prim.Properties.OwnerID.ToString()+"\n");
-						MainClass.client.Avatars.RequestAvatarName(prim.Properties.OwnerID);
-						this.label_owner.Text="Waiting...";
-					}
 					string group;
 					if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(prim.Properties.GroupID,out group))
 					{

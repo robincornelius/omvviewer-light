@@ -19,17 +19,23 @@ namespace omvviewerlight
 		LLUUID av_target;
 		LLUUID group_target;
 		List <LLUUID>getting;
+	    object[] callbackvalues1;
 		
-		public delegate void NameCallBack(string name);
+		public delegate void NameCallBack(string name, object[] values);
         public event NameCallBack onNameCallBack;
 		
-		public delegate void GroupNameCallBack(string name);
+		public delegate void GroupNameCallBack(string name,object[] values);
         public event GroupNameCallBack onGroupNameCallBack;
 		
 		void AsyncNameUpdate_init()
 		{
 			MainClass.client.Groups.OnGroupNames += new libsecondlife.GroupManager.GroupNamesCallback(onGroupNames);
 			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);
+		}
+		
+		public void addparameters(params object[] values)
+		{
+			callbackvalues1=values;
 		}
 		
 		void AsynNamesUpdate_deinit()
@@ -78,11 +84,11 @@ namespace omvviewerlight
 		void try_update_name_lable(LLUUID key)
 		{
 			string name;
-			if(MainClass.av_names.TryGetValue(key,out name))
+			if(MainClass.name_cache.av_names.TryGetValue(key,out name))
 			{
 				Gtk.Application.Invoke(delegate {			
 					if(onNameCallBack!=null)
-						onNameCallBack(name);			
+						onNameCallBack(name,this.callbackvalues1);			
 					AsynNamesUpdate_deinit();
 				});
 			}
@@ -100,7 +106,7 @@ namespace omvviewerlight
 			{
 				Gtk.Application.Invoke(delegate {			
 					if(onGroupNameCallBack!=null)
-						onGroupNameCallBack(name);			
+						onGroupNameCallBack(name,this.callbackvalues1);			
 					AsynNamesUpdate_deinit();
 				});
 				

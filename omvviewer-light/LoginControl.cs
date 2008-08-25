@@ -92,6 +92,11 @@ namespace omvviewerlight
 			if(sim.ID==MainClass.client.Network.CurrentSim.ID)
 			{
 				this.trying=false;
+				Gtk.Application.Invoke(delegate
+                {
+                    Thread loginRunner = new Thread(new ThreadStart(this.appearencethread));
+                    loginRunner.Start();
+                });
 			}	
 		}
 		
@@ -147,11 +152,11 @@ namespace omvviewerlight
 				Console.Write("Login status login\n");                          
 				MainClass.client.Groups.RequestCurrentGroups();
 				MainClass.client.Self.RetrieveInstantMessages();
-                Gtk.Application.Invoke(delegate
-                {
-                    Thread loginRunner = new Thread(new ThreadStart(this.appearencethread));
-                    loginRunner.Start();
-                });
+           //     Gtk.Application.Invoke(delegate
+            //    {
+            //        Thread loginRunner = new Thread(new ThreadStart(this.appearencethread));
+            //        loginRunner.Start();
+            //    });
               }		
 		}
 
@@ -177,9 +182,9 @@ namespace omvviewerlight
 		void appearencethread()
 		{
 			Console.Write("Appearence thread go\n");
-			MainClass.client.Groups.RequestCurrentGroups();
-			MainClass.client.Self.RetrieveInstantMessages();		
-			MainClass.client.Appearance.SetPreviousAppearance(false);
+			MainClass.client.Appearance.SetPreviousAppearance(true);
+			Console.Write("Appearence set\n");
+		
 		}
 		
 		protected virtual void OnButton1Clicked (object sender, System.EventArgs e)

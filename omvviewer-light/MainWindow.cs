@@ -323,13 +323,19 @@ public partial class MainWindow: Gtk.Window
 	{
 		Gtk.Application.Invoke(delegate {						
 
-		string owner="Unknown";
-		if(!MainClass.av_names.TryGetValue(parcel.OwnerID,out owner))
-				owner="Unknown";
 		
-		string group="Unknown";
-		if(!MainClass.av_names.TryGetValue(parcel.GroupID,out group))
-			group="Unknown";	
+			//FIX ME NAME UPDATE BROKEN
+	//	AsyncNameUpdate ud=new AsyncNameUpdate(parcel.OwnerID,false);  
+	//	ud.onNameCallBack += delegate(string namex,object[] values){this.label_foundedby.Text="Founded by "+namex;};
+			
+			
+//		string owner="Unknown";
+	//	if(!MainClass.av_names.TryGetValue(parcel.OwnerID,out owner))
+//				owner="Unknown";
+		
+//		string group="Unknown";
+//		if(!MainClass.av_names.TryGetValue(parcel.GroupID,out group))
+//			group="Unknown";	
 				
 		string size;
 		size=parcel.Area.ToString();
@@ -342,8 +348,8 @@ public partial class MainWindow: Gtk.Window
         string tooltext;        
 		tooltext=
 				parcel.Name
-					+"\nOwner :"+owner
-					+"\nGroup :"+group
+					+"\nOwner :"
+					+"\nGroup :"
 					+"\nSize: "+size.ToString()	
 				    +"\nPrims :"+prims.ToString()
 					+"\nTraffic: "+parcel.Dwell.ToString("%0.2f")
@@ -432,7 +438,7 @@ public partial class MainWindow: Gtk.Window
 		else		
 			ud=new AsyncNameUpdate(target,false);
 		
-		ud.onNameCallBack += delegate(string namex){cs.tabLabel.Text=namex;};
+		ud.onNameCallBack += delegate(string namex,object [] values){cs.tabLabel.Text=namex;};
 		
 		button.Clicked += new EventHandler(cs.clickclosed);
 		this.notebook.SwitchPage += new SwitchPageHandler(cs.onSwitchPage);
@@ -466,7 +472,9 @@ public partial class MainWindow: Gtk.Window
 			
 			Gtk.Application.Invoke(delegate {						
 				ChatConsole imc=new ChatConsole(target);
-				makeimwindow(MainClass.av_names[target],imc,false,target);
+				//makeimwindow(MainClass.av_names[target],imc,false,target);
+				makeimwindow("Waiting...",imc,false,target);
+
 				active_ims.Add(target);
 			});
 		}		
@@ -498,6 +506,7 @@ public partial class MainWindow: Gtk.Window
 				ResponseType result=(ResponseType)md.Run();
 				md.Destroy();
 			});
+			return;
 		}
 
 		if(im.Dialog==libsecondlife.InstantMessageDialog.GroupNotice)
@@ -507,8 +516,30 @@ public partial class MainWindow: Gtk.Window
 				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Info,ButtonsType.Ok,"GROUP NOTICE\nFrom:"+im.FromAgentName+"\n"+im.Message);
 				ResponseType result=(ResponseType)md.Run();
 				md.Destroy();
-				return;
+				
 			});
+			return;
+		}
+		
+		if(im.Dialog==libsecondlife.InstantMessageDialog.RequestTeleport)
+		{
+			//Hmm need to handle this differently than a standard IM
+			Gtk.Application.Invoke(delegate {	
+				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,im.FromAgentName+" would like you to join them\n"+im.Message+"\nPress yes to teleport or no to ignore");
+				ResponseType result=(ResponseType)md.Run();
+				if(result==ResponseType.Yes)
+				{
+					MainClass.client.Self.TeleportLureRespond(im.FromAgentID,true);
+				}
+				else
+				{
+					MainClass.client.Self.TeleportLureRespond(im.FromAgentID,false);
+				}
+				md.Destroy();
+				
+			});
+			
+			return;
 			
 		}
 		
@@ -549,11 +580,11 @@ public partial class MainWindow: Gtk.Window
 				ChatConsole imc=new ChatConsole(im);
 				string name;
 
-				if(!MainClass.av_names.TryGetValue(im.FromAgentID,out name))
-					name="Waiting...";
+				//if(!MainClass.av_names.TryGetValue(im.FromAgentID,out name))
+				//	name="Waiting...";
 				
 			
-				makeimwindow(name,imc,false,im.FromAgentID);
+				makeimwindow("Waiting...",imc,false,im.FromAgentID);
 				active_ims.Add(im.FromAgentID);
 			});
 		}

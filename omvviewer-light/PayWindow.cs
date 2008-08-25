@@ -70,14 +70,14 @@ namespace omvviewerlight
 		void request_name(LLUUID id)
 		{
 			Console.Write("Requesting name for ID : "+id.ToString()+"\n");
-			if(!MainClass.av_names.ContainsKey(id))
+			if(!MainClass.name_cache.av_names.ContainsKey(id))
 			{
 				Console.Write("Not found sending to server\n");
 				MainClass.client.Avatars.RequestAvatarName(id);			
 			}
 			else
 			{
-				Console.Write("Already known :"+MainClass.av_names[id]+"\n");
+				Console.Write("Already known :"+MainClass.name_cache.av_names[id]+"\n");
 			}
 		}
 		
@@ -85,7 +85,7 @@ namespace omvviewerlight
 		{
 			this.entry1.Text=amountpay.ToString();
 			
-			if(!MainClass.av_names.TryGetValue(resident_key, out resident))
+			if(!MainClass.name_cache.av_names.TryGetValue(resident_key, out resident))
 			{
 				resident="Waiting......";
 			}
@@ -109,8 +109,8 @@ namespace omvviewerlight
 			
 			foreach(KeyValuePair<LLUUID,string> name in names)
 			{
-				if(!MainClass.av_names.ContainsKey(name.Key))
-					MainClass.av_names.Add(name.Key,name.Value);		
+				//if(!MainClass.name_cache.av_names.ContainsKey(name.Key))
+				//	MainClass.name_cache.av_names.Add(name.Key,name.Value);		
 			
 				Console.Write("Names = "+name.Value+"\n");
 			}

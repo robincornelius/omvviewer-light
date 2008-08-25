@@ -13,9 +13,11 @@ namespace omvviewerlight
 	public class AVNameCache
 	{
 		List <LLUUID>getting;
+		public Dictionary<LLUUID, string> av_names;
 		
 		public AVNameCache()
 		{
+			av_names = new Dictionary<LLUUID, string>();
 			getting = new List<LLUUID>();
 			MainClass.client.Groups.OnGroupNames += new libsecondlife.GroupManager.GroupNamesCallback(onGroupNames);
 			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);
@@ -23,7 +25,7 @@ namespace omvviewerlight
 		
 		public void reqname(LLUUID name)
 		{
-			if(!getting.Contains(name)&& !MainClass.av_names.ContainsKey(name))
+			if(!getting.Contains(name)&& !MainClass.name_cache.av_names.ContainsKey(name))
 			{
 				getting.Add(name);
 				MainClass.client.Avatars.RequestAvatarName(name);
@@ -37,9 +39,12 @@ namespace omvviewerlight
 			
 			foreach(LLUUID name in names)
 			{
-				if(!MainClass.av_names.ContainsKey(name) && !this.getting.Contains(name))
+				if(!this.getting.Contains(name))
 				{
 					getting.Add(name);
+				}
+				if(!av_names.ContainsKey(name))
+				{
 					request.Add(name);
 				}
 				
@@ -58,9 +63,9 @@ namespace omvviewerlight
 				if(getting.Contains(kvp.Key))
 			        getting.Remove(kvp.Key);
 								   
-				if(!MainClass.av_names.ContainsKey(kvp.Key))
+				if(!av_names.ContainsKey(kvp.Key))
 				{
-					MainClass.av_names.Add(kvp.Key,kvp.Value);
+					av_names.Add(kvp.Key,kvp.Value);
 				}
 			}	
 		

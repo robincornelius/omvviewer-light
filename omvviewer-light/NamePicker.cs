@@ -37,7 +37,7 @@ namespace omvviewerlight
 			treeview1.Model=store;
 			store.SetSortColumnId(0,Gtk.SortType.Ascending);
 			
-			foreach(KeyValuePair<LLUUID,string> name in MainClass.av_names)
+			foreach(KeyValuePair<LLUUID,string> name in MainClass.name_cache.av_names)
 			{
 				store.AppendValues(name.Value,name.Key);
 				

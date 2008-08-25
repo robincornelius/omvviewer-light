@@ -110,16 +110,16 @@ namespace omvviewerlight
 			
 			foreach(KeyValuePair<LLUUID,string> name in names)
 			{
-				if(!MainClass.av_names.ContainsKey(name.Key))
-					MainClass.av_names.Add(name.Key,name.Value);		
+				//if(!MainClass.av_names.ContainsKey(name.Key))
+					//MainClass.av_names.Add(name.Key,name.Value);		
 			
 				Console.Write("Names = "+name.Value+"\n");
 			}
 
 			Gtk.Application.Invoke(delegate {	
-				if(MainClass.av_names.ContainsKey(resident))
+				if(MainClass.name_cache.av_names.ContainsKey(resident))
 				{
-					this.label_name.Text=MainClass.av_names[resident];
+					this.label_name.Text=MainClass.name_cache.av_names[resident];
 				}
 				else
 				{
@@ -130,9 +130,9 @@ namespace omvviewerlight
 			
 		
 			Gtk.Application.Invoke(delegate {	
-				if(MainClass.av_names.ContainsKey(partner_key))
+				if(MainClass.name_cache.av_names.ContainsKey(partner_key))
 				{
-					this.label_partner.Text=MainClass.av_names[partner_key];
+					this.label_partner.Text=MainClass.name_cache.av_names[partner_key];
 				}
 				else
 				{
@@ -179,9 +179,9 @@ namespace omvviewerlight
 			TryGetImage getter= new TryGetImage(this.image7,profile_pic);
 			TryGetImage getter2= new TryGetImage(this.image3,firstlife_pic);
 							
-			if(MainClass.av_names.ContainsKey(id))
+			if(MainClass.name_cache.av_names.ContainsKey(id))
 			{
-				this.label_name.Text=MainClass.av_names[id];
+				this.label_name.Text=MainClass.name_cache.av_names[id];
 			}
 			else
 			{
@@ -191,9 +191,9 @@ namespace omvviewerlight
 						
 			if(props.Partner!=LLUUID.Zero)
 			{	
-				if(MainClass.av_names.ContainsKey(partner_key))
+				if(MainClass.name_cache.av_names.ContainsKey(partner_key))
 				{
-					this.label_partner.Text=MainClass.av_names[partner_key];
+					this.label_partner.Text=MainClass.name_cache.av_names[partner_key];
 				}
 				else
 				{

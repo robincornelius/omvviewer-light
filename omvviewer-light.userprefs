@@ -1,19 +1,18 @@
 ﻿<UserCombinePreferences version="1.0" filename="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light.mds">
   <Files>
     <File name="Welcome" />
-    <File name="omvviewer-light/AsyncNameUpdate.cs" line="89" column="5" />
-    <File name="omvviewer-light/Inventory.cs" line="421" column="83" />
-    <File name="omvviewer-light/NamePicker.cs" line="25" column="43" />
-    <File name="omvviewer-light/MainWindow.cs" line="426" column="58" />
-    <File name="omvviewer-light/GroupInfo.cs" line="122" column="7" />
-    <File name="omvviewer-light/Groups.cs" line="1" column="1" />
-    <File name="omvviewer-light/ChatConsole.cs" line="194" column="1" />
+    <File name="omvviewer-light/AsyncNameUpdate.cs" line="38" column="16" />
+    <File name="omvviewer-light/GroupInfo.cs" line="92" column="4" />
+    <File name="omvviewer-light/Main.cs" line="35" column="32" />
+    <File name="omvviewer-light/MainWindow.cs" line="436" column="3" />
+    <File name="omvviewer-light/ChatConsole.cs" line="248" column="3" />
+    <File name="omvviewer-light/FriendsList.cs" line="45" column="4" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
-          <Node name="AsyncNameUpdate.cs" selected="True" />
+          <Node name="Main.cs" selected="True" />
         </Node>
       </Node>
     </ViewMemento>
@@ -22,7 +21,7 @@
     </ViewMemento>
   </Views>
   <Properties>
-    <Property key="ActiveWindow" value="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light/AsyncNameUpdate.cs" />
+    <Property key="ActiveWindow" value="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light/Main.cs" />
     <Property key="ActiveConfiguration" value="Debug" />
   </Properties>
 </UserCombinePreferences>

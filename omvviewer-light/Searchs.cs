@@ -66,8 +66,8 @@ namespace omvviewerlight
 			foreach(libsecondlife.DirectoryManager.AgentSearchData person in people)
 			{
 					store.AppendValues (person.Online,person.FirstName+" "+person.LastName,person.AgentID);		
-					if(!MainClass.av_names.ContainsKey(person.AgentID))
-						MainClass.av_names.Add(person.AgentID,person.FirstName+" "+person.LastName);
+					if(!MainClass.name_cache.av_names.ContainsKey(person.AgentID))
+						MainClass.name_cache.av_names.Add(person.AgentID,person.FirstName+" "+person.LastName);
 			}
 		
 			});

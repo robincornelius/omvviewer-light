@@ -93,17 +93,29 @@ namespace omvviewerlight
 			Gtk.MenuItem menupunkt = new MenuItem("Teleport to Landmark");
 			Gtk.MenuItem menu_give = new MenuItem("Give to user");
 			Gtk.MenuItem menu_delete = new MenuItem("Delete item");
-            this.menu_landmark.Append(menupunkt);
+
+			this.menu_landmark.Append(menupunkt);
 			this.menu_landmark.Append(menu_give);
 			this.menu_landmark.Append(menu_delete);
-			this.menu_item.Append(menu_delete);
-			this.menu_item.Append(menu_give);
-			this.menu_item.Append(menu_delete);
-		
-            menupunkt.ButtonPressEvent += new ButtonPressEventHandler(Teleporttolandmark);        
+			
+			menupunkt.ButtonPressEvent += new ButtonPressEventHandler(Teleporttolandmark);        
 			menu_give.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
 			menu_delete.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
 			
+			menu_give = new MenuItem("Give to user");
+			menu_delete = new MenuItem("Delete item");			
+	
+			this.menu_item.Append(menu_delete);
+			this.menu_item.Append(menu_give);
+		 
+			menu_give.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
+			menu_delete.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
+			
+			this.label_aquired.Text="";
+			this.label_createdby.Text="";
+			this.label_name.Text="";
+			this.label_group.Text="";
+			this.label_saleprice.Text="";
 		}
 		
 		void ondeleteasset(object o, ButtonPressEventArgs args)
@@ -123,8 +135,7 @@ namespace omvviewerlight
 					MainClass.client.Inventory.RemoveItem(item.UUID);
 					return;
 				}
-					md.Destroy();
-								
+					md.Destroy();				
 			}
 		}
 		
@@ -137,7 +148,7 @@ namespace omvviewerlight
 			NamePicker np = new NamePicker();
 			
 			if(item is InventoryItem)
-				np.item_name=((InventoryLandmark)item).Name;
+				np.item_name=((InventoryItem)item).Name;
 					
 			np.asset=item.UUID;
 			
@@ -214,6 +225,7 @@ namespace omvviewerlight
 
         void Inventory_OnItemReceived(InventoryItem item)
         {
+			
         }
 
         void Teleporttolandmark(object o, ButtonPressEventArgs args)
@@ -242,14 +254,20 @@ namespace omvviewerlight
 			    Gtk.TreeIter iter;
 
                 if (this.treeview_inv.Selection.GetSelected(out mod, out iter))
-                {   if(mod.GetValue(iter,3)!=null)
+                {   
+					if(mod.GetValue(iter,3)!=null)
                     {
                         InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
                         if(item is InventoryLandmark)
                         {
                             menu_landmark.Popup();
-                            menu_landmark.ShowAll();
+							menu_landmark.ShowAll();
                         }
+						else
+						{
+							menu_item.Popup();
+							menu_item.ShowAll();
+						}
                     }
                 }
             }
@@ -416,11 +434,19 @@ namespace omvviewerlight
 						this.checkbutton_copy.Active=libsecondlife.PermissionMask.Copy==(((InventoryItem)item).Permissions.OwnerMask&libsecondlife.PermissionMask.Copy);
 						this.checkbutton_mod.Active=libsecondlife.PermissionMask.Modify==(((InventoryItem)item).Permissions.OwnerMask&libsecondlife.PermissionMask.Modify);
 						this.checkbutton_trans.Active=libsecondlife.PermissionMask.Transfer==(((InventoryItem)item).Permissions.OwnerMask&libsecondlife.PermissionMask.Transfer);
-						
-		
+					
+						this.checkbutton_copynext.Active=libsecondlife.PermissionMask.Copy==(((InventoryItem)item).Permissions.NextOwnerMask&libsecondlife.PermissionMask.Copy);
+						this.checkbutton_modnext.Active=libsecondlife.PermissionMask.Modify==(((InventoryItem)item).Permissions.NextOwnerMask&libsecondlife.PermissionMask.Modify);
+						this.checkbutton_transnext.Active=libsecondlife.PermissionMask.Transfer==(((InventoryItem)item).Permissions.NextOwnerMask&libsecondlife.PermissionMask.Transfer);
+					
 						AsyncNameUpdate ud=new AsyncNameUpdate(((InventoryItem)item).CreatorID.ToString(),false);
-						ud.onNameCallBack += delegate(string name){this.label_createdby.Text=name;};
+						ud.onNameCallBack += delegate(string name,object[] values){this.label_createdby.Text=name;};
 
+						AsyncNameUpdate ud2=new AsyncNameUpdate(((InventoryItem)item).GroupID,true);
+						ud2.onNameCallBack += delegate(string name,object[] values){this.label_group.Text=name;};
+		
+						this.label_saleprice.Text=((InventoryItem)item).SalePrice.ToString();
+						
 			
 					}
 		

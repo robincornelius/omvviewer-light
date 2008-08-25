@@ -37,6 +37,8 @@ namespace omvviewerlight
 		
 		public FriendsList()
 		{
+			
+			
 			Console.Write("Building friends list window\n");
 			this.Build();
 			store= new Gtk.ListStore (typeof(Gdk.Pixbuf),typeof(string),typeof(string));
@@ -48,7 +50,6 @@ namespace omvviewerlight
 			online_img=new Gdk.Pixbuf("icon_avatar_online.tga");
 			offline_img=new Gdk.Pixbuf("icon_avatar_offline.tga");
 				
-			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);			
 			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);		
 			MainClass.client.Friends.OnFriendOnline += new libsecondlife.FriendsManager.FriendOnlineEvent(onFriendOnline);
 			MainClass.client.Friends.OnFriendOffline += new libsecondlife.FriendsManager.FriendOfflineEvent(onFriendOffline);			
@@ -86,38 +87,19 @@ namespace omvviewerlight
 		{
 			MainClass.client.Friends.FriendList.ForEach(delegate(FriendInfo friend)
 			{
-				store.AppendValues (friend.IsOnline?online_img:offline_img,friend.Name,friend.UUID.ToString());
+				Gtk.TreeIter iter=store.AppendValues (friend.IsOnline?online_img:offline_img,friend.Name,friend.UUID.ToString());
+				AsyncNameUpdate ud=new AsyncNameUpdate(friend.UUID,false);  
+				ud.addparameters(iter);
+				ud.onNameCallBack += delegate(string namex,object[] values){Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; store.SetValue(iterx,1,namex);};
 			});
 		}
 			
-		void onAvatarNames(Dictionary<LLUUID, string> names)
-		{	
-			foreach(KeyValuePair<LLUUID,string> name in names)
-			{
-				if(!MainClass.av_names.ContainsKey(name.Key))
-					MainClass.av_names.Add(name.Key,name.Value);		
-			}
-			
-			Gtk.Application.Invoke(delegate {			
-				store.Foreach(myfunc);
-			});	
-
-		}
 		
 		bool myfunc(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
 		{			
 			string id =(string)store.GetValue(iter,2);
 			LLUUID lid=(LLUUID)id;
 		
-			if(MainClass.av_names!=null)
-			{			
-				string name;
-				if(MainClass.av_names.TryGetValue(lid,out name))
-				{
-					store.SetValue(iter,1,name);
-				}
-			}
-			
 			FriendInfo finfo;
 			if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 			{

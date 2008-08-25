@@ -63,13 +63,10 @@ namespace omvviewerlight
 			
 			TryGetImage img=new TryGetImage(this.image_group_emblem,group.InsigniaID);
 			this.label_name.Text=group.Name;
-		
-			founder_key=group.FounderID;
-			string name;
-			if(MainClass.av_names.TryGetValue(group.FounderID,out name))
-			{
-				this.label_name.Text="Founded by "+MainClass.av_names[group.FounderID];
-			}
+	
+			AsyncNameUpdate ud=new AsyncNameUpdate(group.FounderID,false);  
+			ud.onNameCallBack += delegate(string namex,object[] values){this.label_foundedby.Text="Founded by "+namex;};
+
 			
 		}
 		
@@ -98,9 +95,15 @@ namespace omvviewerlight
 			
 			foreach(KeyValuePair <LLUUID,GroupMember> member in members)
 			{
+				Gtk.TreeIter iter=store_members.AppendValues("Waiting...",member.Value.Title,member.Value.OnlineStatus,member.Value.ID);
+				
 				AsyncNameUpdate ud=new AsyncNameUpdate(member.Value.ID,false);  
-				ud.onNameCallBack += delegate(string namex){store_members.AppendValues(namex,member.Value.Title,member.Value.OnlineStatus,member.Value.ID);};
+				ud.addparameters(iter);
+				ud.onNameCallBack += delegate(string namex,object[] values){Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; store_members.SetValue(iterx,0,namex);};		
 			}
+			Gtk.Application.Invoke(delegate {	
+					this.treeview_members.QueueDraw();
+				});
 		}
 		
 		void onGroupProfile(GroupProfile group)
@@ -127,7 +130,7 @@ namespace omvviewerlight
 			string name=(string)store_members.GetValue(iter,0);
 			LLUUID id =(LLUUID)store_members.GetValue(iter,3);
 			string member_name;
-			if(MainClass.av_names.TryGetValue(id,out member_name))
+			if(MainClass.name_cache.av_names.TryGetValue(id,out member_name))
 			{
 				store_members.SetValue(iter,0,member_name);
 			}
