@@ -119,8 +119,11 @@
     <EmbeddedResource Include="status_voice.tga" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncNameUpdate.cs" />
+    <Compile Include="AVNameCache.cs" />
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="gtk-gui\omvviewerlight.Inventory.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.NamePicker.cs" />
     <Compile Include="Inventory.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="gtk-gui\MainWindow.cs" />
@@ -132,6 +135,7 @@
     <Compile Include="gtk-gui\omvviewerlight.FriendsList.cs" />
     <Compile Include="ChatConsole.cs" />
     <Compile Include="gtk-gui\omvviewerlight.ChatConsole.cs" />
+    <Compile Include="NamePicker.cs" />
     <Compile Include="Radar.cs" />
     <Compile Include="gtk-gui\omvviewerlight.Radar.cs" />
     <Compile Include="TeleportTo.cs" />
