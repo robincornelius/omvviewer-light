@@ -24,6 +24,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 using System;
 using System.Collections.Generic;
 using Gtk;
+using Gdk;
 using libsecondlife;
 using omvviewerlight;
 
@@ -44,8 +45,11 @@ public partial class MainWindow: Gtk.Window
 
     ~MainWindow()
     {
-        this.trayIcon.Visible = false;
-        this.trayIcon.Dispose();
+        if (trayIcon != null)
+        {
+            this.trayIcon.Visible = false;
+            this.trayIcon.Dispose();
+        }
     }
 
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
@@ -117,10 +121,42 @@ public partial class MainWindow: Gtk.Window
 		MainClass.client.Self.OnScriptQuestion += new libsecondlife.AgentManager.ScriptQuestionCallback(onScriptCallback);
 		MainClass.client.Self.OnScriptDialog +=new libsecondlife.AgentManager.ScriptDialogCallback(onScriptDialogue);
 		MainClass.client.Self.OnGroupChatLeft += new libsecondlife.AgentManager.GroupChatLeft(onLeaveGroupChat);
-		
+        MainClass.client.Friends.OnFriendshipResponse += new FriendsManager.FriendshipResponseEvent(Friends_OnFriendshipResponse);
+        MainClass.client.Friends.OnFriendshipTerminated += new FriendsManager.FriendshipTerminatedEvent(Friends_OnFriendshipTerminated);
+
         this.WindowStateEvent += delegate { if (this.Visible) { trayIcon.Blinking = false; this.UrgencyHint = false; };};
    	GLib.Timeout.Add(10000,OnUpdateStatus); 
 	}
+
+    void Friends_OnFriendshipTerminated(LLUUID agentID, string agentName)
+    {
+        Gtk.Application.Invoke(delegate
+        {
+            MessageDialog md = new Gtk.MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Close, true, agentName+" has terminated your friendship");
+            ResponseType result = (ResponseType)md.Run();
+            md.Destroy();	
+        });
+    }
+
+    void Friends_OnFriendshipResponse(LLUUID agentID, string agentName, bool accepted)
+    {
+        Gtk.Application.Invoke(delegate
+        {
+            string msg = "";
+            if (accepted)
+            {
+                msg = agentName + " accepted your friendship request";
+            }
+            else
+            {
+                msg = agentName + " declined your friendship request";
+            }
+
+            MessageDialog md = new Gtk.MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Close, true, msg);
+            ResponseType result = (ResponseType)md.Run();
+            md.Destroy();	
+        });
+    }	
 
 	void onLeaveGroupChat(LLUUID session_id)
 	{

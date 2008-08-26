@@ -29,10 +29,14 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ProductName>omvviewer-light</ProductName>
+    <PublisherName>Robin Cornelius</PublisherName>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>0.3.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <ApplicationIcon>omvviewer.ico</ApplicationIcon>
+    <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputType>Exe</OutputType>
@@ -68,18 +72,22 @@
     <Reference Include="atk-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Program Files\Mono-1.9.1\lib\mono\gtk-sharp-2.0\atk-sharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="gdk-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Program Files\Mono-1.9.1\lib\mono\gtk-sharp-2.0\gdk-sharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="glib-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Program Files\Mono-1.9.1\lib\mono\gtk-sharp-2.0\glib-sharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="gtk-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Program Files\Mono-1.9.1\lib\mono\gtk-sharp-2.0\gtk-sharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -88,10 +96,12 @@
     <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Program Files\Mono-1.9.1\lib\mono\2.0\Mono.Posix.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="pango-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Program Files\Mono-1.9.1\lib\mono\gtk-sharp-2.0\pango-sharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="libsecondlife, Version=0.5.0.0, Culture=neutral, PublicKeyToken=null">
@@ -108,6 +118,10 @@
       <LogicalName>objects.xml</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="closebox.tga" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="status_health.tga" />
     <EmbeddedResource Include="status_money.tga" />
     <EmbeddedResource Include="status_no_build.tga" />
@@ -136,8 +150,19 @@
     <Compile Include="ChatConsole.cs" />
     <Compile Include="gtk-gui\omvviewerlight.ChatConsole.cs" />
     <Compile Include="NamePicker.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Radar.cs" />
     <Compile Include="gtk-gui\omvviewerlight.Radar.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="TeleportTo.cs" />
     <Compile Include="gtk-gui\omvviewerlight.TeleportTo.cs" />
     <Compile Include="Map.cs" />
@@ -179,6 +204,8 @@
     <Content Include="map_home.tga">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="omvviewer.ico" />
+    <Content Include="status_search_btn.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
@@ -203,7 +230,72 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="icn_voice-groupfocus.tga" />
+    <None Include="icn_voice-pvtfocus.tga" />
+    <None Include="icon_avatar_offline.tga" />
+    <None Include="icon_avatar_online.tga" />
+    <None Include="icon_group.tga" />
+    <None Include="icon_place.tga" />
+    <None Include="inv_folder_animation.tga" />
+    <None Include="inv_folder_bodypart.tga" />
+    <None Include="inv_folder_callingcard.tga" />
+    <None Include="inv_folder_clothing.tga" />
+    <None Include="inv_folder_gesture.tga" />
+    <None Include="inv_folder_landmark.tga" />
+    <None Include="inv_folder_lostandfound.tga" />
+    <None Include="inv_folder_notecard.tga" />
+    <None Include="inv_folder_object.tga" />
+    <None Include="inv_folder_plain_closed.tga" />
+    <None Include="inv_folder_plain_open.tga" />
+    <None Include="inv_folder_script.tga" />
+    <None Include="inv_folder_snapshot.tga" />
+    <None Include="inv_folder_sound.tga" />
+    <None Include="inv_folder_texture.tga" />
+    <None Include="inv_folder_trash.tga" />
+    <None Include="inv_item_animation.tga" />
+    <None Include="inv_item_attach.tga" />
+    <None Include="inv_item_callingcard_offline.tga" />
+    <None Include="inv_item_callingcard_online.tga" />
+    <None Include="inv_item_clothing.tga" />
+    <None Include="inv_item_eyes.tga" />
+    <None Include="inv_item_gesture.tga" />
+    <None Include="inv_item_gloves.tga" />
+    <None Include="inv_item_hair.tga" />
+    <None Include="inv_item_jacket.tga" />
+    <None Include="inv_item_landmark.tga" />
+    <None Include="inv_item_landmark_visited.tga" />
+    <None Include="inv_item_notecard.tga" />
+    <None Include="inv_item_object.tga" />
+    <None Include="inv_item_object_multi.tga" />
+    <None Include="inv_item_pants.tga" />
+    <None Include="inv_item_script.tga" />
+    <None Include="inv_item_script_dangerous.tga" />
+    <None Include="inv_item_shape.tga" />
+    <None Include="inv_item_shirt.tga" />
+    <None Include="inv_item_shoes.tga" />
+    <None Include="inv_item_skin.tga" />
+    <None Include="inv_item_skirt.tga" />
+    <None Include="inv_item_snapshot.tga" />
+    <None Include="inv_item_socks.tga" />
+    <None Include="inv_item_sound.tga" />
+    <None Include="inv_item_texture.tga" />
+    <None Include="inv_item_underpants.tga" />
+    <None Include="inv_item_undershirt.tga" />
+    <None Include="item_object.tga" />
+    <None Include="map_avatar_8.tga" />
+    <None Include="map_avatar_above_8.tga" />
+    <None Include="map_avatar_below_8.tga" />
+    <None Include="map_avatar_me_8.tga" />
     <None Include="omvviewer-light_TemporaryKey.pfx" />
+    <None Include="trying.tga" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Artwork\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

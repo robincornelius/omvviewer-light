@@ -46,7 +46,6 @@ namespace omvviewerlight
 		public static void Main (string[] args)
 		{
 
-			
             bool hiddenconsole = false;
 			// Now boot the libsecondlife layer so it is global to our namespace
             System.IO.StreamWriter aStreamWriter;
@@ -55,9 +54,9 @@ namespace omvviewerlight
 
             try
             {
-             //   IntPtr hWnd = GetConsoleWindow();
-             //   ShowWindow(hWnd, 0);
-             //   hiddenconsole = true;
+                IntPtr hWnd = GetConsoleWindow();
+                ShowWindow(hWnd, 0);
+                hiddenconsole = true;
            
             }
             catch(Exception e)
@@ -86,7 +85,7 @@ namespace omvviewerlight
                     ShowWindow(hWnd, 1);
                 }
 
-                Console.Write("The application died in a big heap\n");
+                Console.Write("The application died in a big heap\n This is the debug i caught :-");
                 Console.Write(e.Message);
                 Console.Write(e.Source);
                 Console.Write(e.StackTrace);

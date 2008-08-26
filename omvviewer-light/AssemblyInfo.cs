@@ -11,11 +11,11 @@ using System.Runtime.CompilerServices;
 // Change them to the values specific to your project.
 
 [assembly: AssemblyTitle("omvviewer-light")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A light weight client for connetiing to the 3d metaverse")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("omvviewer-light")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("Robin Cornelius - Licenced under the GPL v3.0 or later")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
