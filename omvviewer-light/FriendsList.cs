@@ -52,15 +52,33 @@ namespace omvviewerlight
 				
 			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);		
 			MainClass.client.Friends.OnFriendOnline += new libsecondlife.FriendsManager.FriendOnlineEvent(onFriendOnline);
-			MainClass.client.Friends.OnFriendOffline += new libsecondlife.FriendsManager.FriendOfflineEvent(onFriendOffline);			
-		}	
+			MainClass.client.Friends.OnFriendOffline += new libsecondlife.FriendsManager.FriendOfflineEvent(onFriendOffline);
+            MainClass.client.Friends.OnFriendshipResponse += new FriendsManager.FriendshipResponseEvent(Friends_OnFriendshipResponse);
+            MainClass.client.Friends.OnFriendshipTerminated += new FriendsManager.FriendshipTerminatedEvent(Friends_OnFriendshipTerminated);
+        }
+
+        void Friends_OnFriendshipTerminated(LLUUID agentID, string agentName)
+        {
+            Gtk.Application.Invoke(delegate
+            {
+                    populate_list();
+            });
+        }
+
+        void Friends_OnFriendshipResponse(LLUUID agentID, string agentName, bool accepted)
+        {
+            Gtk.Application.Invoke(delegate
+            {
+                if (accepted == true) ;
+                    populate_list();
+            });
+        }	
 		
 		void onLogin(LoginStatus status,string message)
 		{
 			if(LoginStatus.Success==status)
 			{
 				Gtk.Application.Invoke(delegate {
-				store.Clear();
 				populate_list();
 				store.Foreach(myfunc);
 				});
@@ -85,6 +103,7 @@ namespace omvviewerlight
 		
 		void populate_list()		
 		{
+            store.Clear();
 			MainClass.client.Friends.FriendList.ForEach(delegate(FriendInfo friend)
 			{
 				Gtk.TreeIter iter=store.AppendValues (friend.IsOnline?online_img:offline_img,friend.Name,friend.UUID.ToString());

@@ -92,6 +92,11 @@ namespace omvviewerlight
 			if(sim.ID==MainClass.client.Network.CurrentSim.ID)
 			{
 				this.trying=false;
+                Gtk.Application.Invoke(delegate
+                {
+                    Thread loginRunner = new Thread(new ThreadStart(this.appearencethread));
+                    loginRunner.Start();
+                });
 				
 			}	
 		}
@@ -148,11 +153,7 @@ namespace omvviewerlight
 				Console.Write("Login status login\n");                          
 				MainClass.client.Groups.RequestCurrentGroups();
 				MainClass.client.Self.RetrieveInstantMessages();
-                Gtk.Application.Invoke(delegate
-                {
-                    Thread loginRunner = new Thread(new ThreadStart(this.appearencethread));
-                    loginRunner.Start();
-                });
+                
               }		
 		}
 

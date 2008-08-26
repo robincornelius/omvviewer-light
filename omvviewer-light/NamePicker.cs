@@ -42,7 +42,6 @@ namespace omvviewerlight
 				store.AppendValues(name.Value,name.Key);
 				
 			}
-			
 		}
 		
 		protected virtual void OnButtonSelectClicked (object sender, System.EventArgs e)

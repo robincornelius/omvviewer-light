@@ -143,9 +143,10 @@ public partial class MainWindow: Gtk.Window
 	{
 		Gtk.Application.Invoke(delegate {						
 			string msg;
-			msg="<b>ALERT FROM SECONDLIFE<b>\n"+message;
+			msg="<b>ALERT FROM SECONDLIFE</b>\n"+message;
 			MessageDialog md= new Gtk.MessageDialog(this,DialogFlags.Modal,MessageType.Info,ButtonsType.Close,true,msg);
-			ResponseType result=(ResponseType)md.Run();			
+			ResponseType result=(ResponseType)md.Run();
+            md.Destroy();
 		});	
 	}
 	

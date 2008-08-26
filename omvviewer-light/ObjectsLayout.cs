@@ -79,8 +79,7 @@ namespace omvviewerlight
 			}
 			
 		}
-				
-			
+						
 		bool myfunc(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
 		{
 			LLUUID key=(LLUUID)store.GetValue(iter,2);			
@@ -108,8 +107,8 @@ namespace omvviewerlight
                     return ((prim.ParentID == 0) && (pos != LLVector3.Zero) && (LLVector3.Dist(pos, location) < radius));
                 }
             );
-			
-			RequestObjectProperties(prims, 250);
+
+           	RequestObjectProperties(prims, 250);
 			
 		}
 		
@@ -199,7 +198,9 @@ namespace omvviewerlight
 						this.label_forsale.Text="Original for $L"+prim.Properties.SalePrice.ToString();	
 						break;	
 					}
-					
+
+                    this.button_lookat.Sensitive = true;
+
 					if(prim.Properties.SaleType ==  (byte)libsecondlife.SaleType.Not)
 					{
 						this.button_buy.Sensitive=false;
