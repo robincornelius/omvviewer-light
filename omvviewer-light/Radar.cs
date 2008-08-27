@@ -83,6 +83,16 @@ namespace omvviewerlight
 
             //Console.Write("Testing " + distA.ToString() + " vs " + distB.ToString() + "\n");
 
+            if (distAs == distBs)
+                return 0;
+
+            if (distAs == "NaN")
+                return 1;
+
+            if (distBs == "NaN")
+                return -1;
+
+
 			if(distA>distB)
 				return 1;
 			
