@@ -179,6 +179,7 @@ namespace omvviewerlight
 
 		unsafe void mergedrawxy(Gdk.Pixbuf bufdest,Gdk.Pixbuf src,int x,int y)
 		{
+    
 			sbyte * pixels=(sbyte *)bufdest.Pixels;
 			sbyte * spixels=(sbyte *)src.Pixels;
 			sbyte * p;			

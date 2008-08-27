@@ -47,8 +47,7 @@ namespace omvviewerlight
 
 
 		public Radar()
-		{
-       
+		{      
 			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(uint));
 			this.Build();
 			treeview_radar.AppendColumn("",new Gtk.CellRendererText(),"text",0);
@@ -140,9 +139,7 @@ namespace omvviewerlight
 		
 		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
 		{
-            Avatar av;
-
-              
+                      
                     Gtk.Application.Invoke(delegate
                     {
                         if (!this.av_tree.ContainsKey(avatar.LocalID))
@@ -162,13 +159,15 @@ namespace omvviewerlight
 		
 		void onKillObject(Simulator simulator, uint objectID)
 		{
+             Gtk.Application.Invoke(delegate {	
            if(this.av_tree.ContainsKey(objectID))
             {
-                Gtk.Application.Invoke(delegate {	
+               
                     store.Remove(ref av_tree[objectID].iter);
                     av_tree.Remove(objectID);
-                });
+               
             }
+             });
 		}
 
         void calcdistance(uint id)
