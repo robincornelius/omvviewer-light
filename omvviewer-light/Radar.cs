@@ -28,13 +28,24 @@ using libsecondlife;
 
 namespace omvviewerlight
 {
-	public partial class Radar : Gtk.Bin
+
+    public class agent 
+    {
+        public libsecondlife.Avatar avatar;
+        public uint localid;
+        public Gtk.TreeIter iter;
+    }
+    
+    
+    public partial class Radar : Gtk.Bin
 	{
 		
 		Gtk.ListStore store;	
 		private Dictionary<uint, Avatar> avs = new Dictionary<uint, Avatar>();
 		private Dictionary<LLUUID, bool> av_typing = new Dictionary<LLUUID, bool>();
-			
+        private Dictionary<uint, agent> av_tree = new Dictionary<uint, agent>();	
+
+
 		public Radar()
 		{
        
@@ -49,18 +60,20 @@ namespace omvviewerlight
 			MainClass.client.Objects.OnObjectKilled += new libsecondlife.ObjectManager.KillObjectCallback(onKillObject);
 			MainClass.client.Objects.OnObjectUpdated += new libsecondlife.ObjectManager.ObjectUpdatedCallback(onUpdate);
 		
-			MainClass.client.Self.OnChat += new libsecondlife.AgentManager.ChatCallback(onChat);
+	//		MainClass.client.Self.OnChat += new libsecondlife.AgentManager.ChatCallback(onChat);
 			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
-			store.SetSortColumnId(2,Gtk.SortType.Ascending);
+			
 	
 			MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
 
 			this.store.SetSortFunc(2,sort_llvector3);	
+            store.SetSortColumnId(2,Gtk.SortType.Ascending);
+
 		}
 		
 		int sort_llvector3(Gtk.TreeModel model,Gtk.TreeIter a,Gtk.TreeIter b)
 		{
-
+            
 			string distAs=(string)store.GetValue(a,2);			
 			string distBs=(string)store.GetValue(b,2);			
 			float distA,distB;
@@ -68,11 +81,13 @@ namespace omvviewerlight
 			float.TryParse(distAs,out distA);
 			float.TryParse(distBs,out distB);
 
+            //Console.Write("Testing " + distA.ToString() + " vs " + distB.ToString() + "\n");
+
 			if(distA>distB)
 				return 1;
 			
 			if(distA<distB)
-				return 0;
+				return -1;
 			
 			return 0;
 		}
@@ -85,6 +100,7 @@ namespace omvviewerlight
 					lock (store)
                     {
 					    store.Clear();
+                        av_tree.Clear();
                     }
                 });
 			}
@@ -97,59 +113,67 @@ namespace omvviewerlight
 				   lock(store)
                    {
                         store.Clear();
+                        av_tree.Clear();
                    }
               });			
 		}
 		
 		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
 		{
-			if(!avs.ContainsKey(update.LocalID))
-			{
-				Gtk.Application.Invoke(delegate {										
-					store.Foreach(myfunc);
-				});
-			}
+            if(this.av_tree.ContainsKey(update.LocalID))
+            {
+                Gtk.Application.Invoke(delegate {
+                    calcdistance(update.LocalID);
+                });
+            }
 		}
 		
 		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
 		{
             Avatar av;
 
-            lock(avs)
-            {
-                if(avs.ContainsKey(avatar.LocalID))
-			    {
-                    return;
-                }
-                avs.Add(avatar.LocalID,avatar);
-                av=avs[avatar.LocalID];
-            }
- 
-            Gtk.Application.Invoke(delegate 
-            {		
-				LLVector3 pos;
-			    pos=MainClass.client.Self.RelativePosition-avatar.Position;
-				double dist;
-				dist=Math.Sqrt(pos.X*pos.X+pos.Y+pos.Y+pos.Z+pos.Z);						
-				store.AppendValues("",av.Name,MainClass.cleandistance(dist.ToString(),1),avatar.LocalID);
-            });
+              
+                    Gtk.Application.Invoke(delegate
+                    {
+                        if (!this.av_tree.ContainsKey(avatar.LocalID))
+                        {
+                        agent theagent = new agent();
+                        theagent.avatar = avatar;
+                        Gtk.TreeIter iter;
+                        iter = store.AppendValues("", avatar.Name, "", avatar.LocalID);
+                        theagent.iter = iter;
+                        av_tree.Add(avatar.LocalID, theagent);
+                        calcdistance(avatar.LocalID);
+                        }
+                    });
+                
+            
 		}
 		
 		void onKillObject(Simulator simulator, uint objectID)
 		{
-            lock (avs)
+           if(this.av_tree.ContainsKey(objectID))
             {
-                if(avs.ContainsKey(objectID))
-				{
-					avs.Remove(objectID);
-				}
-			}
-			
-			Gtk.Application.Invoke(delegate {										
-				store.Foreach(myfunc);
-			});	
+                Gtk.Application.Invoke(delegate {	
+                    store.Remove(ref av_tree[objectID].iter);
+                    av_tree.Remove(objectID);
+                });
+            }
 		}
-		
+
+        void calcdistance(uint id)
+        {
+            if (this.av_tree.ContainsKey(id))
+            {
+                LLVector3 pos;
+                pos = MainClass.client.Self.RelativePosition - (LLVector3)av_tree[id].avatar.Position;
+                double dist;
+                dist = Math.Sqrt(pos.X * pos.X + pos.Y + pos.Y + pos.Z + pos.Z);
+                store.SetValue(av_tree[id].iter, 2, MainClass.cleandistance(dist.ToString(), 1));
+           
+            }
+        }
+/*		
 		bool myfunc(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
 		{
 			uint key=(uint)store.GetValue(iter,3);
@@ -184,13 +208,15 @@ namespace omvviewerlight
 
 			return true;
 		}
-		
+*/
+/*		
 		void onChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourcetype,string fromName, LLUUID id, LLUUID ownerid, LLVector3 position)
 		{
                 lock(av_typing)
                 {
                     if (type == ChatType.StartTyping)
                     {
+
                         if (!av_typing.ContainsKey(id))
                             av_typing.Add(id, true);
                     }
@@ -202,7 +228,7 @@ namespace omvviewerlight
                     }
                 }	
 		}
-
+*/
 		protected virtual void OnButtonImClicked (object sender, System.EventArgs e)
 		{
 			//beter work out who we have selected
