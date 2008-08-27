@@ -447,25 +447,34 @@ namespace omvviewerlight
 				type=libsecondlife.ChatType.Whisper;
 			
 			int channel=0;
+            string outtext = this.entry_chat.Text;
 			
 			if(this.entry_chat.Text.StartsWith("/"))
 			{
-				//TODO fix this so not only a space works!
-				int pos;
-				pos=this.entry_chat.Text.IndexOf(" ");
-				string substr=this.entry_chat.Text.Substring(1,pos);
-				Console.Write("Saying on channle :"+substr+"\n");
-                try
+                char[] nums = new char[] {'0','1','2','3','4','5','6','7','8','9'};
+                string newtext=entry_chat.Text.Substring(1);
+                newtext=newtext.TrimStart(nums);
+                int diff;
+                diff = entry_chat.Text.Length - newtext.Length;
+
+
+                if (diff > 1)
                 {
-				    channel = int.Parse(substr);
-                }
-                catch(Exception ee)
-                {
-                    channel=0;
+                    outtext = newtext;
+                    string substr = this.entry_chat.Text.Substring(1, diff-1);
+ 
+                    try
+                    {
+                        channel = int.Parse(substr);
+                    }
+                    catch (Exception ee)
+                    {
+                        channel = 0;
+                    }
                 }
             }
-			
-			MainClass.client.Self.Chat(this.entry_chat.Text,channel,type);
+
+            MainClass.client.Self.Chat(outtext, channel, type);
 			
 			this.entry_chat.Text="";
 			
