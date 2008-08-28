@@ -61,6 +61,7 @@ namespace omvviewerlight {
             // Container child hbox1.Gtk.Box+BoxChild
             this.button3 = new Gtk.Button();
             this.button3.CanFocus = true;
+            this.button3.Name = "button3";
             this.button3.UseUnderline = true;
             this.button3.Label = Mono.Unix.Catalog.GetString("Reject");
             this.hbox1.Add(this.button3);

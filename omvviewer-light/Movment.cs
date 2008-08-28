@@ -102,5 +102,20 @@ namespace omvviewerlight
 			MainClass.client.Self.Movement.TurnRight=false;
             MainClass.client.Self.Movement.SendUpdate(true, MainClass.client.Network.CurrentSim);	
 		}
+		
+		protected virtual void OnButtonFwdPressed (object sender, System.EventArgs e)
+		{
+			MainClass.client.Self.Movement.AtPos=true;
+            MainClass.client.Self.Movement.SendUpdate(true, MainClass.client.Network.CurrentSim);	
+
+		}
+
+		protected virtual void OnButtonFwdReleased (object sender, System.EventArgs e)
+		{
+			MainClass.client.Self.Movement.AtNeg=true;
+            MainClass.client.Self.Movement.SendUpdate(true, MainClass.client.Network.CurrentSim);	
+
+		}
+
 	}
 }

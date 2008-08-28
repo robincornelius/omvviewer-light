@@ -25,7 +25,9 @@ namespace omvviewerlight {
         
         private Gtk.Button button1;
         
-        private Gtk.Button button2;
+        private Gtk.Button button_fwd;
+        
+        private Gtk.Button button3;
         
         protected virtual void Build() {
             Stetic.Gui.Initialize(this);
@@ -83,21 +85,32 @@ namespace omvviewerlight {
             w4.Expand = false;
             w4.Fill = false;
             // Container child hbox2.Gtk.Box+BoxChild
-            this.button2 = new Gtk.Button();
-            this.button2.CanFocus = true;
-            this.button2.Name = "button2";
-            this.button2.UseUnderline = true;
-            this.button2.Label = Mono.Unix.Catalog.GetString("Right");
-            this.hbox2.Add(this.button2);
-            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.hbox2[this.button2]));
-            w5.Position = 2;
+            this.button_fwd = new Gtk.Button();
+            this.button_fwd.CanFocus = true;
+            this.button_fwd.Name = "button_fwd";
+            this.button_fwd.UseUnderline = true;
+            this.button_fwd.Label = Mono.Unix.Catalog.GetString("Forward");
+            this.hbox2.Add(this.button_fwd);
+            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.hbox2[this.button_fwd]));
+            w5.Position = 1;
             w5.Expand = false;
             w5.Fill = false;
-            this.vbox1.Add(this.hbox2);
-            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
-            w6.Position = 1;
+            // Container child hbox2.Gtk.Box+BoxChild
+            this.button3 = new Gtk.Button();
+            this.button3.CanFocus = true;
+            this.button3.Name = "button3";
+            this.button3.UseUnderline = true;
+            this.button3.Label = Mono.Unix.Catalog.GetString("Right");
+            this.hbox2.Add(this.button3);
+            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox2[this.button3]));
+            w6.Position = 2;
             w6.Expand = false;
             w6.Fill = false;
+            this.vbox1.Add(this.hbox2);
+            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
+            w7.Position = 1;
+            w7.Expand = false;
+            w7.Fill = false;
             this.Add(this.vbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
@@ -107,8 +120,10 @@ namespace omvviewerlight {
             this.spinbutton_direction.ValueChanged += new System.EventHandler(this.OnSpinbuttonDirectionValueChanged);
             this.button1.Pressed += new System.EventHandler(this.OnButton1Pressed);
             this.button1.Released += new System.EventHandler(this.OnButton1Released);
-            this.button2.Pressed += new System.EventHandler(this.OnButton2Pressed);
-            this.button2.Released += new System.EventHandler(this.OnButton2Released);
+            this.button_fwd.Pressed += new System.EventHandler(this.OnButtonFwdPressed);
+            this.button_fwd.Released += new System.EventHandler(this.OnButtonFwdReleased);
+            this.button3.Pressed += new System.EventHandler(this.OnButton2Pressed);
+            this.button3.Released += new System.EventHandler(this.OnButton2Released);
         }
     }
 }
