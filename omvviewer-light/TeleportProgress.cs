@@ -37,6 +37,7 @@ namespace omvviewerlight
 		string tpsim;
 		LLVector3 tppos;
 		LLUUID landmark;
+ 
 		
 		public TeleportProgress() : 
 				base(Gtk.WindowType.Toplevel)
@@ -47,8 +48,11 @@ namespace omvviewerlight
 		
 		public void teleportassetid(LLUUID asset,string name)
 		{
+   
 			landmark=asset;
             tpsim = name;
+            this.label_sim.Text = name;
+            this.label_loc.Text = "";
 			Thread tpRunner= new Thread(new ThreadStart(this.tptolandmark));   			
 			tpRunner.Start();
 		}
@@ -56,6 +60,8 @@ namespace omvviewerlight
 		
 		public void teleporthome()
 		{
+            this.label_sim.Text = "Home";
+            this.label_loc.Text = "";
 			 Thread tpRunner= new Thread(new ThreadStart(this.gohomethread));   			
  			 tpRunner.Start();
 			
@@ -97,6 +103,7 @@ namespace omvviewerlight
 		
 		void tptolandmark()		
 		{
+        
 			   Thread.Sleep(1000);
 			   MainClass.client.Self.Teleport(landmark);
 			
