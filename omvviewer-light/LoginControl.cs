@@ -190,9 +190,12 @@ namespace omvviewerlight
 			MainClass.client.Appearance.SetPreviousAppearance(false);
             if (!appearanceEvent.WaitOne(1000 * 120, false))
             {
-                Gtk.MessageDialog md = new Gtk.MessageDialog(MainClass.win, Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Close, "Failed to set previous appearance");
-                md.Run();
-                md.Destroy();
+                Gtk.Application.Invoke(delegate
+                {
+                    Gtk.MessageDialog md = new Gtk.MessageDialog(MainClass.win, Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Close, "Failed to set previous appearance");
+                    md.Run();
+                    md.Destroy();
+                });
             }
         }
 		
