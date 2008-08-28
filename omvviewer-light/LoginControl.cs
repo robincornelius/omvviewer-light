@@ -153,7 +153,10 @@ namespace omvviewerlight
 				Console.Write("Login status login\n");                          
 				MainClass.client.Groups.RequestCurrentGroups();
 				MainClass.client.Self.RetrieveInstantMessages();
-                
+                MainClass.client.Throttle.Cloud = 0;
+                MainClass.client.Throttle.Wind = 0;
+                MainClass.client.Throttle.Land = 0;
+          
               }		
 		}
 

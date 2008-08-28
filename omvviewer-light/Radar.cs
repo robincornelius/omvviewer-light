@@ -129,12 +129,12 @@ namespace omvviewerlight
 		
 		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
 		{
+            Gtk.Application.Invoke(delegate {
             if(this.av_tree.ContainsKey(update.LocalID))
             {
-                Gtk.Application.Invoke(delegate {
-                    calcdistance(update.LocalID);
-                });
+                    calcdistance(update.LocalID); 
             }
+            });
 		}
 		
 		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
