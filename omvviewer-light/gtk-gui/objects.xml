@@ -59,4 +59,8 @@
     <itemgroups />
     <signals />
   </object>
+  <object type="omvviewerlight.Movment" palette-category="omvviewer-light" allow-children="false" base-type="Gtk.Bin">
+    <itemgroups />
+    <signals />
+  </object>
 </objects>
