@@ -236,7 +236,8 @@ namespace omvviewerlight
             TeleportProgress tp = new TeleportProgress();
             tp.Show();
             InventoryLandmark item = (InventoryLandmark)mod.GetValue(iter, 3);
-			tp.teleportassetid(item.AssetUUID);
+
+            tp.teleportassetid(item.AssetUUID,item.Name);
 			//MainClass.client.Self.Teleport(item.AssetUUID);
         }
 

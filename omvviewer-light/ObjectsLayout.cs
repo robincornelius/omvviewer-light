@@ -304,6 +304,7 @@ namespace omvviewerlight
                     MainClass.client.Self.LookAtEffect(LLUUID.Zero, prim.ID, LLVector3d.Zero, LookAtType.Idle, LLUUID.Zero);
 				    // We may actualy just want to turn around in this general direction
                     //MainClass.client.Self.Movement.BodyRotation.SetQuaternion(
+                    MainClass.client.Self.Movement.TurnToward(prim.Position);
                 }
 			}
 		}

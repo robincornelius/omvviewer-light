@@ -45,9 +45,10 @@ namespace omvviewerlight
 			MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
 		}
 		
-		public void teleportassetid(LLUUID asset)
+		public void teleportassetid(LLUUID asset,string name)
 		{
 			landmark=asset;
+            tpsim = name;
 			Thread tpRunner= new Thread(new ThreadStart(this.tptolandmark));   			
 			tpRunner.Start();
 		}
