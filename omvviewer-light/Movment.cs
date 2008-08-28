@@ -12,7 +12,6 @@ using Gtk;
 namespace omvviewerlight
 {
 	
-	
 	public partial class Movment : Gtk.Bin
 	{
 		
@@ -21,9 +20,27 @@ namespace omvviewerlight
 		public Movment()
 		{
 			this.Build();			
-			GLib.Timeout.Add(5000,dirupdate);
 			this.image_direction.Pixbuf=new Pixbuf("arrow.tga");
-		}
+            Gtk.Timeout.Add(1000, dirupdate);
+            MainClass.client.Objects.OnObjectUpdated += new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);
+        }
+
+        void Objects_OnObjectUpdated(Simulator simulator, ObjectUpdate update, ulong regionHandle, ushort timeDilation)
+        {
+            if (update.LocalID == MainClass.client.Self.LocalID)
+            {
+                Console.Write("UPDATE ME\n");
+                Gtk.Application.Invoke(delegate
+                {
+                    dirupdate();
+                });
+
+            }
+        }
+
+       
+
+        
 		
 		bool dirupdate()
 		{
@@ -44,10 +61,7 @@ namespace omvviewerlight
 				z=(float)z*(float)(360.0/(2.0*3.1415));
 				this.spinbutton_direction.Value=(int)z;
 				//Gdk.PixbufRotation angle=new Gdk.PixbufRotation(z);
-				
-				
-								
-				
+					
 			}
 			
 			return true;
@@ -68,23 +82,25 @@ namespace omvviewerlight
 		protected virtual void OnButton1Pressed (object sender, System.EventArgs e)
 		{
 			MainClass.client.Self.Movement.TurnLeft=true;
+            MainClass.client.Self.Movement.SendUpdate(true, MainClass.client.Network.CurrentSim);
 		}
 
 		protected virtual void OnButton1Released (object sender, System.EventArgs e)
 		{
 			MainClass.client.Self.Movement.TurnLeft=false;
-		}
+            MainClass.client.Self.Movement.SendUpdate(true, MainClass.client.Network.CurrentSim);
+        }
 
 		protected virtual void OnButton2Pressed (object sender, System.EventArgs e)
 		{
 			MainClass.client.Self.Movement.TurnRight=true;
-
+            MainClass.client.Self.Movement.SendUpdate(true, MainClass.client.Network.CurrentSim);
 		}
 
 		protected virtual void OnButton2Released (object sender, System.EventArgs e)
 		{
 			MainClass.client.Self.Movement.TurnRight=false;
-			
+            MainClass.client.Self.Movement.SendUpdate(true, MainClass.client.Network.CurrentSim);	
 		}
 	}
 }

@@ -45,7 +45,6 @@ namespace omvviewerlight
 		private Dictionary<LLUUID, bool> av_typing = new Dictionary<LLUUID, bool>();
         private Dictionary<uint, agent> av_tree = new Dictionary<uint, agent>();	
 
-
 		public Radar()
 		{      
 			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(uint));

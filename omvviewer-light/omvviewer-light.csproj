@@ -149,7 +149,11 @@
     <Compile Include="gtk-gui\omvviewerlight.FriendsList.cs" />
     <Compile Include="ChatConsole.cs" />
     <Compile Include="gtk-gui\omvviewerlight.ChatConsole.cs" />
+    <Compile Include="Movment.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="NamePicker.cs" />
+    <Compile Include="omvviewerlight.Movment.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
