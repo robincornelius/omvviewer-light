@@ -62,11 +62,8 @@ namespace omvviewerlight
 		{
             this.label_sim.Text = "Home";
             this.label_loc.Text = "";
-			 Thread tpRunner= new Thread(new ThreadStart(this.gohomethread));   			
- 			 tpRunner.Start();
-			
-			//MainClass.client.Self.GoHome();
-			
+			Thread tpRunner= new Thread(new ThreadStart(this.gohomethread));   			
+ 			tpRunner.Start();		
 		}
 
 		public void teleport(string sim,LLVector3 pos)

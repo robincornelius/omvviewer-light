@@ -50,25 +50,39 @@ namespace omvviewerlight
 		Gtk.Image avatar_me=new Gtk.Image("map_avatar_me_8.tga");
 		Gtk.Image avatar_above=new Gtk.Image("map_avatar_above_8.tga");
 		Gtk.Image avatar_below=new Gtk.Image("map_avatar_below_8.tga");
+        Simulator last;
 
 		public Map()
 		{           
 			this.Build();
 			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
-			MainClass.client.Network.OnCurrentSimChanged += new libsecondlife.NetworkManager.CurrentSimChangedCallback(onNewSim);
+			//MainClass.client.Network.OnCurrentSimChanged += new libsecondlife.NetworkManager.CurrentSimChangedCallback(onNewSim);
 			MainClass.client.Objects.OnNewAvatar += new libsecondlife.ObjectManager.NewAvatarCallback(onNewAvatar);
 			MainClass.client.Objects.OnObjectKilled += new libsecondlife.ObjectManager.KillObjectCallback(onKillObject);
 			MainClass.client.Objects.OnObjectUpdated += new libsecondlife.ObjectManager.ObjectUpdatedCallback(onUpdate);
-			MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);	
-		}
+            MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
+        }
 
 		void onTeleport(string Message, libsecondlife.AgentManager.TeleportStatus status,libsecondlife.AgentManager.TeleportFlags flags)
 	    {
 			if(status==libsecondlife.AgentManager.TeleportStatus.Finished)
 			{
-				Gtk.Application.Invoke(delegate {										
-					avs.Clear();
-					drawavs();
+            
+               
+    		    Gtk.Application.Invoke(delegate {
+
+                if (last == null)
+                {
+                    last = MainClass.client.Network.CurrentSim;
+                    avs.Clear();
+                }
+                else
+                if (last.Name != MainClass.client.Network.CurrentSim.Name)
+                {
+                    last = MainClass.client.Network.CurrentSim;
+                    avs.Clear();
+                }
+                drawavs();
 				});
 			}
 	    }
@@ -134,24 +148,34 @@ namespace omvviewerlight
 		}
 		
 
-		
-		void onNewSim(Simulator last)
+	/*
+		void onNewSim(Simulator lastsim)
 	    {
-			Gtk.Application.Invoke(delegate {		
+			Gtk.Application.Invoke(delegate {
 
+            Console.Write("\n\n******************\nMAP: On NEW SIM INVOKE\n");
 			if(MainClass.client.Network.LoginStatusCode==LoginStatus.Success)
 				{
 					getmap();
 					this.label1.Text=MainClass.client.Network.CurrentSim.Name;
+
+                    if (last != MainClass.client.Network.CurrentSim)
+                    {
+                        avs.Clear();
+                        last = MainClass.client.Network.CurrentSim;
+                    }
+                    drawavs();
+
 				}
 				else
-				{
-					this.label1.Text="No location";
+			//	{
+			////		this.label1.Text="No location";
 					
-				}
+			//	}
 			});
 		}
-			
+		*/
+	
 		void showme(Gdk.Pixbuf buf,Gdk.Pixbuf src,LLVector3 pos)
 		{
 			int tx,ty;
@@ -219,11 +243,15 @@ namespace omvviewerlight
 				
 				if(login==LoginStatus.Success)
 				{
+                    Console.Write("\n\n******************\nMAP ON LOGIN INVOKE\n");
+                    last = MainClass.client.Network.CurrentSim;
+                    avs.Clear();
 					getmap();
 					this.label1.Text=MainClass.client.Network.CurrentSim.Name;
-					drawavs();
+					//drawavs();
 				}
 			});
+          
 		}
 				
 		void getmap()
@@ -263,10 +291,11 @@ namespace omvviewerlight
 				    channels=basemap.Pixbuf.NChannels;
 				    width=basemap.Pixbuf.Width;
 				    height=basemap.Pixbuf.Height;		
-				});
+				
 
                 drawavs(); //already deligated inside	
-				return;
+                });
+                return;
 					
             }
             catch (Exception e)
