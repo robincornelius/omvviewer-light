@@ -271,9 +271,12 @@ namespace omvviewerlight
             }
             catch (Exception e)
             {
-				Gtk.MessageDialog msg = new Gtk.MessageDialog(MainClass.win,DialogFlags.Modal,MessageType.Error,ButtonsType.Ok,"Error Downloading Web Map Image");
-				msg.Run();
-				msg.Destroy();
+                Gtk.Application.Invoke(delegate
+                {
+                    Gtk.MessageDialog msg = new Gtk.MessageDialog(MainClass.win, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "Error Downloading Web Map Image");
+                    msg.Run();
+                    msg.Destroy();
+                });
 				return ;
             }	
 		}

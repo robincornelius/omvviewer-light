@@ -210,7 +210,7 @@ public partial class MainWindow: Gtk.Window
 			message="Control your camera";
 			break;
 		case ScriptPermission.Debit:
-			message="<b>BE ABLE TO TAKE YOUR MONEY<b>";
+			message="<b>BE ABLE TO TAKE YOUR MONEY<\b>";
 			break;
 		case ScriptPermission.ReleaseOwnership:
 			message="Release ownership";

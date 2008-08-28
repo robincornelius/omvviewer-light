@@ -178,11 +178,20 @@ namespace omvviewerlight
 		
 		void appearencethread()
 		{
+            AutoResetEvent appearanceEvent = new AutoResetEvent(false);
+            AppearanceManager.AppearanceUpdatedCallback callback =
+                delegate(LLObject.TextureEntry te) { appearanceEvent.Set(); };
+            MainClass.client.Appearance.OnAppearanceUpdated += callback;
+
 			Console.Write("Appearence thread go\n");
 			MainClass.client.Appearance.SetPreviousAppearance(false);
-			Console.Write("Appearence set\n");
-		
-		}
+            if (!appearanceEvent.WaitOne(1000 * 120, false))
+            {
+                Gtk.MessageDialog md = new Gtk.MessageDialog(MainClass.win, Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Close, "Failed to set previous appearance");
+                md.Run();
+                md.Destroy();
+            }
+        }
 		
 		protected virtual void OnButton1Clicked (object sender, System.EventArgs e)
 		{
