@@ -34,8 +34,8 @@ namespace omvviewerlight
 
 	public partial class Inventory : Gtk.Bin
 	{
-     
-     
+
+        Dictionary<LLUUID, Gtk.TreeIter> assetmap = new Dictionary<LLUUID, Gtk.TreeIter>();
 		String[] SearchFolders = { "" };
 		//initialize our list to store the folder contents
         LLUUID inventoryItems;
@@ -81,22 +81,8 @@ namespace omvviewerlight
 			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
             this.treeview_inv.ButtonPressEvent += new ButtonPressEventHandler(treeview_inv_ButtonPressEvent);
 
-
-            MainClass.client.Inventory.OnItemReceived += new InventoryManager.ItemReceivedCallback(Inventory_OnItemReceived);
-            MainClass.client.Inventory.OnObjectOffered += new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
-            MainClass.client.Inventory.OnFolderUpdated += new InventoryManager.FolderUpdatedCallback(Inventory_OnFolderUpdated);
-            MainClass.client.Inventory.OnTaskInventoryReply += new InventoryManager.TaskInventoryReplyCallback(Inventory_OnTaskInventoryReply);
-            MainClass.client.Inventory.OnTaskItemReceived += new InventoryManager.TaskItemReceivedCallback(Inventory_OnTaskItemReceived);
-		
-
-         
-
-           
-           
-
-          
-
-        
+          MainClass.client.Inventory.OnObjectOffered += new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
+  
           
 			this.label_aquired.Text="";
 			this.label_createdby.Text="";
@@ -174,17 +160,19 @@ namespace omvviewerlight
 		
         void Inventory_OnTaskItemReceived(LLUUID itemID, LLUUID folderID, LLUUID creatorID, LLUUID assetID, InventoryType type)
         {
+
+            Console.Write("\nOn Task Item Recieved\n");
         }
 
         void Inventory_OnTaskInventoryReply(LLUUID itemID, short serial, string assetFilename)
         {
+            Console.Write("\nOn Task Inventory Reply\n");
         }
 
         void Inventory_OnFolderUpdated(LLUUID folderID)
         {
-			Gtk.TreeIter iter;
-			inventory.GetIterFirst(out iter);
-		}
+            
+        }
 
         bool Inventory_OnObjectOffered(InstantMessage offerDetails, AssetType type, LLUUID objectID, bool fromTask)
         {
@@ -219,16 +207,9 @@ namespace omvviewerlight
 				return true;
 		   }
 		   else
-			{
-					return false;
-				}			
-
-     
-        }
-
-        void Inventory_OnItemReceived(InventoryItem item)
-        {
-			
+		{
+			    return false;
+			}			
         }
 
         void Teleporttolandmark(object o, ButtonPressEventArgs args)
@@ -257,22 +238,12 @@ namespace omvviewerlight
 			    Gtk.TreeIter iter;
 
                
-            
-
-         
-
-
-                
-     
-               
                 if (this.treeview_inv.Selection.GetSelected(out mod, out iter))
                 {   
 					if(mod.GetValue(iter,3)!=null)
                     {
                         Gtk.Menu menu = new Gtk.Menu();
-                        menu.Hidden += new EventHandler(menu_Hidden);
-                        menu.PopupMenu += new PopupMenuHandler(menu_PopupMenu);
-
+    
                         InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
 
                         if(item is InventoryLandmark)
@@ -300,12 +271,15 @@ namespace omvviewerlight
                         if(item is InventoryItem)
                         {
                             Gtk.MenuItem menu_give_item = new MenuItem("Give item to user");
+                            Gtk.MenuItem menu_attach_item = new MenuItem("Attach (default pos)");
                             Gtk.MenuItem menu_delete_item = new MenuItem("Delete folder ");
 
                             menu_give_item.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
                             menu_delete_item.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
+                            menu_attach_item.ButtonPressEvent += new ButtonPressEventHandler(menu_attach_item_ButtonPressEvent);
 
                             menu.Append(menu_give_item);
+                            menu.Append(menu_attach_item);
                             menu.Append(menu_delete_item);
                         }
 
@@ -316,16 +290,13 @@ namespace omvviewerlight
             }
         }
 
-        void menu_PopupMenu(object o, PopupMenuArgs args)
+        void menu_attach_item_ButtonPressEvent(object o, ButtonPressEventArgs args)
         {
-            
-        }
-
-        void menu_Hidden(object sender, EventArgs e)
-        {
-            Console.Write("MENU HIDDEN\n");
-            Gtk.Menu menu = (Gtk.Menu)sender;
-            menu.Destroy();
+            Gtk.TreeModel mod;
+            Gtk.TreeIter iter;
+            this.treeview_inv.Selection.GetSelected(out mod, out iter);
+            InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+            MainClass.client.Appearance.Attach((InventoryItem)item, AttachmentPoint.Default);
         }
 
         void onLogin(LoginStatus status, string message)
@@ -368,14 +339,18 @@ namespace omvviewerlight
 
 			foreach (InventoryBase item in myObjects)
 			{
+
+                if(assetmap.ContainsKey(item.UUID))
+                    continue;
+
 				Gdk.Pixbuf buf=getprettyicon(item);
 				Gtk.TreeIter iter2 = inventory.AppendValues(args.Iter,buf, item.Name, item.UUID,item);
+                assetmap.Add(item.UUID, iter2);
 
 				if (item is InventoryFolder)
-				{
-					inventory.AppendValues(iter2, item_object,"Waiting...", item.UUID,item);	
+				{ 
+					inventory.AppendValues(iter2, item_object,"Waiting...", LLUUID.Zero,null);	
 				}
-				
 			}
 
             //And tidy that waiting
@@ -511,10 +486,7 @@ namespace omvviewerlight
 			}
 		}
 		
-		void onname(string x)
-				{
-					
-				}
+		
 		
 	}
 }
