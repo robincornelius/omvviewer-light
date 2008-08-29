@@ -34,6 +34,7 @@ namespace omvviewerlight
 	
 		LLUUID queryid;
 		Gtk.ListStore store;
+        int places_found;
 		
 		public PlacesSearch()
 		{
@@ -61,10 +62,11 @@ namespace omvviewerlight
 			{
 				if(query!=queryid)
 					return;
-			
+
+                places_found += matchedplaces.Count;
 				Gtk.Application.Invoke(delegate {
 
-				this.label_info.Text="Search returned "+matchedplaces.Count.ToString()+" results";
+                    this.label_info.Text = "Search returned " + places_found.ToString() + " results";
 	    
 
 				foreach(libsecondlife.DirectoryManager.PlacesSearchData place in matchedplaces)
@@ -80,6 +82,7 @@ namespace omvviewerlight
 		{
 			store.Clear();
 			this.label_info.Text="Searching..........";
+            places_found = 0;
 			
 			libsecondlife.DirectoryManager.DirFindFlags flags;
 			flags=libsecondlife.DirectoryManager.DirFindFlags.NameSort;
