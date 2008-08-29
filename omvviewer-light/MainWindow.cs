@@ -23,6 +23,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 //
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Gtk;
 using Gdk;
 using libsecondlife;
@@ -613,17 +614,22 @@ public partial class MainWindow: Gtk.Window
 		
 		if(!active_ims.Contains(im.FromAgentID) && !active_ims.Contains(im.IMSessionID))
 		{
+            AutoResetEvent ChatSetup = new AutoResetEvent(false);
+
 			Gtk.Application.Invoke(delegate {						
 				ChatConsole imc=new ChatConsole(im);
 				string name;
 
-				//if(!MainClass.av_names.TryGetValue(im.FromAgentID,out name))
-				//	name="Waiting...";
-				
-			
-				makeimwindow("Waiting...",imc,false,im.FromAgentID);
+                makeimwindow("Waiting...",imc,false,im.FromAgentID);
 				active_ims.Add(im.FromAgentID);
+                ChatSetup.Set();
 			});
+
+            // Block here untill chat window is set up or else we can get multiple IMs stacking up in new windows
+            // from same user as set up code is run as an invoke
+
+            ChatSetup.WaitOne(2000, false);
+
 		}
 		
 	}	
