@@ -34,11 +34,8 @@ namespace omvviewerlight
 
 	public partial class Inventory : Gtk.Bin
 	{
-        Gtk.Menu menu_landmark = new Menu();
-        Gtk.Menu menu_item = new Menu();
-        Gtk.Menu menu_folder = new Menu();
-
-		
+     
+     
 		String[] SearchFolders = { "" };
 		//initialize our list to store the folder contents
         LLUUID inventoryItems;
@@ -91,31 +88,8 @@ namespace omvviewerlight
             MainClass.client.Inventory.OnTaskInventoryReply += new InventoryManager.TaskInventoryReplyCallback(Inventory_OnTaskInventoryReply);
             MainClass.client.Inventory.OnTaskItemReceived += new InventoryManager.TaskItemReceivedCallback(Inventory_OnTaskItemReceived);
 		
-			
-			Gtk.MenuItem menupunkt = new MenuItem("Teleport to Landmark");
-			Gtk.MenuItem menu_give = new MenuItem("Give to user");
-			Gtk.MenuItem menu_delete = new MenuItem("Delete item");
 
-			this.menu_landmark.Append(menupunkt);
-			this.menu_landmark.Append(menu_give);
-			this.menu_landmark.Append(menu_delete);
-			
-			menupunkt.ButtonPressEvent += new ButtonPressEventHandler(Teleporttolandmark);        
-			menu_give.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
-			menu_delete.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
-			
-			menu_give = new MenuItem("Give to user");
-			menu_delete = new MenuItem("Delete item");
-            Gtk.MenuItem menu_ware = new MenuItem("Try to ware folder contents");
-
-			this.menu_item.Append(menu_delete);
-            this.menu_item.Append(menu_give);
-            this.menu_item.Append(menu_ware);
-
-			menu_give.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
-			menu_delete.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
-            menu_ware.ButtonPressEvent += new ButtonPressEventHandler(menu_ware_ButtonPressEvent);
-
+         
 
            
            
@@ -274,7 +248,6 @@ namespace omvviewerlight
         [GLib.ConnectBefore]
         void treeview_inv_ButtonPressEvent(object o, ButtonPressEventArgs args)
         {
-            Console.Write("Button pressed and it is "+args.Event.Button.ToString()+"\n");
             if (args.Event.Button == 3)//Fuck this should be a define
             {
                 // Do the context sensitive stuff here
@@ -283,27 +256,79 @@ namespace omvviewerlight
                 Gtk.TreeModel mod;
 			    Gtk.TreeIter iter;
 
+               
+            
+
+         
+
+
+                
+     
+               
                 if (this.treeview_inv.Selection.GetSelected(out mod, out iter))
                 {   
 					if(mod.GetValue(iter,3)!=null)
                     {
+                        Gtk.Menu menu = new Gtk.Menu();
+                        menu.Hidden += new EventHandler(menu_Hidden);
+                        menu.PopupMenu += new PopupMenuHandler(menu_PopupMenu);
+
                         InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+
                         if(item is InventoryLandmark)
                         {
-                            menu_landmark.Popup();
-							menu_landmark.ShowAll();
+                            Gtk.MenuItem menu_tp_lm = new MenuItem("Teleport to Landmark");
+                            menu_tp_lm.ButtonPressEvent += new ButtonPressEventHandler(Teleporttolandmark);
+                            menu.Append(menu_tp_lm);
                         }
-						else
-						{
-							menu_item.Popup();
-							menu_item.ShowAll();
-						}
+                       
+                        if (item is InventoryFolder)
+                        {
+                            Gtk.MenuItem menu_wear_folder = new MenuItem("Wear folder contents");
+                            Gtk.MenuItem menu_give_folder = new MenuItem("Give item to user");
+                            Gtk.MenuItem menu_delete_folder = new MenuItem("Delete folder ");
+                            
+                            menu_delete_folder.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
+                            menu_give_folder.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
+                            menu_wear_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_ware_ButtonPressEvent);
+                            
+                            menu.Append(menu_wear_folder);
+                            menu.Append(menu_give_folder);
+                            menu.Append(menu_delete_folder);
+                        }
+
+                        if(item is InventoryItem)
+                        {
+                            Gtk.MenuItem menu_give_item = new MenuItem("Give item to user");
+                            Gtk.MenuItem menu_delete_item = new MenuItem("Delete folder ");
+
+                            menu_give_item.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
+                            menu_delete_item.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
+
+                            menu.Append(menu_give_item);
+                            menu.Append(menu_delete_item);
+                        }
+
+                        menu.Popup();
+                        menu.ShowAll();
                     }
                 }
             }
         }
-	
-		void onLogin(LoginStatus status,string message)
+
+        void menu_PopupMenu(object o, PopupMenuArgs args)
+        {
+            
+        }
+
+        void menu_Hidden(object sender, EventArgs e)
+        {
+            Console.Write("MENU HIDDEN\n");
+            Gtk.Menu menu = (Gtk.Menu)sender;
+            menu.Destroy();
+        }
+
+        void onLogin(LoginStatus status, string message)
 		{
 			if(LoginStatus.Success==status)
 			{
