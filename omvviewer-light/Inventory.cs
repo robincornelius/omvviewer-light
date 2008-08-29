@@ -82,7 +82,6 @@ namespace omvviewerlight
             this.treeview_inv.ButtonPressEvent += new ButtonPressEventHandler(treeview_inv_ButtonPressEvent);
 
           MainClass.client.Inventory.OnObjectOffered += new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
-  
           
 			this.label_aquired.Text="";
 			this.label_createdby.Text="";
