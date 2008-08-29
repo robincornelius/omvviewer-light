@@ -36,6 +36,8 @@ namespace omvviewerlight
 	{
         Gtk.Menu menu_landmark = new Menu();
         Gtk.Menu menu_item = new Menu();
+        Gtk.Menu menu_folder = new Menu();
+
 		
 		String[] SearchFolders = { "" };
 		//initialize our list to store the folder contents
@@ -103,20 +105,47 @@ namespace omvviewerlight
 			menu_delete.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
 			
 			menu_give = new MenuItem("Give to user");
-			menu_delete = new MenuItem("Delete item");			
-	
+			menu_delete = new MenuItem("Delete item");
+            Gtk.MenuItem menu_ware = new MenuItem("Try to ware folder contents");
+
 			this.menu_item.Append(menu_delete);
-			this.menu_item.Append(menu_give);
-		 
+            this.menu_item.Append(menu_give);
+            this.menu_item.Append(menu_ware);
+
 			menu_give.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
 			menu_delete.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
-			
+            menu_ware.ButtonPressEvent += new ButtonPressEventHandler(menu_ware_ButtonPressEvent);
+
+
+           
+           
+
+          
+
+        
+          
 			this.label_aquired.Text="";
 			this.label_createdby.Text="";
 			this.label_name.Text="";
 			this.label_group.Text="";
 			this.label_saleprice.Text="";
 		}
+
+        void menu_ware_ButtonPressEvent(object o, ButtonPressEventArgs args)
+        {
+            Gtk.TreeModel mod;
+            Gtk.TreeIter iter;
+            this.treeview_inv.Selection.GetSelected(out mod, out iter);
+            InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+
+            if (item is InventoryFolder)
+            {
+                MainClass.client.Appearance.WearOutfit(item.UUID,true);
+            }
+
+           // MainClass.client.Appearance.Attach(
+
+        }
 		
 		void ondeleteasset(object o, ButtonPressEventArgs args)
 		{
