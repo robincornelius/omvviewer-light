@@ -53,18 +53,16 @@ namespace omvviewerlight
 			if(query!=queryid)
 					return;
 			
-	
 			Gtk.Application.Invoke(delegate {
-			
 
 			this.label_info.Text="Search returned "+people.Count.ToString()+" results";
 			
 		     if (people.Count == 0)
                 return;
-
-				
+		
 			foreach(libsecondlife.DirectoryManager.AgentSearchData person in people)
 			{
+                    
 					store.AppendValues (person.Online,person.FirstName+" "+person.LastName,person.AgentID);		
 					if(!MainClass.name_cache.av_names.ContainsKey(person.AgentID))
 						MainClass.name_cache.av_names.Add(person.AgentID,person.FirstName+" "+person.LastName);

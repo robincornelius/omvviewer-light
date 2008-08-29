@@ -175,7 +175,7 @@ namespace omvviewerlight
                 LLVector3 pos;
                 pos = MainClass.client.Self.RelativePosition - (LLVector3)av_tree[id].avatar.Position;
                 double dist;
-                dist = Math.Sqrt(pos.X * pos.X + pos.Y + pos.Y + pos.Z + pos.Z);
+                dist = Math.Sqrt(pos.X * pos.X + pos.Y * pos.Y + pos.Z * pos.Z);
                 store.SetValue(av_tree[id].iter, 2, MainClass.cleandistance(dist.ToString(), 1));
            
             }
