@@ -8,7 +8,94 @@
     <widget-library name="../bin/Debug/omvviewer-light.exe" internal="true" />
   </import>
   <widget class="Gtk.Window" id="MainWindow" design-size="812 629">
-    <action-group name="Default" />
+    <action-group name="Default">
+      <action id="StatusAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Status</property>
+        <property name="ShortLabel" translatable="yes">Status</property>
+      </action>
+      <action id="BusyAction">
+        <property name="Type">Radio</property>
+        <property name="Label" translatable="yes">Busy</property>
+        <property name="Sensitive">False</property>
+        <property name="ShortLabel" translatable="yes">Busy</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">False</property>
+        <property name="Value">0</property>
+        <property name="Group">group1</property>
+        <signal name="Activated" handler="OnBusyActionActivated" />
+      </action>
+      <action id="AwayAction">
+        <property name="Type">Radio</property>
+        <property name="Label" translatable="yes">Away</property>
+        <property name="ShortLabel" translatable="yes">Away</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">False</property>
+        <property name="Value">0</property>
+        <property name="Group">group1</property>
+        <signal name="Activated" handler="OnAwayActionActivated" />
+      </action>
+      <action id="GroundSitAction">
+        <property name="Type">Radio</property>
+        <property name="Label" translatable="yes">Ground Sit</property>
+        <property name="ShortLabel" translatable="yes">Ground Sit</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">False</property>
+        <property name="Value">0</property>
+        <property name="Group">group2</property>
+        <signal name="Activated" handler="OnGroundSitActionActivated" />
+      </action>
+      <action id="CrouchAction">
+        <property name="Type">Radio</property>
+        <property name="Label" translatable="yes">Crouch</property>
+        <property name="ShortLabel" translatable="yes">Crouch</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">False</property>
+        <property name="Value">0</property>
+        <property name="Group">group2</property>
+        <signal name="Activated" handler="OnCrouchActionActivated" />
+      </action>
+      <action id="FlyAction">
+        <property name="Type">Radio</property>
+        <property name="Label" translatable="yes">Fly</property>
+        <property name="ShortLabel" translatable="yes">Fly</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">False</property>
+        <property name="Value">0</property>
+        <property name="Group">group2</property>
+        <signal name="Activated" handler="OnFlyActionActivated" />
+      </action>
+      <action id="AvaiableAction">
+        <property name="Type">Radio</property>
+        <property name="Label" translatable="yes">Avaiable</property>
+        <property name="ShortLabel" translatable="yes">Avaiable</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">True</property>
+        <property name="Value">0</property>
+        <property name="Group">group1</property>
+        <signal name="Activated" handler="OnAvaiableActionActivated" />
+      </action>
+      <action id="StandingAction">
+        <property name="Type">Radio</property>
+        <property name="Label" translatable="yes">Standing</property>
+        <property name="ShortLabel" translatable="yes">Standing</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">True</property>
+        <property name="Value">0</property>
+        <property name="Group">group2</property>
+        <signal name="Activated" handler="OnStandingActionActivated" />
+      </action>
+      <action id="SittingAction">
+        <property name="Type">Radio</property>
+        <property name="Label" translatable="yes">Sitting</property>
+        <property name="Sensitive">False</property>
+        <property name="ShortLabel" translatable="yes">Sitting</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">False</property>
+        <property name="Value">0</property>
+        <property name="Group">group2</property>
+      </action>
+    </action-group>
     <property name="MemberName" />
     <property name="WidthRequest">800</property>
     <property name="HeightRequest">600</property>
@@ -22,7 +109,19 @@
         <child>
           <widget class="Gtk.MenuBar" id="menubar1">
             <property name="MemberName" />
-            <node name="menubar1" type="Menubar" />
+            <node name="menubar1" type="Menubar">
+              <node type="Menu" action="StatusAction">
+                <node type="Menuitem" action="AvaiableAction" />
+                <node type="Menuitem" action="BusyAction" />
+                <node type="Menuitem" action="AwayAction" />
+                <node type="Separator" />
+                <node type="Menuitem" action="StandingAction" />
+                <node type="Menuitem" action="GroundSitAction" />
+                <node type="Menuitem" action="CrouchAction" />
+                <node type="Menuitem" action="FlyAction" />
+                <node type="Menuitem" action="SittingAction" />
+              </node>
+            </node>
           </widget>
           <packing>
             <property name="Position">0</property>

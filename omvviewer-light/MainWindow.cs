@@ -125,9 +125,36 @@ public partial class MainWindow: Gtk.Window
         MainClass.client.Friends.OnFriendshipResponse += new FriendsManager.FriendshipResponseEvent(Friends_OnFriendshipResponse);
         MainClass.client.Friends.OnFriendshipTerminated += new FriendsManager.FriendshipTerminatedEvent(Friends_OnFriendshipTerminated);
 
-        this.WindowStateEvent += delegate { if (this.Visible) { trayIcon.Blinking = false; this.UrgencyHint = false; };};
-   	GLib.Timeout.Add(10000,OnUpdateStatus); 
+		//this.menubar1.get
+		
+		this.AvaiableAction.Activate();
+		this.StandingAction.Activate();
+		
+		this.AvaiableAction.Sensitive=false;
+		this.AwayAction.Sensitive=false;
+		this.BusyAction.Sensitive=false;
+		this.StandingAction.Sensitive=false;
+		this.CrouchAction.Sensitive=false;
+		this.FlyAction.Sensitive=false;
+		this.GroundSitAction.Sensitive=false;
+		this.SittingAction.Sensitive=false;
+		
+		this.WindowStateEvent += delegate { if (this.Visible) { trayIcon.Blinking = false; this.UrgencyHint = false; };};			
+
+		GLib.Timeout.Add(10000,OnUpdateStatus); 
 	}
+	
+	public void togglesat()
+		{
+			if(this.SittingAction.Sensitive==false)
+			{
+this.SittingAction.Sensitive=true;			
+this.SittingAction.Activate();
+		this.SittingAction.Sensitive=false;			
+		}
+this.SittingAction.Activate();
+		
+}	
 
     void Friends_OnFriendshipTerminated(LLUUID agentID, string agentName)
     {
@@ -632,6 +659,47 @@ public partial class MainWindow: Gtk.Window
 
 		}
 		
-	}	
+	}
+
+	protected virtual void OnAvaiableActionActivated (object sender, System.EventArgs e)
+	{
+		MainClass.client.Self.Movement.Away=false;
+        MainClass.client.Self.Movement.SendUpdate(true);
+	}
+
+	protected virtual void OnBusyActionActivated (object sender, System.EventArgs e)
+	{
+	   	
+	}
+
+	protected virtual void OnAwayActionActivated (object sender, System.EventArgs e)
+	{
+		MainClass.client.Self.Movement.Away=true;
+        MainClass.client.Self.Movement.SendUpdate(true);
+		
+	}
+
+	protected virtual void OnStandingActionActivated (object sender, System.EventArgs e)
+	{
+		MainClass.client.Self.Stand();
+        MainClass.client.Self.Fly(false);			
+        MainClass.client.Self.Crouch(false); 
+	}
+
+	protected virtual void OnGroundSitActionActivated (object sender, System.EventArgs e)
+	{
+         MainClass.client.Self.SitOnGround();
+	}
+
+	protected virtual void OnCrouchActionActivated (object sender, System.EventArgs e)
+	{
+         MainClass.client.Self.Crouch(true); 
+	}
+
+	protected virtual void OnFlyActionActivated (object sender, System.EventArgs e)
+	{
+	      MainClass.client.Self.Fly(true);	
+	}
+	
 
 }
