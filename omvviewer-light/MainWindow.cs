@@ -139,22 +139,28 @@ public partial class MainWindow: Gtk.Window
 		this.GroundSitAction.Sensitive=false;
 		this.SittingAction.Sensitive=false;
 		
-		this.WindowStateEvent += delegate { if (this.Visible) { trayIcon.Blinking = false; this.UrgencyHint = false; };};			
+		this.WindowStateEvent += delegate { if (this.Visible) { trayIcon.Blinking = false; this.UrgencyHint = false; };};
+        MainClass.client.Self.OnAvatarSitResponse += new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
 
 		GLib.Timeout.Add(10000,OnUpdateStatus); 
 	}
+
+    void Self_OnAvatarSitResponse(LLUUID objectID, bool autoPilot, LLVector3 cameraAtOffset, LLVector3 cameraEyeOffset, bool forceMouselook, LLVector3 sitPosition, LLQuaternion sitRotation)
+    {
+        // we sat down
+        togglesat();
+    }
 	
 	public void togglesat()
+	{
+		if(this.SittingAction.Sensitive==false)
 		{
-			if(this.SittingAction.Sensitive==false)
-			{
-this.SittingAction.Sensitive=true;			
-this.SittingAction.Activate();
-		this.SittingAction.Sensitive=false;			
+            this.SittingAction.Sensitive=true;			
+            this.SittingAction.Activate();
+		    this.SittingAction.Sensitive=false;			
 		}
-this.SittingAction.Activate();
-		
-}	
+        this.SittingAction.Activate();		
+    }	
 
     void Friends_OnFriendshipTerminated(LLUUID agentID, string agentName)
     {
@@ -444,6 +450,14 @@ this.SittingAction.Activate();
 			//MainClass.client.Parcels.RequestAllSimParcels(MainClass.client.Network.CurrentSim);
 			Gtk.Application.Invoke(delegate {						
 				OnUpdateStatus();
+                this.AvaiableAction.Sensitive = true;
+                this.AwayAction.Sensitive = true;
+                this.BusyAction.Sensitive = false;
+                this.StandingAction.Sensitive = true;
+                this.CrouchAction.Sensitive = true;
+                this.FlyAction.Sensitive = true;
+                this.GroundSitAction.Sensitive = true;
+                this.SittingAction.Sensitive = false;
 			});
 		}
 	}
