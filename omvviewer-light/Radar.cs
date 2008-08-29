@@ -41,7 +41,6 @@ namespace omvviewerlight
 	{
 		
 		Gtk.ListStore store;	
-		//private Dictionary<uint, Avatar> avs = new Dictionary<uint, Avatar>();
 		private Dictionary<LLUUID, bool> av_typing = new Dictionary<LLUUID, bool>();
         private Dictionary<uint, agent> av_tree = new Dictionary<uint, agent>();	
 
@@ -181,28 +180,14 @@ namespace omvviewerlight
            
             }
         }
-/*		
-		bool myfunc(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
+		
+	/*	bool myfunc(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
 		{
 			uint key=(uint)store.GetValue(iter,3);
-    
-            lock(avs)
-            {
-			    if(!avs.ContainsKey(key))
-			    {      
-                        store.Remove(ref iter);
-                }
-			    else
-			    {
-				    LLVector3 pos;
-				    pos=MainClass.client.Self.RelativePosition-(LLVector3)avs[key].Position;
-				    double dist;
-				    dist=Math.Sqrt(pos.X*pos.X+pos.Y+pos.Y+pos.Z+pos.Z);
-				    store.SetValue(iter,2,MainClass.cleandistance(dist.ToString(),1));
-    		
+		
                     lock(av_typing)
                     {
-				        if(av_typing.ContainsKey(avs[key].ID))
+				        if(av_typing.ContainsKey(av_tree[key].ID))
 				        {
 					        store.SetValue(iter,0,"*");
 				        }
@@ -211,8 +196,6 @@ namespace omvviewerlight
 					        store.SetValue(iter,0," ");
 				        }
                     }
-			    }
-            }
 
 			return true;
 		}
@@ -220,19 +203,32 @@ namespace omvviewerlight
 		
 		void onChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourcetype,string fromName, LLUUID id, LLUUID ownerid, LLVector3 position)
 		{
+            // What a glorious inefficient way to do things
                 lock(av_typing)
                 {
                     if (type == ChatType.StartTyping)
                     {
+                        foreach (KeyValuePair<uint, agent> kvp in av_tree)
+                        {
+                            if (kvp.Value.avatar.ID == id)
+                            {
+                                store.SetValue(kvp.Value.iter, 0, "*");
+                                return;
+                            }
+                        }
 
-                        if (!av_typing.ContainsKey(id))
-                            av_typing.Add(id, true);
                     }
 
                     if (type == ChatType.StopTyping)
                     {
-                        if (av_typing.ContainsKey(id))
-                            av_typing.Remove(id);
+                        foreach (KeyValuePair<uint, agent> kvp in av_tree)
+                        {
+                            if (kvp.Value.avatar.ID == id)
+                            {
+                                store.SetValue(kvp.Value.iter, 0, " ");
+                                return;
+                            }
+                        } 
                     }
                 }	
 		}
