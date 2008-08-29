@@ -41,7 +41,7 @@ namespace omvviewerlight
 	{
 		
 		Gtk.ListStore store;	
-		private Dictionary<uint, Avatar> avs = new Dictionary<uint, Avatar>();
+		//private Dictionary<uint, Avatar> avs = new Dictionary<uint, Avatar>();
 		private Dictionary<LLUUID, bool> av_typing = new Dictionary<LLUUID, bool>();
         private Dictionary<uint, agent> av_tree = new Dictionary<uint, agent>();	
 
@@ -58,7 +58,7 @@ namespace omvviewerlight
 			MainClass.client.Objects.OnObjectKilled += new libsecondlife.ObjectManager.KillObjectCallback(onKillObject);
 			MainClass.client.Objects.OnObjectUpdated += new libsecondlife.ObjectManager.ObjectUpdatedCallback(onUpdate);
 		
-	//		MainClass.client.Self.OnChat += new libsecondlife.AgentManager.ChatCallback(onChat);
+			MainClass.client.Self.OnChat += new libsecondlife.AgentManager.ChatCallback(onChat);
 			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
 			
 	
@@ -217,7 +217,7 @@ namespace omvviewerlight
 			return true;
 		}
 */
-/*		
+		
 		void onChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourcetype,string fromName, LLUUID id, LLUUID ownerid, LLVector3 position)
 		{
                 lock(av_typing)
@@ -236,7 +236,7 @@ namespace omvviewerlight
                     }
                 }	
 		}
-*/
+
 		protected virtual void OnButtonImClicked (object sender, System.EventArgs e)
 		{
 			//beter work out who we have selected
@@ -246,10 +246,10 @@ namespace omvviewerlight
 			if(this.treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
 				uint localid=(uint)mod.GetValue(iter,3);
-				Avatar avatar;
-				if(avs.TryGetValue(localid,out avatar))
+				agent avatar;
+				if(av_tree.TryGetValue(localid,out avatar))
 				{
-					MainClass.win.startIM(avatar.ID);
+					MainClass.win.startIM(avatar.avatar.ID);
 				}
 			}		
 		}
@@ -263,10 +263,10 @@ namespace omvviewerlight
 			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
 				uint localid=(uint)mod.GetValue(iter,3);
-				Avatar avatar;
-				if(avs.TryGetValue(localid,out avatar))
+				agent avatar;
+				if(av_tree.TryGetValue(localid,out avatar))
 				{
-					PayWindow pay=new PayWindow(avatar.ID,0);
+					PayWindow pay=new PayWindow(avatar.avatar.ID,0);
 					pay.Show();
 				}
 						
@@ -281,10 +281,10 @@ namespace omvviewerlight
 			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
 				uint localid=(uint)mod.GetValue(iter,3);
-				Avatar avatar;
-				if(avs.TryGetValue(localid,out avatar))
+				agent avatar;
+				if(av_tree.TryGetValue(localid,out avatar))
 				{
-					ProfileVIew p = new ProfileVIew(avatar.ID);
+					ProfileVIew p = new ProfileVIew(avatar.avatar.ID);
 					p.Show();
 				}
 						
