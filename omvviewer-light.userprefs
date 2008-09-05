@@ -8,13 +8,13 @@
     <File name="omvviewer-light/FriendsList.cs" line="93" column="1" />
     <File name="omvviewer-light/MainWindow.cs" line="517" column="1" />
     <File name="omvviewer-light/LoginControl.cs" line="155" column="13" />
-    <File name="omvviewer-light/Movment.cs" line="115" column="40" />
+    <File name="omvviewer-light/Movment.cs" line="116" column="1" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
-          <Node name="Movment.cs" selected="True" />
+          <Node name="MainWindow.cs" selected="True" />
         </Node>
       </Node>
     </ViewMemento>
@@ -23,7 +23,7 @@
     </ViewMemento>
   </Views>
   <Properties>
-    <Property key="ActiveWindow" value="/home/robin/libsecondlife/omvviewer-light/omvviewer-light/Movment.cs" />
+    <Property key="ActiveWindow" value="/home/robin/libsecondlife/omvviewer-light/omvviewer-light/MainWindow.cs" />
     <Property key="ActiveConfiguration" value="Debug" />
   </Properties>
 </UserCombinePreferences>

@@ -135,6 +135,7 @@
             <property name="MemberName" />
             <property name="CanFocus">True</property>
             <property name="CurrentPage">0</property>
+            <property name="Scrollable">True</property>
             <child>
               <widget class="omvviewerlight.LoginControl" id="logincontrol5">
                 <property name="MemberName" />
