@@ -24,7 +24,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 
 using System;
 using System.Collections.Generic;
-using libsecondlife;
+using OpenMetaverse;
 using Gtk;
 using Gdk;
 
@@ -34,9 +34,9 @@ namespace omvviewerlight
 	
 	public class AsyncNameUpdate
 	{
-		LLUUID av_target;
-		LLUUID group_target;
-		List <LLUUID>getting;
+		UUID av_target;
+		UUID group_target;
+		List <UUID>getting;
 	    object[] callbackvalues1;
 		
 		public delegate void NameCallBack(string name, object[] values);
@@ -47,8 +47,8 @@ namespace omvviewerlight
 		
 		void AsyncNameUpdate_init()
 		{
-			MainClass.client.Groups.OnGroupNames += new libsecondlife.GroupManager.GroupNamesCallback(onGroupNames);
-			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);
+			MainClass.client.Groups.OnGroupNames += new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
+			MainClass.client.Avatars.OnAvatarNames += new OpenMetaverse.AvatarManager.AvatarNamesCallback(onAvatarNames);
 		}
 		
 		public void addparameters(params object[] values)
@@ -58,11 +58,11 @@ namespace omvviewerlight
 		
 		void AsynNamesUpdate_deinit()
 		{
-			MainClass.client.Groups.OnGroupNames -= new libsecondlife.GroupManager.GroupNamesCallback(onGroupNames);
-			MainClass.client.Avatars.OnAvatarNames -= new libsecondlife.AvatarManager.AvatarNamesCallback(onAvatarNames);
+			MainClass.client.Groups.OnGroupNames -= new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
+			MainClass.client.Avatars.OnAvatarNames -= new OpenMetaverse.AvatarManager.AvatarNamesCallback(onAvatarNames);
 		}
 		
-		public AsyncNameUpdate(LLUUID key,bool group)
+		public AsyncNameUpdate(UUID key,bool group)
 		{
 			
 			//Console.Write("New AsyncName Update for "+key.ToString()_" group mode = "+group.ToString()+"\n");
@@ -87,19 +87,19 @@ namespace omvviewerlight
 				try_update_group_lable(key);
 		}
 		
-		void onAvatarNames(Dictionary <LLUUID,string>names)
+		void onAvatarNames(Dictionary <UUID,string>names)
 		{
 			if(names.ContainsKey(av_target))
 			   try_update_name_lable(av_target);
 		}
 		
-		void onGroupNames(Dictionary <LLUUID,string>groups)
+		void onGroupNames(Dictionary <UUID,string>groups)
 	    {
 			if(groups.ContainsKey(group_target))
 			   try_update_group_lable(group_target);	   
 		}
 		
-		void try_update_name_lable(LLUUID key)
+		void try_update_name_lable(UUID key)
 		{
 			string name;
 			if(MainClass.name_cache.av_names.TryGetValue(key,out name))
@@ -116,7 +116,7 @@ namespace omvviewerlight
 			}
 		}
 		
-		void try_update_group_lable(LLUUID key)
+		void try_update_group_lable(UUID key)
 		{
 			string name;
 				

@@ -23,7 +23,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 //
 
 using System;
-using libsecondlife;
+using OpenMetaverse;
 using Gtk;
 
 
@@ -37,8 +37,8 @@ namespace omvviewerlight
 		{
 			this.Build();		
 			//GLib.Timeout.Add(1000,OnTimeout);
-			//MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
-			//MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
+			//MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
+			//MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
 
 		}
 
@@ -47,7 +47,7 @@ namespace omvviewerlight
             Gtk.Application.Invoke(delegate
             {
 
-                if (login == libsecondlife.LoginStatus.Success)
+                if (login == OpenMetaverse.LoginStatus.Success)
                 {
                     this.spinbutton_x.Value = MainClass.client.Self.SimPosition.X;
                     this.spinbutton_y.Value = MainClass.client.Self.SimPosition.Y;
@@ -57,9 +57,9 @@ namespace omvviewerlight
             });
 		}
 		
-		void onTeleport(string Message, libsecondlife.AgentManager.TeleportStatus status,libsecondlife.AgentManager.TeleportFlags flags)
+		void onTeleport(string Message, OpenMetaverse.AgentManager.TeleportStatus status,OpenMetaverse.AgentManager.TeleportFlags flags)
 		{
-			if(status==libsecondlife.AgentManager.TeleportStatus.Finished)
+			if(status==OpenMetaverse.AgentManager.TeleportStatus.Finished)
             Gtk.Application.Invoke(delegate
             {
                 this.spinbutton_x.Value = MainClass.client.Self.SimPosition.X;
@@ -71,7 +71,7 @@ namespace omvviewerlight
 		
 	    bool OnTimeout()
 		{
-			if(MainClass.client.Network.LoginStatusCode==libsecondlife.LoginStatus.Success)
+			if(MainClass.client.Network.LoginStatusCode==OpenMetaverse.LoginStatus.Success)
 			{
 				this.label_current.Text="Current Location: "+MainClass.client.Network.CurrentSim.Name+" "+MainClass.client.Self.SimPosition;
 			}
@@ -85,8 +85,8 @@ namespace omvviewerlight
 
 		protected virtual void OnButtonTeleportClicked (object sender, System.EventArgs e)
 		{
-			LLVector3 pos;
-			pos=new LLVector3();
+			Vector3 pos;
+			pos=new Vector3();
 			pos.X=(float)this.spinbutton_x.Value;
 			pos.Y=(float)this.spinbutton_y.Value;
 			pos.Z=(float)this.spinbutton_z.Value;

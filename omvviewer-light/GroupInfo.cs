@@ -24,7 +24,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 
 using System;
 using System.Collections.Generic;
-using libsecondlife;
+using OpenMetaverse;
 using Gtk;
 
 namespace omvviewerlight
@@ -34,8 +34,9 @@ namespace omvviewerlight
 	public partial class GroupInfo : Gtk.Window
 	{
 		Gtk.ListStore store_members;		
-		LLUUID groupkey;
-		LLUUID founder_key;
+      
+		UUID groupkey;
+		UUID founder_key;
 		
 		public GroupInfo(Group group) : 
 				base(Gtk.WindowType.Toplevel)
@@ -44,7 +45,7 @@ namespace omvviewerlight
 
 			groupkey=group.ID;
 			
-			store_members = new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(LLUUID));			
+			store_members = new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(UUID));			
 		
 			treeview_members.AppendColumn("Member name",new CellRendererText(),"text",0);
 			treeview_members.AppendColumn("Title",new CellRendererText(),"text",1);
@@ -52,9 +53,9 @@ namespace omvviewerlight
 			
 			treeview_members.Model=store_members;
 				
-			MainClass.client.Groups.OnGroupProfile += new libsecondlife.GroupManager.GroupProfileCallback(onGroupProfile);
-			MainClass.client.Groups.OnGroupMembers += new libsecondlife.GroupManager.GroupMembersCallback(onGroupMembers);
-			MainClass.client.Groups.OnGroupTitles += new libsecondlife.GroupManager.GroupTitlesCallback(onGroupTitles);
+			MainClass.client.Groups.OnGroupProfile += new OpenMetaverse.GroupManager.GroupProfileCallback(onGroupProfile);
+			MainClass.client.Groups.OnGroupMembers += new OpenMetaverse.GroupManager.GroupMembersCallback(onGroupMembers);
+			MainClass.client.Groups.OnGroupTitles += new OpenMetaverse.GroupManager.GroupTitlesCallback(onGroupTitles);
 			
 			MainClass.client.Groups.RequestGroupProfile(group.ID);
 			MainClass.client.Groups.RequestGroupMembers(group.ID);
@@ -70,11 +71,11 @@ namespace omvviewerlight
 			
 		}
 		
-		void onGroupTitles(Dictionary <LLUUID,libsecondlife.GroupTitle> titles)
+		void onGroupTitles(Dictionary <UUID,OpenMetaverse.GroupTitle> titles)
 		{
 			Gtk.Application.Invoke(delegate {	
 
-			foreach(KeyValuePair  <LLUUID,libsecondlife.GroupTitle> title in titles)
+			foreach(KeyValuePair  <UUID,OpenMetaverse.GroupTitle> title in titles)
 			{
 				this.combobox_active_title.InsertText(0,title.Value.Title);
 				Console.Write("Title : "+title.Value.Title+" : "+title.Value.Selected.ToString()+"\n");
@@ -88,12 +89,12 @@ namespace omvviewerlight
 			});
 		}
 		
-		void onGroupMembers(Dictionary <LLUUID,GroupMember> members)		
+		void onGroupMembers(Dictionary <UUID,GroupMember> members)		
 		{
-			List<LLUUID> names = new List<LLUUID>(members.Keys);
+			List<UUID> names = new List<UUID>(members.Keys);
 			MainClass.name_cache.reqnames(names);
 			
-			foreach(KeyValuePair <LLUUID,GroupMember> member in members)
+			foreach(KeyValuePair <UUID,GroupMember> member in members)
 			{
 				Gtk.TreeIter iter=store_members.AppendValues("Waiting...",member.Value.Title,member.Value.OnlineStatus,member.Value.ID);
 				
@@ -106,7 +107,7 @@ namespace omvviewerlight
 				});
 		}
 		
-		void onGroupProfile(GroupProfile group)
+		void onGroupProfile(Group group)
 		{
 			
 			if(group.ID!=this.groupkey)
@@ -128,7 +129,7 @@ namespace omvviewerlight
 		{			
 			bool stillwaiting;
 			string name=(string)store_members.GetValue(iter,0);
-			LLUUID id =(LLUUID)store_members.GetValue(iter,3);
+			UUID id =(UUID)store_members.GetValue(iter,3);
 			string member_name;
 			if(MainClass.name_cache.av_names.TryGetValue(id,out member_name))
 			{

@@ -24,7 +24,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 using System;
 using System.Collections.Generic;
 using Gtk;
-using libsecondlife;
+using OpenMetaverse;
 using System.Runtime.InteropServices;
 
 
@@ -38,7 +38,7 @@ namespace omvviewerlight
         [DllImport("user32.dll")]
             static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-		public static SecondLife client;
+		public static GridClient client;
 		public static MainWindow win;
 
 		public static AVNameCache name_cache;
@@ -67,7 +67,7 @@ namespace omvviewerlight
 
             try
             {
-                client = new SecondLife();
+                client = new GridClient();
               
 				name_cache=new AVNameCache();
                 Application.Init();
@@ -117,13 +117,13 @@ namespace omvviewerlight
 			return dist.Substring(0,pos+dp);		
 		}		
 		
-		public static string prettyvector(LLVector3 vector,int dp)
+		public static string prettyvector(Vector3 vector,int dp)
 		{
-			LLVector3d vec = new LLVector3d(vector.X,vector.Y,vector.Z);
+			Vector3d vec = new Vector3d(vector.X,vector.Y,vector.Z);
 			return prettyvector(vec,dp);
 		}
 		
-		public static string prettyvector(LLVector3d vector,int dp)
+		public static string prettyvector(Vector3d vector,int dp)
 		{
 			string ret;
 			

@@ -25,7 +25,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 using System;
 using System.Collections.Generic;
 using System.IO;
-using libsecondlife;
+using OpenMetaverse;
 
 
 namespace omvviewerlight
@@ -34,26 +34,26 @@ namespace omvviewerlight
 	public partial class ProfileVIew : Gtk.Window
 	{
 		
-		LLUUID profile_pic;
-		LLUUID firstlife_pic;
-		LLUUID partner_key;
-		LLUUID resident;
+		UUID profile_pic;
+		UUID firstlife_pic;
+		UUID partner_key;
+		UUID resident;
 		
-		List <LLUUID>picks_waiting;
+		List <UUID>picks_waiting;
 		
-		public ProfileVIew(LLUUID key) : 
+		public ProfileVIew(UUID key) : 
 				base(Gtk.WindowType.Toplevel)
 		{
 			this.Build();
 	
-			picks_waiting=new List<LLUUID>();
+			picks_waiting=new List<UUID>();
 			resident=key;
 			
-			MainClass.client.Avatars.OnAvatarProperties += new libsecondlife.AvatarManager.AvatarPropertiesCallback(onAvatarProperties);
+			MainClass.client.Avatars.OnAvatarProperties += new OpenMetaverse.AvatarManager.AvatarPropertiesCallback(onAvatarProperties);
 			MainClass.client.Avatars.RequestAvatarProperties(key);
-			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(on_avnames);
-			MainClass.client.Avatars.OnAvatarPicks += new libsecondlife.AvatarManager.AvatarPicksCallback(onPicks);
-			MainClass.client.Avatars.OnPickInfo += new libsecondlife.AvatarManager.PickInfoCallback(onPickInfo);
+			MainClass.client.Avatars.OnAvatarNames += new OpenMetaverse.AvatarManager.AvatarNamesCallback(on_avnames);
+			MainClass.client.Avatars.OnAvatarPicks += new OpenMetaverse.AvatarManager.AvatarPicksCallback(onPicks);
+			MainClass.client.Avatars.OnPickInfo += new OpenMetaverse.AvatarManager.PickInfoCallback(onPickInfo);
 			MainClass.client.Avatars.RequestAvatarPicks(key);
 			
 			this.label_born.Text="";
@@ -69,7 +69,7 @@ namespace omvviewerlight
 			
 		}
 	
-		void onPickInfo(LLUUID pick,ProfilePick info)
+		void onPickInfo(UUID pick,ProfilePick info)
 		{				
 			if(!this.picks_waiting.Contains(pick))
 				return;
@@ -87,13 +87,13 @@ namespace omvviewerlight
 			});
 		}
 		
-		void onPicks(LLUUID avatar, Dictionary<LLUUID,string> picks)
+		void onPicks(UUID avatar, Dictionary<UUID,string> picks)
 	    {
 			if(avatar!=	resident)
 				return;
 		
 			Gtk.Application.Invoke(delegate {	
-				foreach(KeyValuePair<LLUUID,string> pick in picks)
+				foreach(KeyValuePair<UUID,string> pick in picks)
 				{	
 					//this.notebook_picks.InsertPage(
 					this.picks_waiting.Add(pick.Key);
@@ -102,13 +102,13 @@ namespace omvviewerlight
 			});
 		}
 			                                                   
-		void on_avnames(Dictionary<LLUUID, string> names)
+		void on_avnames(Dictionary<UUID, string> names)
 			{
 			//what the hell, lets cache them to the program store if we find them
 			//Possible to do, move this type of stuff more global
 			Console.Write("Got new names \n");
 			
-			foreach(KeyValuePair<LLUUID,string> name in names)
+			foreach(KeyValuePair<UUID,string> name in names)
 			{
 				//if(!MainClass.av_names.ContainsKey(name.Key))
 					//MainClass.av_names.Add(name.Key,name.Value);		
@@ -143,7 +143,7 @@ namespace omvviewerlight
 				
 		}		
 		
-		void onAvatarProperties(LLUUID id,libsecondlife.Avatar.AvatarProperties props)
+		void onAvatarProperties(UUID id,OpenMetaverse.Avatar.AvatarProperties props)
 		{
 			if(id!=	resident)
 				return;
@@ -189,7 +189,7 @@ namespace omvviewerlight
 				this.label_name.Text="Waiting....";
 			}
 						
-			if(props.Partner!=LLUUID.Zero)
+			if(props.Partner!=UUID.Zero)
 			{	
 				if(MainClass.name_cache.av_names.ContainsKey(partner_key))
 				{

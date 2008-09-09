@@ -24,7 +24,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 
 using System;
 using System.Collections.Generic;
-using libsecondlife;
+using OpenMetaverse;
 
 namespace omvviewerlight
 {
@@ -32,14 +32,14 @@ namespace omvviewerlight
 	public partial class PlacesSearch : Gtk.Bin
 	{
 	
-		LLUUID queryid;
+		UUID queryid;
 		Gtk.ListStore store;
         int places_found;
 		
 		public PlacesSearch()
 		{
 			this.Build();
-			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(string),typeof(LLVector3));
+			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(string),typeof(Vector3));
 			
 			treeview1.AppendColumn("Name",new Gtk.CellRendererText(),"text",0);
 			treeview1.AppendColumn("Sim",new Gtk.CellRendererText(),"text",1);		
@@ -53,12 +53,12 @@ namespace omvviewerlight
 			
 			treeview1.Model=store;
 			
-			MainClass.client.Directory.OnPlacesReply += new libsecondlife.DirectoryManager.PlacesReplyCallback(onPlaces);
+			MainClass.client.Directory.OnPlacesReply += new OpenMetaverse.DirectoryManager.PlacesReplyCallback(onPlaces);
 		
 			
 		}
 				
-			void onPlaces(LLUUID query,List <libsecondlife.DirectoryManager.PlacesSearchData> matchedplaces)
+			void onPlaces(UUID query,List <OpenMetaverse.DirectoryManager.PlacesSearchData> matchedplaces)
 			{
 				if(query!=queryid)
 					return;
@@ -69,9 +69,9 @@ namespace omvviewerlight
                     this.label_info.Text = "Search returned " + places_found.ToString() + " results";
 	    
 
-				foreach(libsecondlife.DirectoryManager.PlacesSearchData place in matchedplaces)
+				foreach(OpenMetaverse.DirectoryManager.PlacesSearchData place in matchedplaces)
 				{	
-					LLVector3 pos=new LLVector3(((int)place.GlobalX)&0x0000FF,((int)place.GlobalY)&0x0000FF,place.GlobalZ);
+					Vector3 pos=new Vector3(((int)place.GlobalX)&0x0000FF,((int)place.GlobalY)&0x0000FF,place.GlobalZ);
 					store.AppendValues(place.Name,place.SimName,place.Dwell.ToString(),MainClass.prettyvector(pos,2),pos);
 				}
 			
@@ -84,22 +84,22 @@ namespace omvviewerlight
 			this.label_info.Text="Searching..........";
             places_found = 0;
 			
-			libsecondlife.DirectoryManager.DirFindFlags flags;
-			flags=libsecondlife.DirectoryManager.DirFindFlags.NameSort;
+			OpenMetaverse.DirectoryManager.DirFindFlags flags;
+			flags=OpenMetaverse.DirectoryManager.DirFindFlags.NameSort;
 			
 			if(this.checkbutton_mature.Active==false)
-			flags|=libsecondlife.DirectoryManager.DirFindFlags.PgSimsOnly;
+			flags|=OpenMetaverse.DirectoryManager.DirFindFlags.PgSimsOnly;
 				
-			libsecondlife.Parcel.ParcelCategory pcat;
-			pcat=libsecondlife.Parcel.ParcelCategory.Any;
-			queryid=LLUUID.Random();
+			OpenMetaverse.Parcel.ParcelCategory pcat;
+			pcat=OpenMetaverse.Parcel.ParcelCategory.Any;
+			queryid=UUID.Random();
 			MainClass.client.Directory.StartPlacesSearch(flags,pcat,entry1.Text,"",MainClass.client.Self.ActiveGroup,queryid);
 		}
 
 		protected virtual void OnButtonTPClicked (object sender, System.EventArgs e)
 		{
 			
-			LLVector3 pos=new LLVector3();
+			Vector3 pos=new Vector3();
 			string sim;
 			
 			//beter work out who we have selected
@@ -109,7 +109,7 @@ namespace omvviewerlight
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
 				sim=(string)mod.GetValue(iter,1);
-				pos=(LLVector3)mod.GetValue(iter,4);
+				pos=(Vector3)mod.GetValue(iter,4);
 										
 				TeleportProgress tp = new TeleportProgress();
 				tp.Show();

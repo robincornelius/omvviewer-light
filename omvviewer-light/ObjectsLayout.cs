@@ -24,7 +24,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 
 using System;
 using System.Collections.Generic;
-using libsecondlife;
+using OpenMetaverse;
 
 namespace omvviewerlight
 {
@@ -33,12 +33,12 @@ namespace omvviewerlight
 	{
 	
 		Gtk.ListStore store;	
-        Dictionary<LLUUID, Primitive> PrimsWaiting = new Dictionary<LLUUID, Primitive>();
+        Dictionary<UUID, Primitive> PrimsWaiting = new Dictionary<UUID, Primitive>();
 
 		public ObjectsLayout()
 		{
 			this.Build();
-			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(LLUUID));
+			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(UUID));
 			treeview1.AppendColumn("Name",new Gtk.CellRendererText(),"text",0);
 			treeview1.AppendColumn("Desc.",new Gtk.CellRendererText(),"text",1);
 			treeview1.AppendColumn("ID",new Gtk.CellRendererText(),"text",2);
@@ -49,19 +49,19 @@ namespace omvviewerlight
 			this.label_name.Text="";
 			this.label_owner.Text="";
 
-			MainClass.client.Objects.OnObjectProperties += new libsecondlife.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
-			MainClass.client.Groups.OnGroupNames += new libsecondlife.GroupManager.GroupNamesCallback(onGroupNames);
+			MainClass.client.Objects.OnObjectProperties += new OpenMetaverse.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
+			MainClass.client.Groups.OnGroupNames += new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
 
 		}
 			
-		void onGroupNames(Dictionary <LLUUID,string>groups)
+		void onGroupNames(Dictionary <UUID,string>groups)
 	    {
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				LLUUID id=(LLUUID)mod.GetValue(iter,2);
+				UUID id=(UUID)mod.GetValue(iter,2);
 				Primitive prim;
 				
 				if(PrimsWaiting.TryGetValue(id,out prim))
@@ -82,7 +82,7 @@ namespace omvviewerlight
 						
 		bool myfunc(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
 		{
-			LLUUID key=(LLUUID)store.GetValue(iter,2);			
+			UUID key=(UUID)store.GetValue(iter,2);			
 			if(PrimsWaiting.ContainsKey(key))
 			{
 				store.SetValue(iter,0,PrimsWaiting[key].Properties.Name);
@@ -98,13 +98,13 @@ namespace omvviewerlight
 			int.TryParse(this.entry1.Text,out radius);
 			store.Clear();
 			// *** get current location ***
-            LLVector3 location = MainClass.client.Self.SimPosition;
+            Vector3 location = MainClass.client.Self.SimPosition;
 
             // *** find all objects in radius ***
             List<Primitive> prims = MainClass.client.Network.CurrentSim.ObjectsPrimitives.FindAll(
                 delegate(Primitive prim) {
-                    LLVector3 pos = prim.Position;
-                    return ((prim.ParentID == 0) && (pos != LLVector3.Zero) && (LLVector3.Dist(pos, location) < radius));
+                    Vector3 pos = prim.Position;
+                    return ((prim.ParentID == 0) && (pos != Vector3.Zero) && (Vector3.Distance(pos, location) < radius));
                 }
             );
 
@@ -131,7 +131,7 @@ namespace omvviewerlight
             //return AllPropertiesReceived.WaitOne(2000 + msPerRequest * objects.Count, false);
         }
 
-		void Objects_OnObjectProperties(Simulator simulator, LLObject.ObjectProperties properties)
+		void Objects_OnObjectProperties(Simulator simulator, Primitive.ObjectProperties properties)
         {
             lock (PrimsWaiting) {
                 Primitive prim;
@@ -160,7 +160,7 @@ namespace omvviewerlight
 						
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				LLUUID id=(LLUUID)mod.GetValue(iter,2);
+				UUID id=(UUID)mod.GetValue(iter,2);
 		
 				Primitive prim;
 				if(PrimsWaiting.TryGetValue(id,out prim))
@@ -182,26 +182,26 @@ namespace omvviewerlight
 					
 					switch(prim.Properties.SaleType)
 					{
-					case (byte)libsecondlife.SaleType.Not: 
+					case (byte)OpenMetaverse.SaleType.Not: 
 						this.label_forsale.Text="Not for sale";
 						break;
 				
-					case (byte)libsecondlife.SaleType.Contents: 
+					case OpenMetaverse.SaleType.Contents: 
 						this.label_forsale.Text="Contents for $L"+prim.Properties.SalePrice.ToString();
 						break;
 
-					case (byte)libsecondlife.SaleType.Copy: 
+					case OpenMetaverse.SaleType.Copy: 
 						this.label_forsale.Text="Copy for $L"+prim.Properties.SalePrice.ToString();	
 						break;
 					
-					case (byte)libsecondlife.SaleType.Original: 
+					case OpenMetaverse.SaleType.Original: 
 						this.label_forsale.Text="Original for $L"+prim.Properties.SalePrice.ToString();	
 						break;	
 					}
 
                     this.button_lookat.Sensitive = true;
 
-					if(prim.Properties.SaleType ==  (byte)libsecondlife.SaleType.Not)
+					if(prim.Properties.SaleType ==  (byte)OpenMetaverse.SaleType.Not)
 					{
 						this.button_buy.Sensitive=false;
 					}
@@ -209,8 +209,8 @@ namespace omvviewerlight
 					{
 						this.button_buy.Sensitive=true;						
 					}
-					
-					if((prim.Flags & libsecondlife.LLObject.ObjectFlags.Touch) == libsecondlife.LLObject.ObjectFlags.Touch)
+
+                    if ((prim.Flags & PrimFlags.Touch) == PrimFlags.Touch)
 					{
 						this.button_touch.Sensitive=true;
 					}
@@ -218,8 +218,8 @@ namespace omvviewerlight
 					{
 						this.button_touch.Sensitive=false;
 					}
-					
-					if((prim.Flags & libsecondlife.LLObject.ObjectFlags.Money) == libsecondlife.LLObject.ObjectFlags.Money)
+
+                    if ((prim.Flags & PrimFlags.Money) == PrimFlags.Money)
 					{
 						this.button_pay.Sensitive=true;
 					}
@@ -240,7 +240,7 @@ namespace omvviewerlight
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				LLUUID id=(LLUUID)mod.GetValue(iter,2);
+				UUID id=(UUID)mod.GetValue(iter,2);
 				Primitive prim;
 				
 				if(PrimsWaiting.TryGetValue(id,out prim))
@@ -260,7 +260,7 @@ namespace omvviewerlight
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				LLUUID id=(LLUUID)mod.GetValue(iter,2);
+				UUID id=(UUID)mod.GetValue(iter,2);
 				Primitive prim;
 				
 				if(PrimsWaiting.TryGetValue(id,out prim))
@@ -277,13 +277,13 @@ namespace omvviewerlight
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				LLUUID id=(LLUUID)mod.GetValue(iter,2);
+				UUID id=(UUID)mod.GetValue(iter,2);
 				Primitive prim;
 				
 				if(PrimsWaiting.TryGetValue(id,out prim))
 				{
 					//MainClass.client.Self.sit
-					MainClass.client.Self.RequestSit(prim.ID,LLVector3.Zero);
+					MainClass.client.Self.RequestSit(prim.ID,Vector3.Zero);
 				}
 			}
 		
@@ -296,12 +296,12 @@ namespace omvviewerlight
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				LLUUID id=(LLUUID)mod.GetValue(iter,2);
+				UUID id=(UUID)mod.GetValue(iter,2);
 				Primitive prim;
 				
 				if(PrimsWaiting.TryGetValue(id,out prim))
 				{
-                    MainClass.client.Self.LookAtEffect(LLUUID.Zero, prim.ID, LLVector3d.Zero, LookAtType.Idle, LLUUID.Zero);
+                    MainClass.client.Self.LookAtEffect(UUID.Zero, prim.ID, Vector3d.Zero, LookAtType.Idle, UUID.Zero);
 				    // We may actualy just want to turn around in this general direction
                     //MainClass.client.Self.Movement.BodyRotation.SetQuaternion(
                     MainClass.client.Self.Movement.TurnToward(prim.Position);
@@ -325,7 +325,7 @@ namespace omvviewerlight
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				LLUUID id=(LLUUID)mod.GetValue(iter,2);
+				UUID id=(UUID)mod.GetValue(iter,2);
 				Primitive prim;
 				
 				if(PrimsWaiting.TryGetValue(id,out prim))
@@ -343,7 +343,7 @@ namespace omvviewerlight
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				LLUUID id=(LLUUID)mod.GetValue(iter,2);
+				UUID id=(UUID)mod.GetValue(iter,2);
 				Primitive prim;
 				
 				if(PrimsWaiting.TryGetValue(id,out prim))

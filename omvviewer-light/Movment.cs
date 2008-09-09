@@ -23,7 +23,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 //
 
 using System;
-using libsecondlife;
+using OpenMetaverse;
 using Gdk;
 using Gtk;
 
@@ -33,7 +33,7 @@ namespace omvviewerlight
 	public partial class Movment : Gtk.Bin
 	{
 		
-		LLQuaternion rotation;
+		Quaternion rotation;
 		
 		public Movment()
 		{
@@ -67,21 +67,21 @@ namespace omvviewerlight
 			if(MainClass.client.Network.LoginStatusCode!=LoginStatus.Success)
 				return true;
 
-			LLQuaternion myrotation=MainClass.client.Self.RelativeRotation;
+			Quaternion myrotation=MainClass.client.Self.RelativeRotation;
 			Console.Write(myrotation.ToString()+"\n");
 
 			if(myrotation!=rotation)
 			{
 				
-				float x,y,z;
-				rotation=myrotation;
-				LLMatrix3 xx=new LLMatrix3(rotation);
-				xx.GetEulerAngles(out x,out y,out z);
-				Console.Write("X :"+x.ToString()+" Y: "+y.ToString()+" Z: "+z.ToString()+"\n");
-				this.spinbutton_direction.Value=(int)z*(float)(360.0/(2.0*3.1415));
+			//	float x,y,z;
+			//	rotation=myrotation;
+			//	Matrix4 xx=new Matrix4(rotation);
+			//	xx.GetEulerAngles(out x,out y,out z);
+			//	Console.Write("X :"+x.ToString()+" Y: "+y.ToString()+" Z: "+z.ToString()+"\n");
+			//	this.spinbutton_direction.Value=(int)z*(float)(360.0/(2.0*3.1415));
                // Gdk.Pixbuf rotated = rotatepixbuf((float)1.567, this.image_direction.Pixbuf);
                // this.image_direction.Pixbuf = rotated;
-
+               
 			}
 			
 			return true;

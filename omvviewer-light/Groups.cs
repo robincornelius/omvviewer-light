@@ -24,7 +24,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 
 using System;
 using System.Collections.Generic;
-using libsecondlife;
+using OpenMetaverse;
 using Gtk;
 
 namespace omvviewerlight
@@ -43,16 +43,16 @@ namespace omvviewerlight
 			treeview1.AppendColumn("Group",new CellRendererText(),"text",0);
 			treeview1.Model=store;
 	
-			MainClass.client.Groups.OnCurrentGroups += new libsecondlife.GroupManager.CurrentGroupsCallback(onGroups);
+			MainClass.client.Groups.OnCurrentGroups += new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
 			MainClass.client.Groups.RequestCurrentGroups();
 		}
 		
-		void onGroups(Dictionary<LLUUID,Group> groups)
+		void onGroups(Dictionary<UUID,Group> groups)
 		{
 			
 			Gtk.Application.Invoke(delegate {
 				
-				foreach(KeyValuePair <LLUUID,Group> group in groups)
+				foreach(KeyValuePair <UUID,Group> group in groups)
 				{
 					if(!this.groups_recieved.Contains(group.Value))
 					{

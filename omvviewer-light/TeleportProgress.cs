@@ -23,7 +23,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 //
 
 using System;
-using libsecondlife;
+using OpenMetaverse;
 using System.Threading;
 using Gdk;
 
@@ -35,18 +35,18 @@ namespace omvviewerlight
 	{
 		
 		string tpsim;
-		LLVector3 tppos;
-		LLUUID landmark;
+		Vector3 tppos;
+		UUID landmark;
  
 		
 		public TeleportProgress() : 
 				base(Gtk.WindowType.Toplevel)
 		{
 			this.Build();
-			MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
+			MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
 		}
 		
-		public void teleportassetid(LLUUID asset,string name)
+		public void teleportassetid(UUID asset,string name)
 		{
    
 			landmark=asset;
@@ -66,7 +66,7 @@ namespace omvviewerlight
  			tpRunner.Start();		
 		}
 
-		public void teleport(string sim,LLVector3 pos)
+		public void teleport(string sim,Vector3 pos)
 		{
 			Gtk.Application.Invoke(delegate {						
 				this.label_sim.Text=sim;
@@ -84,7 +84,7 @@ namespace omvviewerlight
 		{
 			Thread.Sleep(1000);
 			GridRegion region;
-			if(!MainClass.client.Grid.GetGridRegion(tpsim,libsecondlife.GridLayerType.Objects, out region))
+			if(!MainClass.client.Grid.GetGridRegion(tpsim,OpenMetaverse.GridLayerType.Objects, out region))
 			{
 				Gtk.Application.Invoke(delegate {
 					this.button_close.Sensitive=true;
@@ -113,7 +113,7 @@ namespace omvviewerlight
 			
 		}
 		
-		void onTeleport(string Message, libsecondlife.AgentManager.TeleportStatus status,libsecondlife.AgentManager.TeleportFlags flags)
+		void onTeleport(string Message, OpenMetaverse.AgentManager.TeleportStatus status,OpenMetaverse.AgentManager.TeleportFlags flags)
 		{
 		Gtk.Application.Invoke(delegate {						
 						
@@ -121,30 +121,30 @@ namespace omvviewerlight
 			
 			this.label_info.Text=Message;
 				
-			if(libsecondlife.AgentManager.TeleportStatus.Start==status)
+			if(OpenMetaverse.AgentManager.TeleportStatus.Start==status)
 				progressbar1.Fraction=0.2;
 				
-			if(libsecondlife.AgentManager.TeleportStatus.Progress==status)
+			if(OpenMetaverse.AgentManager.TeleportStatus.Progress==status)
 			{
 			     Console.Write("Progress\n");
 				progressbar1.Fraction+=0.2;
 			}	
 			
-			if(libsecondlife.AgentManager.TeleportStatus.Finished==status)
+			if(OpenMetaverse.AgentManager.TeleportStatus.Finished==status)
 			{
 					progressbar1.Fraction=1.0;
 					//GLib.Timeout.Add(1000,closewindow);
 					this.button_close.Sensitive=true;
 			}
 
-			if(libsecondlife.AgentManager.TeleportStatus.Cancelled==status)
+			if(OpenMetaverse.AgentManager.TeleportStatus.Cancelled==status)
 			{
 					progressbar1.Fraction=1.0;
 					this.button_close.Sensitive=true;
 					this.label_info.Text="Teleport Cancelled";
 			}
 
-			if(libsecondlife.AgentManager.TeleportStatus.Failed==status)
+			if(OpenMetaverse.AgentManager.TeleportStatus.Failed==status)
 			{
 					progressbar1.Fraction=1.0;
 					this.button_close.Sensitive=true;

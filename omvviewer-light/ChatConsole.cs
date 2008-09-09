@@ -24,7 +24,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 
 using System;
 using System.Collections.Generic;
-using libsecondlife;
+using OpenMetaverse;
 using Gtk;
 
 namespace omvviewerlight
@@ -43,8 +43,8 @@ namespace omvviewerlight
 
 			
 		public Gtk.Label tabLabel;
-		public LLUUID im_key=libsecondlife.LLUUID.Zero;
-		public LLUUID im_session_id=libsecondlife.LLUUID.Zero;
+		public UUID im_key=OpenMetaverse.UUID.Zero;
+		public UUID im_session_id=OpenMetaverse.UUID.Zero;
 		
 		~ChatConsole()
 		{
@@ -55,10 +55,10 @@ namespace omvviewerlight
 		public ChatConsole()
 		{
 			dosetup();
-            this.im_session_id = LLUUID.Zero;
-            this.im_key = LLUUID.Zero;
-			MainClass.client.Self.OnChat += new libsecondlife.AgentManager.ChatCallback(onChat);
-            MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
+            this.im_session_id = UUID.Zero;
+            this.im_key = UUID.Zero;
+			MainClass.client.Self.OnChat += new OpenMetaverse.AgentManager.ChatCallback(onChat);
+            MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
 		}
 
 
@@ -66,12 +66,12 @@ namespace omvviewerlight
 		public ChatConsole(InstantMessage im)
 		{
 			dosetup();
-			MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
+			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
 			if(im.GroupIM)
 			{
 				this.im_session_id=im.IMSessionID;
-				im_key=LLUUID.Zero;			
-				MainClass.client.Self.OnGroupChatJoin += new libsecondlife.AgentManager.GroupChatJoined(onGroupChatJoin);
+				im_key=UUID.Zero;
+                MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
 				MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
 			}
 			else
@@ -83,6 +83,8 @@ namespace omvviewerlight
             // only just registered.
 			onIM(im,null);
 		}
+
+       
 		
 		public void onSwitchPage(object o, SwitchPageArgs args)
 		{
@@ -110,8 +112,8 @@ namespace omvviewerlight
 				    this.tabLabel.ModifyFg(type,col);				
 			}
 		}
-		
-		void onGroupChatJoin(LLUUID groupChatSessionID, LLUUID tmpSessionID, bool success)
+
+        void onGroupChatJoin(UUID groupChatSessionID, string sessionName, UUID tmpSessionID, bool success)
 		{
 			if(groupChatSessionID!=this.im_session_id)
 				return;
@@ -169,18 +171,18 @@ namespace omvviewerlight
 			});
 		}
 		
-		public ChatConsole(LLUUID target)
+		public ChatConsole(UUID target)
 		{
 			dosetup();
-			MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);			
+			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);			
 			im_key=target;
 		}
 
-		public ChatConsole(LLUUID target,bool igroup)
+		public ChatConsole(UUID target,bool igroup)
 		{
 			dosetup();
-			MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
-			im_key=LLUUID.Zero;			
+			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
+			im_key=UUID.Zero;			
 			MainClass.client.Self.RequestJoinGroupChat(target);
 			im_session_id=target;
 		}
@@ -223,11 +225,11 @@ namespace omvviewerlight
 			nb =(Gtk.Notebook)this.Parent;
 			pageno=nb.PageNum((Gtk.Widget)this);
 
-		    if(im_key!=libsecondlife.LLUUID.Zero)
+		    if(im_key!=OpenMetaverse.UUID.Zero)
 				if(MainClass.win.active_ims.Contains(im_key))
 					MainClass.win.active_ims.Remove(im_key);	
 			
-			if(im_session_id!=libsecondlife.LLUUID.Zero)
+			if(im_session_id!=OpenMetaverse.UUID.Zero)
 				if(MainClass.win.active_ims.Contains(im_session_id))
 					MainClass.client.Self.RequestLeaveGroupChat(im_session_id);		
 			
@@ -235,9 +237,9 @@ namespace omvviewerlight
 			nb.RemovePage(pageno);
 			Console.Write("ref count is "+this.RefCount.ToString()+"\n");
 			
-			MainClass.client.Self.OnChat -= new libsecondlife.AgentManager.ChatCallback(onChat);
-            MainClass.client.Self.OnInstantMessage -= new libsecondlife.AgentManager.InstantMessageCallback(onIM);
-			MainClass.client.Self.OnGroupChatJoin -= new libsecondlife.AgentManager.GroupChatJoined(onGroupChatJoin);
+			MainClass.client.Self.OnChat -= new OpenMetaverse.AgentManager.ChatCallback(onChat);
+            MainClass.client.Self.OnInstantMessage -= new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
+			MainClass.client.Self.OnGroupChatJoin -= new OpenMetaverse.AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
 			
 			Console.Write("Trying to destroy chat window\n");
 			
@@ -278,16 +280,16 @@ namespace omvviewerlight
 			
 			//Reject some IMs that we handle else where
 			
-			if(im.Dialog==libsecondlife.InstantMessageDialog.InventoryOffered)
+			if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryOffered)
 				return;
 			
-			if(im.Dialog==libsecondlife.InstantMessageDialog.TaskInventoryOffered)
+			if(im.Dialog==OpenMetaverse.InstantMessageDialog.TaskInventoryOffered)
 				return;
 			
-			if(im.Dialog==libsecondlife.InstantMessageDialog.InventoryAccepted)
+			if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryAccepted)
 				return;
 				
-			if(im.Dialog==libsecondlife.InstantMessageDialog.InventoryAccepted)
+			if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryAccepted)
 				return;
 				
             Console.Write("IM FROM " + im.FromAgentID + " : " + im.FromAgentName + " : " + im.IMSessionID + "\n");
@@ -298,10 +300,10 @@ namespace omvviewerlight
             // Is this from an object?
             //null session ID
 
-            if (im.IMSessionID == LLUUID.Zero)
+            if (im.IMSessionID == UUID.Zero)
             {
                 //Its an object message, display in chat not IM
-                if ((this.im_key == LLUUID.Zero) && (this.im_session_id ==LLUUID.Zero))
+                if ((this.im_key == UUID.Zero) && (this.im_session_id ==UUID.Zero))
                 {
                     // We are the chat console not an IM tab
                     Gtk.Application.Invoke(delegate
@@ -351,7 +353,7 @@ namespace omvviewerlight
 	
 			}
 			                                       
-		void onChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourcetype,string fromName, LLUUID id, LLUUID ownerid, LLVector3 position)
+		void onChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourcetype,string fromName, UUID id, UUID ownerid, Vector3 position)
 		{
 
 			if(type==ChatType.StartTyping || type==ChatType.StopTyping || type==ChatType.Debug ||type==ChatType.OwnerSay)
@@ -412,7 +414,7 @@ namespace omvviewerlight
 		protected virtual void OnEntryChatActivated (object sender, System.EventArgs e)
 		{
 			
-			if(im_key!=libsecondlife.LLUUID.Zero)
+			if(im_key!=OpenMetaverse.UUID.Zero)
 			{
 				MainClass.client.Self.InstantMessage(im_key,entry_chat.Text);
 
@@ -432,20 +434,20 @@ namespace omvviewerlight
 				return;
 			}
 			
-			if(this.im_session_id!=libsecondlife.LLUUID.Zero)
+			if(this.im_session_id!=OpenMetaverse.UUID.Zero)
 			{				
 				MainClass.client.Self.InstantMessageGroup(im_session_id,entry_chat.Text);
 				this.entry_chat.Text="";
 				return;
 			}
 			
-			ChatType type=libsecondlife.ChatType.Normal;
+			ChatType type=OpenMetaverse.ChatType.Normal;
 			if(this.combobox_say_type.ActiveText=="Say")
-				type=libsecondlife.ChatType.Normal;
+				type=OpenMetaverse.ChatType.Normal;
 			if(this.combobox_say_type.ActiveText=="Shout")
-				type=libsecondlife.ChatType.Shout;
+				type=OpenMetaverse.ChatType.Shout;
 			if(this.combobox_say_type.ActiveText=="Whisper")
-				type=libsecondlife.ChatType.Whisper;
+				type=OpenMetaverse.ChatType.Whisper;
 			
 			int channel=0;
             string outtext = this.entry_chat.Text;

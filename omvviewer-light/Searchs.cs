@@ -24,7 +24,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 
 using System;
 using System.Collections.Generic;
-using libsecondlife;
+using OpenMetaverse;
 
 namespace omvviewerlight
 {
@@ -32,7 +32,7 @@ namespace omvviewerlight
 	public partial class Searches : Gtk.Bin
 	{
 		
-		LLUUID queryid;
+		UUID queryid;
 		Gtk.ListStore store;
         int people_found;
 		
@@ -40,16 +40,16 @@ namespace omvviewerlight
 		{
 			this.Build();
 					
-			store= new Gtk.ListStore (typeof(bool),typeof(string),typeof(LLUUID));
+			store= new Gtk.ListStore (typeof(bool),typeof(string),typeof(UUID));
 			
 			treeview1.AppendColumn("Online",new Gtk.CellRendererToggle(),"active",0);
 			treeview1.AppendColumn("Name",new Gtk.CellRendererText(),"text",1);		
 			store.SetSortColumnId(1,Gtk.SortType.Ascending);
 			treeview1.Model=store;
-			MainClass.client.Directory.OnDirPeopleReply += new libsecondlife.DirectoryManager.DirPeopleReplyCallback(onFindPeople);
+			MainClass.client.Directory.OnDirPeopleReply += new OpenMetaverse.DirectoryManager.DirPeopleReplyCallback(onFindPeople);
 		}
 
-		void onFindPeople(LLUUID query,List <libsecondlife.DirectoryManager.AgentSearchData> people)
+		void onFindPeople(UUID query,List <OpenMetaverse.DirectoryManager.AgentSearchData> people)
 		{
 			if(query!=queryid)
 					return;
@@ -63,7 +63,7 @@ namespace omvviewerlight
 		     if (people.Count == 0)
                 return;
 		
-			foreach(libsecondlife.DirectoryManager.AgentSearchData person in people)
+			foreach(OpenMetaverse.DirectoryManager.AgentSearchData person in people)
 			{
                     
 					store.AppendValues (person.Online,person.FirstName+" "+person.LastName,person.AgentID);		
@@ -80,9 +80,9 @@ namespace omvviewerlight
 			this.label_info.Text="Searching..........";
             people_found = 0;
 		
-			queryid=LLUUID.Random();
-			libsecondlife.DirectoryManager.DirFindFlags findFlags;
-			findFlags=libsecondlife.DirectoryManager.DirFindFlags.People;
+			queryid=UUID.Random();
+			OpenMetaverse.DirectoryManager.DirFindFlags findFlags;
+			findFlags=OpenMetaverse.DirectoryManager.DirFindFlags.People;
 			string searchText;
 			searchText=entry1.Text;
 			int queryStart=1;
@@ -100,7 +100,7 @@ namespace omvviewerlight
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
 				//ALL i want is a fucking UUID
-				LLUUID id=(LLUUID)mod.GetValue(iter,2);
+				UUID id=(UUID)mod.GetValue(iter,2);
 				MainClass.win.startIM(id);
 			}
 
@@ -114,7 +114,7 @@ namespace omvviewerlight
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				LLUUID id=(LLUUID)mod.GetValue(iter,2);			
+				UUID id=(UUID)mod.GetValue(iter,2);			
 				PayWindow pay=new PayWindow(id,0);
 				pay.Show();
 			}		
@@ -127,7 +127,7 @@ namespace omvviewerlight
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				LLUUID id=(LLUUID)mod.GetValue(iter,2);			
+				UUID id=(UUID)mod.GetValue(iter,2);			
 				ProfileVIew p=new ProfileVIew(id);
 				p.Show();
 			}				

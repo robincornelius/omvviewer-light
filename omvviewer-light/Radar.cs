@@ -24,14 +24,14 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 
 using System;
 using System.Collections.Generic;
-using libsecondlife;
+using OpenMetaverse;
 
 namespace omvviewerlight
 {
 
     public class agent 
     {
-        public libsecondlife.Avatar avatar;
+        public OpenMetaverse.Avatar avatar;
         public uint localid;
         public Gtk.TreeIter iter;
     }
@@ -41,7 +41,7 @@ namespace omvviewerlight
 	{
 		
 		Gtk.ListStore store;	
-		private Dictionary<LLUUID, bool> av_typing = new Dictionary<LLUUID, bool>();
+		private Dictionary<UUID, bool> av_typing = new Dictionary<UUID, bool>();
         private Dictionary<uint, agent> av_tree = new Dictionary<uint, agent>();	
 
 		public Radar()
@@ -53,22 +53,22 @@ namespace omvviewerlight
 			treeview_radar.AppendColumn("Dist.",new Gtk.CellRendererText(),"text",2);
 			treeview_radar.Model=store;
 	
-			MainClass.client.Objects.OnNewAvatar += new libsecondlife.ObjectManager.NewAvatarCallback(onNewAvatar);
-			MainClass.client.Objects.OnObjectKilled += new libsecondlife.ObjectManager.KillObjectCallback(onKillObject);
-			MainClass.client.Objects.OnObjectUpdated += new libsecondlife.ObjectManager.ObjectUpdatedCallback(onUpdate);
+			MainClass.client.Objects.OnNewAvatar += new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
+			MainClass.client.Objects.OnObjectKilled += new OpenMetaverse.ObjectManager.KillObjectCallback(onKillObject);
+			MainClass.client.Objects.OnObjectUpdated += new OpenMetaverse.ObjectManager.ObjectUpdatedCallback(onUpdate);
 		
-			MainClass.client.Self.OnChat += new libsecondlife.AgentManager.ChatCallback(onChat);
-			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
+			MainClass.client.Self.OnChat += new OpenMetaverse.AgentManager.ChatCallback(onChat);
+			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
 			
 	
-			MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
+			MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
 
-			this.store.SetSortFunc(2,sort_llvector3);	
+			this.store.SetSortFunc(2,sort_Vector3);	
             store.SetSortColumnId(2,Gtk.SortType.Ascending);
 
 		}
 		
-		int sort_llvector3(Gtk.TreeModel model,Gtk.TreeIter a,Gtk.TreeIter b)
+		int sort_Vector3(Gtk.TreeModel model,Gtk.TreeIter a,Gtk.TreeIter b)
 		{
             
 			string distAs=(string)store.GetValue(a,2);			
@@ -99,9 +99,9 @@ namespace omvviewerlight
 			return 0;
 		}
 		
-		void onTeleport(string Message, libsecondlife.AgentManager.TeleportStatus status,libsecondlife.AgentManager.TeleportFlags flags)
+		void onTeleport(string Message, OpenMetaverse.AgentManager.TeleportStatus status,OpenMetaverse.AgentManager.TeleportFlags flags)
 	    {
-			if(status==libsecondlife.AgentManager.TeleportStatus.Finished)
+			if(status==OpenMetaverse.AgentManager.TeleportStatus.Finished)
 			{
 				Gtk.Application.Invoke(delegate {
 					lock (store)
@@ -184,8 +184,8 @@ namespace omvviewerlight
         {
             if (this.av_tree.ContainsKey(id))
             {
-                LLVector3 pos;
-                pos = MainClass.client.Self.RelativePosition - (LLVector3)av_tree[id].avatar.Position;
+                Vector3 pos;
+                pos = MainClass.client.Self.RelativePosition - (Vector3)av_tree[id].avatar.Position;
                 double dist;
                 dist = Math.Sqrt((pos.X * pos.X) + (pos.Y * pos.Y) + (pos.Z * pos.Z));
                 store.SetValue(av_tree[id].iter, 2, MainClass.cleandistance(dist.ToString(), 1));
@@ -213,7 +213,7 @@ namespace omvviewerlight
 		}
 */
 		
-		void onChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourcetype,string fromName, LLUUID id, LLUUID ownerid, LLVector3 position)
+		void onChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourcetype,string fromName, UUID id, UUID ownerid, Vector3 position)
 		{
             // What a glorious inefficient way to do things
                 lock(av_typing)

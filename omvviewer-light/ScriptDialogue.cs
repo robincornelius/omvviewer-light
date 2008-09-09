@@ -24,7 +24,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 
 using System;
 using System.Collections.Generic;
-using libsecondlife;
+using OpenMetaverse;
 
 namespace omvviewerlight
 {
@@ -34,7 +34,7 @@ namespace omvviewerlight
 	{
 		
 		int channel;
-		public ScriptDialogue(string message,string objectName,LLUUID imageID,LLUUID objectID,string FirstName,string lastName,int chatChannel,List <string> buttons) : 
+		public ScriptDialogue(string message,string objectName,UUID imageID,UUID objectID,string FirstName,string lastName,int chatChannel,List <string> buttons) : 
 				base(Gtk.WindowType.Toplevel)
 		{
 			this.Build();

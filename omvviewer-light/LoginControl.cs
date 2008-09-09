@@ -24,7 +24,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 
 using System;
 using System.Threading;
-using libsecondlife;
+using OpenMetaverse;
 using System.IO;
 
 namespace omvviewerlight
@@ -53,12 +53,12 @@ namespace omvviewerlight
 		public LoginControl()
 		{
 			this.Build();
-			MainClass.client.Network.OnConnected += new libsecondlife.NetworkManager.ConnectedCallback(onConnected);
-			MainClass.client.Network.OnDisconnected += new libsecondlife.NetworkManager.DisconnectedCallback(onDisconnected);
-			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
-			MainClass.client.Network.OnEventQueueRunning += new libsecondlife.NetworkManager.EventQueueRunningCallback(onEventQueue);
+			MainClass.client.Network.OnConnected += new OpenMetaverse.NetworkManager.ConnectedCallback(onConnected);
+			MainClass.client.Network.OnDisconnected += new OpenMetaverse.NetworkManager.DisconnectedCallback(onDisconnected);
+			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+			MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
            
-            libsecondlife.Logger.OnLogMessage += new libsecondlife.Logger.LogCallback(onLogMessage);
+            OpenMetaverse.Logger.OnLogMessage += new OpenMetaverse.Logger.LogCallback(onLogMessage);
            
                 this.entry_pass.Visibility=false;
 			
@@ -122,7 +122,7 @@ namespace omvviewerlight
 			Console.Write("Connected to simulator\n");
 		}
 		
-		void onDisconnected(libsecondlife.NetworkManager.DisconnectType reason, string message)
+		void onDisconnected(OpenMetaverse.NetworkManager.DisconnectType reason, string message)
 		{
 			Gtk.Application.Invoke(delegate {
 				this.button_login.Label="Login";
@@ -160,9 +160,9 @@ namespace omvviewerlight
               }		
 		}
 
-		void onLogMessage(object obj, libsecondlife.Helpers.LogLevel level)
+		void onLogMessage(object obj, OpenMetaverse.Helpers.LogLevel level)
 		{
-			if(level >= libsecondlife.Helpers.LogLevel.Warning)
+			if(level >= OpenMetaverse.Helpers.LogLevel.Warning)
 			{
 				Gtk.Application.Invoke(delegate {
 					this.textview_log.Buffer.InsertAtCursor(obj.ToString()+"\n");
@@ -183,7 +183,7 @@ namespace omvviewerlight
 		{
             AutoResetEvent appearanceEvent = new AutoResetEvent(false);
             AppearanceManager.AppearanceUpdatedCallback callback =
-                delegate(LLObject.TextureEntry te) { appearanceEvent.Set(); };
+                delegate(Primitive.TextureEntry te) { appearanceEvent.Set(); };
             MainClass.client.Appearance.OnAppearanceUpdated += callback;
 
 			Console.Write("Appearence thread go\n");

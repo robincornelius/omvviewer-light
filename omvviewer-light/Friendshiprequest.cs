@@ -23,7 +23,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 //
 
 using System;
-using libsecondlife;
+using OpenMetaverse;
 
 namespace omvviewerlight
 {
@@ -31,9 +31,9 @@ namespace omvviewerlight
 	
 	public partial class Friendshiprequest : Gtk.Window
 	{
-		LLUUID agent;
-		LLUUID session;
-		public Friendshiprequest(LLUUID agentID,string agentname,LLUUID sessionid) : 
+		UUID agent;
+		UUID session;
+		public Friendshiprequest(UUID agentID,string agentname,UUID sessionid) : 
 				base(Gtk.WindowType.Toplevel)
 		{
 			this.Build();

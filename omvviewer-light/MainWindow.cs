@@ -26,13 +26,13 @@ using System.Collections.Generic;
 using System.Threading;
 using Gtk;
 using Gdk;
-using libsecondlife;
+using OpenMetaverse;
 using omvviewerlight;
 
 public partial class MainWindow: Gtk.Window
 {	
-	public List<libsecondlife.LLUUID>active_ims = new List<libsecondlife.LLUUID>();
-	public List<libsecondlife.LLUUID>active_groups_ims = new List<libsecondlife.LLUUID>();
+	public List<OpenMetaverse.UUID>active_ims = new List<OpenMetaverse.UUID>();
+	public List<OpenMetaverse.UUID>active_groups_ims = new List<OpenMetaverse.UUID>();
 	
 	Gtk.Label status_location;
 	Gtk.HBox status_balance;
@@ -109,19 +109,19 @@ public partial class MainWindow: Gtk.Window
 		
 		this.statusbar1.ShowAll();
 		
-		MainClass.client.Self.OnInstantMessage += new libsecondlife.AgentManager.InstantMessageCallback(onIM);
+		MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
 		
-		MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
-		MainClass.client.Self.OnBalanceUpdated += new libsecondlife.AgentManager.BalanceCallback(onBalance);
-		MainClass.client.Parcels.OnParcelProperties += new libsecondlife.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
-		MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
-		MainClass.client.Network.OnDisconnected += new libsecondlife.NetworkManager.DisconnectedCallback(onDisconnect);
+		MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+		MainClass.client.Self.OnBalanceUpdated += new OpenMetaverse.AgentManager.BalanceCallback(onBalance);
+		MainClass.client.Parcels.OnParcelProperties += new OpenMetaverse.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
+		MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
+		MainClass.client.Network.OnDisconnected += new OpenMetaverse.NetworkManager.DisconnectedCallback(onDisconnect);
 		
-		MainClass.client.Friends.OnFriendshipOffered += new libsecondlife.FriendsManager.FriendshipOfferedEvent(onFriendship);
-		MainClass.client.Self.OnAlertMessage += new libsecondlife.AgentManager.AlertMessage(onAlertMessage);
-		MainClass.client.Self.OnScriptQuestion += new libsecondlife.AgentManager.ScriptQuestionCallback(onScriptCallback);
-		MainClass.client.Self.OnScriptDialog +=new libsecondlife.AgentManager.ScriptDialogCallback(onScriptDialogue);
-		MainClass.client.Self.OnGroupChatLeft += new libsecondlife.AgentManager.GroupChatLeft(onLeaveGroupChat);
+		MainClass.client.Friends.OnFriendshipOffered += new OpenMetaverse.FriendsManager.FriendshipOfferedEvent(onFriendship);
+		MainClass.client.Self.OnAlertMessage += new OpenMetaverse.AgentManager.AlertMessageCallback(onAlertMessage);
+		MainClass.client.Self.OnScriptQuestion += new OpenMetaverse.AgentManager.ScriptQuestionCallback(onScriptCallback);
+		MainClass.client.Self.OnScriptDialog +=new OpenMetaverse.AgentManager.ScriptDialogCallback(onScriptDialogue);
+		MainClass.client.Self.OnGroupChatLeft += new OpenMetaverse.AgentManager.GroupChatLeftCallback(onLeaveGroupChat);
         MainClass.client.Friends.OnFriendshipResponse += new FriendsManager.FriendshipResponseEvent(Friends_OnFriendshipResponse);
         MainClass.client.Friends.OnFriendshipTerminated += new FriendsManager.FriendshipTerminatedEvent(Friends_OnFriendshipTerminated);
 
@@ -163,7 +163,7 @@ public partial class MainWindow: Gtk.Window
         args.RetVal = false;
     }
 
-    void Self_OnAvatarSitResponse(LLUUID objectID, bool autoPilot, LLVector3 cameraAtOffset, LLVector3 cameraEyeOffset, bool forceMouselook, LLVector3 sitPosition, LLQuaternion sitRotation)
+    void Self_OnAvatarSitResponse(UUID objectID, bool autoPilot, Vector3 cameraAtOffset, Vector3 cameraEyeOffset, bool forceMouselook, Vector3 sitPosition, Quaternion sitRotation)
     {
         // we sat down
         togglesat();
@@ -180,7 +180,7 @@ public partial class MainWindow: Gtk.Window
         this.SittingAction.Activate();		
     }	
 
-    void Friends_OnFriendshipTerminated(LLUUID agentID, string agentName)
+    void Friends_OnFriendshipTerminated(UUID agentID, string agentName)
     {
         Gtk.Application.Invoke(delegate
         {
@@ -190,7 +190,7 @@ public partial class MainWindow: Gtk.Window
         });
     }
 
-    void Friends_OnFriendshipResponse(LLUUID agentID, string agentName, bool accepted)
+    void Friends_OnFriendshipResponse(UUID agentID, string agentName, bool accepted)
     {
         Gtk.Application.Invoke(delegate
         {
@@ -210,7 +210,7 @@ public partial class MainWindow: Gtk.Window
         });
     }	
 
-	void onLeaveGroupChat(LLUUID session_id)
+	void onLeaveGroupChat(UUID session_id)
 	{
 		Console.Write("Left group chat for session "+session_id.ToString()+"\n");
 		if(MainClass.win.active_groups_ims.Contains(session_id))
@@ -218,7 +218,7 @@ public partial class MainWindow: Gtk.Window
 		
 	}
 	
-	void onScriptDialogue(string message,string objectName,LLUUID imageID,LLUUID objectID,string FirstName,string lastName,int chatChannel,List <string> buttons)
+	void onScriptDialogue(string message,string objectName,UUID imageID,UUID objectID,string FirstName,string lastName,int chatChannel,List <string> buttons)
 	{
         Gtk.Application.Invoke(delegate
         {
@@ -238,7 +238,7 @@ public partial class MainWindow: Gtk.Window
 		});	
 	}
 	
-	void onScriptCallback(Simulator sim,LLUUID taskID,LLUUID itemID,string objectName,string objectOwner,libsecondlife.ScriptPermission questions)
+	void onScriptCallback(Simulator sim,UUID taskID,UUID itemID,string objectName,string objectOwner,OpenMetaverse.ScriptPermission questions)
 	{
 		string message;
 	
@@ -308,7 +308,7 @@ public partial class MainWindow: Gtk.Window
 		return this.notebook;
 	}
 	
-	void onFriendship(LLUUID agentID,string agentname,LLUUID sessionid)
+	void onFriendship(UUID agentID,string agentname,UUID sessionid)
 	{
 		Gtk.Application.Invoke(delegate {						
 		
@@ -343,7 +343,7 @@ public partial class MainWindow: Gtk.Window
         return lable;		
 	}
 	
-	void onDisconnect(libsecondlife.NetworkManager.DisconnectType Reason,string msg)	                                       
+	void onDisconnect(OpenMetaverse.NetworkManager.DisconnectType Reason,string msg)	                                       
     {
 		Gtk.Application.Invoke(delegate {						
 			if(status_icons!=null)
@@ -356,7 +356,7 @@ public partial class MainWindow: Gtk.Window
 		});
 	}
 			
-	void onTeleport(string Message, libsecondlife.AgentManager.TeleportStatus status,libsecondlife.AgentManager.TeleportFlags flags)
+	void onTeleport(string Message, OpenMetaverse.AgentManager.TeleportStatus status,OpenMetaverse.AgentManager.TeleportFlags flags)
     {		
 		Gtk.Application.Invoke(delegate {						
 			status_location.Text="Location: "+MainClass.client.Network.CurrentSim.Name+MainClass.prettyvector(MainClass.client.Self.SimPosition,2);	
@@ -372,14 +372,14 @@ public partial class MainWindow: Gtk.Window
 		status_icons=new Gtk.HBox();		
 		this.statusbar1.PackStart(status_icons);
 		
-		if((parcel.Flags & libsecondlife.Parcel.ParcelFlags.AllowFly) != libsecondlife.Parcel.ParcelFlags.AllowFly )
+		if((parcel.Flags & OpenMetaverse.Parcel.ParcelFlags.AllowFly) != OpenMetaverse.Parcel.ParcelFlags.AllowFly )
 		{
 			Gtk.Image myimage=new Gtk.Image("status_no_fly.tga");
 			status_icons.PackStart(myimage);
 			status_icons.SetChildPacking(myimage,false,false,0,PackType.Start);
 		}
 	
-		if((parcel.Flags & libsecondlife.Parcel.ParcelFlags.RestrictPushObject)==libsecondlife.Parcel.ParcelFlags.RestrictPushObject)
+		if((parcel.Flags & OpenMetaverse.Parcel.ParcelFlags.RestrictPushObject)==OpenMetaverse.Parcel.ParcelFlags.RestrictPushObject)
 		{
 			Gtk.Image myimage=new Gtk.Image("status_no_push.tga");
 			status_icons.PackStart(myimage);				
@@ -387,7 +387,7 @@ public partial class MainWindow: Gtk.Window
 
 		}
 
-		if((parcel.Flags & libsecondlife.Parcel.ParcelFlags.AllowOtherScripts)!=libsecondlife.Parcel.ParcelFlags.AllowOtherScripts)
+		if((parcel.Flags & OpenMetaverse.Parcel.ParcelFlags.AllowOtherScripts)!=OpenMetaverse.Parcel.ParcelFlags.AllowOtherScripts)
 		{
 			Gtk.Image myimage=new Gtk.Image("status_no_scripts.tga");
 			status_icons.PackStart(myimage);				
@@ -395,7 +395,7 @@ public partial class MainWindow: Gtk.Window
 		
 		}
 
-		if((parcel.Flags & libsecondlife.Parcel.ParcelFlags.CreateObjects)!=libsecondlife.Parcel.ParcelFlags.CreateObjects)
+		if((parcel.Flags & OpenMetaverse.Parcel.ParcelFlags.CreateObjects)!=OpenMetaverse.Parcel.ParcelFlags.CreateObjects)
 		{
 			Gtk.Image myimage=new Gtk.Image("status_no_build.tga");
 			status_icons.PackStart(myimage);				
@@ -500,7 +500,7 @@ public partial class MainWindow: Gtk.Window
 	}		
 
 	
-	void makeimwindow(string name,ChatConsole cs,bool group,LLUUID target)
+	void makeimwindow(string name,ChatConsole cs,bool group,UUID target)
 	{
 		Gtk.Image image=new Gtk.Image("closebox.tga");
 		image.HeightRequest=16;
@@ -545,7 +545,7 @@ public partial class MainWindow: Gtk.Window
 	
 	
 	
-	public void startGroupIM(LLUUID id)
+	public void startGroupIM(UUID id)
 	{
 		if(!active_ims.Contains(id))
 		{
@@ -562,7 +562,7 @@ public partial class MainWindow: Gtk.Window
 		}
 	}
 	
-	public void startIM(LLUUID target)
+	public void startIM(UUID target)
 	{
 		if(!active_ims.Contains(target))
 		{
@@ -580,13 +580,13 @@ public partial class MainWindow: Gtk.Window
 	   	
 	void onIM(InstantMessage im, Simulator sim)
 	{	
-		if(im.Dialog==libsecondlife.InstantMessageDialog.InventoryOffered)
+		if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryOffered)
 			return;
 			
-		if(im.Dialog==libsecondlife.InstantMessageDialog.TaskInventoryOffered)
+		if(im.Dialog==OpenMetaverse.InstantMessageDialog.TaskInventoryOffered)
 			return;
 		
-		if(im.Dialog==libsecondlife.InstantMessageDialog.InventoryAccepted)
+		if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryAccepted)
 		{
 			Gtk.Application.Invoke(delegate {	
 				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.Modal,MessageType.Info,ButtonsType.Ok,im.FromAgentName+" accepted your inventory offer");
@@ -596,7 +596,7 @@ public partial class MainWindow: Gtk.Window
 			return;
 		}
 		
-		if(im.Dialog==libsecondlife.InstantMessageDialog.InventoryAccepted)
+		if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryAccepted)
 		{
 			Gtk.Application.Invoke(delegate {	
 				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.Modal,MessageType.Info,ButtonsType.Ok,im.FromAgentName+" accepted your inventory offer");
@@ -606,7 +606,7 @@ public partial class MainWindow: Gtk.Window
 			return;
 		}
 
-		if(im.Dialog==libsecondlife.InstantMessageDialog.GroupNotice)
+		if(im.Dialog==OpenMetaverse.InstantMessageDialog.GroupNotice)
 		{
 			//Hmm need to handle this differently than a standard IM
 			Gtk.Application.Invoke(delegate {	
@@ -618,7 +618,7 @@ public partial class MainWindow: Gtk.Window
 			return;
 		}
 		
-		if(im.Dialog==libsecondlife.InstantMessageDialog.RequestTeleport)
+		if(im.Dialog==OpenMetaverse.InstantMessageDialog.RequestTeleport)
 		{
 			//Hmm need to handle this differently than a standard IM
 			Gtk.Application.Invoke(delegate {	
@@ -649,7 +649,7 @@ public partial class MainWindow: Gtk.Window
 		}
 	        });
 
-        if (im.IMSessionID == LLUUID.Zero)
+        if (im.IMSessionID == UUID.Zero)
             return; //Its an object Im, chat weill grab this for us
 			
 		if(im.GroupIM==true)

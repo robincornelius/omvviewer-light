@@ -24,7 +24,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 
 using System;
 using System.Collections.Generic;
-using libsecondlife;
+using OpenMetaverse;
 using Gtk;
 
 namespace omvviewerlight
@@ -50,14 +50,14 @@ namespace omvviewerlight
 			online_img=new Gdk.Pixbuf("icon_avatar_online.tga");
 			offline_img=new Gdk.Pixbuf("icon_avatar_offline.tga");
 				
-			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);		
-			MainClass.client.Friends.OnFriendOnline += new libsecondlife.FriendsManager.FriendOnlineEvent(onFriendOnline);
-			MainClass.client.Friends.OnFriendOffline += new libsecondlife.FriendsManager.FriendOfflineEvent(onFriendOffline);
+			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);		
+			MainClass.client.Friends.OnFriendOnline += new OpenMetaverse.FriendsManager.FriendOnlineEvent(onFriendOnline);
+			MainClass.client.Friends.OnFriendOffline += new OpenMetaverse.FriendsManager.FriendOfflineEvent(onFriendOffline);
             MainClass.client.Friends.OnFriendshipResponse += new FriendsManager.FriendshipResponseEvent(Friends_OnFriendshipResponse);
             MainClass.client.Friends.OnFriendshipTerminated += new FriendsManager.FriendshipTerminatedEvent(Friends_OnFriendshipTerminated);
         }
 
-        void Friends_OnFriendshipTerminated(LLUUID agentID, string agentName)
+        void Friends_OnFriendshipTerminated(UUID agentID, string agentName)
         {
             Gtk.Application.Invoke(delegate
             {
@@ -65,7 +65,7 @@ namespace omvviewerlight
             });
         }
 
-        void Friends_OnFriendshipResponse(LLUUID agentID, string agentName, bool accepted)
+        void Friends_OnFriendshipResponse(UUID agentID, string agentName, bool accepted)
         {
             Gtk.Application.Invoke(delegate
             {
@@ -117,7 +117,7 @@ namespace omvviewerlight
 		bool myfunc(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
 		{			
 			string id =(string)store.GetValue(iter,2);
-			LLUUID lid=(LLUUID)id;
+			UUID lid=(UUID)id;
 		
 			FriendInfo finfo;
 			if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
@@ -136,7 +136,7 @@ namespace omvviewerlight
 			   {
 				//ALL i want is a fucking UUID
 				string id=(string)mod.GetValue(iter,2);
-				LLUUID lid=(LLUUID)id;
+				UUID lid=(UUID)id;
 				FriendInfo finfo;
 				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 				{
@@ -156,7 +156,7 @@ namespace omvviewerlight
 			{
 				//ALL i want is a fucking UUID
 				string id=(string)mod.GetValue(iter,2);
-				LLUUID lid=(LLUUID)id;
+				UUID lid=(UUID)id;
 				FriendInfo finfo;
 				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 				{
@@ -184,7 +184,7 @@ namespace omvviewerlight
 			{
 				//ALL i want is a fucking UUID
 				string id=(string)mod.GetValue(iter,2);
-				LLUUID lid=(LLUUID)id;
+				UUID lid=(UUID)id;
 				FriendInfo finfo;
 				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 				{
@@ -212,7 +212,7 @@ namespace omvviewerlight
 			{
 				//ALL i want is a fucking UUID
 				string id=(string)mod.GetValue(iter,2);
-				LLUUID lid=(LLUUID)id;
+				UUID lid=(UUID)id;
 				FriendInfo finfo;
 				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 				{
@@ -259,7 +259,7 @@ namespace omvviewerlight
 			{
 				//ALL i want is a fucking UUID
 				string id=(string)mod.GetValue(iter,2);
-				LLUUID lid=(LLUUID)id;
+				UUID lid=(UUID)id;
 				MainClass.win.startIM(lid);
 			}
 		}
@@ -272,7 +272,7 @@ namespace omvviewerlight
 			if(treeview_friends.Selection.GetSelected(out mod,out iter))			
 			{
 				string id=(string)mod.GetValue(iter,2);
-				LLUUID lid=(LLUUID)id;
+				UUID lid=(UUID)id;
 				MainClass.client.Self.SendTeleportLure(lid);
 			}
 
@@ -300,7 +300,7 @@ namespace omvviewerlight
 			if(treeview_friends.Selection.GetSelected(out mod,out iter))			
 			{
 				string id=(string)mod.GetValue(iter,2);
-				LLUUID lid=(LLUUID)id;
+				UUID lid=(UUID)id;
 					
 				ProfileVIew profile=new ProfileVIew(lid);
 				profile.Show();

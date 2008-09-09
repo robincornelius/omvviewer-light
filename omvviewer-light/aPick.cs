@@ -23,17 +23,17 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 //
 
 using System;
-using libsecondlife;
+using OpenMetaverse;
 
 namespace omvviewerlight
 {
 
 	public partial class aPick : Gtk.Bin
 	{
-		LLVector3d picpos;
+		Vector3d picpos;
 		string sim;
 		
-		public aPick(LLUUID image,string name,string desc,string info,string simname,LLVector3d pos)
+		public aPick(UUID image,string name,string desc,string info,string simname,Vector3d pos)
 		{
 			this.Build();
 			this.label_sim.Text=name;
@@ -46,7 +46,7 @@ namespace omvviewerlight
 
 		protected virtual void OnButtonTeleportClicked (object sender, System.EventArgs e)
 		{
-			LLVector3 pos=new LLVector3();
+			Vector3 pos=new Vector3();
 			pos.X=(int)(picpos.X)&0x0000FF;
 			pos.Y=(int)(picpos.Y)&0x0000FF;
 			pos.Z=(int)(picpos.Z)&0x0000FF;

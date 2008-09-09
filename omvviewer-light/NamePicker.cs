@@ -6,7 +6,7 @@
 
 using System;
 using System.Collections.Generic;
-using libsecondlife;
+using OpenMetaverse;
 using Gdk;
 using Gtk;
 
@@ -19,11 +19,11 @@ namespace omvviewerlight
 		
 		Gtk.ListStore store;
 		
-		public delegate void UserSelected(LLUUID id,LLUUID asset,string item_name,string user_name);
+		public delegate void UserSelected(UUID id,UUID asset,string item_name,string user_name);
  
         // Define an Event based on the above Delegate
         public event UserSelected UserSel;
-		public LLUUID asset;
+		public UUID asset;
 		public string item_name;
 		public string user_name;
 		
@@ -32,12 +32,12 @@ namespace omvviewerlight
 				base(Gtk.WindowType.Toplevel)
 		{
 			this.Build();
-			store= new Gtk.ListStore (typeof(string),typeof(LLUUID));
+			store= new Gtk.ListStore (typeof(string),typeof(UUID));
 			treeview1.AppendColumn("Name",new Gtk.CellRendererText(),"text",0);		
 			treeview1.Model=store;
 			store.SetSortColumnId(0,Gtk.SortType.Ascending);
 			
-			foreach(KeyValuePair<LLUUID,string> name in MainClass.name_cache.av_names)
+			foreach(KeyValuePair<UUID,string> name in MainClass.name_cache.av_names)
 			{
 				store.AppendValues(name.Value,name.Key);
 				
@@ -51,7 +51,7 @@ namespace omvviewerlight
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				LLUUID id=(LLUUID)mod.GetValue(iter,1);
+				UUID id=(UUID)mod.GetValue(iter,1);
 				if(UserSel!=null)
 					UserSel(id,asset,item_name,user_name);
 			}

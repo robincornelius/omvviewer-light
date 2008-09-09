@@ -24,7 +24,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 
 using System;
 using System.Threading;
-using libsecondlife;
+using OpenMetaverse;
 using System.Collections.Generic;
 using Gdk;
 using Gtk;
@@ -35,11 +35,11 @@ namespace omvviewerlight
 	public partial class Inventory : Gtk.Bin
 	{
 
-        Dictionary<LLUUID, Gtk.TreeIter> assetmap = new Dictionary<LLUUID, Gtk.TreeIter>();
+        Dictionary<UUID, Gtk.TreeIter> assetmap = new Dictionary<UUID, Gtk.TreeIter>();
 		String[] SearchFolders = { "" };
 		//initialize our list to store the folder contents
-        LLUUID inventoryItems;
-		Gtk.TreeStore inventory = new Gtk.TreeStore (typeof(Gdk.Pixbuf),typeof (string), typeof (LLUUID),typeof(InventoryBase));		
+        UUID inventoryItems;
+		Gtk.TreeStore inventory = new Gtk.TreeStore (typeof(Gdk.Pixbuf),typeof (string), typeof (UUID),typeof(InventoryBase));		
 		Gdk.Pixbuf folder_closed = new Gdk.Pixbuf("inv_folder_plain_closed.tga");
 		Gdk.Pixbuf folder_open = new Gdk.Pixbuf("inv_folder_plain_open.tga");
 		Gdk.Pixbuf item_landmark = new Gdk.Pixbuf("inv_item_landmark.tga");
@@ -78,7 +78,7 @@ namespace omvviewerlight
 			treeview_inv.Model=inventory;
 			this.treeview_inv.RowExpanded += new Gtk.RowExpandedHandler(onRowExpanded);
 			this.treeview_inv.RowCollapsed += new Gtk.RowCollapsedHandler(onRowCollapsed);
-			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
+			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             this.treeview_inv.ButtonPressEvent += new ButtonPressEventHandler(treeview_inv_ButtonPressEvent);
 
           MainClass.client.Inventory.OnObjectOffered += new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
@@ -145,7 +145,7 @@ namespace omvviewerlight
 			
 		}
 		
-		void ongiveasset2(LLUUID id,LLUUID asset,string item_name,string user_name)
+		void ongiveasset2(UUID id,UUID asset,string item_name,string user_name)
 		{
 			MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.Modal,MessageType.Question,ButtonsType.YesNo,"Are you sure you wish to give\n"+item_name+"to "+user_name);
 			ResponseType result=(ResponseType)md.Run();	
@@ -157,23 +157,23 @@ namespace omvviewerlight
 			}
 		}
 		
-        void Inventory_OnTaskItemReceived(LLUUID itemID, LLUUID folderID, LLUUID creatorID, LLUUID assetID, InventoryType type)
+        void Inventory_OnTaskItemReceived(UUID itemID, UUID folderID, UUID creatorID, UUID assetID, InventoryType type)
         {
 
             Console.Write("\nOn Task Item Recieved\n");
         }
 
-        void Inventory_OnTaskInventoryReply(LLUUID itemID, short serial, string assetFilename)
+        void Inventory_OnTaskInventoryReply(UUID itemID, short serial, string assetFilename)
         {
             Console.Write("\nOn Task Inventory Reply\n");
         }
 
-        void Inventory_OnFolderUpdated(LLUUID folderID)
+        void Inventory_OnFolderUpdated(UUID folderID)
         {
             
         }
 
-        bool Inventory_OnObjectOffered(InstantMessage offerDetails, AssetType type, LLUUID objectID, bool fromTask)
+        bool Inventory_OnObjectOffered(InstantMessage offerDetails, AssetType type, UUID objectID, bool fromTask)
         {
 			
 			AutoResetEvent ObjectOfferEvent = new AutoResetEvent(false);
@@ -312,13 +312,13 @@ namespace omvviewerlight
 				
 		void onRowCollapsed(object o,Gtk.RowCollapsedArgs args)
 		{
-			LLUUID key=(LLUUID)this.inventory.GetValue(args.Iter,2);
+			UUID key=(UUID)this.inventory.GetValue(args.Iter,2);
 			inventory.SetValue(args.Iter,0,folder_closed);
 		}
 
 		void onRowExpanded(object o,Gtk.RowExpandedArgs args)
 		{
-			LLUUID key=(LLUUID)this.inventory.GetValue(args.Iter,2);
+			UUID key=(UUID)this.inventory.GetValue(args.Iter,2);
 			if(inventory.GetValue(args.Iter,0)==folder_closed)
                 inventory.SetValue(args.Iter,0,folder_open);
 
@@ -348,7 +348,7 @@ namespace omvviewerlight
 
 				if (item is InventoryFolder)
 				{ 
-					inventory.AppendValues(iter2, item_object,"Waiting...", LLUUID.Zero,null);	
+					inventory.AppendValues(iter2, item_object,"Waiting...", UUID.Zero,null);	
 				}
 			}
 
@@ -413,31 +413,31 @@ namespace omvviewerlight
             if (item is InventoryFolder)
                 return getprettyfoldericon((InventoryFolder)item);
 					
-			if(item is libsecondlife.InventoryLandmark)
+			if(item is OpenMetaverse.InventoryLandmark)
 				return this.item_landmark;
 			
-			if(item is libsecondlife.InventoryAnimation)
+			if(item is OpenMetaverse.InventoryAnimation)
 				return this.item_animation;
 			
-			if(item is libsecondlife.InventoryWearable)
+			if(item is OpenMetaverse.InventoryWearable)
 				return this.item_clothing;
 
-            if (item is libsecondlife.InventoryGesture)
+            if (item is OpenMetaverse.InventoryGesture)
                 return this.item_gesture;
 
-            if (item is libsecondlife.InventoryNotecard)
+            if (item is OpenMetaverse.InventoryNotecard)
                 return this.item_notecard;
 
-            if (item is libsecondlife.InventoryLSL)
+            if (item is OpenMetaverse.InventoryLSL)
                 return this.item_script;
 
-            if (item is libsecondlife.InventorySnapshot)
+            if (item is OpenMetaverse.InventorySnapshot)
                 return this.item_snapshot;
 
-            if (item is libsecondlife.InventorySound)
+            if (item is OpenMetaverse.InventorySound)
                 return this.item_sound;
 
-            if (item is libsecondlife.InventoryCallingCard)
+            if (item is OpenMetaverse.InventoryCallingCard)
                 return this.item_callingcard;
          
 			return item_object;
@@ -460,13 +460,13 @@ namespace omvviewerlight
 					{
 						this.label_createdby.Text=((InventoryItem)item).CreatorID.ToString();
 						this.label_aquired.Text=((InventoryItem)item).CreationDate.ToString();
-						this.checkbutton_copy.Active=libsecondlife.PermissionMask.Copy==(((InventoryItem)item).Permissions.OwnerMask&libsecondlife.PermissionMask.Copy);
-						this.checkbutton_mod.Active=libsecondlife.PermissionMask.Modify==(((InventoryItem)item).Permissions.OwnerMask&libsecondlife.PermissionMask.Modify);
-						this.checkbutton_trans.Active=libsecondlife.PermissionMask.Transfer==(((InventoryItem)item).Permissions.OwnerMask&libsecondlife.PermissionMask.Transfer);
+						this.checkbutton_copy.Active=OpenMetaverse.PermissionMask.Copy==(((InventoryItem)item).Permissions.OwnerMask&OpenMetaverse.PermissionMask.Copy);
+						this.checkbutton_mod.Active=OpenMetaverse.PermissionMask.Modify==(((InventoryItem)item).Permissions.OwnerMask&OpenMetaverse.PermissionMask.Modify);
+						this.checkbutton_trans.Active=OpenMetaverse.PermissionMask.Transfer==(((InventoryItem)item).Permissions.OwnerMask&OpenMetaverse.PermissionMask.Transfer);
 					
-						this.checkbutton_copynext.Active=libsecondlife.PermissionMask.Copy==(((InventoryItem)item).Permissions.NextOwnerMask&libsecondlife.PermissionMask.Copy);
-						this.checkbutton_modnext.Active=libsecondlife.PermissionMask.Modify==(((InventoryItem)item).Permissions.NextOwnerMask&libsecondlife.PermissionMask.Modify);
-						this.checkbutton_transnext.Active=libsecondlife.PermissionMask.Transfer==(((InventoryItem)item).Permissions.NextOwnerMask&libsecondlife.PermissionMask.Transfer);
+						this.checkbutton_copynext.Active=OpenMetaverse.PermissionMask.Copy==(((InventoryItem)item).Permissions.NextOwnerMask&OpenMetaverse.PermissionMask.Copy);
+						this.checkbutton_modnext.Active=OpenMetaverse.PermissionMask.Modify==(((InventoryItem)item).Permissions.NextOwnerMask&OpenMetaverse.PermissionMask.Modify);
+						this.checkbutton_transnext.Active=OpenMetaverse.PermissionMask.Transfer==(((InventoryItem)item).Permissions.NextOwnerMask&OpenMetaverse.PermissionMask.Transfer);
 					
 						AsyncNameUpdate ud=new AsyncNameUpdate(((InventoryItem)item).CreatorID.ToString(),false);
 						ud.onNameCallBack += delegate(string name,object[] values){this.label_createdby.Text=name;};

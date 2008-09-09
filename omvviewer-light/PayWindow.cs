@@ -24,7 +24,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 
 using System;
 using System.Collections.Generic;
-using libsecondlife;
+using OpenMetaverse;
 
 namespace omvviewerlight
 {
@@ -32,8 +32,8 @@ namespace omvviewerlight
 	public partial class PayWindow : Gtk.Window
 	{
 		string resident;
-		LLUUID resident_key;
-		LLUUID object_key;
+		UUID resident_key;
+		UUID object_key;
 		string object_name;
 		bool is_object;
 		int amountpay;
@@ -45,7 +45,7 @@ namespace omvviewerlight
 			this.Build();
 			is_object=true;
 			amountpay=amount;
-			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(on_avnames);
+			MainClass.client.Avatars.OnAvatarNames += new OpenMetaverse.AvatarManager.AvatarNamesCallback(on_avnames);
 			resident_key=prim.Properties.OwnerID;
 			request_name(prim.Properties.OwnerID);
 					
@@ -55,19 +55,19 @@ namespace omvviewerlight
 			refresh();
 		}
 	
-	public PayWindow(LLUUID target,int amount) : 
+	public PayWindow(UUID target,int amount) : 
 				base(Gtk.WindowType.Toplevel)
 		{
 			is_object=false;
 			amountpay=amount;
-			MainClass.client.Avatars.OnAvatarNames += new libsecondlife.AvatarManager.AvatarNamesCallback(on_avnames);
+			MainClass.client.Avatars.OnAvatarNames += new OpenMetaverse.AvatarManager.AvatarNamesCallback(on_avnames);
 			resident_key=target;	
 			request_name(target);
 			this.Build();
 			refresh();
 		}	
 	
-		void request_name(LLUUID id)
+		void request_name(UUID id)
 		{
 			Console.Write("Requesting name for ID : "+id.ToString()+"\n");
 			if(!MainClass.name_cache.av_names.ContainsKey(id))
@@ -101,13 +101,13 @@ namespace omvviewerlight
 			
 		}
 					
-		void on_avnames(Dictionary<LLUUID, string> names)
+		void on_avnames(Dictionary<UUID, string> names)
 	    {
 			//what the hell, lets cache them to the program store if we find them
 			//Possible to do, move this type of stuff more global
 			Console.Write("Got new names \n");
 			
-			foreach(KeyValuePair<LLUUID,string> name in names)
+			foreach(KeyValuePair<UUID,string> name in names)
 			{
 				//if(!MainClass.name_cache.av_names.ContainsKey(name.Key))
 				//	MainClass.name_cache.av_names.Add(name.Key,name.Value);		
@@ -124,7 +124,7 @@ namespace omvviewerlight
 
 		protected virtual void OnButtonCancelClicked (object sender, System.EventArgs e)
 		{
-			MainClass.client.Avatars.OnAvatarNames -= new libsecondlife.AvatarManager.AvatarNamesCallback(on_avnames);
+			MainClass.client.Avatars.OnAvatarNames -= new OpenMetaverse.AvatarManager.AvatarNamesCallback(on_avnames);
 			this.Destroy();
 		}
 

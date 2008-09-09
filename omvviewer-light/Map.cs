@@ -26,7 +26,7 @@ using System;
 using System.Net;
 using System.Collections.Generic;
 using System.Threading;
-using libsecondlife;
+using OpenMetaverse;
 using omvviewerlight;
 using System.Drawing;
 using Gdk;
@@ -55,17 +55,17 @@ namespace omvviewerlight
 		public Map()
 		{           
 			this.Build();
-			MainClass.client.Network.OnLogin += new libsecondlife.NetworkManager.LoginCallback(onLogin);
-			//MainClass.client.Network.OnCurrentSimChanged += new libsecondlife.NetworkManager.CurrentSimChangedCallback(onNewSim);
-			MainClass.client.Objects.OnNewAvatar += new libsecondlife.ObjectManager.NewAvatarCallback(onNewAvatar);
-			MainClass.client.Objects.OnObjectKilled += new libsecondlife.ObjectManager.KillObjectCallback(onKillObject);
-			MainClass.client.Objects.OnObjectUpdated += new libsecondlife.ObjectManager.ObjectUpdatedCallback(onUpdate);
-            MainClass.client.Self.OnTeleport += new libsecondlife.AgentManager.TeleportCallback(onTeleport);
+			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+			//MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
+			MainClass.client.Objects.OnNewAvatar += new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
+			MainClass.client.Objects.OnObjectKilled += new OpenMetaverse.ObjectManager.KillObjectCallback(onKillObject);
+			MainClass.client.Objects.OnObjectUpdated += new OpenMetaverse.ObjectManager.ObjectUpdatedCallback(onUpdate);
+            MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
         }
 
-		void onTeleport(string Message, libsecondlife.AgentManager.TeleportStatus status,libsecondlife.AgentManager.TeleportFlags flags)
+		void onTeleport(string Message, OpenMetaverse.AgentManager.TeleportStatus status,OpenMetaverse.AgentManager.TeleportFlags flags)
 	    {
-			if(status==libsecondlife.AgentManager.TeleportStatus.Finished)
+			if(status==OpenMetaverse.AgentManager.TeleportStatus.Finished)
 			{
             
                
@@ -131,8 +131,8 @@ namespace omvviewerlight
 				{
 						if(kvp.Value.LocalID!=MainClass.client.Self.LocalID)
 						{
-                            if (kvp.Value.CurrentSim != MainClass.client.Network.CurrentSim)
-                                continue; // Skip AV's that are not in this sim
+                            //if (kvp.Value. != MainClass.client.Network.CurrentSim)
+                              //  continue; // Skip AV's that are not in this sim
 
                             Console.Write("Position is " + kvp.Value.Position.ToString() + "\n");
                             Console.Write("I am " + MainClass.client.Self.SimPosition.ToString() + "\n");
@@ -181,7 +181,7 @@ namespace omvviewerlight
 		}
 		*/
 	
-		void showme(Gdk.Pixbuf buf,Gdk.Pixbuf src,LLVector3 pos)
+		void showme(Gdk.Pixbuf buf,Gdk.Pixbuf src,Vector3 pos)
 		{
 			int tx,ty;
 			tx=(int)pos.X;

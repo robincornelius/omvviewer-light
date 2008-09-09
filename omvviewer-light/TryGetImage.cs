@@ -23,8 +23,8 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 //
 
 using System;
-using libsecondlife;
-using libsecondlife.Imaging;
+using OpenMetaverse;
+using OpenMetaverse.Imaging;
 using Gdk;
 
 namespace omvviewerlight
@@ -32,15 +32,15 @@ namespace omvviewerlight
 	public class TryGetImage
 	{
 		
-		LLUUID target_asset;
+		UUID target_asset;
 		Gtk.Image target_image;
 		
-		public TryGetImage(Gtk.Image target,LLUUID asset)
+		public TryGetImage(Gtk.Image target,UUID asset)
 		{
 			if(target==null)
 				return;
 			
-			MainClass.client.Assets.OnImageReceived += new libsecondlife.AssetManager.ImageReceivedCallback(onGotImage);
+			MainClass.client.Assets.OnImageReceived += new OpenMetaverse.AssetManager.ImageReceivedCallback(onGotImage);
 			
 			target_asset=asset;
 			target_image=target;
@@ -48,8 +48,8 @@ namespace omvviewerlight
 			Gdk.Pixbuf buf=new Gdk.Pixbuf("trying.tga");
 			target_image.Pixbuf=buf.ScaleSimple(128,128,Gdk.InterpType.Bilinear);
 
-			if(asset!=LLUUID.Zero)
-					MainClass.client.Assets.RequestImage(asset,libsecondlife.ImageType.Normal,1013000.0f, 0);	
+			if(asset!=UUID.Zero)
+					MainClass.client.Assets.RequestImage(asset,OpenMetaverse.ImageType.Normal,1013000.0f, 0);	
 						
 		}
 		
