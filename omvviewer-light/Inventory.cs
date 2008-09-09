@@ -338,7 +338,7 @@ namespace omvviewerlight
            // this.treeview_inv.QueueDraw();
             Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
             invthreaddata x = new invthreaddata(key,args);
-            invRunner.Start((object)x);
+            //invRunner.Start((object)x);
             UpdateRow(x);
             //UpdateRow(key,args);
             
@@ -378,25 +378,22 @@ namespace omvviewerlight
                 if (myObjects == null)
                     return;
 
-              
-
                     foreach (InventoryBase item in myObjects)
                     {
 
                             Gdk.Pixbuf buf = getprettyicon(item);
 
-                            lock (assetmap)
-                            {
-                                if (!assetmap.ContainsKey(item.UUID))
-                                {
-                                    Gtk.TreeIter iter2 = inventory.AppendValues(args.Iter, buf, item.Name, item.UUID, item);
-                                    assetmap.Add(item.UUID, iter2);
-                                    if (item is InventoryFolder)
+                           
+                                    if (!assetmap.ContainsKey(item.UUID))
                                     {
-                                        inventory.AppendValues(iter2, item_object, "Waiting...", UUID.Zero, null);
+                                        Gtk.TreeIter iter2 = inventory.AppendValues(args.Iter, buf, item.Name, item.UUID, item);
+                                        assetmap.Add(item.UUID, iter2);
+                                        if (item is InventoryFolder)
+                                        {
+                                            inventory.AppendValues(iter2, item_object, "Waiting...", UUID.Zero, null);
+                                        }
                                     }
-                                }
-                            }
+                            
                          
                     }
 
