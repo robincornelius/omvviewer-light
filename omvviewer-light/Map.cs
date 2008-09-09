@@ -131,7 +131,12 @@ namespace omvviewerlight
 				{
 						if(kvp.Value.LocalID!=MainClass.client.Self.LocalID)
 						{
-						
+                            if (kvp.Value.CurrentSim != MainClass.client.Network.CurrentSim)
+                                continue; // Skip AV's that are not in this sim
+
+                            Console.Write("Position is " + kvp.Value.Position.ToString() + "\n");
+                            Console.Write("I am " + MainClass.client.Self.SimPosition.ToString() + "\n");
+
 							if(kvp.Value.Position.Z-myz>5)
 								showme(buf,avatar_above.Pixbuf,kvp.Value.Position);
 							else if(kvp.Value.Position.Z-myz<-5)

@@ -142,13 +142,25 @@ namespace omvviewerlight
                     {
                         if (!this.av_tree.ContainsKey(avatar.LocalID))
                         {
-                        agent theagent = new agent();
-                        theagent.avatar = avatar;
-                        Gtk.TreeIter iter;
-                        iter = store.AppendValues("", avatar.Name, "", avatar.LocalID);
-                        theagent.iter = iter;
-                        av_tree.Add(avatar.LocalID, theagent);
-                        calcdistance(avatar.LocalID);
+                            // The agent *might* still be present under an old localID and we
+                            // missed the kill
+
+                            foreach(KeyValuePair<uint, agent> av in av_tree)
+                            {
+                                if (av.Value.avatar.ID == avatar.ID)
+                                {
+                                    //All ready in tree kill that old definition
+                                    av_tree.Remove(av.Key);
+                                }
+                            }
+
+                            agent theagent = new agent();
+                            theagent.avatar = avatar;
+                            Gtk.TreeIter iter;
+                            iter = store.AppendValues("", avatar.Name, "", avatar.LocalID);
+                            theagent.iter = iter;
+                            av_tree.Add(avatar.LocalID, theagent);
+                            calcdistance(avatar.LocalID);
                         }
                     });
                 
@@ -175,7 +187,7 @@ namespace omvviewerlight
                 LLVector3 pos;
                 pos = MainClass.client.Self.RelativePosition - (LLVector3)av_tree[id].avatar.Position;
                 double dist;
-                dist = Math.Sqrt(pos.X * pos.X + pos.Y * pos.Y + pos.Z * pos.Z);
+                dist = Math.Sqrt((pos.X * pos.X) + (pos.Y * pos.Y) + (pos.Z * pos.Z));
                 store.SetValue(av_tree[id].iter, 2, MainClass.cleandistance(dist.ToString(), 1));
            
             }
