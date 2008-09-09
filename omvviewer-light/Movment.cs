@@ -40,7 +40,7 @@ namespace omvviewerlight
 			this.Build();			
 			this.image_direction.Pixbuf=new Pixbuf("arrow.tga");
            // Gtk.Timeout.Add(1000, dirupdate);
-            MainClass.client.Objects.OnObjectUpdated += new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);
+           // MainClass.client.Objects.OnObjectUpdated += new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);
             //Gdk.Pixbuf rotated = rotatepixbuf((float)0.7, this.image_direction.Pixbuf);
             //this.image_direction.Pixbuf = rotated;
         

@@ -32,6 +32,17 @@ using Gtk;
 namespace omvviewerlight
 {
 
+    public partial class invthreaddata
+    {
+        public UUID key;
+        public RowExpandedArgs args;
+        public invthreaddata(UUID keyx, RowExpandedArgs argsx)
+        {
+            key = keyx;
+            args = argsx;
+        }
+    }
+
 	public partial class Inventory : Gtk.Bin
 	{
 
@@ -321,47 +332,82 @@ namespace omvviewerlight
 			UUID key=(UUID)this.inventory.GetValue(args.Iter,2);
 			if(inventory.GetValue(args.Iter,0)==folder_closed)
                 inventory.SetValue(args.Iter,0,folder_open);
-
-            Gtk.TreePath path = args.Path;
-            path.Down();
-            Gtk.TreeIter childiter;
+ 
             Console.Write("Trying to get child iter\n");
 
-            this.treeview_inv.QueueDraw();
+           // this.treeview_inv.QueueDraw();
+            Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
+            invthreaddata x = new invthreaddata(key,args);
+            invRunner.Start((object)x);
+            UpdateRow(x);
+            //UpdateRow(key,args);
             
-			MainClass.client.Inventory.RequestFolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate);
-			List<InventoryBase> myObjects  =MainClass.client.Inventory.FolderContents(key,MainClass.client.Self.AgentID,true,true,InventorySortOrder.ByDate,30000);
-			
-	     
-			if (myObjects == null)
-				return;
-
-			foreach (InventoryBase item in myObjects)
-			{
-
-                if(assetmap.ContainsKey(item.UUID))
-                    continue;
-
-				Gdk.Pixbuf buf=getprettyicon(item);
-				Gtk.TreeIter iter2 = inventory.AppendValues(args.Iter,buf, item.Name, item.UUID,item);
-                assetmap.Add(item.UUID, iter2);
-
-				if (item is InventoryFolder)
-				{ 
-					inventory.AppendValues(iter2, item_object,"Waiting...", UUID.Zero,null);	
-				}
-			}
-
-            //And tidy that waiting
-            if (inventory.GetIter(out childiter, path))
-            {
-                Console.Write("We got a childiter for that\n");
-                Console.Write("Value is =" + (string)inventory.GetValue(childiter, 1) + "\n");
-                if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
-                    inventory.Remove(ref childiter);
-            }
-
 		}
+
+  
+        //void UpdateRow(UUID key, Gtk.RowExpandedArgs args)
+        void UpdateRow(object x)
+        {
+        
+            Gtk.RowExpandedArgs args;
+            UUID key;
+
+            key = ((invthreaddata)x).key;
+            args = ((invthreaddata)x).args;
+
+            Gtk.TreeIter childiter;
+          
+            Gtk.TreePath path = args.Path;
+            path.Down();
+
+                MainClass.client.Inventory.RequestFolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate);
+                List<InventoryBase> myObjects = MainClass.client.Inventory.FolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
+
+
+                //And tidy that waiting
+                if (inventory.GetIter(out childiter, path))
+                {
+                    Console.Write("We got a childiter for that\n");
+                    Console.Write("Value is =" + (string)inventory.GetValue(childiter, 1) + "\n");
+                    if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
+
+                        inventory.Remove(ref childiter);
+
+                }
+
+                if (myObjects == null)
+                    return;
+
+              
+
+                    foreach (InventoryBase item in myObjects)
+                    {
+
+                            Gdk.Pixbuf buf = getprettyicon(item);
+
+                            lock (assetmap)
+                            {
+                                if (!assetmap.ContainsKey(item.UUID))
+                                {
+                                    Gtk.TreeIter iter2 = inventory.AppendValues(args.Iter, buf, item.Name, item.UUID, item);
+                                    assetmap.Add(item.UUID, iter2);
+                                    if (item is InventoryFolder)
+                                    {
+                                        inventory.AppendValues(iter2, item_object, "Waiting...", UUID.Zero, null);
+                                    }
+                                }
+                            }
+                         
+                    }
+
+       
+
+              
+               
+         
+
+
+        }
 
         Gdk.Pixbuf getprettyfoldericon(InventoryFolder item)
         {
