@@ -263,7 +263,8 @@ namespace omvviewerlight
 				if(im.FromAgentID!=this.im_key && im.IMSessionID!=this.im_session_id)
 					return;
 			}
-			
+
+
 
 			// Is this a typing message
 			

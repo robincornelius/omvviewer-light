@@ -141,9 +141,27 @@ public partial class MainWindow: Gtk.Window
 		
 		this.WindowStateEvent += delegate { if (this.Visible) { trayIcon.Blinking = false; this.UrgencyHint = false; };};
         MainClass.client.Self.OnAvatarSitResponse += new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
+    
+        this.DeleteEvent += new DeleteEventHandler(MainWindow_DeleteEvent);
 
-		GLib.Timeout.Add(10000,OnUpdateStatus); 
+        GLib.Timeout.Add(10000,OnUpdateStatus); 
 	}
+
+   [GLib.ConnectBefore]
+    void MainWindow_DeleteEvent(object o, DeleteEventArgs args)
+    {
+        Gtk.MessageDialog md = new MessageDialog(this, DialogFlags.Modal, MessageType.Question, ButtonsType.YesNo, false, "Do you really want to close (YES)\n Or minimse (NO)");
+        ResponseType result = (ResponseType)md.Run();
+        md.Destroy();
+
+        if (result == ResponseType.No)
+        {
+            args.RetVal = true;
+            this.Visible = false;
+            return;
+        }
+        args.RetVal = false;
+    }
 
     void Self_OnAvatarSitResponse(LLUUID objectID, bool autoPilot, LLVector3 cameraAtOffset, LLVector3 cameraEyeOffset, bool forceMouselook, LLVector3 sitPosition, LLQuaternion sitRotation)
     {
