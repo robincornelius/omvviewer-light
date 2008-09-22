@@ -40,6 +40,7 @@ namespace omvviewerlight
             Gtk.TextTag objectIMchat;
             Gtk.TextTag systemchat;
 		    Gtk.TextTag ownerobjectchat;
+            Gtk.TextTag typing_tag;
 
 			
 		public Gtk.Label tabLabel;
@@ -197,8 +198,8 @@ namespace omvviewerlight
 			systemchat=new Gtk.TextTag("systemchat");
 			ownerobjectchat=new Gtk.TextTag("ownerobjectchat");
             objectIMchat = new Gtk.TextTag("objectIMchat");
-
-			
+            typing_tag = new Gtk.TextTag("typing");
+            
 			bold.Weight=Pango.Weight.Bold;
 		
 			objectchat.ForegroundGdk=col_green;
@@ -207,12 +208,16 @@ namespace omvviewerlight
 			
 			systemchat.Weight=Pango.Weight.Ultrabold;
 			systemchat.ForegroundGdk=col_red;
+
+            typing_tag.ForegroundGdk = col_blue;
 			
 			textview_chat.Buffer.TagTable.Add(bold);
 			textview_chat.Buffer.TagTable.Add(avchat);
 			textview_chat.Buffer.TagTable.Add(systemchat);
 			textview_chat.Buffer.TagTable.Add(objectchat);
 			textview_chat.Buffer.TagTable.Add(ownerobjectchat);
+            textview_chat.Buffer.TagTable.Add(typing_tag);
+
 			Console.Write("**** CHAT CONSOLE SETUP ****\n");
 
 		}
@@ -272,17 +277,11 @@ namespace omvviewerlight
 			
 			if(im.Message=="typing")
 			{
-
-                Gtk.Application.Invoke(delegate
-                {
-                    string buffer;
-                    TextIter iter;
-
-                    iter = textview_chat.Buffer.EndIter;
-                    buffer = im.FromAgentName + " is typing...";
-                    textview_chat.Buffer.InsertWithTags(ref iter, buffer, bold);
-                });
-
+                 Gtk.Application.Invoke(delegate
+                 {
+                     displaychat("is typing...", im.FromAgentName, typing_tag, typing_tag);
+                 });
+           
 				return;
 			}
 
@@ -319,22 +318,9 @@ namespace omvviewerlight
                     // We are the chat console not an IM tab
                     Gtk.Application.Invoke(delegate
                     {
-                        Gtk.TextIter iter;
-                        string buffer;
-
-                        iter = textview_chat.Buffer.EndIter;
-                        buffer = im.FromAgentName;
-                        textview_chat.Buffer.InsertWithTags(ref iter, buffer, bold, objectIMchat);
-
-                        iter = textview_chat.Buffer.EndIter;
-                        buffer = " "+im.Message + "\n";
-                        textview_chat.Buffer.InsertWithTags(ref iter, buffer, objectIMchat);
-                        textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
-                    
+                        displaychat(im.Message, im.FromAgentName, objectIMchat, objectIMchat); 
                     });
-                    
-                  
-
+ 
                     return;
 
 
@@ -346,20 +332,7 @@ namespace omvviewerlight
 
             Gtk.Application.Invoke(delegate
             {
-               
-			
-			    string buffer;
-			    TextIter iter;
-		
-				iter=textview_chat.Buffer.EndIter;
-				buffer=im.FromAgentName+": ";
-				textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold);
-				
-				buffer=im.Message+"\n";
-				textview_chat.Buffer.InsertWithTags(ref iter,buffer,avchat);
-                TextMark mark=textview_chat.Buffer.CreateMark("xyz", textview_chat.Buffer.EndIter, true);
-                textview_chat.ScrollMarkOnscreen(mark);
-				textview_chat.Buffer.DeleteMark("xyz");
+                displaychat(im.Message, im.FromAgentName, avchat, bold); 
 			});	
 	
 			}
