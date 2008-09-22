@@ -36,17 +36,20 @@ namespace omvviewerlight
     {
         public UUID key;
         public RowExpandedArgs args;
-        public invthreaddata(UUID keyx, RowExpandedArgs argsx)
+		public string path;
+		public invthreaddata(UUID keyx, RowExpandedArgs argsx,string pathx)
         {
             key = keyx;
             args = argsx;
-        }
+			path = pathx;
+		}
     }
 
 	public partial class Inventory : Gtk.Bin
 	{
-
-        Dictionary<UUID, Gtk.TreeIter> assetmap = new Dictionary<UUID, Gtk.TreeIter>();
+  	
+        Dictionary<invthreaddata, List<InventoryBase>> incomming = new Dictionary<invthreaddata, List<InventoryBase>>();  
+		Dictionary<UUID, Gtk.TreeIter> assetmap = new Dictionary<UUID, Gtk.TreeIter>();
 		String[] SearchFolders = { "" };
 		//initialize our list to store the folder contents
         UUID inventoryItems;
@@ -337,69 +340,72 @@ namespace omvviewerlight
 
            // this.treeview_inv.QueueDraw();
             Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
-            invthreaddata x = new invthreaddata(key,args);
-           // UpdateRow(x);
+            invthreaddata x = new invthreaddata(key,args,args.Path.ToString());
+
+		    Console.Write("Key is NOW "+key.ToString()+"\n");
+		    Console.Write("Path is NOW "+args.Path.ToString()+"\n");
+			Console.Write("ARgs is now"+args.ToString()+"\n"+"\n");        
+			
             MainClass.client.Inventory.RequestFolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate);
 
 			invRunner.Start(x);
    		
 		}
 
-        //void UpdateRow(UUID key, Gtk.RowExpandedArgs args)
         void UpdateRow(object x)
         {
 	        UUID key;
             Gtk.RowExpandedArgs args;
+			Gtk.TreePath path;
+			invthreaddata xx=(invthreaddata)x;
     
             key = ((invthreaddata)x).key;
             args = ((invthreaddata)x).args;
-				
-            // MainClass.client.Inventory.RequestFolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate);
-            List<InventoryBase> myObjects = MainClass.client.Inventory.FolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
+			string paths=((invthreaddata)x).path;
+			path=new Gtk.TreePath(paths);
+
+	        List<InventoryBase> myObjects = MainClass.client.Inventory.FolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
+
+			incomming.Add(xx,myObjects);
 
 			Gtk.TreeIter childiter;
-          
-            Gtk.TreePath path = args.Path;
-            path.Down();
+             
+            Console.Write("Path is "+path.ToString()+"\n");
+		    
+		    path.Down();
+	        Console.Write("Path down is "+path.ToString()+"\n");
+				
 
-            Gtk.Application.Invoke(delegate {			
-			    
-			
+             if (myObjects == null)
+                return;
+
+             foreach (InventoryBase item in myObjects)
+             {
+				 Console.Write("Adding item "+item.ToString()+"\n");
+				 Gdk.Pixbuf buf = getprettyicon(item);
+
+                 if (!assetmap.ContainsKey(item.UUID))
+                 {
+                     Gtk.TreeIter iter2 = inventory.AppendValues(args.Iter, buf, item.Name, item.UUID, item);
+                     assetmap.Add(item.UUID, iter2);
+                     if (item is InventoryFolder)
+                     {
+                          inventory.AppendValues(iter2, item_object, "Waiting...", UUID.Zero, null);
+                     }
+                 }
                 //And tidy that waiting
-                if (inventory.GetIter(out childiter, path))
-                {
-                    Console.Write("We got a childiter for that\n");
-                    Console.Write("Value is =" + (string)inventory.GetValue(childiter, 1) + "\n");
-                    if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
+               if (inventory.GetIter(out childiter, path))
+               {
+                  Console.Write("We got a childiter for that\n");
+                  Console.Write("Value is =" + (string)inventory.GetValue(childiter, 1) + "\n");
+                  if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
 
-                        inventory.Remove(ref childiter);
+                  inventory.Remove(ref childiter);
+               }
 
-                }
-
-                if (myObjects == null)
-                    return;
-
-                    foreach (InventoryBase item in myObjects)
-                    {
-
-                            Gdk.Pixbuf buf = getprettyicon(item);
-   
-                                    if (!assetmap.ContainsKey(item.UUID))
-                                    {
-                                        Gtk.TreeIter iter2 = inventory.AppendValues(args.Iter, buf, item.Name, item.UUID, item);
-                                        assetmap.Add(item.UUID, iter2);
-                                        if (item is InventoryFolder)
-                                        {
-                                            inventory.AppendValues(iter2, item_object, "Waiting...", UUID.Zero, null);
-                                        }
-                                    }
-                            
-					
-			           }
-			   });
-    
+			 }
         }
-
+		
         Gdk.Pixbuf getprettyfoldericon(InventoryFolder item)
         {
             // Assume this is a InventoryFolder
