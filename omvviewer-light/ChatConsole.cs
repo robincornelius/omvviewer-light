@@ -43,9 +43,8 @@ namespace omvviewerlight
         Gtk.TextTag typing_tag;
 		
 		bool istyping=false;
-		
+		bool istypingsent=false;
 
-			
 		public Gtk.Label tabLabel;
 		public UUID im_key=OpenMetaverse.UUID.Zero;
 		public UUID im_session_id=OpenMetaverse.UUID.Zero;
@@ -467,7 +466,7 @@ namespace omvviewerlight
             MainClass.client.Self.Chat(outtext, channel, type);
 			
 			this.entry_chat.Text="";
-			
+			istypingsent=false;
 		}
 
       
@@ -544,6 +543,22 @@ namespace omvviewerlight
 
             }
 
-        }					
+        }
+
+        protected virtual void OnEntryChatChanged (object sender, System.EventArgs e)
+        {
+			if(im_key!=OpenMetaverse.UUID.Zero)
+			{
+				if(this.im_session_id!=OpenMetaverse.UUID.Zero)
+				{						
+					if(istypingsent==false)
+					{	MainClass.client.Self.InstantMessageGroup(im_session_id,"typing");
+						istypingsent=true;
+					}
+				}
+			}
+				
+        }
+					
 	}
 }

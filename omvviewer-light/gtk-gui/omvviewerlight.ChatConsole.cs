@@ -84,6 +84,7 @@ namespace omvviewerlight {
             }
             this.Show();
             this.entry_chat.Activated += new System.EventHandler(this.OnEntryChatActivated);
+            this.entry_chat.Changed += new System.EventHandler(this.OnEntryChatChanged);
         }
     }
 }

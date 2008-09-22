@@ -821,6 +821,7 @@ Shout</property>
                 <property name="IsEditable">True</property>
                 <property name="InvisibleChar">●</property>
                 <signal name="Activated" handler="OnEntryChatActivated" />
+                <signal name="Changed" handler="OnEntryChatChanged" />
               </widget>
               <packing>
                 <property name="Position">1</property>
