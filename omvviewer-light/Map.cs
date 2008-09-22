@@ -119,12 +119,14 @@ namespace omvviewerlight
 			if(basemap==null)
 					return;
 			
-			Gtk.Application.Invoke(delegate {						
+							
 				
 				Gdk.Pixbuf buf=(Gdk.Pixbuf)basemap.Pixbuf.Clone();
-					
-				showme(buf,avatar_me.Pixbuf,MainClass.client.Self.SimPosition);				
-					
+                Gtk.Application.Invoke(delegate
+                {		
+				    showme(buf,avatar_me.Pixbuf,MainClass.client.Self.SimPosition);				
+				});
+
 				int myz=(int)MainClass.client.Self.SimPosition.Z;
 									
 				foreach(KeyValuePair<uint, Avatar> kvp in avs)
@@ -134,21 +136,24 @@ namespace omvviewerlight
                             //if (kvp.Value. != MainClass.client.Network.CurrentSim)
                               //  continue; // Skip AV's that are not in this sim
 
-                            Console.Write("Position is " + kvp.Value.Position.ToString() + "\n");
-                            Console.Write("I am " + MainClass.client.Self.SimPosition.ToString() + "\n");
-
-							if(kvp.Value.Position.Z-myz>5)
-								showme(buf,avatar_above.Pixbuf,kvp.Value.Position);
-							else if(kvp.Value.Position.Z-myz<-5)
-								showme(buf,avatar_below.Pixbuf,kvp.Value.Position);
-							else
-								showme(buf,avatar.Pixbuf,kvp.Value.Position);
+                            //Console.Write("Position is " + kvp.Value.Position.ToString() + "\n");
+                            //Console.Write("I am " + MainClass.client.Self.SimPosition.ToString() + "\n");
+                             Gtk.Application.Invoke(delegate
+                            {
+							    if(kvp.Value.Position.Z-myz>5)
+								    showme(buf,avatar_above.Pixbuf,kvp.Value.Position);
+							    else if(kvp.Value.Position.Z-myz<-5)
+								    showme(buf,avatar_below.Pixbuf,kvp.Value.Position);
+							    else
+								    showme(buf,avatar.Pixbuf,kvp.Value.Position);
+                            });
 						}
 				}
-
-				image.Pixbuf=buf;
-				image.QueueDraw();
-			});
+                Gtk.Application.Invoke(delegate
+                {
+				    image.Pixbuf=buf;
+				    image.QueueDraw();
+                 });
 			
 		}
 		

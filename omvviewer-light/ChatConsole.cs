@@ -272,6 +272,17 @@ namespace omvviewerlight
 			
 			if(im.Message=="typing")
 			{
+
+                Gtk.Application.Invoke(delegate
+                {
+                    string buffer;
+                    TextIter iter;
+
+                    iter = textview_chat.Buffer.EndIter;
+                    buffer = im.FromAgentName + " is typing...";
+                    textview_chat.Buffer.InsertWithTags(ref iter, buffer, bold);
+                });
+
 				return;
 			}
 
