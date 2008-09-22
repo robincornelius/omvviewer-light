@@ -1,20 +1,14 @@
 ﻿<UserCombinePreferences version="1.0" filename="/home/robin/libsecondlife/omvviewer-light/omvviewer-light.mds">
   <Files>
-    <File name="Welcome" />
-    <File name="omvviewer-light/PayWindow.cs" line="113" column="7" />
-    <File name="omvviewer-light/AVNameCache.cs" line="49" column="6" />
-    <File name="omvviewer-light/AsyncNameUpdate.cs" line="77" column="3" />
-    <File name="omvviewer-light/GroupInfo.cs" line="104" column="38" />
-    <File name="omvviewer-light/FriendsList.cs" line="93" column="1" />
-    <File name="omvviewer-light/MainWindow.cs" line="517" column="1" />
-    <File name="omvviewer-light/LoginControl.cs" line="155" column="13" />
-    <File name="omvviewer-light/Movment.cs" line="116" column="1" />
+    <File name="omvviewer-light/Inventory.cs" line="519" column="1" />
+    <File name="omvviewer-light/ChatConsole.cs" line="581" column="1" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
-          <Node name="MainWindow.cs" selected="True" />
+          <Node name="References" expanded="True" />
+          <Node name="ChatConsole.cs" selected="True" />
         </Node>
       </Node>
     </ViewMemento>
@@ -23,7 +17,7 @@
     </ViewMemento>
   </Views>
   <Properties>
-    <Property key="ActiveWindow" value="/home/robin/libsecondlife/omvviewer-light/omvviewer-light/MainWindow.cs" />
+    <Property key="ActiveWindow" value="/home/robin/libsecondlife/omvviewer-light/omvviewer-light/ChatConsole.cs" />
     <Property key="ActiveConfiguration" value="Debug" />
   </Properties>
 </UserCombinePreferences>
