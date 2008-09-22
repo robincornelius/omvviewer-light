@@ -567,26 +567,12 @@ namespace omvviewerlight
 					if(istypingsent==false)
 					{	
 					    Console.Write("\nSending typing message\n");
-					//MainClass.client.Self.InstantMessage(im_key,"typing");   
-                    byte[] binaryBucket;
-                    binaryBucket = new byte[0];
-					MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_key,"typing",im_session_id,InstantMessageDialog.StartTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
-  
-   
-						istypingsent=true;
+                        byte[] binaryBucket;
+                        binaryBucket = new byte[0];
+		    			MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_key,"typing",im_session_id,InstantMessageDialog.StartTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
+				    	istypingsent=true;
 					}
-
-			     return;	
-            }			
-			if(this.im_session_id!=OpenMetaverse.UUID.Zero)
-			{						
-					if(istypingsent==false)
-					{	
-					    Console.Write("\nSending typing message\n");
-					    //MainClass.client.Self.InstantMessageGroup(im_session_id,"typing");
-						istypingsent=true;
-					}
-			}				
+            }			
         }
 							
 	}
