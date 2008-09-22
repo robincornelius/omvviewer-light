@@ -182,7 +182,7 @@ namespace omvviewerlight
 					
 					switch(prim.Properties.SaleType)
 					{
-					case (byte)OpenMetaverse.SaleType.Not: 
+					case OpenMetaverse.SaleType.Not: 
 						this.label_forsale.Text="Not for sale";
 						break;
 				
@@ -201,7 +201,7 @@ namespace omvviewerlight
 
                     this.button_lookat.Sensitive = true;
 
-					if(prim.Properties.SaleType ==  (byte)OpenMetaverse.SaleType.Not)
+					if(prim.Properties.SaleType == OpenMetaverse.SaleType.Not)
 					{
 						this.button_buy.Sensitive=false;
 					}

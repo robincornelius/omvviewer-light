@@ -511,7 +511,7 @@ namespace omvviewerlight
 						this.checkbutton_modnext.Active=OpenMetaverse.PermissionMask.Modify==(((InventoryItem)item).Permissions.NextOwnerMask&OpenMetaverse.PermissionMask.Modify);
 						this.checkbutton_transnext.Active=OpenMetaverse.PermissionMask.Transfer==(((InventoryItem)item).Permissions.NextOwnerMask&OpenMetaverse.PermissionMask.Transfer);
 					
-						AsyncNameUpdate ud=new AsyncNameUpdate(((InventoryItem)item).CreatorID.ToString(),false);
+						AsyncNameUpdate ud=new AsyncNameUpdate((UUID)((InventoryItem)item).CreatorID.ToString(),false);
 						ud.onNameCallBack += delegate(string name,object[] values){this.label_createdby.Text=name;};
 
 						AsyncNameUpdate ud2=new AsyncNameUpdate(((InventoryItem)item).GroupID,true);

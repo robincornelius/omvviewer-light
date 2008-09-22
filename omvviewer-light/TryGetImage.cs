@@ -49,7 +49,7 @@ namespace omvviewerlight
 			target_image.Pixbuf=buf.ScaleSimple(128,128,Gdk.InterpType.Bilinear);
 
 			if(asset!=UUID.Zero)
-					MainClass.client.Assets.RequestImage(asset,OpenMetaverse.ImageType.Normal,1013000.0f, 0);	
+					MainClass.client.Assets.RequestImage(asset,OpenMetaverse.ImageType.Normal,1013000.0f, 0,0);	
 						
 		}
 		

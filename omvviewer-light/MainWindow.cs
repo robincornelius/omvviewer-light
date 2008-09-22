@@ -7,7 +7,7 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
+    This program is distributed in thOe hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
@@ -408,7 +408,7 @@ public partial class MainWindow: Gtk.Window
 		
 	}
 	
-	void onParcelProperties(Parcel parcel, ParcelManager.ParcelResult result, int sequenceID, bool snapSelection)
+	void onParcelProperties(Simulator Sim,Parcel parcel, ParcelResult result, int selectedprims,int sequenceID, bool snapSelection)
 	{
 		Gtk.Application.Invoke(delegate {						
 

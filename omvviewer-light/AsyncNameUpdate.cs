@@ -70,12 +70,12 @@ namespace omvviewerlight
 			if(group==true)
 			{
 				group_target=key;
-				av_target=null;
+				av_target=UUID.Zero;
 			}			
 			else
 			{
 				av_target=key;
-				group_target=null;
+				group_target=UUID.Zero;
 			}
 			
 			AsyncNameUpdate_init();
