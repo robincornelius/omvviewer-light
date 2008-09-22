@@ -336,11 +336,9 @@ namespace omvviewerlight
             Console.Write("Trying to get child iter\n");
 
            // this.treeview_inv.QueueDraw();
-            Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
+            //Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
             invthreaddata x = new invthreaddata(key,args);
-            //invRunner.Start((object)x);
             UpdateRow(x);
-            //UpdateRow(key,args);
             
 		}
 
@@ -362,7 +360,6 @@ namespace omvviewerlight
 
                 MainClass.client.Inventory.RequestFolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate);
                 List<InventoryBase> myObjects = MainClass.client.Inventory.FolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
-
 
                 //And tidy that waiting
                 if (inventory.GetIter(out childiter, path))
