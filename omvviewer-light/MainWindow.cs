@@ -580,6 +580,10 @@ public partial class MainWindow: Gtk.Window
 	   	
 	void onIM(InstantMessage im, Simulator sim)
 	{	
+		
+		if(im.Message=="typing")
+			return; //Ignore these here
+		
 		if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryOffered)
 			return;
 			

@@ -31,16 +31,19 @@ namespace omvviewerlight
 {
 	public partial class ChatConsole : Gtk.Bin
 	{
-			Gdk.Color col_red = new Gdk.Color(255,0,0);
-			Gdk.Color col_blue = new Gdk.Color(0,0,255);
-			Gdk.Color col_green = new Gdk.Color(0,255,0);
-		    Gtk.TextTag bold;
-		    Gtk.TextTag avchat;
-		    Gtk.TextTag objectchat;
-            Gtk.TextTag objectIMchat;
-            Gtk.TextTag systemchat;
-		    Gtk.TextTag ownerobjectchat;
-            Gtk.TextTag typing_tag;
+	    Gdk.Color col_red = new Gdk.Color(255,0,0);
+	    Gdk.Color col_blue = new Gdk.Color(0,0,255);
+	    Gdk.Color col_green = new Gdk.Color(0,255,0);
+		Gtk.TextTag bold;
+		Gtk.TextTag avchat;
+		Gtk.TextTag objectchat;
+        Gtk.TextTag objectIMchat;
+        Gtk.TextTag systemchat;
+		Gtk.TextTag ownerobjectchat;
+        Gtk.TextTag typing_tag;
+		
+		bool istyping=false;
+		
 
 			
 		public Gtk.Label tabLabel;
@@ -490,6 +493,26 @@ namespace omvviewerlight
             
             bool emote = false;
 
+			if(message=="is typing...")
+			{				
+				istyping=true;		
+			}
+			else
+			{					
+				if(istyping==true)
+				{
+					TextIter iter2=new TextIter();
+					iter2=textview_chat.Buffer.EndIter;
+					textview_chat.BackwardDisplayLine(ref iter2);
+					textview_chat.BackwardDisplayLine(ref iter2);
+					textview_chat.Buffer.SelectRange(iter2,textview_chat.Buffer.EndIter);
+					textview_chat.Buffer.DeleteSelection(false,false);
+					name="\n"+name; // we seem to have lost one of these erasing the buffer
+				}
+				istyping=false;
+			}
+							
+			
             if (message.Length > 3)
                 if (message.Substring(0, 3) == "/me")
                     emote=true;
@@ -497,7 +520,7 @@ namespace omvviewerlight
             if (emote == false)
             {
                 iter = textview_chat.Buffer.EndIter;
-                buffer = name;
+                buffer = name+" ";
                 textview_chat.Buffer.InsertWithTags(ref iter, buffer, name_tag);
                 iter = textview_chat.Buffer.EndIter;
                 buffer = message + "\n";
@@ -513,7 +536,7 @@ namespace omvviewerlight
 
                 message = message.Substring(3, message.Length-3);
                 iter = textview_chat.Buffer.EndIter;
-                buffer = name+message + "\n";
+                buffer = name+" "+message + "\n";
                 textview_chat.Buffer.InsertWithTags(ref iter, buffer, message_tag);
                 TextMark mark = textview_chat.Buffer.CreateMark("xyz", textview_chat.Buffer.EndIter, true);
                 textview_chat.ScrollMarkOnscreen(mark);
