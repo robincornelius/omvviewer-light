@@ -399,6 +399,17 @@ namespace omvviewerlight
 
 		protected virtual void OnEntryChatActivated (object sender, System.EventArgs e)
 		{
+				if(istyping==true)
+				{
+                    TextIter iter2=new TextIter();
+					iter2=textview_chat.Buffer.EndIter;
+					textview_chat.BackwardDisplayLine(ref iter2);
+					textview_chat.BackwardDisplayLine(ref iter2);
+					textview_chat.Buffer.SelectRange(iter2,textview_chat.Buffer.EndIter);
+					textview_chat.Buffer.DeleteSelection(false,false);
+					//name="\n"+name; // we seem to have lost one of these erasing the buffer
+				    entry_chat.Text="\n"+entry_chat.Text;
+			     }
 			
 			if(im_key!=OpenMetaverse.UUID.Zero)
 			{
@@ -415,6 +426,7 @@ namespace omvviewerlight
 				textview_chat.Buffer.InsertWithTags(ref iter,buffer,avchat);
 			
 				textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
+
 				this.entry_chat.Text="";
 				istypingsent=false;
 								
@@ -468,10 +480,6 @@ namespace omvviewerlight
             MainClass.client.Self.Chat(outtext, channel, type);
 			
 			this.entry_chat.Text="";
-			if(istyping==true)
-			{
-                 this.cleartypingmessage();
-			}
 			
 			istypingsent=false;
 		}
@@ -507,7 +515,13 @@ namespace omvviewerlight
 			{					
 				if(istyping==true)
 				{
-                      this.cleartypingmessage();
+                    TextIter iter2=new TextIter();
+					iter2=textview_chat.Buffer.EndIter;
+					textview_chat.BackwardDisplayLine(ref iter2);
+					textview_chat.BackwardDisplayLine(ref iter2);
+					textview_chat.Buffer.SelectRange(iter2,textview_chat.Buffer.EndIter);
+					textview_chat.Buffer.DeleteSelection(false,false);
+					name="\n"+name; // we seem to have lost one of these erasing the buffer
 				}
 				istyping=false;
 			}
@@ -570,20 +584,6 @@ namespace omvviewerlight
 					}
 			}				
         }
-		
-		void cleartypingmessage()
-	    {
-			
-					TextIter iter2=new TextIter();
-					iter2=textview_chat.Buffer.EndIter;
-					textview_chat.BackwardDisplayLine(ref iter2);
-					textview_chat.BackwardDisplayLine(ref iter2);
-					textview_chat.Buffer.SelectRange(iter2,textview_chat.Buffer.EndIter);
-					textview_chat.Buffer.DeleteSelection(false,false);
-					name="\n"+name; // we seem to have lost one of these erasing the buffer
-			
-			
-       }		
-					
+							
 	}
 }
