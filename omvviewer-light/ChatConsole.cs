@@ -273,20 +273,20 @@ namespace omvviewerlight
 					return;
 			}
 
-
-
 			// Is this a typing message
 			
 			if(im.Message=="typing")
 			{
-                 Gtk.Application.Invoke(delegate
-                 {
-                     displaychat("is typing...", im.FromAgentName, typing_tag, typing_tag);
-                 });
-           
+				if(istyping==false)
+				{
+	                 Gtk.Application.Invoke(delegate
+	                 {
+	                     displaychat("is typing...", im.FromAgentName, typing_tag, typing_tag);
+	                 });
+				}
 				return;
 			}
-
+			
 			if(im.Dialog!=null)
 				Console.Write("**** DIALOGUE RESPONSE ****\n"+im.Dialog.ToString()+"\n");
 			
@@ -416,6 +416,7 @@ namespace omvviewerlight
 			
 				textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
 				this.entry_chat.Text="";
+				istypingsent=false;
 								
 				return;
 			}
@@ -424,6 +425,7 @@ namespace omvviewerlight
 			{				
 				MainClass.client.Self.InstantMessageGroup(im_session_id,entry_chat.Text);
 				this.entry_chat.Text="";
+				istypingsent=false;
 				return;
 			}
 			
@@ -466,6 +468,11 @@ namespace omvviewerlight
             MainClass.client.Self.Chat(outtext, channel, type);
 			
 			this.entry_chat.Text="";
+			if(istyping==true)
+			{
+                 this.cleartypingmessage();
+			}
+			
 			istypingsent=false;
 		}
 
@@ -500,13 +507,7 @@ namespace omvviewerlight
 			{					
 				if(istyping==true)
 				{
-					TextIter iter2=new TextIter();
-					iter2=textview_chat.Buffer.EndIter;
-					textview_chat.BackwardDisplayLine(ref iter2);
-					textview_chat.BackwardDisplayLine(ref iter2);
-					textview_chat.Buffer.SelectRange(iter2,textview_chat.Buffer.EndIter);
-					textview_chat.Buffer.DeleteSelection(false,false);
-					name="\n"+name; // we seem to have lost one of these erasing the buffer
+                      this.cleartypingmessage();
 				}
 				istyping=false;
 			}
@@ -546,19 +547,43 @@ namespace omvviewerlight
         }
 
         protected virtual void OnEntryChatChanged (object sender, System.EventArgs e)
-        {
+		{
 			if(im_key!=OpenMetaverse.UUID.Zero)
-			{
-				if(this.im_session_id!=OpenMetaverse.UUID.Zero)
-				{						
+				{
 					if(istypingsent==false)
-					{	MainClass.client.Self.InstantMessageGroup(im_session_id,"typing");
+					{	
+					    Console.Write("\nSending typing message\n");
+					    //MainClass.client.Self.InstantMessage(im_key,"typing");
+                   
 						istypingsent=true;
 					}
-				}
-			}
-				
+
+			     return;	
+            }			
+			if(this.im_session_id!=OpenMetaverse.UUID.Zero)
+			{						
+					if(istypingsent==false)
+					{	
+					    Console.Write("\nSending typing message\n");
+					    //MainClass.client.Self.InstantMessageGroup(im_session_id,"typing");
+						istypingsent=true;
+					}
+			}				
         }
+		
+		void cleartypingmessage()
+	    {
+			
+					TextIter iter2=new TextIter();
+					iter2=textview_chat.Buffer.EndIter;
+					textview_chat.BackwardDisplayLine(ref iter2);
+					textview_chat.BackwardDisplayLine(ref iter2);
+					textview_chat.Buffer.SelectRange(iter2,textview_chat.Buffer.EndIter);
+					textview_chat.Buffer.DeleteSelection(false,false);
+					name="\n"+name; // we seem to have lost one of these erasing the buffer
+			
+			
+       }		
 					
 	}
 }

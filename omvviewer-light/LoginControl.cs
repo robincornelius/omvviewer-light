@@ -220,17 +220,15 @@ namespace omvviewerlight
                 catch(Exception ee)
                 {
                 }
-
-				if(this.checkbutton_lastlocation.Active)
-				{
-					login.Start="last";
-				}
-				else
-				{
+				
+				if(this.radiobutton1.Active)
 					login.Start="home";
-				}
+				if(this.radiobutton2.Active)
+					login.Start="last";
+				if(this.radiobutton3.Active)
+					login.Start=this.entry_location.Text;
 				
-				
+
 				this.textview_log.Buffer.Clear();
 				button_login.Label="Logout";			
 				if(this.combobox_grid.ActiveText=="Agni")
@@ -269,7 +267,10 @@ namespace omvviewerlight
 			this.entry_pass.Sensitive=false;
 			this.combobox_grid.Sensitive=false;
 			this.checkbutton_rememberpass.Sensitive=false;
-			this.checkbutton_lastlocation.Sensitive=false;			
+			this.radiobutton1.Sensitive=false;
+			this.radiobutton2.Sensitive=false;
+			this.radiobutton3.Sensitive=false;
+			
 		}
 		
 		void enablebuttons()
@@ -280,7 +281,14 @@ namespace omvviewerlight
 			this.entry_pass.Sensitive=true;
 			this.combobox_grid.Sensitive=true;	
 			this.checkbutton_rememberpass.Sensitive=true;
-			this.checkbutton_lastlocation.Sensitive=true;			
+			this.radiobutton1.Sensitive=true;
+			this.radiobutton2.Sensitive=true;
+			this.radiobutton3.Sensitive=true;
+			
+		}
+
+		protected virtual void OnRadiobutton1GroupChanged (object sender, System.EventArgs e)
+		{
 		}
 	
 	}
