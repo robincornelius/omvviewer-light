@@ -567,8 +567,12 @@ namespace omvviewerlight
 					if(istypingsent==false)
 					{	
 					    Console.Write("\nSending typing message\n");
-					    //MainClass.client.Self.InstantMessage(im_key,"typing");
-                   
+					//MainClass.client.Self.InstantMessage(im_key,"typing");   
+                    byte[] binaryBucket;
+                    binaryBucket = new byte[0];
+					MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_key,"typing",im_session_id,InstantMessageDialog.StartTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
+  
+   
 						istypingsent=true;
 					}
 

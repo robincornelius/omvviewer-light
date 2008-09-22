@@ -336,31 +336,35 @@ namespace omvviewerlight
             Console.Write("Trying to get child iter\n");
 
            // this.treeview_inv.QueueDraw();
-            //Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
+            Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
             invthreaddata x = new invthreaddata(key,args);
-            UpdateRow(x);
-            
+           // UpdateRow(x);
+            MainClass.client.Inventory.RequestFolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate);
+
+			invRunner.Start(x);
+   		
 		}
 
-  
         //void UpdateRow(UUID key, Gtk.RowExpandedArgs args)
         void UpdateRow(object x)
         {
-        
+	        UUID key;
             Gtk.RowExpandedArgs args;
-            UUID key;
-
+    
             key = ((invthreaddata)x).key;
             args = ((invthreaddata)x).args;
+				
+            // MainClass.client.Inventory.RequestFolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate);
+            List<InventoryBase> myObjects = MainClass.client.Inventory.FolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
 
-            Gtk.TreeIter childiter;
+			Gtk.TreeIter childiter;
           
             Gtk.TreePath path = args.Path;
             path.Down();
 
-                MainClass.client.Inventory.RequestFolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate);
-                List<InventoryBase> myObjects = MainClass.client.Inventory.FolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
-
+            Gtk.Application.Invoke(delegate {			
+			    
+			
                 //And tidy that waiting
                 if (inventory.GetIter(out childiter, path))
                 {
@@ -379,8 +383,7 @@ namespace omvviewerlight
                     {
 
                             Gdk.Pixbuf buf = getprettyicon(item);
-
-                           
+   
                                     if (!assetmap.ContainsKey(item.UUID))
                                     {
                                         Gtk.TreeIter iter2 = inventory.AppendValues(args.Iter, buf, item.Name, item.UUID, item);
@@ -391,16 +394,10 @@ namespace omvviewerlight
                                         }
                                     }
                             
-                         
-                    }
-
-       
-
-              
-               
-         
-
-
+					
+			           }
+			   });
+    
         }
 
         Gdk.Pixbuf getprettyfoldericon(InventoryFolder item)
