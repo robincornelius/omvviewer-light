@@ -80,9 +80,6 @@ namespace omvviewerlight
         Gdk.Pixbuf folder_bodypart = new Gdk.Pixbuf("inv_folder_bodypart.tga");
         Gdk.Pixbuf folder_callingcard = new Gdk.Pixbuf("inv_folder_callingcard.tga");
         Gdk.Pixbuf folder_clothing = new Gdk.Pixbuf("inv_folder_clothing.tga");
-
-	
-		
 		
 		public Inventory()
 		{
@@ -326,8 +323,16 @@ namespace omvviewerlight
 				
 		void onRowCollapsed(object o,Gtk.RowCollapsedArgs args)
 		{
+			Gdk.Pixbuf image=folder_closed;
+			
 			UUID key=(UUID)this.inventory.GetValue(args.Iter,2);
-			inventory.SetValue(args.Iter,0,folder_closed);
+			InventoryBase item=(InventoryBase)this.inventory.GetValue(args.Iter,3);
+			if(item is InventoryFolder)
+			{
+				image=getprettyfoldericon((InventoryFolder)item);	
+			}
+			
+			inventory.SetValue(args.Iter,0,item);
 		}
 
 		void onRowExpanded(object o,Gtk.RowExpandedArgs args)
