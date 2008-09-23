@@ -581,9 +581,14 @@ public partial class MainWindow: Gtk.Window
 	void onIM(InstantMessage im, Simulator sim)
 	{	
 		
-		if(im.Message=="typing")
-			return; //Ignore these here
-		
+        // Note to self, if i do implement a dispatcher here these two need to be dispatched but not open 
+        // new IM tabs so don't treat the same as the rest below.
+		if(im.Dialog==OpenMetaverse.InstantMessageDialog.StartTyping)
+			return;
+
+        if (im.Dialog == OpenMetaverse.InstantMessageDialog.StopTyping)
+            return;
+
 		if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryOffered)
 			return;
 			
