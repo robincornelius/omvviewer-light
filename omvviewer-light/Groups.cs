@@ -92,7 +92,7 @@ namespace omvviewerlight
                             active = true;
                         }
                         Gtk.TreeIter iter=store.AppendValues(group.Value.Name, group.Value,active);
-						if(active);
+						if(active)
 						    active_group_iter=iter;
 						
 						this.groups_recieved.Add(group.Value);
@@ -141,6 +141,7 @@ namespace omvviewerlight
 				mod.SetValue(iter,2,true);
 				mod.SetValue(active_group_iter,2,false);
 				active_group_iter=iter;
+                treeview1.QueueDraw();
 			}		
 		}
 	}
