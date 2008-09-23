@@ -55,23 +55,17 @@ namespace omvviewerlight {
         
         private Gtk.Entry entry_location;
         
-        private Gtk.HBox hbox3;
+        private Gtk.ProgressBar progressbar2;
         
-        private Gtk.VBox vbox4;
+        private Gtk.HBox hbox6;
         
         private Gtk.Label label4;
         
-        private Gtk.Label label5;
-        
-        private Gtk.VBox vbox6;
-        
         private Gtk.ComboBox combobox_grid;
         
+        private Gtk.Label label5;
+        
         private Gtk.Entry entry_loginuri;
-        
-        private Gtk.VBox vbox7;
-        
-        private Gtk.ProgressBar progressbar2;
         
         private Gtk.Frame frame1;
         
@@ -79,7 +73,7 @@ namespace omvviewerlight {
         
         private Gtk.TextView textview_loginmsg;
         
-        private Gtk.Label GtkLabel3;
+        private Gtk.Label GtkLabel5;
         
         private Gtk.Frame frame2;
         
@@ -89,7 +83,7 @@ namespace omvviewerlight {
         
         private Gtk.TextView textview_log;
         
-        private Gtk.Label GtkLabel4;
+        private Gtk.Label GtkLabel6;
         
         protected virtual void Build() {
             Stetic.Gui.Initialize(this);
@@ -238,7 +232,7 @@ namespace omvviewerlight {
             // Container child hbox5.Gtk.Box+BoxChild
             this.hbox4 = new Gtk.HBox();
             this.hbox4.Name = "hbox4";
-            this.hbox4.Spacing = 6;
+            this.hbox4.Spacing = 5;
             // Container child hbox4.Gtk.Box+BoxChild
             this.radiobutton1 = new Gtk.RadioButton(Mono.Unix.Catalog.GetString("Home"));
             this.radiobutton1.CanFocus = true;
@@ -281,97 +275,66 @@ namespace omvviewerlight {
             this.hbox5.Add(this.hbox4);
             Gtk.Box.BoxChild w18 = ((Gtk.Box.BoxChild)(this.hbox5[this.hbox4]));
             w18.Position = 1;
+            w18.Expand = false;
+            w18.Fill = false;
+            // Container child hbox5.Gtk.Box+BoxChild
+            this.progressbar2 = new Gtk.ProgressBar();
+            this.progressbar2.Name = "progressbar2";
+            this.hbox5.Add(this.progressbar2);
+            Gtk.Box.BoxChild w19 = ((Gtk.Box.BoxChild)(this.hbox5[this.progressbar2]));
+            w19.PackType = ((Gtk.PackType)(1));
+            w19.Position = 2;
             this.vbox5.Add(this.hbox5);
-            Gtk.Box.BoxChild w19 = ((Gtk.Box.BoxChild)(this.vbox5[this.hbox5]));
-            w19.Position = 1;
-            w19.Expand = false;
-            w19.Fill = false;
+            Gtk.Box.BoxChild w20 = ((Gtk.Box.BoxChild)(this.vbox5[this.hbox5]));
+            w20.Position = 1;
+            w20.Expand = false;
+            w20.Fill = false;
             // Container child vbox5.Gtk.Box+BoxChild
-            this.hbox3 = new Gtk.HBox();
-            this.hbox3.Name = "hbox3";
-            this.hbox3.Spacing = 6;
-            // Container child hbox3.Gtk.Box+BoxChild
-            this.vbox4 = new Gtk.VBox();
-            this.vbox4.Name = "vbox4";
-            this.vbox4.Homogeneous = true;
-            this.vbox4.Spacing = 6;
-            // Container child vbox4.Gtk.Box+BoxChild
+            this.hbox6 = new Gtk.HBox();
+            this.hbox6.Name = "hbox6";
+            this.hbox6.Spacing = 6;
+            // Container child hbox6.Gtk.Box+BoxChild
             this.label4 = new Gtk.Label();
             this.label4.Name = "label4";
             this.label4.LabelProp = Mono.Unix.Catalog.GetString("Connect to grid ");
-            this.vbox4.Add(this.label4);
-            Gtk.Box.BoxChild w20 = ((Gtk.Box.BoxChild)(this.vbox4[this.label4]));
-            w20.Position = 0;
-            w20.Expand = false;
-            w20.Fill = false;
-            // Container child vbox4.Gtk.Box+BoxChild
-            this.label5 = new Gtk.Label();
-            this.label5.Name = "label5";
-            this.label5.LabelProp = Mono.Unix.Catalog.GetString("Login URI");
-            this.vbox4.Add(this.label5);
-            Gtk.Box.BoxChild w21 = ((Gtk.Box.BoxChild)(this.vbox4[this.label5]));
-            w21.Position = 1;
+            this.hbox6.Add(this.label4);
+            Gtk.Box.BoxChild w21 = ((Gtk.Box.BoxChild)(this.hbox6[this.label4]));
+            w21.Position = 0;
             w21.Expand = false;
             w21.Fill = false;
-            this.hbox3.Add(this.vbox4);
-            Gtk.Box.BoxChild w22 = ((Gtk.Box.BoxChild)(this.hbox3[this.vbox4]));
-            w22.Position = 0;
-            w22.Expand = false;
-            w22.Fill = false;
-            // Container child hbox3.Gtk.Box+BoxChild
-            this.vbox6 = new Gtk.VBox();
-            this.vbox6.Name = "vbox6";
-            this.vbox6.Spacing = 6;
-            // Container child vbox6.Gtk.Box+BoxChild
+            // Container child hbox6.Gtk.Box+BoxChild
             this.combobox_grid = Gtk.ComboBox.NewText();
-            this.combobox_grid.AppendText(Mono.Unix.Catalog.GetString("Agni"));
-            this.combobox_grid.AppendText(Mono.Unix.Catalog.GetString("Aditi"));
-            this.combobox_grid.AppendText(Mono.Unix.Catalog.GetString("Local"));
-            this.combobox_grid.AppendText(Mono.Unix.Catalog.GetString("Custom"));
+            this.combobox_grid.WidthRequest = 140;
             this.combobox_grid.Name = "combobox_grid";
             this.combobox_grid.Active = 0;
-            this.vbox6.Add(this.combobox_grid);
-            Gtk.Box.BoxChild w23 = ((Gtk.Box.BoxChild)(this.vbox6[this.combobox_grid]));
-            w23.Position = 0;
+            this.hbox6.Add(this.combobox_grid);
+            Gtk.Box.BoxChild w22 = ((Gtk.Box.BoxChild)(this.hbox6[this.combobox_grid]));
+            w22.Position = 1;
+            w22.Expand = false;
+            w22.Fill = false;
+            // Container child hbox6.Gtk.Box+BoxChild
+            this.label5 = new Gtk.Label();
+            this.label5.Name = "label5";
+            this.label5.LabelProp = Mono.Unix.Catalog.GetString("URI");
+            this.hbox6.Add(this.label5);
+            Gtk.Box.BoxChild w23 = ((Gtk.Box.BoxChild)(this.hbox6[this.label5]));
+            w23.Position = 2;
             w23.Expand = false;
             w23.Fill = false;
-            // Container child vbox6.Gtk.Box+BoxChild
+            // Container child hbox6.Gtk.Box+BoxChild
             this.entry_loginuri = new Gtk.Entry();
             this.entry_loginuri.CanFocus = true;
             this.entry_loginuri.Name = "entry_loginuri";
             this.entry_loginuri.IsEditable = true;
             this.entry_loginuri.InvisibleChar = '●';
-            this.vbox6.Add(this.entry_loginuri);
-            Gtk.Box.BoxChild w24 = ((Gtk.Box.BoxChild)(this.vbox6[this.entry_loginuri]));
-            w24.Position = 1;
-            w24.Expand = false;
-            w24.Fill = false;
-            this.hbox3.Add(this.vbox6);
-            Gtk.Box.BoxChild w25 = ((Gtk.Box.BoxChild)(this.hbox3[this.vbox6]));
-            w25.Position = 1;
+            this.hbox6.Add(this.entry_loginuri);
+            Gtk.Box.BoxChild w24 = ((Gtk.Box.BoxChild)(this.hbox6[this.entry_loginuri]));
+            w24.Position = 3;
+            this.vbox5.Add(this.hbox6);
+            Gtk.Box.BoxChild w25 = ((Gtk.Box.BoxChild)(this.vbox5[this.hbox6]));
+            w25.Position = 3;
             w25.Expand = false;
             w25.Fill = false;
-            // Container child hbox3.Gtk.Box+BoxChild
-            this.vbox7 = new Gtk.VBox();
-            this.vbox7.Name = "vbox7";
-            this.vbox7.Spacing = 6;
-            // Container child vbox7.Gtk.Box+BoxChild
-            this.progressbar2 = new Gtk.ProgressBar();
-            this.progressbar2.Name = "progressbar2";
-            this.vbox7.Add(this.progressbar2);
-            Gtk.Box.BoxChild w26 = ((Gtk.Box.BoxChild)(this.vbox7[this.progressbar2]));
-            w26.Position = 0;
-            w26.Expand = false;
-            w26.Fill = false;
-            this.hbox3.Add(this.vbox7);
-            Gtk.Box.BoxChild w27 = ((Gtk.Box.BoxChild)(this.hbox3[this.vbox7]));
-            w27.PackType = ((Gtk.PackType)(1));
-            w27.Position = 2;
-            this.vbox5.Add(this.hbox3);
-            Gtk.Box.BoxChild w28 = ((Gtk.Box.BoxChild)(this.vbox5[this.hbox3]));
-            w28.Position = 2;
-            w28.Expand = false;
-            w28.Fill = false;
             // Container child vbox5.Gtk.Box+BoxChild
             this.frame1 = new Gtk.Frame();
             this.frame1.Name = "frame1";
@@ -382,21 +345,21 @@ namespace omvviewerlight {
             this.GtkAlignment.LeftPadding = ((uint)(12));
             // Container child GtkAlignment.Gtk.Container+ContainerChild
             this.textview_loginmsg = new Gtk.TextView();
-            this.textview_loginmsg.HeightRequest = 30;
+            this.textview_loginmsg.HeightRequest = 35;
             this.textview_loginmsg.CanFocus = true;
             this.textview_loginmsg.Name = "textview_loginmsg";
             this.textview_loginmsg.Editable = false;
             this.textview_loginmsg.WrapMode = ((Gtk.WrapMode)(2));
             this.GtkAlignment.Add(this.textview_loginmsg);
             this.frame1.Add(this.GtkAlignment);
-            this.GtkLabel3 = new Gtk.Label();
-            this.GtkLabel3.Name = "GtkLabel3";
-            this.GtkLabel3.LabelProp = Mono.Unix.Catalog.GetString("<b>Login message</b>");
-            this.GtkLabel3.UseMarkup = true;
-            this.frame1.LabelWidget = this.GtkLabel3;
+            this.GtkLabel5 = new Gtk.Label();
+            this.GtkLabel5.Name = "GtkLabel5";
+            this.GtkLabel5.LabelProp = Mono.Unix.Catalog.GetString("<b>Login message</b>");
+            this.GtkLabel5.UseMarkup = true;
+            this.frame1.LabelWidget = this.GtkLabel5;
             this.vbox5.Add(this.frame1);
-            Gtk.Box.BoxChild w31 = ((Gtk.Box.BoxChild)(this.vbox5[this.frame1]));
-            w31.Position = 3;
+            Gtk.Box.BoxChild w28 = ((Gtk.Box.BoxChild)(this.vbox5[this.frame1]));
+            w28.Position = 4;
             // Container child vbox5.Gtk.Box+BoxChild
             this.frame2 = new Gtk.Frame();
             this.frame2.Name = "frame2";
@@ -411,7 +374,7 @@ namespace omvviewerlight {
             this.GtkScrolledWindow1.ShadowType = ((Gtk.ShadowType)(1));
             // Container child GtkScrolledWindow1.Gtk.Container+ContainerChild
             this.textview_log = new Gtk.TextView();
-            this.textview_log.HeightRequest = 290;
+            this.textview_log.HeightRequest = 270;
             this.textview_log.CanFocus = true;
             this.textview_log.Name = "textview_log";
             this.textview_log.Editable = false;
@@ -419,17 +382,17 @@ namespace omvviewerlight {
             this.GtkScrolledWindow1.Add(this.textview_log);
             this.GtkAlignment1.Add(this.GtkScrolledWindow1);
             this.frame2.Add(this.GtkAlignment1);
-            this.GtkLabel4 = new Gtk.Label();
-            this.GtkLabel4.Name = "GtkLabel4";
-            this.GtkLabel4.LabelProp = Mono.Unix.Catalog.GetString("<b>Debug log</b>");
-            this.GtkLabel4.UseMarkup = true;
-            this.frame2.LabelWidget = this.GtkLabel4;
+            this.GtkLabel6 = new Gtk.Label();
+            this.GtkLabel6.Name = "GtkLabel6";
+            this.GtkLabel6.LabelProp = Mono.Unix.Catalog.GetString("<b>Debug log</b>");
+            this.GtkLabel6.UseMarkup = true;
+            this.frame2.LabelWidget = this.GtkLabel6;
             this.vbox5.Add(this.frame2);
-            Gtk.Box.BoxChild w35 = ((Gtk.Box.BoxChild)(this.vbox5[this.frame2]));
-            w35.Position = 4;
+            Gtk.Box.BoxChild w32 = ((Gtk.Box.BoxChild)(this.vbox5[this.frame2]));
+            w32.Position = 5;
             this.vbox1.Add(this.vbox5);
-            Gtk.Box.BoxChild w36 = ((Gtk.Box.BoxChild)(this.vbox1[this.vbox5]));
-            w36.Position = 1;
+            Gtk.Box.BoxChild w33 = ((Gtk.Box.BoxChild)(this.vbox1[this.vbox5]));
+            w33.Position = 1;
             this.Add(this.vbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
@@ -437,7 +400,7 @@ namespace omvviewerlight {
             this.Show();
             this.button_login.Clicked += new System.EventHandler(this.OnButton1Clicked);
             this.checkbutton_rememberpass.Clicked += new System.EventHandler(this.OnCheckbuttonRememberpassClicked);
-            this.radiobutton1.GroupChanged += new System.EventHandler(this.OnRadiobutton1GroupChanged);
+            this.combobox_grid.Changed += new System.EventHandler(this.OnComboboxGridChanged);
         }
     }
 }

@@ -1,0 +1,5 @@
+Angi https://login.agni.lindenlab.com/cgi-bin/login.cgi
+Aditi https://login.aditi.lindenlab.com/cgi-bin/login.cgi
+Local http://127.0.0.1:9000
+Custom None
+

@@ -176,7 +176,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="omvviewerlight.LoginControl" design-size="529 875">
+  <widget class="Gtk.Bin" id="omvviewerlight.LoginControl" design-size="1476 875">
     <property name="MemberName" />
     <child>
       <widget class="Gtk.VBox" id="vbox1">
@@ -339,9 +339,6 @@
                 <child>
                   <placeholder />
                 </child>
-                <child>
-                  <placeholder />
-                </child>
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -369,17 +366,17 @@
                 <child>
                   <widget class="Gtk.HBox" id="hbox4">
                     <property name="MemberName" />
-                    <property name="Spacing">6</property>
+                    <property name="Spacing">5</property>
                     <child>
                       <widget class="Gtk.RadioButton" id="radiobutton1">
                         <property name="MemberName" />
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">Home</property>
+                        <property name="Active">True</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>
                         <property name="Group">group1</property>
-                        <signal name="GroupChanged" handler="OnRadiobutton1GroupChanged" />
                       </widget>
                       <packing>
                         <property name="Position">0</property>
@@ -431,6 +428,18 @@
                   </widget>
                   <packing>
                     <property name="Position">1</property>
+                    <property name="AutoSize">False</property>
+                    <property name="Expand">False</property>
+                    <property name="Fill">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="Gtk.ProgressBar" id="progressbar2">
+                    <property name="MemberName" />
+                  </widget>
+                  <packing>
+                    <property name="PackType">End</property>
+                    <property name="Position">2</property>
                     <property name="AutoSize">True</property>
                   </packing>
                 </child>
@@ -443,38 +452,16 @@
               </packing>
             </child>
             <child>
-              <widget class="Gtk.HBox" id="hbox3">
+              <placeholder />
+            </child>
+            <child>
+              <widget class="Gtk.HBox" id="hbox6">
                 <property name="MemberName" />
                 <property name="Spacing">6</property>
                 <child>
-                  <widget class="Gtk.VBox" id="vbox4">
+                  <widget class="Gtk.Label" id="label4">
                     <property name="MemberName" />
-                    <property name="Homogeneous">True</property>
-                    <property name="Spacing">6</property>
-                    <child>
-                      <widget class="Gtk.Label" id="label4">
-                        <property name="MemberName" />
-                        <property name="LabelProp" translatable="yes">Connect to grid </property>
-                      </widget>
-                      <packing>
-                        <property name="Position">0</property>
-                        <property name="AutoSize">True</property>
-                        <property name="Expand">False</property>
-                        <property name="Fill">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="Gtk.Label" id="label5">
-                        <property name="MemberName" />
-                        <property name="LabelProp" translatable="yes">Login URI</property>
-                      </widget>
-                      <packing>
-                        <property name="Position">1</property>
-                        <property name="AutoSize">True</property>
-                        <property name="Expand">False</property>
-                        <property name="Fill">False</property>
-                      </packing>
-                    </child>
+                    <property name="LabelProp" translatable="yes">Connect to grid </property>
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -484,40 +471,13 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.VBox" id="vbox6">
+                  <widget class="Gtk.ComboBox" id="combobox_grid">
                     <property name="MemberName" />
-                    <property name="Spacing">6</property>
-                    <child>
-                      <widget class="Gtk.ComboBox" id="combobox_grid">
-                        <property name="MemberName" />
-                        <property name="IsTextCombo">True</property>
-                        <property name="Items" translatable="yes">Agni
-Aditi
-Local
-Custom</property>
-                        <property name="Active">0</property>
-                      </widget>
-                      <packing>
-                        <property name="Position">0</property>
-                        <property name="AutoSize">True</property>
-                        <property name="Expand">False</property>
-                        <property name="Fill">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="Gtk.Entry" id="entry_loginuri">
-                        <property name="MemberName" />
-                        <property name="CanFocus">True</property>
-                        <property name="IsEditable">True</property>
-                        <property name="InvisibleChar">●</property>
-                      </widget>
-                      <packing>
-                        <property name="Position">1</property>
-                        <property name="AutoSize">True</property>
-                        <property name="Expand">False</property>
-                        <property name="Fill">False</property>
-                      </packing>
-                    </child>
+                    <property name="WidthRequest">140</property>
+                    <property name="IsTextCombo">True</property>
+                    <property name="Items" translatable="yes" />
+                    <property name="Active">0</property>
+                    <signal name="Changed" handler="OnComboboxGridChanged" />
                   </widget>
                   <packing>
                     <property name="Position">1</property>
@@ -527,33 +487,32 @@ Custom</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.VBox" id="vbox7">
+                  <widget class="Gtk.Label" id="label5">
                     <property name="MemberName" />
-                    <property name="Spacing">6</property>
-                    <child>
-                      <widget class="Gtk.ProgressBar" id="progressbar2">
-                        <property name="MemberName" />
-                      </widget>
-                      <packing>
-                        <property name="Position">0</property>
-                        <property name="AutoSize">True</property>
-                        <property name="Expand">False</property>
-                        <property name="Fill">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <placeholder />
-                    </child>
+                    <property name="LabelProp" translatable="yes">URI</property>
                   </widget>
                   <packing>
-                    <property name="PackType">End</property>
                     <property name="Position">2</property>
+                    <property name="AutoSize">True</property>
+                    <property name="Expand">False</property>
+                    <property name="Fill">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="Gtk.Entry" id="entry_loginuri">
+                    <property name="MemberName" />
+                    <property name="CanFocus">True</property>
+                    <property name="IsEditable">True</property>
+                    <property name="InvisibleChar">●</property>
+                  </widget>
+                  <packing>
+                    <property name="Position">3</property>
                     <property name="AutoSize">True</property>
                   </packing>
                 </child>
               </widget>
               <packing>
-                <property name="Position">2</property>
+                <property name="Position">3</property>
                 <property name="AutoSize">True</property>
                 <property name="Expand">False</property>
                 <property name="Fill">False</property>
@@ -572,7 +531,7 @@ Custom</property>
                     <child>
                       <widget class="Gtk.TextView" id="textview_loginmsg">
                         <property name="MemberName" />
-                        <property name="HeightRequest">30</property>
+                        <property name="HeightRequest">35</property>
                         <property name="CanFocus">True</property>
                         <property name="Editable">False</property>
                         <property name="Text" translatable="yes" />
@@ -582,7 +541,7 @@ Custom</property>
                   </widget>
                 </child>
                 <child>
-                  <widget class="Gtk.Label" id="GtkLabel3">
+                  <widget class="Gtk.Label" id="GtkLabel5">
                     <property name="MemberName" />
                     <property name="LabelProp" translatable="yes">&lt;b&gt;Login message&lt;/b&gt;</property>
                     <property name="UseMarkup">True</property>
@@ -593,7 +552,7 @@ Custom</property>
                 </child>
               </widget>
               <packing>
-                <property name="Position">3</property>
+                <property name="Position">4</property>
                 <property name="AutoSize">True</property>
               </packing>
             </child>
@@ -614,7 +573,7 @@ Custom</property>
                         <child>
                           <widget class="Gtk.TextView" id="textview_log">
                             <property name="MemberName" />
-                            <property name="HeightRequest">290</property>
+                            <property name="HeightRequest">270</property>
                             <property name="CanFocus">True</property>
                             <property name="ShowScrollbars">True</property>
                             <property name="Editable">False</property>
@@ -627,7 +586,7 @@ Custom</property>
                   </widget>
                 </child>
                 <child>
-                  <widget class="Gtk.Label" id="GtkLabel4">
+                  <widget class="Gtk.Label" id="GtkLabel6">
                     <property name="MemberName" />
                     <property name="LabelProp" translatable="yes">&lt;b&gt;Debug log&lt;/b&gt;</property>
                     <property name="UseMarkup">True</property>
@@ -638,7 +597,7 @@ Custom</property>
                 </child>
               </widget>
               <packing>
-                <property name="Position">4</property>
+                <property name="Position">5</property>
                 <property name="AutoSize">True</property>
               </packing>
             </child>
@@ -2942,7 +2901,7 @@ Resident Michelle2 Zenovka
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="omvviewerlight.Groups" design-size="300 300">
+  <widget class="Gtk.Bin" id="omvviewerlight.Groups" design-size="386 300">
     <property name="MemberName" />
     <child>
       <widget class="Gtk.HBox" id="hbox1">
@@ -2959,6 +2918,7 @@ Resident Michelle2 Zenovka
                 <child>
                   <widget class="Gtk.TreeView" id="treeview1">
                     <property name="MemberName" />
+                    <property name="WidthRequest">350</property>
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>
                     <property name="HeadersClickable">True</property>

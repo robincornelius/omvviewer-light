@@ -26,11 +26,14 @@ using System;
 using System.Threading;
 using OpenMetaverse;
 using System.IO;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace omvviewerlight
 {	
 	public partial class LoginControl : Gtk.Bin
 	{
+		Dictionary<string,string> gridlist = new Dictionary<string,string>();
 		LoginParams login;
 		
 		bool trying;
@@ -62,7 +65,30 @@ namespace omvviewerlight
                 this.checkbutton_rememberpass.Active = true;
 		    else
                 this.checkbutton_rememberpass.Active = false;
-        }
+
+            StreamReader s = File.OpenText("gridlist.txt");
+			try
+			{
+				char[] splitter  = {' '};
+				string[] arInfo = new string[2];
+
+				while(!s.EndOfStream)
+				{
+					string line=s.ReadLine();
+					arInfo=line.Split(splitter,2);
+					gridlist.Add(arInfo[0],arInfo[1]);
+					this.combobox_grid.AppendText(arInfo[0]);
+				}
+			}
+			catch(Exception e)
+			{
+			}					
+			
+			int selected=0;
+			int.TryParse(MainClass.ReadSetting("Selected Grid"),out selected);			
+			combobox_grid.Active=selected;			
+			
+		}
 
         void oncleanuptime()
         {
@@ -82,7 +108,10 @@ namespace omvviewerlight
                 MainClass.WriteSetting("Remember pass", "true");
             else
                 MainClass.WriteSetting("Remember pass", "false");  
-        }
+
+			    MainClass.WriteSetting("Selected Grid",combobox_grid.Active.ToString());
+		
+		}
 
  
 		void onEventQueue(Simulator sim)
@@ -226,21 +255,26 @@ namespace omvviewerlight
 				if(this.radiobutton3.Active)
 					login.Start=this.entry_location.Text;
 				
-
 				this.textview_log.Buffer.Clear();
-				button_login.Label="Logout";			
+				button_login.Label="Logout";
+				
+				login.URI=entry_loginuri.Text;
+					
+			    /*
 				if(this.combobox_grid.ActiveText=="Agni")
-				      login.URI="https://login.agni.lindenlab.com/cgi-bin/login.cgi";
+				      login.URI=entry_loginuri.Text="https://login.agni.lindenlab.com/cgi-bin/login.cgi";
 				
 				if(this.combobox_grid.ActiveText=="Aditi")
-				      login.URI="https://login.aditi.lindenlab.com/cgi-bin/login.cgi";
+				      login.URI=entry_loginuri.Text="https://login.aditi.lindenlab.com/cgi-bin/login.cgi";
 				                                                  			                                                  
 				if(this.combobox_grid.ActiveText=="Local")
-				      login.URI="http://127.0.0.1:9000";
+				      login.URI=entry_loginuri.Text="http://127.0.0.1:9000";
 				
 				if(this.combobox_grid.ActiveText=="Custom")
-				      login.URI=this.entry_loginuri.Text;
-	                                                 
+				      login.URI=entry_loginuri.Text=this.entry_loginuri.Text;
+	              */
+				
+				
 				Thread loginRunner= new Thread(new ThreadStart(this.loginthread));                               
 				
 				loginRunner.Start();
@@ -281,12 +315,16 @@ namespace omvviewerlight
 			this.checkbutton_rememberpass.Sensitive=true;
 			this.radiobutton1.Sensitive=true;
 			this.radiobutton2.Sensitive=true;
-			this.radiobutton3.Sensitive=true;
-			
+			this.radiobutton3.Sensitive=true;
 		}
 
-		protected virtual void OnRadiobutton1GroupChanged (object sender, System.EventArgs e)
+		protected virtual void OnComboboxGridChanged (object sender, System.EventArgs e)
 		{
+			string grid=this.combobox_grid.ActiveText;
+			string uri;
+			
+			if(gridlist.TryGetValue(grid,out uri))
+		        this.entry_loginuri.Text=uri;
 		}
 	
 	}
