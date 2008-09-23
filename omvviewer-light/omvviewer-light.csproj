@@ -216,6 +216,7 @@
     <Content Include="map_home.tga">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="omvviewer-light.ico" />
     <Content Include="omvviewer.ico" />
     <Content Include="status_search_btn.png" />
   </ItemGroup>
