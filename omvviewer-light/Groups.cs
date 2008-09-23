@@ -129,7 +129,8 @@ namespace omvviewerlight
 			}
 		}
 
-		protected virtual void OnActivateGroupActivated (object sender, System.EventArgs e)
+		
+		protected virtual void OnActivateGroupClicked (object sender, System.EventArgs e)
 		{
 		    Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
@@ -143,6 +144,7 @@ namespace omvviewerlight
 				active_group_iter=iter;
                 treeview1.QueueDraw();
 			}		
+
 		}
 	}
 }

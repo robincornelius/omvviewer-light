@@ -118,7 +118,7 @@ namespace omvviewerlight {
             this.Show();
             this.button_groupim.Clicked += new System.EventHandler(this.OnButtonGroupimClicked);
             this.button_info.Clicked += new System.EventHandler(this.OnButtonInfoClicked);
-            this.Activate_group.Activated += new System.EventHandler(this.OnActivateGroupActivated);
+            this.Activate_group.Clicked += new System.EventHandler(this.OnActivateGroupClicked);
         }
     }
 }

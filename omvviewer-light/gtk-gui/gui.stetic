@@ -3013,7 +3013,7 @@ Resident Michelle2 Zenovka
                     <property name="Type">TextOnly</property>
                     <property name="Label" translatable="yes">Activate</property>
                     <property name="UseUnderline">True</property>
-                    <signal name="Activated" handler="OnActivateGroupActivated" />
+                    <signal name="Clicked" handler="OnActivateGroupClicked" />
                   </widget>
                   <packing>
                     <property name="Position">2</property>
