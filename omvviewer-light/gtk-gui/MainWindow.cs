@@ -68,7 +68,7 @@ public partial class MainWindow {
         this.CrouchAction.ShortLabel = Mono.Unix.Catalog.GetString("Crouch");
         w2.Add(this.CrouchAction, null);
         this.FlyAction = new Gtk.RadioAction("FlyAction", Mono.Unix.Catalog.GetString("Fly"), null, null, 0);
-        this.FlyAction.Group = this.GroundSitAction.Group;
+        this.FlyAction.Group = this.CrouchAction.Group;
         this.FlyAction.ShortLabel = Mono.Unix.Catalog.GetString("Fly");
         w2.Add(this.FlyAction, null);
         this.AvaiableAction = new Gtk.RadioAction("AvaiableAction", Mono.Unix.Catalog.GetString("Avaiable"), null, null, 0);
@@ -76,11 +76,11 @@ public partial class MainWindow {
         this.AvaiableAction.ShortLabel = Mono.Unix.Catalog.GetString("Avaiable");
         w2.Add(this.AvaiableAction, null);
         this.StandingAction = new Gtk.RadioAction("StandingAction", Mono.Unix.Catalog.GetString("Standing"), null, null, 0);
-        this.StandingAction.Group = this.GroundSitAction.Group;
+        this.StandingAction.Group = this.CrouchAction.Group;
         this.StandingAction.ShortLabel = Mono.Unix.Catalog.GetString("Standing");
         w2.Add(this.StandingAction, null);
         this.SittingAction = new Gtk.RadioAction("SittingAction", Mono.Unix.Catalog.GetString("Sitting"), null, null, 0);
-        this.SittingAction.Group = this.StandingAction.Group;
+        this.SittingAction.Group = this.CrouchAction.Group;
         this.SittingAction.Sensitive = false;
         this.SittingAction.ShortLabel = Mono.Unix.Catalog.GetString("Sitting");
         w2.Add(this.SittingAction, null);
