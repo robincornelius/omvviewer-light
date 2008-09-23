@@ -39,14 +39,43 @@ namespace omvviewerlight
 		{
    
 			this.Build();
-			store= new Gtk.ListStore (typeof(string),typeof(Group));			
-			treeview1.AppendColumn("Group",new CellRendererText(),"text",0);
-			treeview1.Model=store;
+			store= new Gtk.ListStore (typeof(string),typeof(Group),typeof(bool));			
+			//treeview1.AppendColumn("Group",new CellRendererText(),"text",0);
+               
+            Gtk.TreeViewColumn groupColumn = new Gtk.TreeViewColumn();
+            groupColumn.Title = "Group";
+            Gtk.CellRendererText groupNameCell = new Gtk.CellRendererText();
+            groupColumn.PackStart(groupNameCell, true);
+
+            groupColumn.SetCellDataFunc(groupNameCell, new Gtk.TreeCellDataFunc(RenderGroupName));
+            treeview1.AppendColumn(groupColumn);
+
+			
+            treeview1.Model=store;
 	
 			MainClass.client.Groups.OnCurrentGroups += new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
 			MainClass.client.Groups.RequestCurrentGroups();
 		}
-		
+
+        private void RenderGroupName(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter)
+        {
+            bool active = (bool)model.GetValue(iter, 2);
+            string text = (string)model.GetValue(iter, 0);
+
+            if (active == true)
+            {
+                (cell as Gtk.CellRendererText).Foreground = "red";
+            }
+            else
+            {
+                (cell as Gtk.CellRendererText).Foreground = "black";
+            }
+
+            (cell as Gtk.CellRendererText).Text = text;
+
+        }
+
+
 		void onGroups(Dictionary<UUID,Group> groups)
 		{
 			
@@ -56,17 +85,19 @@ namespace omvviewerlight
 				{
 					if(!this.groups_recieved.Contains(group.Value))
 					{
-						string name;
-						name=group.Value.Name;
+                        bool active = false;
 						if(MainClass.client.Self.ActiveGroup==group.Value.ID)
 						{
-							name="<b>"+name+"<b>";
-						}
-						store.AppendValues(group.Value.Name,group.Value);
+                            active = true;
+                        }
+                        store.AppendValues(group.Value.Name, group.Value,active);
 						this.groups_recieved.Add(group.Value);
 					}
 				}
 			});
+
+          
+
 		}
 
 		protected virtual void OnButtonGroupimClicked (object sender, System.EventArgs e)
