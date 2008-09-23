@@ -34,11 +34,40 @@ namespace omvviewerlight
 		LoginParams login;
 		
 		bool trying;
-		
-		~LoginControl()
+
+        ~LoginControl()
+        {
+            //This is ugly but works. GC should be called when we need it as we want to do this
+            //when the app is going down anyway
+            oncleanuptime();
+        }
+
+		public LoginControl()
 		{
+
+			this.Build();
+			MainClass.client.Network.OnConnected += new OpenMetaverse.NetworkManager.ConnectedCallback(onConnected);
+			MainClass.client.Network.OnDisconnected += new OpenMetaverse.NetworkManager.DisconnectedCallback(onDisconnected);
+			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+			MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
+                 
+            OpenMetaverse.Logger.OnLogMessage += new OpenMetaverse.Logger.LogCallback(onLogMessage);
+           
+            this.entry_pass.Visibility=false;
+
+            entry_first.Text = MainClass.ReadSetting("First");
+            entry_last.Text = MainClass.ReadSetting("Last");
+            entry_pass.Text = MainClass.ReadSetting("Pass");
+            if (MainClass.ReadSetting("Remember pass") == "true")
+                this.checkbutton_rememberpass.Active = true;
+		    else
+                this.checkbutton_rememberpass.Active = false;
+        }
+
+        void oncleanuptime()
+        {
             // This is a shit place to do this
-			MainClass.WriteSetting("First",entry_first.Text);
+            MainClass.WriteSetting("First", entry_first.Text);
             MainClass.WriteSetting("Last", entry_last.Text);
             if (this.checkbutton_rememberpass.Active)
             {
@@ -52,32 +81,10 @@ namespace omvviewerlight
             if (this.checkbutton_rememberpass.Active == true)
                 MainClass.WriteSetting("Remember pass", "true");
             else
-                MainClass.WriteSetting("Remember pass", "false");
+                MainClass.WriteSetting("Remember pass", "false");  
+        }
 
-		}
-				
-		public LoginControl()
-		{
-			this.Build();
-			MainClass.client.Network.OnConnected += new OpenMetaverse.NetworkManager.ConnectedCallback(onConnected);
-			MainClass.client.Network.OnDisconnected += new OpenMetaverse.NetworkManager.DisconnectedCallback(onDisconnected);
-			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-			MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
-           
-            OpenMetaverse.Logger.OnLogMessage += new OpenMetaverse.Logger.LogCallback(onLogMessage);
-           
-            this.entry_pass.Visibility=false;
-
-            entry_first.Text = MainClass.ReadSetting("First");
-            entry_last.Text = MainClass.ReadSetting("Last");
-            entry_pass.Text = MainClass.ReadSetting("Pass");
-            if (MainClass.ReadSetting("Remember pass") == "true")
-                this.checkbutton_rememberpass.Active = true;
-		    else
-                this.checkbutton_rememberpass.Active = false;
-        }	
-		
-
+ 
 		void onEventQueue(Simulator sim)
 		{
 			if(sim.ID==MainClass.client.Network.CurrentSim.ID)

@@ -33,7 +33,10 @@ public partial class MainWindow: Gtk.Window
 {	
 	public List<OpenMetaverse.UUID>active_ims = new List<OpenMetaverse.UUID>();
 	public List<OpenMetaverse.UUID>active_groups_ims = new List<OpenMetaverse.UUID>();
-	
+
+    public delegate void Cleanuptime();
+    public event Cleanuptime oncleanuptime;
+
 	Gtk.Label status_location;
 	Gtk.HBox status_balance;
 	Gtk.Label status_balance_lable;
@@ -63,8 +66,7 @@ public partial class MainWindow: Gtk.Window
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
         Build();
-       
-            
+                  
 		trayIcon = new StatusIcon(new Gdk.Pixbuf("viewericon.xpm"));
 		trayIcon.Visible=true;
 		trayIcon.Tooltip="Hello World";
@@ -167,6 +169,10 @@ public partial class MainWindow: Gtk.Window
             this.Visible = false;
             return;
         }
+
+        if (oncleanuptime != null)
+            oncleanuptime();		
+
         args.RetVal = false;
     }
 
