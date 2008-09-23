@@ -7,7 +7,6 @@
     <ViewMemento id="ProjectPad">
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
-          <Node name="References" expanded="True" />
           <Node name="ChatConsole.cs" selected="True" />
         </Node>
       </Node>

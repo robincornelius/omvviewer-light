@@ -94,6 +94,7 @@
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../../usr/local/lib/log4net.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../../usr/local/lib/OpenMetaverse.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../../usr/local/lib/OpenMetaverseTypes.dll" />
+    <ProjectReference type="Gac" localcopy="True" refto="System.Configuration, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   </References>
   <GtkDesignInfo isWidgetLibrary="True" gtkVersion="2.12.1">
     <ExportedWidgets>

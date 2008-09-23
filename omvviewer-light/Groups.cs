@@ -34,6 +34,7 @@ namespace omvviewerlight
 	
 		Gtk.ListStore store;
 		List<Group> groups_recieved=new List<Group>();
+		Gtk.TreeIter active_group_iter;
 		
 		public Groups()
 		{
@@ -90,7 +91,10 @@ namespace omvviewerlight
 						{
                             active = true;
                         }
-                        store.AppendValues(group.Value.Name, group.Value,active);
+                        Gtk.TreeIter iter=store.AppendValues(group.Value.Name, group.Value,active);
+						if(active);
+						    active_group_iter=iter;
+						
 						this.groups_recieved.Add(group.Value);
 					}
 				}
@@ -123,6 +127,21 @@ namespace omvviewerlight
 				GroupInfo info=new GroupInfo(group);
 				info.Show();
 			}
+		}
+
+		protected virtual void OnActivateGroupActivated (object sender, System.EventArgs e)
+		{
+		    Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(treeview1.Selection.GetSelected(out mod,out iter))			
+			{
+				Group group=(Group)mod.GetValue(iter,1);
+				MainClass.client.Groups.ActivateGroup(group.ID);
+				mod.SetValue(iter,2,true);
+				mod.SetValue(active_group_iter,2,false);
+				active_group_iter=iter;
+			}		
 		}
 	}
 }

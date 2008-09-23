@@ -27,6 +27,8 @@ namespace omvviewerlight {
         
         private Gtk.Button button_info;
         
+        private Gtk.Button Activate_group;
+        
         private Gtk.VBox vbox2;
         
         protected virtual void Build() {
@@ -81,21 +83,34 @@ namespace omvviewerlight {
             w4.Position = 1;
             w4.Expand = false;
             w4.Fill = false;
-            this.vbox1.Add(this.hbox2);
-            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
-            w5.Position = 1;
+            // Container child hbox2.Gtk.Box+BoxChild
+            this.Activate_group = new Gtk.Button();
+            this.Activate_group.CanFocus = true;
+            this.Activate_group.Name = "Activate_group";
+            this.Activate_group.UseUnderline = true;
+            this.Activate_group.Label = Mono.Unix.Catalog.GetString("Activate");
+            this.hbox2.Add(this.Activate_group);
+            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.hbox2[this.Activate_group]));
+            w5.Position = 2;
             w5.Expand = false;
             w5.Fill = false;
+            this.vbox1.Add(this.hbox2);
+            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
+            w6.Position = 1;
+            w6.Expand = false;
+            w6.Fill = false;
             this.hbox1.Add(this.vbox1);
-            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox1]));
-            w6.Position = 0;
+            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox1]));
+            w7.Position = 0;
+            w7.Expand = false;
+            w7.Fill = false;
             // Container child hbox1.Gtk.Box+BoxChild
             this.vbox2 = new Gtk.VBox();
             this.vbox2.Name = "vbox2";
             this.vbox2.Spacing = 6;
             this.hbox1.Add(this.vbox2);
-            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox2]));
-            w7.Position = 1;
+            Gtk.Box.BoxChild w8 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox2]));
+            w8.Position = 1;
             this.Add(this.hbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
@@ -103,6 +118,7 @@ namespace omvviewerlight {
             this.Show();
             this.button_groupim.Clicked += new System.EventHandler(this.OnButtonGroupimClicked);
             this.button_info.Clicked += new System.EventHandler(this.OnButtonInfoClicked);
+            this.Activate_group.Activated += new System.EventHandler(this.OnActivateGroupActivated);
         }
     }
 }
