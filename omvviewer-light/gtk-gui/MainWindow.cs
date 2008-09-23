@@ -80,7 +80,7 @@ public partial class MainWindow {
         this.StandingAction.ShortLabel = Mono.Unix.Catalog.GetString("Standing");
         w2.Add(this.StandingAction, null);
         this.SittingAction = new Gtk.RadioAction("SittingAction", Mono.Unix.Catalog.GetString("Sitting"), null, null, 0);
-        this.SittingAction.Group = this.GroundSitAction.Group;
+        this.SittingAction.Group = this.StandingAction.Group;
         this.SittingAction.Sensitive = false;
         this.SittingAction.ShortLabel = Mono.Unix.Catalog.GetString("Sitting");
         w2.Add(this.SittingAction, null);

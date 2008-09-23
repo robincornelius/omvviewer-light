@@ -34,7 +34,8 @@ namespace omvviewerlight
 	public partial class GroupInfo : Gtk.Window
 	{
 		Gtk.ListStore store_members;		
-      
+		Gtk.ListStore store_membersandroles_members;
+		
 		UUID groupkey;
 		UUID founder_key;
 		
@@ -46,13 +47,19 @@ namespace omvviewerlight
 			groupkey=group.ID;
 			
 			store_members = new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(UUID));			
-		
 			treeview_members.AppendColumn("Member name",new CellRendererText(),"text",0);
 			treeview_members.AppendColumn("Title",new CellRendererText(),"text",1);
 			treeview_members.AppendColumn("Last login",new CellRendererText(),"text",2);
-			
 			treeview_members.Model=store_members;
 				
+			//Tree view for Members & Roles, Members
+			
+			this.store_membersandroles_members=new Gtk.ListStore(typeof(string),typeof(string),typeof(string),typeof(UUID));
+			this.treeview_members1.AppendColumn("Member name",new CellRendererText(),"text",0);
+			this.treeview_members1.AppendColumn("Land",new CellRendererText(),"text",1);
+			this.treeview_members1.AppendColumn("Title",new CellRendererText(),"text",2);
+			this.treeview_members1.Model=store_membersandroles_members;		
+			
 			MainClass.client.Groups.OnGroupProfile += new OpenMetaverse.GroupManager.GroupProfileCallback(onGroupProfile);
 			MainClass.client.Groups.OnGroupMembers += new OpenMetaverse.GroupManager.GroupMembersCallback(onGroupMembers);
 			MainClass.client.Groups.OnGroupTitles += new OpenMetaverse.GroupManager.GroupTitlesCallback(onGroupTitles);
@@ -68,6 +75,17 @@ namespace omvviewerlight
 			AsyncNameUpdate ud=new AsyncNameUpdate(group.FounderID,false);  
 			ud.onNameCallBack += delegate(string namex,object[] values){this.label_foundedby.Text="Founded by "+namex;};
 
+			this.entry_enrollmentfee.Text=group.MembershipFee.ToString();
+			if(group.MembershipFee>0)
+				this.checkbutton_mature.Active=true;
+			
+			this.checkbutton_group_notices.Active=group.AcceptNotices;
+			this.checkbutton_openenrolement.Active=group.OpenEnrollment;
+			//this.checkbutton_showinpofile.Active=group.AllowPublish;
+			this.checkbutton_showinsearch.Active=group.ShowInList;
+			this.checkbutton_mature.Active=group.MaturePublish;
+			this.textview_group_charter.Buffer.Text=group.Charter;
+
 			
 		}
 		
@@ -81,7 +99,6 @@ namespace omvviewerlight
 				Console.Write("Title : "+title.Value.Title+" : "+title.Value.Selected.ToString()+"\n");
 				if(title.Value.Selected)
 				{
-					//this.combobox_active_title.ActiveText=title.Value.Title;
 						this.combobox_active_title.Active=0;
 				}
 			}	
@@ -101,6 +118,12 @@ namespace omvviewerlight
 				AsyncNameUpdate ud=new AsyncNameUpdate(member.Value.ID,false);  
 				ud.addparameters(iter);
 				ud.onNameCallBack += delegate(string namex,object[] values){Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; store_members.SetValue(iterx,0,namex);};		
+			
+				iter=this.store_membersandroles_members.AppendValues("Waiting...",member.Value.Contribution.ToString(),member.Value.Title);
+				AsyncNameUpdate ud2=new AsyncNameUpdate(member.Value.ID,false);  
+				ud2.addparameters(iter);
+				ud2.onNameCallBack += delegate(string namex,object[] values){Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; store_members.SetValue(iterx,0,namex);};		
+			
 			}
 			Gtk.Application.Invoke(delegate {	
 					this.treeview_members.QueueDraw();
@@ -115,13 +138,25 @@ namespace omvviewerlight
 			
 			Gtk.Application.Invoke(delegate {	
 			
-			this.textview_group_charter.Buffer.Text=group.Charter;
-			this.checkbutton_group_notices.Active=group.AcceptNotices;
-			this.checkbutton_openenrolement.Active=group.OpenEnrollment;
 			this.entry_enrollmentfee.Text=group.MembershipFee.ToString();
-			this.checkbutton_showinpofile.Active=group.ShowInList;
-			this.checkbutton_showinsearch.Active=group.AllowPublish;
+			
+			if(group.MembershipFee>0)
+				this.checkbutton_mature.Active=true;
+			
+		//	this.checkbutton_group_notices.Active=group.AcceptNotices;
+			this.checkbutton_openenrolement.Active=group.OpenEnrollment;
+			this.checkbutton_showinpofile.Active=group.AllowPublish;
+			this.checkbutton_showinsearch.Active=group.ShowInList;
+			this.checkbutton_mature.Active=group.MaturePublish;
+			this.textview_group_charter.Buffer.Text=group.Charter;
 
+			if((group.Powers & GroupPowers.SendNotices)==GroupPowers.SendNotices)
+					this.button_send_notice.Sensitive=true;
+				else
+					this.button_send_notice.Sensitive=false;
+					
+				
+				
 			});
 		}
 		
@@ -136,6 +171,36 @@ namespace omvviewerlight
 				store_members.SetValue(iter,0,member_name);
 			}
 				return false;
+		}
+
+		protected virtual void OnComboboxActiveTitleChanged (object sender, System.EventArgs e)
+		{
+			//MainClass.client.Groups.ActivateTitle(
+		
+		}
+
+		protected virtual void OnCheckbuttonGroupNoticesClicked (object sender, System.EventArgs e)
+		{
+			if(this.checkbutton_group_notices.Active)
+			{
+//				MainClass.client.Groups.SendGroupNotice();
+	//			GroupNotice note;
+				
+			}
+			else
+			{
+			}
+			
+		}
+
+		protected virtual void OnCheckbuttonShowinpofileClicked (object sender, System.EventArgs e)
+		{
+			if(this.checkbutton_showinpofile.Active)
+			{
+			}
+			else
+			{
+			}
 		}
 		
 		
