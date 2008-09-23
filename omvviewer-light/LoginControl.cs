@@ -37,17 +37,23 @@ namespace omvviewerlight
 		
 		~LoginControl()
 		{
-			FileInfo f = new FileInfo("Mytext.txt");
-			StreamWriter w = f.CreateText();
-			w.WriteLine(entry_first.Text);
-			w.WriteLine(entry_last.Text);
-			if(this.checkbutton_rememberpass.Active)
-			{
-				w.WriteLine("store_pass");
-				w.WriteLine(entry_pass.Text);
-			}
-			w.Close();
-			
+            // This is a shit place to do this
+			MainClass.WriteSetting("First",entry_first.Text);
+            MainClass.WriteSetting("Last", entry_last.Text);
+            if (this.checkbutton_rememberpass.Active)
+            {
+                MainClass.WriteSetting("pass", entry_pass.Text);
+            }
+            else
+            {
+                MainClass.WriteSetting("pass", "");
+            }
+
+            if (this.checkbutton_rememberpass.Active == true)
+                MainClass.WriteSetting("Remember pass", "true");
+            else
+                MainClass.WriteSetting("Remember pass", "false");
+
 		}
 				
 		public LoginControl()
@@ -60,33 +66,18 @@ namespace omvviewerlight
            
             OpenMetaverse.Logger.OnLogMessage += new OpenMetaverse.Logger.LogCallback(onLogMessage);
            
-                this.entry_pass.Visibility=false;
-			
-			// SUper dirty hack
-			// todo WRITE A PROPER FILE HANDLIER
-			// MAY BE A NICE XML FORMAT OPTION
-			try
-			{			
-				StreamReader s = File.OpenText("Mytext.txt");			
-				entry_first.Text=s.ReadLine();
-				entry_last.Text=s.ReadLine();
-				string x;
-				x=s.ReadLine();
-				if(x=="store_pass")
-				{
-					entry_pass.Text=s.ReadLine();
-					this.checkbutton_rememberpass.Active=true;
+            this.entry_pass.Visibility=false;
 
-				}
-				s.Close();
-			
-			}
-			catch(IOException e)
-			{
-			
-			}
-		}	
+            entry_first.Text = MainClass.ReadSetting("First");
+            entry_last.Text = MainClass.ReadSetting("Last");
+            entry_pass.Text = MainClass.ReadSetting("Pass");
+            if (MainClass.ReadSetting("Remember pass") == "true")
+                this.checkbutton_rememberpass.Active = true;
+		    else
+                this.checkbutton_rememberpass.Active = false;
+        }	
 		
+
 		void onEventQueue(Simulator sim)
 		{
 			if(sim.ID==MainClass.client.Network.CurrentSim.ID)

@@ -167,34 +167,29 @@ namespace omvviewerlight
 
         }
 
-        static void UpdateAppSettings()
+        public static void WriteSetting(string key, string value)
         {
-            // Get the configuration file.
             System.Configuration.Configuration config =
-              ConfigurationManager.OpenExeConfiguration(
-              ConfigurationUserLevel.None);
+           ConfigurationManager.OpenExeConfiguration(
+           ConfigurationUserLevel.None);
 
-            // Add an entry to appSettings.
-            int appStgCnt =
-                ConfigurationManager.AppSettings.Count;
-            //string newKey = "NewKey" + appStgCnt.ToString();
-            string newKey = "NewKey";
-
-            string newValue = DateTime.Now.ToLongDateString() + " " +
-                           DateTime.Now.ToLongTimeString();
-
-            config.AppSettings.Settings.Add(newKey, newValue);
-   
-
-            // Save the configuration file.
-            config.Save(ConfigurationSaveMode.Modified);
-
-            // Force a reload of the changed section.
-            ConfigurationManager.RefreshSection("appSettings");
+           config.AppSettings.Settings.Remove(key);
+           config.AppSettings.Settings.Add(key, value);
+           config.Save(ConfigurationSaveMode.Modified); 
 
         }
 
+        public static string ReadSetting(string key)
+        {
+            NameValueCollection appSettings =
+             ConfigurationManager.AppSettings;
 
+            if (appSettings.Get(key) == null)
+                return "";
+
+            return appSettings.Get(key);
+
+        }
 
 
 
