@@ -26,6 +26,13 @@ using System.Collections.Generic;
 using Gtk;
 using OpenMetaverse;
 using System.Runtime.InteropServices;
+using System.Collections.Specialized;
+using System.Collections.ObjectModel;
+using System.Collections;
+using System.Text;
+using System.Configuration;
+using System.Configuration.Assemblies;
+
 
 
 namespace omvviewerlight
@@ -42,7 +49,7 @@ namespace omvviewerlight
 		public static MainWindow win;
 
 		public static AVNameCache name_cache;
-		
+
 		public static void Main (string[] args)
 		{
 
@@ -55,8 +62,10 @@ namespace omvviewerlight
             try
             {
                 IntPtr hWnd = GetConsoleWindow();
-                ShowWindow(hWnd, 0);
-                hiddenconsole = true;
+               // UpdateAppSettings();
+                DisplayAppSettings();
+                //ShowWindow(hWnd, 0);
+                //hiddenconsole = true;
            
             }
             catch(Exception e)
@@ -136,6 +145,58 @@ namespace omvviewerlight
 			
 			return ret;
 		}
-	
+
+        // Show how to use AppSettings.
+        static void DisplayAppSettings()
+        {
+
+            // Get the AppSettings collection.
+            NameValueCollection appSettings =
+               ConfigurationManager.AppSettings;
+
+            string[] keys = appSettings.AllKeys;
+
+            Console.WriteLine();
+            Console.WriteLine("Application appSettings:");
+
+            // Loop to get key/value pairs.
+            for (int i = 0; i < appSettings.Count; i++)
+
+                Console.WriteLine("#{0} Name: {1} Value: {2}",
+                  i, keys[i], appSettings[i]);
+
+        }
+
+        static void UpdateAppSettings()
+        {
+            // Get the configuration file.
+            System.Configuration.Configuration config =
+              ConfigurationManager.OpenExeConfiguration(
+              ConfigurationUserLevel.None);
+
+            // Add an entry to appSettings.
+            int appStgCnt =
+                ConfigurationManager.AppSettings.Count;
+            //string newKey = "NewKey" + appStgCnt.ToString();
+            string newKey = "NewKey";
+
+            string newValue = DateTime.Now.ToLongDateString() + " " +
+                           DateTime.Now.ToLongTimeString();
+
+            config.AppSettings.Settings.Add(newKey, newValue);
+   
+
+            // Save the configuration file.
+            config.Save(ConfigurationSaveMode.Modified);
+
+            // Force a reload of the changed section.
+            ConfigurationManager.RefreshSection("appSettings");
+
+        }
+
+
+
+
+
 	}
 }

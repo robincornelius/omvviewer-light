@@ -48,8 +48,15 @@ public partial class MainWindow: Gtk.Window
     {
         if (trayIcon != null)
         {
-            this.trayIcon.Visible = false;
-            this.trayIcon.Dispose();
+            try
+            {
+                this.trayIcon.Visible = false;
+                this.trayIcon.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.ToString());
+            }
         }
     }
 
