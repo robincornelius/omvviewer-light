@@ -144,13 +144,15 @@ namespace omvviewerlight
                         {
                             // The agent *might* still be present under an old localID and we
                             // missed the kill
-
-                            foreach(KeyValuePair<uint, agent> av in av_tree)
+                            lock (av_tree)
                             {
-                                if (av.Value.avatar.ID == avatar.ID)
+                                foreach (KeyValuePair<uint, agent> av in av_tree)
                                 {
-                                    //All ready in tree kill that old definition
-                                    av_tree.Remove(av.Key);
+                                    if (av.Value.avatar.ID == avatar.ID)
+                                    {
+                                        //All ready in tree kill that old definition
+                                        av_tree.Remove(av.Key);
+                                    }
                                 }
                             }
 

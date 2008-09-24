@@ -302,7 +302,8 @@ namespace omvviewerlight
 			this.radiobutton1.Sensitive=false;
 			this.radiobutton2.Sensitive=false;
 			this.radiobutton3.Sensitive=false;
-			this.entry_location.Sensitive=false;			
+			this.entry_location.Sensitive=false;
+			
 		}
 		
 		void enablebuttons()
@@ -316,7 +317,8 @@ namespace omvviewerlight
 			this.radiobutton1.Sensitive=true;
 			this.radiobutton2.Sensitive=true;
 			this.radiobutton3.Sensitive=true;
-			this.entry_location.Sensitive=true;
+			this.entry_location.Sensitive=true;
+
 		}
 
 		protected virtual void OnComboboxGridChanged (object sender, System.EventArgs e)

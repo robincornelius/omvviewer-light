@@ -35,7 +35,9 @@ namespace omvviewerlight
 	{
 		Gtk.ListStore store_members;		
 		Gtk.ListStore store_membersandroles_members;
-		
+
+        bool nobody_cares = false;
+
 		UUID groupkey;
 		UUID founder_key;
 		
@@ -85,9 +87,19 @@ namespace omvviewerlight
 			this.checkbutton_showinsearch.Active=group.ShowInList;
 			this.checkbutton_mature.Active=group.MaturePublish;
 			this.textview_group_charter.Buffer.Text=group.Charter;
-
-			
+            this.DeleteEvent += new DeleteEventHandler(GroupWindow_DeleteEvent);
+	
 		}
+
+         [GLib.ConnectBefore]
+        void GroupWindow_DeleteEvent(object o, DeleteEventArgs args)
+        {
+            nobody_cares = true;
+            MainClass.client.Groups.OnGroupProfile -= new OpenMetaverse.GroupManager.GroupProfileCallback(onGroupProfile);
+            MainClass.client.Groups.OnGroupMembers -= new OpenMetaverse.GroupManager.GroupMembersCallback(onGroupMembers);
+            MainClass.client.Groups.OnGroupTitles -= new OpenMetaverse.GroupManager.GroupTitlesCallback(onGroupTitles);
+            this.DeleteEvent -= new DeleteEventHandler(GroupWindow_DeleteEvent);
+        }
 		
 		void onGroupTitles(Dictionary <UUID,OpenMetaverse.GroupTitle> titles)
 		{
@@ -110,23 +122,30 @@ namespace omvviewerlight
 		{
 			List<UUID> names = new List<UUID>(members.Keys);
 			MainClass.name_cache.reqnames(names);
-			
+
+            Console.Write("\n Got the group list\n");
+
 			foreach(KeyValuePair <UUID,GroupMember> member in members)
 			{
+
 				Gtk.TreeIter iter=store_members.AppendValues("Waiting...",member.Value.Title,member.Value.OnlineStatus,member.Value.ID);
 				
 				AsyncNameUpdate ud=new AsyncNameUpdate(member.Value.ID,false);  
 				ud.addparameters(iter);
-				ud.onNameCallBack += delegate(string namex,object[] values){Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; store_members.SetValue(iterx,0,namex);};		
-			
-				iter=this.store_membersandroles_members.AppendValues("Waiting...",member.Value.Contribution.ToString(),member.Value.Title);
+				ud.onNameCallBack += delegate(string namex,object[] values){if(nobody_cares){return;} Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; store_members.SetValue(iterx,0,namex);};
+
+                Gtk.TreeIter iter2 = store_membersandroles_members.AppendValues("Waiting...", member.Value.Contribution.ToString(), member.Value.Title);
 				AsyncNameUpdate ud2=new AsyncNameUpdate(member.Value.ID,false);  
-				ud2.addparameters(iter);
-				ud2.onNameCallBack += delegate(string namex,object[] values){Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; store_members.SetValue(iterx,0,namex);};		
+				ud2.addparameters(iter2);
+				ud2.onNameCallBack += delegate(string namex,object[] values){if(nobody_cares){return;} Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; store_membersandroles_members.SetValue(iterx,0,namex);};		
 			
 			}
+
+            Console.Write("Queueing tree for draw\n");
+
 			Gtk.Application.Invoke(delegate {	
 					this.treeview_members.QueueDraw();
+                    this.treeview_members1.QueueDraw();
 				});
 		}
 		

@@ -43,33 +43,58 @@ namespace omvviewerlight
 		
 		public void reqname(UUID name)
 		{
-			if(!getting.Contains(name)&& !MainClass.name_cache.av_names.ContainsKey(name))
-			{
-				getting.Add(name);
-				MainClass.client.Avatars.RequestAvatarName(name);
-			}			
+
+            lock (getting)
+            {
+                if (!getting.Contains(name) && !MainClass.name_cache.av_names.ContainsKey(name))
+                {
+                    //Console.Write("NO requesting\n");
+                    getting.Add(name);
+                    MainClass.client.Avatars.RequestAvatarName(name);
+                }
+                else
+                {
+                    // Console.Write("Already have or already getting\n");
+                }
+            }
 		}
 		
 		public void reqnames(List <UUID> names)
 		{
-			
-			List <UUID> request=new List <UUID>();
-			
-			foreach(UUID name in names)
-			{
-				if(!this.getting.Contains(name))
-				{
-					getting.Add(name);
-				}
-				if(!av_names.ContainsKey(name))
-				{
-					request.Add(name);
-				}
-				
-			}
-				
-			if(request.Count>0)
-				MainClass.client.Avatars.RequestAvatarNames(request);
+
+            lock (getting)
+            {
+                List<UUID> request = new List<UUID>();
+                foreach (UUID name in names)
+                {
+                    //Console.Write("LIST Do we have " + name.ToString() + "\n");
+                    if (!getting.Contains(name) && !MainClass.name_cache.av_names.ContainsKey(name))
+                    {
+                        // Console.Write("LIST NO requesting\n");
+                        getting.Add(name);
+                        request.Add(name);
+                        //MainClass.client.Avatars.RequestAvatarName(name);
+                    }
+                    else
+                    {
+                        // Console.Write("LIST Already have or already getting\n");
+                    }
+
+                }
+            
+                // Possible libomv bug, dont request too many names in a single shot
+                for (int x = 0; x < request.Count; x = x + 100)
+                {
+                    List<UUID> request_temp = request.GetRange(x, (x + 100) < (request.Count - 1) ? 100 : 100-((x + 100)-(request.Count - 1)));
+                    MainClass.client.Avatars.RequestAvatarNames(request_temp); 
+              
+                }
+
+
+                
+            }
+
+            
 			
 			
 		}
@@ -78,11 +103,15 @@ namespace omvviewerlight
 		{
 			foreach(KeyValuePair <UUID,string> kvp in names)
 			{
-				if(getting.Contains(kvp.Key))
-			        getting.Remove(kvp.Key);
-								   
+                lock(getting)
+                {
+				    if(getting.Contains(kvp.Key))
+			            getting.Remove(kvp.Key);
+				}
+				   
 				if(!av_names.ContainsKey(kvp.Key))
 				{
+                    //Console.Write("GOT "+kvp.Key.ToString()+" = "+kvp.Value+"\n");
 					av_names.Add(kvp.Key,kvp.Value);
 				}
 			}	

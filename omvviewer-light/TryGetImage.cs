@@ -64,30 +64,37 @@ namespace omvviewerlight
 			
 			if(asset.AssetID!=target_asset)
 				return;
-			
-			Gtk.Application.Invoke(delegate {	
+
+            MainClass.client.Assets.OnImageReceived -= new OpenMetaverse.AssetManager.ImageReceivedCallback(onGotImage);
+
 				
 				Console.Write("Downloaded asset "+asset.AssetID.ToString()+"\n");
+                byte[] tgaFile=null;
 				try
 				{	    
 					ManagedImage imgData;
 					OpenJPEG.DecodeToImage(image.AssetData, out imgData);
-					byte[] tgaFile = imgData.ExportTGA();
-    				
+					tgaFile = imgData.ExportTGA();
+                }
+                catch (Exception e)
+                {
+                    Console.Write("\n*****************\n" + e.Message + "\n");
+                }
+
+                Gtk.Application.Invoke(delegate
+                {	
 					Gdk.Pixbuf buf=new Gdk.Pixbuf(tgaFile);
 					Console.Write("Decoded\n");
 					int x,y;
-					x=target_image.Pixbuf.Width;
-					
-					target_image.Pixbuf=buf.ScaleSimple(128,128,Gdk.InterpType.Bilinear);
-
-				}
-				catch(Exception e)
-				{
-					Console.Write("\n*****************\n"+e.Message+"\n");	
-				}				
-
-			});
+                    if (target_image!=null) // this has managed to get set to null
+                    {
+                        if (target_image.Pixbuf != null)
+                        {
+                            x = target_image.Pixbuf.Width;
+                            target_image.Pixbuf = buf.ScaleSimple(128, 128, Gdk.InterpType.Bilinear);
+                        }
+                    }
+              });
 		}	
 	}
 }

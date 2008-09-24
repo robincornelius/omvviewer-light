@@ -31,13 +31,13 @@ using Gdk;
 
 namespace omvviewerlight
 {
-	
 	public class AsyncNameUpdate
 	{
 		UUID av_target;
 		UUID group_target;
 		List <UUID>getting;
 	    object[] callbackvalues1;
+        int count = 0;
 		
 		public delegate void NameCallBack(string name, object[] values);
         public event NameCallBack onNameCallBack;
@@ -49,8 +49,29 @@ namespace omvviewerlight
 		{
 			MainClass.client.Groups.OnGroupNames += new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
 			MainClass.client.Avatars.OnAvatarNames += new OpenMetaverse.AvatarManager.AvatarNamesCallback(onAvatarNames);
-		}
-		
+           // GLib.Timeout.Add(1000, onTimeout);
+        }
+/*
+        bool onTimeout()
+        {
+            count++;
+
+            if (av_target!=UUID.Zero)
+                try_update_name_lable(av_target);
+
+            if (group_target != UUID.Zero)
+                try_update_group_lable(group_target);
+
+            if (count >= 30)
+            {
+                AsynNamesUpdate_deinit();
+                return true;
+            }
+
+            return false;
+
+        }
+*/
 		public void addparameters(params object[] values)
 		{
 			callbackvalues1=values;
@@ -64,8 +85,11 @@ namespace omvviewerlight
 		
 		public AsyncNameUpdate(UUID key,bool group)
 		{
-			
-			//Console.Write("New AsyncName Update for "+key.ToString()_" group mode = "+group.ToString()+"\n");
+
+            if (key == UUID.Zero)
+                return;
+
+			//Console.Write("New AsyncName Update for "+key.ToString()+" group mode = "+group.ToString()+"\n");
 			
 			if(group==true)
 			{
@@ -101,17 +125,21 @@ namespace omvviewerlight
 		
 		void try_update_name_lable(UUID key)
 		{
+           // Console.Write("Try update KEY " + key.ToString() + "\n");
+
 			string name;
 			if(MainClass.name_cache.av_names.TryGetValue(key,out name))
 			{
-				Gtk.Application.Invoke(delegate {			
+				Gtk.Application.Invoke(delegate {
+                   // Console.Write("Success! trying to throw callback\n");
 					if(onNameCallBack!=null)
 						onNameCallBack(name,this.callbackvalues1);			
 					AsynNamesUpdate_deinit();
 				});
 			}
 			else
-			{		
+			{
+                //Console.Write("Failed! kicking requester\n");
 				MainClass.name_cache.reqname(key);			
 			}
 		}
