@@ -90,7 +90,7 @@ public partial class MainWindow: Gtk.Window
 		this.statusbar1.PackStart(status_parcel);
 		this.statusbar1.PackStart(status_balance);
 
-		this.Title="Omvviewer-light v0.21";
+		this.Title="Omvviewer-light v0.30 SVN";
 		this.SetIconFromFile("viewericon.xpm");
 		
 		// Fuck stupid notebook tabs and monodeveop have to do it myself
