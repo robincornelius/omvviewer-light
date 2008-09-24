@@ -83,7 +83,7 @@ namespace omvviewerlight
 			
 			this.checkbutton_group_notices.Active=group.AcceptNotices;
 			this.checkbutton_openenrolement.Active=group.OpenEnrollment;
-			//this.checkbutton_showinpofile.Active=group.AllowPublish;
+			this.checkbutton_showinpofile.Active=group.AllowPublish;
 			this.checkbutton_showinsearch.Active=group.ShowInList;
 			this.checkbutton_mature.Active=group.MaturePublish;
 			this.textview_group_charter.Buffer.Text=group.Charter;
@@ -173,9 +173,7 @@ namespace omvviewerlight
 					this.button_send_notice.Sensitive=true;
 				else
 					this.button_send_notice.Sensitive=false;
-					
-				
-				
+		
 			});
 		}
 		

@@ -146,14 +146,19 @@ namespace omvviewerlight
                             // missed the kill
                             lock (av_tree)
                             {
+                                uint localid=0;
                                 foreach (KeyValuePair<uint, agent> av in av_tree)
                                 {
                                     if (av.Value.avatar.ID == avatar.ID)
                                     {
                                         //All ready in tree kill that old definition
-                                        av_tree.Remove(av.Key);
+                                        localid=av.Key;
+                                        break;
+                                        
                                     }
                                 }
+                                if(localid!=0)
+                                    av_tree.Remove(localid);
                             }
 
                             agent theagent = new agent();
