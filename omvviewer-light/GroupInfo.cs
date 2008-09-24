@@ -37,7 +37,7 @@ namespace omvviewerlight
 		Gtk.ListStore store_membersandroles_members;
 
         bool nobody_cares = false;
-
+		
 		UUID groupkey;
 		UUID founder_key;
 		
@@ -62,9 +62,13 @@ namespace omvviewerlight
 			this.treeview_members1.AppendColumn("Title",new CellRendererText(),"text",2);
 			this.treeview_members1.Model=store_membersandroles_members;		
 			
+			treeview_members.AppendColumn("Role",new CellRendererText(),"text",0);
+			
+			
 			MainClass.client.Groups.OnGroupProfile += new OpenMetaverse.GroupManager.GroupProfileCallback(onGroupProfile);
 			MainClass.client.Groups.OnGroupMembers += new OpenMetaverse.GroupManager.GroupMembersCallback(onGroupMembers);
 			MainClass.client.Groups.OnGroupTitles += new OpenMetaverse.GroupManager.GroupTitlesCallback(onGroupTitles);
+			MainClass.client.Groups.OnGroupRoles += new OpenMetaverse.GroupManager.GroupRolesCallback(onGroupRoles);
 			
 			MainClass.client.Groups.RequestGroupProfile(group.ID);
 			MainClass.client.Groups.RequestGroupMembers(group.ID);
@@ -91,6 +95,12 @@ namespace omvviewerlight
 	
 		}
 
+		void onGroupRoles(Dictionary <UUID, GroupRole> roles)
+		{
+			// Maybe we should flag up that the roles have been recieved?
+			
+		}
+		
          [GLib.ConnectBefore]
         void GroupWindow_DeleteEvent(object o, DeleteEventArgs args)
         {
@@ -134,7 +144,7 @@ namespace omvviewerlight
 				ud.addparameters(iter);
 				ud.onNameCallBack += delegate(string namex,object[] values){if(nobody_cares){return;} Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; store_members.SetValue(iterx,0,namex);};
 
-                Gtk.TreeIter iter2 = store_membersandroles_members.AppendValues("Waiting...", member.Value.Contribution.ToString(), member.Value.Title);
+                Gtk.TreeIter iter2 = store_membersandroles_members.AppendValues("Waiting...", member.Value.Contribution.ToString(), member.Value.Title,member.Value.ID);
 				AsyncNameUpdate ud2=new AsyncNameUpdate(member.Value.ID,false);  
 				ud2.addparameters(iter2);
 				ud2.onNameCallBack += delegate(string namex,object[] values){if(nobody_cares){return;} Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; store_membersandroles_members.SetValue(iterx,0,namex);};		
@@ -217,6 +227,37 @@ namespace omvviewerlight
 			}
 			else
 			{
+			}
+		}
+
+		protected virtual void OnTreeviewMembers1CursorChanged (object sender, System.EventArgs e)
+		{
+			//This is the Members List on the Members role tab
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(this.treeview_members1.Selection.GetSelected(out mod,out iter))			
+			{
+				UUID id=(UUID)mod.GetValue(iter,3);
+				//Now populate the roles list
+				Dictionary<UUID,GroupRole> grouproles;
+				//MainClass.client.Groups.GroupMembersCaches.TryGetValue(id,out group);
+				if(MainClass.client.Groups.GroupRolesCaches.TryGetValue(id,out grouproles))
+				{
+					    Gtk.ListStore assigned_roles;	
+						assigned_roles = new Gtk.ListStore (typeof(string),typeof(UUID));			
+						this.treeview_assigned_roles.Model=assigned_roles;
+		
+					foreach(KeyValuePair<UUID,GroupRole> kvp in grouproles)
+					{
+						
+						assigned_roles.AppendValues(kvp.Value.Name,kvp.Value.ID);
+						
+					}
+					
+					
+				}
+				
 			}
 		}
 		

@@ -133,7 +133,7 @@ namespace omvviewerlight {
             this.notebook1 = new Gtk.Notebook();
             this.notebook1.CanFocus = true;
             this.notebook1.Name = "notebook1";
-            this.notebook1.CurrentPage = 0;
+            this.notebook1.CurrentPage = 1;
             // Container child notebook1.Gtk.Notebook+NotebookChild
             this.vbox1 = new Gtk.VBox();
             this.vbox1.Name = "vbox1";
@@ -598,6 +598,7 @@ namespace omvviewerlight {
             this.combobox_active_title.Changed += new System.EventHandler(this.OnComboboxActiveTitleChanged);
             this.checkbutton_group_notices.Clicked += new System.EventHandler(this.OnCheckbuttonGroupNoticesClicked);
             this.checkbutton_showinpofile.Clicked += new System.EventHandler(this.OnCheckbuttonShowinpofileClicked);
+            this.treeview_members1.CursorChanged += new System.EventHandler(this.OnTreeviewMembers1CursorChanged);
         }
     }
 }
