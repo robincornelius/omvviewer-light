@@ -83,7 +83,9 @@ namespace omvviewerlight
 
                 Gtk.Application.Invoke(delegate
                 {	
-					Gdk.Pixbuf buf=new Gdk.Pixbuf(tgaFile);
+					try
+				{
+				    Gdk.Pixbuf buf=new Gdk.Pixbuf(tgaFile);
 					Console.Write("Decoded\n");
 					int x,y;
                     if (target_image!=null) // this has managed to get set to null
@@ -94,6 +96,12 @@ namespace omvviewerlight
                             target_image.Pixbuf = buf.ScaleSimple(128, 128, Gdk.InterpType.Bilinear);
                         }
                     }
+				}
+				catch(Exception e)
+				{
+					Console.Write("*** Image decode blew whist trying to write image into pixbuf ***\n");
+					Console.WriteLine(e.Message);
+				}
               });
 		}	
 	}
