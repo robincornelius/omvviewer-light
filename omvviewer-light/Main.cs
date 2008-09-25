@@ -94,9 +94,24 @@ namespace omvviewerlight
                 }
 
                 Console.Write("The application died in a big heap\n This is the debug i caught :-");
-                Console.Write(e.Message);
-                Console.Write(e.Source);
-                Console.Write(e.StackTrace);
+                Console.Write("-----------------------------------------------\n");
+                Console.Write(e.Message+"\n");
+                Console.Write(e.Source+"\n");
+                Console.Write(e.StackTrace+"\n");
+                Console.Write(e.TargetSite+"\n");
+                Exception ee;
+                ee = e.InnerException;
+
+                while (ee != null)
+                {
+                    Console.Write("-----------------------------------------------\n");
+                    Console.Write(ee.Message + "\n");
+                    Console.Write(ee.Source + "\n");
+                    Console.Write(ee.StackTrace + "\n");
+                    Console.Write(ee.TargetSite + "\n");
+                    ee = e.InnerException;
+                }
+
                
             }
 			

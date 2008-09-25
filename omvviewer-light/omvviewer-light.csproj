@@ -99,10 +99,9 @@
       <HintPath>..\..\..\Program Files\Mono-1.9.1\lib\mono\2.0\Mono.Posix.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="OpenMetaverse, Version=1.0.0.14689, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="OpenMetaverse, Version=1.0.0.18515, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\OpenMetaverse.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="OpenMetaverseTypes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

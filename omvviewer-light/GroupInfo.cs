@@ -33,11 +33,16 @@ namespace omvviewerlight
 	
 	public partial class GroupInfo : Gtk.Window
 	{
-		Dictionary <UUID, GroupRole> grouproles;
-		List<KeyValuePair<UUID,UUID>> rolesmembers;
+		//Dictionary <UUID, GroupRole> grouproles;
+		//List<KeyValuePair<UUID,UUID>> rolesmembers;
 		Gtk.ListStore store_members;		
 		Gtk.ListStore store_membersandroles_members;
-		Gtk.ListStore assigned_roles;	
+		Gtk.ListStore assigned_roles;
+
+        UUID request_members;
+        UUID request_titles;
+        UUID request_roles;
+        UUID request_roles_members;
 
         bool nobody_cares = false;
 		
@@ -73,16 +78,16 @@ namespace omvviewerlight
 			
 			
 			MainClass.client.Groups.OnGroupProfile += new OpenMetaverse.GroupManager.GroupProfileCallback(onGroupProfile);
-			MainClass.client.Groups.OnGroupMembers += new OpenMetaverse.GroupManager.GroupMembersCallback(onGroupMembers);
-			MainClass.client.Groups.OnGroupTitles += new OpenMetaverse.GroupManager.GroupTitlesCallback(onGroupTitles);
-			MainClass.client.Groups.OnGroupRoles += new OpenMetaverse.GroupManager.GroupRolesCallback(onGroupRoles);
-			MainClass.client.Groups.OnGroupRolesMembers += new OpenMetaverse.GroupManager.GroupRolesMembersCallback(onGroupRolesMembers);
+            MainClass.client.Groups.OnGroupMembers += new OpenMetaverse.GroupManager.GroupMembersCallback(onGroupMembers);
+            MainClass.client.Groups.OnGroupTitles += new OpenMetaverse.GroupManager.GroupTitlesCallback(onGroupTitles);
+            MainClass.client.Groups.OnGroupRoles += new OpenMetaverse.GroupManager.GroupRolesCallback(onGroupRoles);
+            MainClass.client.Groups.OnGroupRolesMembers += new OpenMetaverse.GroupManager.GroupRolesMembersCallback(onGroupRolesMembers);
 			
 			MainClass.client.Groups.RequestGroupProfile(group.ID);
-			MainClass.client.Groups.RequestGroupMembers(group.ID);
-			MainClass.client.Groups.RequestGroupTitles(group.ID);
-			MainClass.client.Groups.RequestGroupRoles(group.ID);
-			MainClass.client.Groups.RequestGroupRoleMembers(group.ID);
+            request_members = MainClass.client.Groups.RequestGroupMembers(group.ID);
+            request_titles = MainClass.client.Groups.RequestGroupTitles(group.ID);
+            request_roles = MainClass.client.Groups.RequestGroupRoles(group.ID);
+            request_roles_members = MainClass.client.Groups.RequestGroupRoleMembers(group.ID);
 			
 			TryGetImage img=new TryGetImage(this.image_group_emblem,group.InsigniaID);
 			this.label_name.Text=group.Name;
@@ -108,14 +113,14 @@ namespace omvviewerlight
 		{
 			Console.Write("Group roles members recieved\n");
 
-			rolesmembers=rolesmember;
+			//rolesmembers=rolesmember;
 		}
 		
 		void onGroupRoles(Dictionary <UUID, GroupRole> roles)
 		{
 			// Maybe we should flag up that the roles have been recieved?
 			Console.Write("Group roles recieved\n");
-			grouproles=roles;
+			//grouproles=roles;
 
 		}
 		
@@ -253,6 +258,8 @@ namespace omvviewerlight
 			//This is the Members List on the Members role tab
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
+            Dictionary <UUID, GroupRole> grouproles;
+            List<KeyValuePair<UUID,UUID>> rolesmembers;
 			
 			if(this.treeview_members1.Selection.GetSelected(out mod,out iter))			
 			{
@@ -261,7 +268,10 @@ namespace omvviewerlight
 				//Now populate the roles list
 				//MainClass.client.Groups.GroupMembersCaches.TryGetValue(id,out group);
 				//MainClass.client.Groups.
-				this.assigned_roles.Clear();
+                MainClass.client.Groups.GroupRolesCaches.TryGetValue(request_roles, out grouproles);
+                MainClass.client.Groups.GroupRolesMembersCaches.TryGetValue(request_roles_members, out rolesmembers);
+
+    				this.assigned_roles.Clear();
 				
 			    Console.Write("Got group roles from cache\n");
 	
@@ -270,7 +280,7 @@ namespace omvviewerlight
 					bool ingroup=false;
 					Console.Write("Appending value "+kvp.Value.Name+"\n");
 
-					foreach(KeyValuePair<UUID,UUID> rolesmember in this.rolesmembers)
+					foreach(KeyValuePair<UUID,UUID> rolesmember in rolesmembers)
 					{
 						if(rolesmember.Value==id && kvp.Value.ID==rolesmember.Key)
 							ingroup=true;
