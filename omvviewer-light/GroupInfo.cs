@@ -79,7 +79,9 @@ namespace omvviewerlight
 			
             //Tree view for group notices
             notice_list = new Gtk.ListStore(typeof(string), typeof(string), typeof(UUID));
-            
+            this.treeview_notice_list.AppendColumn("From", new CellRendererText(), "text", 0);
+            this.treeview_notice_list.AppendColumn("Subject", new CellRendererText(), "text", 1);
+            this.treeview_notice_list.Model = notice_list;
 			
 			MainClass.client.Groups.OnGroupProfile += new OpenMetaverse.GroupManager.GroupProfileCallback(onGroupProfile);
             MainClass.client.Groups.OnGroupMembers += new OpenMetaverse.GroupManager.GroupMembersCallback(onGroupMembers);
@@ -117,9 +119,11 @@ namespace omvviewerlight
 
         void Groups_OnGroupNoticesList(UUID groupID, GroupNoticeList notice)
         {
-        
+            if (groupID != this.groupkey)
+                return;
             Console.Write("Notice list entry: From: "+notice.FromName+"\nSubject: "+notice.Subject + "\n");
 
+            this.notice_list.AppendValues(notice.FromName, notice.Subject, notice.NoticeID);
         }
 
 		void onGroupRolesMembers(List<KeyValuePair<UUID,UUID>> rolesmember)
