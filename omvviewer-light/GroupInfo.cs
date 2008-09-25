@@ -33,8 +33,11 @@ namespace omvviewerlight
 	
 	public partial class GroupInfo : Gtk.Window
 	{
+		Dictionary <UUID, GroupRole> grouproles;
+		List<KeyValuePair<UUID,UUID>> rolesmembers;
 		Gtk.ListStore store_members;		
 		Gtk.ListStore store_membersandroles_members;
+		Gtk.ListStore assigned_roles;	
 
         bool nobody_cares = false;
 		
@@ -61,19 +64,25 @@ namespace omvviewerlight
 			this.treeview_members1.AppendColumn("Land",new CellRendererText(),"text",1);
 			this.treeview_members1.AppendColumn("Title",new CellRendererText(),"text",2);
 			this.treeview_members1.Model=store_membersandroles_members;		
-			
-			treeview_members.AppendColumn("Role",new CellRendererText(),"text",0);
+
+			//Tree view for Roles
+			assigned_roles = new Gtk.ListStore (typeof(bool),typeof(string),typeof(UUID));					
+			this.treeview_assigned_roles.AppendColumn("",new Gtk.CellRendererToggle(),"active",0);
+			this.treeview_assigned_roles.AppendColumn("Role",new CellRendererText(),"text",1);
+			this.treeview_assigned_roles.Model=assigned_roles;
 			
 			
 			MainClass.client.Groups.OnGroupProfile += new OpenMetaverse.GroupManager.GroupProfileCallback(onGroupProfile);
 			MainClass.client.Groups.OnGroupMembers += new OpenMetaverse.GroupManager.GroupMembersCallback(onGroupMembers);
 			MainClass.client.Groups.OnGroupTitles += new OpenMetaverse.GroupManager.GroupTitlesCallback(onGroupTitles);
 			MainClass.client.Groups.OnGroupRoles += new OpenMetaverse.GroupManager.GroupRolesCallback(onGroupRoles);
+			MainClass.client.Groups.OnGroupRolesMembers += new OpenMetaverse.GroupManager.GroupRolesMembersCallback(onGroupRolesMembers);
 			
 			MainClass.client.Groups.RequestGroupProfile(group.ID);
 			MainClass.client.Groups.RequestGroupMembers(group.ID);
 			MainClass.client.Groups.RequestGroupTitles(group.ID);
 			MainClass.client.Groups.RequestGroupRoles(group.ID);
+			MainClass.client.Groups.RequestGroupRoleMembers(group.ID);
 			
 			TryGetImage img=new TryGetImage(this.image_group_emblem,group.InsigniaID);
 			this.label_name.Text=group.Name;
@@ -95,13 +104,22 @@ namespace omvviewerlight
 	
 		}
 
+		void onGroupRolesMembers(List<KeyValuePair<UUID,UUID>> rolesmember)
+		{
+			Console.Write("Group roles members recieved\n");
+
+			rolesmembers=rolesmember;
+		}
+		
 		void onGroupRoles(Dictionary <UUID, GroupRole> roles)
 		{
 			// Maybe we should flag up that the roles have been recieved?
-			
+			Console.Write("Group roles recieved\n");
+			grouproles=roles;
+
 		}
 		
-         [GLib.ConnectBefore]
+        [GLib.ConnectBefore]
         void GroupWindow_DeleteEvent(object o, DeleteEventArgs args)
         {
             nobody_cares = true;
@@ -239,25 +257,28 @@ namespace omvviewerlight
 			if(this.treeview_members1.Selection.GetSelected(out mod,out iter))			
 			{
 				UUID id=(UUID)mod.GetValue(iter,3);
+				Console.Write("Selected id "+id.ToString()+"\n");
 				//Now populate the roles list
-				Dictionary<UUID,GroupRole> grouproles;
 				//MainClass.client.Groups.GroupMembersCaches.TryGetValue(id,out group);
-				if(MainClass.client.Groups.GroupRolesCaches.TryGetValue(id,out grouproles))
+				//MainClass.client.Groups.
+				this.assigned_roles.Clear();
+				
+			    Console.Write("Got group roles from cache\n");
+	
+				foreach(KeyValuePair<UUID,GroupRole> kvp in grouproles)
 				{
-					    Gtk.ListStore assigned_roles;	
-						assigned_roles = new Gtk.ListStore (typeof(string),typeof(UUID));			
-						this.treeview_assigned_roles.Model=assigned_roles;
-		
-					foreach(KeyValuePair<UUID,GroupRole> kvp in grouproles)
+					bool ingroup=false;
+					Console.Write("Appending value "+kvp.Value.Name+"\n");
+
+					foreach(KeyValuePair<UUID,UUID> rolesmember in this.rolesmembers)
 					{
-						
-						assigned_roles.AppendValues(kvp.Value.Name,kvp.Value.ID);
-						
+						if(rolesmember.Value==id && kvp.Value.ID==rolesmember.Key)
+							ingroup=true;
 					}
 					
-					
+					assigned_roles.AppendValues(ingroup,kvp.Value.Name,kvp.Value.ID);	
 				}
-				
+									
 			}
 		}
 		
