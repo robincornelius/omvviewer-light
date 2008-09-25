@@ -414,22 +414,9 @@ namespace omvviewerlight
 			if(im_key!=OpenMetaverse.UUID.Zero)
 			{
 				MainClass.client.Self.InstantMessage(im_key,entry_chat.Text);
-
-				string buffer;
-				TextIter iter;
-			
-				iter=textview_chat.Buffer.EndIter;
-				buffer=MainClass.client.Self.Name+": ";
-				textview_chat.Buffer.InsertWithTags(ref iter,buffer,bold);
-			
-				buffer=entry_chat.Text+"\n";
-				textview_chat.Buffer.InsertWithTags(ref iter,buffer,avchat);
-			
-				textview_chat.ScrollMarkOnscreen(textview_chat.Buffer.InsertMark);
-
+				this.displaychat(entry_chat.Text,MainClass.client.Self.Name,avchat,bold);
 				this.entry_chat.Text="";
 				istypingsent=false;
-								
 				return;
 			}
 			
