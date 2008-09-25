@@ -2374,7 +2374,7 @@ Resident Michelle2 Zenovka
         <property name="MemberName" />
         <property name="WidthRequest">160</property>
         <property name="CanFocus">True</property>
-        <property name="CurrentPage">2</property>
+        <property name="CurrentPage">1</property>
         <child>
           <widget class="Gtk.VBox" id="vbox1">
             <property name="MemberName" />
@@ -2695,7 +2695,7 @@ Resident Michelle2 Zenovka
         <child>
           <widget class="Gtk.Label" id="label2">
             <property name="MemberName" />
-            <property name="LabelProp" translatable="yes">1st Life</property>
+            <property name="LabelProp" translatable="yes">2nd Life</property>
           </widget>
           <packing>
             <property name="type">tab</property>
@@ -2746,7 +2746,7 @@ Resident Michelle2 Zenovka
         <child>
           <widget class="Gtk.Label" id="label3">
             <property name="MemberName" />
-            <property name="LabelProp" translatable="yes">2nd Life</property>
+            <property name="LabelProp" translatable="yes">1st Life</property>
           </widget>
           <packing>
             <property name="type">tab</property>
@@ -4023,9 +4023,8 @@ Resident Michelle2 Zenovka
                 <property name="MemberName" />
                 <property name="ShadowType">In</property>
                 <child>
-                  <widget class="Gtk.TextView" id="textview2">
+                  <widget class="Gtk.TextView" id="textview_notice">
                     <property name="MemberName" />
-                    <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>
                     <property name="Text" translatable="yes" />

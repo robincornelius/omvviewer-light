@@ -602,6 +602,9 @@ public partial class MainWindow: Gtk.Window
         if (im.Dialog == OpenMetaverse.InstantMessageDialog.StopTyping)
             return;
 
+		if(im.Dialog==OpenMetaverse.InstantMessageDialog.GroupNoticeRequested)
+			return;
+		
 		if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryOffered)
 			return;
 			

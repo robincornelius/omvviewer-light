@@ -90,6 +90,8 @@ namespace omvviewerlight
             MainClass.client.Groups.OnGroupRolesMembers += new OpenMetaverse.GroupManager.GroupRolesMembersCallback(onGroupRolesMembers);
             MainClass.client.Groups.OnGroupNoticesList += new GroupManager.GroupNoticesListCallback(Groups_OnGroupNoticesList);
 
+			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);			
+			
 			MainClass.client.Groups.RequestGroupProfile(group.ID);
             request_members = MainClass.client.Groups.RequestGroupMembers(group.ID);
             request_titles = MainClass.client.Groups.RequestGroupTitles(group.ID);
@@ -148,7 +150,13 @@ namespace omvviewerlight
             MainClass.client.Groups.OnGroupProfile -= new OpenMetaverse.GroupManager.GroupProfileCallback(onGroupProfile);
             MainClass.client.Groups.OnGroupMembers -= new OpenMetaverse.GroupManager.GroupMembersCallback(onGroupMembers);
             MainClass.client.Groups.OnGroupTitles -= new OpenMetaverse.GroupManager.GroupTitlesCallback(onGroupTitles);
-            this.DeleteEvent -= new DeleteEventHandler(GroupWindow_DeleteEvent);
+            MainClass.client.Groups.OnGroupRoles -= new OpenMetaverse.GroupManager.GroupRolesCallback(onGroupRoles);
+            MainClass.client.Groups.OnGroupRolesMembers -= new OpenMetaverse.GroupManager.GroupRolesMembersCallback(onGroupRolesMembers);
+            MainClass.client.Groups.OnGroupNoticesList -= new GroupManager.GroupNoticesListCallback(Groups_OnGroupNoticesList);
+			MainClass.client.Self.OnInstantMessage -= new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);			
+			     
+			
+			this.DeleteEvent -= new DeleteEventHandler(GroupWindow_DeleteEvent);
         }
 		
 		void onGroupTitles(Dictionary <UUID,OpenMetaverse.GroupTitle> titles)
@@ -319,8 +327,18 @@ namespace omvviewerlight
 			{
 				UUID id=(UUID)mod.GetValue(iter,2);
 				MainClass.client.Groups.RequestGroupNotice(id);
+				this.entry1.Text=(string)mod.GetValue(iter,1);
 			}
 		
+		}
+		
+		void onIM(InstantMessage im, Simulator sim)
+		{
+			
+			if(im.Dialog!=OpenMetaverse.InstantMessageDialog.GroupNoticeRequested)
+				return;
+			
+			textview_notice.Buffer.SetText(im.Message);
 		}
 		
 		
