@@ -101,7 +101,7 @@ namespace omvviewerlight {
         
         private Gtk.ScrolledWindow GtkScrolledWindow2;
         
-        private Gtk.TextView textview1;
+        private Gtk.TreeView treeview_notice_list;
         
         private Gtk.HBox hbox4;
         
@@ -133,7 +133,7 @@ namespace omvviewerlight {
             this.notebook1 = new Gtk.Notebook();
             this.notebook1.CanFocus = true;
             this.notebook1.Name = "notebook1";
-            this.notebook1.CurrentPage = 1;
+            this.notebook1.CurrentPage = 2;
             // Container child notebook1.Gtk.Notebook+NotebookChild
             this.vbox1 = new Gtk.VBox();
             this.vbox1.Name = "vbox1";
@@ -492,10 +492,11 @@ namespace omvviewerlight {
             this.GtkScrolledWindow2.Name = "GtkScrolledWindow2";
             this.GtkScrolledWindow2.ShadowType = ((Gtk.ShadowType)(1));
             // Container child GtkScrolledWindow2.Gtk.Container+ContainerChild
-            this.textview1 = new Gtk.TextView();
-            this.textview1.CanFocus = true;
-            this.textview1.Name = "textview1";
-            this.GtkScrolledWindow2.Add(this.textview1);
+            this.treeview_notice_list = new Gtk.TreeView();
+            this.treeview_notice_list.CanFocus = true;
+            this.treeview_notice_list.Name = "treeview_notice_list";
+            this.treeview_notice_list.HeadersClickable = true;
+            this.GtkScrolledWindow2.Add(this.treeview_notice_list);
             this.vbox5.Add(this.GtkScrolledWindow2);
             Gtk.Box.BoxChild w40 = ((Gtk.Box.BoxChild)(this.vbox5[this.GtkScrolledWindow2]));
             w40.Position = 0;
