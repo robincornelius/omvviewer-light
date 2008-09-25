@@ -327,6 +327,8 @@ namespace omvviewerlight
 			
 			UUID key=(UUID)this.inventory.GetValue(args.Iter,2);
 			InventoryBase item=(InventoryBase)this.inventory.GetValue(args.Iter,3);
+            if (item == null)
+                return;
 			if(item is InventoryFolder)
 			{
 				image=getprettyfoldericon((InventoryFolder)item);	
