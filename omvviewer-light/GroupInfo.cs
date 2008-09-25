@@ -38,6 +38,7 @@ namespace omvviewerlight
 		Gtk.ListStore store_members;		
 		Gtk.ListStore store_membersandroles_members;
 		Gtk.ListStore assigned_roles;
+        Gtk.ListStore notice_list;
 
         UUID request_members;
         UUID request_titles;
@@ -76,18 +77,23 @@ namespace omvviewerlight
 			this.treeview_assigned_roles.AppendColumn("Role",new CellRendererText(),"text",1);
 			this.treeview_assigned_roles.Model=assigned_roles;
 			
+            //Tree view for group notices
+            notice_list = new Gtk.ListStore(typeof(string), typeof(string), typeof(UUID));
+            
 			
 			MainClass.client.Groups.OnGroupProfile += new OpenMetaverse.GroupManager.GroupProfileCallback(onGroupProfile);
             MainClass.client.Groups.OnGroupMembers += new OpenMetaverse.GroupManager.GroupMembersCallback(onGroupMembers);
             MainClass.client.Groups.OnGroupTitles += new OpenMetaverse.GroupManager.GroupTitlesCallback(onGroupTitles);
             MainClass.client.Groups.OnGroupRoles += new OpenMetaverse.GroupManager.GroupRolesCallback(onGroupRoles);
             MainClass.client.Groups.OnGroupRolesMembers += new OpenMetaverse.GroupManager.GroupRolesMembersCallback(onGroupRolesMembers);
-			
+            MainClass.client.Groups.OnGroupNoticesList += new GroupManager.GroupNoticesListCallback(Groups_OnGroupNoticesList);
+
 			MainClass.client.Groups.RequestGroupProfile(group.ID);
             request_members = MainClass.client.Groups.RequestGroupMembers(group.ID);
             request_titles = MainClass.client.Groups.RequestGroupTitles(group.ID);
             request_roles = MainClass.client.Groups.RequestGroupRoles(group.ID);
             request_roles_members = MainClass.client.Groups.RequestGroupRoleMembers(group.ID);
+            MainClass.client.Groups.RequestGroupNoticeList(group.ID);
 			
 			TryGetImage img=new TryGetImage(this.image_group_emblem,group.InsigniaID);
 			this.label_name.Text=group.Name;
@@ -108,6 +114,13 @@ namespace omvviewerlight
             this.DeleteEvent += new DeleteEventHandler(GroupWindow_DeleteEvent);
 	
 		}
+
+        void Groups_OnGroupNoticesList(UUID groupID, GroupNoticeList notice)
+        {
+        
+            Console.Write("Notice list entry: From: "+notice.FromName+"\nSubject: "+notice.Subject + "\n");
+
+        }
 
 		void onGroupRolesMembers(List<KeyValuePair<UUID,UUID>> rolesmember)
 		{
