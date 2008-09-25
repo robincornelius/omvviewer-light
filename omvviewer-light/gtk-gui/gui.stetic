@@ -3972,6 +3972,7 @@ Resident Michelle2 Zenovka
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>
                     <property name="HeadersClickable">True</property>
+                    <signal name="CursorChanged" handler="OnTreeviewNoticeListCursorChanged" />
                   </widget>
                 </child>
               </widget>

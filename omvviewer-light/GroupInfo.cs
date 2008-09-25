@@ -308,6 +308,20 @@ namespace omvviewerlight
 									
 			}
 		}
+
+		protected virtual void OnTreeviewNoticeListCursorChanged (object sender, System.EventArgs e)
+		{
+			//This is the Members List on the Members role tab
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(this.treeview_notice_list.Selection.GetSelected(out mod,out iter))			
+			{
+				UUID id=(UUID)mod.GetValue(iter,2);
+				MainClass.client.Groups.RequestGroupNotice(id);
+			}
+		
+		}
 		
 		
 	}

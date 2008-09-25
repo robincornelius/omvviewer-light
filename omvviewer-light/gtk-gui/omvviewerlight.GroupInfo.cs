@@ -600,6 +600,7 @@ namespace omvviewerlight {
             this.checkbutton_group_notices.Clicked += new System.EventHandler(this.OnCheckbuttonGroupNoticesClicked);
             this.checkbutton_showinpofile.Clicked += new System.EventHandler(this.OnCheckbuttonShowinpofileClicked);
             this.treeview_members1.CursorChanged += new System.EventHandler(this.OnTreeviewMembers1CursorChanged);
+            this.treeview_notice_list.CursorChanged += new System.EventHandler(this.OnTreeviewNoticeListCursorChanged);
         }
     }
 }
