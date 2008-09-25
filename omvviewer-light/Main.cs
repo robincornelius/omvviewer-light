@@ -109,7 +109,7 @@ namespace omvviewerlight
                     Console.Write(ee.Source + "\n");
                     Console.Write(ee.StackTrace + "\n");
                     Console.Write(ee.TargetSite + "\n");
-                    ee = e.InnerException;
+                    ee = ee.InnerException;
                 }
 
                
