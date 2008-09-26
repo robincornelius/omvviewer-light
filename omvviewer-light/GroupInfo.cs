@@ -39,6 +39,7 @@ namespace omvviewerlight
 		Gtk.ListStore store_membersandroles_members;
 		Gtk.ListStore assigned_roles;
         Gtk.ListStore notice_list;
+        Gtk.ListStore store_membersandroles_powers;
 
         UUID request_members;
         UUID request_titles;
@@ -82,7 +83,12 @@ namespace omvviewerlight
             this.treeview_notice_list.AppendColumn("From", new CellRendererText(), "text", 0);
             this.treeview_notice_list.AppendColumn("Subject", new CellRendererText(), "text", 1);
             this.treeview_notice_list.Model = notice_list;
-			
+
+            store_membersandroles_powers = new Gtk.ListStore(typeof(bool), typeof(string), typeof(UUID));
+            this.treeview_allowed_ability1.AppendColumn("", new Gtk.CellRendererToggle(), "active", 0);
+            this.treeview_allowed_ability1.AppendColumn("Role", new CellRendererText(), "text", 1);
+            this.treeview_allowed_ability1.Model = store_membersandroles_powers;
+
 			MainClass.client.Groups.OnGroupProfile += new OpenMetaverse.GroupManager.GroupProfileCallback(onGroupProfile);
             MainClass.client.Groups.OnGroupMembers += new OpenMetaverse.GroupManager.GroupMembersCallback(onGroupMembers);
             MainClass.client.Groups.OnGroupTitles += new OpenMetaverse.GroupManager.GroupTitlesCallback(onGroupTitles);
@@ -284,19 +290,46 @@ namespace omvviewerlight
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
             Dictionary <UUID, GroupRole> grouproles;
+            Dictionary<UUID, GroupMember> groupmembers;
             List<KeyValuePair<UUID,UUID>> rolesmembers;
 			
 			if(this.treeview_members1.Selection.GetSelected(out mod,out iter))			
 			{
 				UUID id=(UUID)mod.GetValue(iter,3);
 				Console.Write("Selected id "+id.ToString()+"\n");
+                GroupMember member;
 				//Now populate the roles list
 				//MainClass.client.Groups.GroupMembersCaches.TryGetValue(id,out group);
 				//MainClass.client.Groups.
                 MainClass.client.Groups.GroupRolesCaches.TryGetValue(request_roles, out grouproles);
                 MainClass.client.Groups.GroupRolesMembersCaches.TryGetValue(request_roles_members, out rolesmembers);
+                MainClass.client.Groups.GroupMembersCaches.TryGetValue(request_members, out groupmembers);
 
-    				this.assigned_roles.Clear();
+                store_membersandroles_powers.Clear();
+
+
+
+                if (groupmembers.TryGetValue(id, out member))
+                {
+                    Gtk.TreeIter iterx;
+                    iterx = this.store_membersandroles_powers.AppendValues("", "Parcel Managment", UUID.Zero);
+                    iterx = this.store_membersandroles_powers.AppendValues("", "Parcel Identy", UUID.Zero);
+                    iterx = this.store_membersandroles_powers.AppendValues("", "Parcel Settings", UUID.Zero);
+                    iterx = this.store_membersandroles_powers.AppendValues("", "Parcel Powers", UUID.Zero);
+                    iterx = this.store_membersandroles_powers.AppendValues("", "Parcel Access", UUID.Zero);
+                    iterx = this.store_membersandroles_powers.AppendValues("", "Parcel Content", UUID.Zero);
+                    iterx = this.store_membersandroles_powers.AppendValues("", "Object Managment", UUID.Zero);
+                    iterx = this.store_membersandroles_powers.AppendValues("", "Notices", UUID.Zero);
+                    iterx = this.store_membersandroles_powers.AppendValues("", "Proposals", UUID.Zero);
+                    iterx = this.store_membersandroles_powers.AppendValues("", "Chat", UUID.Zero);
+
+               //     this.store_membersandroles_powers.AppendValues(
+    
+                }
+
+
+
+    		    this.assigned_roles.Clear();
 				
 			    Console.Write("Got group roles from cache\n");
 	
