@@ -5,7 +5,7 @@
     <target-gtk-version>2.12.1</target-gtk-version>
   </configuration>
   <import>
-    <widget-library name="../bin/omvviewer-light.exe" internal="true" />
+    <widget-library name="../omvviewer-light.exe" internal="true" />
   </import>
   <widget class="Gtk.Window" id="MainWindow" design-size="812 629">
     <action-group name="Default">

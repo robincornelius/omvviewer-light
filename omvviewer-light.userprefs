@@ -6,26 +6,24 @@
     <File name="omvviewer-light/TryGetImage.cs" line="103" column="35" />
     <File name="omvviewer-light/MainWindow.cs" line="121" column="105" />
     <File name="omvviewer-light/ProfileVIew.cs" line="1" column="1" />
-    <File name="omvviewer-light/ChatConsole.cs" line="424" column="9" />
-    <File name="omvviewer-light/Searchs.cs" line="1" column="1" />
-    <File name="omvviewer-light/gtk-gui/omvviewerlight.Movment.cs" line="33" column="10" />
-    <File name="omvviewer-light/AssemblyInfo.cs" line="1" column="1" />
-    <File name="omvviewer-light/gtk-gui/MainWindow.cs" line="8" column="10" />
     <File name="omvviewer-light/aPick.cs" line="36" column="92" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
-          <Node name="References" expanded="True">
-            <Node name="OpenMetaverse" selected="True" />
+          <Node name="References" expanded="True" selected="True" />
+          <Node name="UserInterface" expanded="True">
+            <Node name="omvviewerlight.Movment">
+              <Option id="GroupCodeBehind" value="False" />
+              <Option id="ShowAllFiles" value="False" />
+            </Node>
           </Node>
-          <Node name="gtk-gui" expanded="True" />
         </Node>
       </Node>
     </ViewMemento>
     <ViewMemento id="ClassPad">
-      <Node />
+      <Node expanded="True" />
     </ViewMemento>
   </Views>
   <Properties>

@@ -10,7 +10,7 @@
         <WarningLevel>4</WarningLevel>
         <WarningsAsErrors>false</WarningsAsErrors>
         <SuppressWarnings>1591,1574,0419,0618</SuppressWarnings>
-        <OutputPath>bin</OutputPath>
+        <OutputPath>omvviewer-light/bin</OutputPath>
         <DebugInformation>true</DebugInformation>
         <IncrementalBuild>true</IncrementalBuild>
         <NoStdLib>false</NoStdLib>
@@ -25,7 +25,7 @@
         <WarningLevel>4</WarningLevel>
         <WarningsAsErrors>false</WarningsAsErrors>
         <SuppressWarnings>1591,1574,0419,0618</SuppressWarnings>
-        <OutputPath>bin</OutputPath>
+        <OutputPath>omvviewer-light/bin</OutputPath>
         <DebugInformation>false</DebugInformation>
         <IncrementalBuild>true</IncrementalBuild>
         <NoStdLib>false</NoStdLib>
@@ -37,30 +37,28 @@
     <Project name="omvviewer-light" path="omvviewer-light/" type="WinExe">
       <Configuration name="Debug">
         <Options>
-          <OutputPath>bin/Debug</OutputPath>
+          <OutputPath>omvviewer-light/bin/</OutputPath>
         </Options>
       </Configuration>
       <Configuration name="Release">
         <Options>
-          <OutputPath>bin/Release</OutputPath>
+          <OutputPath>omvviewer-light/bin/</OutputPath>
         </Options>
       </Configuration>
 
-      <ReferencePath>bin/Debug</ReferencePath>
+
+      <ReferencePath>omvviewer-light/bin/</ReferencePath>
       <Reference name="System"/>
       <Reference name="System.Configuration"/>
       <Reference name="System.Drawing"/>
+      <Reference name="Mono.Posix"/>
       <Reference name="OpenMetaverse"/>
       <Reference name="OpenMetaverseTypes"/>
       <Reference name="log4net"/>
-      <Reference name="Mono.Posix"/>
-      <Reference name="gdk-sharp"/>
-      <Reference name="glade-sharp"/>
-      <Reference name="gtk-sharp"/>
-      <Reference name="pango-sharp"/>
 
       <Files>
-        <Match pattern="*.cs" recurse="true"/>
+        <Match pattern="*.cs" recurse="true">
+	</Match>
        </Files>
     </Project>
 

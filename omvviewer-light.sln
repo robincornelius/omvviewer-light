@@ -1,8 +1,8 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "omvviewer-light", "../omvviewer-light/omvviewer-light/omvviewer-light.csproj", "{2A2F56B4-DC24-40CB-B5A0-DB13106455B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "omvviewer-light", "../omvviewer-light/omvviewer-light/omvviewer-light.csproj", "{AB62691E-6F93-4A5A-83B7-9E3ADF6F03FB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{37ABFAAA-1DB2-4C4F-9844-815A51A433EA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{DED0C252-9D87-4F56-9176-DD31C458866E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,9 +10,9 @@ Global
 		Debug|Any CPU = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2A2F56B4-DC24-40CB-B5A0-DB13106455B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2A2F56B4-DC24-40CB-B5A0-DB13106455B4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2A2F56B4-DC24-40CB-B5A0-DB13106455B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2A2F56B4-DC24-40CB-B5A0-DB13106455B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB62691E-6F93-4A5A-83B7-9E3ADF6F03FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB62691E-6F93-4A5A-83B7-9E3ADF6F03FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB62691E-6F93-4A5A-83B7-9E3ADF6F03FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB62691E-6F93-4A5A-83B7-9E3ADF6F03FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal
