@@ -1,310 +1,274 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
-    <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{11CC1B79-6496-49D0-BCCE-9B3C366D3668}</ProjectGuid>
-    <RootNamespace>
-    </RootNamespace>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AB62691E-6F93-4A5A-83B7-9E3ADF6F03FB}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon></ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>omvviewer-light</AssemblyName>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder></AppDesignerFolder>
+    <RootNamespace>omvviewer-light</RootNamespace>
+    <StartupObject></StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <OldToolsVersion>2.0</OldToolsVersion>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <OutputType>WinExe</OutputType>
-    <StartupObject>omvviewerlight.MainClass</StartupObject>
-    <ManifestCertificateThumbprint>0DB8568C639B078DA9EBBB6B1FDAC8FAC1426128</ManifestCertificateThumbprint>
-    <ManifestKeyFile>omvviewer-light_TemporaryKey.pfx</ManifestKeyFile>
-    <GenerateManifests>true</GenerateManifests>
-    <SignManifests>true</SignManifests>
-    <ApplicationIcon>omvviewer.ico</ApplicationIcon>
-    <NoWin32Manifest>true</NoWin32Manifest>
-    <PublishUrl>c:\deploy\omvviewer-light\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ProductName>omvviewer-light</ProductName>
-    <PublisherName>Robin Cornelius</PublisherName>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>0.3.0.0</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputType>Exe</OutputType>
-    <AssemblyName>omvviewer-light</AssemblyName>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DebugSymbols>true</DebugSymbols>
-    <RootNamespace>
-    </RootNamespace>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DefineConstants>DEBUG</DefineConstants>
-    <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputType>Exe</OutputType>
-    <AssemblyName>omvviewer-light</AssemblyName>
-    <OutputPath>bin\Release\</OutputPath>
-    <DebugSymbols>true</DebugSymbols>
-    <RootNamespace>
-    </RootNamespace>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>false</Optimize>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DefineConstants>
-    </DefineConstants>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile></DocumentationFile>
+    <DebugSymbols>False</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>True</Optimize>
+    <OutputPath>omvviewer-light/bin/</OutputPath>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <RemoveIntegerChecks>False</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <DebugType>full</DebugType>
+    <NoWarn>1591,1574,0419,0618</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DocumentationFile></DocumentationFile>
+    <DebugSymbols>True</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>False</Optimize>
+    <OutputPath>omvviewer-light/bin/</OutputPath>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <RemoveIntegerChecks>False</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1591,1574,0419,0618</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="atk-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files\Mono-1.9.1\lib\mono\gtk-sharp-2.0\atk-sharp.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System">
+        <Name>System</Name>
+      <HintPath>\System.dll</HintPath>
     </Reference>
-    <Reference Include="gdk-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files\Mono-1.9.1\lib\mono\gtk-sharp-2.0\gdk-sharp.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Configuration">
+        <Name>System.Configuration</Name>
+      <HintPath>\System.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="glib-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files\Mono-1.9.1\lib\mono\gtk-sharp-2.0\glib-sharp.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Drawing">
+        <Name>System.Drawing</Name>
+      <HintPath>\System.Drawing.dll</HintPath>
     </Reference>
-    <Reference Include="gtk-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files\Mono-1.9.1\lib\mono\gtk-sharp-2.0\gtk-sharp.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Mono.Posix">
+        <Name>Mono.Posix</Name>
+      <HintPath>\Mono.Posix.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\log4net.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="OpenMetaverse">
+        <Name>OpenMetaverse</Name>
+      <HintPath>\OpenMetaverse.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files\Mono-1.9.1\lib\mono\2.0\Mono.Posix.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="OpenMetaverseTypes">
+        <Name>OpenMetaverseTypes</Name>
+      <HintPath>\OpenMetaverseTypes.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMetaverse, Version=1.0.0.18515, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\OpenMetaverse.dll</HintPath>
+    <Reference Include="log4net">
+        <Name>log4net</Name>
+      <HintPath>\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="OpenMetaverseTypes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="pango-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files\Mono-1.9.1\lib\mono\gtk-sharp-2.0\pango-sharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="gtk-gui\gui.stetic">
-      <LogicalName>gui.stetic</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="gtk-gui\objects.xml">
-      <LogicalName>objects.xml</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="closebox.tga" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="status_health.tga" />
-    <EmbeddedResource Include="status_money.tga" />
-    <EmbeddedResource Include="status_no_build.tga" />
-    <EmbeddedResource Include="status_no_fly.tga" />
-    <EmbeddedResource Include="status_no_push.tga" />
-    <EmbeddedResource Include="status_no_scripts.tga" />
-    <EmbeddedResource Include="status_no_voice.tga" />
-    <EmbeddedResource Include="status_script_debug.tga" />
-    <EmbeddedResource Include="status_voice.tga" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncNameUpdate.cs" />
-    <Compile Include="AVNameCache.cs" />
-    <Compile Include="gtk-gui\generated.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.Inventory.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.NamePicker.cs" />
-    <Compile Include="Inventory.cs" />
-    <Compile Include="MainWindow.cs" />
-    <Compile Include="gtk-gui\MainWindow.cs" />
-    <Compile Include="Main.cs" />
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="LoginControl.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.LoginControl.cs" />
-    <Compile Include="FriendsList.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.FriendsList.cs" />
-    <Compile Include="ChatConsole.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.ChatConsole.cs" />
+    <Compile Include="AVNameCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AsyncNameUpdate.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ChatConsole.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ChatLayout.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FriendsList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Friendshiprequest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GroupInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Groups.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Inventory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Location.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LoginControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Main.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Map.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Movment.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="NamePicker.cs" />
-    <Compile Include="omvviewerlight.Movment.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    <Compile Include="NamePicker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ObjectsLayout.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PayWindow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PlacesSearch.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProfileVIew.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Radar.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ScriptDialogue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Search.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Searchs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Settings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TeleportProgress.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TeleportTo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TryGetImage.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="aPick.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties/Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
+    <Compile Include="Properties/Settings.Designer.cs">
+      <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Radar.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.Radar.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="TeleportTo.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.TeleportTo.cs" />
-    <Compile Include="Map.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.Map.cs" />
-    <Compile Include="Search.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.Search.cs" />
-    <Compile Include="Searchs.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.Searches.cs" />
-    <Compile Include="PlacesSearch.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.PlacesSearch.cs" />
-    <Compile Include="Location.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.Location.cs" />
-    <Compile Include="ChatLayout.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.ChatLayout.cs" />
-    <Compile Include="ObjectsLayout.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.ObjectsLayout.cs" />
-    <Compile Include="PayWindow.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.PayWindow.cs" />
-    <Compile Include="ProfileVIew.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.ProfileVIew.cs" />
-    <Compile Include="aPick.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.aPick.cs" />
-    <Compile Include="Groups.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.Groups.cs" />
-    <Compile Include="TeleportProgress.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.TeleportProgress.cs" />
-    <Compile Include="Friendshiprequest.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.Friendshiprequest.cs" />
-    <Compile Include="TryGetImage.cs" />
-    <Compile Include="ScriptDialogue.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.ScriptDialogue.cs" />
-    <Compile Include="GroupInfo.cs" />
-    <Compile Include="gtk-gui\omvviewerlight.GroupInfo.cs" />
+    <Compile Include="gtk-gui/MainWindow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/generated.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.ChatConsole.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.ChatLayout.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.FriendsList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.Friendshiprequest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.GroupInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.Groups.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.Inventory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.Location.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.LoginControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.Map.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.Movment.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.NamePicker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.ObjectsLayout.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.PayWindow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.PlacesSearch.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.ProfileVIew.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.Radar.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.ScriptDialogue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.Search.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.Searches.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.TeleportProgress.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.TeleportTo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gtk-gui/omvviewerlight.aPick.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Artwork-licence.txt" />
-    <Content Include="GNU-GPLv3.txt" />
-    <Content Include="libsecondlife-licence.txt" />
-    <Content Include="map_home.tga">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="omvviewer-light.ico" />
-    <Content Include="omvviewer.ico" />
-    <Content Include="status_search_btn.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="icn_voice-groupfocus.tga" />
-    <None Include="icn_voice-pvtfocus.tga" />
-    <None Include="icon_avatar_offline.tga" />
-    <None Include="icon_avatar_online.tga" />
-    <None Include="icon_group.tga" />
-    <None Include="icon_place.tga" />
-    <None Include="inv_folder_animation.tga" />
-    <None Include="inv_folder_bodypart.tga" />
-    <None Include="inv_folder_callingcard.tga" />
-    <None Include="inv_folder_clothing.tga" />
-    <None Include="inv_folder_gesture.tga" />
-    <None Include="inv_folder_landmark.tga" />
-    <None Include="inv_folder_lostandfound.tga" />
-    <None Include="inv_folder_notecard.tga" />
-    <None Include="inv_folder_object.tga" />
-    <None Include="inv_folder_plain_closed.tga" />
-    <None Include="inv_folder_plain_open.tga" />
-    <None Include="inv_folder_script.tga" />
-    <None Include="inv_folder_snapshot.tga" />
-    <None Include="inv_folder_sound.tga" />
-    <None Include="inv_folder_texture.tga" />
-    <None Include="inv_folder_trash.tga" />
-    <None Include="inv_item_animation.tga" />
-    <None Include="inv_item_attach.tga" />
-    <None Include="inv_item_callingcard_offline.tga" />
-    <None Include="inv_item_callingcard_online.tga" />
-    <None Include="inv_item_clothing.tga" />
-    <None Include="inv_item_eyes.tga" />
-    <None Include="inv_item_gesture.tga" />
-    <None Include="inv_item_gloves.tga" />
-    <None Include="inv_item_hair.tga" />
-    <None Include="inv_item_jacket.tga" />
-    <None Include="inv_item_landmark.tga" />
-    <None Include="inv_item_landmark_visited.tga" />
-    <None Include="inv_item_notecard.tga" />
-    <None Include="inv_item_object.tga" />
-    <None Include="inv_item_object_multi.tga" />
-    <None Include="inv_item_pants.tga" />
-    <None Include="inv_item_script.tga" />
-    <None Include="inv_item_script_dangerous.tga" />
-    <None Include="inv_item_shape.tga" />
-    <None Include="inv_item_shirt.tga" />
-    <None Include="inv_item_shoes.tga" />
-    <None Include="inv_item_skin.tga" />
-    <None Include="inv_item_skirt.tga" />
-    <None Include="inv_item_snapshot.tga" />
-    <None Include="inv_item_socks.tga" />
-    <None Include="inv_item_sound.tga" />
-    <None Include="inv_item_texture.tga" />
-    <None Include="inv_item_underpants.tga" />
-    <None Include="inv_item_undershirt.tga" />
-    <None Include="item_object.tga" />
-    <None Include="map_avatar_8.tga" />
-    <None Include="map_avatar_above_8.tga" />
-    <None Include="map_avatar_below_8.tga" />
-    <None Include="map_avatar_me_8.tga" />
-    <None Include="omvviewer-light_TemporaryKey.pfx" />
-    <None Include="trying.tga" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Artwork\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>

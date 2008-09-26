@@ -1,25 +1,12 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <PublishUrlHistory>c:\deploy\omvviewer-light\|publish\</PublishUrlHistory>
-    <InstallUrlHistory>
-    </InstallUrlHistory>
-    <SupportUrlHistory>
-    </SupportUrlHistory>
-    <UpdateUrlHistory>
-    </UpdateUrlHistory>
-    <BootstrapperUrlHistory>
-    </BootstrapperUrlHistory>
-    <FallbackCulture>en-US</FallbackCulture>
-    <VerifyUploadedFiles>false</VerifyUploadedFiles>
-    <EnableSecurityDebugging>false</EnableSecurityDebugging>
-    <ReferencePath>C:\Program Files\Mono-1.9.1\bin\;C:\Program Files\Mono-1.9.1\lib\gtk-sharp-2.0\;C:\Program Files\Mono-1.9.1\lib\mono\2.0\</ReferencePath>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ReferencePath>/home/robin/libsecondlife/omvviewer-light/omvviewer-light/omvviewer-light/bin/</ReferencePath>
+    <LastOpenVersion>8.0.50727</LastOpenVersion>
+    <ProjectView>ProjectFiles</ProjectView>
+    <ProjectTrust>0</ProjectTrust>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <StartArguments>
-    </StartArguments>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <StartArguments>
-    </StartArguments>
-  </PropertyGroup>
+  <PropertyGroup Condition = " '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
+  <PropertyGroup Condition = " '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
 </Project>

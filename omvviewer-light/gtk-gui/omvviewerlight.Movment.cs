@@ -13,21 +13,21 @@ namespace omvviewerlight {
     
     public partial class Movment {
         
-//        private Gtk.VBox vbox1;
+        private Gtk.VBox vbox1;
         
-  //      private Gtk.HBox hbox1;
+        private Gtk.HBox hbox1;
         
-    //    private Gtk.Image image_direction;
+        private Gtk.Image image_direction;
         
-      //  private Gtk.SpinButton spinbutton_direction;
+        private Gtk.SpinButton spinbutton_direction;
         
-      //  private Gtk.HBox hbox2;
+        private Gtk.HBox hbox2;
         
-       // private Gtk.Button button1;
+        private Gtk.Button button1;
         
-      //  private Gtk.Button button_fwd;
+        private Gtk.Button button_fwd;
         
-       // private Gtk.Button button3;
+        private Gtk.Button button3;
         
         protected virtual void Build() {
             Stetic.Gui.Initialize(this);
