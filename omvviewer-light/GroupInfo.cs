@@ -44,6 +44,10 @@ namespace omvviewerlight
         Gtk.TreeStore store_roles_abilities;
         Gtk.TreeStore store_roles_members;
 
+        Gtk.TreeStore store_abilities;
+        Gtk.TreeStore store_roles_with_ability;
+        Gtk.TreeStore store_members_with_ability;
+		
         UUID request_members;
         UUID request_titles;
         UUID request_roles;
@@ -81,7 +85,7 @@ namespace omvviewerlight
 			this.treeview_members1.Model=store_membersandroles_members;		
 
 			//Tree view for Roles
-			assigned_roles = new Gtk.ListStore (typeof(bool),typeof(string),typeof(UUID));					
+			assigned_roles = new Gtk.ListStore (typeof(bool),typeof(string),typeof(GroupPowers));					
 			this.treeview_assigned_roles.AppendColumn("",new Gtk.CellRendererToggle(),"active",0);
 			this.treeview_assigned_roles.AppendColumn("Role",new CellRendererText(),"text",1);
 			this.treeview_assigned_roles.Model=assigned_roles;
@@ -92,7 +96,7 @@ namespace omvviewerlight
             this.treeview_notice_list.AppendColumn("Subject", new CellRendererText(), "text", 1);
             this.treeview_notice_list.Model = notice_list;
 
-            store_membersandroles_powers = new Gtk.TreeStore(typeof(Gdk.Pixbuf), typeof(string), typeof(UUID));
+            store_membersandroles_powers = new Gtk.TreeStore(typeof(Gdk.Pixbuf), typeof(string), typeof(GroupPowers));
 			this.treeview_allowed_ability1.AppendColumn("",new CellRendererPixbuf(),"pixbuf",0);
             this.treeview_allowed_ability1.AppendColumn("Role", new CellRendererText(), "text", 1);
             this.treeview_allowed_ability1.Model = store_membersandroles_powers;
@@ -112,6 +116,23 @@ namespace omvviewerlight
 			this.store_roles_members = new Gtk.TreeStore(typeof(string));
 			treeview_roles_assigned_members.AppendColumn("Assigned Members", new CellRendererText(), "text", 0);
 			treeview_roles_assigned_members.Model=this.store_roles_members;
+		
+			this.store_abilities=new Gtk.TreeStore(typeof(Gdk.Pixbuf), typeof(string), typeof(GroupPowers));
+			this.treeview_abilities.AppendColumn("",new CellRendererPixbuf(),"pixbuf",0);
+			this.treeview_abilities.AppendColumn("Abilities", new CellRendererText(), "text", 1);
+			this.treeview_abilities.Model=this.store_abilities;
+			
+			this.store_members_with_ability=new Gtk.TreeStore(typeof(string));
+			this.treeview_members_with_ability.AppendColumn("Members with ability",new CellRendererText(), "text", 0);
+			this.treeview_members_with_ability.Model=this.store_members_with_ability;
+			
+			this.store_roles_with_ability=new Gtk.TreeStore(typeof(string));
+			this.treeview_roles_with_ability.AppendColumn("Roles with ability",new CellRendererText(), "text", 0);
+			this.treeview_roles_with_ability.Model=this.store_roles_with_ability;
+
+			GroupPowers powers=new GroupPowers();
+			this.showpowers(this.store_abilities,powers);
+			this.treeview_abilities.ExpandAll();
 			
 			MainClass.client.Groups.OnGroupProfile += new OpenMetaverse.GroupManager.GroupProfileCallback(onGroupProfile);
             MainClass.client.Groups.OnGroupMembers += new OpenMetaverse.GroupManager.GroupMembersCallback(onGroupMembers);
@@ -147,6 +168,9 @@ namespace omvviewerlight
 			this.textview_group_charter.Buffer.Text=group.Charter;
             this.DeleteEvent += new DeleteEventHandler(GroupWindow_DeleteEvent);
 	
+			this.notebook1.Page=0;
+			this.notebook2.Page=0;
+			
 		}
 
         void Groups_OnGroupNoticesList(UUID groupID, GroupNoticeList notice)
@@ -433,98 +457,147 @@ namespace omvviewerlight
         {
 					Gtk.TreeIter iterx;
 					bool test;
-                    iterx = store.AppendValues(folder_open, "Membership Managment", UUID.Zero);
+                    iterx = store.AppendValues(folder_open, "Membership Managment", GroupPowers.None);
 					test=(powers & GroupPowers.Invite) == GroupPowers.Invite;
-					store.AppendValues(iterx,test?tick:cross,"Invite people to group",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Invite people to group",GroupPowers.Invite);
 					test=(powers & GroupPowers.Eject) == GroupPowers.Eject;
-					store.AppendValues(iterx,test?tick:cross,"Eject members",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Eject members",GroupPowers.Eject);
 					test=(powers & GroupPowers.ChangeOptions) == GroupPowers.ChangeOptions; //?????????
-					store.AppendValues(iterx,test?tick:cross,"Toggle Open Enrollment",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Toggle Open Enrollment",GroupPowers.ChangeOptions);
 		
-					iterx = store.AppendValues(folder_open, "Roles", UUID.Zero);
+					iterx = store.AppendValues(folder_open, "Roles", GroupPowers.None);
 					test=(powers & GroupPowers.CreateRole) == GroupPowers.CreateRole; //?????????
-					store.AppendValues(iterx,test?tick:cross,"Toggle Open Enrollment",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Toggle Open Enrollment",GroupPowers.CreateRole);
 					test=(powers & GroupPowers.DeleteRole) == GroupPowers.DeleteRole; //?????????
-					store.AppendValues(iterx,test?tick:cross,"Delete ROles",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Delete ROles",GroupPowers.DeleteRole);
 					test=(powers & GroupPowers.RoleProperties) == GroupPowers.RoleProperties; //?????????
-					store.AppendValues(iterx,test?tick:cross,"Change ROle names,titles",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Change ROle names,titles",GroupPowers.RoleProperties);
 					test=(powers & GroupPowers.AssignMemberLimited) == GroupPowers.AssignMemberLimited; //?????????
-					store.AppendValues(iterx,test?tick:cross,"Assign Members to Assigners Role",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Assign Members to Assigners Role",GroupPowers.AssignMemberLimited);
 					test=(powers & GroupPowers.AssignMember) == GroupPowers.AssignMember; //?????????
-					store.AppendValues(iterx,test?tick:cross,"Assign Members to Any Role",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Assign Members to Any Role",GroupPowers.AssignMember);
 					test=(powers & GroupPowers.RemoveMember) == GroupPowers.RemoveMember; //?????????
-					store.AppendValues(iterx,test?tick:cross,"Remove Members from Roles",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Remove Members from Roles",GroupPowers.RemoveMember);
 					test=(powers & GroupPowers.ChangeIdentity) == GroupPowers.ChangeIdentity; //?????????
-					store.AppendValues(iterx,test?tick:cross,"Assign and Remove Abilities",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Assign and Remove Abilities",GroupPowers.ChangeIdentity);
 
-					iterx = store.AppendValues(folder_open, "Parcel Managment", UUID.Zero);
+					iterx = store.AppendValues(folder_open, "Parcel Managment", GroupPowers.None);
 					test=(powers & GroupPowers.LandDeed) == GroupPowers.LandDeed; //?????????
-					store.AppendValues(iterx,test?tick:cross,"Deed land and buy land for group",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Deed land and buy land for group",GroupPowers.LandDeed);
 					test=(powers & GroupPowers.LandRelease) == GroupPowers.LandRelease; //?????????
-					store.AppendValues(iterx,test?tick:cross,"Abandon land",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Abandon land",GroupPowers.LandRelease);
 					test=(powers & GroupPowers.LandSetSale) == GroupPowers.LandSetSale; //?????????
-					store.AppendValues(iterx,test?tick:cross,"Set land for sale info",UUID.Zero);					
+					store.AppendValues(iterx,test?tick:cross,"Set land for sale info",GroupPowers.LandSetSale);					
 					test=(powers & GroupPowers.LandDivideJoin) == GroupPowers.LandDivideJoin;
-					store.AppendValues(iterx,test?tick:cross,"Join and Divide Parcels",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Join and Divide Parcels",GroupPowers.LandDivideJoin);
 					                                              
-                    iterx = store.AppendValues(folder_open, "Parcel Identy", UUID.Zero);
+                    iterx = store.AppendValues(folder_open, "Parcel Identy", GroupPowers.None);
 					test=(powers & GroupPowers.FindPlaces) == GroupPowers.FindPlaces;
-					store.AppendValues(iterx,test?tick:cross,"Toggle show in Find Places",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Toggle show in Find Places",GroupPowers.FindPlaces);
 					test=(powers & GroupPowers.LandChangeIdentity) == GroupPowers.LandChangeIdentity;
-					store.AppendValues(iterx,test?tick:cross,"Change parcel name and Description",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Change parcel name and Description",GroupPowers.LandChangeIdentity);
 					test=(powers & GroupPowers.SetLandingPoint) == GroupPowers.SetLandingPoint;
-					store.AppendValues(iterx,test?tick:cross,"Set Landing point",UUID.Zero);				
+					store.AppendValues(iterx,test?tick:cross,"Set Landing point",GroupPowers.SetLandingPoint);				
 						
-					iterx = store.AppendValues(folder_open, "Parcel Settings", UUID.Zero);
+					iterx = store.AppendValues(folder_open, "Parcel Settings", GroupPowers.None);
 					test=(powers & GroupPowers.ChangeMedia) == GroupPowers.ChangeMedia;
-					store.AppendValues(iterx,test?tick:cross,"Change music & media settings",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Change music & media settings",GroupPowers.ChangeMedia);
     				test=(powers & GroupPowers.ChangeOptions) == GroupPowers.ChangeOptions;
-					store.AppendValues(iterx,test?tick:cross,"Toggle various about->land options",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Toggle various about->land options",GroupPowers.ChangeOptions);
                     
-					iterx = store.AppendValues(folder_open, "Parcel Powers", UUID.Zero);
+					iterx = store.AppendValues(folder_open, "Parcel Powers", GroupPowers.None);
     				test=(powers & GroupPowers.AllowEditLand) == GroupPowers.AllowEditLand;
-					store.AppendValues(iterx,test?tick:cross,"Always allow Edit Terrain",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Always allow Edit Terrain",GroupPowers.AllowEditLand);
     				test=(powers & GroupPowers.AllowFly) == GroupPowers.AllowFly;
-					store.AppendValues(iterx,test?tick:cross,"Always allow fly",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Always allow fly",GroupPowers.AllowFly);
     				test=(powers & GroupPowers.AllowRez) == GroupPowers.AllowRez;
-					store.AppendValues(iterx,test?tick:cross,"Always allow Create Objects",UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Always allow Create Objects",GroupPowers.AllowRez);
     				test=(powers & GroupPowers.AllowLandmark) == GroupPowers.AllowLandmark;
-					store.AppendValues(iterx,test,"Always allow Create Landmarks",UUID.Zero);
+					store.AppendValues(iterx,test,"Always allow Create Landmarks",GroupPowers.AllowLandmark);
     				test=(powers & GroupPowers.AllowSetHome) == GroupPowers.AllowSetHome;
-					store.AppendValues(iterx,test?tick:cross,"Allow Set Home to Hete on group land",UUID.Zero);
-					iterx = store.AppendValues(folder_open, "Parcel Access", UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Allow Set Home to Hete on group land",GroupPowers.AllowSetHome);
+					
+			        iterx = store.AppendValues(folder_open, "Parcel Access", GroupPowers.None);
     				test=(powers & GroupPowers.LandManageAllowed) == GroupPowers.LandManageAllowed;
-					store.AppendValues(iterx,test?tick:cross,"Manage parcel Access lists",UUID.Zero);    				test=(powers & GroupPowers.LandManageBanned) == GroupPowers.LandManageBanned;
-					store.AppendValues(iterx,test?tick:cross,"Manage Ban lists",UUID.Zero);    				test=(powers & GroupPowers.LandEjectAndFreeze) == GroupPowers.LandEjectAndFreeze;
-					store.AppendValues(iterx,test?tick:cross,"Eject and freeze Residents on parcel",UUID.Zero);					
-                    iterx = store.AppendValues(folder_open, "Parcel Content", UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Manage parcel Access lists",GroupPowers.LandManageAllowed);    				test=(powers & GroupPowers.LandManageBanned) == GroupPowers.LandManageBanned;
+					store.AppendValues(iterx,test?tick:cross,"Manage Ban lists",GroupPowers.LandManageBanned);    				test=(powers & GroupPowers.LandEjectAndFreeze) == GroupPowers.LandEjectAndFreeze;
+					store.AppendValues(iterx,test?tick:cross,"Eject and freeze Residents on parcel",GroupPowers.LandEjectAndFreeze);					
+                    iterx = store.AppendValues(folder_open, "Parcel Content", GroupPowers.None);
                     test=(powers & GroupPowers.ReturnGroupOwned) == GroupPowers.ReturnGroupOwned;
-					store.AppendValues(iterx,test?tick:cross,"Return objects owner by group",UUID.Zero);                    test=(powers & GroupPowers.ReturnGroupSet) == GroupPowers.ReturnGroupSet;
-					store.AppendValues(iterx,test?tick:cross,"Return objects set to group",UUID.Zero);                    test=(powers & GroupPowers.ReturnNonGroup) == GroupPowers.ReturnNonGroup;
-					store.AppendValues(iterx,test?tick:cross,"Return non-group objects",UUID.Zero);                    test=(powers & GroupPowers.LandGardening) == GroupPowers.LandGardening;
-					store.AppendValues(iterx,test?tick:cross,"Landscaping using Linden Plants",UUID.Zero);					
-                    iterx = store.AppendValues(folder_open, "Object Managment", UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Return objects owner by group",GroupPowers.ReturnGroupSet);                    test=(powers & GroupPowers.ReturnGroupSet) == GroupPowers.ReturnGroupSet;
+					store.AppendValues(iterx,test?tick:cross,"Return objects set to group",GroupPowers.ReturnGroupSet);                    test=(powers & GroupPowers.ReturnNonGroup) == GroupPowers.ReturnNonGroup;
+					store.AppendValues(iterx,test?tick:cross,"Return non-group objects",GroupPowers.ReturnNonGroup);                    test=(powers & GroupPowers.LandGardening) == GroupPowers.LandGardening;
+			store.AppendValues(iterx,test?tick:cross,"Landscaping using Linden Plants",GroupPowers.LandGardening);					
+                    iterx = store.AppendValues(folder_open, "Object Managment", GroupPowers.None);
                     test=(powers & GroupPowers.DeedObject) == GroupPowers.DeedObject;
-					store.AppendValues(iterx,test?tick:cross,"Deed objects to group",UUID.Zero);					test=(powers & GroupPowers.ObjectManipulate) == GroupPowers.ObjectManipulate;
-					store.AppendValues(iterx,test?tick:cross,"Manipulate (move,copy,modify) group objetcs",UUID.Zero);                    test=(powers & GroupPowers.ObjectSetForSale) == GroupPowers.ObjectSetForSale;
-					store.AppendValues(iterx,test?tick:cross,"Set group objects for sale",UUID.Zero);
-                    iterx = store.AppendValues(folder_open, "Notices", UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Deed objects to group",GroupPowers.DeedObject);			test=(powers & GroupPowers.ObjectManipulate) == GroupPowers.ObjectManipulate;
+					store.AppendValues(iterx,test?tick:cross,"Manipulate (move,copy,modify) group objetcs",GroupPowers.ObjectManipulate);                    test=(powers & GroupPowers.ObjectSetForSale) == GroupPowers.ObjectSetForSale;
+					store.AppendValues(iterx,test?tick:cross,"Set group objects for sale",GroupPowers.ObjectSetForSale);
+
+                    iterx = store.AppendValues(folder_open, "Notices", GroupPowers.None);
 					test=(powers & GroupPowers.SendNotices) == GroupPowers.SendNotices;
-					store.AppendValues(iterx,test?tick:cross,"Send Notices",UUID.Zero);                    test=(powers & GroupPowers.ReceiveNotices) == GroupPowers.ReceiveNotices;
-					store.AppendValues(iterx,test?tick:cross,"Receive Notices and view past Notices",UUID.Zero);
-                    iterx = store.AppendValues(folder_open, "Proposals", UUID.Zero);
+					store.AppendValues(iterx,test?tick:cross,"Send Notices",GroupPowers.SendNotices);                    test=(powers & GroupPowers.ReceiveNotices) == GroupPowers.ReceiveNotices;
+					store.AppendValues(iterx,test?tick:cross,"Receive Notices and view past Notices",GroupPowers.ReceiveNotices);
+
+                    iterx = store.AppendValues(folder_open, "Proposals", GroupPowers.None);
                     test=(powers & GroupPowers.StartProposal) == GroupPowers.StartProposal;
-					store.AppendValues(iterx,test?tick:cross,"Create Proposals",UUID.Zero);                    test=(powers & GroupPowers.VoteOnProposal) == GroupPowers.VoteOnProposal;
-					store.AppendValues(iterx,test?tick:cross,"Vote on Proposals",UUID.Zero);
-                    iterx = store.AppendValues(folder_open, "Chat", UUID.Zero);
-                    test=(powers & GroupPowers.JoinChat) == GroupPowers.JoinChat;
-					store.AppendValues(iterx,test?tick:cross,"Join Group Chat",UUID.Zero);                    test=(powers & GroupPowers.AllowVoiceChat) == GroupPowers.AllowVoiceChat;
-					store.AppendValues(iterx,test?tick:cross,"Join Group Voice Chat",UUID.Zero);    
-                    this.treeview_allowed_ability1.ExpandAll();
+					store.AppendValues(iterx,test?tick:cross,"Create Proposals",GroupPowers.StartProposal);                    test=(powers & GroupPowers.VoteOnProposal) == GroupPowers.VoteOnProposal;
+					store.AppendValues(iterx,test?tick:cross,"Vote on Proposals",GroupPowers.VoteOnProposal);
+                    iterx = store.AppendValues(folder_open, "Chat", GroupPowers.None);
+			test=(powers & GroupPowers.JoinChat) == GroupPowers.JoinChat;
+			store.AppendValues(iterx,test?tick:cross,"Join Group Chat",GroupPowers.JoinChat);			test=(powers & GroupPowers.AllowVoiceChat) == GroupPowers.AllowVoiceChat;
+					store.AppendValues(iterx,test?tick:cross,"Join Group Voice Chat",GroupPowers.AllowVoiceChat);    
+				this.treeview_allowed_ability1.ExpandAll();
+				
+				
+				
+			}
+					
+					protected virtual void OnTreeviewAbilitiesCursorChanged (object sender, System.EventArgs e)
+					{
+					Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+					if(this.treeview_abilities.Selection.GetSelected(out mod,out iter))			
+			{
+				GroupPowers powers=(GroupPowers)mod.GetValue(iter,2);
+                //power should be singular
+                List<KeyValuePair<UUID,UUID>> rolesmembers;
+                MainClass.client.Groups.GroupRolesMembersCaches.TryGetValue(request_roles_members, out rolesmembers);
+					this.store_members_with_ability.Clear();
+						Dictionary <UUID, GroupRole> grouproles;
+						MainClass.client.Groups.GroupRolesCaches.TryGetValue(request_roles,out grouproles);
+
+			    foreach(KeyValuePair<UUID,UUID> rolesmember in rolesmembers)
+			    {
+					 // rolesmember.Value is the user UUID
+				// .key is the group role UUIS
+				UUID user=rolesmember.Value;
+					UUID rolekey=rolesmember.Key;
+					GroupRole role;
+					grouproles.TryGetValue(rolekey,out role);
+				if((role.Powers & powers) == powers)
+                     {
+                          string name="";
+                          MainClass.name_cache.av_names.TryGetValue(user,out name);
+                          this.store_members_with_ability.AppendValues(name);
+                     }
+                }
+				
+				this.store_roles_with_ability.Clear();
+                foreach(KeyValuePair<UUID, GroupRole> role in grouproles)
+                {
+                  
+       				if((role.Value.Powers & powers) == powers)
+                     {
+                       
+                          this.store_roles_with_ability.AppendValues(role.Value.Name);
+                     }
 
 
+                }
+                
 
+            }
         }
-		
 	}
 }
