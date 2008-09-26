@@ -12,7 +12,9 @@
     <ViewMemento id="ProjectPad">
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
-          <Node name="References" expanded="True" selected="True" />
+          <Node name="References" expanded="True" />
+          <Node name="Resources" expanded="True" />
+          <Node name="aPick.cs" selected="True" />
         </Node>
       </Node>
     </ViewMemento>
