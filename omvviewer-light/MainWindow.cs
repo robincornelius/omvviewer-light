@@ -46,7 +46,8 @@ public partial class MainWindow: Gtk.Window
 	
 	public uint currentpage=0;
 	public StatusIcon trayIcon;
-
+   
+    
     ~MainWindow()
     {
         if (trayIcon != null)

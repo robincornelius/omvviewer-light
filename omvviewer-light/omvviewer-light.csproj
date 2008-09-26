@@ -1,12 +1,12 @@
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F59E711D-2669-4BC6-ACA4-2F7E9B8EDD0E}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon></ApplicationIcon>
+    <ApplicationIcon>omvviewer-light.ico</ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>omvviewer-light</AssemblyName>
@@ -16,11 +16,30 @@
     <DelaySign>false</DelaySign>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder></AppDesignerFolder>
+    <AppDesignerFolder>
+    </AppDesignerFolder>
     <RootNamespace>omvviewer-light</RootNamespace>
-    <StartupObject></StartupObject>
+    <StartupObject>omvviewerlight.MainClass</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <SignManifests>true</SignManifests>
+    <ManifestCertificateThumbprint>0DB8568C639B078DA9EBBB6B1FDAC8FAC1426128</ManifestCertificateThumbprint>
+    <SignAssembly>false</SignAssembly>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -29,16 +48,18 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>bin\omvviewer-light.XML</DocumentationFile>
     <DebugSymbols>False</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <Optimize>True</Optimize>
-    <OutputPath>omvviewer-light/bin/</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <RegisterForComInterop>False</RegisterForComInterop>
     <RemoveIntegerChecks>False</RemoveIntegerChecks>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <WarningLevel>4</WarningLevel>
     <NoWarn>1591,1574,0419,0618</NoWarn>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -47,45 +68,66 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>bin\omvviewer-light.XML</DocumentationFile>
     <DebugSymbols>True</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <Optimize>False</Optimize>
-    <OutputPath>omvviewer-light/bin/</OutputPath>
+    <OutputPath>bin/</OutputPath>
     <RegisterForComInterop>False</RegisterForComInterop>
     <RemoveIntegerChecks>False</RemoveIntegerChecks>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <WarningLevel>4</WarningLevel>
     <NoWarn>1591,1574,0419,0618</NoWarn>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="atk-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files\Mono-1.9.1\lib\mono\gtk-sharp-2.0\atk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="gdk-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files\Mono-1.9.1\lib\mono\gtk-sharp-2.0\gdk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="glib-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files\Mono-1.9.1\lib\mono\gtk-sharp-2.0\glib-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="gtk-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files\Mono-1.9.1\lib\mono\gtk-sharp-2.0\gtk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files\Mono-1.9.1\lib\mono\2.0\Mono.Posix.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenMetaverse, Version=1.0.0.18473, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\OpenMetaverse.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenMetaverseTypes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\OpenMetaverseTypes.dll</HintPath>
+    </Reference>
+    <Reference Include="pango-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files\Mono-1.9.1\lib\mono\gtk-sharp-2.0\pango-sharp.dll</HintPath>
+    </Reference>
     <Reference Include="System">
-        <Name>System</Name>
+      <Name>System</Name>
       <HintPath>\System.dll</HintPath>
     </Reference>
     <Reference Include="System.Configuration">
-        <Name>System.Configuration</Name>
+      <Name>System.Configuration</Name>
       <HintPath>\System.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing">
-        <Name>System.Drawing</Name>
+      <Name>System.Drawing</Name>
       <HintPath>\System.Drawing.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Posix">
-        <Name>Mono.Posix</Name>
-      <HintPath>\Mono.Posix.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenMetaverse">
-        <Name>OpenMetaverse</Name>
-      <HintPath>\OpenMetaverse.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenMetaverseTypes">
-        <Name>OpenMetaverseTypes</Name>
-      <HintPath>\OpenMetaverseTypes.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net">
-        <Name>log4net</Name>
-      <HintPath>\log4net.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +160,31 @@
     <Compile Include="Groups.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="gtk-gui\generated.cs" />
+    <Compile Include="gtk-gui\MainWindow.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.aPick.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.ChatConsole.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.ChatLayout.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.Friendshiprequest.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.FriendsList.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.GroupInfo.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.Groups.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.Inventory.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.Location.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.LoginControl.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.Map.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.Movment.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.NamePicker.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.ObjectsLayout.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.PayWindow.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.PlacesSearch.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.ProfileVIew.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.Radar.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.ScriptDialogue.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.Search.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.Searches.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.TeleportProgress.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.TeleportTo.cs" />
     <Compile Include="Inventory.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -188,81 +255,26 @@
     <Compile Include="Properties/Settings.Designer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="gtk-gui/MainWindow.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/generated.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.ChatConsole.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.ChatLayout.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.FriendsList.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.Friendshiprequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.GroupInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.Groups.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.Inventory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.Location.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.LoginControl.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.Map.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.Movment.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.NamePicker.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.ObjectsLayout.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.PayWindow.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.PlacesSearch.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.ProfileVIew.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.Radar.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.ScriptDialogue.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.Search.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.Searches.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.TeleportProgress.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.TeleportTo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="gtk-gui/omvviewerlight.aPick.cs">
-      <SubType>Code</SubType>
-    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="omvviewer-light.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <PropertyGroup>

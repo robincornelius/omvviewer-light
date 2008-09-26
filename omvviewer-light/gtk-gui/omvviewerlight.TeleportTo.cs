@@ -235,7 +235,7 @@ namespace omvviewerlight {
             w16.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w17 = new Gtk.Image();
-            w17.Pixbuf = new Gdk.Pixbuf(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "./map_home.tga"));
+            w17.Pixbuf = new Gdk.Pixbuf(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "map_home.tga"));
             w16.Add(w17);
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w19 = new Gtk.Label();

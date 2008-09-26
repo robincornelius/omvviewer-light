@@ -325,7 +325,10 @@ namespace omvviewerlight
 		{
 			string grid=this.combobox_grid.ActiveText;
 			string uri;
-			
+
+            if (grid == null)
+                return;
+
 			if(gridlist.TryGetValue(grid,out uri))
 		        this.entry_loginuri.Text=uri;
 		}
