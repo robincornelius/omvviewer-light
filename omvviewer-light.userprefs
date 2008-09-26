@@ -1,4 +1,4 @@
-﻿<UserCombinePreferences version="1.0" filename="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light.mds">
+﻿<UserCombinePreferences version="1.0" filename="/home/robin/libsecondlife/omvviewer-light/omvviewer-light.mds">
   <Files>
     <File name="Welcome" />
     <File name="omvviewer-light/LoginControl.cs" line="305" column="39" />
@@ -6,14 +6,21 @@
     <File name="omvviewer-light/TryGetImage.cs" line="103" column="35" />
     <File name="omvviewer-light/MainWindow.cs" line="121" column="105" />
     <File name="omvviewer-light/ProfileVIew.cs" line="1" column="1" />
-    <File name="omvviewer-light/ChatConsole.cs" line="419" column="24" />
+    <File name="omvviewer-light/ChatConsole.cs" line="424" column="9" />
     <File name="omvviewer-light/Searchs.cs" line="1" column="1" />
+    <File name="omvviewer-light/gtk-gui/omvviewerlight.Movment.cs" line="33" column="10" />
+    <File name="omvviewer-light/AssemblyInfo.cs" line="1" column="1" />
+    <File name="omvviewer-light/gtk-gui/MainWindow.cs" line="8" column="10" />
+    <File name="omvviewer-light/aPick.cs" line="36" column="92" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
-          <Node name="ChatConsole.cs" selected="True" />
+          <Node name="References" expanded="True">
+            <Node name="OpenMetaverse" selected="True" />
+          </Node>
+          <Node name="gtk-gui" expanded="True" />
         </Node>
       </Node>
     </ViewMemento>
@@ -22,7 +29,7 @@
     </ViewMemento>
   </Views>
   <Properties>
-    <Property key="ActiveWindow" value="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light/ChatConsole.cs" />
+    <Property key="ActiveWindow" value="/home/robin/libsecondlife/omvviewer-light/omvviewer-light/aPick.cs" />
     <Property key="ActiveConfiguration" value="Debug" />
   </Properties>
 </UserCombinePreferences>
