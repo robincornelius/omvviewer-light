@@ -13,12 +13,6 @@
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
           <Node name="References" expanded="True" selected="True" />
-          <Node name="UserInterface" expanded="True">
-            <Node name="omvviewerlight.Movment">
-              <Option id="GroupCodeBehind" value="False" />
-              <Option id="ShowAllFiles" value="False" />
-            </Node>
-          </Node>
         </Node>
       </Node>
     </ViewMemento>
