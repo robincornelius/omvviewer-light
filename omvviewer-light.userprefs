@@ -1,29 +1,26 @@
-﻿<UserCombinePreferences version="1.0" filename="/home/robin/libsecondlife/omvviewer-light/omvviewer-light.mds">
+﻿<UserCombinePreferences version="1.0" filename="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light.mds">
   <Files>
     <File name="Welcome" />
     <File name="omvviewer-light/LoginControl.cs" line="305" column="39" />
-    <File name="omvviewer-light/GroupInfo.cs" line="330" column="30" />
+    <File name="omvviewer-light/GroupInfo.cs" line="330" column="1" />
     <File name="omvviewer-light/TryGetImage.cs" line="103" column="35" />
-    <File name="omvviewer-light/MainWindow.cs" line="121" column="105" />
+    <File name="omvviewer-light/MainWindow.cs" line="121" column="1" />
     <File name="omvviewer-light/ProfileVIew.cs" line="1" column="1" />
-    <File name="omvviewer-light/aPick.cs" line="36" column="92" />
+    <File name="omvviewer-light/ChatConsole.cs" line="419" column="24" />
+    <File name="omvviewer-light/Searchs.cs" line="1" column="1" />
+    <File name="omvviewer-light/Map.cs" line="1" column="1" />
+    <File name="omvviewer-light/Radar.cs" line="47" column="17" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
-      <Node expanded="True">
-        <Node name="omvviewer-light" expanded="True">
-          <Node name="References" expanded="True" />
-          <Node name="Resources" expanded="True" />
-          <Node name="aPick.cs" selected="True" />
-        </Node>
-      </Node>
+      <Node expanded="True" />
     </ViewMemento>
     <ViewMemento id="ClassPad">
-      <Node expanded="True" />
+      <Node />
     </ViewMemento>
   </Views>
   <Properties>
-    <Property key="ActiveWindow" value="/home/robin/libsecondlife/omvviewer-light/omvviewer-light/aPick.cs" />
+    <Property key="ActiveWindow" value="Welcome" />
     <Property key="ActiveConfiguration" value="Debug" />
   </Properties>
 </UserCombinePreferences>

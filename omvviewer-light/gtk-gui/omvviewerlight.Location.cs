@@ -65,6 +65,7 @@ namespace omvviewerlight {
             w3.Fill = false;
             // Container child hbox1.Gtk.Box+BoxChild
             this.radar1 = new omvviewerlight.Radar();
+            this.radar1.WidthRequest = 275;
             this.radar1.Events = ((Gdk.EventMask)(256));
             this.radar1.Name = "radar1";
             this.hbox1.Add(this.radar1);
@@ -79,6 +80,8 @@ namespace omvviewerlight {
             this.hbox1.Add(this.movment1);
             Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.hbox1[this.movment1]));
             w5.Position = 2;
+            w5.Expand = false;
+            w5.Fill = false;
             this.Add(this.hbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
