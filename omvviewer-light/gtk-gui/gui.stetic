@@ -1291,7 +1291,7 @@ Shout</property>
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="omvviewerlight.Search" design-size="545 300">
+  <widget class="Gtk.Bin" id="omvviewerlight.Search" design-size="647 300">
     <property name="MemberName" />
     <child>
       <widget class="Gtk.Notebook" id="notebook1">
@@ -1500,7 +1500,7 @@ Shout</property>
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="omvviewerlight.PlacesSearch" design-size="541 300">
+  <widget class="Gtk.Bin" id="omvviewerlight.PlacesSearch" design-size="1446 300">
     <property name="MemberName" />
     <child>
       <widget class="Gtk.VBox" id="vbox1">
@@ -1582,7 +1582,7 @@ Shout</property>
                 <child>
                   <widget class="Gtk.TreeView" id="treeview1">
                     <property name="MemberName" />
-                    <property name="WidthRequest">400</property>
+                    <property name="WidthRequest">650</property>
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>
                     <property name="HeadersClickable">True</property>
@@ -1630,7 +1630,7 @@ Shout</property>
           </widget>
           <packing>
             <property name="Position">2</property>
-            <property name="AutoSize">True</property>
+            <property name="AutoSize">False</property>
           </packing>
         </child>
         <child>

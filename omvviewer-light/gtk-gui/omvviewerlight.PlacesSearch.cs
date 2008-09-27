@@ -106,7 +106,7 @@ namespace omvviewerlight {
             this.GtkScrolledWindow.ShadowType = ((Gtk.ShadowType)(1));
             // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
             this.treeview1 = new Gtk.TreeView();
-            this.treeview1.WidthRequest = 400;
+            this.treeview1.WidthRequest = 650;
             this.treeview1.CanFocus = true;
             this.treeview1.Name = "treeview1";
             this.treeview1.HeadersClickable = true;
