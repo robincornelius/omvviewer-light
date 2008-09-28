@@ -8,6 +8,7 @@ using System;
 using OpenMetaverse;
 using System.Collections.Generic;
 
+
 namespace omvviewerlight
 {
 	
@@ -75,10 +76,14 @@ namespace omvviewerlight
 		//	if(this.checkbutton_mature.Active==false)
 		//	flags|=OpenMetaverse.DirectoryManager.DirFindFlags.PgSimsOnly;
 				
+		//	EventCategories	cats;
+		//	cats=EventCateogries.
+				
+			
 			OpenMetaverse.Parcel.ParcelCategory pcat;
 			pcat=OpenMetaverse.Parcel.ParcelCategory.Any;
 			queryid=UUID.Random();
-			MainClass.client.Directory.StartEventsSearch(entry1.Text);
+			MainClass.client.Directory.StartEventsSearch(entry1.Text,true,OpenMetaverse.DirectoryManager.EventCategories.All);
 			
         }
 	

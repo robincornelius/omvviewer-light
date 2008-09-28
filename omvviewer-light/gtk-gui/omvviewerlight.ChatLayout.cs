@@ -30,6 +30,7 @@ namespace omvviewerlight {
             this.Name = "omvviewerlight.ChatLayout";
             // Container child omvviewerlight.ChatLayout.Gtk.Container+ContainerChild
             this.hbox2 = new Gtk.HBox();
+            this.hbox2.Name = "hbox2";
             this.hbox2.Spacing = 6;
             // Container child hbox2.Gtk.Box+BoxChild
             this.chatconsole1 = new omvviewerlight.ChatConsole();

@@ -1,13 +1,16 @@
 ﻿<UserCombinePreferences version="1.0" filename="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light.mds">
   <Files>
-    <File name="omvviewer-light/MainWindow.cs" line="64" column="1" />
-    <File name="omvviewer-light/Search.cs" line="1" column="1" />
+    <File name="Welcome" />
+    <File name="omvviewer-light/MainWindow.cs" line="104" column="38" />
+    <File name="omvviewer-light/Search.cs" line="46" column="52" />
+    <File name="omvviewer-light/EventsSearch.cs" line="81" column="49" />
+    <File name="omvviewer-light/PlacesSearch.cs" line="96" column="118" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
-          <Node name="Search.cs" selected="True" />
+          <Node name="EventsSearch.cs" selected="True" />
         </Node>
       </Node>
     </ViewMemento>
@@ -16,7 +19,7 @@
     </ViewMemento>
   </Views>
   <Properties>
-    <Property key="ActiveWindow" value="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light/Search.cs" />
+    <Property key="ActiveWindow" value="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light/EventsSearch.cs" />
     <Property key="ActiveConfiguration" value="Debug" />
   </Properties>
 </UserCombinePreferences>
