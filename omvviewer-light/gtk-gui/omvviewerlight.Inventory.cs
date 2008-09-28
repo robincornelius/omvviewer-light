@@ -332,7 +332,6 @@ namespace omvviewerlight {
             w25.Fill = false;
             // Container child vbox1.Gtk.Box+BoxChild
             this.hbox2 = new Gtk.HBox();
-            this.hbox2.Name = "hbox2";
             this.hbox2.Spacing = 6;
             // Container child hbox2.Gtk.Box+BoxChild
             this.label13 = new Gtk.Label();

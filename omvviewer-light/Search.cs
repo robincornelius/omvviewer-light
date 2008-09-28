@@ -35,6 +35,34 @@ namespace omvviewerlight
 		public Search()
 		{
 			this.Build();
+			// Fuck stupid notebook tabs and monodeveop have to do it myself
+			Searches s=new Searches();
+            this.addtabwithicon("icn_voice-pvtfocus.tga","People",s);
+			
+			PlacesSearch ps=new PlacesSearch();
+			this.addtabwithicon("icon_place.tga","Places",ps);
+			
+			EventsSearch es=new EventsSearch();
+			this.addtabwithicon("icon_event.tga","Events",es);
+			
+       
 		}
+		
+		Gtk.Label addtabwithicon(string filename,string label,Gtk.Widget contents)
+	    {
+			Gtk.Image image=new Gtk.Image(filename);
+			image.SetSizeRequest(16,16);
+			Gtk.Label lable=new Gtk.Label(label);
+			Gtk.HBox box=new Gtk.HBox();
+			box.PackStart(image);
+			box.PackStart(lable);
+			box.SetChildPacking(image,false,false,0,PackType.Start);
+			box.ShowAll();
+			notebook1.InsertPage(contents,box,-1);
+		    notebook1.ShowAll();
+	        return lable;		
+		}
+		
+		
 	}
 }

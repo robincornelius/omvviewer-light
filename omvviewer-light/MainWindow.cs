@@ -713,7 +713,7 @@ public partial class MainWindow: Gtk.Window
             // Block here untill chat window is set up or else we can get multiple IMs stacking up in new windows
             // from same user as set up code is run as an invoke
 
-            ChatSetup.WaitOne(2000, false);
+            ChatSetup.WaitOne(5000, false);
 
 		}
 		

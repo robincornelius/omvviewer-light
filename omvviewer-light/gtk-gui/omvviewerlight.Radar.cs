@@ -58,7 +58,6 @@ namespace omvviewerlight {
             this.vbox2.Spacing = 6;
             // Container child vbox2.Gtk.Box+BoxChild
             this.hbox2 = new Gtk.HBox();
-            this.hbox2.Name = "hbox2";
             this.hbox2.Spacing = 6;
             // Container child hbox2.Gtk.Box+BoxChild
             this.button_im = new Gtk.Button();
