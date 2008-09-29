@@ -50,7 +50,7 @@ namespace omvviewerlight
 		Gtk.Image avatar_me=new Gtk.Image("map_avatar_me_8.tga");
 		Gtk.Image avatar_above=new Gtk.Image("map_avatar_above_8.tga");
 		Gtk.Image avatar_below=new Gtk.Image("map_avatar_below_8.tga");
-        Simulator last;
+        UUID lastsim = new UUID();
 
 		public Map()
 		{           
@@ -65,25 +65,25 @@ namespace omvviewerlight
 
 		void onTeleport(string Message, OpenMetaverse.AgentManager.TeleportStatus status,OpenMetaverse.AgentManager.TeleportFlags flags)
 	    {
+
+
 			if(status==OpenMetaverse.AgentManager.TeleportStatus.Finished)
 			{
-            
+
+                if (MainClass.client.Network.CurrentSim.ID == lastsim)
+                    return;
                
     		    Gtk.Application.Invoke(delegate {
 
-                if (last == null)
-                {
-                    last = MainClass.client.Network.CurrentSim;
-                    avs.Clear();
-                }
-                else
-                if (last.Name != MainClass.client.Network.CurrentSim.Name)
-                {
-                    last = MainClass.client.Network.CurrentSim;
-                    avs.Clear();
-                }
-                drawavs();
+                    lock (avs)
+                    {
+                        avs.Clear();
+                    }
+                    
+                    drawavs();
 				});
+
+                lastsim = MainClass.client.Network.CurrentSim.ID;
 			}
 	    }
 				
@@ -264,12 +264,12 @@ namespace omvviewerlight
 				if(login==LoginStatus.Success)
 				{
                     Console.Write("\n\n******************\nMAP ON LOGIN INVOKE\n");
-                    last = MainClass.client.Network.CurrentSim;
                     avs.Clear();
 					getmap();
 					this.label1.Text=MainClass.client.Network.CurrentSim.Name;
-					//drawavs();
+                    lastsim = MainClass.client.Network.CurrentSim.ID;
 				}
+
 			});
           
 		}

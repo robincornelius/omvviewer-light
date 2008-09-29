@@ -28,6 +28,8 @@ using OpenMetaverse;
 
 namespace omvviewerlight
 {
+        
+    
 
     public class agent 
     {
@@ -42,7 +44,8 @@ namespace omvviewerlight
 		
 		Gtk.ListStore store;	
 		private Dictionary<UUID, bool> av_typing = new Dictionary<UUID, bool>();
-        private Dictionary<uint, agent> av_tree = new Dictionary<uint, agent>();	
+        private Dictionary<uint, agent> av_tree = new Dictionary<uint, agent>();
+        UUID lastsim = new UUID();
 
 		public Radar()
 		{      
@@ -103,6 +106,10 @@ namespace omvviewerlight
 	    {
 			if(status==OpenMetaverse.AgentManager.TeleportStatus.Finished)
 			{
+
+                if(MainClass.client.Network.CurrentSim.ID == lastsim)
+                    return;
+
 				Gtk.Application.Invoke(delegate {
                     lock (store)
                     {
@@ -113,6 +120,8 @@ namespace omvviewerlight
                        av_tree.Clear();
                     }
                 });
+
+                 lastsim=MainClass.client.Network.CurrentSim.ID;
 			}
 	    }
 		
@@ -128,7 +137,9 @@ namespace omvviewerlight
                    {
                        av_tree.Clear();
                    }
-              });			
+              });
+
+            lastsim = MainClass.client.Network.CurrentSim.ID;
 		}
 		
 		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
@@ -219,27 +230,7 @@ namespace omvviewerlight
            
             }
         }
-		
-	/*	bool myfunc(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
-		{
-			uint key=(uint)store.GetValue(iter,3);
-		
-                    lock(av_typing)
-                    {
-				        if(av_typing.ContainsKey(av_tree[key].ID))
-				        {
-					        store.SetValue(iter,0,"*");
-				        }
-				        else
-				        {
-					        store.SetValue(iter,0," ");
-				        }
-                    }
-
-			return true;
-		}
-*/
-		
+			
 		void onChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourcetype,string fromName, UUID id, UUID ownerid, Vector3 position)
 		{
             // What a glorious inefficient way to do things
