@@ -91,16 +91,25 @@ namespace omvviewerlight
 		{
 			if(avs.ContainsKey(update.LocalID))
 			{
+                lock (avs)
+                {
+                    avs[update.LocalID].Position = update.Position;
+                }
 				drawavs();
 			}
 		}
 		
 		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
 		{
+
 			if(!avs.ContainsKey(avatar.LocalID))
 			{
-				avs.Add(avatar.LocalID,avatar);	
-				drawavs();			
+                lock (avs)
+                {
+                    avs.Add(avatar.LocalID, avatar);
+                }
+                
+                drawavs();			
 			}
 		}
 
@@ -108,8 +117,11 @@ namespace omvviewerlight
 		{
 			if(avs.ContainsKey(objectID))
 			{
-				avs.Remove(objectID);
-				drawavs();
+                lock (avs)
+                {
+                    avs.Remove(objectID);
+                }
+                    drawavs();
 			}
 			
 		}
@@ -119,8 +131,6 @@ namespace omvviewerlight
 			if(basemap==null)
 					return;
 			
-							
-				
 				Gdk.Pixbuf buf=(Gdk.Pixbuf)basemap.Pixbuf.Clone();
                 Gtk.Application.Invoke(delegate
                 {		
@@ -128,27 +138,27 @@ namespace omvviewerlight
 				});
 
 				int myz=(int)MainClass.client.Self.SimPosition.Z;
-									
-				foreach(KeyValuePair<uint, Avatar> kvp in avs)
-				{
-						if(kvp.Value.LocalID!=MainClass.client.Self.LocalID)
-						{
-                            //if (kvp.Value. != MainClass.client.Network.CurrentSim)
-                              //  continue; // Skip AV's that are not in this sim
 
-                            //Console.Write("Position is " + kvp.Value.Position.ToString() + "\n");
-                            //Console.Write("I am " + MainClass.client.Self.SimPosition.ToString() + "\n");
-                             Gtk.Application.Invoke(delegate
+                KeyValuePair<uint, Avatar> avs_copy;
+
+                lock (avs)
+                {
+                    foreach (KeyValuePair<uint, Avatar> kvp in avs)
+                    {
+                        if (kvp.Value.LocalID != MainClass.client.Self.LocalID)
+                        {
+                            Gtk.Application.Invoke(delegate
                             {
-							    if(kvp.Value.Position.Z-myz>5)
-								    showme(buf,avatar_above.Pixbuf,kvp.Value.Position);
-							    else if(kvp.Value.Position.Z-myz<-5)
-								    showme(buf,avatar_below.Pixbuf,kvp.Value.Position);
-							    else
-								    showme(buf,avatar.Pixbuf,kvp.Value.Position);
+                                if (kvp.Value.Position.Z - myz > 5)
+                                    showme(buf, avatar_above.Pixbuf, kvp.Value.Position);
+                                else if (kvp.Value.Position.Z - myz < -5)
+                                    showme(buf, avatar_below.Pixbuf, kvp.Value.Position);
+                                else
+                                    showme(buf, avatar.Pixbuf, kvp.Value.Position);
                             });
-						}
-				}
+                        }
+                    }
+                }
                 Gtk.Application.Invoke(delegate
                 {
 				    image.Pixbuf=buf;
