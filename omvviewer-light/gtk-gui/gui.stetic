@@ -5098,7 +5098,7 @@ permissions</property>
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="Type">TextAndIcon</property>
-                <property name="Icon">file:./bin/status_search_btn.png</property>
+                <property name="Icon">file:status_search_btn.png</property>
                 <property name="Label" translatable="yes">Search</property>
                 <property name="UseUnderline">True</property>
                 <signal name="Clicked" handler="OnButtonSearchClicked" />
