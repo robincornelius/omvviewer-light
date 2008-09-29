@@ -203,8 +203,33 @@ namespace omvviewerlight
 		void loginthread()
 		{
 			Console.Write("Login thread go\n");
-			MainClass.client.Network.Login(login);
-		}
+            try
+            {
+                MainClass.client.Network.Login(login);
+            }
+            catch (Exception e)
+            {
+                Console.Write("Login throw an exception\n");
+                Console.Write(e.ToString()+"\n");
+                Gtk.Application.Invoke(delegate
+                {
+                    this.button_login.Label = "Login";
+                    this.enablebuttons();
+                });
+
+                try
+                {
+                    MainClass.client.Network.Logout();
+                }
+                catch (Exception ee)
+                {
+                    Console.Write("Additional exception cleaning up logout\n");
+                    Console.Write(ee.ToString()+"\n");
+                }
+
+                this.trying = false;
+            }
+        }
 		
 		void appearencethread()
 		{

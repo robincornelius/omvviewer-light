@@ -104,10 +104,13 @@ namespace omvviewerlight
 			if(status==OpenMetaverse.AgentManager.TeleportStatus.Finished)
 			{
 				Gtk.Application.Invoke(delegate {
-					lock (store)
+                    lock (store)
                     {
-					    store.Clear();
-                        av_tree.Clear();
+                        store.Clear();
+                    }
+                    lock (av_tree)
+                    {
+                       av_tree.Clear();
                     }
                 });
 			}
@@ -120,7 +123,10 @@ namespace omvviewerlight
 				   lock(store)
                    {
                         store.Clear();
-                        av_tree.Clear();
+                   }
+                   lock (av_tree)
+                   {
+                       av_tree.Clear();
                    }
               });			
 		}
@@ -128,16 +134,19 @@ namespace omvviewerlight
 		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
 		{
             Gtk.Application.Invoke(delegate {
-            if(this.av_tree.ContainsKey(update.LocalID))
-            {
-                    calcdistance(update.LocalID); 
-            }
+                if(this.av_tree.ContainsKey(update.LocalID))
+                {
+                    lock (av_tree)
+                    {
+                        calcdistance(update.LocalID);
+                    }
+                }
             });
 		}
 		
 		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
 		{
-                      
+ 
                     Gtk.Application.Invoke(delegate
                     {
                         if (!this.av_tree.ContainsKey(avatar.LocalID))
@@ -164,11 +173,18 @@ namespace omvviewerlight
                             agent theagent = new agent();
                             theagent.avatar = avatar;
                             Gtk.TreeIter iter;
-                            iter = store.AppendValues("", avatar.Name, "", avatar.LocalID);
-                            theagent.iter = iter;
-                            av_tree.Add(avatar.LocalID, theagent);
-                            calcdistance(avatar.LocalID);
-                        }
+                            lock (store)
+                            {
+                                iter = store.AppendValues("", avatar.Name, "", avatar.LocalID);
+                                theagent.iter = iter;
+                            }
+
+                            lock (av_tree)
+                            {
+                                av_tree.Add(avatar.LocalID, theagent);
+                                calcdistance(avatar.LocalID);
+                            }
+                       }
                     });
                 
             
@@ -179,10 +195,14 @@ namespace omvviewerlight
              Gtk.Application.Invoke(delegate {	
            if(this.av_tree.ContainsKey(objectID))
             {
-               
+                lock (store)
+                {
                     store.Remove(ref av_tree[objectID].iter);
+                }
+                lock (av_tree)
+                {
                     av_tree.Remove(objectID);
-               
+                }
             }
              });
 		}
