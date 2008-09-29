@@ -176,8 +176,8 @@ namespace omvviewerlight
 			profile_pic=props.ProfileImage;
 			firstlife_pic=props.FirstLifeImage;
 
-			TryGetImage getter= new TryGetImage(this.image7,profile_pic);
-			TryGetImage getter2= new TryGetImage(this.image3,firstlife_pic);
+			TryGetImage getter= new TryGetImage(this.image7,profile_pic,128,128);
+			TryGetImage getter2= new TryGetImage(this.image3,firstlife_pic,128,128);
 							
 			if(MainClass.name_cache.av_names.ContainsKey(id))
 			{

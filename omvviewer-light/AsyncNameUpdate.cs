@@ -51,27 +51,7 @@ namespace omvviewerlight
 			MainClass.client.Avatars.OnAvatarNames += new OpenMetaverse.AvatarManager.AvatarNamesCallback(onAvatarNames);
            // GLib.Timeout.Add(1000, onTimeout);
         }
-/*
-        bool onTimeout()
-        {
-            count++;
 
-            if (av_target!=UUID.Zero)
-                try_update_name_lable(av_target);
-
-            if (group_target != UUID.Zero)
-                try_update_group_lable(group_target);
-
-            if (count >= 30)
-            {
-                AsynNamesUpdate_deinit();
-                return true;
-            }
-
-            return false;
-
-        }
-*/
 		public void addparameters(params object[] values)
 		{
 			callbackvalues1=values;
@@ -87,9 +67,7 @@ namespace omvviewerlight
 		{
 
             if (key == UUID.Zero)
-                return;
-
-			//Console.Write("New AsyncName Update for "+key.ToString()+" group mode = "+group.ToString()+"\n");
+                return;
 			
 			if(group==true)
 			{
@@ -101,7 +79,7 @@ namespace omvviewerlight
 				av_target=key;
 				group_target=UUID.Zero;
 			}
-			
+						
 			AsyncNameUpdate_init();
 
 			if(!group)

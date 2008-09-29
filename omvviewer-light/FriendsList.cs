@@ -41,11 +41,16 @@ namespace omvviewerlight
 			
 			Console.Write("Building friends list window\n");
 			this.Build();
-			store= new Gtk.ListStore (typeof(Gdk.Pixbuf),typeof(string),typeof(string));
+			store= new Gtk.ListStore (typeof(Gdk.Pixbuf),typeof(string),typeof(string),typeof(bool));
 			
 			treeview_friends.AppendColumn("Online",new CellRendererPixbuf(),"pixbuf",0);
-			treeview_friends.AppendColumn("Name",new Gtk.CellRendererText(),"text",1);		
+			treeview_friends.AppendColumn("Name",new Gtk.CellRendererText(),"text",1);
+			
 			treeview_friends.Model=store;
+			
+			store.SetSortColumnId(3,SortType.Descending);
+			store.SetSortFunc(3,sort_bool);
+			
 			
 			online_img=new Gdk.Pixbuf("icon_avatar_online.tga");
 			offline_img=new Gdk.Pixbuf("icon_avatar_offline.tga");
@@ -55,7 +60,35 @@ namespace omvviewerlight
 			MainClass.client.Friends.OnFriendOffline += new OpenMetaverse.FriendsManager.FriendOfflineEvent(onFriendOffline);
             MainClass.client.Friends.OnFriendshipResponse += new FriendsManager.FriendshipResponseEvent(Friends_OnFriendshipResponse);
             MainClass.client.Friends.OnFriendshipTerminated += new FriendsManager.FriendshipTerminatedEvent(Friends_OnFriendshipTerminated);
+			
+			
         }
+			                  
+        int sort_bool(Gtk.TreeModel model,Gtk.TreeIter a,Gtk.TreeIter b)
+		{
+            
+			bool As=(bool)store.GetValue(a,3);			
+			bool Bs=(bool)store.GetValue(b,3);			
+				
+			if(As==Bs)
+			{
+				string Aa=(string)store.GetValue(a,1);
+				string Bb=(string)store.GetValue(b,1);
+				int x=string.Compare(Aa,Bb);	
+				
+				if(x==-1) return 1;
+				
+				if(x==1) return -1;
+				
+				return 0;
+			}
+				
+			if(As==true && Bs==false)
+				return 1;
+			
+			return -1;
+				
+		}
 
         void Friends_OnFriendshipTerminated(UUID agentID, string agentName)
         {
@@ -106,7 +139,7 @@ namespace omvviewerlight
             store.Clear();
 			MainClass.client.Friends.FriendList.ForEach(delegate(FriendInfo friend)
 			{
-				Gtk.TreeIter iter=store.AppendValues (friend.IsOnline?online_img:offline_img,friend.Name,friend.UUID.ToString());
+				Gtk.TreeIter iter=store.AppendValues (friend.IsOnline?online_img:offline_img,friend.Name,friend.UUID.ToString(),friend.IsOnline);
 				AsyncNameUpdate ud=new AsyncNameUpdate(friend.UUID,false);  
 				ud.addparameters(iter);
 				ud.onNameCallBack += delegate(string namex,object[] values){Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; store.SetValue(iterx,1,namex);};
@@ -123,6 +156,7 @@ namespace omvviewerlight
 			if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 			{
 				store.SetValue(iter,0,finfo.IsOnline?new Gdk.Pixbuf("icon_avatar_online.tga"):new Gdk.Pixbuf("icon_avatar_offline.tga"));
+				store.SetValue(iter,3,finfo.IsOnline);
 			}
 			return false;
 		}

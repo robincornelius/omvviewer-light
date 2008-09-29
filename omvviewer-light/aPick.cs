@@ -41,7 +41,7 @@ namespace omvviewerlight
 			this.textview1.Buffer.Text=desc;
 			sim=simname;
 			picpos=pos;
-			TryGetImage pic=new TryGetImage(this.image2,image);
+			TryGetImage pic=new TryGetImage(this.image2,image,128,128);
 		}
 
 		protected virtual void OnButtonTeleportClicked (object sender, System.EventArgs e)

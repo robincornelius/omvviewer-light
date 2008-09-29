@@ -150,7 +150,7 @@ namespace omvviewerlight
             request_roles_members = MainClass.client.Groups.RequestGroupRoleMembers(group.ID);
             MainClass.client.Groups.RequestGroupNoticeList(group.ID);
 			
-			TryGetImage img=new TryGetImage(this.image_group_emblem,group.InsigniaID);
+			TryGetImage img=new TryGetImage(this.image_group_emblem,group.InsigniaID,128,128);
 			this.label_name.Text=group.Name;
 	
 			AsyncNameUpdate ud=new AsyncNameUpdate(group.FounderID,false);  

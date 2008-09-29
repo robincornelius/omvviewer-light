@@ -35,24 +35,77 @@ namespace omvviewerlight
 		UUID target_asset;
 		Gtk.Image target_image;
 		
-		public TryGetImage(Gtk.Image target,UUID asset)
+		public TryGetImage(Gtk.Image target,UUID asset,int width,int height)
 		{
 			if(target==null)
 				return;
 			
 			MainClass.client.Assets.OnImageReceived += new OpenMetaverse.AssetManager.ImageReceivedCallback(onGotImage);
+			MainClass.client.Assets.OnImageReceiveProgress += new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
 			
 			target_asset=asset;
 			target_image=target;
-					
+					
 			Gdk.Pixbuf buf=new Gdk.Pixbuf("trying.tga");
-			target_image.Pixbuf=buf.ScaleSimple(128,128,Gdk.InterpType.Bilinear);
+			target_image.Pixbuf=buf.ScaleSimple(width,height,Gdk.InterpType.Bilinear);
 
 			if(asset!=UUID.Zero)
 					MainClass.client.Assets.RequestImage(asset,OpenMetaverse.ImageType.Normal,1013000.0f, 0,0);	
 						
 		}
+			                                               
+        void onProgress(UUID image, int recieved, int total)
+		{
+			if(target_asset!=image)
+			return;
+			
+Console.WriteLine("Progress recieved "+recieved.ToString()+" of "+total.ToString());
+			
+            progress(target_image.Pixbuf,(float)recieved/(float)total);
+			
+
+	
+	}
 		
+		unsafe void progress(Gdk.Pixbuf bufdest,float progress)
+		{
+			byte * pixels=(byte *)bufdest.Pixels;
+		    int width=bufdest.Width;
+			int height=bufdest.Height;
+			int rowstride=bufdest.Rowstride;
+			int channels=bufdest.NChannels;
+			byte * p;		
+			int y,x;
+			
+			Console.WriteLine("Progress is "+progress.ToString());
+            int widthx=(int)((float)width*progress);
+			Console.WriteLine("Width is  is "+widthx.ToString());
+
+			
+			if(progress>1)
+                 progress=1;			
+			
+			for(y=(height-20);y<(height-5);y++)
+			{
+				for(x=0;x<((float)widthx);x++)
+					{
+                    
+					p=pixels+((y)*rowstride)+((x)* channels);
+                        p[0]=255;
+						p[1]=255;
+						p[2]=255;
+                }	
+				
+			
+		     }
+
+
+			
+			
+         
+			
+        }
+		                                  
 		void onGotImage(ImageDownload image,AssetTexture asset)
 		{
 	

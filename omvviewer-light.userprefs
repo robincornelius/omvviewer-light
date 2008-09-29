@@ -1,15 +1,14 @@
 ﻿<UserCombinePreferences version="1.0" filename="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light.mds">
   <Files>
     <File name="Welcome" />
-    <File name="omvviewer-light/Map.cs" line="76" column="4" />
-    <File name="omvviewer-light/TryGetImage.cs" line="45" column="23" />
-    <File name="omvviewer-light/FriendsList.cs" line="65" column="16" />
+    <File name="omvviewer-light/TryGetImage.cs" line="82" column="37" />
+    <File name="omvviewer-light/Map.cs" line="80" column="4" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
-          <Node name="Map.cs" selected="True" />
+          <Node name="TryGetImage.cs" selected="True" />
         </Node>
       </Node>
     </ViewMemento>
@@ -18,7 +17,7 @@
     </ViewMemento>
   </Views>
   <Properties>
-    <Property key="ActiveWindow" value="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light/Map.cs" />
+    <Property key="ActiveWindow" value="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light/TryGetImage.cs" />
     <Property key="ActiveConfiguration" value="Debug" />
   </Properties>
 </UserCombinePreferences>

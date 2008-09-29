@@ -72,9 +72,9 @@ namespace omvviewerlight
 			Console.Write("Got grid layer reply, requesting texture :"+region.MapImageID.ToString()+"\n");
 			Gdk.Pixbuf pb= new Gdk.Pixbuf("trying.tga");
 			
-			//this.basemap=new Gtk.Image(pb);
-			//TryGetImage img=new TryGetImage(basemap,region.MapImageID);
-			getmap();
+			this.basemap=new Gtk.Image(pb);
+			TryGetImage img=new TryGetImage(basemap,region.MapImageID,256,256);
+			//getmap();
 			
 		}
 				
