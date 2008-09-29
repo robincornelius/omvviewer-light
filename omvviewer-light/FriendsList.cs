@@ -69,7 +69,7 @@ namespace omvviewerlight
         {
             Gtk.Application.Invoke(delegate
             {
-                if (accepted == true) ;
+                if (accepted == true)
                     populate_list();
             });
         }	

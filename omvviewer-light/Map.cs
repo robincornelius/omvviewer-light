@@ -51,17 +51,37 @@ namespace omvviewerlight
 		Gtk.Image avatar_above=new Gtk.Image("map_avatar_above_8.tga");
 		Gtk.Image avatar_below=new Gtk.Image("map_avatar_below_8.tga");
         UUID lastsim = new UUID();
+		string simname;
 
 		public Map()
 		{           
-			this.Build();
-			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-			//MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
+			this.Build();
+			MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
 			MainClass.client.Objects.OnNewAvatar += new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
 			MainClass.client.Objects.OnObjectKilled += new OpenMetaverse.ObjectManager.KillObjectCallback(onKillObject);
 			MainClass.client.Objects.OnObjectUpdated += new OpenMetaverse.ObjectManager.ObjectUpdatedCallback(onUpdate);
             MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
-        }
+			//MainClass.client.Grid.OnGridLayer += new OpenMetaverse.GridManager.GridLayerCallback(onGridLayer);
+			MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
+							
+		
+		}
+		
+		void onGridRegion(GridRegion region)
+		{
+			Console.Write("Got grid layer reply, requesting texture :"+region.MapImageID.ToString()+"\n");
+			Gdk.Pixbuf pb= new Gdk.Pixbuf("trying.tga");
+			
+			//this.basemap=new Gtk.Image(pb);
+			//TryGetImage img=new TryGetImage(basemap,region.MapImageID);
+			getmap();
+			
+		}
+				
+		void onGridLayer(GridLayer layer)
+	    {
+			
+		}
 
 		void onTeleport(string Message, OpenMetaverse.AgentManager.TeleportStatus status,OpenMetaverse.AgentManager.TeleportFlags flags)
 	    {
@@ -167,34 +187,13 @@ namespace omvviewerlight
 			
 		}
 		
-
-	/*
+
 		void onNewSim(Simulator lastsim)
 	    {
-			Gtk.Application.Invoke(delegate {
-
-            Console.Write("\n\n******************\nMAP: On NEW SIM INVOKE\n");
-			if(MainClass.client.Network.LoginStatusCode==LoginStatus.Success)
-				{
-					getmap();
-					this.label1.Text=MainClass.client.Network.CurrentSim.Name;
-
-                    if (last != MainClass.client.Network.CurrentSim)
-                    {
-                        avs.Clear();
-                        last = MainClass.client.Network.CurrentSim;
-                    }
-                    drawavs();
-
-				}
-				else
-			//	{
-			////		this.label1.Text="No location";
-					
-			//	}
-			});
+			Console.Write("New simulator :"+MainClass.client.Network.CurrentSim.Name +" requesting grid layer for terrain \n");
+			MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Terrain);
+     
 		}
-		*/
 	
 		void showme(Gdk.Pixbuf buf,Gdk.Pixbuf src,Vector3 pos)
 		{
@@ -255,24 +254,7 @@ namespace omvviewerlight
 					}
 				}
 			}	
-		}
-		
-		void onLogin(LoginStatus login, string message)
-		{
-			Gtk.Application.Invoke(delegate {		
-				
-				if(login==LoginStatus.Success)
-				{
-                    Console.Write("\n\n******************\nMAP ON LOGIN INVOKE\n");
-                    avs.Clear();
-					getmap();
-					this.label1.Text=MainClass.client.Network.CurrentSim.Name;
-                    lastsim = MainClass.client.Network.CurrentSim.ID;
-				}
-
-			});
-          
-		}
+		}
 				
 		void getmap()
 		{
