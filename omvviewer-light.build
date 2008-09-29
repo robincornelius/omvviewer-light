@@ -54,6 +54,7 @@
                 <exclude name="*.txt" />
                 <exclude name="*.tga" />
                 <exclude name="*.xpm" />
+                <exclude name="*.png" />
 	   </fileset>
         </delete>
         <delete dir="${obj.dir}" failonerror="false" />

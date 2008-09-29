@@ -20,6 +20,7 @@
                 <include name="AsyncNameUpdate.cs" />
                 <include name="ChatConsole.cs" />
                 <include name="ChatLayout.cs" />
+                <include name="EventsSearch.cs" />
                 <include name="FriendsList.cs" />
                 <include name="Friendshiprequest.cs" />
                 <include name="GroupInfo.cs" />
@@ -51,6 +52,7 @@
                 <include name="gtk-gui/generated.cs" />
                 <include name="gtk-gui/omvviewerlight.ChatConsole.cs" />
                 <include name="gtk-gui/omvviewerlight.ChatLayout.cs" />
+                <include name="gtk-gui/omvviewerlight.EventsSearch.cs" />
                 <include name="gtk-gui/omvviewerlight.FriendsList.cs" />
                 <include name="gtk-gui/omvviewerlight.Friendshiprequest.cs" />
                 <include name="gtk-gui/omvviewerlight.GroupInfo.cs" />
