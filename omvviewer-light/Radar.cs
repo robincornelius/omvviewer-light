@@ -121,6 +121,7 @@ namespace omvviewerlight
                     }
                 });
 
+                if (MainClass.client.Network.CurrentSim != null)
                  lastsim=MainClass.client.Network.CurrentSim.ID;
 			}
 	    }
@@ -139,6 +140,7 @@ namespace omvviewerlight
                    }
               });
 
+            if (MainClass.client.Network.CurrentSim != null)
             lastsim = MainClass.client.Network.CurrentSim.ID;
 		}
 		
