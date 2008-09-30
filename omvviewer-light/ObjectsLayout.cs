@@ -254,7 +254,9 @@ namespace omvviewerlight
 						this.button_take.Sensitive=false;
 					}
 					
-					this.label_float_text=prim.Text;
+					this.label_float_text.Text=prim.Text;
+					
+					
 				}
 			
 			}
