@@ -103,12 +103,14 @@ namespace omvviewerlight
                     drawavs();
 				});
 
-                lastsim = MainClass.client.Network.CurrentSim.ID;
+                if(MainClass.client.Network.CurrentSim !=null)
+                    lastsim = MainClass.client.Network.CurrentSim.ID;
 			}
 	    }
 				
 		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
 		{
+          
 			if(avs.ContainsKey(update.LocalID))
 			{
                 lock (avs)
@@ -150,7 +152,10 @@ namespace omvviewerlight
 		{
 			if(basemap==null)
 					return;
-			
+
+            if (basemap.Pixbuf == null)
+                return;
+
 				Gdk.Pixbuf buf=(Gdk.Pixbuf)basemap.Pixbuf.Clone();
                 Gtk.Application.Invoke(delegate
                 {		
@@ -158,8 +163,6 @@ namespace omvviewerlight
 				});
 
 				int myz=(int)MainClass.client.Self.SimPosition.Z;
-
-                KeyValuePair<uint, Avatar> avs_copy;
 
                 lock (avs)
                 {

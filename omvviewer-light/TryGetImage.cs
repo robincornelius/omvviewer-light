@@ -54,7 +54,7 @@ namespace omvviewerlight
 						
 		}
 			                                               
-        void onProgress(UUID image, int recieved, int total)
+        void onProgress(UUID image, int recieved, int total,int lastpacket)
 		{
 			if(target_asset!=image)
 			return;

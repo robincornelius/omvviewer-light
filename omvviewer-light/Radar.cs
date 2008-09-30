@@ -203,19 +203,21 @@ namespace omvviewerlight
 		
 		void onKillObject(Simulator simulator, uint objectID)
 		{
-             Gtk.Application.Invoke(delegate {	
-           if(this.av_tree.ContainsKey(objectID))
-            {
-                lock (store)
-                {
-                    store.Remove(ref av_tree[objectID].iter);
-                }
-                lock (av_tree)
-                {
-                    av_tree.Remove(objectID);
-                }
-            }
-             });
+           //  Gtk.Application.Invoke(delegate {
+                 lock (av_tree)
+                 {
+                     if (this.av_tree.ContainsKey(objectID))
+                     {
+                         lock (store)
+                         {
+                             Console.Write("Ttrying to remove " + objectID.ToString() + "\n");
+                             Console.Write("Iter is " + av_tree[objectID].iter.ToString() + "\n");
+                             store.Remove(ref av_tree[objectID].iter);
+                         }
+                         av_tree.Remove(objectID);
+                     }
+                 }
+            // });
 		}
 
         void calcdistance(uint id)
