@@ -41,6 +41,8 @@ namespace omvviewerlight
         Gtk.TextTag systemchat;
 		Gtk.TextTag ownerobjectchat;
         Gtk.TextTag typing_tag;
+		TextMark preTyping;
+		TextMark postTyping;
 		
 		bool istyping=false;
 		bool istypingsent=false;
@@ -275,7 +277,7 @@ namespace omvviewerlight
 
 			// Is this a typing message
 			
-			if(im.Message=="typing")
+			if(im.Dialog == InstantMessageDialog.StartTyping)
 			{
 				if(istyping==false)
 				{
@@ -283,6 +285,25 @@ namespace omvviewerlight
 	                 {
 	                     displaychat("is typing...", im.FromAgentName, typing_tag, typing_tag);
 	                 });
+				}
+				return;
+			}
+
+			if(im.Dialog == InstantMessageDialog.StopTyping)
+			{
+				if(istyping==false)
+				{
+	                 Gtk.Application.Invoke(delegate
+	                 {
+						if(this.istyping==true)
+						{
+							TextIter start=this.textview_chat.Buffer.GetIterAtMark(this.preTyping);
+							TextIter end=this.textview_chat.Buffer.GetIterAtMark(this.postTyping);
+							textview_chat.Buffer.SelectRange(start,end);
+							textview_chat.Buffer.DeleteSelection(false,false);			
+							istyping=false;
+						}	                
+					});
 				}
 				return;
 			}
@@ -399,17 +420,17 @@ namespace omvviewerlight
 
 		protected virtual void OnEntryChatActivated (object sender, System.EventArgs e)
 		{
-				if(istyping==true)
-				{
-                    TextIter iter2=new TextIter();
-					iter2=textview_chat.Buffer.EndIter;
-					textview_chat.BackwardDisplayLine(ref iter2);
-					textview_chat.BackwardDisplayLine(ref iter2);
-					textview_chat.Buffer.SelectRange(iter2,textview_chat.Buffer.EndIter);
-					textview_chat.Buffer.DeleteSelection(false,false);
-					//name="\n"+name; // we seem to have lost one of these erasing the buffer
-				    entry_chat.Text="\n"+entry_chat.Text;
-			     }
+		//		if(istyping==true)
+		//		{
+        //            TextIter iter2=new TextIter();
+		//			iter2=textview_chat.Buffer.EndIter;
+		//			textview_chat.BackwardDisplayLine(ref iter2);
+		//			textview_chat.BackwardDisplayLine(ref iter2);
+		//			textview_chat.Buffer.SelectRange(iter2,textview_chat.Buffer.EndIter);
+		//			textview_chat.Buffer.DeleteSelection(false,false);
+		//			//name="\n"+name; // we seem to have lost one of these erasing the buffer
+		//		    entry_chat.Text="\n"+entry_chat.Text;
+		//	     }
 			
 			if(im_key!=OpenMetaverse.UUID.Zero)
 			{
@@ -491,29 +512,28 @@ namespace omvviewerlight
         {
             string buffer;
             TextIter iter;
-            
+			bool removedtyping=false;
             bool emote = false;
-
+			
 			if(message=="is typing...")
-			{				
-				istyping=true;		
+			{
+				this.textview_chat.Buffer.DeleteMark("Typing start");
+				this.textview_chat.Buffer.DeleteMark("Typing end");
+				this.preTyping=textview_chat.Buffer.CreateMark("Typing start",textview_chat.Buffer.EndIter,true);
+				istyping=true;
 			}
 			else
-			{					
+			{
 				if(istyping==true)
 				{
-                    TextIter iter2=new TextIter();
-					iter2=textview_chat.Buffer.EndIter;
-					textview_chat.BackwardDisplayLine(ref iter2);
-					textview_chat.BackwardDisplayLine(ref iter2);
-					textview_chat.Buffer.SelectRange(iter2,textview_chat.Buffer.EndIter);
+					TextIter start=this.textview_chat.Buffer.GetIterAtMark(this.preTyping);
+					TextIter end=this.textview_chat.Buffer.GetIterAtMark(this.postTyping);
+					textview_chat.Buffer.SelectRange(start,end);
 					textview_chat.Buffer.DeleteSelection(false,false);
-					name="\n"+name; // we seem to have lost one of these erasing the buffer
+					istyping=false;
 				}
-				istyping=false;
 			}
-							
-			
+				
             if (message.Length > 3)
                 if (message.Substring(0, 3) == "/me")
                     emote=true;
@@ -544,6 +564,17 @@ namespace omvviewerlight
                 textview_chat.Buffer.DeleteMark("xyz");
 
             }
+			
+			if(message=="is typing...")
+			{
+				this.postTyping=textview_chat.Buffer.CreateMark("Typing end",textview_chat.Buffer.EndIter,true);				
+			}
+			
+			if(removedtyping==true)
+			{
+				this.istyping=false; //set this false or recuse to hell
+				displaychat("is typing...", name, this.typing_tag, this.typing_tag);				
+			}
 
         }
 
@@ -558,9 +589,23 @@ namespace omvviewerlight
                         binaryBucket = new byte[0];
 		    			MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_key,"typing",im_session_id,InstantMessageDialog.StartTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
 				    	istypingsent=true;
-					}
+					    GLib.Timeout.Add(10000,StopTyping);
+				    }
             }			
-        }
+	}
+		
+	bool StopTyping()
+	 {
+			
+					    Console.Write("\nSending typing message\n");
+                        byte[] binaryBucket;
+                        binaryBucket = new byte[0];
+		    			MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_key,"",im_session_id,InstantMessageDialog.StopTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
+			istypingsent=false;
+		     return false;	
+			
+		 
+      }
 							
 	}
 }
