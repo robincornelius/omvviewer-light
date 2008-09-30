@@ -41,7 +41,7 @@ namespace omvviewerlight
 			
 			Console.Write("Building friends list window\n");
 			this.Build();
-			store= new Gtk.ListStore (typeof(Gdk.Pixbuf),typeof(string),typeof(string));
+			store= new Gtk.ListStore (typeof(Gdk.Pixbuf),typeof(string),typeof(string),typeof(bool));
 			
 			treeview_friends.AppendColumn("Online",new CellRendererPixbuf(),"pixbuf",0);
 			treeview_friends.AppendColumn("Name",new Gtk.CellRendererText(),"text",1);		
@@ -64,16 +64,17 @@ namespace omvviewerlight
             string nameA = (string)store.GetValue(a, 1);
             string nameB = (string)store.GetValue(b, 1);
 
-            Gdk.Pixbuf Pa = (Gdk.Pixbuf)store.GetValue(a, 0);
-            Gdk.Pixbuf Pb =(Gdk.Pixbuf)store.GetValue(b, 0);
+            bool Pa = (bool)store.GetValue(a, 3);
+            bool Pb =(bool)store.GetValue(b, 3);
+
 
             if (Pa == Pb)
             {
-               return string.Compare(nameB, nameA);
+               return string.Compare(nameA, nameB);
             }
 
-            if (Pa == online_img)
-                return -1;
+            if (Pa == true)
+               return -1;
 
             return 1;
 
@@ -129,7 +130,7 @@ namespace omvviewerlight
             store.Clear();
 			MainClass.client.Friends.FriendList.ForEach(delegate(FriendInfo friend)
 			{
-				Gtk.TreeIter iter=store.AppendValues (friend.IsOnline?online_img:offline_img,friend.Name,friend.UUID.ToString());
+                Gtk.TreeIter iter = store.AppendValues(friend.IsOnline ? online_img : offline_img, friend.Name, friend.UUID.ToString(), friend.IsOnline);
 				AsyncNameUpdate ud=new AsyncNameUpdate(friend.UUID,false);  
 				ud.addparameters(iter);
 				ud.onNameCallBack += delegate(string namex,object[] values){Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; store.SetValue(iterx,1,namex);};
@@ -145,8 +146,9 @@ namespace omvviewerlight
 			FriendInfo finfo;
 			if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 			{
-				store.SetValue(iter,0,finfo.IsOnline?new Gdk.Pixbuf("icon_avatar_online.tga"):new Gdk.Pixbuf("icon_avatar_offline.tga"));
-			}
+                store.SetValue(iter, 0, finfo.IsOnline ? new Gdk.Pixbuf("icon_avatar_online.tga") : new Gdk.Pixbuf("icon_avatar_offline.tga"));
+			    store.SetValue(iter, 3, finfo.IsOnline);
+            }
 			return false;
 		}
 		
