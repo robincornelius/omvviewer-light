@@ -75,7 +75,6 @@ namespace omvviewerlight
 			//this.basemap=new Gtk.Image(pb);
 			//TryGetImage img=new TryGetImage(basemap,region.MapImageID,256,256);
 			getmap();
-			
 		}
 				
 		void onGridLayer(GridLayer layer)

@@ -120,9 +120,7 @@ namespace omvviewerlight
         static void delete_event(object obj, DeleteEventArgs args)
         {
            
-            if(client.Network.Connected)
-                client.Network.Logout();
-      
+	     
         }
 
 

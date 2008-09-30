@@ -171,6 +171,14 @@ public partial class MainWindow: Gtk.Window
             return;
         }
 
+		if(MainClass.client.Network.Connected)
+		{
+			Gtk.MessageDialog md2=new MessageDialog(this,DialogFlags.DestroyWithParent,MessageType.Info,ButtonsType.None,false,"The system is trying to log you out now\n please wait");
+			md2.Show();
+			MainClass.client.Network.Logout();
+			md2.Destroy();
+		}
+		
         if (oncleanuptime != null)
             oncleanuptime();		
 

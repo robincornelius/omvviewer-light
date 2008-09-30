@@ -299,15 +299,12 @@ namespace omvviewerlight
 				      login.URI=entry_loginuri.Text=this.entry_loginuri.Text;
 	              */
 				
-				
-				Thread loginRunner= new Thread(new ThreadStart(this.loginthread));                               
-				
+				Thread loginRunner= new Thread(new ThreadStart(this.loginthread));                               		
 				loginRunner.Start();
 
 }
 			else
 			{
-				trying=false;
 				MainClass.client.Network.Logout();
 			}
 		}
