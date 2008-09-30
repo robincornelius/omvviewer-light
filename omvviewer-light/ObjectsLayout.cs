@@ -48,7 +48,11 @@ namespace omvviewerlight
 			this.label_group.Text="";
 			this.label_name.Text="";
 			this.label_owner.Text="";
-
+		    this.label_key.Text="";
+			this.label_distance.Text="";
+			this.label_pos.Text="";
+		    this.label_float_text.Text="";
+			
 			MainClass.client.Objects.OnObjectProperties += new OpenMetaverse.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
 			MainClass.client.Groups.OnGroupNames += new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
 
@@ -165,6 +169,8 @@ namespace omvviewerlight
 				Primitive prim;
 				if(PrimsWaiting.TryGetValue(id,out prim))
 				{
+				Console.WriteLine(prim.ToString());
+
 					this.label_name.Text=prim.Properties.Name;
 					this.label_desc.Text=prim.Properties.Description;
 									
@@ -227,6 +233,28 @@ namespace omvviewerlight
 					{
 						this.button_pay.Sensitive=false;
 					}
+					
+					this.label_key.Text=prim.ID.ToString();
+				
+					this.label_pos.Text=prim.Position.ToString();
+					
+					this.label_distance.Text=(MainClass.client.Self.RelativePosition-prim.Position).ToString();
+					
+					this.button_take_copy.Sensitive=((prim.Flags & PrimFlags.ObjectCopy)==PrimFlags.ObjectCopy);
+					
+					Console.WriteLine(prim.Flags.ToString());
+					this.textview1.Buffer.SetText(prim.Flags.ToString());
+				
+					if((prim.Flags & PrimFlags.ObjectYouOwner)==PrimFlags.ObjectYouOwner)
+					{
+						this.button_take.Sensitive=true;
+					}
+					else
+					{
+						this.button_take.Sensitive=false;
+					}
+					
+					this.label_float_text=prim.Text;
 				}
 			
 			}
@@ -348,11 +376,46 @@ namespace omvviewerlight
 				
 				if(PrimsWaiting.TryGetValue(id,out prim))
 				{
-					
+					Gtk.MessageDialog md=new Gtk.MessageDialog(MainClass.win,Gtk.DialogFlags.DestroyWithParent,Gtk.MessageType.Info,Gtk.ButtonsType.Ok,false,"Sorry that is not yet implemented");
+					md.Run();
+					md.Destroy();
 				}
 			}
 		}
 
-		
+		protected virtual void OnButtonBuyClicked (object sender, System.EventArgs e)
+		{
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(treeview1.Selection.GetSelected(out mod,out iter))			
+			{
+				UUID id=(UUID)mod.GetValue(iter,2);
+				Primitive prim;
+				
+				if(PrimsWaiting.TryGetValue(id,out prim))
+				{
+				}
+			}
+		}
+
+
+		protected virtual void OnButtonReturnClicked (object sender, System.EventArgs e)
+		{
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(treeview1.Selection.GetSelected(out mod,out iter))			
+			{
+				UUID id=(UUID)mod.GetValue(iter,2);
+				Primitive prim;
+				
+				if(PrimsWaiting.TryGetValue(id,out prim))
+				{
+					//MainClass.client.Parcels
+				}
+			}
+		}
+	
 	}
 }
