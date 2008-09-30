@@ -1031,7 +1031,7 @@ Shout</property>
                         <child>
                           <widget class="Gtk.Label" id="label1">
                             <property name="MemberName" />
-                            <property name="LabelProp" translatable="yes">SIm Name</property>
+                            <property name="LabelProp" translatable="yes">Sim Name</property>
                           </widget>
                           <packing>
                             <property name="Position">0</property>

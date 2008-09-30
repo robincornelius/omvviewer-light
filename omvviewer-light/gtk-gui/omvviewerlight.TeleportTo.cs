@@ -101,7 +101,7 @@ namespace omvviewerlight {
             // Container child hbox1.Gtk.Box+BoxChild
             this.label1 = new Gtk.Label();
             this.label1.Name = "label1";
-            this.label1.LabelProp = Mono.Unix.Catalog.GetString("SIm Name");
+            this.label1.LabelProp = Mono.Unix.Catalog.GetString("Sim Name");
             this.hbox1.Add(this.label1);
             Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.hbox1[this.label1]));
             w3.Position = 0;
