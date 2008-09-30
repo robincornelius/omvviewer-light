@@ -256,7 +256,6 @@ namespace omvviewerlight
 					
 					this.label_float_text.Text=prim.Text;
 					
-					
 				}
 			
 			}

@@ -434,7 +434,6 @@ public partial class MainWindow: Gtk.Window
 	{
 		Gtk.Application.Invoke(delegate {						
 
-		
 			//FIX ME NAME UPDATE BROKEN
 	//	AsyncNameUpdate ud=new AsyncNameUpdate(parcel.OwnerID,false);  
 	//	ud.onNameCallBack += delegate(string namex,object[] values){this.label_foundedby.Text="Founded by "+namex;};
@@ -469,8 +468,7 @@ public partial class MainWindow: Gtk.Window
         Tooltips tooltips1 = new Tooltips();
         tooltips1.SetTip(this.statusbar1, tooltext, null);
         tooltips1.Enable();
-       
-      
+       
 			doicons(parcel);
 		});
 	}
