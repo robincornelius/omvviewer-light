@@ -116,8 +116,6 @@ namespace omvviewerlight {
                 this.Child.ShowAll();
             }
             this.Show();
-            this.spinbutton_direction.ChangeValue += new Gtk.ChangeValueHandler(this.OnSpinbuttonDirectionChangeValue);
-            this.spinbutton_direction.ValueChanged += new System.EventHandler(this.OnSpinbuttonDirectionValueChanged);
             this.button1.Pressed += new System.EventHandler(this.OnButton1Pressed);
             this.button1.Released += new System.EventHandler(this.OnButton1Released);
             this.button_fwd.Pressed += new System.EventHandler(this.OnButtonFwdPressed);

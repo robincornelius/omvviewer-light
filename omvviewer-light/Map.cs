@@ -104,7 +104,6 @@ namespace omvviewerlight
 				
 		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
 		{
-          
 			if(avs.ContainsKey(update.LocalID))
 			{
                 lock (avs)

@@ -28,7 +28,6 @@ using Gtk;
 
 namespace omvviewerlight
 {
-	
 	public partial class TeleportTo : Gtk.Bin
 	{
 		
@@ -36,7 +35,23 @@ namespace omvviewerlight
 		{
 			this.Build();		
             MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-		}
+            MainClass.client.Objects.OnObjectUpdated += new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);    
+
+        }
+
+        void Objects_OnObjectUpdated(Simulator simulator, ObjectUpdate update, ulong regionHandle, ushort timeDilation)
+        {
+            if (update.LocalID == MainClass.client.Self.LocalID)
+            {
+                Gtk.Application.Invoke(delegate
+                {
+                    this.spinbutton_x.Value = MainClass.client.Self.SimPosition.X;
+                    this.spinbutton_y.Value = MainClass.client.Self.SimPosition.Y;
+                    this.spinbutton_z.Value = MainClass.client.Self.SimPosition.Z;
+                });
+
+            }
+        }
 
         void onNewSim(Simulator lastsim)
         {
