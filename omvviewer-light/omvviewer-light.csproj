@@ -22,24 +22,27 @@
     <StartupObject>omvviewerlight.MainClass</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
     <SignManifests>true</SignManifests>
     <ManifestCertificateThumbprint>0DB8568C639B078DA9EBBB6B1FDAC8FAC1426128</ManifestCertificateThumbprint>
     <SignAssembly>false</SignAssembly>
     <GenerateManifests>true</GenerateManifests>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>false</MapFileExtensions>
+    <MapFileExtensions>true</MapFileExtensions>
+    <InstallUrl>http://www.byteme.org.uk/omvviewer-light/</InstallUrl>
     <SupportUrl>http://jira.byteme.org.uk</SupportUrl>
     <ProductName>omvviewer-light</ProductName>
     <PublisherName>omvviewer-light</PublisherName>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>index.html</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>0.30.0.%2a</ApplicationVersion>
