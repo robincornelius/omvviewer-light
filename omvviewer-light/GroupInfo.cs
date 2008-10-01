@@ -56,7 +56,6 @@ namespace omvviewerlight
         bool nobody_cares = false;
 		
 		UUID groupkey;
-		UUID founder_key;
 
 		Gdk.Pixbuf folder_open = new Gdk.Pixbuf("inv_folder_plain_open.tga");
 		Gdk.Pixbuf tick = new Gdk.Pixbuf("tick.tga");
@@ -295,7 +294,6 @@ namespace omvviewerlight
 		
 		bool myfunc_members(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
 		{			
-			bool stillwaiting;
 			string name=(string)store_members.GetValue(iter,0);
 			UUID id =(UUID)store_members.GetValue(iter,3);
 			string member_name;

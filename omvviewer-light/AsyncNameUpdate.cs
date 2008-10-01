@@ -35,10 +35,8 @@ namespace omvviewerlight
 	{
 		UUID av_target;
 		UUID group_target;
-		List <UUID>getting;
 	    object[] callbackvalues1;
-        int count = 0;
-		
+       		
 		public delegate void NameCallBack(string name, object[] values);
         public event NameCallBack onNameCallBack;
 		

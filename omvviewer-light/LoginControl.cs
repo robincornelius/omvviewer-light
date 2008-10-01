@@ -82,6 +82,7 @@ namespace omvviewerlight
 			}
 			catch(Exception e)
 			{
+                Console.WriteLine(e.ToString());
 			}					
 			
 			int selected=0;
@@ -271,6 +272,7 @@ namespace omvviewerlight
                 }
                 catch(Exception ee)
                 {
+                    Console.WriteLine(ee.ToString());
                 }
 				
 				if(this.radiobutton1.Active)

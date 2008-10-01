@@ -62,8 +62,8 @@ namespace omvviewerlight
 			this.label_info.Text="Searching..........";
             events_found = 0;
 			
-			OpenMetaverse.Parcel.ParcelCategory pcat;
-			pcat=OpenMetaverse.Parcel.ParcelCategory.Any;
+			//OpenMetaverse.Parcel.ParcelCategory pcat;
+			//pcat=OpenMetaverse.Parcel.ParcelCategory.Any;
 			queryid=UUID.Random();
 			MainClass.client.Directory.StartEventsSearch(entry1.Text,true,OpenMetaverse.DirectoryManager.EventCategories.All);
 			

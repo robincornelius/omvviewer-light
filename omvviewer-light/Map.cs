@@ -51,8 +51,7 @@ namespace omvviewerlight
 		Gtk.Image avatar_above=new Gtk.Image("map_avatar_above_8.tga");
 		Gtk.Image avatar_below=new Gtk.Image("map_avatar_below_8.tga");
         UUID lastsim = new UUID();
-		string simname;
-
+		
 		public Map()
 		{           
 			this.Build();
@@ -72,9 +71,9 @@ namespace omvviewerlight
 			Console.Write("Got grid layer reply, requesting texture :"+region.MapImageID.ToString()+"\n");
 			Gdk.Pixbuf pb= new Gdk.Pixbuf("trying.tga");
 			
-			//this.basemap=new Gtk.Image(pb);
-			//TryGetImage img=new TryGetImage(basemap,region.MapImageID,256,256);
-			getmap();
+			this.basemap=new Gtk.Image(pb);
+			TryGetImage img=new TryGetImage(basemap,region.MapImageID,256,256);
+			//getmap();
 		}
 				
 		void onGridLayer(GridLayer layer)
@@ -304,6 +303,8 @@ namespace omvviewerlight
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.ToString());
+
                 Gtk.Application.Invoke(delegate
                 {
                     Gtk.MessageDialog msg = new Gtk.MessageDialog(MainClass.win, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "Error Downloading Web Map Image");

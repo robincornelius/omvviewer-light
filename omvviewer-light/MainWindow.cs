@@ -263,8 +263,6 @@ public partial class MainWindow: Gtk.Window
 	void onScriptCallback(Simulator sim,UUID taskID,UUID itemID,string objectName,string objectOwner,OpenMetaverse.ScriptPermission questions)
 	{
 		string message;
-	
-		ScriptPermission x;
 		
 		switch(questions)
 		{
@@ -304,7 +302,6 @@ public partial class MainWindow: Gtk.Window
 		default:
 			message="I HAVE NO IDEA";
 			return;
-			break;
 		}
 
 		Gtk.Application.Invoke(delegate {						
@@ -709,8 +706,7 @@ public partial class MainWindow: Gtk.Window
 
 			Gtk.Application.Invoke(delegate {						
 				ChatConsole imc=new ChatConsole(im);
-				string name;
-
+				
                 makeimwindow("Waiting...",imc,false,im.FromAgentID);
 				active_ims.Add(im.FromAgentID);
                 ChatSetup.Set();

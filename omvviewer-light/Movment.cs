@@ -33,8 +33,6 @@ namespace omvviewerlight
 	public partial class Movment : Gtk.Bin
 	{
 		
-		Quaternion rotation;
-		
 		public Movment()
 		{
 			this.Build();			
@@ -70,8 +68,8 @@ namespace omvviewerlight
 			Quaternion myrotation=MainClass.client.Self.RelativeRotation;
 			Console.Write(myrotation.ToString()+"\n");
 
-			if(myrotation!=rotation)
-			{
+		//	if(myrotation!=rotation)
+		//	{
 				
 			//	float x,y,z;
 			//	rotation=myrotation;
@@ -82,7 +80,7 @@ namespace omvviewerlight
                // Gdk.Pixbuf rotated = rotatepixbuf((float)1.567, this.image_direction.Pixbuf);
                // this.image_direction.Pixbuf = rotated;
                
-			}
+		//	}
 			
 			return true;
 		}

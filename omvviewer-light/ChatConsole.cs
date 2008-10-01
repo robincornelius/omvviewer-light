@@ -307,10 +307,7 @@ namespace omvviewerlight
 				}
 				return;
 			}
-			
-			if(im.Dialog!=null)
-				Console.Write("**** DIALOGUE RESPONSE ****\n"+im.Dialog.ToString()+"\n");
-			
+				
 			//Reject some IMs that we handle else where
 			
 			if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryOffered)
@@ -372,10 +369,6 @@ namespace omvviewerlight
 
             redtab();
             windownotify();
-
-			
-			string buffer;
-			TextIter iter;
 
 			if(type==ChatType.Whisper)
 				fromName=fromName+" whispers: ";
@@ -480,6 +473,7 @@ namespace omvviewerlight
                     }
                     catch (Exception ee)
                     {
+                        Console.WriteLine(ee.ToString());
                         channel = 0;
                     }
                 }

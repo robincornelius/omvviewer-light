@@ -34,6 +34,8 @@ namespace omvviewerlight
 		
 		UUID target_asset;
 		Gtk.Image target_image;
+        int img_width;
+        int img_height;
 		
 		public TryGetImage(Gtk.Image target,UUID asset,int width,int height)
 		{
@@ -45,6 +47,8 @@ namespace omvviewerlight
 			
 			target_asset=asset;
 			target_image=target;
+            img_width = width;
+            img_height = height;
 					
 			Gdk.Pixbuf buf=new Gdk.Pixbuf("trying.tga");
 			target_image.Pixbuf=buf.ScaleSimple(width,height,Gdk.InterpType.Bilinear);
@@ -140,13 +144,13 @@ namespace omvviewerlight
 				{
 				    Gdk.Pixbuf buf=new Gdk.Pixbuf(tgaFile);
 					Console.Write("Decoded\n");
-					int x,y;
+					int x;
                     if (target_image!=null) // this has managed to get set to null
                     {
                         if (target_image.Pixbuf != null)
                         {
                             x = target_image.Pixbuf.Width;
-                            target_image.Pixbuf = buf.ScaleSimple(128, 128, Gdk.InterpType.Bilinear);
+                            target_image.Pixbuf = buf.ScaleSimple(img_width, img_height, Gdk.InterpType.Bilinear);
                         }
                     }
 				}
