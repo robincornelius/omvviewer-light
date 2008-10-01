@@ -40,8 +40,9 @@ namespace omvviewerlight
 		private const int GRID_Y_OFFSET = 1279;
 
 		private Dictionary<uint, Avatar> avs = new Dictionary<uint, Avatar>();
-		
-		Gtk.Image basemap;
+
+        Gtk.Image basemap;
+
 		int rowstride;
 		int channels;
 		int width;
@@ -71,9 +72,10 @@ namespace omvviewerlight
 			Console.Write("Got grid layer reply, requesting texture :"+region.MapImageID.ToString()+"\n");
 			Gdk.Pixbuf pb= new Gdk.Pixbuf("trying.tga");
 			
-			this.basemap=new Gtk.Image(pb);
-			TryGetImage img=new TryGetImage(basemap,region.MapImageID,256,256);
-			//getmap();
+			//this.basemap=new Gtk.Image(pb);
+			//TryGetImage img=new TryGetImage(basemap,region.MapImageID,256,256);
+
+        	getmap();
 		}
 				
 		void onGridLayer(GridLayer layer)
@@ -193,8 +195,8 @@ namespace omvviewerlight
 	    {
 			Console.Write("New simulator :"+MainClass.client.Network.CurrentSim.Name +" requesting grid layer for terrain \n");
 			MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Terrain);
-     
-		}
+            this.label1.Text = MainClass.client.Network.CurrentSim.Name;
+        }
 	
 		void showme(Gdk.Pixbuf buf,Gdk.Pixbuf src,Vector3 pos)
 		{
