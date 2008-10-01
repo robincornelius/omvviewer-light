@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ReferencePath>C:\Program Files\Mono-1.9.1\lib\mono\gtk-sharp-2.0\;C:\Program Files\Mono-1.9.1\lib\mono\2.0\</ReferencePath>
+    <ReferencePath>C:\Program Files\Medsphere\Gtk# Runtime\lib\gtk-sharp-2.0\atk\;C:\Program Files\Medsphere\Gtk# Runtime\lib\gtk-sharp-2.0\gdk\;C:\Program Files\Medsphere\Gtk# Runtime\lib\gtk-sharp-2.0\glib\;C:\Program Files\Medsphere\Gtk# Runtime\lib\gtk-sharp-2.0\gtk\;C:\Program Files\Medsphere\Gtk# Runtime\lib\gtk-sharp-2.0\pango\</ReferencePath>
     <LastOpenVersion>8.0.50727</LastOpenVersion>
     <ProjectView>ProjectFiles</ProjectView>
     <ProjectTrust>0</ProjectTrust>
