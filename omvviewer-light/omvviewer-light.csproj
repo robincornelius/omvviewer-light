@@ -220,6 +220,7 @@
     <Compile Include="ObjectsLayout.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ParcelMgr.cs" />
     <Compile Include="PayWindow.cs">
       <SubType>Code</SubType>
     </Compile>

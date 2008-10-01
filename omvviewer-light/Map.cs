@@ -61,7 +61,7 @@ namespace omvviewerlight
 			MainClass.client.Objects.OnObjectKilled += new OpenMetaverse.ObjectManager.KillObjectCallback(onKillObject);
 			MainClass.client.Objects.OnObjectUpdated += new OpenMetaverse.ObjectManager.ObjectUpdatedCallback(onUpdate);
             MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
-			//MainClass.client.Grid.OnGridLayer += new OpenMetaverse.GridManager.GridLayerCallback(onGridLayer);
+			MainClass.client.Grid.OnGridLayer += new OpenMetaverse.GridManager.GridLayerCallback(onGridLayer);
 			MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
 							
 		
@@ -69,12 +69,9 @@ namespace omvviewerlight
 		
 		void onGridRegion(GridRegion region)
 		{
-			Console.Write("Got grid layer reply, requesting texture :"+region.MapImageID.ToString()+"\n");
-			Gdk.Pixbuf pb= new Gdk.Pixbuf("trying.tga");
+		//	Console.Write("Got grid layer reply, requesting texture :"+region.MapImageID.ToString()+"\n");
+		//	Gdk.Pixbuf pb= new Gdk.Pixbuf("trying.tga");
 			
-			//this.basemap=new Gtk.Image(pb);
-			//TryGetImage img=new TryGetImage(basemap,region.MapImageID,256,256);
-
         	getmap();
 		}
 				
@@ -85,8 +82,6 @@ namespace omvviewerlight
 
 		void onTeleport(string Message, OpenMetaverse.AgentManager.TeleportStatus status,OpenMetaverse.AgentManager.TeleportFlags flags)
 	    {
-
-
 			if(status==OpenMetaverse.AgentManager.TeleportStatus.Finished)
 			{
 
@@ -94,12 +89,11 @@ namespace omvviewerlight
                     return;
                
     		    Gtk.Application.Invoke(delegate {
-
                     lock (avs)
                     {
                         avs.Clear();
                     }
-                    
+       
                     drawavs();
 				});
 
@@ -188,9 +182,7 @@ namespace omvviewerlight
 				    image.QueueDraw();
                  });
 			
-		}
-		
-
+		}
 		void onNewSim(Simulator lastsim)
 	    {
 			Console.Write("New simulator :"+MainClass.client.Network.CurrentSim.Name +" requesting grid layer for terrain \n");
