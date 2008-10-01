@@ -39,9 +39,9 @@
     <MapFileExtensions>false</MapFileExtensions>
     <SupportUrl>http://jira.byteme.org.uk</SupportUrl>
     <ProductName>omvviewer-light</ProductName>
-    <PublisherName>Robin Cornelius</PublisherName>
+    <PublisherName>omvviewer-light</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>0.30.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
