@@ -1,17 +1,16 @@
-﻿<UserCombinePreferences version="1.0" filename="/home/robin/libsecondlife/omvviewer-light/omvviewer-light.mds">
+﻿<UserCombinePreferences version="1.0" filename="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light.mds">
   <Files>
     <File name="Welcome" />
-    <File name="omvviewer-light/TryGetImage.cs" line="82" column="37" />
-    <File name="omvviewer-light/Map.cs" line="78" column="4" />
-    <File name="omvviewer-light/ObjectsLayout.cs" line="258" column="6" />
-    <File name="omvviewer-light/MainWindow.cs" line="434" column="3" />
-    <File name="omvviewer-light/ParcelMgr.cs" line="12" column="2" />
+    <File name="omvviewer-light/TryGetImage.cs" line="1" column="1" />
+    <File name="omvviewer-light/Map.cs" line="1" column="1" />
+    <File name="omvviewer-light/MainWindow.cs" line="1" column="1" />
+    <File name="omvviewer-light/Inventory.cs" line="391" column="43" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
-          <Node name="ParcelMgr.cs" selected="True" />
+          <Node name="Inventory.cs" selected="True" />
         </Node>
       </Node>
     </ViewMemento>
@@ -20,7 +19,7 @@
     </ViewMemento>
   </Views>
   <Properties>
-    <Property key="ActiveWindow" value="/home/robin/libsecondlife/omvviewer-light/omvviewer-light/ParcelMgr.cs" />
+    <Property key="ActiveWindow" value="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light/Inventory.cs" />
     <Property key="ActiveConfiguration" value="Debug" />
   </Properties>
 </UserCombinePreferences>
