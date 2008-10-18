@@ -72,6 +72,8 @@
     <File name="gtk-gui/omvviewerlight.Movment.cs" subtype="Code" buildaction="Compile" />
     <File name="EventsSearch.cs" subtype="Code" buildaction="Compile" />
     <File name="gtk-gui/omvviewerlight.EventsSearch.cs" subtype="Code" buildaction="Compile" />
+    <File name="ParcelMgr.cs" subtype="Code" buildaction="Compile" />
+    <File name="gtk-gui/omvviewerlight.ParcelMgr.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
@@ -105,6 +107,8 @@
       <Widget>omvviewerlight.Inventory</Widget>
       <Widget>omvviewerlight.Movment</Widget>
       <Widget>omvviewerlight.EventsSearch</Widget>
+      <Widget>omvviewerlight.Parcel</Widget>
+      <Widget>omvviewerlight.ParcelMgr</Widget>
     </ExportedWidgets>
   </GtkDesignInfo>
 </Project>

@@ -116,6 +116,9 @@ public partial class MainWindow: Gtk.Window
 		omvviewerlight.Inventory i = new omvviewerlight.Inventory();
 		this.addtabwithicon("inv_folder_plain_open.tga","Inventory",i);
 		//this.doicons();
+
+		omvviewerlight.ParcelMgr p = new ParcelMgr();
+		this.addtabwithicon("inv_folder_plain_open.tga","Parcel",p);
 		
 		this.statusbar1.ShowAll();
 		
@@ -429,8 +432,10 @@ public partial class MainWindow: Gtk.Window
 	
 	void onParcelProperties(Simulator Sim,Parcel parcel, ParcelResult result, int selectedprims,int sequenceID, bool snapSelection)
 	{
-		Gtk.Application.Invoke(delegate {						
+		Gtk.Application.Invoke(delegate {		
+			
 
+			
 			//FIX ME NAME UPDATE BROKEN
 	//	AsyncNameUpdate ud=new AsyncNameUpdate(parcel.OwnerID,false);  
 	//	ud.onNameCallBack += delegate(string namex,object[] values){this.label_foundedby.Text="Founded by "+namex;};

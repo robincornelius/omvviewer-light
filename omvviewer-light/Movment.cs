@@ -112,5 +112,13 @@ namespace omvviewerlight
 
 		}
 
+		protected virtual void OnSpinbuttonDirectionChangeValue (object o, Gtk.ChangeValueArgs args)
+		{
+		}
+
+		protected virtual void OnSpinbuttonDirectionValueChanged (object sender, System.EventArgs e)
+		{
+		}
+
 	}
 }

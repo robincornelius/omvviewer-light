@@ -67,4 +67,8 @@
     <itemgroups />
     <signals />
   </object>
+  <object type="omvviewerlight.ParcelMgr" palette-category="omvviewer-light" allow-children="false" base-type="Gtk.Bin">
+    <itemgroups />
+    <signals />
+  </object>
 </objects>

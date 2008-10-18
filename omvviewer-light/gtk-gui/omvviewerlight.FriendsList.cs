@@ -59,6 +59,7 @@ namespace omvviewerlight {
             this.treeview_friends.WidthRequest = 225;
             this.treeview_friends.CanFocus = true;
             this.treeview_friends.Name = "treeview_friends";
+            this.treeview_friends.Reorderable = true;
             this.treeview_friends.HeadersClickable = true;
             this.GtkScrolledWindow.Add(this.treeview_friends);
             this.vbox7.Add(this.GtkScrolledWindow);

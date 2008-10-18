@@ -34,6 +34,7 @@
                 <include name="Movment.cs" />
                 <include name="NamePicker.cs" />
                 <include name="ObjectsLayout.cs" />
+                <include name="ParcelMgr.cs" />
                 <include name="PayWindow.cs" />
                 <include name="PlacesSearch.cs" />
                 <include name="ProfileVIew.cs" />
@@ -65,6 +66,7 @@
                 <include name="gtk-gui/omvviewerlight.NamePicker.cs" />
                 <include name="gtk-gui/omvviewerlight.ObjectsLayout.cs" />
                 <include name="gtk-gui/omvviewerlight.PayWindow.cs" />
+		<include name="gtk-gui/omvviewerlight.ParcelMgr.cs" />
                 <include name="gtk-gui/omvviewerlight.PlacesSearch.cs" />
                 <include name="gtk-gui/omvviewerlight.ProfileVIew.cs" />
                 <include name="gtk-gui/omvviewerlight.Radar.cs" />
