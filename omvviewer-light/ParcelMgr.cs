@@ -30,7 +30,6 @@ namespace omvviewerlight
 			MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
 			MainClass.client.Parcels.OnSimParcelsDownloaded += new OpenMetaverse.ParcelManager.SimParcelsDownloaded(onParcelsDownloaded);
 			MainClass.client.Parcels.OnParcelProperties += new OpenMetaverse.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
-			//MainClass.client.Parcels.OnAccessListReply += new OpenMetaverse.ParcelManager.ParcelAccessListReplyCallback(onAccessList);
 			
 			parcels_store=new Gtk.TreeStore (typeof(string),typeof(string),typeof(string),typeof(Parcel),typeof(int));
 			parcels_access=new Gtk.TreeStore(typeof(string),typeof(UUID));
@@ -46,34 +45,11 @@ namespace omvviewerlight
 			this.treeview_access.Model=this.parcels_access;
 			this.treeview_ban.Model=this.parcels_ban;
 			
+			MainClass.client.Settings.ALWAYS_REQUEST_PARCEL_ACL=true;
+			MainClass.client.Settings.ALWAYS_REQUEST_PARCEL_DWELL=true;
 		
 		}
-		
-		void onAccessList(Simulator sim,int seq,int localid,uint flags,List <OpenMetaverse.ParcelManager.ParcelAccessEntry> entries)
-	    {
-			
-			return;
-			
-			if(seq!=sequence)
-				return;
-			
-			Console.WriteLine("ACL callback");			
-			
-				foreach(OpenMetaverse.ParcelManager.ParcelAccessEntry entry in entries)
-				{
-				
-				  if(entry.AgentID==UUID.Zero)
-					continue;
-				
-				    Console.WriteLine(entry.AgentID.ToString());
-				
-					Gtk.TreeIter iter2=this.parcels_access.AppendValues("Waiting...");			
-					AsyncNameUpdate ud=new AsyncNameUpdate(entry.AgentID,false);  
-					ud.addparameters(iter2);
-					ud.onNameCallBack += delegate(string namex,object[] values){ Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; this.parcels_access.SetValue(iterx,0,namex);};				
-				}		
-		}
-		
+
 	    void onParcelProperties(Simulator Sim,Parcel parcel, ParcelResult result, int selectedprims,int sequenceID, bool snapSelection)
 		{		
 			
@@ -94,16 +70,8 @@ namespace omvviewerlight
 			
 			MainClass.client.Network.CurrentSim.Parcels.ForEach(delegate(Parcel parcel)
 			{
-				
- sb.AppendFormat("Parcel[{0}]: Name: \"{1}\", Description: \"{2}\" ACL Count: {3} Traffic: {4}" + System.Environment.NewLine,
-                        parcel.LocalID, parcel.Name, parcel.Desc, parcel.AccessList.Count, parcel.Dwell);		
-				
-					foreach(OpenMetaverse.ParcelManager.ParcelAccessEntry entry in  parcel.AccessList)
-				{
-					sb.Append(entry.AgentID.ToString()+"\n");
-					
-				}
-				
+				sb.AppendFormat("Parcel[{0}]: Name: \"{1}\", Description: \"{2}\" ACL Count: {3} Traffic: {4}" + System.Environment.NewLine,
+				                parcel.LocalID, parcel.Name, parcel.Desc, parcel.AccessBlackList.Count+parcel.AccessWhiteList.Count, parcel.Dwell);			
 			});
 			
 			Console.Write("\n"+sb.ToString()+"\n");
@@ -138,40 +106,47 @@ namespace omvviewerlight
 				//this.image_parcel.Pixbuf=new Gdk.Pixbuf(parcel.Bitmap);
 				parcels_access.Clear();
 				parcels_ban.Clear();
-				
+					
 				Parcel parcel;
 				
+				
 				if(MainClass.client.Network.CurrentSim.Parcels.TryGetValue(id, out parcel))
-				{
-					
-					foreach(OpenMetaverse.ParcelManager.ParcelAccessEntry entry in parcel.AccessList)
+				{						
+					foreach(OpenMetaverse.ParcelManager.ParcelAccessEntry entry in parcel.AccessWhiteList)
 					{
-					
-					  if(entry.AgentID==UUID.Zero)
-						continue;
 						
-					//	if(entry.Flags==(AccessList)1)//booooo
-						{					
+						Console.WriteLine(parcel.Flags.ToString());
+						
+						this.checkbox_nopayment.Active=(OpenMetaverse.Parcel.ParcelFlags.DenyAnonymous==(parcel.Flags& OpenMetaverse.Parcel.ParcelFlags.DenyAnonymous));
+						this.checkbutton_noageverify.Active=(OpenMetaverse.Parcel.ParcelFlags.DenyAgeUnverified==(parcel.Flags& OpenMetaverse.Parcel.ParcelFlags.DenyAgeUnverified));
+						this.entry2.Text=parcel.PassHours.ToString();
+						this.entry1.Text=parcel.PassPrice.ToString();
+						this.checkbutton_publicaccess.Active=!(OpenMetaverse.Parcel.ParcelFlags.UseAccessList==(parcel.Flags& OpenMetaverse.Parcel.ParcelFlags.UseAccessList));
+						//this.checkbutton_sellpasses;
+						this.checkbutton_groupaccess.Active=(OpenMetaverse.Parcel.ParcelFlags.UseAccessGroup==(parcel.Flags& OpenMetaverse.Parcel.ParcelFlags.UseAccessGroup));
+						
+						
+						if(entry.AgentID==UUID.Zero)
+							continue;
+						
 						    Console.WriteLine(entry.AgentID.ToString()+" Flags = "+entry.Flags.ToString());
 							Gtk.TreeIter iter2=this.parcels_access.AppendValues("Waiting...");			
 							AsyncNameUpdate ud=new AsyncNameUpdate(entry.AgentID,false);  
 							ud.addparameters(iter2);
 							ud.onNameCallBack += delegate(string namex,object[] values){ Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; this.parcels_access.SetValue(iterx,0,namex);};				
-						}					
-						
-						if(entry.Flags==(AccessList)2)//boooo
-						{					
-						    Console.WriteLine(entry.AgentID.ToString());
+					}
+					
+					foreach(OpenMetaverse.ParcelManager.ParcelAccessEntry entry in parcel.AccessBlackList)
+					{
+						if(entry.AgentID==UUID.Zero)
+							continue;
+										
+						Console.WriteLine(entry.AgentID.ToString()+" Flags = "+entry.Flags.ToString());
 							Gtk.TreeIter iter2=this.parcels_ban.AppendValues("Waiting...");			
 							AsyncNameUpdate ud=new AsyncNameUpdate(entry.AgentID,false);  
 							ud.addparameters(iter2);
-							ud.onNameCallBack += delegate(string namex,object[] values){ Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; this.parcels_access.SetValue(iterx,0,namex);};				
-						}					
-						
-						
-					}	
-					
-					
+							ud.onNameCallBack += delegate(string namex,object[] values){ Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; this.parcels_ban.SetValue(iterx,0,namex);};				
+						}			
 				}
 				else			
 				{
