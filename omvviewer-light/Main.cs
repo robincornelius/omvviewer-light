@@ -39,11 +39,12 @@ namespace omvviewerlight
 {
 	class MainClass
 	{
-        [DllImport("Kernel32")]
-            private static extern IntPtr GetConsoleWindow();
+		
+     //   [DllImport("Kernel32")]
+      //      private static extern IntPtr GetConsoleWindow();
 
-        [DllImport("user32.dll")]
-            static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+      //  [DllImport("user32.dll")]
+      //      static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
 		public static GridClient client;
 		public static MainWindow win;
@@ -59,11 +60,11 @@ namespace omvviewerlight
              
             aStreamWriter = new System.IO.StreamWriter("log.txt");
 
-            try
+     /*       try
             {
                 IntPtr hWnd = GetConsoleWindow();
                 DisplayAppSettings();
-               // ShowWindow(hWnd, 0);
+                ShowWindow(hWnd, 0);
                 hiddenconsole = true;
            
             }
@@ -72,7 +73,7 @@ namespace omvviewerlight
                 Console.WriteLine(e.ToString());
             }
 
-
+*/
             try
             {
                 client = new GridClient();
@@ -87,11 +88,11 @@ namespace omvviewerlight
             }
             catch(Exception e)
             {
-                if (hiddenconsole)
-                {
-                    IntPtr hWnd = GetConsoleWindow();
-                    ShowWindow(hWnd, 1);
-                }
+            //    if (hiddenconsole)
+           //     {
+           //         IntPtr hWnd = GetConsoleWindow();
+           //         ShowWindow(hWnd, 1);
+           //     }
 
                 Console.Write("The application died in a big heap\n This is the debug i caught :-");
                 Console.Write("-----------------------------------------------\n");

@@ -46,8 +46,11 @@ public partial class MainWindow: Gtk.Window
 	
 	public uint currentpage=0;
 	public StatusIcon trayIcon;
+	
+	public int current_parcelid;
+	bool is_parcel_owner;
+	public List<Group> current_groups=new List<Group>();
    
-    
     ~MainWindow()
     {
         if (trayIcon != null)
@@ -434,7 +437,18 @@ public partial class MainWindow: Gtk.Window
 	{
 		Gtk.Application.Invoke(delegate {		
 			
+		Console.WriteLine("PARCEL Callback for "+parcel.LocalID+" sqeuence is "+sequenceID.ToString());
 
+		//yuck very very hacky
+		if(sequenceID==int.MaxValue)
+			   return;
+			
+		this.current_parcelid=parcel.LocalID;
+			
+		this.is_parcel_owner=(parcel.OwnerID==MainClass.client.Self.AgentID);
+				
+
+		return;
 			
 			//FIX ME NAME UPDATE BROKEN
 	//	AsyncNameUpdate ud=new AsyncNameUpdate(parcel.OwnerID,false);  
@@ -497,7 +511,11 @@ public partial class MainWindow: Gtk.Window
                 this.CrouchAction.Sensitive = true;
                 this.FlyAction.Sensitive = true;
                 this.GroundSitAction.Sensitive = true;
-                this.SittingAction.Sensitive = false;
+				this.SittingAction.Sensitive = false;
+				
+                MainClass.client.Groups.OnCurrentGroups += new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
+				MainClass.client.Groups.RequestCurrentGroups();
+
 			});
 		}
 	}
@@ -764,7 +782,40 @@ public partial class MainWindow: Gtk.Window
 	protected virtual void OnFlyActionActivated (object sender, System.EventArgs e)
 	{
 	      MainClass.client.Self.Fly(true);	
-	}
+}
 	
+    void onGroups(Dictionary<UUID,Group> groups)
+		{
+			
+			Gtk.Application.Invoke(delegate {
+				
+				foreach(KeyValuePair <UUID,Group> group in groups)
+				{
+					if(!this.current_groups.Contains(group.Value))
+					{
+						this.current_groups.Add(group.Value);
+					}
+				}
+			});
 
+		}
+	
+	
+	bool parcelallowed(Simulator sim,int parcelid)
+	{
+	   if(sim.Parcels.Dictionary.ContainsKey(parcelid))
+	    {
+		   if(sim.Parcels.Dictionary[parcelid].OwnerID==MainClass.client.Self.AgentID)
+			  return true;	
+			
+			   if(this.current_groups.Contains(sim.Parcels.Dictionary[parcelid].GroupID)
+			   {
+ 				     //Avatar is in the group of this land but do they have permission todo stuff?
+			         //assume yes for the moment
+			         return true; 
+   			   }
+		}
+		
+           return false;
+    }	
 }

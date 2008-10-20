@@ -87,8 +87,14 @@ namespace omvviewerlight
 			
 			int selected=0;
 			int.TryParse(MainClass.ReadSetting("Selected Grid"),out selected);			
-			combobox_grid.Active=selected;			
-			
+			try
+			{
+				combobox_grid.Active=selected;			
+			}
+			catch
+			{
+				
+			}
 		}
 
         void oncleanuptime()

@@ -6,4 +6,3 @@ OpenlifeGrid http:://logingrid.net:8002/
 CentralGrid http://maingrid.CentralGrid.com:8002
 Local http://127.0.0.1:9000
 Custom None
-

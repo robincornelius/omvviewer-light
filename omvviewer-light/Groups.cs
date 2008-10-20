@@ -54,8 +54,10 @@ namespace omvviewerlight
 			
             treeview1.Model=store;
 	
+			//REFACTOR ME, MAINCLASS IS DUPLICATING
 			MainClass.client.Groups.OnCurrentGroups += new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
-			MainClass.client.Groups.RequestCurrentGroups();
+			//MainClass.client.Groups.RequestCurrentGroups();
+			
 		}
 
         private void RenderGroupName(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter)
@@ -76,6 +78,8 @@ namespace omvviewerlight
 
         }
 
+
+		//REFACTOR ME, MAINCLASS IS DUPLICATING
 
 		void onGroups(Dictionary<UUID,Group> groups)
 		{
@@ -104,6 +108,7 @@ namespace omvviewerlight
 
 		}
 
+		
 		protected virtual void OnButtonGroupimClicked (object sender, System.EventArgs e)
 		{			
 		    Gtk.TreeModel mod;
