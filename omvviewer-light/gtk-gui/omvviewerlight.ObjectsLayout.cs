@@ -119,6 +119,7 @@ namespace omvviewerlight {
             this.treeview1 = new Gtk.TreeView();
             this.treeview1.CanFocus = true;
             this.treeview1.Name = "treeview1";
+            this.treeview1.SearchColumn = 2;
             this.treeview1.HeadersClickable = true;
             this.GtkScrolledWindow.Add(this.treeview1);
             this.vbox2.Add(this.GtkScrolledWindow);

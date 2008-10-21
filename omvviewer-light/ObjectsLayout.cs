@@ -38,10 +38,11 @@ namespace omvviewerlight
 		public ObjectsLayout()
 		{
 			this.Build();
-			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(UUID));
+			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(UUID));
 			treeview1.AppendColumn("Name",new Gtk.CellRendererText(),"text",0);
 			treeview1.AppendColumn("Desc.",new Gtk.CellRendererText(),"text",1);
-			treeview1.AppendColumn("ID",new Gtk.CellRendererText(),"text",2);
+			treeview1.AppendColumn("Distance",new Gtk.CellRendererText(),"text",2);
+			treeview1.AppendColumn("ID",new Gtk.CellRendererText(),"text",3);
 			treeview1.Model=store;
 		    this.label_desc.Text="";
 			this.label_forsale.Text="";
@@ -65,7 +66,7 @@ namespace omvviewerlight
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				UUID id=(UUID)mod.GetValue(iter,2);
+				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
 				
 				if(PrimsWaiting.TryGetValue(id,out prim))
@@ -86,12 +87,13 @@ namespace omvviewerlight
 						
 		bool myfunc(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
 		{
-			UUID key=(UUID)store.GetValue(iter,2);			
+			UUID key=(UUID)store.GetValue(iter,3);			
 			if(PrimsWaiting.ContainsKey(key))
 			{
 				store.SetValue(iter,0,PrimsWaiting[key].Properties.Name);
 				store.SetValue(iter,1,PrimsWaiting[key].Properties.Description);
-				store.SetValue(iter,2,PrimsWaiting[key].Properties.ObjectID.ToString());
+				store.SetValue(iter,2,Vector3.Distance(PrimsWaiting[key].Position,MainClass.client.Self.RelativePosition).ToString());
+				store.SetValue(iter,3,PrimsWaiting[key].Properties.ObjectID.ToString());
 			}
 			return true;
 		}
@@ -141,7 +143,7 @@ namespace omvviewerlight
                 Primitive prim;
                 if (PrimsWaiting.TryGetValue(properties.ObjectID, out prim)) {
                     prim.Properties = properties;
-					store.AppendValues(prim.Properties.Name,prim.Properties.Description,prim.Properties.ObjectID);
+					store.AppendValues(prim.Properties.Name,prim.Properties.Description,Vector3.Distance(prim.Position,MainClass.client.Self.RelativePosition).ToString(),prim.Properties.ObjectID);
 					Gtk.Application.Invoke(delegate {										
 						store.Foreach(myfunc);
 				});
@@ -164,7 +166,7 @@ namespace omvviewerlight
 						
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				UUID id=(UUID)mod.GetValue(iter,2);
+				UUID id=(UUID)mod.GetValue(iter,3);
 		
 				Primitive prim;
 				if(PrimsWaiting.TryGetValue(id,out prim))
@@ -271,7 +273,7 @@ namespace omvviewerlight
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				UUID id=(UUID)mod.GetValue(iter,2);
+				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
 				
 				if(PrimsWaiting.TryGetValue(id,out prim))
@@ -291,7 +293,7 @@ namespace omvviewerlight
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				UUID id=(UUID)mod.GetValue(iter,2);
+				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
 				
 				if(PrimsWaiting.TryGetValue(id,out prim))
@@ -308,7 +310,7 @@ namespace omvviewerlight
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				UUID id=(UUID)mod.GetValue(iter,2);
+				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
 				
 				if(PrimsWaiting.TryGetValue(id,out prim))
@@ -327,7 +329,7 @@ namespace omvviewerlight
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				UUID id=(UUID)mod.GetValue(iter,2);
+				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
 				
 				if(PrimsWaiting.TryGetValue(id,out prim))
@@ -356,7 +358,7 @@ namespace omvviewerlight
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				UUID id=(UUID)mod.GetValue(iter,2);
+				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
 				
 				if(PrimsWaiting.TryGetValue(id,out prim))
@@ -374,7 +376,7 @@ namespace omvviewerlight
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				UUID id=(UUID)mod.GetValue(iter,2);
+				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
 				
 				if(PrimsWaiting.TryGetValue(id,out prim))
@@ -393,7 +395,7 @@ namespace omvviewerlight
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				UUID id=(UUID)mod.GetValue(iter,2);
+				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
 				
 				if(PrimsWaiting.TryGetValue(id,out prim))
@@ -410,7 +412,7 @@ namespace omvviewerlight
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				UUID id=(UUID)mod.GetValue(iter,2);
+				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
 				
 				if(PrimsWaiting.TryGetValue(id,out prim))
