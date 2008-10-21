@@ -670,6 +670,25 @@ public partial class MainWindow: Gtk.Window
 			return;
 		}
 		
+		if(im.Dialog==OpenMetaverse.InstantMessageDialog.GroupInvitation)
+		{
+			Gtk.Application.Invoke(delegate {	
+				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,im.FromAgentName+" has invited you to join a group\n"+im.Message+"\nPress yes to accept or no to decline");
+                ResponseType result=(ResponseType)md.Run();
+				if(result==ResponseType.Yes)
+				{
+                    MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im.FromAgentID,"",im.IMSessionID,InstantMessageDialog.GroupInvitationAccept,InstantMessageOnline.Offline,MainClass.client.Self.RelativePosition,MainClass.client.Network.CurrentSim.ID,null);
+			    }
+				else
+				{
+                    MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im.FromAgentID,"",im.IMSessionID,InstantMessageDialog.GroupInvitationDecline,InstantMessageOnline.Offline,MainClass.client.Self.RelativePosition,MainClass.client.Network.CurrentSim.ID,null);
+		     	
+                }
+				md.Destroy();
+                return;				
+            });			
+        }		
+		
 		if(im.Dialog==OpenMetaverse.InstantMessageDialog.RequestTeleport)
 		{
 			//Hmm need to handle this differently than a standard IM
@@ -800,7 +819,6 @@ public partial class MainWindow: Gtk.Window
 
 		}
 	
-	
 	bool parcelallowed(Simulator sim,int parcelid)
 	{
 	   if(sim.Parcels.Dictionary.ContainsKey(parcelid))
@@ -808,11 +826,11 @@ public partial class MainWindow: Gtk.Window
 		   if(sim.Parcels.Dictionary[parcelid].OwnerID==MainClass.client.Self.AgentID)
 			  return true;	
 			
-			   if(this.current_groups.Contains(sim.Parcels.Dictionary[parcelid].GroupID)
+			//   if(this.current_groups.Contains(sim.Parcels.Dictionary[parcelid].GroupID))
 			   {
  				     //Avatar is in the group of this land but do they have permission todo stuff?
 			         //assume yes for the moment
-			         return true; 
+			 //        return true; 
    			   }
 		}
 		

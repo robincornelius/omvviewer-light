@@ -237,8 +237,10 @@ namespace omvviewerlight
 					this.label_key.Text=prim.ID.ToString();
 				
 					this.label_pos.Text=prim.Position.ToString();
+				
 					
-					this.label_distance.Text=(MainClass.client.Self.RelativePosition-prim.Position).ToString();
+					this.label_distance.Text=Vector3.Distance(MainClass.client.Self.RelativePosition,prim.Position).ToString()+" m";
+				
 					
 					this.button_take_copy.Sensitive=((prim.Flags & PrimFlags.ObjectCopy)==PrimFlags.ObjectCopy);
 					
