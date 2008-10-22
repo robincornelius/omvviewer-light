@@ -32,6 +32,7 @@
                 <include name="MainWindow.cs" />
                 <include name="Map.cs" />
                 <include name="Movment.cs" />
+                <include name="MyTreeViewColumn.cs" />
                 <include name="NamePicker.cs" />
                 <include name="ObjectsLayout.cs" />
                 <include name="ParcelMgr.cs" />
@@ -76,6 +77,7 @@
                 <include name="gtk-gui/omvviewerlight.TeleportProgress.cs" />
                 <include name="gtk-gui/omvviewerlight.TeleportTo.cs" />
                 <include name="gtk-gui/omvviewerlight.aPick.cs" />
+   
             </sources>
             <references basedir="${project::get-base-directory()}">
                 <lib>
