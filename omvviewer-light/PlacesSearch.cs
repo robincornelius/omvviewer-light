@@ -41,18 +41,32 @@ namespace omvviewerlight
 			this.Build();
 			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(string),typeof(Vector3));
 			
-			treeview1.AppendColumn("Name",new Gtk.CellRendererText(),"text",0);
-			treeview1.AppendColumn("Sim",new Gtk.CellRendererText(),"text",1);		
-			treeview1.AppendColumn("Trafic",new Gtk.CellRendererText(),"text",2);		
-			treeview1.AppendColumn("Loc",new Gtk.CellRendererText(),"text",3);
-		
-			store.SetSortColumnId(3,Gtk.SortType.Ascending);
-			store.SetSortColumnId(2,Gtk.SortType.Ascending);
-			store.SetSortColumnId(1,Gtk.SortType.Ascending);
-			store.SetSortColumnId(0,Gtk.SortType.Ascending);
-			
+		//	treeview1.AppendColumn("Name",new Gtk.CellRendererText(),"text",0);
+		//	treeview1.AppendColumn("Sim",new Gtk.CellRendererText(),"text",1);		
+		//	treeview1.AppendColumn("Trafic",new Gtk.CellRendererText(),"text",2);		
+		//	treeview1.AppendColumn("Loc",new Gtk.CellRendererText(),"text",3);
+
+            MyTreeViewColumn mycol;
+            mycol = new MyTreeViewColumn("Name", new Gtk.CellRendererText(), "text", 0);
+            mycol.setmodel(store);
+            treeview1.AppendColumn(mycol);
+
+            mycol = new MyTreeViewColumn("Sim", new Gtk.CellRendererText(), "text", 1);
+            mycol.setmodel(store);
+            treeview1.AppendColumn(mycol);
+
+            mycol = new MyTreeViewColumn("Traffic", new Gtk.CellRendererText(), "text", 2);
+            mycol.setmodel(store);
+            treeview1.AppendColumn(mycol);
+
+            mycol = new MyTreeViewColumn("Location", new Gtk.CellRendererText(), "text", 3);
+            mycol.setmodel(store);
+            treeview1.AppendColumn(mycol);
+
+            treeview1.HeadersClickable = true;
 			treeview1.Model=store;
-			
+            store.SetSortColumnId(0, Gtk.SortType.Ascending);
+
 			MainClass.client.Directory.OnPlacesReply += new OpenMetaverse.DirectoryManager.PlacesReplyCallback(onPlaces);
 		
 			

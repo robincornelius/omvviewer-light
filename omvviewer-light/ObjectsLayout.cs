@@ -70,7 +70,9 @@ namespace omvviewerlight
             treeview1.AppendColumn(mycol);
             
             treeview1.Model=store;
+            this.store.SetSortFunc(2, sort_Vector3);
             store.SetSortColumnId(2, Gtk.SortType.Ascending);
+
 		    this.label_desc.Text="";
 			this.label_forsale.Text="";
 			this.label_group.Text="";
@@ -87,6 +89,37 @@ namespace omvviewerlight
 			MainClass.client.Groups.OnGroupNames += new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
 
 		}
+
+        int sort_Vector3(Gtk.TreeModel model, Gtk.TreeIter a, Gtk.TreeIter b)
+        {
+
+            string distAs = (string)store.GetValue(a, 2);
+            string distBs = (string)store.GetValue(b, 2);
+            float distA, distB;
+
+            float.TryParse(distAs, out distA);
+            float.TryParse(distBs, out distB);
+
+            //Console.Write("Testing " + distA.ToString() + " vs " + distB.ToString() + "\n");
+
+            if (distAs == distBs)
+                return 0;
+
+            if (distAs == "NaN")
+                return 1;
+
+            if (distBs == "NaN")
+                return -1;
+
+
+            if (distA > distB)
+                return 1;
+
+            if (distA < distB)
+                return -1;
+
+            return 0;
+        }
 
         void setupsort(int selcol)
         {
