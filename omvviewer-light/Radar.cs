@@ -107,7 +107,6 @@ namespace omvviewerlight
                 if(MainClass.client.Network.CurrentSim.ID == lastsim)
                     return;
 
-				Gtk.Application.Invoke(delegate {
                     lock (store)
                     {
                         store.Clear();
@@ -116,7 +115,6 @@ namespace omvviewerlight
                     {
                        av_tree.Clear();
                     }
-                });
 
                 if (MainClass.client.Network.CurrentSim != null)
                  lastsim=MainClass.client.Network.CurrentSim.ID;
@@ -126,7 +124,7 @@ namespace omvviewerlight
 		void onLogin(LoginStatus status,string message)
 		{
 			if(status==LoginStatus.Success)
-				Gtk.Application.Invoke(delegate {										
+										
 				   lock(store)
                    {
                         store.Clear();
@@ -134,8 +132,7 @@ namespace omvviewerlight
                    lock (av_tree)
                    {
                        av_tree.Clear();
-                   }
-              });
+			       }
 
             if (MainClass.client.Network.CurrentSim != null)
             lastsim = MainClass.client.Network.CurrentSim.ID;
@@ -143,7 +140,6 @@ namespace omvviewerlight
 		
 		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
 		{
-            Gtk.Application.Invoke(delegate {
                 if(this.av_tree.ContainsKey(update.LocalID))
                 {
                     lock (av_tree)
@@ -151,7 +147,6 @@ namespace omvviewerlight
                         calcdistance(update.LocalID);
                     }
                 }
-            });
 		}
 		
 		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
