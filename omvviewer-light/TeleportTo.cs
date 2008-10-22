@@ -55,10 +55,15 @@ namespace omvviewerlight
 
         void onNewSim(Simulator lastsim)
         {
-            this.spinbutton_x.Value = MainClass.client.Self.SimPosition.X;
-            this.spinbutton_y.Value = MainClass.client.Self.SimPosition.Y;
-            this.spinbutton_z.Value = MainClass.client.Self.SimPosition.Z;
-        }
+			
+           Gtk.Application.Invoke(delegate
+            {
+	            this.spinbutton_x.Value = MainClass.client.Self.SimPosition.X;
+	            this.spinbutton_y.Value = MainClass.client.Self.SimPosition.Y;
+	            this.spinbutton_z.Value = MainClass.client.Self.SimPosition.Z;
+				this.entry_simname.Text=MainClass.client.Network.CurrentSim.Name;
+			});    
+		}
 
 	    bool OnTimeout()
 		{

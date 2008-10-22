@@ -104,6 +104,7 @@ namespace omvviewerlight
 				
 		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
 		{
+/*			
 			if(avs.ContainsKey(update.LocalID))
 			{
                 lock (avs)
@@ -130,37 +131,23 @@ namespace omvviewerlight
                 }
 				drawavs();
 			}
-		}
+*/
+}
 		
 		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
 		{
-
-			if(!avs.ContainsKey(avatar.LocalID))
-			{
-                lock (avs)
-                {
-                    avs.Add(avatar.LocalID, avatar);
-                }
-                
                 drawavs();			
-			}
 		}
 
 		void onKillObject(Simulator simulator, uint objectID)
-		{
-			if(avs.ContainsKey(objectID))
-			{
-                lock (avs)
-                {
-                    avs.Remove(objectID);
-                }
-                    drawavs();
-			}
-			
+		{			
 		}
 		
 		void drawavs()
-		{
+			{
+			
+			lock(basemap)
+            {
 			if(basemap==null)
 					return;
 
@@ -177,19 +164,28 @@ namespace omvviewerlight
 
                 lock (avs)
                 {
-                    foreach (KeyValuePair<uint, Avatar> kvp in avs)
+                    foreach (KeyValuePair<uint, Avatar> kvp in MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
                     {
                         if (kvp.Value.LocalID != MainClass.client.Self.LocalID)
-                        {
-                            Gtk.Application.Invoke(delegate
-                            {
+                        {									
+                                Vector3 pos;
+							    if (kvp.Value.ParentID != 0)
+								{
+			                        Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[kvp.Value.ParentID];
+			                        pos = Vector3.Transform(kvp.Value.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
+								}
+								else
+                                {
+                                    pos=kvp.Value.Position;
+							    }
+                                
                                 if (kvp.Value.Position.Z - myz > 5)
-                                    showme(buf, avatar_above.Pixbuf, kvp.Value.Position);
+                                    showme(buf, avatar_above.Pixbuf, pos);
                                 else if (kvp.Value.Position.Z - myz < -5)
-                                    showme(buf, avatar_below.Pixbuf, kvp.Value.Position);
+                                    showme(buf, avatar_below.Pixbuf, pos);
                                 else
-                                    showme(buf, avatar.Pixbuf, kvp.Value.Position);
-                            });
+                                    showme(buf, avatar.Pixbuf, pos);
+ 
                         }
                     }
                 }
@@ -197,8 +193,8 @@ namespace omvviewerlight
                 {
 				    image.Pixbuf=buf;
 				    image.QueueDraw();
-                 });
-			
+			});
+			}
 		}
 		void onNewSim(Simulator lastsim)
 	    {

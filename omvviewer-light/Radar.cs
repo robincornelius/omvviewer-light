@@ -80,8 +80,6 @@ namespace omvviewerlight
 			float.TryParse(distAs,out distA);
 			float.TryParse(distBs,out distB);
 
-            //Console.Write("Testing " + distA.ToString() + " vs " + distB.ToString() + "\n");
-
             if (distAs == distBs)
                 return 0;
 
@@ -150,7 +148,6 @@ namespace omvviewerlight
                 {
                     lock (av_tree)
                     {
-                        Console.WriteLine(update.LocalID.ToString() + " is at " + update.Position.ToString()+" :: "+update.Avatar.ToString());
                         calcdistance(update.LocalID);
                     }
                 }
@@ -159,8 +156,8 @@ namespace omvviewerlight
 		
 		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
 		{
-                     Gtk.Application.Invoke(delegate
-                    {
+                    //Gtk.Application.Invoke(delegate
+                    //{
                         if (!this.av_tree.ContainsKey(avatar.LocalID))
                         {
                             // The agent *might* still be present under an old localID and we
@@ -197,14 +194,13 @@ namespace omvviewerlight
                                 calcdistance(avatar.LocalID);
                             }
                        }
-                    });
+                    //});
                 
             
 		}
 		
 		void onKillObject(Simulator simulator, uint objectID)
 		{
-           //  Gtk.Application.Invoke(delegate {
                  lock (av_tree)
                  {
                      if (this.av_tree.ContainsKey(objectID))
@@ -216,7 +212,6 @@ namespace omvviewerlight
                          av_tree.Remove(objectID);
                      }
                  }
-            // });
 		}
 
         void calcdistance(uint id)
@@ -241,8 +236,11 @@ namespace omvviewerlight
                     dist = Vector3.Distance(MainClass.client.Self.RelativePosition, av.Position);
                 }
 
-                store.SetValue(av_tree[id].iter, 2, MainClass.cleandistance(dist.ToString(), 1));
-            }
+				lock (av_tree)
+                {
+					store.SetValue(av_tree[id].iter, 2, MainClass.cleandistance(dist.ToString(), 1));
+				}
+			}
         }
 			
 		void onChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourcetype,string fromName, UUID id, UUID ownerid, Vector3 position)

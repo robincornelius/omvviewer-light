@@ -436,9 +436,8 @@ public partial class MainWindow: Gtk.Window
 	void onParcelProperties(Simulator Sim,Parcel parcel, ParcelResult result, int selectedprims,int sequenceID, bool snapSelection)
 	{
 		Gtk.Application.Invoke(delegate {		
-			
-		Console.WriteLine("PARCEL Callback for "+parcel.LocalID+" sqeuence is "+sequenceID.ToString());
 
+			
 		//yuck very very hacky
 		if(sequenceID==int.MaxValue)
 			   return;

@@ -206,9 +206,8 @@ namespace omvviewerlight
             objectIMchat = new Gtk.TextTag("objectIMchat");
             typing_tag = new Gtk.TextTag("typing");
             
-			bold.Weight=Pango.Weight.Ultrabold;
+			bold.Weight=Pango.Weight.Bold;
             bold.FontDesc = Pango.FontDescription.FromString("Arial Bold");
-            avchat.Weight = Pango.Weight.Ultrabold;
 
             selfavchat.Weight = Pango.Weight.Bold;
             selfavchat.ForegroundGdk = col_red;
@@ -548,7 +547,7 @@ namespace omvviewerlight
 
                 message = message.Substring(3, message.Length-3);
                 iter = textview_chat.Buffer.EndIter;
-                buffer = name+" "+message + "\n";
+                buffer = name+message + "\n";
                 textview_chat.Buffer.InsertWithTags(ref iter, buffer, message_tag);
                 TextMark mark = textview_chat.Buffer.CreateMark("xyz", textview_chat.Buffer.EndIter, true);
                 textview_chat.ScrollMarkOnscreen(mark);

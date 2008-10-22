@@ -105,7 +105,7 @@ namespace omvviewerlight
 		
 		void onParcelInfo(ParcelInfo pinfo)
 		{
-			Console.WriteLine("Got parcel info");		
+		
 		}
 		
 		void onNewSim(Simulator lastsim)
@@ -122,8 +122,6 @@ namespace omvviewerlight
 			
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
-			
-			Console.WriteLine("Cusror changed");
 			
 			if(this.treeview_parcels.Selection.GetSelected(out mod,out iter))			
 			{
