@@ -108,7 +108,20 @@ namespace omvviewerlight
 			{
                 lock (avs)
                 {
-                    avs[update.LocalID].Position = MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[update.LocalID].Position;
+
+                    Avatar av = MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[update.LocalID];
+
+                    if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[update.LocalID].ParentID != 0)
+                    {
+                        Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[av.ParentID];
+                        Vector3 av_pos = Vector3.Transform(av.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
+                        avs[update.LocalID].Position = av_pos;
+                    }
+                    else
+                    {
+                        avs[update.LocalID].Position = av.Position;
+                    }
+
                     //Rott66: you will need to take the parent prim's position and add Vector3.Transform(av.Position, Matrix3.CreateFromQuaternion(parent.Rotation))
                     //avs[update.LocalID].Position = update.Position;
                 }

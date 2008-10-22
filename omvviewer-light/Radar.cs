@@ -223,10 +223,20 @@ namespace omvviewerlight
         {
             if (this.av_tree.ContainsKey(id))
             {
-               
                 double dist;
-                dist = Vector3.Distance(MainClass.client.Self.RelativePosition,MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[id].Position);
-                //dist=Vector3.Distance(MainClass.client.Self.RelativePosition, av_tree[id].avatar.Position);
+                Avatar av = MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[id];
+               
+                if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[id].ParentID != 0)
+                {
+                    Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[av.ParentID];
+                    Vector3 av_pos = Vector3.Transform(av.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
+                    dist = Vector3.Distance(MainClass.client.Self.RelativePosition, av_pos);
+                }
+                else
+                {
+                    dist = Vector3.Distance(MainClass.client.Self.RelativePosition, av.Position);
+                }
+
                 store.SetValue(av_tree[id].iter, 2, MainClass.cleandistance(dist.ToString(), 1));
             }
         }
