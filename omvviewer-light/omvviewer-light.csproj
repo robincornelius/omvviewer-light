@@ -115,10 +115,12 @@
       <Name>System.Configuration</Name>
       <HintPath>\System.Configuration.dll</HintPath>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing">
       <Name>System.Drawing</Name>
       <HintPath>\System.Drawing.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
@@ -199,6 +201,7 @@
     <Compile Include="Movment.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MyTreeViewColumn.cs" />
     <Compile Include="NamePicker.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -362,6 +365,11 @@
     <Content Include="libopenjpeg-dotnet-2.1.3.0.so" />
     <Content Include="MonoPosixHelper.dll" />
     <Content Include="OpenMetaverse.dll.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="blank_arrow.tga" />
+    <None Include="down_arrow.tga" />
+    <None Include="up_arrow.tga" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <PropertyGroup>

@@ -40,20 +40,37 @@ namespace omvviewerlight
 			this.Build();
 			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(UUID));
             Gtk.TreeViewColumn col;
-
+           
+            /*
             col = new Gtk.TreeViewColumn("Name", new Gtk.CellRendererText(), "text", 0);
             col.Clicked += new EventHandler(name_col_Clicked);
+            Gdk.Pixbuf tick = new Gdk.Pixbuf("tick.tga");
+            Gtk.Image i = new Gtk.Image(tick);
+            Gtk.HBox hb = new Gtk.HBox();
+            Gtk.Label lb = new Gtk.Label("Name");
+            hb.PackEnd(lb);
+            hb.PackEnd(i);
+            col.Widget = hb;
+            hb.ShowAll();
             treeview1.AppendColumn(col);
+            treeview1.ShowAll();
+            */
 
-            col = new Gtk.TreeViewColumn("Desc.",new Gtk.CellRendererText(),"text",1);
-            col.Clicked += new EventHandler(desc_col_Clicked);
-            treeview1.AppendColumn(col);
+            MyTreeViewColumn mycol;
+            mycol = new MyTreeViewColumn("Name",new Gtk.CellRendererText(), "text", 0);
+            mycol.setmodel(store);
+            treeview1.AppendColumn(mycol);
 
-            col = new Gtk.TreeViewColumn("Distance",new Gtk.CellRendererText(),"text",2);
-            col.Clicked += new EventHandler(dist_col_Clicked);
-            treeview1.AppendColumn(col);
+            mycol = new MyTreeViewColumn("Desc", new Gtk.CellRendererText(), "text", 1);
+            mycol.setmodel(store);
+            treeview1.AppendColumn(mycol);
+
+            mycol = new MyTreeViewColumn("Distance", new Gtk.CellRendererText(), "text", 2);
+            mycol.setmodel(store);
+            treeview1.AppendColumn(mycol);
             
             treeview1.Model=store;
+            store.SetSortColumnId(2, Gtk.SortType.Ascending);
 		    this.label_desc.Text="";
 			this.label_forsale.Text="";
 			this.label_group.Text="";
