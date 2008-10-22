@@ -36,6 +36,7 @@ namespace omvviewerlight
 	    Gdk.Color col_green = new Gdk.Color(0,255,0);
 		Gtk.TextTag bold;
 		Gtk.TextTag avchat;
+        Gtk.TextTag selfavchat;
 		Gtk.TextTag objectchat;
         Gtk.TextTag objectIMchat;
         Gtk.TextTag systemchat;
@@ -198,13 +199,19 @@ namespace omvviewerlight
 			this.Build();
 			bold=new Gtk.TextTag("bold");
 			avchat=new Gtk.TextTag("avchat");
+            selfavchat = new Gtk.TextTag("selfavchat");
 			objectchat=new Gtk.TextTag("objectchat");
 			systemchat=new Gtk.TextTag("systemchat");
 			ownerobjectchat=new Gtk.TextTag("ownerobjectchat");
             objectIMchat = new Gtk.TextTag("objectIMchat");
             typing_tag = new Gtk.TextTag("typing");
             
-			bold.Weight=Pango.Weight.Bold;
+			bold.Weight=Pango.Weight.Ultrabold;
+            bold.FontDesc = Pango.FontDescription.FromString("Arial Bold");
+            avchat.Weight = Pango.Weight.Ultrabold;
+
+            selfavchat.Weight = Pango.Weight.Bold;
+            selfavchat.ForegroundGdk = col_red;
 		
 			objectchat.ForegroundGdk=col_green;
 			
@@ -371,12 +378,10 @@ namespace omvviewerlight
             windownotify();
 
 			if(type==ChatType.Whisper)
-				fromName=fromName+" whispers: ";
+				fromName=fromName+" whispers";
 			if(type==ChatType.Shout)
-				fromName=fromName+" shouts: ";
-			if(type==ChatType.Normal)
-				fromName=fromName+" ";
-
+				fromName=fromName+" shouts";
+	
 			if(sourcetype==ChatSourceType.Agent)
 			{
 				Gtk.Application.Invoke(delegate {						
@@ -413,17 +418,9 @@ namespace omvviewerlight
 
 		protected virtual void OnEntryChatActivated (object sender, System.EventArgs e)
 		{
-		//		if(istyping==true)
-		//		{
-        //            TextIter iter2=new TextIter();
-		//			iter2=textview_chat.Buffer.EndIter;
-		//			textview_chat.BackwardDisplayLine(ref iter2);
-		//			textview_chat.BackwardDisplayLine(ref iter2);
-		//			textview_chat.Buffer.SelectRange(iter2,textview_chat.Buffer.EndIter);
-		//			textview_chat.Buffer.DeleteSelection(false,false);
-		//			//name="\n"+name; // we seem to have lost one of these erasing the buffer
-		//		    entry_chat.Text="\n"+entry_chat.Text;
-		//	     }
+
+            if (this.entry_chat.Text == "")
+                return;
 			
 			if(im_key!=OpenMetaverse.UUID.Zero)
 			{

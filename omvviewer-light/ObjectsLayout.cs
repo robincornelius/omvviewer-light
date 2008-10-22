@@ -39,11 +39,21 @@ namespace omvviewerlight
 		{
 			this.Build();
 			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(UUID));
-			treeview1.AppendColumn("Name",new Gtk.CellRendererText(),"text",0);
-			treeview1.AppendColumn("Desc.",new Gtk.CellRendererText(),"text",1);
-			treeview1.AppendColumn("Distance",new Gtk.CellRendererText(),"text",2);
-			treeview1.AppendColumn("ID",new Gtk.CellRendererText(),"text",3);
-			treeview1.Model=store;
+            Gtk.TreeViewColumn col;
+
+            col = new Gtk.TreeViewColumn("Name", new Gtk.CellRendererText(), "text", 0);
+            col.Clicked += new EventHandler(name_col_Clicked);
+            treeview1.AppendColumn(col);
+
+            col = new Gtk.TreeViewColumn("Desc.",new Gtk.CellRendererText(),"text",1);
+            col.Clicked += new EventHandler(desc_col_Clicked);
+            treeview1.AppendColumn(col);
+
+            col = new Gtk.TreeViewColumn("Distance",new Gtk.CellRendererText(),"text",2);
+            col.Clicked += new EventHandler(dist_col_Clicked);
+            treeview1.AppendColumn(col);
+            
+            treeview1.Model=store;
 		    this.label_desc.Text="";
 			this.label_forsale.Text="";
 			this.label_group.Text="";
@@ -53,11 +63,49 @@ namespace omvviewerlight
 			this.label_distance.Text="";
 			this.label_pos.Text="";
 		    this.label_float_text.Text="";
+            treeview1.HeadersClickable = true;
+          
 			
 			MainClass.client.Objects.OnObjectProperties += new OpenMetaverse.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
 			MainClass.client.Groups.OnGroupNames += new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
 
 		}
+
+        void setupsort(int selcol)
+        {
+
+            int col;
+            Gtk.SortType order;
+
+            this.store.GetSortColumnId(out col, out order);
+            if(col==selcol)
+            {
+                if(order==Gtk.SortType.Ascending)
+                    this.store.SetSortColumnId(selcol,Gtk.SortType.Descending);
+                else
+                    this.store.SetSortColumnId(selcol,Gtk.SortType.Ascending);
+
+                return;
+            }
+
+            this.store.SetSortColumnId(selcol, Gtk.SortType.Ascending);
+
+        }
+
+        void name_col_Clicked(object sender, EventArgs e)
+        {
+            setupsort(0);
+        }
+
+        void dist_col_Clicked(object sender, EventArgs e)
+        {
+            setupsort(2);
+        }
+
+        void desc_col_Clicked(object sender, EventArgs e)
+        {
+            setupsort(1);
+        }
 			
 		void onGroupNames(Dictionary <UUID,string>groups)
 	    {

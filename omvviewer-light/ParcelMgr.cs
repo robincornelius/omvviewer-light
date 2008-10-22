@@ -30,7 +30,7 @@ namespace omvviewerlight
 			this.Build();
 			MainClass.client.Parcels.OnParcelInfo += new OpenMetaverse.ParcelManager.ParcelInfoCallback(onParcelInfo);
 			MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-			MainClass.client.Parcels.OnSimParcelsDownloaded += new OpenMetaverse.ParcelManager.SimParcelsDownloaded(onParcelsDownloaded);
+			//MainClass.client.Parcels.OnSimParcelsDownloaded += new OpenMetaverse.ParcelManager.SimParcelsDownloaded(onParcelsDownloaded);
 			MainClass.client.Parcels.OnParcelProperties += new OpenMetaverse.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
 			MainClass.client.Parcels.OnPrimOwnersListReply += new OpenMetaverse.ParcelManager.ParcelObjectOwnersListReplyCallback(onParcelObjectOwners);
 			
@@ -87,7 +87,7 @@ namespace omvviewerlight
 		
 		void onParcelsDownloaded(Simulator sim,InternalDictionary <int,Parcel> simParcels,int[,] parcelmap)
 		{
-					
+			/*	
 			Console.WriteLine("Parcels download");
 			
 			StringBuilder sb = new StringBuilder();
@@ -100,7 +100,7 @@ namespace omvviewerlight
 			});
 			
 			Console.Write("\n"+sb.ToString()+"\n");
-			
+			*/
 		}
 		
 		void onParcelInfo(ParcelInfo pinfo)
