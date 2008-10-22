@@ -62,7 +62,6 @@ namespace omvviewerlight
 		
 			MainClass.client.Self.OnChat += new OpenMetaverse.AgentManager.ChatCallback(onChat);
 			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-			
 	
 			MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
 
@@ -151,6 +150,7 @@ namespace omvviewerlight
                 {
                     lock (av_tree)
                     {
+                        Console.WriteLine(update.LocalID.ToString() + " is at " + update.Position.ToString()+" :: "+update.Avatar.ToString());
                         calcdistance(update.LocalID);
                     }
                 }
@@ -159,8 +159,7 @@ namespace omvviewerlight
 		
 		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
 		{
- 
-                    Gtk.Application.Invoke(delegate
+                     Gtk.Application.Invoke(delegate
                     {
                         if (!this.av_tree.ContainsKey(avatar.LocalID))
                         {
@@ -212,8 +211,6 @@ namespace omvviewerlight
                      {
                          lock (store)
                          {
-                             Console.Write("Ttrying to remove " + objectID.ToString() + "\n");
-                             Console.Write("Iter is " + av_tree[objectID].iter.ToString() + "\n");
                              store.Remove(ref av_tree[objectID].iter);
                          }
                          av_tree.Remove(objectID);
@@ -226,18 +223,16 @@ namespace omvviewerlight
         {
             if (this.av_tree.ContainsKey(id))
             {
-                Vector3 pos;
-                pos = MainClass.client.Self.RelativePosition - (Vector3)av_tree[id].avatar.Position;
+               
                 double dist;
-                dist = Math.Sqrt((pos.X * pos.X) + (pos.Y * pos.Y) + (pos.Z * pos.Z));
+                dist = Vector3.Distance(MainClass.client.Self.RelativePosition,MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[id].Position);
+                //dist=Vector3.Distance(MainClass.client.Self.RelativePosition, av_tree[id].avatar.Position);
                 store.SetValue(av_tree[id].iter, 2, MainClass.cleandistance(dist.ToString(), 1));
-           
             }
         }
 			
 		void onChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourcetype,string fromName, UUID id, UUID ownerid, Vector3 position)
 		{
-            // What a glorious inefficient way to do things
                 lock(av_typing)
                 {
                     if (type == ChatType.StartTyping)
@@ -250,7 +245,6 @@ namespace omvviewerlight
                                 return;
                             }
                         }
-
                     }
 
                     if (type == ChatType.StopTyping)

@@ -108,7 +108,8 @@ namespace omvviewerlight
 			{
                 lock (avs)
                 {
-                    avs[update.LocalID].Position = update.Position;
+                    avs[update.LocalID].Position = MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[update.LocalID].Position;
+                    //avs[update.LocalID].Position = update.Position;
                 }
 				drawavs();
 			}
