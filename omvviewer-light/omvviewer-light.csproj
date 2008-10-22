@@ -168,6 +168,7 @@
     <Compile Include="gtk-gui\omvviewerlight.Movment.cs" />
     <Compile Include="gtk-gui\omvviewerlight.NamePicker.cs" />
     <Compile Include="gtk-gui\omvviewerlight.ObjectsLayout.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.ParcelMgr.cs" />
     <Compile Include="gtk-gui\omvviewerlight.PayWindow.cs" />
     <Compile Include="gtk-gui\omvviewerlight.PlacesSearch.cs" />
     <Compile Include="gtk-gui\omvviewerlight.ProfileVIew.cs" />
