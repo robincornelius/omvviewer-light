@@ -109,6 +109,7 @@ namespace omvviewerlight
                 lock (avs)
                 {
                     avs[update.LocalID].Position = MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[update.LocalID].Position;
+                    //Rott66: you will need to take the parent prim's position and add Vector3.Transform(av.Position, Matrix3.CreateFromQuaternion(parent.Rotation))
                     //avs[update.LocalID].Position = update.Position;
                 }
 				drawavs();
