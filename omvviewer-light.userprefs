@@ -1,14 +1,18 @@
 ﻿<UserCombinePreferences version="1.0" filename="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light.mds">
   <Files>
     <File name="Welcome" />
-    <File name="omvviewer-light/ParcelMgr.cs" line="188" column="24" />
-    <File name="omvviewer-light/MainWindow.cs" line="448" column="4" />
+    <File name="omvviewer-light/Location.cs" line="1" column="1" />
+    <File name="omvviewer-light/Map.cs" line="162" column="14" />
+    <File name="omvviewer-light/ParcelMgr.cs" line="57" column="51" />
+    <File name="omvviewer-light/MainWindow.cs" line="440" column="4" />
+    <File name="omvviewer-light/Radar.cs" line="149" column="18" />
+    <File name="omvviewer-light/Movment.cs" line="104" column="3" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
-          <Node name="ParcelMgr.cs" selected="True" />
+          <Node name="Movment.cs" selected="True" />
         </Node>
       </Node>
     </ViewMemento>
@@ -17,7 +21,7 @@
     </ViewMemento>
   </Views>
   <Properties>
-    <Property key="ActiveWindow" value="Welcome" />
+    <Property key="ActiveWindow" value="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light/Movment.cs" />
     <Property key="ActiveConfiguration" value="Release" />
   </Properties>
 </UserCombinePreferences>

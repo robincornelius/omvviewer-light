@@ -78,38 +78,38 @@ namespace omvviewerlight
 		protected virtual void OnButton1Pressed (object sender, System.EventArgs e)
 		{
 			MainClass.client.Self.Movement.TurnLeft=true;
-            MainClass.client.Self.Movement.SendUpdate(true, MainClass.client.Network.CurrentSim);
+         MainClass.client.Self.Movement.SendUpdate(false);
 		}
 
 		protected virtual void OnButton1Released (object sender, System.EventArgs e)
 		{
 			MainClass.client.Self.Movement.TurnLeft=false;
-            MainClass.client.Self.Movement.SendUpdate(true, MainClass.client.Network.CurrentSim);
+       MainClass.client.Self.Movement.SendUpdate(false);
         }
 
 		protected virtual void OnButton2Pressed (object sender, System.EventArgs e)
 		{
 			MainClass.client.Self.Movement.TurnRight=true;
-            MainClass.client.Self.Movement.SendUpdate(true, MainClass.client.Network.CurrentSim);
+      MainClass.client.Self.Movement.SendUpdate(false);
 		}
 
 		protected virtual void OnButton2Released (object sender, System.EventArgs e)
 		{
 			MainClass.client.Self.Movement.TurnRight=false;
-            MainClass.client.Self.Movement.SendUpdate(true, MainClass.client.Network.CurrentSim);	
+         MainClass.client.Self.Movement.SendUpdate(false);
 		}
 		
 		protected virtual void OnButtonFwdPressed (object sender, System.EventArgs e)
 		{
+		
 			MainClass.client.Self.Movement.AtPos=true;
-            MainClass.client.Self.Movement.SendUpdate(true, MainClass.client.Network.CurrentSim);	
+            MainClass.client.Self.Movement.SendUpdate(false);
 		}
 
 		protected virtual void OnButtonFwdReleased (object sender, System.EventArgs e)
 		{
 			MainClass.client.Self.Movement.AtNeg=true;
-            MainClass.client.Self.Movement.SendUpdate(true, MainClass.client.Network.CurrentSim);	
-
+            MainClass.client.Self.Movement.SendUpdate(false);
 		}
 
 		protected virtual void OnSpinbuttonDirectionChangeValue (object o, Gtk.ChangeValueArgs args)
