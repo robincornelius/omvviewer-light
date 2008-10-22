@@ -224,6 +224,10 @@ namespace omvviewerlight
             if (this.av_tree.ContainsKey(id))
             {
                 double dist;
+                
+                if (!MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.ContainsKey(id))
+                    return;
+
                 Avatar av = MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[id];
                
                 if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[id].ParentID != 0)

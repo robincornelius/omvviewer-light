@@ -109,6 +109,9 @@ namespace omvviewerlight
                 lock (avs)
                 {
 
+                    if (!MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.ContainsKey(update.LocalID))
+                        return;
+
                     Avatar av = MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[update.LocalID];
 
                     if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[update.LocalID].ParentID != 0)

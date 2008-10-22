@@ -73,6 +73,9 @@ namespace omvviewerlight
 		
 		unsafe void progress(Gdk.Pixbuf bufdest,float progress)
 		{
+            if (bufdest == null)
+                return;
+
 			byte * pixels=(byte *)bufdest.Pixels;
 		    int width=bufdest.Width;
 			int height=bufdest.Height;
