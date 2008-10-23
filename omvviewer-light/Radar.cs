@@ -28,8 +28,6 @@ using OpenMetaverse;
 
 namespace omvviewerlight
 {
-        
-    
 
     public class agent 
     {
@@ -67,9 +65,47 @@ namespace omvviewerlight
 
 			this.store.SetSortFunc(2,sort_Vector3);	
             store.SetSortColumnId(2,Gtk.SortType.Ascending);
-
+            Gtk.Timeout.Add(10000, kickrefresh);
 		}
-		
+
+        bool kickrefresh()
+        {
+
+            Console.WriteLine("Kicking radar refresh");
+
+
+            if (MainClass.client.Network.CurrentSim == null)
+                return true;
+
+            if (MainClass.client.Network.CurrentSim.ObjectsAvatars == null)
+                return true;
+
+            foreach (KeyValuePair<uint, Avatar> kvp in MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
+            {
+                if (!this.av_tree.ContainsKey(kvp.Value.LocalID))
+                {
+                    agent theagent = new agent();
+                    theagent.avatar = kvp.Value;
+                    Gtk.TreeIter iter;
+
+                    iter = store.AppendValues("", kvp.Value.Name, "", kvp.Value.LocalID);
+                    theagent.iter = iter;
+
+                    av_tree.Add(kvp.Value.LocalID, theagent);
+                    calcdistance(kvp.Value.LocalID);
+                }
+                else
+                {
+                    calcdistance(kvp.Value.LocalID);
+                }
+
+            }
+            
+            
+            return true;
+
+        }
+
 		int sort_Vector3(Gtk.TreeModel model,Gtk.TreeIter a,Gtk.TreeIter b)
 		{
             
@@ -142,10 +178,9 @@ namespace omvviewerlight
 		{
                 if(this.av_tree.ContainsKey(update.LocalID))
                 {
-                    lock (av_tree)
-                    {
+                    
                         calcdistance(update.LocalID);
-                    }
+                    
                 }
 		}
 		
@@ -157,8 +192,7 @@ namespace omvviewerlight
                         {
                             // The agent *might* still be present under an old localID and we
                             // missed the kill
-                            lock (av_tree)
-                            {
+                           
                                 uint localid=0;
                                 foreach (KeyValuePair<uint, agent> av in av_tree)
                                 {
@@ -172,22 +206,18 @@ namespace omvviewerlight
                                 }
                                 if(localid!=0)
                                     av_tree.Remove(localid);
-                            }
+                            
 
                             agent theagent = new agent();
                             theagent.avatar = avatar;
                             Gtk.TreeIter iter;
-                            lock (store)
-                            {
+                            
                                 iter = store.AppendValues("", avatar.Name, "", avatar.LocalID);
                                 theagent.iter = iter;
-                            }
-
-                            lock (av_tree)
-                            {
+                            
                                 av_tree.Add(avatar.LocalID, theagent);
                                 calcdistance(avatar.LocalID);
-                            }
+                            
                        }
                     //});
                 
@@ -196,8 +226,7 @@ namespace omvviewerlight
 		
 		void onKillObject(Simulator simulator, uint objectID)
 		{
-                 lock (av_tree)
-                 {
+                 
                      if (this.av_tree.ContainsKey(objectID))
                      {
                          lock (store)
@@ -206,7 +235,7 @@ namespace omvviewerlight
                          }
                          av_tree.Remove(objectID);
                      }
-                 }
+                 
 		}
 
         void calcdistance(uint id)

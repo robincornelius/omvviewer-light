@@ -61,9 +61,22 @@ namespace omvviewerlight
             MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
 			MainClass.client.Grid.OnGridLayer += new OpenMetaverse.GridManager.GridLayerCallback(onGridLayer);
 			MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
-							
+            Gtk.Timeout.Add(10000, kickrefresh);				
 		
 		}
+
+        bool kickrefresh()
+        {
+
+
+
+            Console.WriteLine("Kicking map refresh");
+            if (MainClass.client.Network.CurrentSim != null)
+                drawavs();
+
+            return true;
+
+        }
 		
 		void onGridRegion(GridRegion region)
 		{
