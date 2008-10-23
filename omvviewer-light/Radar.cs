@@ -222,6 +222,9 @@ namespace omvviewerlight
                
                 if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[id].ParentID != 0)
                 {
+                    if (!MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary.ContainsKey(MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[id].ParentID))
+                        return;
+
                     Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[av.ParentID];
                     Vector3 av_pos = Vector3.Transform(av.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
                     dist = Vector3.Distance(MainClass.client.Self.RelativePosition, av_pos);

@@ -39,9 +39,7 @@ namespace omvviewerlight
 		private const String MAP_IMG_URL = "http://secondlife.com/apps/mapapi/grid/map_image/";
 		private const int GRID_Y_OFFSET = 1279;
 
-		private Dictionary<uint, Avatar> avs = new Dictionary<uint, Avatar>();
-
-        Gtk.Image basemap;
+	    Gtk.Image basemap;
 
 		int rowstride;
 		int channels;
@@ -88,14 +86,7 @@ namespace omvviewerlight
                 if (MainClass.client.Network.CurrentSim.ID == lastsim)
                     return;
                
-    		    Gtk.Application.Invoke(delegate {
-                    lock (avs)
-                    {
-                        avs.Clear();
-                    }
-       
-                    drawavs();
-				});
+                drawavs();
 
                 if(MainClass.client.Network.CurrentSim !=null)
                     lastsim = MainClass.client.Network.CurrentSim.ID;
@@ -104,34 +95,10 @@ namespace omvviewerlight
 				
 		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
 		{
-/*			
-			if(avs.ContainsKey(update.LocalID))
-			{
-                lock (avs)
-                {
 
-                    if (!MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.ContainsKey(update.LocalID))
-                        return;
+           if(MainClass.client.Network.CurrentSim.ObjectsAvatars.ContainsKey(update.LocalID))
+               drawavs();
 
-                    Avatar av = MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[update.LocalID];
-
-                    if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[update.LocalID].ParentID != 0)
-                    {
-                        Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[av.ParentID];
-                        Vector3 av_pos = Vector3.Transform(av.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
-                        avs[update.LocalID].Position = av_pos;
-                    }
-                    else
-                    {
-                        avs[update.LocalID].Position = av.Position;
-                    }
-
-                    //Rott66: you will need to take the parent prim's position and add Vector3.Transform(av.Position, Matrix3.CreateFromQuaternion(parent.Rotation))
-                    //avs[update.LocalID].Position = update.Position;
-                }
-				drawavs();
-			}
-*/
 }
 		
 		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
@@ -144,15 +111,16 @@ namespace omvviewerlight
 		}
 		
 		void drawavs()
-			{
-			
+		{
+
+          if (basemap == null)
+              return;
+
+          if (basemap.Pixbuf == null)
+              return;
+
 			lock(basemap)
             {
-			if(basemap==null)
-					return;
-
-            if (basemap.Pixbuf == null)
-                return;
 
 				Gdk.Pixbuf buf=(Gdk.Pixbuf)basemap.Pixbuf.Clone();
                 Gtk.Application.Invoke(delegate
@@ -162,8 +130,6 @@ namespace omvviewerlight
 
 				int myz=(int)MainClass.client.Self.SimPosition.Z;
 
-                lock (avs)
-                {
                     foreach (KeyValuePair<uint, Avatar> kvp in MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
                     {
                         if (kvp.Value.LocalID != MainClass.client.Self.LocalID)
@@ -171,6 +137,11 @@ namespace omvviewerlight
                                 Vector3 pos;
 							    if (kvp.Value.ParentID != 0)
 								{
+                                    if(!MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary.ContainsKey(kvp.Value.ParentID))
+                                    {
+                                        Console.WriteLine("Could not find parent prim for AV\n");
+                                        continue;
+                                    }
 			                        Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[kvp.Value.ParentID];
 			                        pos = Vector3.Transform(kvp.Value.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
 								}
@@ -178,17 +149,17 @@ namespace omvviewerlight
                                 {
                                     pos=kvp.Value.Position;
 							    }
-                                
-                                if (kvp.Value.Position.Z - myz > 5)
+
+                                if (pos.Z - myz > 5)
                                     showme(buf, avatar_above.Pixbuf, pos);
-                                else if (kvp.Value.Position.Z - myz < -5)
+                                else if (pos.Z - myz < -5)
                                     showme(buf, avatar_below.Pixbuf, pos);
                                 else
                                     showme(buf, avatar.Pixbuf, pos);
  
                         }
                     }
-                }
+              
                 Gtk.Application.Invoke(delegate
                 {
 				    image.Pixbuf=buf;
