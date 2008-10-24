@@ -121,7 +121,7 @@ public partial class MainWindow: Gtk.Window
 		//this.doicons();
 
 		omvviewerlight.ParcelMgr p = new ParcelMgr();
-		this.addtabwithicon("inv_folder_plain_open.tga","Parcel",p);
+		this.addtabwithicon("parcel.tga","Parcel",p);
 		
 		this.statusbar1.ShowAll();
 		
