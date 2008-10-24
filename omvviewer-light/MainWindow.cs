@@ -556,17 +556,16 @@ public partial class MainWindow: Gtk.Window
 		Gtk.Label lable=new Gtk.Label(name);
 		Gtk.Button button=new Gtk.Button(image);
         button.SetSizeRequest(16,16);
-		    Gtk.HBox box=new Gtk.HBox();
-			box.PackStart(icon);
-			box.PackStart(lable);
-		    box.PackStart(button);
-		    box.SetChildPacking(image,false,false,0,PackType.Start);
+		Gtk.HBox box=new Gtk.HBox();
+		box.PackStart(icon);
+		box.PackStart(lable);
+		box.PackStart(button);
+		box.SetChildPacking(image,false,false,0,PackType.Start);
 		
-		    box.ShowAll();
-		    notebook.InsertPage(cs,box,-1);
-		    notebook.ShowAll();
+		box.ShowAll();
+		notebook.InsertPage(cs,box,-1);
+		notebook.ShowAll();
 		cs.tabLabel=lable;
-		//cs.kicknames();
 		AsyncNameUpdate ud;
 		
 		if(group)
