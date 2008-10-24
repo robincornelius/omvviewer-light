@@ -136,10 +136,7 @@ namespace omvviewerlight
             {
 
 				Gdk.Pixbuf buf=(Gdk.Pixbuf)basemap.Pixbuf.Clone();
-                Gtk.Application.Invoke(delegate
-                {		
-				    showme(buf,avatar_me.Pixbuf,MainClass.client.Self.SimPosition);				
-				});
+				showme(buf,avatar_me.Pixbuf,MainClass.client.Self.SimPosition);				
 
 				int myz=(int)MainClass.client.Self.SimPosition.Z;
 
@@ -172,11 +169,14 @@ namespace omvviewerlight
  
                         }
                     }
-              
+
+                image.Pixbuf = buf;
+
                 Gtk.Application.Invoke(delegate
                 {
-				    image.Pixbuf=buf;
-				    image.QueueDraw();
+    
+                      image.QueueDraw();
+   
 			});
 			}
 		}
@@ -277,18 +277,17 @@ namespace omvviewerlight
                 request.ReadWriteTimeout = 20000;
 				response = (HttpWebResponse)request.GetResponse();
 
-				Gtk.Application.Invoke(delegate {		
-					
-				    basemap=new Gtk.Image(response.GetResponseStream());
-				    image.Pixbuf=(Gdk.Pixbuf)basemap.Pixbuf.Clone();
-				    rowstride=basemap.Pixbuf.Rowstride;
-				    channels=basemap.Pixbuf.NChannels;
-				    width=basemap.Pixbuf.Width;
-				    height=basemap.Pixbuf.Height;		
-				
+			
 
+                        basemap = new Gtk.Image(response.GetResponseStream());
+                        image.Pixbuf = (Gdk.Pixbuf)basemap.Pixbuf.Clone();
+                        rowstride = basemap.Pixbuf.Rowstride;
+                        channels = basemap.Pixbuf.NChannels;
+                        width = basemap.Pixbuf.Width;
+                        height = basemap.Pixbuf.Height;
+ 
                 drawavs(); //already deligated inside	
-                });
+
                 return;
 					
             }
