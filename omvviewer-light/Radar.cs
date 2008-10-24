@@ -71,7 +71,7 @@ namespace omvviewerlight
         bool kickrefresh()
         {
 
-            Console.WriteLine("Kicking radar refresh");
+            //Console.WriteLine("Kicking radar refresh");
 
 
             if (MainClass.client.Network.CurrentSim == null)

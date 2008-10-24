@@ -70,7 +70,7 @@ namespace omvviewerlight
 
 
 
-            Console.WriteLine("Kicking map refresh");
+           // Console.WriteLine("Kicking map refresh");
             if (MainClass.client.Network.CurrentSim != null)
                 drawavs();
 

@@ -19,6 +19,7 @@ namespace omvviewerlight
 		Gtk.TreeStore parcels_access;
 		Gtk.TreeStore parcels_ban;
 		Gtk.TreeStore parcel_prim_owners;
+        Gdk.Pixbuf parcel_map;
 		
 		int sequence=0;
 
@@ -58,6 +59,8 @@ namespace omvviewerlight
 			
 			this.label_parcelgroup.Text="";
 			this.label_parcelowner.Text="";
+
+            this.parcel_map = new Gdk.Pixbuf("trying.tga");
 		
 		}
 
@@ -87,9 +90,31 @@ namespace omvviewerlight
 		
 		void onParcelsDownloaded(Simulator sim,InternalDictionary <int,Parcel> simParcels,int[,] parcelmap)
 		{
-			/*	
-			Console.WriteLine("Parcels download");
-			
+				
+			Console.WriteLine("All Parcels download");
+
+            uint[,] pm = new uint[64,64];
+
+            int x = 0;
+            int y = 0;
+
+            uint[] colmap = { 0x00FFFFFF, 0xFF00FFFF,0xFFFF00FF};
+
+
+            for (x = 0; x < 64; x++)
+            {
+                for (y = 0; y < 64; y++)
+                {
+
+
+                }
+                Console.Write("\n");
+            }
+
+
+
+
+            /*
 			StringBuilder sb = new StringBuilder();
             string result;
 			
@@ -102,8 +127,8 @@ namespace omvviewerlight
 			Console.Write("\n"+sb.ToString()+"\n");
 			*/
 		}
-		
-		void onParcelInfo(ParcelInfo pinfo)
+
+        void onParcelInfo(ParcelInfo pinfo)
 		{
 		
 		}
