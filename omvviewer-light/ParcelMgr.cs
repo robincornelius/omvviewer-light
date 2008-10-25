@@ -8,6 +8,7 @@ using System;
 using OpenMetaverse;
 using System.Collections.Generic;
 using System.Text;
+using Gtk;
 
 namespace omvviewerlight
 {
@@ -24,25 +25,29 @@ namespace omvviewerlight
 		int sequence=0;
 
 		Dictionary <int,Parcel> simParcelsDict=new Dictionary <int,Parcel>();
-		
+		Dictionary <uint,uint> colmaptoid=new Dictionary<uint,uint>(); // map parcelid->colindex
+        uint[] colmap = { 0x00FFFFFF, 0xFF00FFFF,0xFFFF00FF,0x55FFFFFF,0xaaFFFFFF,0xFF55FFFF,0xFFaaFFFF,0xFFFF55FF,0xFFFFaaFF,0xFFFFFFFF, 0x0000FFFF, 0xFF0000FF,0x00FF00FF, 0x5555FFFF, 0xFF5555FF,0x55FF55FF, 0xaaaaFFFF, 0xFFaaaaFF,0xaaFFaaFF};
+   	    int nextcol=0;
+
 		public ParcelMgr()
 		{
 
 			this.Build();
 			MainClass.client.Parcels.OnParcelInfo += new OpenMetaverse.ParcelManager.ParcelInfoCallback(onParcelInfo);
 			MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-			//MainClass.client.Parcels.OnSimParcelsDownloaded += new OpenMetaverse.ParcelManager.SimParcelsDownloaded(onParcelsDownloaded);
+			MainClass.client.Parcels.OnSimParcelsDownloaded += new OpenMetaverse.ParcelManager.SimParcelsDownloaded(onParcelsDownloaded);
 			MainClass.client.Parcels.OnParcelProperties += new OpenMetaverse.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
 			MainClass.client.Parcels.OnPrimOwnersListReply += new OpenMetaverse.ParcelManager.ParcelObjectOwnersListReplyCallback(onParcelObjectOwners);
 			
-			parcels_store=new Gtk.TreeStore (typeof(string),typeof(string),typeof(string),typeof(Parcel),typeof(int));
+			parcels_store=new Gtk.TreeStore (typeof(Gdk.Pixbuf),typeof(string),typeof(string),typeof(string),typeof(Parcel),typeof(int));
 			parcels_access=new Gtk.TreeStore(typeof(string),typeof(UUID));
 			parcels_ban=new Gtk.TreeStore(typeof(string),typeof(UUID));
 			this.parcel_prim_owners=new Gtk.TreeStore(typeof(string),typeof(string));
-			
-			this.treeview_parcels.AppendColumn("Parcel",new Gtk.CellRendererText(),"text",0);
-			this.treeview_parcels.AppendColumn("Area",new Gtk.CellRendererText(),"text",1);
-			this.treeview_parcels.AppendColumn("Traffic",new Gtk.CellRendererText(),"text",2);
+
+			this.treeview_parcels.AppendColumn("Key",new CellRendererPixbuf(),"pixbuf",0);
+			this.treeview_parcels.AppendColumn("Parcel",new Gtk.CellRendererText(),"text",1);
+			this.treeview_parcels.AppendColumn("Area",new Gtk.CellRendererText(),"text",2);
+			this.treeview_parcels.AppendColumn("Traffic",new Gtk.CellRendererText(),"text",3);
 					
 			treeview_parcels.Model=parcels_store;
 			this.treeview_access.AppendColumn("Allowed Access",new Gtk.CellRendererText(),"text",0);
@@ -60,7 +65,9 @@ namespace omvviewerlight
 			this.label_parcelgroup.Text="";
 			this.label_parcelowner.Text="";
 
-            this.parcel_map = new Gdk.Pixbuf("trying.tga");
+           // this.parcel_map = new Gdk.Pixbuf("trying.tga");
+		//	this.image9.Pixbuf=this.parcel_map;
+			
 		
 		}
 
@@ -78,54 +85,111 @@ namespace omvviewerlight
 						
 		}
 		
-	    void onParcelProperties(Simulator Sim,Parcel parcel, ParcelResult result, int selectedprims,int sequenceID, bool snapSelection)
+	 unsafe   void onParcelProperties(Simulator Sim,Parcel parcel, ParcelResult result, int selectedprims,int sequenceID, bool snapSelection)
 		{		
 			
 			if(!simParcelsDict.ContainsKey(parcel.LocalID))
 			{	
 				this.simParcelsDict.Add(parcel.LocalID,parcel);
-				parcels_store.AppendValues(parcel.Name,parcel.Area.ToString(),parcel.Dwell.ToString(),parcel,parcel.LocalID);
+				int thiscol=0;
+				
+				if(!colmaptoid.ContainsKey((uint)parcel.LocalID))
+				{
+						
+					colmaptoid.Add((uint)parcel.LocalID,colmap[nextcol]);
+					thiscol=nextcol;
+					Console.WriteLine("ID "+parcel.LocalID.ToString()+"Setting col to "+nextcol.ToString());
+						
+					nextcol++;
+					if(nextcol>=colmap.Length)
+						nextcol=colmap.Length-1;
+						
+					byte[] data= new byte[4*32*16];
+					uint col=colmap[thiscol];
+					
+					Gdk.Pixbuf pb=new Gdk.Pixbuf("parcelindex.tga");	
+					sbyte * ps;		
+					ps=(sbyte *)pb.Pixels;
+					
+					for (int x=0;x<4*32*16;x=x+4)
+					{
+						
+						ps[x+0]=(sbyte)((0xFF000000&col)>>24);
+						ps[x+1]=(sbyte)((0x00FF0000&col)>>16);
+						ps[x+2]=(sbyte)((0x0000FF00&col)>>8);
+						ps[x+3]=(sbyte)((0x000000FF&col)>>0);
+					}
+					
+					parcels_store.AppendValues(pb,parcel.Name,parcel.Area.ToString(),parcel.Dwell.ToString(),parcel,parcel.LocalID);
+					
+					Gtk.Application.Invoke(delegate {		
+						this.treeview_parcels.Parent.QueueDraw();
+						this.treeview_parcels.QueueDraw();;
+						
+					});
+					
+				}		
+				
+					
 			}			
 		}
 		
-		void onParcelsDownloaded(Simulator sim,InternalDictionary <int,Parcel> simParcels,int[,] parcelmap)
+		unsafe void onParcelsDownloaded(Simulator sim,InternalDictionary <int,Parcel> simParcels,int[,] parcelmap)
 		{
-				
+			
 			Console.WriteLine("All Parcels download");
+			
+		
 
             uint[,] pm = new uint[64,64];
 
             int x = 0;
             int y = 0;
 
-            uint[] colmap = { 0x00FFFFFF, 0xFF00FFFF,0xFFFF00FF};
-
-
-            for (x = 0; x < 64; x++)
-            {
-                for (y = 0; y < 64; y++)
-                {
-
-
-                }
-                Console.Write("\n");
-            }
-
-
-
-
-            /*
-			StringBuilder sb = new StringBuilder();
-            string result;
 			
-			MainClass.client.Network.CurrentSim.Parcels.ForEach(delegate(Parcel parcel)
+			
+			sbyte * spixels=(sbyte *)this.parcel_map.Pixels;		
+			sbyte * ps;			
+						
+			            uint[] colmap = { 0x00FFFFFF, 0xFF00FFFF,0xFFFF00FF,0x55FFFFFF,0xaaFFFFFF,0xFF55FFFF,0xFFaaFFFF,0xFFFF55FF,0xFFFFaaFF,0xFFFFFFFF, 0x0000FFFF, 0xFF0000FF,0x00FF00FF, 0x5555FFFF, 0xFF5555FF,0x55FF55FF, 0xaaaaFFFF, 0xFFaaaaFF,0xaaFFaaFF};
+			int nextcol=0;
+
+			int srcwidth=parcel_map.Width;
+			int srcheight=parcel_map.Height;
+			int srcrowsstride=parcel_map.Rowstride;
+			int schannels=parcel_map.NChannels;
+			
+			
+			
+			for(int sx=0;sx<srcwidth;sx++)
 			{
-				sb.AppendFormat("Parcel[{0}]: Name: \"{1}\", Description: \"{2}\" ACL Count: {3} Traffic: {4}" + System.Environment.NewLine,
-				                parcel.LocalID, parcel.Name, parcel.Desc, parcel.AccessBlackList.Count+parcel.AccessWhiteList.Count, parcel.Dwell);			
+				for(int sy=0;sy<srcheight;sy++)
+				{	
+				 	
+				    x=(int)(((double)sx/(double)srcwidth)*64.0);
+					y=(int)(((float)sy/(float)srcheight)*64.0);
+		
+   				    uint id=(uint)parcelmap[x,y];
+					uint col;
+					
+					if(colmaptoid.ContainsKey(id))
+					{
+						col=colmaptoid[id];
+						ps=spixels+(sy*srcrowsstride)+(sx* schannels);
+						ps[0]=(sbyte)((0xFF000000&col)>>24);
+						ps[1]=(sbyte)((0x00FF0000&col)>>16);
+						ps[2]=(sbyte)((0x0000FF00&col)>>8);
+						ps[3]=(sbyte)((0x000000FF&col)>>0);
+					}
+					
+				}
+			}	
+
+			Gtk.Application.Invoke(delegate {		
+				this.image9.QueueDraw();
 			});
-			
-			Console.Write("\n"+sb.ToString()+"\n");
-			*/
+
+           
 		}
 
         void onParcelInfo(ParcelInfo pinfo)
@@ -138,6 +202,11 @@ namespace omvviewerlight
 			this.parcels_store.Clear();
 			this.parcels_access.Clear();
 			this.parcels_ban.Clear();
+			this.colmaptoid.Clear();
+			nextcol=0;
+			this.parcel_map = new Gdk.Pixbuf("trying.tga");
+			this.image9.Pixbuf=this.parcel_map;
+
 			Console.WriteLine("Requesting parcel info for sim:"+MainClass.client.Network.CurrentSim.Name);
 			MainClass.client.Parcels.RequestAllSimParcels(MainClass.client.Network.CurrentSim);
 		}
@@ -150,7 +219,7 @@ namespace omvviewerlight
 			
 			if(this.treeview_parcels.Selection.GetSelected(out mod,out iter))			
 			{
-				int id=(int)mod.GetValue(iter,4);
+				int id=(int)mod.GetValue(iter,5);
 				//this.image_parcel.Pixbuf=new Gdk.Pixbuf(parcel.Bitmap);
 				parcels_access.Clear();
 				parcels_ban.Clear();
@@ -238,7 +307,7 @@ namespace omvviewerlight
 			
 			if(this.treeview_parcels.Selection.GetSelected(out mod,out iter))			
 			{
-				int id=(int)mod.GetValue(iter,4);
+				int id=(int)mod.GetValue(iter,5);
 				Console.WriteLine("Requesting parcel prim owners for sim "+MainClass.client.Network.CurrentSim.Name+" parcel :"+id.ToString());
 				MainClass.client.Parcels.ObjectOwnersRequest(MainClass.client.Network.CurrentSim,id);
 			}
