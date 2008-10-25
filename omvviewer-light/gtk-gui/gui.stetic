@@ -918,7 +918,8 @@ Shout</property>
                   <widget class="Gtk.Button" id="button_im">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">file:./bin/icn_voice-groupfocus.tga</property>
                     <property name="Label" translatable="yes">IM</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonImClicked" />
@@ -934,7 +935,8 @@ Shout</property>
                   <widget class="Gtk.Button" id="button_pay">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">file:./status_money.tga</property>
                     <property name="Label" translatable="yes">Pay</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonPayClicked" />
@@ -957,6 +959,38 @@ Shout</property>
                   </widget>
                   <packing>
                     <property name="Position">2</property>
+                    <property name="AutoSize">True</property>
+                    <property name="Expand">False</property>
+                    <property name="Fill">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="Gtk.Button" id="button1">
+                    <property name="MemberName" />
+                    <property name="CanFocus">True</property>
+                    <property name="Type">TextOnly</property>
+                    <property name="Label" translatable="yes">Follow</property>
+                    <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="OnButton1Clicked" />
+                  </widget>
+                  <packing>
+                    <property name="Position">3</property>
+                    <property name="AutoSize">True</property>
+                    <property name="Expand">False</property>
+                    <property name="Fill">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="Gtk.Button" id="button_lookat">
+                    <property name="MemberName" />
+                    <property name="CanFocus">True</property>
+                    <property name="Type">TextOnly</property>
+                    <property name="Label" translatable="yes">Look at</property>
+                    <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="OnButtonLookatClicked" />
+                  </widget>
+                  <packing>
+                    <property name="Position">4</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>

@@ -103,25 +103,24 @@ public partial class MainWindow: Gtk.Window
         c.passontablable(chat_tab_lable);
         this.notebook.SwitchPage += new SwitchPageHandler(c.onSwitchPage);
 		
-		Location t=new Location();
-		this.addtabwithicon("icon_place.tga","Location",t);
+	//	Location t=new Location();
+	//	this.addtabwithicon("icon_place.tga","Location",t);
 			
-		Search s=new Search();
-		this.addtabwithicon("status_search_btn.png","Search",s);
+	//	Search s=new Search();
+	//	this.addtabwithicon("status_search_btn.png","Search",s);
 
-		ObjectsLayout o=new ObjectsLayout();
-		this.addtabwithicon("item_object.tga","Objects",o);
+	//	ObjectsLayout o=new ObjectsLayout();
+	//	this.addtabwithicon("item_object.tga","Objects",o);
 		
-		Groups g = new Groups();
-		this.addtabwithicon("icn_voice-groupfocus.tga","Groups",g);
-		//this.doicons();
+	//	Groups g = new Groups();
+	//	this.addtabwithicon("icn_voice-groupfocus.tga","Groups",g);
 				
 		omvviewerlight.Inventory i = new omvviewerlight.Inventory();
 		this.addtabwithicon("inv_folder_plain_open.tga","Inventory",i);
 		//this.doicons();
 
-		omvviewerlight.ParcelMgr p = new ParcelMgr();
-		this.addtabwithicon("parcel.tga","Parcel",p);
+//		omvviewerlight.ParcelMgr p = new ParcelMgr();
+//		this.addtabwithicon("parcel.tga","Parcel",p);
 		
 		this.statusbar1.ShowAll();
 		

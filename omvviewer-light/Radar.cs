@@ -44,6 +44,9 @@ namespace omvviewerlight
 		private Dictionary<UUID, bool> av_typing = new Dictionary<UUID, bool>();
         private Dictionary<uint, agent> av_tree = new Dictionary<uint, agent>();
         UUID lastsim = new UUID();
+		const float DISTANCE_BUFFER = 3.0f;
+        uint targetLocalID = 0;
+		bool Active;
 
 		public Radar()
 		{      
@@ -354,6 +357,122 @@ namespace omvviewerlight
 			}		
 
 		}
+
+		protected virtual void OnButton1Clicked (object sender, System.EventArgs e)
+		{
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
+			{
+				uint localid=(uint)mod.GetValue(iter,3);
+				
+				this.targetLocalID=localid;
+			
+			Active=true;
+			Gtk.Timeout.Add(250,Think);
+
+			}
+		}
+
+		protected virtual void OnButtonLookatClicked (object sender, System.EventArgs e)
+		{
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
+			{
+				uint localid=(uint)mod.GetValue(iter,3);
+				agent avatar;
+				if(av_tree.TryGetValue(localid,out avatar))
+				{
+					Vector3 pos;
+					
+				
+					if(avatar.avatar.ParentID==0)
+					{
+						pos=avatar.avatar.Position;
+						MainClass.client.Self.Movement.TurnToward(pos);					
+					}					
+						else
+					{
+						 if(!MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary.ContainsKey(avatar.avatar.ParentID))
+						 {
+							Console.WriteLine("AV is seated and i can't find the parent prim in dictionay");
+						 }
+						else
+						{
+						  Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[avatar.avatar.ParentID];
+						  pos = Vector3.Transform(avatar.avatar.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
+						  MainClass.client.Self.Movement.TurnToward(pos);						
+						}					
+					}
+			
+					
+					
+				}
+		
+					
+			}
+			
+		}
+		
+		bool Think()
+		{
+            if (Active)
+            {
+                // Find the target position
+                lock (MainClass.client.Network.Simulators)
+                {
+                    for (int i = 0; i < MainClass.client.Network.Simulators.Count; i++)
+                    {
+                        Avatar targetAv;
+
+                        if (MainClass.client.Network.Simulators[i].ObjectsAvatars.TryGetValue(targetLocalID, out targetAv))
+                        {
+                            float distance = 0.0f;
+
+                            if (MainClass.client.Network.Simulators[i] == MainClass.client.Network.CurrentSim)
+                            {
+                                distance = Vector3.Distance(targetAv.Position, MainClass.client.Self.SimPosition);
+                            }
+                            else
+                            {
+                                // FIXME: Calculate global distances
+                            }
+
+                            if (distance > DISTANCE_BUFFER)
+                            {
+                                uint regionX, regionY;
+                                Utils.LongToUInts(MainClass.client.Network.Simulators[i].Handle, out regionX, out regionY);
+
+                                double xTarget = (double)targetAv.Position.X + (double)regionX;
+                                double yTarget = (double)targetAv.Position.Y + (double)regionY;
+                                double zTarget = targetAv.Position.Z - 2f;
+
+                                Logger.DebugLog(String.Format("[Autopilot] {0} meters away from the target, starting autopilot to <{1},{2},{3}>",
+                                    distance, xTarget, yTarget, zTarget), MainClass.client);
+
+                                MainClass.client.Self.AutoPilot(xTarget, yTarget, zTarget);
+                            }
+                            else
+                            {
+                                // We are in range of the target and moving, stop moving
+                                MainClass.client.Self.AutoPilotCancel();
+                            }
+                        }
+                    }
+                }
+				return true;
+            }
+			else
+			{
+				return false;
+			}
+
+			//base.Think();
+		}
+
 		
 	}
 }
