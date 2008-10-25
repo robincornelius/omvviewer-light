@@ -5385,6 +5385,7 @@ permissions</property>
                     <child>
                       <widget class="Gtk.Label" id="label_parcelowner">
                         <property name="MemberName" />
+                        <property name="WidthRequest">200</property>
                         <property name="LabelProp" translatable="yes">label4</property>
                       </widget>
                       <packing>
@@ -5418,8 +5419,37 @@ permissions</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Image" id="image9">
+                  <widget class="Gtk.VBox" id="vbox10">
                     <property name="MemberName" />
+                    <property name="Spacing">6</property>
+                    <child>
+                      <widget class="Gtk.Label" id="label12">
+                        <property name="MemberName" />
+                        <property name="LabelProp" translatable="yes">Parcel map</property>
+                      </widget>
+                      <packing>
+                        <property name="Position">0</property>
+                        <property name="AutoSize">True</property>
+                        <property name="Expand">False</property>
+                        <property name="Fill">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="Gtk.Image" id="image9">
+                        <property name="MemberName" />
+                        <property name="WidthRequest">256</property>
+                        <property name="HeightRequest">256</property>
+                      </widget>
+                      <packing>
+                        <property name="Position">1</property>
+                        <property name="AutoSize">True</property>
+                        <property name="Expand">False</property>
+                        <property name="Fill">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder />
+                    </child>
                   </widget>
                   <packing>
                     <property name="Position">2</property>
@@ -5959,8 +5989,6 @@ permissions</property>
           <packing>
             <property name="Position">1</property>
             <property name="AutoSize">True</property>
-            <property name="Expand">False</property>
-            <property name="Fill">False</property>
           </packing>
         </child>
       </widget>
