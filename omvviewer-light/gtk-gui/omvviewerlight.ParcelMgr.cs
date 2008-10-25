@@ -144,6 +144,7 @@ namespace omvviewerlight {
             this.GtkScrolledWindow.ShadowType = ((Gtk.ShadowType)(1));
             // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
             this.treeview_parcels = new Gtk.TreeView();
+            this.treeview_parcels.HeightRequest = 164;
             this.treeview_parcels.CanFocus = true;
             this.treeview_parcels.Name = "treeview_parcels";
             this.treeview_parcels.HeadersClickable = true;
@@ -200,6 +201,7 @@ namespace omvviewerlight {
             this.label_parcelowner = new Gtk.Label();
             this.label_parcelowner.WidthRequest = 200;
             this.label_parcelowner.Name = "label_parcelowner";
+            this.label_parcelowner.Xalign = 0F;
             this.label_parcelowner.LabelProp = Mono.Unix.Catalog.GetString("label4");
             this.vbox9.Add(this.label_parcelowner);
             Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.vbox9[this.label_parcelowner]));
@@ -209,6 +211,7 @@ namespace omvviewerlight {
             // Container child vbox9.Gtk.Box+BoxChild
             this.label_parcelgroup = new Gtk.Label();
             this.label_parcelgroup.Name = "label_parcelgroup";
+            this.label_parcelgroup.Xalign = 0F;
             this.label_parcelgroup.LabelProp = Mono.Unix.Catalog.GetString("label5");
             this.vbox9.Add(this.label_parcelgroup);
             Gtk.Box.BoxChild w8 = ((Gtk.Box.BoxChild)(this.vbox9[this.label_parcelgroup]));
