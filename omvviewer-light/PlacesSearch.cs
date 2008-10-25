@@ -35,11 +35,12 @@ namespace omvviewerlight
 		UUID queryid;
 		Gtk.ListStore store;
         int places_found;
+		TryGetImage getter;
 		
 		public PlacesSearch()
 		{
 			this.Build();
-			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(string),typeof(Vector3));
+			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(string),typeof(Vector3),typeof(UUID));
 			
 		//	treeview1.AppendColumn("Name",new Gtk.CellRendererText(),"text",0);
 		//	treeview1.AppendColumn("Sim",new Gtk.CellRendererText(),"text",1);		
@@ -87,26 +88,8 @@ namespace omvviewerlight
 
 				foreach(OpenMetaverse.DirectoryManager.PlacesSearchData place in matchedplaces)
 				{	
-		Console.Write("************ PLACE DATA ********************\n");
-		Console.WriteLine("OwnerID "+place.OwnerID.ToString());
-		Console.WriteLine("Name "+place.Name);
-		Console.WriteLine("Desc "+place.Desc.ToString());
-		Console.WriteLine("Area "+place.ActualArea.ToString());
-		Console.WriteLine("Billable area "+place.BillableArea.ToString());
-		Console.WriteLine("Flags "+place.Flags.ToString());
-		Console.WriteLine("GlobalX "+place.GlobalX.ToString());
-		Console.WriteLine("GlobalY "+place.GlobalY.ToString());
-		Console.WriteLine("GlobalZ "+place.GlobalZ.ToString());
-		Console.WriteLine("SimName "+place.SimName);
-		Console.WriteLine("SnapshotID "+place.SnapshotID);
-		Console.WriteLine("Dwell "+place.Dwell.ToString());
-		Console.WriteLine("Proce "+place.Price.ToString());
-
-					
-		Console.Write("************ END OF PLACE DATA ********************\n");
-		
 					Vector3 pos=new Vector3(((int)place.GlobalX)&0x0000FF,((int)place.GlobalY)&0x0000FF,place.GlobalZ);
-					store.AppendValues(place.Name,place.SimName,place.Dwell.ToString(),MainClass.prettyvector(pos,2),pos);
+					store.AppendValues(place.Name,place.SimName,place.Dwell.ToString(),MainClass.prettyvector(pos,2),pos,place.SnapshotID);
 				}
 			
 			 });
@@ -148,6 +131,25 @@ namespace omvviewerlight
 				TeleportProgress tp = new TeleportProgress();
 				tp.Show();
 				tp.teleport(sim,pos);
+			}
+		}
+
+		protected virtual void OnTreeview1CursorChanged (object sender, System.EventArgs e)
+		{
+			
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(this.treeview1.Selection.GetSelected(out mod,out iter))			
+			{
+				UUID id=(UUID)mod.GetValue(iter,5);
+
+				if(getter!=null)
+					getter.abort();
+							
+				TryGetImage i = new TryGetImage(this.image_parcel,id,175,175);
+				getter=i;
+				
 			}
 		}
 				

@@ -70,7 +70,7 @@ namespace omvviewerlight
 			if(target_asset!=image)
 			return;
 			
-            Console.WriteLine("Progress recieved "+recieved.ToString()+" of "+total.ToString()+" last "+lastpacket.ToString());
+            //Console.WriteLine("Progress recieved "+recieved.ToString()+" of "+total.ToString()+" last "+lastpacket.ToString());
 			
             progress(target_image.Pixbuf,(float)total/(float)lastpacket);
 			
@@ -91,9 +91,9 @@ namespace omvviewerlight
 			byte * p;		
 			int y,x;
 			
-			Console.WriteLine("Progress is "+progress.ToString());
+			//Console.WriteLine("Progress is "+progress.ToString());
 			int widthx=(int)((float)width*progress);
-		    Console.WriteLine("Width is  is "+widthx.ToString());
+		    //Console.WriteLine("Width is  is "+widthx.ToString());
 	
 			if(progress>1)
                  progress=1;			
