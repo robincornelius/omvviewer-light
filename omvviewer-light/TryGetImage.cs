@@ -56,16 +56,23 @@ namespace omvviewerlight
 			if(asset!=UUID.Zero)
 					MainClass.client.Assets.RequestImage(asset,OpenMetaverse.ImageType.Normal,1013000.0f, 0,0);	
 						
-		}
+	}
+		
+		public void abort()
+	   {
+			MainClass.client.Assets.OnImageReceived -= new OpenMetaverse.AssetManager.ImageReceivedCallback(onGotImage);
+			MainClass.client.Assets.OnImageReceiveProgress -= new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
+	
+       }
 			                                               
         void onProgress(UUID image, int recieved, int total,int lastpacket)
 		{
 			if(target_asset!=image)
 			return;
 			
-            Console.WriteLine("Progress recieved "+recieved.ToString()+" of "+total.ToString());
+            Console.WriteLine("Progress recieved "+recieved.ToString()+" of "+total.ToString()+" last "+lastpacket.ToString());
 			
-            progress(target_image.Pixbuf,(float)recieved/(float)total);
+            progress(target_image.Pixbuf,(float)total/(float)lastpacket);
 			
 
 	
@@ -84,11 +91,10 @@ namespace omvviewerlight
 			byte * p;		
 			int y,x;
 			
-			//Console.WriteLine("Progress is "+progress.ToString());
-            int widthx=(int)((float)width*progress);
-		//	Console.WriteLine("Width is  is "+widthx.ToString());
-
-			
+			Console.WriteLine("Progress is "+progress.ToString());
+			int widthx=(int)((float)width*progress);
+		    Console.WriteLine("Width is  is "+widthx.ToString());
+	
 			if(progress>1)
                  progress=1;			
 			
@@ -100,11 +106,19 @@ namespace omvviewerlight
 					p=pixels+((y)*rowstride)+((x)* channels);
                         p[0]=255;
 						p[1]=255;
-						p[2]=255;
+					    p[2]=255;
+					    p[3]=255;
+
                 }	
 				
 			
-		     }
+		}
+			
+        Gtk.Application.Invoke(delegate
+				{
+				
+			target_image.QueueDraw();
+       });
 
 
 			
@@ -126,6 +140,7 @@ namespace omvviewerlight
 				return;
 
             MainClass.client.Assets.OnImageReceived -= new OpenMetaverse.AssetManager.ImageReceivedCallback(onGotImage);
+			MainClass.client.Assets.OnImageReceiveProgress -= new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
 
 				
 				Console.Write("Downloaded asset "+asset.AssetID.ToString()+"\n");
@@ -144,25 +159,29 @@ namespace omvviewerlight
                 Gtk.Application.Invoke(delegate
                 {	
 					try
-				{
-				    Gdk.Pixbuf buf=new Gdk.Pixbuf(tgaFile);
-					Console.Write("Decoded\n");
-					int x;
-                    if (target_image!=null) // this has managed to get set to null
-                    {
-                        if (target_image.Pixbuf != null)
-                        {
-                            x = target_image.Pixbuf.Width;
-                            target_image.Pixbuf = buf.ScaleSimple(img_width, img_height, Gdk.InterpType.Bilinear);
-                        }
-                    }
-				}
-				catch(Exception e)
-				{
-					Console.Write("*** Image decode blew whist trying to write image into pixbuf ***\n");
-					Console.WriteLine(e.Message);
-				}
-              });
+					{
+					    Gdk.Pixbuf buf=new Gdk.Pixbuf(tgaFile);
+						Console.Write("Decoded\n");
+						int x;
+	                    if (target_image!=null) // this has managed to get set to null
+	                    {
+	                        if (target_image.Pixbuf != null)
+	                        {
+	                            x = target_image.Pixbuf.Width;
+	                            target_image.Pixbuf = buf.ScaleSimple(img_width, img_height, Gdk.InterpType.Bilinear);
+	                        }
+	                    }
+					}
+					catch(Exception e)
+					{
+						Console.Write("*** Image decode blew whist trying to write image into pixbuf ***\n");
+						Console.WriteLine(e.Message);
+			}
+		});
+			
+			//target_image=null;
+
+	
 		}	
 	}
 }

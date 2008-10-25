@@ -22,6 +22,8 @@ namespace omvviewerlight
 		Gtk.TreeStore parcel_prim_owners;
         Gdk.Pixbuf parcel_map;
 		
+		TryGetImage getter;
+		
 		int sequence=0;
 
 		Dictionary <int,Parcel> simParcelsDict=new Dictionary <int,Parcel>();
@@ -39,7 +41,7 @@ namespace omvviewerlight
 			MainClass.client.Parcels.OnParcelProperties += new OpenMetaverse.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
 			MainClass.client.Parcels.OnPrimOwnersListReply += new OpenMetaverse.ParcelManager.ParcelObjectOwnersListReplyCallback(onParcelObjectOwners);
 			
-			parcels_store=new Gtk.TreeStore (typeof(Gdk.Pixbuf),typeof(string),typeof(string),typeof(string),typeof(Parcel),typeof(int));
+			parcels_store=new Gtk.TreeStore (typeof(Gdk.Pixbuf),typeof(string),typeof(string),typeof(string),typeof(string),typeof(Parcel),typeof(int));
 			parcels_access=new Gtk.TreeStore(typeof(string),typeof(UUID));
 			parcels_ban=new Gtk.TreeStore(typeof(string),typeof(UUID));
 			this.parcel_prim_owners=new Gtk.TreeStore(typeof(string),typeof(string));
@@ -48,6 +50,8 @@ namespace omvviewerlight
 			this.treeview_parcels.AppendColumn("Parcel",new Gtk.CellRendererText(),"text",1);
 			this.treeview_parcels.AppendColumn("Area",new Gtk.CellRendererText(),"text",2);
 			this.treeview_parcels.AppendColumn("Traffic",new Gtk.CellRendererText(),"text",3);
+			this.treeview_parcels.AppendColumn("For sale",new Gtk.CellRendererText(),"text",4);
+			
 					
 			treeview_parcels.Model=parcels_store;
 			this.treeview_access.AppendColumn("Allowed Access",new Gtk.CellRendererText(),"text",0);
@@ -120,13 +124,25 @@ namespace omvviewerlight
 						ps[x+3]=(sbyte)((0x000000FF&col)>>0);
 					}
 					
-					parcels_store.AppendValues(pb,parcel.Name,parcel.Area.ToString(),parcel.Dwell.ToString(),parcel,parcel.LocalID);
+					string saleinfo;
+					if((parcel.Flags & Parcel.ParcelFlags.ForSale) == Parcel.ParcelFlags.ForSale)
+					{
+						if(parcel.AuthBuyerID!=UUID.Zero)
+						{
+							saleinfo="Single AV";	
+						}
+						else
+						{
+							saleinfo=parcel.SalePrice.ToString();
+							
+						}
+					}
 					
-					Gtk.Application.Invoke(delegate {		
-						this.treeview_parcels.Parent.QueueDraw();
-						this.treeview_parcels.QueueDraw();;
-						
-					});
+					saleinfo="";
+					
+					parcels_store.AppendValues(pb,parcel.Name,parcel.Area.ToString(),parcel.Dwell.ToString(),saleinfo,parcel,parcel.LocalID);
+					
+					
 					
 				}		
 				
@@ -219,7 +235,7 @@ namespace omvviewerlight
 			
 			if(this.treeview_parcels.Selection.GetSelected(out mod,out iter))			
 			{
-				int id=(int)mod.GetValue(iter,5);
+				int id=(int)mod.GetValue(iter,6);
 				//this.image_parcel.Pixbuf=new Gdk.Pixbuf(parcel.Bitmap);
 				parcels_access.Clear();
 				parcels_ban.Clear();
@@ -248,6 +264,18 @@ namespace omvviewerlight
 						this.entry_primsowner.Text=parcel.OwnerPrims.ToString();
 						this.entry_primsother.Text=parcel.OtherPrims.ToString();
 						this.entry_totalprims.Text=parcel.TotalPrims.ToString();
+						
+						
+						
+						if(parcel.SnapshotID!=UUID.Zero)
+						{
+							if(getter!=null)
+								getter.abort();
+							
+							TryGetImage i = new TryGetImage(this.image_parcelsnap,parcel.SnapshotID,256,256);
+							getter=i;
+							
+						}
 					
 						AsyncNameUpdate ud;
 						
@@ -307,7 +335,7 @@ namespace omvviewerlight
 			
 			if(this.treeview_parcels.Selection.GetSelected(out mod,out iter))			
 			{
-				int id=(int)mod.GetValue(iter,5);
+				int id=(int)mod.GetValue(iter,6);
 				Console.WriteLine("Requesting parcel prim owners for sim "+MainClass.client.Network.CurrentSim.Name+" parcel :"+id.ToString());
 				MainClass.client.Parcels.ObjectOwnersRequest(MainClass.client.Network.CurrentSim,id);
 			}
