@@ -1858,7 +1858,8 @@ Shout</property>
                   <widget class="Gtk.Button" id="button_search">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">file:./status_search_btn.png</property>
                     <property name="Label" translatable="yes">Search</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonSearchClicked" />
@@ -1886,6 +1887,7 @@ Shout</property>
                 <child>
                   <widget class="Gtk.Button" id="button_touch">
                     <property name="MemberName" />
+                    <property name="WidthRequest">75</property>
                     <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
                     <property name="Type">TextOnly</property>
@@ -1903,6 +1905,7 @@ Shout</property>
                 <child>
                   <widget class="Gtk.Button" id="button_siton">
                     <property name="MemberName" />
+                    <property name="WidthRequest">75</property>
                     <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
                     <property name="Type">TextOnly</property>
@@ -1920,6 +1923,7 @@ Shout</property>
                 <child>
                   <widget class="Gtk.Button" id="button_lookat">
                     <property name="MemberName" />
+                    <property name="WidthRequest">75</property>
                     <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
                     <property name="Type">TextOnly</property>
@@ -1937,9 +1941,11 @@ Shout</property>
                 <child>
                   <widget class="Gtk.Button" id="button_pay">
                     <property name="MemberName" />
+                    <property name="WidthRequest">75</property>
                     <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">file:./status_money.tga</property>
                     <property name="Label" translatable="yes">Pay</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonPayClicked" />
@@ -1954,7 +1960,7 @@ Shout</property>
               </widget>
               <packing>
                 <property name="Position">1</property>
-                <property name="AutoSize">True</property>
+                <property name="AutoSize">False</property>
                 <property name="Expand">False</property>
                 <property name="Fill">False</property>
               </packing>
@@ -1967,9 +1973,11 @@ Shout</property>
                 <child>
                   <widget class="Gtk.Button" id="button_buy">
                     <property name="MemberName" />
+                    <property name="WidthRequest">75</property>
                     <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">file:./status_money.tga</property>
                     <property name="Label" translatable="yes">Buy</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonBuyClicked" />
@@ -1984,6 +1992,7 @@ Shout</property>
                 <child>
                   <widget class="Gtk.Button" id="button_take">
                     <property name="MemberName" />
+                    <property name="WidthRequest">75</property>
                     <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
                     <property name="Type">TextOnly</property>
@@ -2001,6 +2010,7 @@ Shout</property>
                 <child>
                   <widget class="Gtk.Button" id="button_take_copy">
                     <property name="MemberName" />
+                    <property name="WidthRequest">75</property>
                     <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
                     <property name="Type">TextOnly</property>
@@ -2018,6 +2028,7 @@ Shout</property>
                 <child>
                   <widget class="Gtk.Button" id="button_return">
                     <property name="MemberName" />
+                    <property name="WidthRequest">75</property>
                     <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
                     <property name="Type">TextOnly</property>
