@@ -44,9 +44,10 @@ namespace omvviewerlight
 		private Dictionary<UUID, bool> av_typing = new Dictionary<UUID, bool>();
         private Dictionary<uint, agent> av_tree = new Dictionary<uint, agent>();
         UUID lastsim = new UUID();
-		const float DISTANCE_BUFFER = 3.0f;
+		const float DISTANCE_BUFFER = 4.0f;
         uint targetLocalID = 0;
 		bool Active;
+		bool piloton=false;
 
 		public Radar()
 		{      
@@ -421,6 +422,8 @@ namespace omvviewerlight
 		{
             if (Active)
             {
+				
+				
                 // Find the target position
                 lock (MainClass.client.Network.Simulators)
                 {
@@ -453,12 +456,26 @@ namespace omvviewerlight
                                 Logger.DebugLog(String.Format("[Autopilot] {0} meters away from the target, starting autopilot to <{1},{2},{3}>",
                                     distance, xTarget, yTarget, zTarget), MainClass.client);
 
+								if(piloton==true)
+									return true;
+								else
+								{
+								piloton=true;
+									
+								Vector3 pos;
+								pos.X=(float)xTarget;
+								pos.Y=(float)yTarget;
+								pos.Z=(float)zTarget;
+									
+								MainClass.client.Self.Movement.TurnToward(pos);			
                                 MainClass.client.Self.AutoPilot(xTarget, yTarget, zTarget);
-                            }
+								}                            
+							}
                             else
                             {
                                 // We are in range of the target and moving, stop moving
                                 MainClass.client.Self.AutoPilotCancel();
+								piloton=false;
                             }
                         }
                     }
