@@ -44,7 +44,7 @@ namespace omvviewerlight
 		private Dictionary<UUID, bool> av_typing = new Dictionary<UUID, bool>();
         private Dictionary<uint, agent> av_tree = new Dictionary<uint, agent>();
         UUID lastsim = new UUID();
-		const float DISTANCE_BUFFER = 4.0f;
+		const float DISTANCE_BUFFER = 3f;
         uint targetLocalID = 0;
 		bool Active;
 		bool piloton=false;
@@ -371,7 +371,7 @@ namespace omvviewerlight
 				this.targetLocalID=localid;
 			
 			Active=true;
-			Gtk.Timeout.Add(250,Think);
+			Gtk.Timeout.Add(1000,Think);
 
 			}
 		}
@@ -444,22 +444,22 @@ namespace omvviewerlight
                                 // FIXME: Calculate global distances
                             }
 
-                            if (distance > DISTANCE_BUFFER)
+                            if (distance > 5)
                             {
                                 uint regionX, regionY;
                                 Utils.LongToUInts(MainClass.client.Network.Simulators[i].Handle, out regionX, out regionY);
 
                                 double xTarget = (double)targetAv.Position.X + (double)regionX;
                                 double yTarget = (double)targetAv.Position.Y + (double)regionY;
-                                double zTarget = targetAv.Position.Z - 2f;
+                                double zTarget = targetAv.Position.Z;
 
                                 Logger.DebugLog(String.Format("[Autopilot] {0} meters away from the target, starting autopilot to <{1},{2},{3}>",
                                     distance, xTarget, yTarget, zTarget), MainClass.client);
 
-								if(piloton==true)
-									return true;
-								else
-								{
+							//	if(piloton==true)
+							//		return true;
+							//  else
+							//	{
 								piloton=true;
 									
 								Vector3 pos;
@@ -469,13 +469,14 @@ namespace omvviewerlight
 									
 								MainClass.client.Self.Movement.TurnToward(pos);			
                                 MainClass.client.Self.AutoPilot(xTarget, yTarget, zTarget);
-								}                            
+							//	}                            
 							}
                             else
                             {
                                 // We are in range of the target and moving, stop moving
+								Logger.DebugLog("Stopping autopilot");
                                 MainClass.client.Self.AutoPilotCancel();
-								piloton=false;
+								
                             }
                         }
                     }
