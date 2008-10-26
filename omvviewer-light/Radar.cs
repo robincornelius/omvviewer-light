@@ -364,6 +364,13 @@ namespace omvviewerlight
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
 			
+			if(this.button1.Label=="STOP")
+			{
+				Active=false;
+				this.button1.Label="Follow";
+				return;
+			}
+			
 			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
 				uint localid=(uint)mod.GetValue(iter,3);
@@ -372,6 +379,7 @@ namespace omvviewerlight
 			
 			Active=true;
 			Gtk.Timeout.Add(1000,Think);
+			this.button1.Label="STOP";
 			//Think();
 				
 			}
@@ -486,6 +494,7 @@ namespace omvviewerlight
             }
 			else
 			{
+				MainClass.client.Self.AutoPilotCancel();
 				return false;
 			}
 
