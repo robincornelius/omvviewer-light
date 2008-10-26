@@ -53,7 +53,6 @@ namespace omvviewerlight
 		
 		public Map()
 		{           
-			return;
 			this.Build();
 			MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
 			MainClass.client.Objects.OnNewAvatar += new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);

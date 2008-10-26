@@ -191,7 +191,7 @@ namespace omvviewerlight
 				store.SetValue(iter,0,PrimsWaiting[key].Properties.Name);
 				store.SetValue(iter,1,PrimsWaiting[key].Properties.Description);
 				store.SetValue(iter,2,Vector3.Distance(PrimsWaiting[key].Position,MainClass.client.Self.RelativePosition).ToString());
-				store.SetValue(iter,3,PrimsWaiting[key].Properties.ObjectID.ToString());
+				store.SetValue(iter,3,PrimsWaiting[key].Properties.ObjectID);
 			}
 			return true;
 		}
@@ -358,6 +358,8 @@ namespace omvviewerlight
 					
 					this.label_float_text.Text=prim.Text;
 					
+					this.button_moveto.Sensitive=true;
+					
 				}
 			
 			}
@@ -518,6 +520,33 @@ namespace omvviewerlight
 					//MainClass.client.Parcels
 				}
 			}
+		}
+
+		protected virtual void OnButtonMovetoClicked (object sender, System.EventArgs e)
+		{
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(treeview1.Selection.GetSelected(out mod,out iter))			
+			{
+				UUID id=(UUID)mod.GetValue(iter,3);
+				Primitive prim;
+				
+				if(PrimsWaiting.TryGetValue(id,out prim))
+				{
+					uint regionX, regionY;
+                    Utils.LongToUInts(MainClass.client.Network.CurrentSim.Handle, out regionX, out regionY);
+					double xTarget = (double)prim.Position.X + (double)regionX;
+                    double yTarget = (double)prim.Position.Y + (double)regionY;
+                    double zTarget = prim.Position.Z;
+					
+					MainClass.client.Self.Movement.TurnToward(prim.Position);			
+                    MainClass.client.Self.AutoPilot(xTarget, yTarget, zTarget);
+					
+				}
+					
+			}
+			
 		}
 	
 	}

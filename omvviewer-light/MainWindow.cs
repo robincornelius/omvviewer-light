@@ -103,24 +103,24 @@ public partial class MainWindow: Gtk.Window
         c.passontablable(chat_tab_lable);
         this.notebook.SwitchPage += new SwitchPageHandler(c.onSwitchPage);
 		
-	//	Location t=new Location();
-	//	this.addtabwithicon("icon_place.tga","Location",t);
+		Location t=new Location();
+		this.addtabwithicon("icon_place.tga","Location",t);
 			
-	//	Search s=new Search();
-	//	this.addtabwithicon("status_search_btn.png","Search",s);
+		Search s=new Search();
+		this.addtabwithicon("status_search_btn.png","Search",s);
 
-	//	ObjectsLayout o=new ObjectsLayout();
-	//	this.addtabwithicon("item_object.tga","Objects",o);
+		ObjectsLayout o=new ObjectsLayout();
+		this.addtabwithicon("item_object.tga","Objects",o);
 		
-	//	Groups g = new Groups();
-	//	this.addtabwithicon("icn_voice-groupfocus.tga","Groups",g);
+		Groups g = new Groups();
+		this.addtabwithicon("icn_voice-groupfocus.tga","Groups",g);
 				
 		omvviewerlight.Inventory i = new omvviewerlight.Inventory();
 		this.addtabwithicon("inv_folder_plain_open.tga","Inventory",i);
 		//this.doicons();
 
-//		omvviewerlight.ParcelMgr p = new ParcelMgr();
-//		this.addtabwithicon("parcel.tga","Parcel",p);
+		omvviewerlight.ParcelMgr p = new ParcelMgr();
+		this.addtabwithicon("parcel.tga","Parcel",p);
 		
 		this.statusbar1.ShowAll();
 		
@@ -256,6 +256,9 @@ public partial class MainWindow: Gtk.Window
 	
 	void onAlertMessage(string message)
 	{
+		if(message=="Autopilot canceled")
+			return;
+		
 		Gtk.Application.Invoke(delegate {						
 			string msg;
 			msg="<b>ALERT FROM SECONDLIFE</b>\n"+message;
@@ -434,7 +437,7 @@ public partial class MainWindow: Gtk.Window
 	
 	void onParcelProperties(Simulator Sim,Parcel parcel, ParcelResult result, int selectedprims,int sequenceID, bool snapSelection)
 	{
-		Gtk.Application.Invoke(delegate {		
+	
 
 			
 		//yuck very very hacky
@@ -447,7 +450,8 @@ public partial class MainWindow: Gtk.Window
 				
 
 		return;
-			
+		
+		Gtk.Application.Invoke(delegate {		
 			//FIX ME NAME UPDATE BROKEN
 	//	AsyncNameUpdate ud=new AsyncNameUpdate(parcel.OwnerID,false);  
 	//	ud.onNameCallBack += delegate(string namex,object[] values){this.label_foundedby.Text="Founded by "+namex;};
