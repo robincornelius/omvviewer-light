@@ -130,12 +130,14 @@ namespace omvviewerlight
               return;
 
           if (basemap.Pixbuf == null)
-              return;
+			return;
+          
+          Gdk.Pixbuf buf;
 
 			lock(basemap)
             {
 
-				Gdk.Pixbuf buf=(Gdk.Pixbuf)basemap.Pixbuf.Clone();
+				buf=(Gdk.Pixbuf)basemap.Pixbuf.Clone();
 				showme(buf,avatar_me.Pixbuf,MainClass.client.Self.SimPosition);				
 
 				int myz=(int)MainClass.client.Self.SimPosition.Z;
@@ -170,21 +172,25 @@ namespace omvviewerlight
                         }
                     }
 
-                image.Pixbuf = buf;
+			
+                 }
 
-                Gtk.Application.Invoke(delegate
+					Gtk.Application.Invoke(delegate
                 {
-    
+                      image.Pixbuf = buf;
                       image.QueueDraw();
    
 			});
-			}
+			
 		}
 		void onNewSim(Simulator lastsim)
 	    {
 			Console.Write("New simulator :"+MainClass.client.Network.CurrentSim.Name +" requesting grid layer for terrain \n");
-			MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Terrain);
-            this.label1.Text = MainClass.client.Network.CurrentSim.Name;
+		    MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Terrain);
+			Gtk.Application.Invoke(delegate
+                {            
+                  this.label1.Text = MainClass.client.Network.CurrentSim.Name;
+});
         }
 	
 		void showme(Gdk.Pixbuf buf,Gdk.Pixbuf src,Vector3 pos)

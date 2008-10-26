@@ -28,7 +28,6 @@ using Gtk;
 namespace omvviewerlight
 {
 	
-	
 	public partial class Search : Gtk.Bin
 	{
 		
@@ -45,7 +44,13 @@ namespace omvviewerlight
 			EventsSearch es=new EventsSearch();
 			this.addtabwithicon("icon_event.tga","Events",es);
 			
-       
+		}
+		
+        public void kill()
+		{
+			Gtk.Notebook p;
+			p=(Gtk.Notebook)this.Parent;
+			p.RemovePage(p.PageNum(this));
 		}
 		
 		Gtk.Label addtabwithicon(string filename,string label,Gtk.Widget contents)

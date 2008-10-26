@@ -2,17 +2,18 @@
   <Files>
     <File name="Welcome" />
     <File name="omvviewer-light/Location.cs" line="1" column="1" />
-    <File name="omvviewer-light/Map.cs" line="56" column="11" />
+    <File name="omvviewer-light/Map.cs" line="55" column="15" />
     <File name="omvviewer-light/ParcelMgr.cs" line="1" column="1" />
-    <File name="omvviewer-light/MainWindow.cs" line="114" column="3" />
-    <File name="omvviewer-light/Radar.cs" line="477" column="47" />
-    <File name="omvviewer-light/ObjectsLayout.cs" line="438" column="78" />
+    <File name="omvviewer-light/MainWindow.cs" line="116" column="3" />
+    <File name="omvviewer-light/Radar.cs" line="471" column="92" />
+    <File name="omvviewer-light/ObjectsLayout.cs" line="194" column="64" />
+    <File name="omvviewer-light/Groups.cs" line="1" column="1" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
-          <Node name="Radar.cs" selected="True" />
+          <Node name="MainWindow.cs" selected="True" />
         </Node>
       </Node>
     </ViewMemento>
@@ -21,7 +22,7 @@
     </ViewMemento>
   </Views>
   <Properties>
-    <Property key="ActiveWindow" value="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light/Radar.cs" />
+    <Property key="ActiveWindow" value="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light/MainWindow.cs" />
     <Property key="ActiveConfiguration" value="Debug" />
   </Properties>
 </UserCombinePreferences>

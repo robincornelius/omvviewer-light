@@ -372,7 +372,8 @@ namespace omvviewerlight
 			
 			Active=true;
 			Gtk.Timeout.Add(1000,Think);
-
+			//Think();
+				
 			}
 		}
 
@@ -475,7 +476,7 @@ namespace omvviewerlight
                             {
                                 // We are in range of the target and moving, stop moving
 								Logger.DebugLog("Stopping autopilot");
-                                MainClass.client.Self.AutoPilotCancel();
+                               // MainClass.client.Self.AutoPilotCancel();
 								
                             }
                         }

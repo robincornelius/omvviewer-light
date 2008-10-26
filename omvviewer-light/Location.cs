@@ -35,5 +35,13 @@ namespace omvviewerlight
 		{
 			this.Build();
 		}
+		
+		public void kill()
+		{
+			Gtk.Notebook p;
+			p=(Gtk.Notebook)this.Parent;
+			p.RemovePage(p.PageNum(this));
+			
+		}
 	}
 }

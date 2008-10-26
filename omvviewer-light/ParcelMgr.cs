@@ -220,8 +220,11 @@ namespace omvviewerlight
 			this.parcels_ban.Clear();
 			this.colmaptoid.Clear();
 			nextcol=0;
-			this.parcel_map = new Gdk.Pixbuf("trying.tga");
-			this.image9.Pixbuf=this.parcel_map;
+			Gtk.Application.Invoke(delegate
+            {
+				this.parcel_map = new Gdk.Pixbuf("trying.tga");
+				this.image9.Pixbuf=this.parcel_map;
+			});
 
 			Console.WriteLine("Requesting parcel info for sim:"+MainClass.client.Network.CurrentSim.Name);
 			MainClass.client.Parcels.RequestAllSimParcels(MainClass.client.Network.CurrentSim);

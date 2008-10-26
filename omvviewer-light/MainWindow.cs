@@ -37,6 +37,10 @@ public partial class MainWindow: Gtk.Window
     public delegate void Cleanuptime();
     public event Cleanuptime oncleanuptime;
 
+	Search tab_search;
+	Location tab_location;
+		
+	
 	Gtk.Label status_location;
 	Gtk.HBox status_balance;
 	Gtk.Label status_balance_lable;
@@ -99,28 +103,26 @@ public partial class MainWindow: Gtk.Window
 		
 		// Fuck stupid notebook tabs and monodeveop have to do it myself
 		ChatLayout c=new ChatLayout();
-        chat_tab_lable=this.addtabwithicon("icn_voice-pvtfocus.tga","Chat",c);
-        c.passontablable(chat_tab_lable);
+        chat_tab_lable=this.addtabwithicon("icn_voice-pvtfocus.tga","Chat",c);        
+		c.passontablable(chat_tab_lable);
         this.notebook.SwitchPage += new SwitchPageHandler(c.onSwitchPage);
-		
-		Location t=new Location();
-		this.addtabwithicon("icon_place.tga","Location",t);
-			
-		Search s=new Search();
-		this.addtabwithicon("status_search_btn.png","Search",s);
-
+				
 		ObjectsLayout o=new ObjectsLayout();
 		this.addtabwithicon("item_object.tga","Objects",o);
-		
+		this.ObjectsAction.Active=true;
+	
 		Groups g = new Groups();
 		this.addtabwithicon("icn_voice-groupfocus.tga","Groups",g);
-				
+		this.GroupsAction.Active=true;
+		
 		omvviewerlight.Inventory i = new omvviewerlight.Inventory();
 		this.addtabwithicon("inv_folder_plain_open.tga","Inventory",i);
-		//this.doicons();
-
+		this.InventoryAction.Active=true;
+	
 		omvviewerlight.ParcelMgr p = new ParcelMgr();
 		this.addtabwithicon("parcel.tga","Parcel",p);
+		this.ParcelAction.Active=true;
+		
 		
 		this.statusbar1.ShowAll();
 		
@@ -836,5 +838,53 @@ public partial class MainWindow: Gtk.Window
 		}
 		
            return false;
-    }	
+    }
+
+	protected virtual void OnParcelActionToggled (object sender, System.EventArgs e)
+	{
+               
+	}
+
+	protected virtual void OnObjectsActionToggled (object sender, System.EventArgs e)
+	{
+	}
+
+	protected virtual void OnInventoryActionToggled (object sender, System.EventArgs e)
+	{
+	}
+
+	protected virtual void OnLocationActionToggled (object sender, System.EventArgs e)
+		{
+		
+         if(this.LocationAction.Active==true)
+        {
+			tab_location=new Location();
+		    this.addtabwithicon("icon_place.tga","Location",tab_location);
+		    this.LocationAction.Active=true;
+	    }
+		else
+		{
+           tab_location.kill();	
+        }	
+	
+	}
+
+	protected virtual void OnGroupsActionToggled (object sender, System.EventArgs e)
+	{
+	}
+
+	protected virtual void OnSearchActionToggled (object sender, System.EventArgs e)
+    {	
+		if(this.SearchAction.Active==true)
+        {
+	        tab_search=new Search();
+			this.addtabwithicon("status_search_btn.png","Search",tab_search);
+		    this.SearchAction.Active=true;
+	    }
+		else
+		{
+           tab_search.kill();	
+        }	
+	}
+	
 }
