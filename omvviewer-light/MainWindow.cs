@@ -175,6 +175,49 @@ public partial class MainWindow: Gtk.Window
    [GLib.ConnectBefore]
     void MainWindow_DeleteEvent(object o, DeleteEventArgs args)
     {
+		
+		CloseMinimiseDlg cmd = new CloseMinimiseDlg();
+		ResponseType result = (ResponseType)cmd.Run();
+		
+		if(result==ResponseType.Cancel)
+		{
+			args.RetVal = true;
+			cmd.Destroy();
+            return;
+		}
+		
+		if(result==ResponseType.Close)
+		{
+			 if (oncleanuptime != null)
+				oncleanuptime();		
+
+			args.RetVal = false;
+			cmd.Destroy();
+			
+			
+			if(MainClass.client.Network.Connected)
+			{
+				LogoutDlg ld = new LogoutDlg();
+				ld.Run();
+			}
+				
+			return;
+		}
+		
+		if(result==ResponseType.Accept)
+		{
+			cmd.Destroy();
+			args.RetVal = true;
+            this.Visible = false;
+            return;
+		}
+		
+        args.RetVal = true;
+    }   
+	
+/*	
+	void MainWindow_DeleteEvent(object o, DeleteEventArgs args)
+    {
         Gtk.MessageDialog md = new MessageDialog(this, DialogFlags.Modal, MessageType.Question, ButtonsType.YesNo, false, "Do you really want to close (YES)\n Or minimse (NO)");
         ResponseType result = (ResponseType)md.Run();
         md.Destroy();
@@ -202,7 +245,8 @@ public partial class MainWindow: Gtk.Window
 
         args.RetVal = false;
     }
-
+*/
+	
    void logout()
    {
        MainClass.client.Network.Logout();
