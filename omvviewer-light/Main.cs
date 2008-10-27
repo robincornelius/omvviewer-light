@@ -82,8 +82,6 @@ namespace omvviewerlight
                 Application.Init();
                 win = new MainWindow();
                 win.Show();
-                win.DeleteEvent += delete_event;
-
                 Application.Run();
             }
             catch(Exception e)
@@ -117,13 +115,6 @@ namespace omvviewerlight
             }
 			
 		}
-
-        static void delete_event(object obj, DeleteEventArgs args)
-        {
-           
-	     
-        }
-
 
 		public static string cleandistance(string dist,int dp)
 		{			
