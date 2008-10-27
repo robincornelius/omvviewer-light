@@ -189,7 +189,7 @@ public partial class MainWindow: Gtk.Window
 		if(MainClass.client.Network.Connected)
 		{
 			Gtk.MessageDialog md2=new MessageDialog(this,DialogFlags.DestroyWithParent,MessageType.Info,ButtonsType.None,true,"The system is trying to log you out now\n please wait\n This may take a few seconds and the\napplication may report not responding");
-			md2.Show();
+            md2.ShowAll();
             GLib.Timeout.Add(500, closewindowpoll);
             Thread logoutRunner = new Thread(new ThreadStart(logout));
             logoutRunner.Start();
