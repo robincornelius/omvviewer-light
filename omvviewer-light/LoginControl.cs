@@ -95,6 +95,23 @@ namespace omvviewerlight
 			{
 				
 			}
+
+            string target=MainClass.ReadSetting("login_location_choice");
+
+            if (target == "home")
+                this.radiobutton1.Active = true;
+
+            if (target == "last")
+                this.radiobutton2.Active = true;
+
+            if (target == "location")
+            {
+                this.radiobutton1.Active = true;
+                this.entry_location.Text=MainClass.ReadSetting("login_location");
+
+            }
+
+
 		}
 
         void oncleanuptime()
@@ -272,13 +289,24 @@ namespace omvviewerlight
                 {
                     Console.WriteLine(ee.ToString());
                 }
-				
-				if(this.radiobutton1.Active)
-					login.Start="home";
-				if(this.radiobutton2.Active)
-					login.Start="last";
-				if(this.radiobutton3.Active)
-					login.Start=this.entry_location.Text;
+
+                if (this.radiobutton1.Active)
+                {
+                    login.Start = "home";
+                    MainClass.WriteSetting("login_location_choice", "home");
+                }
+                if (this.radiobutton2.Active)
+                {
+                    login.Start = "last";
+                    MainClass.WriteSetting("login_location_choice", "last");
+                }
+
+                if (this.radiobutton3.Active)
+                {
+                    login.Start = this.entry_location.Text;
+                    MainClass.WriteSetting("login_location_choice", "location");
+                    MainClass.WriteSetting("login_location", entry_location.Text);
+                }
 				
 				this.textview_log.Buffer.Clear();
 				button_login.Label="Logout";
