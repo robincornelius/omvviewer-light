@@ -20,6 +20,7 @@
                 <include name="AsyncNameUpdate.cs" />
                 <include name="ChatConsole.cs" />
                 <include name="ChatLayout.cs" />
+		<include name="CloseMinimiseDlg.cs" />     
                 <include name="EventsSearch.cs" />
                 <include name="FriendsList.cs" />
                 <include name="Friendshiprequest.cs" />
@@ -28,6 +29,7 @@
                 <include name="Inventory.cs" />
                 <include name="Location.cs" />
                 <include name="LoginControl.cs" />
+ 		<include name="LogoutDlg.cs" />
                 <include name="Main.cs" />
                 <include name="MainWindow.cs" />
                 <include name="Map.cs" />
@@ -54,6 +56,7 @@
                 <include name="gtk-gui/generated.cs" />
                 <include name="gtk-gui/omvviewerlight.ChatConsole.cs" />
                 <include name="gtk-gui/omvviewerlight.ChatLayout.cs" />
+		<include name="gtk-gui/omvviewerlight.CloseMinimiseDlg.cs" />  
                 <include name="gtk-gui/omvviewerlight.EventsSearch.cs" />
                 <include name="gtk-gui/omvviewerlight.FriendsList.cs" />
                 <include name="gtk-gui/omvviewerlight.Friendshiprequest.cs" />
@@ -62,6 +65,7 @@
                 <include name="gtk-gui/omvviewerlight.Inventory.cs" />
                 <include name="gtk-gui/omvviewerlight.Location.cs" />
                 <include name="gtk-gui/omvviewerlight.LoginControl.cs" />
+ 		<include name="gtk-gui/omvviewerlight.LogoutDlg.cs" />
                 <include name="gtk-gui/omvviewerlight.Map.cs" />
                 <include name="gtk-gui/omvviewerlight.Movment.cs" />
                 <include name="gtk-gui/omvviewerlight.NamePicker.cs" />
