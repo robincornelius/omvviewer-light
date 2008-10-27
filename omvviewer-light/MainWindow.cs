@@ -110,9 +110,24 @@ public partial class MainWindow: Gtk.Window
         chat_tab_lable=this.addtabwithicon("icn_voice-pvtfocus.tga","Chat",c);        
 		c.passontablable(chat_tab_lable);
         this.notebook.SwitchPage += new SwitchPageHandler(c.onSwitchPage);
-						
-		
-	
+
+        if (MainClass.ReadSetting("tab_location") == "active")
+            this.LocationAction.Active = true;
+
+        if (MainClass.ReadSetting("tab_search") == "active")
+            this.SearchAction.Active = true;
+
+        if (MainClass.ReadSetting("tab_groups") == "active")
+            this.GroupsAction.Active = true;
+    
+        if (MainClass.ReadSetting("tab_inv") == "active")
+            this.InventoryAction.Active = true;
+
+        if (MainClass.ReadSetting("tab_objects") == "active")
+            this.ObjectsAction.Active = true;
+    
+        if (MainClass.ReadSetting("tab_parcel") == "active")
+            this.ParcelAction.Active = true;
 	
 		
 		this.statusbar1.ShowAll();
@@ -838,11 +853,15 @@ public partial class MainWindow: Gtk.Window
             tab_parcels = new ParcelMgr();
             this.addtabwithicon("parcel.tga", "Parcel", tab_parcels);
             this.ParcelAction.Active = true;
+            MainClass.WriteSetting("tab_parcel", "active");
+
         }
         else
         {
             tab_parcels.kill();
-        }	         
+            MainClass.WriteSetting("tab_parcel", "off");
+        }
+
 	}
 
 	protected virtual void OnObjectsActionToggled (object sender, System.EventArgs e)
@@ -852,11 +871,15 @@ public partial class MainWindow: Gtk.Window
             tab_objects = new ObjectsLayout();
             this.addtabwithicon("item_object.tga", "Objects", tab_objects);
             this.ObjectsAction.Active = true;
+            MainClass.WriteSetting("tab_objects", "active");
+
 	
         }
         else
         {
             tab_objects.kill();
+            MainClass.WriteSetting("tab_objects", "off");
+
         }	   
 	}
 
@@ -868,11 +891,14 @@ public partial class MainWindow: Gtk.Window
             tab_inventory = new omvviewerlight.Inventory();
             this.addtabwithicon("inv_folder_plain_open.tga", "Inventory", tab_inventory);
             this.InventoryAction.Active = true;
+            MainClass.WriteSetting("tab_inv", "active");
 
         }
         else
         {
             tab_inventory.kill();
+            MainClass.WriteSetting("tab_inv", "off");
+
         }	  
   
 	}
@@ -885,10 +911,13 @@ public partial class MainWindow: Gtk.Window
 			tab_location=new Location();
 		    this.addtabwithicon("icon_place.tga","Location",tab_location);
 		    this.LocationAction.Active=true;
+            MainClass.WriteSetting("tab_location", "active");
+
 	    }
 		else
 		{
-           tab_location.kill();	
+           tab_location.kill();
+           MainClass.WriteSetting("tab_location", "off");
         }	
 	
 	}
@@ -900,10 +929,12 @@ public partial class MainWindow: Gtk.Window
             tab_groups = new Groups();
             this.addtabwithicon("icn_voice-groupfocus.tga", "Groups", tab_groups);
             this.GroupsAction.Active = true;
+            MainClass.WriteSetting("tab_groups", "active");
         }
         else
         {
             tab_groups.kill();
+            MainClass.WriteSetting("tab_groups", "off");
         }	
 	}
 
@@ -914,10 +945,12 @@ public partial class MainWindow: Gtk.Window
 	        tab_search=new Search();
 			this.addtabwithicon("status_search_btn.png","Search",tab_search);
 		    this.SearchAction.Active=true;
+            MainClass.WriteSetting("tab_search", "active");
 	    }
 		else
 		{
-           tab_search.kill();	
+           tab_search.kill();
+           MainClass.WriteSetting("tab_search", "off");
         }	
 	}
 	

@@ -247,15 +247,7 @@ namespace omvviewerlight
 
 			Console.Write("Appearence thread go\n");
 			MainClass.client.Appearance.SetPreviousAppearance(false);
-          //  if (!appearanceEvent.WaitOne(1000 * 120, false))
-          //  {
-          //      Gtk.Application.Invoke(delegate
-          //      {
-          //          Gtk.MessageDialog md = new Gtk.MessageDialog(MainClass.win, Gtk.DialogFlags.Modal, Gtk.MessageType.Error, Gtk.ButtonsType.Close, "Failed to set previous appearance");
-          //          md.Run();
-          //          md.Destroy();
-          //      });
-          //  }
+
         }
 		
 		protected virtual void OnButton1Clicked (object sender, System.EventArgs e)
@@ -292,21 +284,7 @@ namespace omvviewerlight
 				button_login.Label="Logout";
 				
 				login.URI=entry_loginuri.Text;
-					
-			    /*
-				if(this.combobox_grid.ActiveText=="Agni")
-				      login.URI=entry_loginuri.Text="https://login.agni.lindenlab.com/cgi-bin/login.cgi";
-				
-				if(this.combobox_grid.ActiveText=="Aditi")
-				      login.URI=entry_loginuri.Text="https://login.aditi.lindenlab.com/cgi-bin/login.cgi";
-				                                                  			                                                  
-				if(this.combobox_grid.ActiveText=="Local")
-				      login.URI=entry_loginuri.Text="http://127.0.0.1:9000";
-				
-				if(this.combobox_grid.ActiveText=="Custom")
-				      login.URI=entry_loginuri.Text=this.entry_loginuri.Text;
-	              */
-				
+
 				Thread loginRunner= new Thread(new ThreadStart(this.loginthread));                               		
 				loginRunner.Start();
 
