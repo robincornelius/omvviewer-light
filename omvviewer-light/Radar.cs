@@ -86,6 +86,13 @@ namespace omvviewerlight
 
             foreach (KeyValuePair<uint, Avatar> kvp in MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
             {
+                //Seen this fire with a null
+                if (kvp.Value == null)
+                    continue;
+
+                if (kvp.Value.LocalID == null)
+                    continue;
+
                 if (!this.av_tree.ContainsKey(kvp.Value.LocalID))
                 {
                     agent theagent = new agent();

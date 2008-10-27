@@ -39,6 +39,10 @@ public partial class MainWindow: Gtk.Window
 
 	Search tab_search;
 	Location tab_location;
+    Groups tab_groups;
+    ObjectsLayout tab_objects;
+    omvviewerlight.Inventory tab_inventory;
+    ParcelMgr tab_parcels;
 		
 	
 	Gtk.Label status_location;
@@ -98,7 +102,7 @@ public partial class MainWindow: Gtk.Window
 		this.statusbar1.PackStart(status_parcel);
 		this.statusbar1.PackStart(status_balance);
 
-		this.Title="Omvviewer-light v0.30";
+		this.Title="Omvviewer-light v0.40 SVN";
 		this.SetIconFromFile("viewericon.xpm");
 		
 		// Fuck stupid notebook tabs and monodeveop have to do it myself
@@ -106,23 +110,10 @@ public partial class MainWindow: Gtk.Window
         chat_tab_lable=this.addtabwithicon("icn_voice-pvtfocus.tga","Chat",c);        
 		c.passontablable(chat_tab_lable);
         this.notebook.SwitchPage += new SwitchPageHandler(c.onSwitchPage);
-				
-		ObjectsLayout o=new ObjectsLayout();
-		this.addtabwithicon("item_object.tga","Objects",o);
-		this.ObjectsAction.Active=true;
-	
-		Groups g = new Groups();
-		this.addtabwithicon("icn_voice-groupfocus.tga","Groups",g);
-		this.GroupsAction.Active=true;
+						
 		
-		omvviewerlight.Inventory i = new omvviewerlight.Inventory();
-		this.addtabwithicon("inv_folder_plain_open.tga","Inventory",i);
-		this.InventoryAction.Active=true;
 	
-		omvviewerlight.ParcelMgr p = new ParcelMgr();
-		this.addtabwithicon("parcel.tga","Parcel",p);
-		this.ParcelAction.Active=true;
-		
+	
 		
 		this.statusbar1.ShowAll();
 		
@@ -842,15 +833,48 @@ public partial class MainWindow: Gtk.Window
 
 	protected virtual void OnParcelActionToggled (object sender, System.EventArgs e)
 	{
-               
+        if (this.ParcelAction.Active == true)
+        {
+            tab_parcels = new ParcelMgr();
+            this.addtabwithicon("parcel.tga", "Parcel", tab_parcels);
+            this.ParcelAction.Active = true;
+        }
+        else
+        {
+            tab_parcels.kill();
+        }	         
 	}
 
 	protected virtual void OnObjectsActionToggled (object sender, System.EventArgs e)
 	{
+        if (this.ObjectsAction.Active == true)
+        {
+            tab_objects = new ObjectsLayout();
+            this.addtabwithicon("item_object.tga", "Objects", tab_objects);
+            this.ObjectsAction.Active = true;
+	
+        }
+        else
+        {
+            tab_objects.kill();
+        }	   
 	}
 
 	protected virtual void OnInventoryActionToggled (object sender, System.EventArgs e)
 	{
+
+        if (this.InventoryAction.Active == true)
+        {
+            tab_inventory = new omvviewerlight.Inventory();
+            this.addtabwithicon("inv_folder_plain_open.tga", "Inventory", tab_inventory);
+            this.InventoryAction.Active = true;
+
+        }
+        else
+        {
+            tab_inventory.kill();
+        }	  
+  
 	}
 
 	protected virtual void OnLocationActionToggled (object sender, System.EventArgs e)
@@ -871,6 +895,16 @@ public partial class MainWindow: Gtk.Window
 
 	protected virtual void OnGroupsActionToggled (object sender, System.EventArgs e)
 	{
+        if (this.GroupsAction.Active == true)
+        {
+            tab_groups = new Groups();
+            this.addtabwithicon("icn_voice-groupfocus.tga", "Groups", tab_groups);
+            this.GroupsAction.Active = true;
+        }
+        else
+        {
+            tab_groups.kill();
+        }	
 	}
 
 	protected virtual void OnSearchActionToggled (object sender, System.EventArgs e)

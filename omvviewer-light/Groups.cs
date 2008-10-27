@@ -35,7 +35,16 @@ namespace omvviewerlight
 		Gtk.ListStore store;
 		List<Group> groups_recieved=new List<Group>();
 		Gtk.TreeIter active_group_iter;
-		
+
+        public void kill()
+        {
+            MainClass.client.Groups.OnCurrentGroups -= new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
+	
+            Gtk.Notebook p;
+            p = (Gtk.Notebook)this.Parent;
+            p.RemovePage(p.PageNum(this));
+        }
+
 		public Groups()
 		{
    
@@ -50,13 +59,20 @@ namespace omvviewerlight
 
             groupColumn.SetCellDataFunc(groupNameCell, new Gtk.TreeCellDataFunc(RenderGroupName));
             treeview1.AppendColumn(groupColumn);
-
-			
+		
             treeview1.Model=store;
 	
 			//REFACTOR ME, MAINCLASS IS DUPLICATING
 			MainClass.client.Groups.OnCurrentGroups += new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
-			//MainClass.client.Groups.RequestCurrentGroups();
+			
+
+            if (MainClass.client != null)
+            {
+                if (MainClass.client.Network.LoginStatusCode == OpenMetaverse.LoginStatus.Success)
+                {
+                    MainClass.client.Groups.RequestCurrentGroups();
+               }
+            }	
 			
 		}
 

@@ -35,27 +35,23 @@ namespace omvviewerlight
 		Gtk.ListStore store;	
         Dictionary<UUID, Primitive> PrimsWaiting = new Dictionary<UUID, Primitive>();
 
+        public void kill()
+        {
+            MainClass.client.Objects.OnObjectProperties -= new OpenMetaverse.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
+            MainClass.client.Groups.OnGroupNames -= new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
+
+            Gtk.Notebook p;
+            p = (Gtk.Notebook)this.Parent;
+            p.RemovePage(p.PageNum(this));
+        }
+
 		public ObjectsLayout()
 		{
 			this.Build();
 			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(UUID));
             Gtk.TreeViewColumn col;
            
-            /*
-            col = new Gtk.TreeViewColumn("Name", new Gtk.CellRendererText(), "text", 0);
-            col.Clicked += new EventHandler(name_col_Clicked);
-            Gdk.Pixbuf tick = new Gdk.Pixbuf("tick.tga");
-            Gtk.Image i = new Gtk.Image(tick);
-            Gtk.HBox hb = new Gtk.HBox();
-            Gtk.Label lb = new Gtk.Label("Name");
-            hb.PackEnd(lb);
-            hb.PackEnd(i);
-            col.Widget = hb;
-            hb.ShowAll();
-            treeview1.AppendColumn(col);
-            treeview1.ShowAll();
-            */
-
+      
             MyTreeViewColumn mycol;
             mycol = new MyTreeViewColumn("Name",new Gtk.CellRendererText(), "text", 0);
             mycol.setmodel(store);
@@ -87,6 +83,8 @@ namespace omvviewerlight
 			
 			MainClass.client.Objects.OnObjectProperties += new OpenMetaverse.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
 			MainClass.client.Groups.OnGroupNames += new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
+
+
 
 		}
 

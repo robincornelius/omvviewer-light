@@ -79,7 +79,21 @@ namespace omvviewerlight
         Gdk.Pixbuf folder_bodypart = new Gdk.Pixbuf("inv_folder_bodypart.tga");
         Gdk.Pixbuf folder_callingcard = new Gdk.Pixbuf("inv_folder_callingcard.tga");
         Gdk.Pixbuf folder_clothing = new Gdk.Pixbuf("inv_folder_clothing.tga");
-		
+
+
+        public void kill()
+        {
+            this.treeview_inv.RowExpanded -= new Gtk.RowExpandedHandler(onRowExpanded);
+            this.treeview_inv.RowCollapsed -= new Gtk.RowCollapsedHandler(onRowCollapsed);
+            MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+            this.treeview_inv.ButtonPressEvent -= new ButtonPressEventHandler(treeview_inv_ButtonPressEvent);
+            MainClass.client.Inventory.OnObjectOffered -= new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
+    
+            Gtk.Notebook p;
+            p = (Gtk.Notebook)this.Parent;
+            p.RemovePage(p.PageNum(this));
+        }
+
 		public Inventory()
 		{
 			this.Build();		
@@ -91,13 +105,23 @@ namespace omvviewerlight
 			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             this.treeview_inv.ButtonPressEvent += new ButtonPressEventHandler(treeview_inv_ButtonPressEvent);
 
-          MainClass.client.Inventory.OnObjectOffered += new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
+            MainClass.client.Inventory.OnObjectOffered += new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
           
 			this.label_aquired.Text="";
 			this.label_createdby.Text="";
 			this.label_name.Text="";
 			this.label_group.Text="";
 			this.label_saleprice.Text="";
+
+            if (MainClass.client != null)
+            {
+                if (MainClass.client.Network.LoginStatusCode == OpenMetaverse.LoginStatus.Success)
+                {
+                    inventory.Clear();
+                    Gtk.TreeIter iter = inventory.AppendValues(folder_closed, "Inventory", MainClass.client.Inventory.Store.RootFolder.UUID);
+                    inventory.AppendValues(iter, folder_closed, "Waiting...", MainClass.client.Inventory.Store.RootFolder.UUID, null);
+                }
+            }	
 		}
 
         void menu_ware_ButtonPressEvent(object o, ButtonPressEventArgs args)

@@ -25,11 +25,23 @@ namespace omvviewerlight
 		TryGetImage getter;
 		
 		int sequence=0;
-
-		Dictionary <int,Parcel> simParcelsDict=new Dictionary <int,Parcel>();
 		Dictionary <uint,uint> colmaptoid=new Dictionary<uint,uint>(); // map parcelid->colindex
         uint[] colmap = { 0x00FFFFFF, 0xFF00FFFF,0xFFFF00FF,0x55FFFFFF,0xaaFFFFFF,0xFF55FFFF,0xFFaaFFFF,0xFFFF55FF,0xFFFFaaFF,0xFFFFFFFF, 0x0000FFFF, 0xFF0000FF,0x00FF00FF, 0x5555FFFF, 0xFF5555FF,0x55FF55FF, 0xaaaaFFFF, 0xFFaaaaFF,0xaaFFaaFF};
    	    int nextcol=0;
+
+
+        public void kill()
+        {
+            MainClass.client.Parcels.OnParcelInfo -= new OpenMetaverse.ParcelManager.ParcelInfoCallback(onParcelInfo);
+            MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
+            MainClass.client.Parcels.OnSimParcelsDownloaded -= new OpenMetaverse.ParcelManager.SimParcelsDownloaded(onParcelsDownloaded);
+            MainClass.client.Parcels.OnParcelProperties -= new OpenMetaverse.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
+            MainClass.client.Parcels.OnPrimOwnersListReply -= new OpenMetaverse.ParcelManager.ParcelObjectOwnersListReplyCallback(onParcelObjectOwners);
+		
+            Gtk.Notebook p;
+            p = (Gtk.Notebook)this.Parent;
+            p.RemovePage(p.PageNum(this));
+        }
 
 		public ParcelMgr()
 		{
@@ -69,8 +81,28 @@ namespace omvviewerlight
 			this.label_parcelgroup.Text="";
 			this.label_parcelowner.Text="";
 
-           // this.parcel_map = new Gdk.Pixbuf("trying.tga");
-		//	this.image9.Pixbuf=this.parcel_map;
+            if (MainClass.client != null)
+            {
+                if (MainClass.client.Network.LoginStatusCode == OpenMetaverse.LoginStatus.Success)
+                {
+
+                    this.parcels_store.Clear();
+                    this.parcels_access.Clear();
+                    this.parcels_ban.Clear();
+                    this.colmaptoid.Clear();
+                    nextcol = 0;
+                   
+                    this.parcel_map = new Gdk.Pixbuf("trying.tga");
+                    this.image9.Pixbuf = this.parcel_map;
+
+                    populate_tree();
+                    updateparcelmap(MainClass.client.Network.CurrentSim.ParcelMap);
+
+                    Console.WriteLine("Requesting parcel info for sim:" + MainClass.client.Network.CurrentSim.Name);
+                    MainClass.client.Parcels.RequestAllSimParcels(MainClass.client.Network.CurrentSim);
+
+                 }
+            }	
 			
 		
 		}
@@ -83,129 +115,130 @@ namespace omvviewerlight
 				Gtk.TreeIter iter2=parcel_prim_owners.AppendValues("Waiting...",primOwners[i].Count.ToString());			
 				AsyncNameUpdate ud=new AsyncNameUpdate(primOwners[i].OwnerID,false);  
 				ud.addparameters(iter2);
-				ud.onNameCallBack += delegate(string namex,object[] values){ Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; parcel_prim_owners.SetValue(iterx,0,namex);};				
-				
+				ud.onNameCallBack += delegate(string namex,object[] values){ Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; parcel_prim_owners.SetValue(iterx,0,namex);};					
 			}
 						
 		}
 		
-	 unsafe   void onParcelProperties(Simulator Sim,Parcel parcel, ParcelResult result, int selectedprims,int sequenceID, bool snapSelection)
-		{		
+	void onParcelProperties(Simulator Sim,Parcel parcel, ParcelResult result, int selectedprims,int sequenceID, bool snapSelection)
+	{
+        populate_tree();
+        updateparcelmap(MainClass.client.Network.CurrentSim.ParcelMap);
 			
-			if(!simParcelsDict.ContainsKey(parcel.LocalID))
-			{	
-				this.simParcelsDict.Add(parcel.LocalID,parcel);
-				int thiscol=0;
-				
-				if(!colmaptoid.ContainsKey((uint)parcel.LocalID))
-				{
-						
-					colmaptoid.Add((uint)parcel.LocalID,colmap[nextcol]);
-					thiscol=nextcol;
-					Console.WriteLine("ID "+parcel.LocalID.ToString()+"Setting col to "+nextcol.ToString());
-						
-					nextcol++;
-					if(nextcol>=colmap.Length)
-						nextcol=colmap.Length-1;
-						
-					byte[] data= new byte[4*32*16];
-					uint col=colmap[thiscol];
-					
-					Gdk.Pixbuf pb=new Gdk.Pixbuf("parcelindex.tga");	
-					sbyte * ps;		
-					ps=(sbyte *)pb.Pixels;
-					
-					for (int x=0;x<4*32*16;x=x+4)
-					{
-						
-						ps[x+0]=(sbyte)((0xFF000000&col)>>24);
-						ps[x+1]=(sbyte)((0x00FF0000&col)>>16);
-						ps[x+2]=(sbyte)((0x0000FF00&col)>>8);
-						ps[x+3]=(sbyte)((0x000000FF&col)>>0);
-					}
-					
-					string saleinfo;
-					if((parcel.Flags & Parcel.ParcelFlags.ForSale) == Parcel.ParcelFlags.ForSale)
-					{
-						if(parcel.AuthBuyerID!=UUID.Zero)
-						{
-							saleinfo="Single AV";	
-						}
-						else
-						{
-							saleinfo=parcel.SalePrice.ToString();
-							
-						}
-					}
-					
-					saleinfo="";
-					
-					parcels_store.AppendValues(pb,parcel.Name,parcel.Area.ToString(),parcel.Dwell.ToString(),saleinfo,parcel,parcel.LocalID);
-					
-					
-					
-				}		
-				
-					
-			}			
-		}
-		
-		unsafe void onParcelsDownloaded(Simulator sim,InternalDictionary <int,Parcel> simParcels,int[,] parcelmap)
+	}
+
+     unsafe void populate_tree()
+     {
+         lock(MainClass.client.Network.CurrentSim.Parcels.Dictionary)
+         {
+             foreach (KeyValuePair<int, Parcel> kvp in MainClass.client.Network.CurrentSim.Parcels.Dictionary)
+             {
+                 Parcel parcel = kvp.Value;
+                
+                     int thiscol = 0;
+
+                     if (!colmaptoid.ContainsKey((uint)parcel.LocalID))
+                     {
+                         colmaptoid.Add((uint)parcel.LocalID, colmap[nextcol]);
+                         thiscol = nextcol;
+                         Console.WriteLine("ID " + parcel.LocalID.ToString() + "Setting col to " + nextcol.ToString());
+
+                         nextcol++;
+                         if (nextcol >= colmap.Length)
+                             nextcol = colmap.Length - 1;
+
+                         byte[] data = new byte[4 * 32 * 16];
+                         uint col = colmap[thiscol];
+
+                         Gdk.Pixbuf pb = new Gdk.Pixbuf("parcelindex.tga");
+                         sbyte* ps;
+                         ps = (sbyte*)pb.Pixels;
+
+                         for (int x = 0; x < 4 * 32 * 16; x = x + 4)
+                         {
+
+                             ps[x + 0] = (sbyte)((0xFF000000 & col) >> 24);
+                             ps[x + 1] = (sbyte)((0x00FF0000 & col) >> 16);
+                             ps[x + 2] = (sbyte)((0x0000FF00 & col) >> 8);
+                             ps[x + 3] = (sbyte)((0x000000FF & col) >> 0);
+                         }
+
+                         string saleinfo;
+                         if ((parcel.Flags & Parcel.ParcelFlags.ForSale) == Parcel.ParcelFlags.ForSale)
+                         {
+                             if (parcel.AuthBuyerID != UUID.Zero)
+                             {
+                                 saleinfo = "Single AV";
+                             }
+                             else
+                             {
+                                 saleinfo = parcel.SalePrice.ToString();
+
+                             }
+                         }
+
+                         saleinfo = "";
+
+                         parcels_store.AppendValues(pb, parcel.Name, parcel.Area.ToString(), parcel.Dwell.ToString(), saleinfo, parcel, parcel.LocalID);
+
+                     }
+                 
+             }
+
+         }
+     }
+
+     unsafe void updateparcelmap(int[,] parcelmap)
+     {
+         uint[,] pm = new uint[64, 64];
+
+         int x = 0;
+         int y = 0;
+
+         sbyte* spixels = (sbyte*)this.parcel_map.Pixels;
+         sbyte* ps;
+
+         uint[] colmap = { 0x00FFFFFF, 0xFF00FFFF, 0xFFFF00FF, 0x55FFFFFF, 0xaaFFFFFF, 0xFF55FFFF, 0xFFaaFFFF, 0xFFFF55FF, 0xFFFFaaFF, 0xFFFFFFFF, 0x0000FFFF, 0xFF0000FF, 0x00FF00FF, 0x5555FFFF, 0xFF5555FF, 0x55FF55FF, 0xaaaaFFFF, 0xFFaaaaFF, 0xaaFFaaFF };
+         int nextcol = 0;
+
+         int srcwidth = parcel_map.Width;
+         int srcheight = parcel_map.Height;
+         int srcrowsstride = parcel_map.Rowstride;
+         int schannels = parcel_map.NChannels;
+
+         for (int sx = 0; sx < srcwidth; sx++)
+         {
+             for (int sy = 0; sy < srcheight; sy++)
+             {
+
+                 x = (int)(((double)sx / (double)srcwidth) * 64.0);
+                 y = (int)(((float)sy / (float)srcheight) * 64.0);
+
+                 uint id = (uint)parcelmap[y, x];
+                 uint col;
+
+                 if (colmaptoid.ContainsKey(id))
+                 {
+                     col = colmaptoid[id];
+                     ps = spixels + (sy * srcrowsstride) + (sx * schannels);
+                     ps[0] = (sbyte)((0xFF000000 & col) >> 24);
+                     ps[1] = (sbyte)((0x00FF0000 & col) >> 16);
+                     ps[2] = (sbyte)((0x0000FF00 & col) >> 8);
+                     ps[3] = (sbyte)((0x000000FF & col) >> 0);
+                 }
+             }
+         }
+
+         Gtk.Application.Invoke(delegate
+         {
+             this.image9.QueueDraw();
+         });
+     }
+
+		void onParcelsDownloaded(Simulator sim,InternalDictionary <int,Parcel> simParcels,int[,] parcelmap)
 		{
-			
 			Console.WriteLine("All Parcels download");
-			
-		
-
-            uint[,] pm = new uint[64,64];
-
-            int x = 0;
-            int y = 0;
-
-			
-			
-			sbyte * spixels=(sbyte *)this.parcel_map.Pixels;		
-			sbyte * ps;			
-						
-			            uint[] colmap = { 0x00FFFFFF, 0xFF00FFFF,0xFFFF00FF,0x55FFFFFF,0xaaFFFFFF,0xFF55FFFF,0xFFaaFFFF,0xFFFF55FF,0xFFFFaaFF,0xFFFFFFFF, 0x0000FFFF, 0xFF0000FF,0x00FF00FF, 0x5555FFFF, 0xFF5555FF,0x55FF55FF, 0xaaaaFFFF, 0xFFaaaaFF,0xaaFFaaFF};
-			int nextcol=0;
-
-			int srcwidth=parcel_map.Width;
-			int srcheight=parcel_map.Height;
-			int srcrowsstride=parcel_map.Rowstride;
-			int schannels=parcel_map.NChannels;
-			
-			
-			
-			for(int sx=0;sx<srcwidth;sx++)
-			{
-				for(int sy=0;sy<srcheight;sy++)
-				{	
-				 	
-				    x=(int)(((double)sx/(double)srcwidth)*64.0);
-					y=(int)(((float)sy/(float)srcheight)*64.0);
-		
-   				    uint id=(uint)parcelmap[x,y];
-					uint col;
-					
-					if(colmaptoid.ContainsKey(id))
-					{
-						col=colmaptoid[id];
-						ps=spixels+(sy*srcrowsstride)+(sx* schannels);
-						ps[0]=(sbyte)((0xFF000000&col)>>24);
-						ps[1]=(sbyte)((0x00FF0000&col)>>16);
-						ps[2]=(sbyte)((0x0000FF00&col)>>8);
-						ps[3]=(sbyte)((0x000000FF&col)>>0);
-					}
-					
-				}
-			}	
-
-			Gtk.Application.Invoke(delegate {		
-				this.image9.QueueDraw();
-			});
-
-           
+            updateparcelmap(parcelmap);
 		}
 
         void onParcelInfo(ParcelInfo pinfo)
