@@ -62,7 +62,8 @@ public partial class MainWindow: Gtk.Window
     bool loggedout = false;
     string parcel_owner_name;
     string parcel_group;
-    Tooltips tooltips1; 
+    Tooltips tooltips1;
+    int lastparcelid = 0;
    
     ~MainWindow()
     {
@@ -172,7 +173,7 @@ public partial class MainWindow: Gtk.Window
     
         this.DeleteEvent += new DeleteEventHandler(MainWindow_DeleteEvent);
 
-        GLib.Timeout.Add(10000,OnUpdateStatus);
+        GLib.Timeout.Add(1000,OnUpdateStatus);
 
         tooltips1 = new Tooltips();
 	}
@@ -515,8 +516,19 @@ public partial class MainWindow: Gtk.Window
 		status_icons.ShowAll();	
 	}
 
-    void updatestatusinfo(Parcel parcel)
+    void updatestatusinfo()
     {
+        Parcel parcel;
+        Vector3 pos = MainClass.client.Self.RelativePosition;
+        int parcelid = MainClass.client.Network.CurrentSim.ParcelMap[(int)(64.0 * (pos.Y/256.0)), (int)(64.0 * (pos.X/256))];
+        if (parcelid == lastparcelid)
+            return;
+
+        if (!MainClass.client.Network.CurrentSim.Parcels.TryGetValue(parcelid, out parcel))
+            return;
+
+        lastparcelid = parcelid;
+
         string size;
         size = parcel.Area.ToString();
 
@@ -554,13 +566,13 @@ public partial class MainWindow: Gtk.Window
         this.parcel_group = "Waiting....";
 
         AsyncNameUpdate an = new AsyncNameUpdate(parcel.OwnerID, false);
-        an.onNameCallBack += delegate(string namex, object[] values) { this.parcel_owner_name = namex; updatestatusinfo(parcel); };
+        an.onNameCallBack += delegate(string namex, object[] values) { this.parcel_owner_name = namex; updatestatusinfo(); };
 
         AsyncNameUpdate an2 = new AsyncNameUpdate(parcel.GroupID, true);
-        an2.onGroupNameCallBack += delegate(string namex, object[] values) { this.parcel_group = namex; updatestatusinfo(parcel); };
+        an2.onGroupNameCallBack += delegate(string namex, object[] values) { this.parcel_group = namex; updatestatusinfo(); };
 				
 		Gtk.Application.Invoke(delegate {		
-            updatestatusinfo(parcel);
+            updatestatusinfo();
 			doicons(parcel);
 		});
 	}
@@ -600,8 +612,9 @@ public partial class MainWindow: Gtk.Window
 	{
 		if(MainClass.client.Network.LoginStatusCode==LoginStatus.Success)
 		{
-			status_location.Text="Location: "+MainClass.client.Network.CurrentSim.Name+MainClass.prettyvector(MainClass.client.Self.SimPosition,2);	
-		}		
+			status_location.Text="Location: "+MainClass.client.Network.CurrentSim.Name+MainClass.prettyvector(MainClass.client.Self.SimPosition,2);
+            updatestatusinfo();
+        }		
 		return true;
 	}
 	
