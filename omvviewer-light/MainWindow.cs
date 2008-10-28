@@ -60,6 +60,9 @@ public partial class MainWindow: Gtk.Window
 	public List<Group> current_groups=new List<Group>();
 
     bool loggedout = false;
+    string parcel_owner_name;
+    string parcel_group;
+    Tooltips tooltips1; 
    
     ~MainWindow()
     {
@@ -169,7 +172,9 @@ public partial class MainWindow: Gtk.Window
     
         this.DeleteEvent += new DeleteEventHandler(MainWindow_DeleteEvent);
 
-        GLib.Timeout.Add(10000,OnUpdateStatus); 
+        GLib.Timeout.Add(10000,OnUpdateStatus);
+
+        tooltips1 = new Tooltips();
 	}
 
    [GLib.ConnectBefore]
@@ -506,12 +511,34 @@ public partial class MainWindow: Gtk.Window
 			status_icons.SetChildPacking(myimage,false,false,0,PackType.Start);
 
 		}
-		
-		
-		status_icons.ShowAll();
-		
+
+		status_icons.ShowAll();	
 	}
-	
+
+    void updatestatusinfo(Parcel parcel)
+    {
+        string size;
+        size = parcel.Area.ToString();
+
+        int primscount = parcel.OwnerPrims + parcel.OtherPrims + parcel.GroupPrims;
+        string prims;
+        prims = primscount.ToString() + " of " + parcel.MaxPrims;
+
+        status_parcel.Text = parcel.Name;
+        string tooltext;
+        tooltext =
+                parcel.Name
+                    + "\nOwner : " + this.parcel_owner_name
+                    + "\nGroup : " + this.parcel_group
+                    + "\nSize : " + size.ToString()
+                    + "\nPrims : " + prims.ToString()
+                    + "\nTraffic : " + parcel.Dwell.ToString()
+                    + "\nArea : " + parcel.Area.ToString();
+
+        tooltips1.SetTip(this.statusbar1, tooltext, null);
+        tooltips1.Enable();
+    }
+
 	void onParcelProperties(Simulator Sim,Parcel parcel, ParcelResult result, int selectedprims,int sequenceID, bool snapSelection)
 	{
 
@@ -522,46 +549,18 @@ public partial class MainWindow: Gtk.Window
 		this.current_parcelid=parcel.LocalID;
 			
 		this.is_parcel_owner=(parcel.OwnerID==MainClass.client.Self.AgentID);
-				
 
-		return;
-		
+        this.parcel_owner_name = "Waiting....";
+        this.parcel_group = "Waiting....";
+
+        AsyncNameUpdate an = new AsyncNameUpdate(parcel.OwnerID, false);
+        an.onNameCallBack += delegate(string namex, object[] values) { this.parcel_owner_name = namex; updatestatusinfo(parcel); };
+
+        AsyncNameUpdate an2 = new AsyncNameUpdate(parcel.GroupID, true);
+        an2.onGroupNameCallBack += delegate(string namex, object[] values) { this.parcel_group = namex; updatestatusinfo(parcel); };
+				
 		Gtk.Application.Invoke(delegate {		
-			//FIX ME NAME UPDATE BROKEN
-	//	AsyncNameUpdate ud=new AsyncNameUpdate(parcel.OwnerID,false);  
-	//	ud.onNameCallBack += delegate(string namex,object[] values){this.label_foundedby.Text="Founded by "+namex;};
-			
-			
-//		string owner="Unknown";
-	//	if(!MainClass.av_names.TryGetValue(parcel.OwnerID,out owner))
-//				owner="Unknown";
-		
-//		string group="Unknown";
-//		if(!MainClass.av_names.TryGetValue(parcel.GroupID,out group))
-//			group="Unknown";	
-				
-		string size;
-		size=parcel.Area.ToString();
-		
-		int primscount=parcel.OwnerPrims+parcel.OtherPrims+parcel.GroupPrims;
-		string prims;
-		prims=primscount.ToString()+ " of "+	parcel.MaxPrims;
-					
-		status_parcel.Text=parcel.Name;
-        string tooltext;        
-		tooltext=
-				parcel.Name
-					+"\nOwner :"
-					+"\nGroup :"
-					+"\nSize: "+size.ToString()	
-				    +"\nPrims :"+prims.ToString()
-					+"\nTraffic: "+parcel.Dwell.ToString("%0.2f")
-					+"\nArea: "+parcel.Area.ToString();
-
-        Tooltips tooltips1 = new Tooltips();
-        tooltips1.SetTip(this.statusbar1, tooltext, null);
-        tooltips1.Enable();
-       
+            updatestatusinfo(parcel);
 			doicons(parcel);
 		});
 	}
