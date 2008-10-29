@@ -86,8 +86,11 @@ namespace omvviewerlight
 
             foreach (KeyValuePair<uint, Avatar> kvp in MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
             {
-                //Seen this fire with a null
+                //Seen this fire with some kind of null
                 if (kvp.Value == null)
+                    continue;
+
+                if (kvp.Value.ID == UUID.Zero)
                     continue;
 
                 if (kvp.Value.LocalID == null)
@@ -460,7 +463,7 @@ namespace omvviewerlight
                                 // FIXME: Calculate global distances
                             }
 
-                            if (distance > 5)
+                            if (distance > 2.5)
                             {
                                 uint regionX, regionY;
                                 Utils.LongToUInts(MainClass.client.Network.Simulators[i].Handle, out regionX, out regionY);
