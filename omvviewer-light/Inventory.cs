@@ -281,43 +281,59 @@ namespace omvviewerlight
 
                         if(item is InventoryLandmark)
                         {
-                            Gtk.MenuItem menu_tp_lm = new MenuItem("Teleport to Landmark");
-                            menu_tp_lm.ButtonPressEvent += new ButtonPressEventHandler(Teleporttolandmark);
+							Gtk.ImageMenuItem menu_tp_lm = new ImageMenuItem("Teleport to Landmark");
+							menu_tp_lm.Image=new Gtk.Image("icon_place.tga");
+							menu_tp_lm.ButtonPressEvent += new ButtonPressEventHandler(Teleporttolandmark);
                             menu.Append(menu_tp_lm);
                         }
                        
                         if (item is InventoryFolder)
                         {
                             Gtk.MenuItem menu_wear_folder = new MenuItem("Wear folder contents");
-                            Gtk.MenuItem menu_give_folder = new MenuItem("Give item to user");
-                            Gtk.MenuItem menu_delete_folder = new MenuItem("Delete folder ");
-                            
+                            Gtk.ImageMenuItem menu_give_folder = new ImageMenuItem("Give folder to user");
+							menu_give_folder.Image=new Gtk.Image("ff_edit_theirs.tga");
+                            Gtk.ImageMenuItem menu_delete_folder = new ImageMenuItem("Delete Folder");
+							menu_delete_folder.Image=new Gtk.Image("inv_folder_trash.tga");
+
+							
                             menu_delete_folder.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
                             menu_give_folder.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
                             menu_wear_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_ware_ButtonPressEvent);
                             
-                            menu.Append(menu_wear_folder);
+							Gtk.Label x=new Gtk.Label("Folder Item");
+							
+							menu.Append(menu_wear_folder);
                             menu.Append(menu_give_folder);
                             menu.Append(menu_delete_folder);
                         }
 
                         if(item is InventoryItem)
                         {
-                            Gtk.MenuItem menu_give_item = new MenuItem("Give item to user");
-                            Gtk.MenuItem menu_attach_item = new MenuItem("Attach (default pos)");
-                            Gtk.MenuItem menu_delete_item = new MenuItem("Delete folder ");
+						
+						    Gtk.ImageMenuItem menu_give_item = new ImageMenuItem("Give item to user");
+							menu_give_item.Image=new Gtk.Image("ff_edit_theirs.tga");
+							
+                            Gtk.ImageMenuItem menu_delete_item = new ImageMenuItem("Delete item");
+							menu_delete_item.Image=new Gtk.Image("inv_folder_trash.tga");
 
                             menu_give_item.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
                             menu_delete_item.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
-                            menu_attach_item.ButtonPressEvent += new ButtonPressEventHandler(menu_attach_item_ButtonPressEvent);
-
+            
                             menu.Append(menu_give_item);
-                            menu.Append(menu_attach_item);
+                          
                             menu.Append(menu_delete_item);
                         }
+						
+						if(item is InventoryAttachment || item is InventoryObject)
+						{
+							Gtk.MenuItem menu_attach_item = new MenuItem("Attach (default pos)");
+							menu_attach_item.ButtonPressEvent += new ButtonPressEventHandler(menu_attach_item_ButtonPressEvent);
+							menu.Append(menu_attach_item);
+						}
 
                         menu.Popup();
                         menu.ShowAll();
+						
                     }
                 }
             }

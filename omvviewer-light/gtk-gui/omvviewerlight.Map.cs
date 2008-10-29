@@ -28,6 +28,7 @@ namespace omvviewerlight {
             this.Name = "omvviewerlight.Map";
             // Container child omvviewerlight.Map.Gtk.Container+ContainerChild
             this.vbox1 = new Gtk.VBox();
+            this.vbox1.WidthRequest = 350;
             this.vbox1.Name = "vbox1";
             this.vbox1.Spacing = 6;
             // Container child vbox1.Gtk.Box+BoxChild
@@ -62,6 +63,7 @@ namespace omvviewerlight {
                 this.Child.ShowAll();
             }
             this.Show();
+            this.image.ButtonPressEvent += new Gtk.ButtonPressEventHandler(this.OnImageButtonPressEvent);
         }
     }
 }

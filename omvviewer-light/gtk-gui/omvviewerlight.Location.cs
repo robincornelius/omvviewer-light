@@ -23,8 +23,6 @@ namespace omvviewerlight {
         
         private omvviewerlight.Radar radar1;
         
-        private omvviewerlight.Movment movment1;
-        
         protected virtual void Build() {
             Stetic.Gui.Initialize(this);
             // Widget omvviewerlight.Location
@@ -40,8 +38,8 @@ namespace omvviewerlight {
             this.vbox4.Spacing = 6;
             // Container child vbox4.Gtk.Box+BoxChild
             this.map1 = new omvviewerlight.Map();
-            this.map1.WidthRequest = 256;
-            this.map1.HeightRequest = 256;
+            this.map1.WidthRequest = 300;
+            this.map1.HeightRequest = 300;
             this.map1.Events = ((Gdk.EventMask)(256));
             this.map1.Name = "map1";
             this.vbox4.Add(this.map1);
@@ -73,15 +71,6 @@ namespace omvviewerlight {
             w4.Position = 1;
             w4.Expand = false;
             w4.Fill = false;
-            // Container child hbox1.Gtk.Box+BoxChild
-            this.movment1 = new omvviewerlight.Movment();
-            this.movment1.Events = ((Gdk.EventMask)(256));
-            this.movment1.Name = "movment1";
-            this.hbox1.Add(this.movment1);
-            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.hbox1[this.movment1]));
-            w5.Position = 2;
-            w5.Expand = false;
-            w5.Fill = false;
             this.Add(this.hbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();

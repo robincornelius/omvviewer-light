@@ -87,7 +87,7 @@ public partial class MainWindow: Gtk.Window
                   
 		trayIcon = new StatusIcon(new Gdk.Pixbuf("viewericon.xpm"));
 		trayIcon.Visible=true;
-		trayIcon.Tooltip="Hello World";
+		trayIcon.Tooltip="Disconnected";
 		trayIcon.Activate+= delegate{Visible=!Visible;};
 
         trayIcon.Activate += delegate { trayIcon.Blinking = false; this.UrgencyHint = false; };
@@ -586,6 +586,8 @@ public partial class MainWindow: Gtk.Window
 	
 	void onLogin(LoginStatus login, string message)
 	{
+		
+		
 		if(login==LoginStatus.Success)
 		{			
 			MainClass.client.Self.RequestBalance();
@@ -603,7 +605,14 @@ public partial class MainWindow: Gtk.Window
 				
                 MainClass.client.Groups.OnCurrentGroups += new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
 				MainClass.client.Groups.RequestCurrentGroups();
+				trayIcon.Tooltip="Logged in as\n"+MainClass.client.Self.Name;
 
+			});
+		}
+		else
+		{
+			Gtk.Application.Invoke(delegate {	
+				trayIcon.Tooltip="Status: login.ToString()";
 			});
 		}
 	}

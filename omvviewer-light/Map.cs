@@ -293,7 +293,7 @@ namespace omvviewerlight
                 request.Timeout = 5000;
                 request.ReadWriteTimeout = 20000;
 				response = (HttpWebResponse)request.GetResponse();
-
+				
 			
 
                         basemap = new Gtk.Image(response.GetResponseStream());
@@ -320,6 +320,11 @@ namespace omvviewerlight
                 });
 				return ;
             }	
+		}
+
+		protected virtual void OnImageButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+
 		}
 	}
 }
