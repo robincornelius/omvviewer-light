@@ -221,38 +221,6 @@ public partial class MainWindow: Gtk.Window
         args.RetVal = true;
     }   
 	
-/*	
-	void MainWindow_DeleteEvent(object o, DeleteEventArgs args)
-    {
-        Gtk.MessageDialog md = new MessageDialog(this, DialogFlags.Modal, MessageType.Question, ButtonsType.YesNo, false, "Do you really want to close (YES)\n Or minimse (NO)");
-        ResponseType result = (ResponseType)md.Run();
-        md.Destroy();
-
-        if (result == ResponseType.No)
-        {
-            args.RetVal = true;
-            this.Visible = false;
-            return;
-        }
-
-		if(MainClass.client.Network.Connected)
-		{
-			Gtk.MessageDialog md2=new MessageDialog(this,DialogFlags.DestroyWithParent,MessageType.Info,ButtonsType.None,true,"The system is trying to log you out now\n please wait\n This may take a few seconds and the\napplication may report not responding");
-            md2.ShowAll();
-            GLib.Timeout.Add(500, closewindowpoll);
-            Thread logoutRunner = new Thread(new ThreadStart(logout));
-            logoutRunner.Start();
-            args.RetVal = true;
-            return;
-		}
-		
-        if (oncleanuptime != null)
-            oncleanuptime();		
-
-        args.RetVal = false;
-    }
-*/
-	
    void logout()
    {
        MainClass.client.Network.Logout();
@@ -270,8 +238,6 @@ public partial class MainWindow: Gtk.Window
            return false;
        }
    }
-
-
 
     void Self_OnAvatarSitResponse(UUID objectID, bool autoPilot, Vector3 cameraAtOffset, Vector3 cameraEyeOffset, bool forceMouselook, Vector3 sitPosition, Quaternion sitRotation)
     {
@@ -516,12 +482,12 @@ public partial class MainWindow: Gtk.Window
 		status_icons.ShowAll();	
 	}
 
-    void updatestatusinfo()
+    void updatestatusinfo(bool callback)
     {
         Parcel parcel;
         Vector3 pos = MainClass.client.Self.RelativePosition;
         int parcelid = MainClass.client.Network.CurrentSim.ParcelMap[(int)(64.0 * (pos.Y/256.0)), (int)(64.0 * (pos.X/256))];
-        if (parcelid == lastparcelid)
+        if (!callback && parcelid == lastparcelid)
             return;
 
         if (!MainClass.client.Network.CurrentSim.Parcels.TryGetValue(parcelid, out parcel))
@@ -566,13 +532,13 @@ public partial class MainWindow: Gtk.Window
         this.parcel_group = "Waiting....";
 
         AsyncNameUpdate an = new AsyncNameUpdate(parcel.OwnerID, false);
-        an.onNameCallBack += delegate(string namex, object[] values) { this.parcel_owner_name = namex; updatestatusinfo(); };
+        an.onNameCallBack += delegate(string namex, object[] values) { this.parcel_owner_name = namex; updatestatusinfo(true); };
 
         AsyncNameUpdate an2 = new AsyncNameUpdate(parcel.GroupID, true);
-        an2.onGroupNameCallBack += delegate(string namex, object[] values) { this.parcel_group = namex; updatestatusinfo(); };
+        an2.onGroupNameCallBack += delegate(string namex, object[] values) { this.parcel_group = namex; updatestatusinfo(true); };
 				
 		Gtk.Application.Invoke(delegate {		
-            updatestatusinfo();
+            updatestatusinfo(false);
 			doicons(parcel);
 		});
 	}
@@ -622,7 +588,7 @@ public partial class MainWindow: Gtk.Window
 		if(MainClass.client.Network.LoginStatusCode==LoginStatus.Success)
 		{
 			status_location.Text="Location: "+MainClass.client.Network.CurrentSim.Name+MainClass.prettyvector(MainClass.client.Self.SimPosition,2);
-            updatestatusinfo();
+            updatestatusinfo(false);
         }		
 		return true;
 	}
