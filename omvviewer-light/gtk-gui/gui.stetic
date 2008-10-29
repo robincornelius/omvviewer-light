@@ -3271,7 +3271,7 @@ Resident Michelle2 Zenovka
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Window" id="omvviewerlight.TeleportProgress" design-size="416 137">
+  <widget class="Gtk.Window" id="omvviewerlight.TeleportProgress" design-size="416 149">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Teleport Progress</property>
     <property name="WindowPosition">Center</property>
@@ -3294,6 +3294,7 @@ Resident Michelle2 Zenovka
                 <property name="AutoSize">True</property>
                 <property name="Expand">False</property>
                 <property name="Fill">False</property>
+                <property name="Padding">27</property>
               </packing>
             </child>
             <child>
@@ -3323,17 +3324,18 @@ Resident Michelle2 Zenovka
           </widget>
           <packing>
             <property name="Position">0</property>
-            <property name="AutoSize">True</property>
+            <property name="AutoSize">False</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
             <property name="Padding">8</property>
           </packing>
         </child>
         <child>
-          <widget class="Gtk.ProgressBar" id="progressbar1">
+          <widget class="Gtk.Label" id="label_info">
             <property name="MemberName" />
-            <property name="Fraction">0.00999999999999991</property>
-            <property name="PulseStep">1</property>
+            <property name="Xpad">24</property>
+            <property name="Xalign">0</property>
+            <property name="LabelProp" translatable="yes" />
           </widget>
           <packing>
             <property name="Position">1</property>
@@ -3343,9 +3345,32 @@ Resident Michelle2 Zenovka
           </packing>
         </child>
         <child>
-          <widget class="Gtk.Label" id="label_info">
+          <widget class="Gtk.HBox" id="hbox1">
             <property name="MemberName" />
-            <property name="LabelProp" translatable="yes" />
+            <property name="Spacing">6</property>
+            <child>
+              <widget class="Gtk.Image" id="image356">
+                <property name="MemberName" />
+                <property name="Pixbuf">file:./icon_place.tga</property>
+              </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.ProgressBar" id="progressbar1">
+                <property name="MemberName" />
+                <property name="Fraction">0.00999999999999991</property>
+                <property name="PulseStep">1</property>
+              </widget>
+              <packing>
+                <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+              </packing>
+            </child>
           </widget>
           <packing>
             <property name="Position">2</property>
@@ -3364,10 +3389,11 @@ Resident Michelle2 Zenovka
                 <property name="MemberName" />
                 <property name="Sensitive">False</property>
                 <property name="CanFocus">True</property>
-                <property name="Type">TextOnly</property>
-                <property name="Label" translatable="yes">Close</property>
-                <property name="UseUnderline">True</property>
+                <property name="UseStock">True</property>
+                <property name="Type">StockItem</property>
+                <property name="StockId">gtk-stop</property>
                 <signal name="Clicked" handler="OnButtonCloseClicked" />
+                <property name="label">gtk-stop</property>
               </widget>
               <packing>
                 <property name="Position">0</property>

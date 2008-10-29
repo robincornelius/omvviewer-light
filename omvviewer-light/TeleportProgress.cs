@@ -133,7 +133,7 @@ namespace omvviewerlight
 			if(OpenMetaverse.AgentManager.TeleportStatus.Finished==status)
 			{
 					progressbar1.Fraction=1.0;
-					//GLib.Timeout.Add(1000,closewindow);
+					GLib.Timeout.Add(1000,closewindow);
 					this.button_close.Sensitive=true;
 			}
 
