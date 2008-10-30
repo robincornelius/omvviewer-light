@@ -31,6 +31,7 @@ namespace omvviewerlight
 		void logout()
 		{
 			MainClass.client.Network.Logout();
+            Gtk.Application.Quit();
 		}
 		
 		bool tick()
@@ -40,14 +41,7 @@ namespace omvviewerlight
 				this.Destroy();
 				return false;
 			}
-			
-			if(MainClass.client.Network.Connected==false)
-			{
-				abort=true;
-				this.Destroy();
-				return false;				
-			}
-			
+
 			this.progressbar1.Pulse();
 			return true;
 			
@@ -55,7 +49,7 @@ namespace omvviewerlight
 
 		protected virtual void OnButtonOkClicked (object sender, System.EventArgs e)
 		{
-			abort=true;
+            Gtk.Application.Quit();
 
 		}
 	}
