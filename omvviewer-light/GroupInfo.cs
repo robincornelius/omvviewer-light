@@ -143,10 +143,18 @@ namespace omvviewerlight
 			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);			
 			
 			MainClass.client.Groups.RequestGroupProfile(group.ID);
+
+            Console.WriteLine("group id is " + group.ID.ToString());
             request_members = MainClass.client.Groups.RequestGroupMembers(group.ID);
             request_titles = MainClass.client.Groups.RequestGroupTitles(group.ID);
-            request_roles = MainClass.client.Groups.RequestGroupRoles(group.ID);
+            request_roles = MainClass.client.Groups.RequestGroupRoles(group.ID);  //this is indexed by group ID
             request_roles_members = MainClass.client.Groups.RequestGroupRoleMembers(group.ID);
+
+            request_roles = group.ID; //CORRECT
+           // request_roles_members = group.ID;
+            request_titles = group.ID;
+           // request_members = group.ID;
+
             MainClass.client.Groups.RequestGroupNoticeList(group.ID);
 			
 			TryGetImage img=new TryGetImage(this.image_group_emblem,group.InsigniaID,128,128);
@@ -218,6 +226,8 @@ namespace omvviewerlight
 		
 		void onGroupTitles(Dictionary <UUID,OpenMetaverse.GroupTitle> titles)
 		{
+            Console.Write("Group titles recieved\n");
+
 			Gtk.Application.Invoke(delegate {	
 
 			foreach(KeyValuePair  <UUID,OpenMetaverse.GroupTitle> title in titles)
@@ -350,9 +360,12 @@ namespace omvviewerlight
                 GroupMember member;
 				//Now populate the roles list
 
-				MainClass.client.Groups.GroupRolesCaches.TryGetValue(request_roles, out grouproles);
-                MainClass.client.Groups.GroupRolesMembersCaches.TryGetValue(request_roles_members, out rolesmembers);
-                MainClass.client.Groups.GroupMembersCaches.TryGetValue(request_members, out groupmembers);
+                if (!MainClass.client.Groups.GroupRolesCaches.TryGetValue(request_roles, out grouproles))
+                    return;
+                if(!MainClass.client.Groups.GroupRolesMembersCaches.TryGetValue(request_roles_members, out rolesmembers))
+                     return;
+                if (!MainClass.client.Groups.GroupMembersCaches.TryGetValue(request_members, out groupmembers)) 
+                     return;
 
                 store_membersandroles_powers.Clear();
 
@@ -418,7 +431,10 @@ namespace omvviewerlight
 					{
 						UUID id=(UUID)mod.GetValue(iter,3);
 						Dictionary <UUID, GroupRole> grouproles;
-						MainClass.client.Groups.GroupRolesCaches.TryGetValue(request_roles,out grouproles);
+
+                        if (!MainClass.client.Groups.GroupRolesCaches.TryGetValue(request_roles, out grouproles))
+                            return;
+
 						GroupRole role;
 						grouproles.TryGetValue(id,out role);
 						this.entry_roles_name.Text=role.Name;
@@ -430,7 +446,8 @@ namespace omvviewerlight
 			            
 				        //now to fine members with this role
 				        List<KeyValuePair<UUID,UUID>> rolesmembers;
-				        MainClass.client.Groups.GroupRolesMembersCaches.TryGetValue(this.request_roles_members,out rolesmembers);
+                        if (!MainClass.client.Groups.GroupRolesMembersCaches.TryGetValue(this.request_roles_members, out rolesmembers))
+                            return;
 				
 				        this.store_roles_members.Clear();
 					    foreach(KeyValuePair<UUID,UUID> rolesmember in rolesmembers)
@@ -560,7 +577,10 @@ namespace omvviewerlight
 				GroupPowers powers=(GroupPowers)mod.GetValue(iter,2);
                 //power should be singular
                 List<KeyValuePair<UUID,UUID>> rolesmembers;
-                MainClass.client.Groups.GroupRolesMembersCaches.TryGetValue(request_roles_members, out rolesmembers);
+               
+                  if (!MainClass.client.Groups.GroupRolesMembersCaches.TryGetValue(request_roles_members, out rolesmembers))
+                    return;
+
 					this.store_members_with_ability.Clear();
 						Dictionary <UUID, GroupRole> grouproles;
 						MainClass.client.Groups.GroupRolesCaches.TryGetValue(request_roles,out grouproles);
@@ -572,11 +592,14 @@ namespace omvviewerlight
 				UUID user=rolesmember.Value;
 					UUID rolekey=rolesmember.Key;
 					GroupRole role;
-					grouproles.TryGetValue(rolekey,out role);
+                    if (!grouproles.TryGetValue(rolekey, out role))
+                        continue;
 				if((role.Powers & powers) == powers)
                      {
                           string name="";
-                          MainClass.name_cache.av_names.TryGetValue(user,out name);
+
+                          if (!MainClass.name_cache.av_names.TryGetValue(user, out name))
+                              continue;
                           this.store_members_with_ability.AppendValues(name);
                      }
                 }

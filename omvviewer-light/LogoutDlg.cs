@@ -31,8 +31,16 @@ namespace omvviewerlight
 		void logout()
 		{
 			MainClass.client.Network.Logout();
-            Gtk.Application.Quit();
+            Gtk.Timeout.Add(5000, killme);
+            
 		}
+
+        bool killme()
+        {
+            abort = true;
+            Gtk.Application.Quit();
+            return false;
+        }
 		
 		bool tick()
 		{
