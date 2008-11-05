@@ -82,8 +82,11 @@ namespace omvviewerlight
 
 
            // Console.WriteLine("Kicking map refresh");
-            if (MainClass.client.Network.CurrentSim != null)
-                drawavs();
+            Gtk.Application.Invoke(delegate
+               {
+                   if (MainClass.client.Network.CurrentSim != null)
+                       drawavs();
+               });
 
             return true;
 
@@ -109,8 +112,10 @@ namespace omvviewerlight
 
                 if (MainClass.client.Network.CurrentSim.ID == lastsim)
                     return;
-               
-                drawavs();
+                Gtk.Application.Invoke(delegate
+                {
+                    drawavs();
+                });
 
                 if(MainClass.client.Network.CurrentSim !=null)
                     lastsim = MainClass.client.Network.CurrentSim.ID;
@@ -120,14 +125,20 @@ namespace omvviewerlight
 		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
 		{
 
-           if(MainClass.client.Network.CurrentSim.ObjectsAvatars.ContainsKey(update.LocalID))
-               drawavs();
+            Gtk.Application.Invoke(delegate
+                {
+                    if (MainClass.client.Network.CurrentSim.ObjectsAvatars.ContainsKey(update.LocalID))
+                        drawavs();
+                });
 
 }
 		
 		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
 		{
-                drawavs();			
+            Gtk.Application.Invoke(delegate
+                {
+                    drawavs();
+                });
 		}
 
 		void onKillObject(Simulator simulator, uint objectID)
@@ -148,50 +159,67 @@ namespace omvviewerlight
 			lock(basemap)
             {
 
-				buf=(Gdk.Pixbuf)basemap.Pixbuf.Clone();
-				showme(buf,avatar_me.Pixbuf,MainClass.client.Self.SimPosition);				
+                try
+                {
+                    buf = (Gdk.Pixbuf)basemap.Pixbuf.Clone();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Map, caught exception cloning pixbuf\n");
+                    return;
+                }
+                    showme(buf,avatar_me.Pixbuf,MainClass.client.Self.SimPosition);				
 
 				int myz=(int)MainClass.client.Self.SimPosition.Z;
 
+                lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
+                {
                     foreach (KeyValuePair<uint, Avatar> kvp in MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
                     {
                         if (kvp.Value.LocalID != MainClass.client.Self.LocalID)
-                        {									
-                                Vector3 pos;
-							    if (kvp.Value.ParentID != 0)
-								{
-                                    if(!MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary.ContainsKey(kvp.Value.ParentID))
-                                    {
-                                        Console.WriteLine("Could not find parent prim for AV\n");
-                                        continue;
-                                    }
-			                        Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[kvp.Value.ParentID];
-			                        pos = Vector3.Transform(kvp.Value.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
-								}
-								else
+                        {
+                            Vector3 pos;
+                            if (kvp.Value.ParentID != 0)
+                            {
+                                if (!MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary.ContainsKey(kvp.Value.ParentID))
                                 {
-                                    pos=kvp.Value.Position;
-							    }
+                                    Console.WriteLine("Could not find parent prim for AV\n");
+                                    continue;
+                                }
+                                Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[kvp.Value.ParentID];
+                                pos = Vector3.Transform(kvp.Value.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
+                            }
+                            else
+                            {
+                                pos = kvp.Value.Position;
+                            }
 
-                                if (pos.Z - myz > 5)
-                                    showme(buf, avatar_above.Pixbuf, pos);
-                                else if (pos.Z - myz < -5)
-                                    showme(buf, avatar_below.Pixbuf, pos);
-                                else
-                                    showme(buf, avatar.Pixbuf, pos);
- 
+                            if (pos.Z - myz > 5)
+                                showme(buf, avatar_above.Pixbuf, pos);
+                            else if (pos.Z - myz < -5)
+                                showme(buf, avatar_below.Pixbuf, pos);
+                            else
+                                showme(buf, avatar.Pixbuf, pos);
+
                         }
                     }
+                }
 
 			
                  }
 
-					Gtk.Application.Invoke(delegate
-                {
-                      image.Pixbuf = buf;
-                      image.QueueDraw();
-   
-			});
+            lock (image)
+            {
+                image.Pixbuf = buf;
+            }
+
+			//		Gtk.Application.Invoke(delegate
+             //   {
+                    lock (image)
+                    {
+                        image.QueueDraw();
+                    }
+			//});
 			
 		}
 		void onNewSim(Simulator lastsim)
@@ -214,15 +242,15 @@ namespace omvviewerlight
 			ty=ty-4;
 			
 			if(tx>245)
-				tx=247;
+				tx=245;
 			
 			if(ty>245)
-			   ty=247;
+			   ty=245;
 			
-			if(tx<0)
-				tx=0;
+			if(tx<8)
+				tx=8;
 			
-			if(ty<0)
+			if(ty<8)
 				ty=8;
 			
 			mergedrawxy(buf,src,tx,ty);
@@ -242,10 +270,10 @@ namespace omvviewerlight
 			int srcrowsstride=src.Rowstride;
 			int schannels=src.NChannels;
 			
-			if(x<0 || x>width)
+			if(x<0 || x>=width)
 				return;
 			
-			if(y<0 || y>height)
+			if(y<0 || y>=height)
 				return;
 					
 			for(int sx=0;sx<srcwidth;sx++)
@@ -269,7 +297,10 @@ namespace omvviewerlight
 		{
 			Gtk.Application.Invoke(delegate {		
 			Gdk.Pixbuf pb= new Gdk.Pixbuf("trying.tga");
-			this.image.Pixbuf=pb;
+            lock (image)
+            {
+                this.image.Pixbuf = pb;
+            }
 			Thread mapdownload= new Thread(new ThreadStart(this.getmap_threaded));                               
 			mapdownload.Start();
 			});
@@ -293,18 +324,36 @@ namespace omvviewerlight
                 request.Timeout = 5000;
                 request.ReadWriteTimeout = 20000;
 				response = (HttpWebResponse)request.GetResponse();
-				
-			
 
-                        basemap = new Gtk.Image(response.GetResponseStream());
+
+                if (basemap != null)
+                {
+                    lock (basemap)
+                    {
+                        lock (image)
+                        {
+                            basemap = new Gtk.Image(response.GetResponseStream());
+                        }
+                    }
+                }
+                else
+                    basemap = new Gtk.Image(response.GetResponseStream());
+
+                lock (basemap)
+                {
+                    lock (image)
+                    {
                         image.Pixbuf = (Gdk.Pixbuf)basemap.Pixbuf.Clone();
-                        rowstride = basemap.Pixbuf.Rowstride;
-                        channels = basemap.Pixbuf.NChannels;
-                        width = basemap.Pixbuf.Width;
-                        height = basemap.Pixbuf.Height;
- 
-                drawavs(); //already deligated inside	
-
+                    }
+                    rowstride = basemap.Pixbuf.Rowstride;
+                    channels = basemap.Pixbuf.NChannels;
+                    width = basemap.Pixbuf.Width;
+                    height = basemap.Pixbuf.Height;
+                }
+                Gtk.Application.Invoke(delegate
+                   {
+                       drawavs(); //already deligated inside	
+                   });
                 return;
 					
             }

@@ -263,27 +263,30 @@ namespace omvviewerlight
             if (!MainClass.client.Groups.GroupMembersCaches.Dictionary.ContainsKey(request_members))
                 return name_poll;
 
-            foreach (KeyValuePair<UUID, GroupMember> member in MainClass.client.Groups.GroupMembersCaches.Dictionary[request_members])
+            lock(MainClass.client.Groups.GroupMembersCaches)
             {
-                if (!rcvd_names.Contains(member.Key))
+                foreach (KeyValuePair<UUID, GroupMember> member in MainClass.client.Groups.GroupMembersCaches.Dictionary[request_members])
                 {
-                    rcvd_names.Add(member.Key);
-                    names.Add(member.Key);
+                    if (!rcvd_names.Contains(member.Key))
+                    {
+                        rcvd_names.Add(member.Key);
+                        names.Add(member.Key);
 
-                    Gtk.TreeIter iter = store_members.AppendValues("Waiting...", member.Value.Title, member.Value.OnlineStatus, member.Value.ID);
+                        Gtk.TreeIter iter = store_members.AppendValues("Waiting...", member.Value.Title, member.Value.OnlineStatus, member.Value.ID);
 
-                    AsyncNameUpdate ud = new AsyncNameUpdate(member.Value.ID, false);
-                    ud.addparameters(iter);
-                    ud.onNameCallBack += delegate(string namex, object[] values) { if (nobody_cares) { return; } Gtk.TreeIter iterx = (Gtk.TreeIter)values[0]; store_members.SetValue(iterx, 0, namex); };
-                    ud.go();
+                        AsyncNameUpdate ud = new AsyncNameUpdate(member.Value.ID, false);
+                        ud.addparameters(iter);
+                        ud.onNameCallBack += delegate(string namex, object[] values) { if (nobody_cares) { return; } Gtk.TreeIter iterx = (Gtk.TreeIter)values[0]; store_members.SetValue(iterx, 0, namex); };
+                        ud.go();
 
-                    Gtk.TreeIter iter2 = store_membersandroles_members.AppendValues("Waiting...", member.Value.Contribution.ToString(), member.Value.Title, member.Value.ID);
-                    AsyncNameUpdate ud2 = new AsyncNameUpdate(member.Value.ID, false);
-                    ud2.addparameters(iter2);
-                    ud2.onNameCallBack += delegate(string namex, object[] values) { if (nobody_cares) { return; } Gtk.TreeIter iterx = (Gtk.TreeIter)values[0]; store_membersandroles_members.SetValue(iterx, 0, namex); };
-                    ud2.go();
-		
+                        Gtk.TreeIter iter2 = store_membersandroles_members.AppendValues("Waiting...", member.Value.Contribution.ToString(), member.Value.Title, member.Value.ID);
+                        AsyncNameUpdate ud2 = new AsyncNameUpdate(member.Value.ID, false);
+                        ud2.addparameters(iter2);
+                        ud2.onNameCallBack += delegate(string namex, object[] values) { if (nobody_cares) { return; } Gtk.TreeIter iterx = (Gtk.TreeIter)values[0]; store_membersandroles_members.SetValue(iterx, 0, namex); };
+                        ud2.go();
 
+
+                    }
                 }
             }
 
@@ -482,6 +485,19 @@ namespace omvviewerlight
                             return;
 				
 				        this.store_roles_members.Clear();
+
+                        if (role.ID == UUID.Zero)
+                        {
+                            foreach (KeyValuePair<UUID, GroupMember> member in MainClass.client.Groups.GroupMembersCaches.Dictionary[request_members])
+                            {
+                                string name = "";
+                                MainClass.name_cache.av_names.TryGetValue(member.Key, out name);
+                                this.store_roles_members.AppendValues(name);
+
+                            }
+                            return;
+                        }
+
 					    foreach(KeyValuePair<UUID,UUID> rolesmember in rolesmembers)
 					    {
 					        // rolesmember.Value is the user UUID
@@ -511,7 +527,8 @@ namespace omvviewerlight
 					store.AppendValues(iterx,test?tick:cross,"Eject members",GroupPowers.Eject);
 					test=(powers & GroupPowers.ChangeOptions) == GroupPowers.ChangeOptions; //?????????
 					store.AppendValues(iterx,test?tick:cross,"Toggle Open Enrollment",GroupPowers.ChangeOptions);
-		
+
+                   
 					iterx = store.AppendValues(folder_open, "Roles", GroupPowers.None);
 					test=(powers & GroupPowers.CreateRole) == GroupPowers.CreateRole; //?????????
 					store.AppendValues(iterx,test?tick:cross,"Toggle Open Enrollment",GroupPowers.CreateRole);
@@ -527,7 +544,8 @@ namespace omvviewerlight
 					store.AppendValues(iterx,test?tick:cross,"Remove Members from Roles",GroupPowers.RemoveMember);
 					test=(powers & GroupPowers.ChangeIdentity) == GroupPowers.ChangeIdentity; //?????????
 					store.AppendValues(iterx,test?tick:cross,"Assign and Remove Abilities",GroupPowers.ChangeIdentity);
-
+                  
+                    return;
 					iterx = store.AppendValues(folder_open, "Parcel Managment", GroupPowers.None);
 					test=(powers & GroupPowers.LandDeed) == GroupPowers.LandDeed; //?????????
 					store.AppendValues(iterx,test?tick:cross,"Deed land and buy land for group",GroupPowers.LandDeed);
@@ -574,10 +592,10 @@ namespace omvviewerlight
 					store.AppendValues(iterx,test?tick:cross,"Return objects owner by group",GroupPowers.ReturnGroupSet);                    test=(powers & GroupPowers.ReturnGroupSet) == GroupPowers.ReturnGroupSet;
 					store.AppendValues(iterx,test?tick:cross,"Return objects set to group",GroupPowers.ReturnGroupSet);                    test=(powers & GroupPowers.ReturnNonGroup) == GroupPowers.ReturnNonGroup;
 					store.AppendValues(iterx,test?tick:cross,"Return non-group objects",GroupPowers.ReturnNonGroup);                    test=(powers & GroupPowers.LandGardening) == GroupPowers.LandGardening;
-			store.AppendValues(iterx,test?tick:cross,"Landscaping using Linden Plants",GroupPowers.LandGardening);					
+			        store.AppendValues(iterx,test?tick:cross,"Landscaping using Linden Plants",GroupPowers.LandGardening);					
                     iterx = store.AppendValues(folder_open, "Object Managment", GroupPowers.None);
                     test=(powers & GroupPowers.DeedObject) == GroupPowers.DeedObject;
-					store.AppendValues(iterx,test?tick:cross,"Deed objects to group",GroupPowers.DeedObject);			test=(powers & GroupPowers.ObjectManipulate) == GroupPowers.ObjectManipulate;
+					store.AppendValues(iterx,test?tick:cross,"Deed objects to group",GroupPowers.DeedObject);			        test=(powers & GroupPowers.ObjectManipulate) == GroupPowers.ObjectManipulate;
 					store.AppendValues(iterx,test?tick:cross,"Manipulate (move,copy,modify) group objetcs",GroupPowers.ObjectManipulate);                    test=(powers & GroupPowers.ObjectSetForSale) == GroupPowers.ObjectSetForSale;
 					store.AppendValues(iterx,test?tick:cross,"Set group objects for sale",GroupPowers.ObjectSetForSale);
 
@@ -590,9 +608,10 @@ namespace omvviewerlight
                     test=(powers & GroupPowers.StartProposal) == GroupPowers.StartProposal;
 					store.AppendValues(iterx,test?tick:cross,"Create Proposals",GroupPowers.StartProposal);                    test=(powers & GroupPowers.VoteOnProposal) == GroupPowers.VoteOnProposal;
 					store.AppendValues(iterx,test?tick:cross,"Vote on Proposals",GroupPowers.VoteOnProposal);
+
                     iterx = store.AppendValues(folder_open, "Chat", GroupPowers.None);
-			test=(powers & GroupPowers.JoinChat) == GroupPowers.JoinChat;
-			store.AppendValues(iterx,test?tick:cross,"Join Group Chat",GroupPowers.JoinChat);			test=(powers & GroupPowers.AllowVoiceChat) == GroupPowers.AllowVoiceChat;
+			        test=(powers & GroupPowers.JoinChat) == GroupPowers.JoinChat;
+			        store.AppendValues(iterx,test?tick:cross,"Join Group Chat",GroupPowers.JoinChat);			        test=(powers & GroupPowers.AllowVoiceChat) == GroupPowers.AllowVoiceChat;
 					store.AppendValues(iterx,test?tick:cross,"Join Group Voice Chat",GroupPowers.AllowVoiceChat);    
 				this.treeview_allowed_ability1.ExpandAll();
 				

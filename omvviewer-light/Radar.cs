@@ -105,11 +105,13 @@ namespace omvviewerlight
                             agent theagent = new agent();
                             theagent.avatar = kvp.Value;
                             Gtk.TreeIter iter;
+                            lock (av_tree)
+                            {
+                                iter = store.AppendValues("", kvp.Value.Name, "", kvp.Value.LocalID);
+                                theagent.iter = iter;
 
-                            iter = store.AppendValues("", kvp.Value.Name, "", kvp.Value.LocalID);
-                            theagent.iter = iter;
-
-                            av_tree.Add(kvp.Value.LocalID, theagent);
+                                av_tree.Add(kvp.Value.LocalID, theagent);
+                            }
                             calcdistance(kvp.Value.LocalID);
                         }
                         else
@@ -230,11 +232,14 @@ namespace omvviewerlight
                             agent theagent = new agent();
                             theagent.avatar = avatar;
                             Gtk.TreeIter iter;
-                            
+
+                            lock (av_tree)
+                            {
                                 iter = store.AppendValues("", avatar.Name, "", avatar.LocalID);
                                 theagent.iter = iter;
-                            
+
                                 av_tree.Add(avatar.LocalID, theagent);
+                            }
                                 calcdistance(avatar.LocalID);
                             
                        }
@@ -249,11 +254,12 @@ namespace omvviewerlight
                  
 
                if (this.av_tree.ContainsKey(objectID))
-                     {
-                             store.Remove(ref av_tree[objectID].iter);
+               {
+                             
                 
 				lock(av_tree)
 				{
+                        store.Remove(ref av_tree[objectID].iter);
                          av_tree.Remove(objectID);
 				}                 
 			}
@@ -287,9 +293,17 @@ namespace omvviewerlight
 
 				lock (av_tree)
                 {
-					if(av_tree.ContainsKey(id))
-						store.SetValue(av_tree[id].iter, 2, MainClass.cleandistance(dist.ToString(), 1));
-				}
+                    try
+                    {
+                        if (av_tree.ContainsKey(id))
+                            store.SetValue(av_tree[id].iter, 2, MainClass.cleandistance(dist.ToString(), 1));
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Exceptioned on store setvalue for radar");
+
+                    }
+               }
 			}
         }
 			
