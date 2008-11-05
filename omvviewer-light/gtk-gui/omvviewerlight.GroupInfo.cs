@@ -199,7 +199,7 @@ namespace omvviewerlight {
             this.notebook1 = new Gtk.Notebook();
             this.notebook1.CanFocus = true;
             this.notebook1.Name = "notebook1";
-            this.notebook1.CurrentPage = 1;
+            this.notebook1.CurrentPage = 2;
             // Container child notebook1.Gtk.Notebook+NotebookChild
             this.vbox1 = new Gtk.VBox();
             this.vbox1.Name = "vbox1";
@@ -852,6 +852,7 @@ namespace omvviewerlight {
             this.textview_notice = new Gtk.TextView();
             this.textview_notice.CanFocus = true;
             this.textview_notice.Name = "textview_notice";
+            this.textview_notice.WrapMode = ((Gtk.WrapMode)(3));
             this.GtkScrolledWindow3.Add(this.textview_notice);
             this.vbox5.Add(this.GtkScrolledWindow3);
             Gtk.Box.BoxChild w76 = ((Gtk.Box.BoxChild)(this.vbox5[this.GtkScrolledWindow3]));
@@ -908,7 +909,7 @@ namespace omvviewerlight {
             if ((this.Child != null)) {
                 this.Child.ShowAll();
             }
-            this.DefaultWidth = 513;
+            this.DefaultWidth = 515;
             this.DefaultHeight = 505;
             this.Show();
             this.combobox_active_title.Changed += new System.EventHandler(this.OnComboboxActiveTitleChanged);

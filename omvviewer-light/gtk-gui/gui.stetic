@@ -3740,7 +3740,7 @@ Resident Michelle2 Zenovka
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Window" id="omvviewerlight.GroupInfo" design-size="513 505">
+  <widget class="Gtk.Window" id="omvviewerlight.GroupInfo" design-size="515 505">
     <property name="MemberName" />
     <property name="Title" translatable="yes">GroupInfo</property>
     <property name="WindowPosition">CenterOnParent</property>
@@ -3748,7 +3748,7 @@ Resident Michelle2 Zenovka
       <widget class="Gtk.Notebook" id="notebook1">
         <property name="MemberName" />
         <property name="CanFocus">True</property>
-        <property name="CurrentPage">1</property>
+        <property name="CurrentPage">2</property>
         <child>
           <widget class="Gtk.VBox" id="vbox1">
             <property name="MemberName" />
@@ -4659,6 +4659,7 @@ Resident Michelle2 Zenovka
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>
                     <property name="Text" translatable="yes" />
+                    <property name="WrapMode">WordChar</property>
                   </widget>
                 </child>
               </widget>
