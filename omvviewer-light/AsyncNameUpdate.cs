@@ -33,8 +33,8 @@ namespace omvviewerlight
 {
 	public class AsyncNameUpdate
 	{
-		UUID av_target;
-		UUID group_target;
+		UUID av_target=UUID.Zero;
+		UUID group_target=UUID.Zero;
 	    object[] callbackvalues1;
        		
 		public delegate void NameCallBack(string name, object[] values);
@@ -42,12 +42,15 @@ namespace omvviewerlight
 		
 		public delegate void GroupNameCallBack(string name,object[] values);
         public event GroupNameCallBack onGroupNameCallBack;
-		
-		void AsyncNameUpdate_init()
-		{
-			MainClass.client.Groups.OnGroupNames += new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
-			MainClass.client.Avatars.OnAvatarNames += new OpenMetaverse.AvatarManager.AvatarNamesCallback(onAvatarNames);
-           // GLib.Timeout.Add(1000, onTimeout);
+
+        public void go()
+        {
+            if (av_target!=UUID.Zero)
+                try_update_name_lable(av_target);
+
+            if (group_target!= UUID.Zero)
+                try_update_group_lable(group_target);
+
         }
 
 		public void addparameters(params object[] values)
@@ -66,7 +69,6 @@ namespace omvviewerlight
 
             if (key == UUID.Zero)
                 return;
-			
 			if(group==true)
 			{
 				group_target=key;
@@ -77,14 +79,10 @@ namespace omvviewerlight
 				av_target=key;
 				group_target=UUID.Zero;
 			}
-						
-			AsyncNameUpdate_init();
 
-			if(!group)
-				try_update_name_lable(key);
-			
-			if(group)
-				try_update_group_lable(key);
+            MainClass.client.Groups.OnGroupNames += new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
+            MainClass.client.Avatars.OnAvatarNames += new OpenMetaverse.AvatarManager.AvatarNamesCallback(onAvatarNames);
+
 		}
 		
 		void onAvatarNames(Dictionary <UUID,string>names)

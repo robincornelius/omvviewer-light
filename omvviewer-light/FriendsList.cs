@@ -134,7 +134,8 @@ namespace omvviewerlight
 				AsyncNameUpdate ud=new AsyncNameUpdate(friend.UUID,false);  
 				ud.addparameters(iter);
 				ud.onNameCallBack += delegate(string namex,object[] values){Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; store.SetValue(iterx,1,namex);};
-			});
+                ud.go();
+            });
 		}
 			
 		

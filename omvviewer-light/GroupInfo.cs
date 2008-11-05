@@ -54,8 +54,12 @@ namespace omvviewerlight
         UUID request_roles_members;
 
         bool nobody_cares = false;
+
+        bool name_poll = false;
 		
 		UUID groupkey;
+
+        List<UUID> rcvd_names = new List<UUID>();
 
 		Gdk.Pixbuf folder_open = new Gdk.Pixbuf("inv_folder_plain_open.tga");
 		Gdk.Pixbuf tick = new Gdk.Pixbuf("tick.tga");
@@ -145,15 +149,19 @@ namespace omvviewerlight
 			MainClass.client.Groups.RequestGroupProfile(group.ID);
 
             Console.WriteLine("group id is " + group.ID.ToString());
+            rcvd_names.Clear();
+
+            name_poll = true;
+            Gtk.Timeout.Add(500, updategroupmembers);
             request_members = MainClass.client.Groups.RequestGroupMembers(group.ID);
             request_titles = MainClass.client.Groups.RequestGroupTitles(group.ID);
             request_roles = MainClass.client.Groups.RequestGroupRoles(group.ID);  //this is indexed by group ID
             request_roles_members = MainClass.client.Groups.RequestGroupRoleMembers(group.ID);
 
             request_roles = group.ID; //CORRECT
-           // request_roles_members = group.ID;
+            request_roles_members = group.ID;
             request_titles = group.ID;
-           // request_members = group.ID;
+            //request_members = group.ID;
 
             MainClass.client.Groups.RequestGroupNoticeList(group.ID);
 			
@@ -162,6 +170,7 @@ namespace omvviewerlight
 	
 			AsyncNameUpdate ud=new AsyncNameUpdate(group.FounderID,false);  
 			ud.onNameCallBack += delegate(string namex,object[] values){this.label_foundedby.Text="Founded by "+namex;};
+            ud.go();
 
 			this.entry_enrollmentfee.Text=group.MembershipFee.ToString();
 			if(group.MembershipFee>0)
@@ -242,36 +251,59 @@ namespace omvviewerlight
 		
 			});
 		}
+
+        bool updategroupmembers()
+        {
+
+            List<UUID> names = new List<UUID>();
+
+            //List<UUID> names = new List<UUID>(MainClass.client.Groups.GroupMembersCaches.Dictionary[request_members].Keys);
+            //MainClass.name_cache.reqnames(names);
+
+            if (!MainClass.client.Groups.GroupMembersCaches.Dictionary.ContainsKey(request_members))
+                return name_poll;
+
+            foreach (KeyValuePair<UUID, GroupMember> member in MainClass.client.Groups.GroupMembersCaches.Dictionary[request_members])
+            {
+                if (!rcvd_names.Contains(member.Key))
+                {
+                    rcvd_names.Add(member.Key);
+                    names.Add(member.Key);
+
+                    Gtk.TreeIter iter = store_members.AppendValues("Waiting...", member.Value.Title, member.Value.OnlineStatus, member.Value.ID);
+
+                    AsyncNameUpdate ud = new AsyncNameUpdate(member.Value.ID, false);
+                    ud.addparameters(iter);
+                    ud.onNameCallBack += delegate(string namex, object[] values) { if (nobody_cares) { return; } Gtk.TreeIter iterx = (Gtk.TreeIter)values[0]; store_members.SetValue(iterx, 0, namex); };
+                    ud.go();
+
+                    Gtk.TreeIter iter2 = store_membersandroles_members.AppendValues("Waiting...", member.Value.Contribution.ToString(), member.Value.Title, member.Value.ID);
+                    AsyncNameUpdate ud2 = new AsyncNameUpdate(member.Value.ID, false);
+                    ud2.addparameters(iter2);
+                    ud2.onNameCallBack += delegate(string namex, object[] values) { if (nobody_cares) { return; } Gtk.TreeIter iterx = (Gtk.TreeIter)values[0]; store_membersandroles_members.SetValue(iterx, 0, namex); };
+                    ud2.go();
 		
+
+                }
+            }
+
+            MainClass.name_cache.reqnames(names);
+
+          
+            this.treeview_members.QueueDraw();
+            this.treeview_members1.QueueDraw();
+            
+
+            return name_poll;
+        }
+
 		void onGroupMembers(Dictionary <UUID,GroupMember> members)		
 		{
-			List<UUID> names = new List<UUID>(members.Keys);
-			MainClass.name_cache.reqnames(names);
 
-            Console.Write("\n Got the group list\n");
+            Console.WriteLine("All group members recieved");
+            name_poll = false;
+            return;
 
-			foreach(KeyValuePair <UUID,GroupMember> member in members)
-			{
-
-				Gtk.TreeIter iter=store_members.AppendValues("Waiting...",member.Value.Title,member.Value.OnlineStatus,member.Value.ID);
-				
-				AsyncNameUpdate ud=new AsyncNameUpdate(member.Value.ID,false);  
-				ud.addparameters(iter);
-				ud.onNameCallBack += delegate(string namex,object[] values){if(nobody_cares){return;} Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; store_members.SetValue(iterx,0,namex);};
-
-                Gtk.TreeIter iter2 = store_membersandroles_members.AppendValues("Waiting...", member.Value.Contribution.ToString(), member.Value.Title,member.Value.ID);
-				AsyncNameUpdate ud2=new AsyncNameUpdate(member.Value.ID,false);  
-				ud2.addparameters(iter2);
-				ud2.onNameCallBack += delegate(string namex,object[] values){if(nobody_cares){return;} Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; store_membersandroles_members.SetValue(iterx,0,namex);};		
-			
-			}
-
-            Console.Write("Queueing tree for draw\n");
-
-			Gtk.Application.Invoke(delegate {	
-					this.treeview_members.QueueDraw();
-                    this.treeview_members1.QueueDraw();
-				});
 		}
 		
 		void onGroupProfile(Group group)

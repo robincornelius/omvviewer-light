@@ -30,10 +30,8 @@ using Gtk;
 
 namespace omvviewerlight
 {
-	
 	public partial class ParcelMgr : Gtk.Bin
-	{
-		
+	{	
 		Gtk.TreeStore parcels_store;
 		Gtk.TreeStore parcels_access;
 		Gtk.TreeStore parcels_ban;
@@ -122,7 +120,6 @@ namespace omvviewerlight
                  }
             }	
 			
-		
 		}
 
 		void onParcelObjectOwners(Simulator sim,List <OpenMetaverse.ParcelManager.ParcelPrimOwners> primOwners)
@@ -133,8 +130,9 @@ namespace omvviewerlight
 				Gtk.TreeIter iter2=parcel_prim_owners.AppendValues("Waiting...",primOwners[i].Count.ToString());			
 				AsyncNameUpdate ud=new AsyncNameUpdate(primOwners[i].OwnerID,false);  
 				ud.addparameters(iter2);
-				ud.onNameCallBack += delegate(string namex,object[] values){ Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; parcel_prim_owners.SetValue(iterx,0,namex);};					
-			}
+				ud.onNameCallBack += delegate(string namex,object[] values){ Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; parcel_prim_owners.SetValue(iterx,0,namex);};
+                ud.go();
+            }
 						
 		}
 		
@@ -319,8 +317,6 @@ namespace omvviewerlight
 						this.entry_primsother.Text=parcel.OtherPrims.ToString();
 						this.entry_totalprims.Text=parcel.TotalPrims.ToString();
 						
-						
-						
 						if(parcel.SnapshotID!=UUID.Zero)
 						{
 							if(getter!=null)
@@ -335,12 +331,13 @@ namespace omvviewerlight
 						
 						this.label_parcelowner.Text="Waiting...";
 						ud=new AsyncNameUpdate(parcel.OwnerID,false);  
-						ud.onNameCallBack += delegate(string namex,object[] values){this.label_parcelowner.Text=namex;};				
-											
+						ud.onNameCallBack += delegate(string namex,object[] values){this.label_parcelowner.Text=namex;};
+                        ud.go();
+					
 						this.label_parcelowner.Text="Waiting...";
 						ud=new AsyncNameUpdate(parcel.GroupID,true);  
-						ud.onNameCallBack += delegate(string namex,object[] values){this.label_parcelowner.Text=namex;};				
-
+						ud.onNameCallBack += delegate(string namex,object[] values){this.label_parcelowner.Text=namex;};
+                        ud.go();
 						
 						if(entry.AgentID==UUID.Zero)
 							continue;
@@ -349,8 +346,9 @@ namespace omvviewerlight
 							Gtk.TreeIter iter2=this.parcels_access.AppendValues("Waiting...");			
 							ud=new AsyncNameUpdate(entry.AgentID,false);  
 							ud.addparameters(iter2);
-							ud.onNameCallBack += delegate(string namex,object[] values){ Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; this.parcels_access.SetValue(iterx,0,namex);};				
-					}
+							ud.onNameCallBack += delegate(string namex,object[] values){ Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; this.parcels_access.SetValue(iterx,0,namex);};
+                            ud.go();
+                    }
 					
 					foreach(OpenMetaverse.ParcelManager.ParcelAccessEntry entry in parcel.AccessBlackList)
 					{
@@ -361,8 +359,9 @@ namespace omvviewerlight
 							Gtk.TreeIter iter2=this.parcels_ban.AppendValues("Waiting...");			
 							AsyncNameUpdate ud=new AsyncNameUpdate(entry.AgentID,false);  
 							ud.addparameters(iter2);
-							ud.onNameCallBack += delegate(string namex,object[] values){ Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; this.parcels_ban.SetValue(iterx,0,namex);};				
-						}			
+							ud.onNameCallBack += delegate(string namex,object[] values){ Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; this.parcels_ban.SetValue(iterx,0,namex);};
+                            ud.go();
+                        }			
 				}
 				else			
 				{

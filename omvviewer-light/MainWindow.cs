@@ -533,9 +533,11 @@ public partial class MainWindow: Gtk.Window
 
         AsyncNameUpdate an = new AsyncNameUpdate(parcel.OwnerID, false);
         an.onNameCallBack += delegate(string namex, object[] values) { this.parcel_owner_name = namex; updatestatusinfo(true); };
+        an.go();
 
         AsyncNameUpdate an2 = new AsyncNameUpdate(parcel.GroupID, true);
         an2.onGroupNameCallBack += delegate(string namex, object[] values) { this.parcel_group = namex; updatestatusinfo(true); };
+        an2.go();
 				
 		Gtk.Application.Invoke(delegate {		
             updatestatusinfo(false);
@@ -639,7 +641,8 @@ public partial class MainWindow: Gtk.Window
 			ud=new AsyncNameUpdate(target,false);
 		
 		ud.onNameCallBack += delegate(string namex,object [] values){cs.tabLabel.Text=namex;};
-		
+        ud.go();
+
 		button.Clicked += new EventHandler(cs.clickclosed);
 		this.notebook.SwitchPage += new SwitchPageHandler(cs.onSwitchPage);
 		

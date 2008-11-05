@@ -86,34 +86,37 @@ namespace omvviewerlight
 			
 			lock(MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
 			{
-	            foreach (KeyValuePair<uint, Avatar> kvp in MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
-	            {
-	                //Seen this fire with some kind of null
-	                if (kvp.Value == null)
-	                    continue;
+                lock(av_tree)
+                {
+                    foreach (KeyValuePair<uint, Avatar> kvp in MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
+                    {
+                        //Seen this fire with some kind of null
+                        if (kvp.Value == null)
+                            continue;
 
-	                if (kvp.Value.ID == UUID.Zero)
-	                    continue;
+                        if (kvp.Value.ID == UUID.Zero)
+                            continue;
 
-	                if (kvp.Value.LocalID == null)
-	                    continue;
+                        if (kvp.Value.LocalID == null)
+                            continue;
 
-	                if (!this.av_tree.ContainsKey(kvp.Value.LocalID))
-	                {
-	                    agent theagent = new agent();
-	                    theagent.avatar = kvp.Value;
-	                    Gtk.TreeIter iter;
+                        if (!this.av_tree.ContainsKey(kvp.Value.LocalID))
+                        {
+                            agent theagent = new agent();
+                            theagent.avatar = kvp.Value;
+                            Gtk.TreeIter iter;
 
-	                    iter = store.AppendValues("", kvp.Value.Name, "", kvp.Value.LocalID);
-	                    theagent.iter = iter;
+                            iter = store.AppendValues("", kvp.Value.Name, "", kvp.Value.LocalID);
+                            theagent.iter = iter;
 
-	                    av_tree.Add(kvp.Value.LocalID, theagent);
-	                    calcdistance(kvp.Value.LocalID);
-	                }
-	                else
-	                {
-	                    calcdistance(kvp.Value.LocalID);
-	                }
+                            av_tree.Add(kvp.Value.LocalID, theagent);
+                            calcdistance(kvp.Value.LocalID);
+                        }
+                        else
+                        {
+                            calcdistance(kvp.Value.LocalID);
+                        }
+                    }
 
 	            }
 			}
@@ -190,11 +193,14 @@ namespace omvviewerlight
 		
 		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
 		{
-                if(this.av_tree.ContainsKey(update.LocalID))
+            lock (av_tree)
+            {
+                if (this.av_tree.ContainsKey(update.LocalID))
                 {
-                    
-                        calcdistance(update.LocalID);   
+
+                    calcdistance(update.LocalID);
                 }
+            }
 		}
 		
 		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
@@ -241,7 +247,8 @@ namespace omvviewerlight
 		void onKillObject(Simulator simulator, uint objectID)
 		{
                  
-                     if (this.av_tree.ContainsKey(objectID))
+
+               if (this.av_tree.ContainsKey(objectID))
                      {
                              store.Remove(ref av_tree[objectID].iter);
                 
@@ -288,7 +295,7 @@ namespace omvviewerlight
 			
 		void onChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourcetype,string fromName, UUID id, UUID ownerid, Vector3 position)
 		{
-                lock(av_typing)
+                lock(av_tree)
                 {
                     if (type == ChatType.StartTyping)
                     {

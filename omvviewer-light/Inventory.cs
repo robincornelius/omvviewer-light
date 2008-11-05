@@ -559,10 +559,12 @@ namespace omvviewerlight
 					
 						AsyncNameUpdate ud=new AsyncNameUpdate((UUID)((InventoryItem)item).CreatorID.ToString(),false);
 						ud.onNameCallBack += delegate(string name,object[] values){this.label_createdby.Text=name;};
+                        ud.go();
 
 						AsyncNameUpdate ud2=new AsyncNameUpdate(((InventoryItem)item).GroupID,true);
 						ud2.onNameCallBack += delegate(string name,object[] values){this.label_group.Text=name;};
-		
+                        ud2.go();
+
 						this.label_saleprice.Text=((InventoryItem)item).SalePrice.ToString();
 						
 			

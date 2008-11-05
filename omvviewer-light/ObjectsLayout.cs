@@ -274,8 +274,9 @@ namespace omvviewerlight
 									
 					AsyncNameUpdate ud=new AsyncNameUpdate(prim.Properties.OwnerID,false);  
 					ud.onNameCallBack += delegate(string namex,object[] values){label_owner.Text=namex;};
+					ud.go();
 					
-					string group;
+                    string group;
 					if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(prim.Properties.GroupID,out group))
 					{
 						MainClass.client.Groups.RequestGroupName(prim.Properties.GroupID);
