@@ -980,7 +980,7 @@ Shout</property>
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">file:./bin/icn_voice-groupfocus.tga</property>
+                    <property name="Icon">file:./icn_voice-groupfocus.tga</property>
                     <property name="Label" translatable="yes">IM</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonImClicked" />

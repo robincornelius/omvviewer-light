@@ -1,32 +1,17 @@
-﻿<UserCombinePreferences version="1.0" filename="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light.mds">
+﻿<UserCombinePreferences version="1.0" filename="/home/robin/libsecondlife/omvviewer-light/omvviewer-light.mds">
   <Files>
     <File name="Welcome" />
-    <File name="omvviewer-light/Location.cs" line="1" column="1" />
-    <File name="omvviewer-light/Map.cs" line="98" column="3" />
-    <File name="omvviewer-light/ParcelMgr.cs" line="1" column="1" />
-    <File name="omvviewer-light/MainWindow.cs" line="591" column="1" />
-    <File name="omvviewer-light/Radar.cs" line="284" column="1" />
-    <File name="omvviewer-light/ObjectsLayout.cs" line="194" column="1" />
-    <File name="omvviewer-light/Groups.cs" line="1" column="1" />
-    <File name="omvviewer-light/Inventory.cs" line="294" column="64" />
-    <File name="omvviewer-light/TeleportProgress.cs" line="91" column="46" />
-    <File name="omvviewer-light/TeleportTo.cs" line="44" column="46" />
-    <File name="omvviewer-light/FriendsList.cs" line="1" column="1" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
-      <Node expanded="True">
-        <Node name="omvviewer-light" expanded="True">
-          <Node name="FriendsList.cs" selected="True" />
-        </Node>
-      </Node>
+      <Node expanded="True" />
     </ViewMemento>
     <ViewMemento id="ClassPad">
       <Node />
     </ViewMemento>
   </Views>
   <Properties>
-    <Property key="ActiveWindow" value="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light/FriendsList.cs" />
+    <Property key="ActiveWindow" value="Welcome" />
     <Property key="ActiveConfiguration" value="Debug" />
   </Properties>
 </UserCombinePreferences>
