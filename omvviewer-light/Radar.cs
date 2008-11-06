@@ -50,7 +50,8 @@ namespace omvviewerlight
 		bool piloton=false;
 
 		public Radar()
-		{      
+		{
+        
 			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(uint));
 			this.Build();
 			treeview_radar.AppendColumn("",new Gtk.CellRendererText(),"text",0);
@@ -107,11 +108,15 @@ namespace omvviewerlight
                             Gtk.TreeIter iter;
                             lock (av_tree)
                             {
-                                lock (store)
-                                {
-                                    iter = store.AppendValues("", kvp.Value.Name, "", kvp.Value.LocalID);
-                                    theagent.iter = iter;
-                                }
+
+                                Gtk.Application.Invoke(delegate
+                                   {
+                                       lock (store)
+                                       {
+                                           iter = store.AppendValues("", kvp.Value.Name, "", kvp.Value.LocalID);
+                                           theagent.iter = iter;
+                                       }
+                                   });
 
                                 av_tree.Add(kvp.Value.LocalID, theagent);
                             }
@@ -174,10 +179,14 @@ namespace omvviewerlight
                 lock (av_tree)
                 {
                     av_tree.Clear();
-                    lock (store)
-                    {
-                        store.Clear();
-                    }
+
+                    Gtk.Application.Invoke(delegate
+                       {
+                           lock (store)
+                           {
+                               store.Clear();
+                           }
+                       });
                 }
                     
                 if (MainClass.client.Network.CurrentSim != null)
@@ -193,10 +202,14 @@ namespace omvviewerlight
                 lock (av_tree)
                 {
                     av_tree.Clear();
-                    lock (store)
-                    {
-                        store.Clear();
-                    }
+
+                    Gtk.Application.Invoke(delegate
+                       {
+                           lock (store)
+                           {
+                               store.Clear();
+                           }
+                       });
                 }
 
             if (MainClass.client.Network.CurrentSim != null)
@@ -217,7 +230,7 @@ namespace omvviewerlight
 		
 		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
 		{
-                  lock(av_tree)
+            lock(av_tree)
 			{
                         if (!this.av_tree.ContainsKey(avatar.LocalID))
                         {
@@ -232,32 +245,37 @@ namespace omvviewerlight
                                     {
                                         //All ready in tree kill that old definition
                                         localid=av.Key;
-                                        break;
-                                        
+                                        lock (MainClass.client.Network.CurrentSim.ObjectsAvatars)
+                                        {
+                                            if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.ContainsKey(localid))
+                                            {
+                                                Console.WriteLine("Removing a AV from dict, did we miss an onkill()?");
+                                                MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.Remove(localid);
+                                            }
+                                        }
                                     }
                                 }
                                 if (localid != 0)
                                 {
                                     av_tree.Remove(localid);
-                                    lock (MainClass.client.Network.CurrentSim.ObjectsAvatars)
-                                    {
-                                        if (!MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.ContainsKey(localid))
-                                            MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.Remove(localid);
-                                    }
+                                   
                                 }
                             
-
                             agent theagent = new agent();
                             theagent.avatar = avatar;
                             Gtk.TreeIter iter;
 
                             lock (av_tree)
                             {
-                                lock (store)
-                                {
-                                    iter = store.AppendValues("", avatar.Name, "", avatar.LocalID);
-                                    theagent.iter = iter;
-                                }
+
+                                Gtk.Application.Invoke(delegate
+                                   {
+                                       lock (store)
+                                       {
+                                           iter = store.AppendValues("", avatar.Name, "", avatar.LocalID);
+                                           theagent.iter = iter;
+                                       }
+                                   });
 
                                 av_tree.Add(avatar.LocalID, theagent);
                             }
@@ -276,16 +294,25 @@ namespace omvviewerlight
 
                if (this.av_tree.ContainsKey(objectID))
                {
-                             
-                
-				lock(av_tree)
+                                 
+				
+
+                    Gtk.Application.Invoke(delegate
+                       {
+                           lock(av_tree)
 				{
-                    lock (store)
-                    {
-                        store.Remove(ref av_tree[objectID].iter);
-                    }
-                    av_tree.Remove(objectID);
-				}                 
+                           lock (store)
+                           {
+                               store.Remove(ref av_tree[objectID].iter);
+                               av_tree.Remove(objectID);
+                           }
+
+                }   
+                       });
+                    
+
+                    Console.WriteLine("Killing ID "+objectID.ToString());
+				              
 			}
                  
 		}
@@ -321,10 +348,15 @@ namespace omvviewerlight
                     {
                         if (av_tree.ContainsKey(id))
                         {
-                            lock (store)
-                            {
-                                store.SetValue(av_tree[id].iter, 2, MainClass.cleandistance(dist.ToString(), 1));
-                            }
+
+                            Gtk.Application.Invoke(delegate
+                               {
+                                   lock (store)
+                                   {
+                                       store.SetValue(av_tree[id].iter, 2, MainClass.cleandistance(dist.ToString(), 1));
+                                   }
+                               });
+                           
                         }
                     }
                     catch (Exception e)
@@ -348,10 +380,14 @@ namespace omvviewerlight
                             {
                                 if (kvp.Value.avatar.ID == id)
                                 {
-                                    lock (store)
+                                    Gtk.Application.Invoke(delegate
                                     {
-                                        store.SetValue(kvp.Value.iter, 0, "*");
-                                    }
+                                        lock (store)
+                                        {
+                                            store.SetValue(kvp.Value.iter, 0, "*");
+                                        }
+                                    });
+
                                     return;
                                 }
                             }
@@ -366,10 +402,13 @@ namespace omvviewerlight
                             {
                                 if (kvp.Value.avatar.ID == id)
                                 {
-                                    lock (store)
+                                    Gtk.Application.Invoke(delegate
                                     {
-                                        store.SetValue(kvp.Value.iter, 0, " ");
-                                    }
+                                        lock (store)
+                                        {
+                                            store.SetValue(kvp.Value.iter, 0, " ");
+                                        }
+                                    });
                                     return;
                                 }
                             }

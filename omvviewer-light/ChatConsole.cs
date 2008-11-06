@@ -145,14 +145,14 @@ namespace omvviewerlight
 				int thispage=MainClass.win.getnotebook().PageNum(this);
 				Console.Write(activepage.ToString()+" : "+thispage.ToString()+"\n");
 
-                Console.Write("Red tab test " + activepage.ToString() + ":" + thispage.ToString() + "\n");
+               // Console.Write("Red tab test " + activepage.ToString() + ":" + thispage.ToString() + "\n");
 
                 if (thispage == -1)
                 {
                     if(this.Parent!=null)
                         thispage = MainClass.win.getnotebook().PageNum(this.Parent);
 
-                    Console.Write("Tried to get parent we are now on :"+thispage.ToString()+"\n");
+                  //  Console.Write("Tried to get parent we are now on :"+thispage.ToString()+"\n");
                 }
 
                 if (thispage == -1 && this.tabLabel != null)
@@ -160,14 +160,14 @@ namespace omvviewerlight
                     //I'm guessing that we are the chat window and the fucking parent operators are still not working
                      if(activepage!=1)
                      {
-                        Console.Write("Assuming chat so going to red that one\n");
+                      //  Console.Write("Assuming chat so going to red that one\n");
                          this.tabLabel.ModifyFg(type, col);
                      }
                 }
                   
 				if(thispage!=-1)
 				{
-                    Console.Write("Got an index\n");
+                   // Console.Write("Got an index\n");
 
                     if(activepage!=thispage)
                         if(this.tabLabel!=null)

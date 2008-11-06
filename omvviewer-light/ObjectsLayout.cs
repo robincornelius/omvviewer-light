@@ -249,6 +249,8 @@ namespace omvviewerlight
 
                 //if (PrimsWaiting.Count == 0)
                    // AllPropertiesReceived.Set();
+   
+                
             }
         }
 

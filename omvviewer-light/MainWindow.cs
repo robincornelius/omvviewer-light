@@ -777,13 +777,12 @@ public partial class MainWindow: Gtk.Window
 			
 		}
 		
-		Gtk.Application.Invoke(delegate {	
-		
-		if(!this.Visible)
-		{
-			trayIcon.Blinking=true;
-			this.UrgencyHint=true;
-		}
+		Gtk.Application.Invoke(delegate {		
+		        if(!this.Visible)
+		        {
+			        trayIcon.Blinking=true;
+			        this.UrgencyHint=true;
+		        }
 	        });
 
         if (im.IMSessionID == UUID.Zero)
