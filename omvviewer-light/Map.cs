@@ -160,8 +160,9 @@ namespace omvviewerlight
             {
 
                 try
-                {
+					{
                     buf = (Gdk.Pixbuf)basemap.Pixbuf.Clone();
+                  // buf.ScaleSimple(512,512,InterpType.Bilinear);
                 }
                 catch (Exception e)
                 {
@@ -236,16 +237,19 @@ namespace omvviewerlight
 		{
 			int tx,ty;
 			tx=(int)pos.X;
-			ty=(int)(255.0-pos.Y);
+			ty=(int)(256.0-pos.Y);
 			
+            tx=(int)(((double)tx/256.0)*(double)buf.Width);
+            ty=(int)(((double)ty/256.0)*(double)buf.Height);
+
 			tx=tx-4;
 			ty=ty-4;
 			
-			if(tx>245)
-				tx=245;
+			if(tx>buf.Width-8)
+				tx=buf.Width-8;
 			
-			if(ty>245)
-			   ty=245;
+			if(ty>buf.Height-8)
+			   ty=buf.Height-8;
 			
 			if(tx<8)
 				tx=8;
@@ -299,7 +303,7 @@ namespace omvviewerlight
 			Gdk.Pixbuf pb= new Gdk.Pixbuf("trying.tga");
             lock (image)
             {
-                this.image.Pixbuf = pb;
+                this.image.Pixbuf = pb.ScaleSimple(350,350,InterpType.Bilinear);
             }
 			Thread mapdownload= new Thread(new ThreadStart(this.getmap_threaded));                               
 			mapdownload.Start();
@@ -334,16 +338,22 @@ namespace omvviewerlight
                         {
                             basemap = new Gtk.Image(response.GetResponseStream());
                         }
-                    }
-                }
+			}
+			}
                 else
                     basemap = new Gtk.Image(response.GetResponseStream());
-
-                lock (basemap)
-                {
-                    lock (image)
+                
+          
+						lock (basemap)
+						{
+						lock (image)
                     {
-                        image.Pixbuf = (Gdk.Pixbuf)basemap.Pixbuf.Clone();
+                 
+                    image.Pixbuf = (Gdk.Pixbuf)basemap.Pixbuf.ScaleSimple(350,350,InterpType.Bilinear);
+                    basemap.Pixbuf=basemap.Pixbuf.ScaleSimple(350,350,InterpType.Bilinear);                                 
+                    // image.Pixbuf = (Gdk.Pixbuf)basemap.Pixbuf.Clone();
+                        //image.Pixbuf=image.Pixbuf.ScaleSimple(512,512,InterpType.Bilinear);
+                        
                     }
                     rowstride = basemap.Pixbuf.Rowstride;
                     channels = basemap.Pixbuf.NChannels;
@@ -373,7 +383,12 @@ namespace omvviewerlight
 
 		protected virtual void OnImageButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-
+Console.WriteLine("CLICK");
+		}
+			
+		protected virtual void OnEventbox1ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+Console.WriteLine("EVENT BOX CLICK"+args.Event.X.ToString()+","+args.Event.Y.ToString());
 		}
 	}
 }

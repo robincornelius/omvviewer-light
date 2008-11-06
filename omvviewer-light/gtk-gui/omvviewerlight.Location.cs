@@ -38,8 +38,8 @@ namespace omvviewerlight {
             this.vbox4.Spacing = 6;
             // Container child vbox4.Gtk.Box+BoxChild
             this.map1 = new omvviewerlight.Map();
-            this.map1.WidthRequest = 300;
-            this.map1.HeightRequest = 300;
+            this.map1.WidthRequest = 350;
+            this.map1.HeightRequest = 350;
             this.map1.Events = ((Gdk.EventMask)(256));
             this.map1.Name = "map1";
             this.vbox4.Add(this.map1);
@@ -49,6 +49,7 @@ namespace omvviewerlight {
             w1.Fill = false;
             // Container child vbox4.Gtk.Box+BoxChild
             this.teleportto1 = new omvviewerlight.TeleportTo();
+            this.teleportto1.HeightRequest = 160;
             this.teleportto1.Events = ((Gdk.EventMask)(256));
             this.teleportto1.Name = "teleportto1";
             this.vbox4.Add(this.teleportto1);

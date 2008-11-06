@@ -59,6 +59,7 @@ namespace omvviewerlight {
             Stetic.Gui.Initialize(this);
             // Widget omvviewerlight.TeleportTo
             Stetic.BinContainer.Attach(this);
+            this.HeightRequest = 160;
             this.Name = "omvviewerlight.TeleportTo";
             // Container child omvviewerlight.TeleportTo.Gtk.Container+ContainerChild
             this.vbox2 = new Gtk.VBox();

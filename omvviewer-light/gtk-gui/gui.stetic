@@ -1076,8 +1076,9 @@ Shout</property>
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="omvviewerlight.TeleportTo" design-size="486 300">
+  <widget class="Gtk.Bin" id="omvviewerlight.TeleportTo" design-size="486 162">
     <property name="MemberName" />
+    <property name="HeightRequest">160</property>
     <child>
       <widget class="Gtk.VBox" id="vbox2">
         <property name="MemberName" />
@@ -1345,8 +1346,10 @@ Shout</property>
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="omvviewerlight.Map" design-size="350 300">
+  <widget class="Gtk.Bin" id="omvviewerlight.Map" design-size="602 375">
     <property name="MemberName" />
+    <property name="WidthRequest">375</property>
+    <property name="HeightRequest">375</property>
     <child>
       <widget class="Gtk.VBox" id="vbox1">
         <property name="MemberName" />
@@ -1367,14 +1370,16 @@ Shout</property>
         <child>
           <widget class="Gtk.EventBox" id="eventbox1">
             <property name="MemberName" />
-            <property name="WidthRequest">256</property>
-            <property name="HeightRequest">256</property>
+            <property name="WidthRequest">350</property>
+            <property name="HeightRequest">350</property>
             <property name="BorderWidth">1</property>
+            <signal name="ButtonPressEvent" handler="OnEventbox1ButtonPressEvent" />
             <child>
               <widget class="Gtk.Image" id="image">
                 <property name="MemberName" />
-                <property name="WidthRequest">256</property>
-                <property name="HeightRequest">256</property>
+                <property name="WidthRequest">350</property>
+                <property name="HeightRequest">350</property>
+                <property name="Events">ButtonPressMask</property>
                 <property name="ExtensionEvents">All</property>
                 <signal name="ButtonPressEvent" handler="OnImageButtonPressEvent" />
               </widget>
@@ -1753,7 +1758,7 @@ Shout</property>
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="omvviewerlight.Location" design-size="925 503">
+  <widget class="Gtk.Bin" id="omvviewerlight.Location" design-size="925 710">
     <property name="MemberName" />
     <child>
       <widget class="Gtk.HBox" id="hbox1">
@@ -1766,13 +1771,13 @@ Shout</property>
             <child>
               <widget class="omvviewerlight.Map" id="map1">
                 <property name="MemberName" />
-                <property name="WidthRequest">300</property>
-                <property name="HeightRequest">300</property>
+                <property name="WidthRequest">350</property>
+                <property name="HeightRequest">350</property>
                 <property name="Events">ButtonPressMask</property>
               </widget>
               <packing>
                 <property name="Position">0</property>
-                <property name="AutoSize">True</property>
+                <property name="AutoSize">False</property>
                 <property name="Expand">False</property>
                 <property name="Fill">False</property>
               </packing>
@@ -1780,6 +1785,7 @@ Shout</property>
             <child>
               <widget class="omvviewerlight.TeleportTo" id="teleportto1">
                 <property name="MemberName" />
+                <property name="HeightRequest">160</property>
                 <property name="Events">ButtonPressMask</property>
               </widget>
               <packing>
