@@ -107,8 +107,11 @@ namespace omvviewerlight
                             Gtk.TreeIter iter;
                             lock (av_tree)
                             {
-                                iter = store.AppendValues("", kvp.Value.Name, "", kvp.Value.LocalID);
-                                theagent.iter = iter;
+                                lock (store)
+                                {
+                                    iter = store.AppendValues("", kvp.Value.Name, "", kvp.Value.LocalID);
+                                    theagent.iter = iter;
+                                }
 
                                 av_tree.Add(kvp.Value.LocalID, theagent);
                             }
@@ -129,9 +132,14 @@ namespace omvviewerlight
 
 		int sort_Vector3(Gtk.TreeModel model,Gtk.TreeIter a,Gtk.TreeIter b)
 		{
-            
-			string distAs=(string)store.GetValue(a,2);			
-			string distBs=(string)store.GetValue(b,2);			
+            string distAs;
+            string distBs;
+
+            lock (store)
+            {
+                distAs = (string)store.GetValue(a, 2);
+                distBs = (string)store.GetValue(b, 2);
+            }
 			float distA,distB;
 			
 			float.TryParse(distAs,out distA);
@@ -163,15 +171,15 @@ namespace omvviewerlight
 
                 if(MainClass.client.Network.CurrentSim.ID == lastsim)
                     return;
-
-                    
-                        store.Clear();
-                  
-                    lock (av_tree)
+                lock (av_tree)
+                {
+                    av_tree.Clear();
+                    lock (store)
                     {
-                       av_tree.Clear();
+                        store.Clear();
                     }
-
+                }
+                    
                 if (MainClass.client.Network.CurrentSim != null)
                  lastsim=MainClass.client.Network.CurrentSim.ID;
 			}
@@ -180,14 +188,16 @@ namespace omvviewerlight
 		void onLogin(LoginStatus status,string message)
 		{
 			if(status==LoginStatus.Success)
-										
-				  
-                   store.Clear();
-             
-                   lock (av_tree)
-                   {
-                       av_tree.Clear();
-			       }
+
+
+                lock (av_tree)
+                {
+                    av_tree.Clear();
+                    lock (store)
+                    {
+                        store.Clear();
+                    }
+                }
 
             if (MainClass.client.Network.CurrentSim != null)
             lastsim = MainClass.client.Network.CurrentSim.ID;
@@ -215,6 +225,7 @@ namespace omvviewerlight
                             // missed the kill
                            
                                 uint localid=0;
+                       
                                 foreach (KeyValuePair<uint, agent> av in av_tree)
                                 {
                                     if (av.Value.avatar.ID == avatar.ID)
@@ -225,8 +236,15 @@ namespace omvviewerlight
                                         
                                     }
                                 }
-                                if(localid!=0)
+                                if (localid != 0)
+                                {
                                     av_tree.Remove(localid);
+                                    lock (MainClass.client.Network.CurrentSim.ObjectsAvatars)
+                                    {
+                                        if (!MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.ContainsKey(localid))
+                                            MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.Remove(localid);
+                                    }
+                                }
                             
 
                             agent theagent = new agent();
@@ -235,8 +253,11 @@ namespace omvviewerlight
 
                             lock (av_tree)
                             {
-                                iter = store.AppendValues("", avatar.Name, "", avatar.LocalID);
-                                theagent.iter = iter;
+                                lock (store)
+                                {
+                                    iter = store.AppendValues("", avatar.Name, "", avatar.LocalID);
+                                    theagent.iter = iter;
+                                }
 
                                 av_tree.Add(avatar.LocalID, theagent);
                             }
@@ -259,8 +280,11 @@ namespace omvviewerlight
                 
 				lock(av_tree)
 				{
+                    lock (store)
+                    {
                         store.Remove(ref av_tree[objectID].iter);
-                         av_tree.Remove(objectID);
+                    }
+                    av_tree.Remove(objectID);
 				}                 
 			}
                  
@@ -296,7 +320,12 @@ namespace omvviewerlight
                     try
                     {
                         if (av_tree.ContainsKey(id))
-                            store.SetValue(av_tree[id].iter, 2, MainClass.cleandistance(dist.ToString(), 1));
+                        {
+                            lock (store)
+                            {
+                                store.SetValue(av_tree[id].iter, 2, MainClass.cleandistance(dist.ToString(), 1));
+                            }
+                        }
                     }
                     catch (Exception e)
                     {
@@ -313,26 +342,38 @@ namespace omvviewerlight
                 {
                     if (type == ChatType.StartTyping)
                     {
-                        foreach (KeyValuePair<uint, agent> kvp in av_tree)
+                        lock (av_tree)
                         {
-                            if (kvp.Value.avatar.ID == id)
+                            foreach (KeyValuePair<uint, agent> kvp in av_tree)
                             {
-                                store.SetValue(kvp.Value.iter, 0, "*");
-                                return;
+                                if (kvp.Value.avatar.ID == id)
+                                {
+                                    lock (store)
+                                    {
+                                        store.SetValue(kvp.Value.iter, 0, "*");
+                                    }
+                                    return;
+                                }
                             }
                         }
                     }
 
                     if (type == ChatType.StopTyping)
                     {
-                        foreach (KeyValuePair<uint, agent> kvp in av_tree)
+                        lock (av_tree)
                         {
-                            if (kvp.Value.avatar.ID == id)
+                            foreach (KeyValuePair<uint, agent> kvp in av_tree)
                             {
-                                store.SetValue(kvp.Value.iter, 0, " ");
-                                return;
+                                if (kvp.Value.avatar.ID == id)
+                                {
+                                    lock (store)
+                                    {
+                                        store.SetValue(kvp.Value.iter, 0, " ");
+                                    }
+                                    return;
+                                }
                             }
-                        } 
+                        }
                     }
                 }	
 		}
