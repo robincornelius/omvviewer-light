@@ -170,7 +170,8 @@ public partial class MainWindow: Gtk.Window
 		
 		this.WindowStateEvent += delegate { if (this.Visible) { trayIcon.Blinking = false; this.UrgencyHint = false; };};
         MainClass.client.Self.OnAvatarSitResponse += new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
-    
+        
+
         this.DeleteEvent += new DeleteEventHandler(MainWindow_DeleteEvent);
 
         GLib.Timeout.Add(1000,OnUpdateStatus);
@@ -245,6 +246,11 @@ public partial class MainWindow: Gtk.Window
     {
         // we sat down
         togglesat();
+    }
+
+    public void stand()
+    {
+        this.StandingAction.Active = true;
     }
 	
 	public void togglesat()

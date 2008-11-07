@@ -431,7 +431,7 @@ namespace omvviewerlight
             if (this.button_siton.Label == "Stand")
             {
                 this.button_siton.Label = "Sit";
-                MainClass.client.Self.Stand();
+                MainClass.win.stand();
                 return;
             }
 
