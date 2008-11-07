@@ -176,6 +176,8 @@ public partial class MainWindow: Gtk.Window
         GLib.Timeout.Add(1000,OnUpdateStatus);
 
         tooltips1 = new Tooltips();
+        this.statusbar1.Push(1, "Logged out");
+
 	}
 
    [GLib.ConnectBefore]
@@ -447,6 +449,7 @@ public partial class MainWindow: Gtk.Window
 
 		status_icons=new Gtk.HBox();		
 		this.statusbar1.PackStart(status_icons);
+        
 		
 		if((parcel.Flags & OpenMetaverse.Parcel.ParcelFlags.AllowFly) != OpenMetaverse.Parcel.ParcelFlags.AllowFly )
 		{
@@ -554,14 +557,15 @@ public partial class MainWindow: Gtk.Window
 	
 	void onLogin(LoginStatus login, string message)
 	{
-		
-		
-		if(login==LoginStatus.Success)
-		{			
-			MainClass.client.Self.RequestBalance();
-			//MainClass.client.Parcels.RequestAllSimParcels(MainClass.client.Network.CurrentSim);
-			Gtk.Application.Invoke(delegate {						
-				OnUpdateStatus();
+
+
+        if (login == LoginStatus.Success)
+        {
+            MainClass.client.Self.RequestBalance();
+            //MainClass.client.Parcels.RequestAllSimParcels(MainClass.client.Network.CurrentSim);
+            Gtk.Application.Invoke(delegate
+            {
+                OnUpdateStatus();
                 this.AvaiableAction.Sensitive = true;
                 this.AwayAction.Sensitive = true;
                 this.BusyAction.Sensitive = false;
@@ -569,20 +573,27 @@ public partial class MainWindow: Gtk.Window
                 this.CrouchAction.Sensitive = true;
                 this.FlyAction.Sensitive = true;
                 this.GroundSitAction.Sensitive = true;
-				this.SittingAction.Sensitive = false;
-				
-                MainClass.client.Groups.OnCurrentGroups += new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
-				MainClass.client.Groups.RequestCurrentGroups();
-				trayIcon.Tooltip="Logged in as\n"+MainClass.client.Self.Name;
+                this.SittingAction.Sensitive = false;
 
-			});
-		}
-		else
-		{
-			Gtk.Application.Invoke(delegate {	
-				trayIcon.Tooltip="Status: login.ToString()";
-			});
-		}
+                MainClass.client.Groups.OnCurrentGroups += new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
+                MainClass.client.Groups.RequestCurrentGroups();
+                trayIcon.Tooltip = "Logged in as\n" + MainClass.client.Self.Name;
+
+            });
+        }
+        else
+        {
+            Gtk.Application.Invoke(delegate
+            {
+                trayIcon.Tooltip = "Status: " + login.ToString();
+               
+            });
+        }
+        Gtk.Application.Invoke(delegate
+            {
+                this.statusbar1.Pop(1);
+                this.statusbar1.Push(1, login.ToString());
+            });
 	}
 	
 	bool OnUpdateStatus()

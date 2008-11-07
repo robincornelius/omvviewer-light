@@ -239,9 +239,9 @@ namespace omvviewerlight
                 Primitive prim;
                 if (PrimsWaiting.TryGetValue(properties.ObjectID, out prim)) {
                     prim.Properties = properties;
-					store.AppendValues(prim.Properties.Name,prim.Properties.Description,Vector3.Distance(prim.Position,MainClass.client.Self.RelativePosition).ToString(),prim.Properties.ObjectID);
-					Gtk.Application.Invoke(delegate {										
-						store.Foreach(myfunc);
+					Gtk.Application.Invoke(delegate {
+                        store.AppendValues(prim.Properties.Name, prim.Properties.Description, Vector3.Distance(prim.Position, MainClass.client.Self.RelativePosition).ToString(), prim.Properties.ObjectID);
+                        store.Foreach(myfunc);
 				});
 				
 				}
