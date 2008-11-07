@@ -903,10 +903,18 @@ public partial class MainWindow: Gtk.Window
 	
 	bool parcelallowed(Simulator sim,int parcelid)
 	{
+        //If avatar owns the parcel they are allowed.
+        //If they are in the group that owns the parcel AND have the correct group permissions AND have the group tag they are allowed
 	   if(sim.Parcels.Dictionary.ContainsKey(parcelid))
 	    {
 		   if(sim.Parcels.Dictionary[parcelid].OwnerID==MainClass.client.Self.AgentID)
-			  return true;	
+			  return true;
+
+           if (sim.Parcels.Dictionary[parcelid].OwnerID = MainClass.client.Self.ActiveGroup)
+           {
+              // if(MainClass.client.Self.ActiveGroupPowers==GroupPowers.ReturnGroupOwned
+
+           }
 			
 			//   if(this.current_groups.Contains(sim.Parcels.Dictionary[parcelid].GroupID))
 			   {
