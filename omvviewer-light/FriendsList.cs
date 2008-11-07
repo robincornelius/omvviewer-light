@@ -103,6 +103,7 @@ namespace omvviewerlight
 			if(LoginStatus.Success==status)
 			{
 				Gtk.Application.Invoke(delegate {
+                store.Clear();
 				populate_list();
 				store.Foreach(myfunc);
 				});
