@@ -39,6 +39,7 @@ namespace omvviewerlight
         {
             MainClass.client.Objects.OnObjectProperties -= new OpenMetaverse.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
             MainClass.client.Groups.OnGroupNames -= new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
+            MainClass.client.Self.OnAvatarSitResponse -= new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
 
             Gtk.Notebook p;
             p = (Gtk.Notebook)this.Parent;
@@ -83,10 +84,16 @@ namespace omvviewerlight
 			
 			MainClass.client.Objects.OnObjectProperties += new OpenMetaverse.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
 			MainClass.client.Groups.OnGroupNames += new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
+            MainClass.client.Self.OnAvatarSitResponse += new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
 
 
 
 		}
+
+        void Self_OnAvatarSitResponse(UUID objectID, bool autoPilot, Vector3 cameraAtOffset, Vector3 cameraEyeOffset, bool forceMouselook, Vector3 sitPosition, Quaternion sitRotation)
+        {
+            this.button_siton.Label = "Stand";
+        }
 
         int sort_Vector3(Gtk.TreeModel model, Gtk.TreeIter a, Gtk.TreeIter b)
         {
@@ -240,7 +247,21 @@ namespace omvviewerlight
                 if (PrimsWaiting.TryGetValue(properties.ObjectID, out prim)) {
                     prim.Properties = properties;
 					Gtk.Application.Invoke(delegate {
-                        store.AppendValues(prim.Properties.Name, prim.Properties.Description, Vector3.Distance(prim.Position, MainClass.client.Self.RelativePosition).ToString(), prim.Properties.ObjectID);
+                        Avatar av;
+                        Vector3 mypos;
+                        mypos=MainClass.client.Self.RelativePosition;
+                        if(MainClass.client.Network.CurrentSim.ObjectsAvatars.TryGetValue(MainClass.client.Self.LocalID, out av))
+                        {
+                            if (av.ParentID!=0)
+                            {
+                                Primitive sitprim;
+                                if(MainClass.client.Network.CurrentSim.ObjectsPrimitives.TryGetValue(av.ParentID,out sitprim))
+                                {
+                                    mypos = Vector3.Transform(av.Position, Matrix4.CreateFromQuaternion(sitprim.Rotation)) + sitprim.Position;
+                                }
+                            }
+                        }
+                        store.AppendValues(prim.Properties.Name, prim.Properties.Description, Vector3.Distance(prim.Position, mypos).ToString(), prim.Properties.ObjectID);
                         store.Foreach(myfunc);
 				});
 				
@@ -406,6 +427,14 @@ namespace omvviewerlight
 
 		protected virtual void OnButtonSitonClicked (object sender, System.EventArgs e)
 		{
+
+            if (this.button_siton.Label == "Stand")
+            {
+                this.button_siton.Label = "Sit";
+                MainClass.client.Self.Stand();
+                return;
+            }
+
 		Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
 			
