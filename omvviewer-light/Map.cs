@@ -173,7 +173,7 @@ namespace omvviewerlight
 
 				int myz=(int)MainClass.client.Self.SimPosition.Z;
 
-                lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
+                lock (MainClass.client.Network.CurrentSim.ObjectsAvatars)
                 {
                     foreach (KeyValuePair<uint, Avatar> kvp in MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
                     {
