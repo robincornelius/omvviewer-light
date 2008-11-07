@@ -197,6 +197,7 @@ namespace omvviewerlight
 				store.SetValue(iter,1,PrimsWaiting[key].Properties.Description);
 				store.SetValue(iter,2,Vector3.Distance(PrimsWaiting[key].Position,MainClass.client.Self.RelativePosition).ToString());
 				store.SetValue(iter,3,PrimsWaiting[key].Properties.ObjectID);
+				
 			}
 			return true;
 		}
@@ -382,6 +383,38 @@ namespace omvviewerlight
 					
 					this.button_moveto.Sensitive=true;
 					
+					
+					
+					//MainClass.client.Parcels.ReturnObjects(MainClass.client.Network.CurrentSim,,ObjectReturnType.Other,
+				
+					bool allowed=false;
+				
+					uint x,y;
+					x=(uint)(64*(prim.Position.X/256));
+					y=(uint)(64*(prim.Position.Y/256));
+					
+					int parcelid=MainClass.client.Network.CurrentSim.ParcelMap[x,y];
+							
+					//If avatar owns the parcel they are allowed.
+					//If they are in the group that owns the parcel AND have the correct group permissions AND have the group tag they are allowed
+					if(MainClass.client.Network.CurrentSim.Parcels.Dictionary.ContainsKey(parcelid))
+					{
+						Parcel parcel;
+						parcel=MainClass.client.Network.CurrentSim.Parcels.Dictionary[parcelid];
+						
+						if(parcel.OwnerID==MainClass.client.Self.AgentID)
+							allowed=true;
+
+						if (parcel.OwnerID == MainClass.client.Self.ActiveGroup || parcel.GroupID==MainClass.client.Self.ActiveGroup)
+						{
+							 if((MainClass.client.Self.ActiveGroupPowers & GroupPowers.ReturnGroupOwned)==GroupPowers.ReturnGroupOwned)
+								allowed=true;
+						}
+					}
+					
+				
+					this.button_return.Sensitive=allowed;
+
 				}
 			
 			}
@@ -547,9 +580,13 @@ namespace omvviewerlight
 				
 				if(PrimsWaiting.TryGetValue(id,out prim))
 				{
-					//MainClass.client.Parcels
+					uint localid=prim.LocalID;
+					MainClass.client.Inventory.RequestDeRezToInventory(localid,DeRezDestination.ReturnToOwner,UUID.Zero,UUID.Random());
 				}
+				
+				
 			}
+			
 		}
 
 		protected virtual void OnButtonMovetoClicked (object sender, System.EventArgs e)

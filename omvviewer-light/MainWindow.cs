@@ -900,7 +900,7 @@ public partial class MainWindow: Gtk.Window
 			});
 
 		}
-	
+/*	
 	bool parcelallowed(Simulator sim,int parcelid)
 	{
         //If avatar owns the parcel they are allowed.
@@ -910,7 +910,7 @@ public partial class MainWindow: Gtk.Window
 		   if(sim.Parcels.Dictionary[parcelid].OwnerID==MainClass.client.Self.AgentID)
 			  return true;
 
-           if (sim.Parcels.Dictionary[parcelid].OwnerID = MainClass.client.Self.ActiveGroup)
+           if (sim.Parcels.Dictionary[parcelid].OwnerID == MainClass.client.Self.ActiveGroup)
            {
               // if(MainClass.client.Self.ActiveGroupPowers==GroupPowers.ReturnGroupOwned
 
@@ -926,7 +926,8 @@ public partial class MainWindow: Gtk.Window
 		
            return false;
     }
-
+*/
+	
 	protected virtual void OnParcelActionToggled (object sender, System.EventArgs e)
 	{
         if (this.ParcelAction.Active == true)
