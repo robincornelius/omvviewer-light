@@ -266,6 +266,7 @@ namespace omvviewerlight
                         }
                         store.AppendValues(prim.Properties.Name, prim.Properties.Description, Vector3.Distance(prim.Position, mypos).ToString(), prim.Properties.ObjectID);
                         store.Foreach(myfunc);
+						PrimsWaiting.Remove(properties.ObjectID);
 				});
 				
 				}
