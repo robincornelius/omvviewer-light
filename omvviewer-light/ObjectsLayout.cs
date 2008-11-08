@@ -569,7 +569,13 @@ namespace omvviewerlight
 					st=prim.Properties.SaleType;
 					string salemsg="";
 					if(st==SaleType.Contents)
+					{
+						MessageDialog md = new Gtk.MessageDialog(MainClass.win, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.Ok, true, "Buy contents has issues and is disabled");
+						ResponseType result = (ResponseType)md.Run();
+						md.Destroy();
+						return;
 						salemsg="the CONTENTS of";
+					}
 					if(st==SaleType.Copy)
 						salemsg="a COPY of";
 					if(st==SaleType.Original)
