@@ -568,12 +568,10 @@ namespace omvviewerlight
 					SaleType st;
 					st=prim.Properties.SaleType;
 					string salemsg="";
+					UUID target=UUID.Zero;
 					if(st==SaleType.Contents)
-					{
-						MessageDialog md = new Gtk.MessageDialog(MainClass.win, DialogFlags.DestroyWithParent, MessageType.Warning, ButtonsType.Ok, true, "Buy contents has issues and is disabled");
-						ResponseType result = (ResponseType)md.Run();
-						md.Destroy();
-						return;
+					{   
+						target=MainClass.client.Inventory.Store.RootFolder.UUID;
 						salemsg="the CONTENTS of";
 					}
 					if(st==SaleType.Copy)
@@ -582,15 +580,15 @@ namespace omvviewerlight
 						salemsg="the ORIGINAL of";
 
 					salemsg="Are you sure you would like to\nbuy "+salemsg+"\n"+prim.Properties.Name+"\n for L$"+prim.Properties.SalePrice.ToString();
-				    MessageDialog md = new Gtk.MessageDialog(MainClass.win, DialogFlags.DestroyWithParent, MessageType.Question, ButtonsType.YesNo, true, salemsg);
-					ResponseType result = (ResponseType)md.Run();
-					if(result==ResponseType.Yes)
+				    MessageDialog md2 = new Gtk.MessageDialog(MainClass.win, DialogFlags.DestroyWithParent, MessageType.Question, ButtonsType.YesNo, true, salemsg);
+					ResponseType result2 = (ResponseType)md2.Run();
+					if(result2==ResponseType.Yes)
 					{
-						MainClass.client.Objects.BuyObject(MainClass.client.Network.CurrentSim,prim.LocalID,st,prim.Properties.SalePrice,MainClass.client.Self.ActiveGroup,UUID.Zero);
+						MainClass.client.Objects.BuyObject(MainClass.client.Network.CurrentSim,prim.LocalID,st,prim.Properties.SalePrice,MainClass.client.Self.ActiveGroup,target);
 						
 					}
 					
-					md.Destroy();	
+					md2.Destroy();	
 
 				}
 			}
