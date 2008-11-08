@@ -361,7 +361,23 @@ namespace omvviewerlight
 							ud.addparameters(iter2);
 							ud.onNameCallBack += delegate(string namex,object[] values){ Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; this.parcels_ban.SetValue(iterx,0,namex);};
                             ud.go();
-                        }			
+                        }		
+					
+					
+						bool allowed=false;
+
+					
+						if(parcel.OwnerID==MainClass.client.Self.AgentID)
+							allowed=true;
+
+						if (parcel.OwnerID == MainClass.client.Self.ActiveGroup)
+						{
+						     //Seems viewing the object list is stricter than just returning, need to be owner, or the land needs to be deeded to group
+							 allowed=true;
+						}
+
+					this.button1.Sensitive=allowed;
+
 				}
 				else			
 				{

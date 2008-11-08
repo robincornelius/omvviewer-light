@@ -5518,7 +5518,7 @@ permissions</property>
           <widget class="Gtk.Notebook" id="notebook1">
             <property name="MemberName" />
             <property name="CanFocus">True</property>
-            <property name="CurrentPage">0</property>
+            <property name="CurrentPage">2</property>
             <child>
               <widget class="Gtk.HBox" id="hbox2">
                 <property name="MemberName" />

@@ -165,7 +165,7 @@ namespace omvviewerlight {
             this.notebook1 = new Gtk.Notebook();
             this.notebook1.CanFocus = true;
             this.notebook1.Name = "notebook1";
-            this.notebook1.CurrentPage = 0;
+            this.notebook1.CurrentPage = 2;
             // Container child notebook1.Gtk.Notebook+NotebookChild
             this.hbox2 = new Gtk.HBox();
             this.hbox2.Name = "hbox2";

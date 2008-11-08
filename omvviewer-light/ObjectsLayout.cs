@@ -36,6 +36,8 @@ namespace omvviewerlight
 	
 		Gtk.ListStore store;	
         Dictionary<UUID, Primitive> PrimsWaiting = new Dictionary<UUID, Primitive>();
+        Dictionary<UUID, Primitive> FetchedPrims = new Dictionary<UUID, Primitive>();
+		
 
         public void kill()
         {
@@ -174,7 +176,7 @@ namespace omvviewerlight
 				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
 				
-				if(PrimsWaiting.TryGetValue(id,out prim))
+				if(FetchedPrims.TryGetValue(id,out prim))
 				{
 			
 					string group;;
@@ -193,12 +195,12 @@ namespace omvviewerlight
 		bool myfunc(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
 		{
 			UUID key=(UUID)store.GetValue(iter,3);			
-			if(PrimsWaiting.ContainsKey(key))
+			if(FetchedPrims.ContainsKey(key))
 			{
-				store.SetValue(iter,0,PrimsWaiting[key].Properties.Name);
-				store.SetValue(iter,1,PrimsWaiting[key].Properties.Description);
-				store.SetValue(iter,2,Vector3.Distance(PrimsWaiting[key].Position,MainClass.client.Self.RelativePosition).ToString());
-				store.SetValue(iter,3,PrimsWaiting[key].Properties.ObjectID);
+				store.SetValue(iter,0,FetchedPrims[key].Properties.Name);
+				store.SetValue(iter,1,FetchedPrims[key].Properties.Description);
+				store.SetValue(iter,2,Vector3.Distance(FetchedPrims[key].Position,MainClass.client.Self.RelativePosition).ToString());
+				store.SetValue(iter,3,FetchedPrims[key].Properties.ObjectID);
 				
 			}
 			return true;
@@ -228,16 +230,21 @@ namespace omvviewerlight
         {
             // Create an array of the local IDs of all the prims we are requesting properties for
             uint[] localids = new uint[objects.Count];
+			lock (FetchedPrims) 
+			{
 
-            lock (PrimsWaiting) {
-                PrimsWaiting.Clear();
+				lock (PrimsWaiting)
+				{
+					PrimsWaiting.Clear();
+				    FetchedPrims.Clear();
 
-                for (int i = 0; i < objects.Count; ++i) {
-                    localids[i] = objects[i].LocalID;
-                    PrimsWaiting.Add(objects[i].ID, objects[i]);
-                }
-            }
-
+					for (int i = 0; i < objects.Count; ++i) {
+						localids[i] = objects[i].LocalID;
+						PrimsWaiting.Add(objects[i].ID, objects[i]);
+					}
+				}
+			}
+			
             MainClass.client.Objects.SelectObjects(MainClass.client.Network.CurrentSim, localids);
 
             //return AllPropertiesReceived.WaitOne(2000 + msPerRequest * objects.Count, false);
@@ -264,9 +271,12 @@ namespace omvviewerlight
                                 }
                             }
                         }
+						PrimsWaiting.Remove(properties.ObjectID);
+					    FetchedPrims.Add(properties.ObjectID,prim);
                         store.AppendValues(prim.Properties.Name, prim.Properties.Description, Vector3.Distance(prim.Position, mypos).ToString(), prim.Properties.ObjectID);
                         store.Foreach(myfunc);
-						PrimsWaiting.Remove(properties.ObjectID);
+					
+						
 				});
 				
 				}
@@ -292,7 +302,7 @@ namespace omvviewerlight
 				UUID id=(UUID)mod.GetValue(iter,3);
 		
 				Primitive prim;
-				if(PrimsWaiting.TryGetValue(id,out prim))
+				if(FetchedPrims.TryGetValue(id,out prim))
 				{
 				Console.WriteLine(prim.ToString());
 
@@ -395,23 +405,33 @@ namespace omvviewerlight
 					uint x,y;
 					x=(uint)(64*(prim.Position.X/256));
 					y=(uint)(64*(prim.Position.Y/256));
-					
-					int parcelid=MainClass.client.Network.CurrentSim.ParcelMap[x,y];
 							
+					int parcelid=MainClass.client.Network.CurrentSim.ParcelMap[y,x];
+
 					//If avatar owns the parcel they are allowed.
 					//If they are in the group that owns the parcel AND have the correct group permissions AND have the group tag they are allowed
 					if(MainClass.client.Network.CurrentSim.Parcels.Dictionary.ContainsKey(parcelid))
 					{
 						Parcel parcel;
 						parcel=MainClass.client.Network.CurrentSim.Parcels.Dictionary[parcelid];
-						
+					
 						if(parcel.OwnerID==MainClass.client.Self.AgentID)
 							allowed=true;
 
 						if (parcel.OwnerID == MainClass.client.Self.ActiveGroup || parcel.GroupID==MainClass.client.Self.ActiveGroup)
 						{
-							 if((MainClass.client.Self.ActiveGroupPowers & GroupPowers.ReturnGroupOwned)==GroupPowers.ReturnGroupOwned)
-								allowed=true;
+							 if(prim.GroupID==parcel.GroupID)
+								if((MainClass.client.Self.ActiveGroupPowers & GroupPowers.ReturnGroupSet)==GroupPowers.ReturnGroupOwned)
+									allowed=true;
+							
+							 if(prim.OwnerID==parcel.GroupID)
+								if((MainClass.client.Self.ActiveGroupPowers & GroupPowers.ReturnGroupOwned)==GroupPowers.ReturnGroupOwned)
+									allowed=true;
+							
+							if(prim.OwnerID!=parcel.GroupID && prim.GroupID!=parcel.GroupID)
+								if((MainClass.client.Self.ActiveGroupPowers & GroupPowers.ReturnNonGroup)==GroupPowers.ReturnNonGroup)
+									allowed=true;
+								
 						}
 					}
 					
@@ -434,7 +454,7 @@ namespace omvviewerlight
 				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
 				
-				if(PrimsWaiting.TryGetValue(id,out prim))
+				if(FetchedPrims.TryGetValue(id,out prim))
 				{
 					PayWindow pay=new PayWindow(prim,0);
 					pay.Modal=true;
@@ -454,7 +474,7 @@ namespace omvviewerlight
 				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
 				
-				if(PrimsWaiting.TryGetValue(id,out prim))
+				if(FetchedPrims.TryGetValue(id,out prim))
 				{
 					MainClass.client.Self.Touch(prim.LocalID);
 				}
@@ -479,7 +499,7 @@ namespace omvviewerlight
 				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
 				
-				if(PrimsWaiting.TryGetValue(id,out prim))
+				if(FetchedPrims.TryGetValue(id,out prim))
 				{
 					//MainClass.client.Self.sit
 					MainClass.client.Self.RequestSit(prim.ID,Vector3.Zero);
@@ -498,7 +518,7 @@ namespace omvviewerlight
 				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
 				
-				if(PrimsWaiting.TryGetValue(id,out prim))
+				if(FetchedPrims.TryGetValue(id,out prim))
 				{
                     MainClass.client.Self.LookAtEffect(UUID.Zero, prim.ID, Vector3d.Zero, LookAtType.Idle, UUID.Zero);
 				    // We may actualy just want to turn around in this general direction
@@ -527,7 +547,7 @@ namespace omvviewerlight
 				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
 				
-				if(PrimsWaiting.TryGetValue(id,out prim))
+				if(FetchedPrims.TryGetValue(id,out prim))
 				{
 					MainClass.client.Inventory.RequestDeRezToInventory(prim.LocalID);
 				}
@@ -545,7 +565,7 @@ namespace omvviewerlight
 				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
 				
-				if(PrimsWaiting.TryGetValue(id,out prim))
+				if(FetchedPrims.TryGetValue(id,out prim))
 				{
 					Gtk.MessageDialog md=new Gtk.MessageDialog(MainClass.win,Gtk.DialogFlags.DestroyWithParent,Gtk.MessageType.Info,Gtk.ButtonsType.Ok,false,"Sorry that is not yet implemented");
 					md.Run();
@@ -564,7 +584,7 @@ namespace omvviewerlight
 				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
 				
-				if(PrimsWaiting.TryGetValue(id,out prim))
+				if(FetchedPrims.TryGetValue(id,out prim))
 				{
 					SaleType st;
 					st=prim.Properties.SaleType;
@@ -606,7 +626,7 @@ namespace omvviewerlight
 				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
 				
-				if(PrimsWaiting.TryGetValue(id,out prim))
+				if(FetchedPrims.TryGetValue(id,out prim))
 				{
 					uint localid=prim.LocalID;
 					MainClass.client.Inventory.RequestDeRezToInventory(localid,DeRezDestination.ReturnToOwner,UUID.Zero,UUID.Random());
@@ -627,7 +647,7 @@ namespace omvviewerlight
 				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
 				
-				if(PrimsWaiting.TryGetValue(id,out prim))
+				if(FetchedPrims.TryGetValue(id,out prim))
 				{
 					uint regionX, regionY;
                     Utils.LongToUInts(MainClass.client.Network.CurrentSim.Handle, out regionX, out regionY);
