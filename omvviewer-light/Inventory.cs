@@ -120,7 +120,10 @@ namespace omvviewerlight
                     inventory.Clear();
                     Gtk.TreeIter iter = inventory.AppendValues(folder_closed, "Inventory", MainClass.client.Inventory.Store.RootFolder.UUID);
                     inventory.AppendValues(iter, folder_closed, "Waiting...", MainClass.client.Inventory.Store.RootFolder.UUID, null);
-                }
+              	
+					iter = inventory.AppendValues(folder_closed, "Library", MainClass.client.Inventory.Store.LibraryFolder.UUID);
+					inventory.AppendValues(iter, folder_closed, "Waiting...", MainClass.client.Inventory.Store.LibraryFolder.UUID, null);
+				}
             }	
 		}
 
@@ -355,7 +358,10 @@ namespace omvviewerlight
 				Gtk.Application.Invoke(delegate {
 					inventory.Clear();
 					Gtk.TreeIter iter = inventory.AppendValues(folder_closed,"Inventory", MainClass.client.Inventory.Store.RootFolder.UUID);
-					inventory.AppendValues(iter,folder_closed, "Waiting...", MainClass.client.Inventory.Store.RootFolder.UUID,null);		
+					inventory.AppendValues(iter,folder_closed, "Waiting...", MainClass.client.Inventory.Store.RootFolder.UUID,null);
+										
+					iter = inventory.AppendValues(folder_closed, "Library", MainClass.client.Inventory.Store.LibraryFolder.UUID);
+					inventory.AppendValues(iter, folder_closed, "Waiting...", MainClass.client.Inventory.Store.LibraryFolder.UUID, null);
 				});
 			}
 		}

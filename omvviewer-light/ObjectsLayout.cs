@@ -25,6 +25,8 @@ omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife
 using System;
 using System.Collections.Generic;
 using OpenMetaverse;
+using Gtk;
+using Gdk;
 
 namespace omvviewerlight
 {
@@ -563,6 +565,27 @@ namespace omvviewerlight
 				
 				if(PrimsWaiting.TryGetValue(id,out prim))
 				{
+					SaleType st;
+					st=prim.Properties.SaleType;
+					string salemsg="";
+					if(st==SaleType.Contents)
+						salemsg="the CONTENTS of";
+					if(st==SaleType.Copy)
+						salemsg="a COPY of";
+					if(st==SaleType.Original)
+						salemsg="the ORIGINAL of";
+
+					salemsg="Are you sure you would like to\nbuy "+salemsg+"\n"+prim.Properties.Name+"\n for L$"+prim.Properties.SalePrice.ToString();
+				    MessageDialog md = new Gtk.MessageDialog(MainClass.win, DialogFlags.DestroyWithParent, MessageType.Question, ButtonsType.YesNo, true, salemsg);
+					ResponseType result = (ResponseType)md.Run();
+					if(result==ResponseType.Yes)
+					{
+						MainClass.client.Objects.BuyObject(MainClass.client.Network.CurrentSim,prim.LocalID,st,prim.Properties.SalePrice,MainClass.client.Self.ActiveGroup,UUID.Zero);
+						
+					}
+					
+					md.Destroy();	
+
 				}
 			}
 		}
