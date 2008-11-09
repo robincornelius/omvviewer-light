@@ -46,6 +46,7 @@ namespace omvviewerlight
    	    int nextcol=0;
 		int selectedparcel=0;
 		
+		Dictionary <int,Gtk.TreeIter> parcel_to_tree =new Dictionary <int,Gtk.TreeIter>();
 
         public void kill()
         {
@@ -69,6 +70,7 @@ namespace omvviewerlight
 			MainClass.client.Parcels.OnSimParcelsDownloaded += new OpenMetaverse.ParcelManager.SimParcelsDownloaded(onParcelsDownloaded);
 			MainClass.client.Parcels.OnParcelProperties += new OpenMetaverse.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
 			MainClass.client.Parcels.OnPrimOwnersListReply += new OpenMetaverse.ParcelManager.ParcelObjectOwnersListReplyCallback(onParcelObjectOwners);
+			MainClass.client.Parcels.OnParcelDwell += new OpenMetaverse.ParcelManager.ParcelDwellCallback(onDwell);
 			
 			parcels_store=new Gtk.TreeStore (typeof(Gdk.Pixbuf),typeof(string),typeof(string),typeof(string),typeof(string),typeof(Parcel),typeof(int));
 			parcels_access=new Gtk.TreeStore(typeof(string),typeof(UUID));
@@ -111,6 +113,8 @@ namespace omvviewerlight
                     this.parcels_access.Clear();
                     this.parcels_ban.Clear();
                     this.colmaptoid.Clear();
+					this.parcel_to_tree.Clear();
+
                     nextcol = 0;
                    
                     this.parcel_map = new Gdk.Pixbuf("trying.tga");
@@ -126,7 +130,20 @@ namespace omvviewerlight
             }	
 			
 		}
-
+			
+		void onDwell (UUID parcelid,int localid,float dwell)
+		{
+				Console.WriteLine("Got dwell for "+parcelid.ToString()+" : local id "+localid.ToString()+" is "+dwell.ToString());
+			Gtk.TreeIter iter;
+			if(this.parcel_to_tree.TryGetValue(localid,out iter))
+			{
+				Gtk.Application.Invoke(delegate{
+					this.parcels_store.SetValue(iter,3,dwell.ToString());
+						
+				});
+			}
+		}
+			
 		void onParcelObjectOwners(Simulator sim,List <OpenMetaverse.ParcelManager.ParcelPrimOwners> primOwners)
 		{
 			Gtk.Application.Invoke(delegate{
@@ -146,6 +163,8 @@ namespace omvviewerlight
 		
 	void onParcelProperties(Simulator Sim,Parcel parcel, ParcelResult result, int selectedprims,int sequenceID, bool snapSelection)
 	{
+		
+		MainClass.client.Parcels.DwellRequest(Sim,parcel.LocalID);
         populate_tree();
         updateparcelmap(MainClass.client.Network.CurrentSim.ParcelMap);
 			
@@ -205,7 +224,8 @@ namespace omvviewerlight
 
 						Gtk.Application.Invoke(delegate
 						{
-                         parcels_store.AppendValues(pb, parcel.Name, parcel.Area.ToString(), parcel.Dwell.ToString(), saleinfo, parcel, parcel.LocalID);
+                         Gtk.TreeIter iter=parcels_store.AppendValues(pb, parcel.Name, parcel.Area.ToString(), parcel.Dwell.ToString(), saleinfo, parcel, parcel.LocalID);
+                         this.parcel_to_tree.Add(parcel.LocalID,iter);						
 						});
                      }
                  
@@ -278,6 +298,8 @@ namespace omvviewerlight
 			this.parcels_access.Clear();
 			this.parcels_ban.Clear();
 			this.colmaptoid.Clear();
+			this.parcel_to_tree.Clear();
+			
 			nextcol=0;
 			Gtk.Application.Invoke(delegate
             {
