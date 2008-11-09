@@ -315,7 +315,7 @@ namespace omvviewerlight
                         if(item is InventoryLandmark)
                         {
 							Gtk.ImageMenuItem menu_tp_lm = new ImageMenuItem("Teleport to Landmark");
-							menu_tp_lm.Image=new Gtk.Image("icon_place.tga");
+							menu_tp_lm.Image=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("icon_place.tga"));
 							menu_tp_lm.ButtonPressEvent += new ButtonPressEventHandler(Teleporttolandmark);
                             menu.Append(menu_tp_lm);
                         }
@@ -324,9 +324,9 @@ namespace omvviewerlight
                         {
                             Gtk.MenuItem menu_wear_folder = new MenuItem("Wear folder contents");
                             Gtk.ImageMenuItem menu_give_folder = new ImageMenuItem("Give folder to user");
-							menu_give_folder.Image=new Gtk.Image("ff_edit_theirs.tga");
+							menu_give_folder.Image=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("ff_edit_theirs.tga"));
                             Gtk.ImageMenuItem menu_delete_folder = new ImageMenuItem("Delete Folder");
-							menu_delete_folder.Image=new Gtk.Image("inv_folder_trash.tga");
+							menu_delete_folder.Image=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("inv_folder_trash.tga"));
 
                             menu_delete_folder.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
                             menu_give_folder.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
@@ -343,10 +343,10 @@ namespace omvviewerlight
                         {
 						
 						    Gtk.ImageMenuItem menu_give_item = new ImageMenuItem("Give item to user");
-							menu_give_item.Image=new Gtk.Image("ff_edit_theirs.tga");
+							menu_give_item.Image=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("ff_edit_theirs.tga"));
 							
                             Gtk.ImageMenuItem menu_delete_item = new ImageMenuItem("Delete item");
-							menu_delete_item.Image=new Gtk.Image("inv_folder_trash.tga");
+							menu_delete_item.Image=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("inv_folder_trash.tga"));
 
                             menu_give_item.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
                             menu_delete_item.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);

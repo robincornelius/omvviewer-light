@@ -487,7 +487,11 @@ namespace omvviewerlight
                     MainClass.win.trayIcon.Blinking = true;
 
                 }
-            });
+				if(!(MainClass.win.Focus is Gtk.Widget))
+				{
+					MainClass.win.UrgencyHint = true;
+				}
+				});
 
         }
 

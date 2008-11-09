@@ -92,6 +92,7 @@ public partial class MainWindow: Gtk.Window
 
         trayIcon.Activate += delegate { trayIcon.Blinking = false; this.UrgencyHint = false; };
 				
+		this.Icon=Gdk.Pixbuf.LoadFromResource("viewericon.xpm");
 		status_location=new Gtk.Label("Location: Unknown (0,0,0)");
 		
 		status_balance=new Gtk.HBox();
@@ -109,7 +110,7 @@ public partial class MainWindow: Gtk.Window
 		this.statusbar1.PackStart(status_parcel);
 		this.statusbar1.PackStart(status_balance);
 
-		this.Title="Omvviewer-light v0.40 SVN";
+		this.Title="Omvviewer-light v0.40";
 		
 		// Fuck stupid notebook tabs and monodeveop have to do it myself
 		ChatLayout c=new ChatLayout();

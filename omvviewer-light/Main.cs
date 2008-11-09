@@ -56,9 +56,10 @@ namespace omvviewerlight
             try
             {
                 client = new GridClient();
-              
 				name_cache=new AVNameCache();
                 Application.Init();
+				Gtk.Window.DefaultIcon=Gdk.Pixbuf.LoadFromResource("viewericon.xpm");
+
                 win = new MainWindow();
                 win.Show();
                 Application.Run();
