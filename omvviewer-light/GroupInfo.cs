@@ -61,9 +61,9 @@ namespace omvviewerlight
 
         List<UUID> rcvd_names = new List<UUID>();
 
-		Gdk.Pixbuf folder_open = new Gdk.Pixbuf("inv_folder_plain_open.tga");
-		Gdk.Pixbuf tick = new Gdk.Pixbuf("tick.tga");
-		Gdk.Pixbuf cross = new Gdk.Pixbuf("cross.tga");
+		Gdk.Pixbuf folder_open = Gdk.Pixbuf.LoadFromResource("inv_folder_plain_open.tga");
+		Gdk.Pixbuf tick = Gdk.Pixbuf.LoadFromResource("tick.tga");
+		Gdk.Pixbuf cross = Gdk.Pixbuf.LoadFromResource("cross.tga");
 		
 		public GroupInfo(Group group) : 
 				base(Gtk.WindowType.Toplevel)

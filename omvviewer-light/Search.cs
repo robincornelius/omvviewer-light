@@ -55,7 +55,7 @@ namespace omvviewerlight
 		
 		Gtk.Label addtabwithicon(string filename,string label,Gtk.Widget contents)
 	    {
-			Gtk.Image image=new Gtk.Image(filename);
+			Gtk.Image image=new Gtk.Image(Gdk.Pixbuf.LoadFromResource(filename));
 			image.SetSizeRequest(16,16);
 			Gtk.Label lable=new Gtk.Label(label);
 			Gtk.HBox box=new Gtk.HBox();

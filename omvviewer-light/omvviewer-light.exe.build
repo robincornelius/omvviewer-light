@@ -12,7 +12,89 @@
             </fileset>
         </copy>
         <csc target="winexe" debug="${build.debug}" unsafe="True" define="TRACE" main="" output="${build.dir}/${project::get-name()}.exe">
-            <resources prefix="omvviewer-light" dynamicprefix="true" >
+            <resources prefix="" dynamicprefix="false" >
+		 <include name="art/arrow.tga" /> 
+		 <include name="art/blank_arrow.tga" /> 
+		 <include name="art/closebox.tga" /> 
+		 <include name="art/cross.tga" /> 
+		 <include name="art/down_arrow.tga" /> 
+		 <include name="art/ff_edit_theirs.tga" /> 
+		 <include name="art/icn_voice-groupfocus2.tga" /> 
+		 <include name="art/icn_voice-groupfocus.tga" /> 
+		 <include name="art/icn_voice-pvtfocus.tga" /> 
+		 <include name="art/icon_avatar_offline.tga" /> 
+		 <include name="art/icon_avatar_online.tga" /> 
+		 <include name="art/icon_event.tga" /> 
+		 <include name="art/icon_group.tga" /> 
+		 <include name="art/icon_place.tga" /> 
+		 <include name="art/inv_folder_animation.tga" /> 
+		 <include name="art/inv_folder_bodypart.tga" /> 
+		 <include name="art/inv_folder_callingcard.tga" /> 
+		 <include name="art/inv_folder_clothing.tga" /> 
+		 <include name="art/inv_folder_gesture.tga" /> 
+		 <include name="art/inv_folder_landmark.tga" /> 
+		 <include name="art/inv_folder_lostandfound.tga" /> 
+		 <include name="art/inv_folder_notecard.tga" /> 
+		 <include name="art/inv_folder_object.tga" /> 
+		 <include name="art/inv_folder_plain_closed.tga" /> 
+		 <include name="art/inv_folder_plain_open.tga" /> 
+		 <include name="art/inv_folder_script.tga" /> 
+		 <include name="art/inv_folder_snapshot.tga" /> 
+		 <include name="art/inv_folder_sound.tga" /> 
+		 <include name="art/inv_folder_texture.tga" /> 
+		 <include name="art/inv_folder_trash.tga" /> 
+		 <include name="art/inv_item_animation.tga" /> 
+		 <include name="art/inv_item_attach.tga" /> 
+		 <include name="art/inv_item_callingcard_offline.tga" /> 
+		 <include name="art/inv_item_callingcard_online.tga" /> 
+		 <include name="art/inv_item_clothing.tga" /> 
+		 <include name="art/inv_item_eyes.tga" /> 
+		 <include name="art/inv_item_gesture.tga" /> 
+		 <include name="art/inv_item_gloves.tga" /> 
+		 <include name="art/inv_item_hair.tga" /> 
+		 <include name="art/inv_item_jacket.tga" /> 
+		 <include name="art/inv_item_landmark.tga" /> 
+		 <include name="art/inv_item_landmark_visited.tga" /> 
+		 <include name="art/inv_item_notecard.tga" /> 
+		 <include name="art/inv_item_object_multi.tga" /> 
+		 <include name="art/inv_item_object.tga" /> 
+		 <include name="art/inv_item_pants.tga" /> 
+		 <include name="art/inv_item_script_dangerous.tga" /> 
+		 <include name="art/inv_item_script.tga" /> 
+		 <include name="art/inv_item_shape.tga" /> 
+		 <include name="art/inv_item_shirt.tga" /> 
+		 <include name="art/inv_item_shoes.tga" /> 
+		 <include name="art/inv_item_skin.tga" /> 
+		 <include name="art/inv_item_skirt.tga" /> 
+		 <include name="art/inv_item_snapshot.tga" /> 
+		 <include name="art/inv_item_socks.tga" /> 
+		 <include name="art/inv_item_sound.tga" /> 
+		 <include name="art/inv_item_texture.tga" /> 
+		 <include name="art/inv_item_underpants.tga" /> 
+		 <include name="art/inv_item_undershirt.tga" /> 
+		 <include name="art/item_object.tga" /> 
+		 <include name="art/map_avatar_8.tga" /> 
+		 <include name="art/map_avatar_above_8.tga" /> 
+		 <include name="art/map_avatar_below_8.tga" /> 
+		 <include name="art/map_avatar_me_8.tga" /> 
+		 <include name="art/map_home.tga" /> 
+		 <include name="art/parcelindex.tga" /> 
+		 <include name="art/parcel.tga" /> 
+		 <include name="art/status_health.tga" /> 
+		 <include name="art/status_money.tga" /> 
+		 <include name="art/status_no_build.tga" /> 
+		 <include name="art/status_no_fly.tga" /> 
+		 <include name="art/status_no_push.tga" /> 
+		 <include name="art/status_no_scripts.tga" /> 
+		 <include name="art/status_no_voice.tga" /> 
+		 <include name="art/status_script_debug.tga" /> 
+		 <include name="art/status_search_btn.png" /> 
+		 <include name="art/status_voice.tga" /> 
+		 <include name="art/tick.tga" /> 
+		 <include name="art/trying.tga" /> 
+		 <include name="art/up_arrow.tga" /> 
+		 <include name="art/viewericon.xpm" />
+
             </resources>
             <sources failonempty="true">
                 <include name="AVNameCache.cs" />
@@ -81,7 +163,6 @@
                 <include name="gtk-gui/omvviewerlight.TeleportProgress.cs" />
                 <include name="gtk-gui/omvviewerlight.TeleportTo.cs" />
                 <include name="gtk-gui/omvviewerlight.aPick.cs" />
-   
             </sources>
             <references basedir="${project::get-base-directory()}">
                 <lib>
@@ -111,3 +192,5 @@
     <target name="doc" description="Creates documentation.">
     </target>
 </project>
+
+

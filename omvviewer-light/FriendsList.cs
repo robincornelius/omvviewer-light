@@ -49,8 +49,9 @@ namespace omvviewerlight
             store.SetSortColumnId(1, SortType.Ascending);
             store.SetSortFunc(1,sortfunc);
 			
-			online_img=new Gdk.Pixbuf("icon_avatar_online.tga");
-			offline_img=new Gdk.Pixbuf("icon_avatar_offline.tga");
+			//online_img=new Gdk.Pixbuf;
+			online_img=Gdk.Pixbuf.LoadFromResource("icon_avatar_online.tga");
+			offline_img=Gdk.Pixbuf.LoadFromResource("icon_avatar_offline.tga");
 				
 			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);		
 			MainClass.client.Friends.OnFriendOnline += new OpenMetaverse.FriendsManager.FriendOnlineEvent(onFriendOnline);
@@ -148,7 +149,7 @@ namespace omvviewerlight
 			FriendInfo finfo;
 			if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 			{
-                store.SetValue(iter, 0, finfo.IsOnline ? new Gdk.Pixbuf("icon_avatar_online.tga") : new Gdk.Pixbuf("icon_avatar_offline.tga"));
+                store.SetValue(iter, 0, finfo.IsOnline ? Gdk.Pixbuf.LoadFromResource("icon_avatar_online.tga") : Gdk.Pixbuf.LoadFromResource("icon_avatar_offline.tga"));
 			    store.SetValue(iter, 3, finfo.IsOnline);
             }
 			return false;

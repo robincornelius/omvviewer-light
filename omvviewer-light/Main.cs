@@ -40,40 +40,19 @@ namespace omvviewerlight
 	class MainClass
 	{
 		
-     //   [DllImport("Kernel32")]
-      //      private static extern IntPtr GetConsoleWindow();
-
-      //  [DllImport("user32.dll")]
-      //      static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-		public static GridClient client;
+    	public static GridClient client;
 		public static MainWindow win;
 
 		public static AVNameCache name_cache;
 
+		public static string art_location=System.AppDomain.CurrentDomain.BaseDirectory;
+		
 		public static void Main (string[] args)
 		{
 
             bool hiddenconsole = false;
 			// Now boot the libsecondlife layer so it is global to our namespace
-            System.IO.StreamWriter aStreamWriter;
-             
-            aStreamWriter = new System.IO.StreamWriter("log.txt");
-
-     /*       try
-            {
-                IntPtr hWnd = GetConsoleWindow();
-                DisplayAppSettings();
-                ShowWindow(hWnd, 0);
-                hiddenconsole = true;
-           
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-
-*/
+            
             try
             {
                 client = new GridClient();
@@ -86,12 +65,7 @@ namespace omvviewerlight
             }
             catch(Exception e)
             {
-            //    if (hiddenconsole)
-           //     {
-           //         IntPtr hWnd = GetConsoleWindow();
-           //         ShowWindow(hWnd, 1);
-           //     }
-
+          
                 Console.Write("The application died in a big heap\n This is the debug i caught :-");
                 Console.Write("-----------------------------------------------\n");
                 Console.Write(e.Message+"\n");

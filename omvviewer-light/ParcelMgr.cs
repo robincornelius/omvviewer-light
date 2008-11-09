@@ -117,7 +117,7 @@ namespace omvviewerlight
 
                     nextcol = 0;
                    
-                    this.parcel_map = new Gdk.Pixbuf("trying.tga");
+                    this.parcel_map = Gdk.Pixbuf.LoadFromResource("trying.tga");
                     this.image9.Pixbuf = this.parcel_map;
 
                     populate_tree();
@@ -133,7 +133,7 @@ namespace omvviewerlight
 			
 		void onDwell (UUID parcelid,int localid,float dwell)
 		{
-				Console.WriteLine("Got dwell for "+parcelid.ToString()+" : local id "+localid.ToString()+" is "+dwell.ToString());
+			//Console.WriteLine("Got dwell for "+parcelid.ToString()+" : local id "+localid.ToString()+" is "+dwell.ToString());
 			Gtk.TreeIter iter;
 			if(this.parcel_to_tree.TryGetValue(localid,out iter))
 			{
@@ -193,7 +193,7 @@ namespace omvviewerlight
                          byte[] data = new byte[4 * 32 * 16];
                          uint col = colmap[thiscol];
 
-                         Gdk.Pixbuf pb = new Gdk.Pixbuf("parcelindex.tga");
+                         Gdk.Pixbuf pb = Gdk.Pixbuf.LoadFromResource("parcelindex.tga");
                          sbyte* ps;
                          ps = (sbyte*)pb.Pixels;
 
@@ -303,7 +303,7 @@ namespace omvviewerlight
 			nextcol=0;
 			Gtk.Application.Invoke(delegate
             {
-				this.parcel_map = new Gdk.Pixbuf("trying.tga");
+				this.parcel_map = Gdk.Pixbuf.LoadFromResource("trying.tga");
 				this.image9.Pixbuf=this.parcel_map;
 			});
 

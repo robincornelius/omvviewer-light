@@ -53,7 +53,7 @@ namespace omvviewerlight {
         
         private Gtk.Button button_tphome;
         
-        private Gtk.Label GtkLabel1;
+        private Gtk.Label GtkLabel2;
         
         protected virtual void Build() {
             Stetic.Gui.Initialize(this);
@@ -225,7 +225,7 @@ namespace omvviewerlight {
             w15.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w16 = new Gtk.Image();
-            w16.Pixbuf = new Gdk.Pixbuf(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "./icon_place.tga"));
+            w16.Pixbuf = Gdk.Pixbuf.LoadFromResource("icon_place.tga");
             w15.Add(w16);
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w18 = new Gtk.Label();
@@ -251,7 +251,7 @@ namespace omvviewerlight {
             w24.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w25 = new Gtk.Image();
-            w25.Pixbuf = new Gdk.Pixbuf(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "./map_home.tga"));
+            w25.Pixbuf = Gdk.Pixbuf.LoadFromResource("map_home.tga");
             w24.Add(w25);
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w27 = new Gtk.Label();
@@ -272,11 +272,11 @@ namespace omvviewerlight {
             w32.Fill = false;
             this.GtkAlignment.Add(this.vbox5);
             this.frame1.Add(this.GtkAlignment);
-            this.GtkLabel1 = new Gtk.Label();
-            this.GtkLabel1.Name = "GtkLabel1";
-            this.GtkLabel1.LabelProp = Mono.Unix.Catalog.GetString("<b>Teleport target</b>");
-            this.GtkLabel1.UseMarkup = true;
-            this.frame1.LabelWidget = this.GtkLabel1;
+            this.GtkLabel2 = new Gtk.Label();
+            this.GtkLabel2.Name = "GtkLabel2";
+            this.GtkLabel2.LabelProp = Mono.Unix.Catalog.GetString("<b>Teleport target</b>");
+            this.GtkLabel2.UseMarkup = true;
+            this.frame1.LabelWidget = this.GtkLabel2;
             this.vbox2.Add(this.frame1);
             Gtk.Box.BoxChild w35 = ((Gtk.Box.BoxChild)(this.vbox2[this.frame1]));
             w35.Position = 1;

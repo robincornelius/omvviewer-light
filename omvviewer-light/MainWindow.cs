@@ -85,7 +85,7 @@ public partial class MainWindow: Gtk.Window
 	{
         Build();
                   
-		trayIcon = new StatusIcon(new Gdk.Pixbuf("viewericon.xpm"));
+		trayIcon = new StatusIcon(Gdk.Pixbuf.LoadFromResource("viewericon.xpm"));
 		trayIcon.Visible=true;
 		trayIcon.Tooltip="Disconnected";
 		trayIcon.Activate+= delegate{Visible=!Visible;};
@@ -96,7 +96,8 @@ public partial class MainWindow: Gtk.Window
 		
 		status_balance=new Gtk.HBox();
 		status_balance_lable=new Gtk.Label("?");
-		Gtk.Image balicon=new Gtk.Image("status_money.tga");
+		Gtk.Image balicon=new Gtk.Image();
+		balicon.Pixbuf = Gdk.Pixbuf.LoadFromResource("status_money.tga");
 		status_balance.PackStart(balicon);
 		status_balance.PackStart(status_balance_lable);
 		status_balance.SetChildPacking(balicon,false,false,0,PackType.Start);
@@ -109,7 +110,6 @@ public partial class MainWindow: Gtk.Window
 		this.statusbar1.PackStart(status_balance);
 
 		this.Title="Omvviewer-light v0.40 SVN";
-		this.SetIconFromFile("viewericon.xpm");
 		
 		// Fuck stupid notebook tabs and monodeveop have to do it myself
 		ChatLayout c=new ChatLayout();
@@ -414,7 +414,8 @@ public partial class MainWindow: Gtk.Window
 			
 	Gtk.Label addtabwithicon(string filename,string label,Gtk.Widget contents)
 	{
-		Gtk.Image image=new Gtk.Image(filename);
+		Gtk.Image image=new Gtk.Image();
+		image.Pixbuf=Gdk.Pixbuf.LoadFromResource(filename);
 		image.SetSizeRequest(16,16);
 		Gtk.Label lable=new Gtk.Label(label);
 		Gtk.HBox box=new Gtk.HBox();
@@ -459,14 +460,14 @@ public partial class MainWindow: Gtk.Window
 		
 		if((parcel.Flags & OpenMetaverse.Parcel.ParcelFlags.AllowFly) != OpenMetaverse.Parcel.ParcelFlags.AllowFly )
 		{
-			Gtk.Image myimage=new Gtk.Image("status_no_fly.tga");
+			Gtk.Image myimage=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("status_no_fly.tga"));
 			status_icons.PackStart(myimage);
 			status_icons.SetChildPacking(myimage,false,false,0,PackType.Start);
 		}
 	
 		if((parcel.Flags & OpenMetaverse.Parcel.ParcelFlags.RestrictPushObject)==OpenMetaverse.Parcel.ParcelFlags.RestrictPushObject)
 		{
-			Gtk.Image myimage=new Gtk.Image("status_no_push.tga");
+			Gtk.Image myimage=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("status_no_push.tga"));
 			status_icons.PackStart(myimage);				
 			status_icons.SetChildPacking(myimage,false,false,0,PackType.Start);
 
@@ -474,7 +475,7 @@ public partial class MainWindow: Gtk.Window
 
 		if((parcel.Flags & OpenMetaverse.Parcel.ParcelFlags.AllowOtherScripts)!=OpenMetaverse.Parcel.ParcelFlags.AllowOtherScripts)
 		{
-			Gtk.Image myimage=new Gtk.Image("status_no_scripts.tga");
+			Gtk.Image myimage=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("status_no_scripts.tga"));
 			status_icons.PackStart(myimage);				
 			status_icons.SetChildPacking(myimage,false,false,0,PackType.Start);
 		
@@ -482,7 +483,7 @@ public partial class MainWindow: Gtk.Window
 
 		if((parcel.Flags & OpenMetaverse.Parcel.ParcelFlags.CreateObjects)!=OpenMetaverse.Parcel.ParcelFlags.CreateObjects)
 		{
-			Gtk.Image myimage=new Gtk.Image("status_no_build.tga");
+			Gtk.Image myimage=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("status_no_build.tga"));
 			status_icons.PackStart(myimage);				
 			status_icons.SetChildPacking(myimage,false,false,0,PackType.Start);
 
@@ -625,16 +626,16 @@ public partial class MainWindow: Gtk.Window
 	
 	void makeimwindow(string name,ChatConsole cs,bool group,UUID target)
 	{
-		Gtk.Image image=new Gtk.Image("closebox.tga");
+		Gtk.Image image=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("closebox.tga"));
 		image.HeightRequest=16;
 		image.WidthRequest=16;
 		
 		Gtk.Image icon;
 		
 		if(group)
-			icon=new Gtk.Image("icon_group.tga");
+			icon=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("icon_group.tga"));
 		else
-			icon=new Gtk.Image("icn_voice-groupfocus.tga");
+			icon=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("icn_voice-groupfocus.tga"));
 		
 		image.SetSizeRequest(16,16);
 		Gtk.Label lable=new Gtk.Label(name);
