@@ -65,8 +65,16 @@ namespace omvviewerlight
                 this.checkbutton_rememberpass.Active = true;
 		    else
                 this.checkbutton_rememberpass.Active = false;
-
-            StreamReader s = File.OpenText("gridlist.txt");
+			
+			 StreamReader s;
+             s = File.OpenText(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory,"gridlist.txt"));
+			
+			if(s==null)
+				s = File.OpenText("gridlist.txt");
+			
+			if(s==null)
+				Console.WriteLine("Can't find a gridlist.txt");
+				
 			try
 			{
 				char[] splitter  = {' '};
@@ -282,7 +290,11 @@ namespace omvviewerlight
 				login=MainClass.client.Network.DefaultLoginParams(entry_first.Text,entry_last.Text,entry_pass.Text,"omvviewer","2.0");
                 try
                 {
-                    StreamReader s = File.OpenText("MyMac.txt");
+					 StreamReader s;
+					 s = File.OpenText(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory,"MyMac.txt"));
+			         if(s==null)
+						s = File.OpenText("MyMac.txt");
+					
                     login.MAC = s.ReadLine();
                 }
                 catch(Exception ee)
