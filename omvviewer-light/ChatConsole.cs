@@ -52,11 +52,6 @@ namespace omvviewerlight
 		public UUID im_key=OpenMetaverse.UUID.Zero;
 		public UUID im_session_id=OpenMetaverse.UUID.Zero;
 		
-		~ChatConsole()
-		{
-           
-					Console.Write("*!*!*!*!*!*!*!*! ALL CLEAN ON CHAT !*!*!*!*!*!*!*\n|");
-		}
 		
 		public ChatConsole()
 		{
@@ -106,11 +101,9 @@ namespace omvviewerlight
             if (thispage == -1)
                 thispage = 1; //FUCKING PARENT CHAT WINDOW STUFF
 
-            Console.Write("On switch page " + thispage.ToString() + ":" + args.PageNum.ToString());
-			if(thispage==args.PageNum)
+      	    if(thispage==args.PageNum)
 			{
-                Console.Write("Setting color to black\n");
-
+          
 			    Gdk.Color col = new Gdk.Color(0,0,0);
 				Gtk.StateType type = new Gtk.StateType();
 				type|=Gtk.StateType.Active;
@@ -143,7 +136,7 @@ namespace omvviewerlight
 					
 				int activepage=MainClass.win.getnotebook().CurrentPage;
 				int thispage=MainClass.win.getnotebook().PageNum(this);
-				Console.Write(activepage.ToString()+" : "+thispage.ToString()+"\n");
+			//	Console.Write(activepage.ToString()+" : "+thispage.ToString()+"\n");
 
                // Console.Write("Red tab test " + activepage.ToString() + ":" + thispage.ToString() + "\n");
 
@@ -228,7 +221,7 @@ namespace omvviewerlight
 			textview_chat.Buffer.TagTable.Add(ownerobjectchat);
             textview_chat.Buffer.TagTable.Add(typing_tag);
 
-			Console.Write("**** CHAT CONSOLE SETUP ****\n");
+			//Console.Write("**** CHAT CONSOLE SETUP ****\n");
 
 		}
 
@@ -248,19 +241,19 @@ namespace omvviewerlight
 				if(MainClass.win.active_ims.Contains(im_session_id))
 					MainClass.client.Self.RequestLeaveGroupChat(im_session_id);		
 			
-			Console.Write("ref count is "+this.RefCount.ToString()+"\n");
+		//	Console.Write("ref count is "+this.RefCount.ToString()+"\n");
 			nb.RemovePage(pageno);
-			Console.Write("ref count is "+this.RefCount.ToString()+"\n");
+			//Console.Write("ref count is "+this.RefCount.ToString()+"\n");
 			
 			MainClass.client.Self.OnChat -= new OpenMetaverse.AgentManager.ChatCallback(onChat);
             MainClass.client.Self.OnInstantMessage -= new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
 			MainClass.client.Self.OnGroupChatJoin -= new OpenMetaverse.AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
 			
-			Console.Write("Trying to destroy chat window\n");
+			//Console.Write("Trying to destroy chat window\n");
 			
 			 MainClass.win.getnotebook().SwitchPage -=  new SwitchPageHandler(onSwitchPage);
 			
-				Console.Write("ref count is "+this.RefCount.ToString()+"\n");
+			//	Console.Write("ref count is "+this.RefCount.ToString()+"\n");
 			this.Destroy();
 		
 		}
@@ -574,7 +567,7 @@ namespace omvviewerlight
 				{
 					if(istypingsent==false)
 					{	
-					    Console.Write("\nSending typing message\n");
+					  //  Console.Write("\nSending typing message\n");
                         byte[] binaryBucket;
                         binaryBucket = new byte[0];
 		    			MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_key,"typing",im_session_id,InstantMessageDialog.StartTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
@@ -587,7 +580,7 @@ namespace omvviewerlight
 	bool StopTyping()
 	 {
 			
-					    Console.Write("\nSending typing message\n");
+					  //  Console.Write("\nSending typing message\n");
                         byte[] binaryBucket;
                         binaryBucket = new byte[0];
 		    			MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_key,"",im_session_id,InstantMessageDialog.StopTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);

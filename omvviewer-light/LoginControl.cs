@@ -66,11 +66,16 @@ namespace omvviewerlight
 		    else
                 this.checkbutton_rememberpass.Active = false;
 			
-			 StreamReader s;
-             s = File.OpenText(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory,"gridlist.txt"));
-			
+			 StreamReader s=null;
+			 if(File.Exists(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory,"gridlist.txt")))
+			   s = File.OpenText(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory,"gridlist.txt"));
+
 			if(s==null)
-				s = File.OpenText("gridlist.txt");
+			   if(File.Exists("~/.gridlist.txt"))
+			      s = File.OpenText("~/.gridlist.txt");		
+			if(s==null)
+			      if(File.Exists("gridlist.txt"))
+			         s = File.OpenText("gridlist.txt");
 			
 			if(s==null)
 				Console.WriteLine("Can't find a gridlist.txt");
@@ -288,19 +293,28 @@ namespace omvviewerlight
 				//LoginParams login;
 			
 				login=MainClass.client.Network.DefaultLoginParams(entry_first.Text,entry_last.Text,entry_pass.Text,"omvviewer","2.0");
-                try
-                {
-					 StreamReader s;
-					 s = File.OpenText(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory,"MyMac.txt"));
-			         if(s==null)
-						s = File.OpenText("MyMac.txt");
-					
-                    login.MAC = s.ReadLine();
-                }
-                catch(Exception ee)
-                {
-                    Console.WriteLine(ee.ToString());
-                }
+				StreamReader s=null;
+              
+				 if(File.Exists(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory,"MyMac.txt")))
+				     s = File.OpenText(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory,"MyMac.txt"));
+				 if(s==null)
+					if(File.Exists("~/.MyMac.txt"))
+						s = File.OpenText("~/.MyMac.txt");	  
+				  if(s==null)
+					if(File.Exists("MyMac.txt"))
+					    s = File.OpenText("MyMac.txt");
+				
+				if(s!=null)
+				{
+					try
+	                {
+	                    login.MAC = s.ReadLine();
+	                }
+	                catch(Exception ee)
+	                {
+	                    Console.WriteLine(ee.ToString());
+	                }
+				}
 
                 if (this.radiobutton1.Active)
                 {
