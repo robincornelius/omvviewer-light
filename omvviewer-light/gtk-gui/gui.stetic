@@ -2632,7 +2632,7 @@ Resident Michelle2 Zenovka
         <property name="MemberName" />
         <property name="WidthRequest">160</property>
         <property name="CanFocus">True</property>
-        <property name="CurrentPage">1</property>
+        <property name="CurrentPage">0</property>
         <child>
           <widget class="Gtk.VBox" id="vbox1">
             <property name="MemberName" />
@@ -2898,7 +2898,8 @@ Resident Michelle2 Zenovka
                   <widget class="Gtk.Button" id="button_IM">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">resource:icn_voice-groupfocus.tga</property>
                     <property name="Label" translatable="yes">IM</property>
                     <property name="UseUnderline">True</property>
                   </widget>
@@ -2914,7 +2915,7 @@ Resident Michelle2 Zenovka
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">file:./status_money.tga</property>
+                    <property name="Icon">resource:status_money.tga</property>
                     <property name="Label" translatable="yes">Pay</property>
                     <property name="UseUnderline">True</property>
                   </widget>
@@ -2929,7 +2930,8 @@ Resident Michelle2 Zenovka
                   <widget class="Gtk.Button" id="button_teleport">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">resource:icon_place.tga</property>
                     <property name="Label" translatable="yes">Teleport</property>
                     <property name="UseUnderline">True</property>
                   </widget>

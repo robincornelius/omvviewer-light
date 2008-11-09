@@ -100,7 +100,7 @@ namespace omvviewerlight {
             this.notebook1.WidthRequest = 160;
             this.notebook1.CanFocus = true;
             this.notebook1.Name = "notebook1";
-            this.notebook1.CurrentPage = 1;
+            this.notebook1.CurrentPage = 0;
             // Container child notebook1.Gtk.Notebook+NotebookChild
             this.vbox1 = new Gtk.VBox();
             this.vbox1.Name = "vbox1";
@@ -304,54 +304,84 @@ namespace omvviewerlight {
             this.button_IM.CanFocus = true;
             this.button_IM.Name = "button_IM";
             this.button_IM.UseUnderline = true;
-            this.button_IM.Label = Mono.Unix.Catalog.GetString("IM");
+            // Container child button_IM.Gtk.Container+ContainerChild
+            Gtk.Alignment w21 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            Gtk.HBox w22 = new Gtk.HBox();
+            w22.Spacing = 2;
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Image w23 = new Gtk.Image();
+            w23.Pixbuf = Gdk.Pixbuf.LoadFromResource("icn_voice-groupfocus.tga");
+            w22.Add(w23);
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Label w25 = new Gtk.Label();
+            w25.LabelProp = Mono.Unix.Catalog.GetString("IM");
+            w25.UseUnderline = true;
+            w22.Add(w25);
+            w21.Add(w22);
+            this.button_IM.Add(w21);
             this.hbox4.Add(this.button_IM);
-            Gtk.Box.BoxChild w21 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_IM]));
-            w21.Position = 0;
-            w21.Expand = false;
-            w21.Fill = false;
+            Gtk.Box.BoxChild w29 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_IM]));
+            w29.Position = 0;
+            w29.Expand = false;
+            w29.Fill = false;
             // Container child hbox4.Gtk.Box+BoxChild
             this.button_pay = new Gtk.Button();
             this.button_pay.CanFocus = true;
             this.button_pay.Name = "button_pay";
             this.button_pay.UseUnderline = true;
             // Container child button_pay.Gtk.Container+ContainerChild
-            Gtk.Alignment w22 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            Gtk.Alignment w30 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
             // Container child GtkAlignment.Gtk.Container+ContainerChild
-            Gtk.HBox w23 = new Gtk.HBox();
-            w23.Spacing = 2;
+            Gtk.HBox w31 = new Gtk.HBox();
+            w31.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
-            Gtk.Image w24 = new Gtk.Image();
-            w24.Pixbuf = new Gdk.Pixbuf(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "./status_money.tga"));
-            w23.Add(w24);
+            Gtk.Image w32 = new Gtk.Image();
+            w32.Pixbuf = Gdk.Pixbuf.LoadFromResource("status_money.tga");
+            w31.Add(w32);
             // Container child GtkHBox.Gtk.Container+ContainerChild
-            Gtk.Label w26 = new Gtk.Label();
-            w26.LabelProp = Mono.Unix.Catalog.GetString("Pay");
-            w26.UseUnderline = true;
-            w23.Add(w26);
-            w22.Add(w23);
-            this.button_pay.Add(w22);
+            Gtk.Label w34 = new Gtk.Label();
+            w34.LabelProp = Mono.Unix.Catalog.GetString("Pay");
+            w34.UseUnderline = true;
+            w31.Add(w34);
+            w30.Add(w31);
+            this.button_pay.Add(w30);
             this.hbox4.Add(this.button_pay);
-            Gtk.Box.BoxChild w30 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_pay]));
-            w30.Position = 1;
-            w30.Expand = false;
-            w30.Fill = false;
+            Gtk.Box.BoxChild w38 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_pay]));
+            w38.Position = 1;
+            w38.Expand = false;
+            w38.Fill = false;
             // Container child hbox4.Gtk.Box+BoxChild
             this.button_teleport = new Gtk.Button();
             this.button_teleport.CanFocus = true;
             this.button_teleport.Name = "button_teleport";
             this.button_teleport.UseUnderline = true;
-            this.button_teleport.Label = Mono.Unix.Catalog.GetString("Teleport");
+            // Container child button_teleport.Gtk.Container+ContainerChild
+            Gtk.Alignment w39 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            Gtk.HBox w40 = new Gtk.HBox();
+            w40.Spacing = 2;
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Image w41 = new Gtk.Image();
+            w41.Pixbuf = Gdk.Pixbuf.LoadFromResource("icon_place.tga");
+            w40.Add(w41);
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Label w43 = new Gtk.Label();
+            w43.LabelProp = Mono.Unix.Catalog.GetString("Teleport");
+            w43.UseUnderline = true;
+            w40.Add(w43);
+            w39.Add(w40);
+            this.button_teleport.Add(w39);
             this.hbox4.Add(this.button_teleport);
-            Gtk.Box.BoxChild w31 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_teleport]));
-            w31.Position = 2;
-            w31.Expand = false;
-            w31.Fill = false;
+            Gtk.Box.BoxChild w47 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_teleport]));
+            w47.Position = 2;
+            w47.Expand = false;
+            w47.Fill = false;
             this.vbox1.Add(this.hbox4);
-            Gtk.Box.BoxChild w32 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox4]));
-            w32.Position = 3;
-            w32.Expand = false;
-            w32.Fill = false;
+            Gtk.Box.BoxChild w48 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox4]));
+            w48.Position = 3;
+            w48.Expand = false;
+            w48.Fill = false;
             this.notebook1.Add(this.vbox1);
             // Notebook tab
             this.label2 = new Gtk.Label();
@@ -369,10 +399,10 @@ namespace omvviewerlight {
             this.image3.HeightRequest = 128;
             this.image3.Name = "image3";
             this.vbox2.Add(this.image3);
-            Gtk.Box.BoxChild w34 = ((Gtk.Box.BoxChild)(this.vbox2[this.image3]));
-            w34.Position = 0;
-            w34.Expand = false;
-            w34.Fill = false;
+            Gtk.Box.BoxChild w50 = ((Gtk.Box.BoxChild)(this.vbox2[this.image3]));
+            w50.Position = 0;
+            w50.Expand = false;
+            w50.Fill = false;
             // Container child vbox2.Gtk.Box+BoxChild
             this.GtkScrolledWindow2 = new Gtk.ScrolledWindow();
             this.GtkScrolledWindow2.Name = "GtkScrolledWindow2";
@@ -385,11 +415,11 @@ namespace omvviewerlight {
             this.textview3.WrapMode = ((Gtk.WrapMode)(2));
             this.GtkScrolledWindow2.Add(this.textview3);
             this.vbox2.Add(this.GtkScrolledWindow2);
-            Gtk.Box.BoxChild w36 = ((Gtk.Box.BoxChild)(this.vbox2[this.GtkScrolledWindow2]));
-            w36.Position = 1;
+            Gtk.Box.BoxChild w52 = ((Gtk.Box.BoxChild)(this.vbox2[this.GtkScrolledWindow2]));
+            w52.Position = 1;
             this.notebook1.Add(this.vbox2);
-            Gtk.Notebook.NotebookChild w37 = ((Gtk.Notebook.NotebookChild)(this.notebook1[this.vbox2]));
-            w37.Position = 1;
+            Gtk.Notebook.NotebookChild w53 = ((Gtk.Notebook.NotebookChild)(this.notebook1[this.vbox2]));
+            w53.Position = 1;
             // Notebook tab
             this.label3 = new Gtk.Label();
             this.label3.Name = "label3";
@@ -407,20 +437,20 @@ namespace omvviewerlight {
             this.notebook_picks.CurrentPage = -1;
             this.notebook_picks.TabPos = ((Gtk.PositionType)(0));
             this.vbox5.Add(this.notebook_picks);
-            Gtk.Box.BoxChild w38 = ((Gtk.Box.BoxChild)(this.vbox5[this.notebook_picks]));
-            w38.Position = 0;
-            w38.Expand = false;
-            w38.Fill = false;
+            Gtk.Box.BoxChild w54 = ((Gtk.Box.BoxChild)(this.vbox5[this.notebook_picks]));
+            w54.Position = 0;
+            w54.Expand = false;
+            w54.Fill = false;
             // Container child vbox5.Gtk.Box+BoxChild
             this.hbox5 = new Gtk.HBox();
             this.hbox5.Name = "hbox5";
             this.hbox5.Spacing = 6;
             this.vbox5.Add(this.hbox5);
-            Gtk.Box.BoxChild w39 = ((Gtk.Box.BoxChild)(this.vbox5[this.hbox5]));
-            w39.Position = 1;
+            Gtk.Box.BoxChild w55 = ((Gtk.Box.BoxChild)(this.vbox5[this.hbox5]));
+            w55.Position = 1;
             this.notebook1.Add(this.vbox5);
-            Gtk.Notebook.NotebookChild w40 = ((Gtk.Notebook.NotebookChild)(this.notebook1[this.vbox5]));
-            w40.Position = 2;
+            Gtk.Notebook.NotebookChild w56 = ((Gtk.Notebook.NotebookChild)(this.notebook1[this.vbox5]));
+            w56.Position = 2;
             // Notebook tab
             this.label4 = new Gtk.Label();
             this.label4.Name = "label4";

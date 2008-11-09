@@ -60,7 +60,7 @@ namespace omvviewerlight
 			MainClass.client.Objects.OnNewAvatar += new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
 			MainClass.client.Objects.OnObjectKilled += new OpenMetaverse.ObjectManager.KillObjectCallback(onKillObject);
 			MainClass.client.Objects.OnObjectUpdated += new OpenMetaverse.ObjectManager.ObjectUpdatedCallback(onUpdate);
-		
+			
 			MainClass.client.Self.OnChat += new OpenMetaverse.AgentManager.ChatCallback(onChat);
 			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
 	
@@ -214,24 +214,31 @@ namespace omvviewerlight
 	        
             lock(av_tree)
 			{
+					lock(MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
+					{
                         if (!this.av_tree.ContainsKey(avatar.LocalID))
                         {
                             // The agent *might* still be present under an old localID and we
                             // missed the kill
-                           
                                 uint localid=0;
+							    List <uint> removelist=new List <uint>();
                                 foreach (KeyValuePair<uint, agent> av in av_tree)
                                 {
                                     if (av.Value.avatar.ID == avatar.ID)
                                     {
-                                        //All ready in tree kill that old definition
-                                        localid=av.Key;
-                                        break;
                                         
+                                        MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.Remove(av.Key);
+									    removelist.Add(av.Key);
+								        //av_tree.Remove(av.Key); 
                                     }
                                 }
-                                if(localid!=0)
-                                    av_tree.Remove(localid);
+							
+							    foreach(uint id in removelist)
+							{
+								av_tree.Remove(id); 
+								
+							}
+                                                                   
                             
 
                             agent theagent = new agent();
@@ -242,8 +249,9 @@ namespace omvviewerlight
 	                                theagent.iter = iter;
 
 	                                av_tree.Add(avatar.LocalID, theagent);
-	        			calcdistance(avatar.LocalID);                            
-                       }
+						            calcdistance(avatar.LocalID);                            
+					}
+}
 			}
      		        });
 			

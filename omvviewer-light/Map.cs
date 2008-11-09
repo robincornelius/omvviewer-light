@@ -56,7 +56,6 @@ namespace omvviewerlight
 			this.Build();
 			MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
 			MainClass.client.Objects.OnNewAvatar += new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
-			MainClass.client.Objects.OnObjectKilled += new OpenMetaverse.ObjectManager.KillObjectCallback(onKillObject);
 			MainClass.client.Objects.OnObjectUpdated += new OpenMetaverse.ObjectManager.ObjectUpdatedCallback(onUpdate);
             MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
 			MainClass.client.Grid.OnGridLayer += new OpenMetaverse.GridManager.GridLayerCallback(onGridLayer);
@@ -126,9 +125,11 @@ namespace omvviewerlight
 		{
 
             Gtk.Application.Invoke(delegate
-                {
-                    if (MainClass.client.Network.CurrentSim.ObjectsAvatars.ContainsKey(update.LocalID))
-                        drawavs();
+				{
+				
+					lock(MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
+                        if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.ContainsKey(update.LocalID))
+                            drawavs();
                 });
 
 }
@@ -141,10 +142,7 @@ namespace omvviewerlight
                 });
 		}
 
-		void onKillObject(Simulator simulator, uint objectID)
-		{			
-		}
-		
+			
 		void drawavs()
 		{
 
@@ -173,7 +171,7 @@ namespace omvviewerlight
 
 				int myz=(int)MainClass.client.Self.SimPosition.Z;
 
-                lock (MainClass.client.Network.CurrentSim.ObjectsAvatars)
+                lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
                 {
                     foreach (KeyValuePair<uint, Avatar> kvp in MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
                     {
@@ -184,7 +182,8 @@ namespace omvviewerlight
                             {
                                 if (!MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary.ContainsKey(kvp.Value.ParentID))
                                 {
-                                    Console.WriteLine("Could not find parent prim for AV\n");
+									Console.WriteLine("Could not find parent prim for AV, killing\n");
+                                     MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.Remove(kvp.Value.LocalID);
                                     continue;
                                 }
                                 Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[kvp.Value.ParentID];
