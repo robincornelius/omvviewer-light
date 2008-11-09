@@ -97,6 +97,10 @@ namespace omvviewerlight
 			
 			this.label_parcelgroup.Text="";
 			this.label_parcelowner.Text="";
+			this.label_forsale.Text="";
+			this.label_price1.Text="";
+			this.lable_forsaleto.Text="";
+			
 
             if (MainClass.client != null)
             {
@@ -125,6 +129,7 @@ namespace omvviewerlight
 
 		void onParcelObjectOwners(Simulator sim,List <OpenMetaverse.ParcelManager.ParcelPrimOwners> primOwners)
 		{
+			Gtk.Application.Invoke(delegate{
 			for(int i = 0; i < primOwners.Count; i++)
 			{
 				Console.WriteLine(primOwners[i].ToString());        
@@ -135,6 +140,7 @@ namespace omvviewerlight
                 ud.go();
 				this.button_return_selected.Sensitive=true;
             }
+			});
 						
 		}
 		
@@ -234,7 +240,7 @@ namespace omvviewerlight
                  x = (int)(((double)sx / (double)srcwidth) * 64.0);
                  y = (int)(((float)sy / (float)srcheight) * 64.0);
 
-                 uint id = (uint)parcelmap[y, x];
+                 uint id = (uint)parcelmap[(63-y), x];
                  uint col;
 
                  if (colmaptoid.ContainsKey(id))
@@ -381,8 +387,35 @@ namespace omvviewerlight
 							 allowed=true;
 						}
 
-					this.button1.Sensitive=allowed;
+					    this.button1.Sensitive=allowed;
+					
+					     if ((parcel.Flags & Parcel.ParcelFlags.ForSale) == Parcel.ParcelFlags.ForSale)
+                         {
+                             if (parcel.AuthBuyerID != UUID.Zero)
+                             {
+                                
+							     this.label_forsale.Text="Single AV";
+						  
+							     AsyncNameUpdate ud=new AsyncNameUpdate(parcel.AuthBuyerID,false);  
+							     ud.onNameCallBack += delegate(string namex,object[] values){  this.lable_forsaleto.Text=namex;};
+                                 ud.go();
+							     this.label_price1.Text=parcel.SalePrice.ToString();
+                             }
+                             else
+                             {
+							     this.label_forsale.Text="Yes";
+                                 this.label_price1.Text=parcel.SalePrice.ToString();
+							     this.lable_forsaleto.Text="Anyone";
 
+                             }
+                         }
+					else
+					{
+						this.label_forsale.Text="No";
+                                 this.label_price1.Text="";
+							     this.lable_forsaleto.Text="";
+					}
+					
 				}
 				else			
 				{
