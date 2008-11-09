@@ -52,8 +52,12 @@ namespace omvviewerlight
 		{      
 			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(uint));
 			this.Build();
+			Gtk.TreeViewColumn tvc;
 			treeview_radar.AppendColumn("",new Gtk.CellRendererText(),"text",0);
-			treeview_radar.AppendColumn("Name",new Gtk.CellRendererText(),"text",1);
+			tvc=treeview_radar.AppendColumn("Name",new Gtk.CellRendererText(),"text",1);
+			//tvc.Resizable=true;
+			tvc.Sizing=Gtk.TreeViewColumnSizing.Autosize;
+			
 			treeview_radar.AppendColumn("Dist.",new Gtk.CellRendererText(),"text",2);
 			treeview_radar.Model=store;
 	

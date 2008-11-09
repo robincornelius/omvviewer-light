@@ -59,7 +59,8 @@ namespace omvviewerlight
             mycol = new MyTreeViewColumn("Traffic", new Gtk.CellRendererText(), "text", 2);
             mycol.setmodel(store);
             treeview1.AppendColumn(mycol);
-
+			store.SetSortFunc(2,numericsort);
+			
             mycol = new MyTreeViewColumn("Location", new Gtk.CellRendererText(), "text", 3);
             mycol.setmodel(store);
             treeview1.AppendColumn(mycol);
@@ -71,6 +72,30 @@ namespace omvviewerlight
 			MainClass.client.Directory.OnPlacesReply += new OpenMetaverse.DirectoryManager.PlacesReplyCallback(onPlaces);
 		
 			
+		}
+		
+		int numericsort(Gtk.TreeModel model, Gtk.TreeIter a, Gtk.TreeIter b)
+		{
+			string nameA = (string)store.GetValue(a, 1);
+            string nameB = (string)store.GetValue(b, 1);
+
+            float Pa = (float)store.GetValue(a, 3);
+            float Pb =(float)store.GetValue(b, 3);
+
+			int tSortColumnId;
+            Gtk.SortType order;
+			
+           		
+            if (Pa == Pb)
+            {
+               return 0;
+            }
+
+						
+            if (Pa > Pb)
+               return -1;
+
+            return 1;
 		}
 				
 			void onPlaces(UUID query,List <OpenMetaverse.DirectoryManager.PlacesSearchData> matchedplaces)
