@@ -118,15 +118,45 @@ namespace omvviewerlight
                 if (MainClass.client.Network.LoginStatusCode == OpenMetaverse.LoginStatus.Success)
                 {
                     inventory.Clear();
-                    Gtk.TreeIter iter = inventory.AppendValues(folder_closed, "Inventory", MainClass.client.Inventory.Store.RootFolder.UUID);
-                    inventory.AppendValues(iter, folder_closed, "Waiting...", MainClass.client.Inventory.Store.RootFolder.UUID, null);
-              	
-				//	iter = inventory.AppendValues(folder_closed, "Library", MainClass.client.Inventory.Store.LibraryFolder.UUID);
-				//	inventory.AppendValues(iter, folder_closed, "Waiting...", MainClass.client.Inventory.Store.LibraryFolder.UUID, null);
+					
+              //      Gtk.TreeIter iter = inventory.AppendValues(folder_closed, "Inventory", MainClass.client.Inventory.Store.RootFolder.UUID);
+               //     inventory.AppendValues(iter, folder_closed, "Waiting...", MainClass.client.Inventory.Store.RootFolder.UUID, null);
+
+				//	Gtk.TreeIter iter2 = inventory.AppendValues(folder_closed, "Library", MainClass.client.Inventory.Store.LibraryFolder.UUID);
+				//	inventory.AppendValues(iter2, folder_closed, "Waiting...", MainClass.client.Inventory.Store.LibraryFolder.UUID, null);
+				
+				populate_top_level_inv();
+					
+					
 				}
             }	
 		}
 
+		void populate_top_level_inv()
+		{
+		
+				if( MainClass.client.Inventory.Store.Items!=null)
+					{
+						foreach(KeyValuePair <UUID, InventoryNode> kvp in MainClass.client.Inventory.Store.Items)
+						{
+							if(kvp.Value.Data!=null)
+							{
+								if(kvp.Value.Data.ParentUUID!=null)
+								{
+									if(kvp.Value.Data.ParentUUID==UUID.Zero)
+									{
+										Gtk.TreeIter iterx = inventory.AppendValues(folder_closed, kvp.Value.Data.Name, kvp.Value.Data.UUID);
+										inventory.AppendValues(iterx, folder_closed, "Waiting...", kvp.Value.Data.UUID, null);
+
+									}
+									Console.Write(kvp.Value.Data.ParentUUID.ToString() +" : ");
+								}
+							}
+						}
+		         }
+
+		}
+		
         void menu_ware_ButtonPressEvent(object o, ButtonPressEventArgs args)
         {
             Gtk.TreeModel mod;
@@ -298,7 +328,6 @@ namespace omvviewerlight
                             Gtk.ImageMenuItem menu_delete_folder = new ImageMenuItem("Delete Folder");
 							menu_delete_folder.Image=new Gtk.Image("inv_folder_trash.tga");
 
-							
                             menu_delete_folder.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
                             menu_give_folder.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
                             menu_wear_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_ware_ButtonPressEvent);
@@ -357,11 +386,12 @@ namespace omvviewerlight
 			{
 				Gtk.Application.Invoke(delegate {
 					inventory.Clear();
-					Gtk.TreeIter iter = inventory.AppendValues(folder_closed,"Inventory", MainClass.client.Inventory.Store.RootFolder.UUID);
-					inventory.AppendValues(iter,folder_closed, "Waiting...", MainClass.client.Inventory.Store.RootFolder.UUID,null);
+					//Gtk.TreeIter iter = inventory.AppendValues(folder_closed,"Inventory", MainClass.client.Inventory.Store.RootFolder.UUID);
+					//inventory.AppendValues(iter,folder_closed, "Waiting...", MainClass.client.Inventory.Store.RootFolder.UUID,null);
 										
-					//iter = inventory.AppendValues(folder_closed, "Library", MainClass.client.Inventory.Store.LibraryFolder.UUID);
-					//inventory.AppendValues(iter, folder_closed, "Waiting...", MainClass.client.Inventory.Store.LibraryFolder.UUID, null);
+					//Gtk.TreeIter iter2 = inventory.AppendValues(folder_closed, "Library", MainClass.client.Inventory.Store.LibraryFolder.UUID);
+					//inventory.AppendValues(iter2, folder_closed, "Waiting...", MainClass.client.Inventory.Store.LibraryFolder.UUID, null);
+					populate_top_level_inv();				
 				});
 			}
 		}

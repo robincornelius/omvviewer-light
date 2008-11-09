@@ -44,7 +44,8 @@ namespace omvviewerlight
 		Dictionary <uint,uint> colmaptoid=new Dictionary<uint,uint>(); // map parcelid->colindex
         uint[] colmap = { 0x00FFFFFF, 0xFF00FFFF,0xFFFF00FF,0x55FFFFFF,0xaaFFFFFF,0xFF55FFFF,0xFFaaFFFF,0xFFFF55FF,0xFFFFaaFF,0xFFFFFFFF, 0x0000FFFF, 0xFF0000FF,0x00FF00FF, 0x5555FFFF, 0xFF5555FF,0x55FF55FF, 0xaaaaFFFF, 0xFFaaaaFF,0xaaFFaaFF};
    	    int nextcol=0;
-
+		int selectedparcel=0;
+		
 
         public void kill()
         {
@@ -72,7 +73,7 @@ namespace omvviewerlight
 			parcels_store=new Gtk.TreeStore (typeof(Gdk.Pixbuf),typeof(string),typeof(string),typeof(string),typeof(string),typeof(Parcel),typeof(int));
 			parcels_access=new Gtk.TreeStore(typeof(string),typeof(UUID));
 			parcels_ban=new Gtk.TreeStore(typeof(string),typeof(UUID));
-			this.parcel_prim_owners=new Gtk.TreeStore(typeof(string),typeof(string));
+			this.parcel_prim_owners=new Gtk.TreeStore(typeof(string),typeof(string),typeof(UUID),typeof(int));
 
 			this.treeview_parcels.AppendColumn("Key",new CellRendererPixbuf(),"pixbuf",0);
 			this.treeview_parcels.AppendColumn("Parcel",new Gtk.CellRendererText(),"text",1);
@@ -127,11 +128,12 @@ namespace omvviewerlight
 			for(int i = 0; i < primOwners.Count; i++)
 			{
 				Console.WriteLine(primOwners[i].ToString());        
-				Gtk.TreeIter iter2=parcel_prim_owners.AppendValues("Waiting...",primOwners[i].Count.ToString());			
+				Gtk.TreeIter iter2=parcel_prim_owners.AppendValues("Waiting...",primOwners[i].Count.ToString(),primOwners[i].OwnerID);			
 				AsyncNameUpdate ud=new AsyncNameUpdate(primOwners[i].OwnerID,false);  
 				ud.addparameters(iter2);
 				ud.onNameCallBack += delegate(string namex,object[] values){ Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; parcel_prim_owners.SetValue(iterx,0,namex);};
                 ud.go();
+				this.button_return_selected.Sensitive=true;
             }
 						
 		}
@@ -180,6 +182,8 @@ namespace omvviewerlight
                          }
 
                          string saleinfo;
+					     saleinfo = "";
+						
                          if ((parcel.Flags & Parcel.ParcelFlags.ForSale) == Parcel.ParcelFlags.ForSale)
                          {
                              if (parcel.AuthBuyerID != UUID.Zero)
@@ -193,10 +197,10 @@ namespace omvviewerlight
                              }
                          }
 
-                         saleinfo = "";
-
+						Gtk.Application.Invoke(delegate
+						{
                          parcels_store.AppendValues(pb, parcel.Name, parcel.Area.ToString(), parcel.Dwell.ToString(), saleinfo, parcel, parcel.LocalID);
-
+						});
                      }
                  
              }
@@ -288,6 +292,7 @@ namespace omvviewerlight
 			if(this.treeview_parcels.Selection.GetSelected(out mod,out iter))			
 			{
 				int id=(int)mod.GetValue(iter,6);
+				selectedparcel=id;
 				//this.image_parcel.Pixbuf=new Gdk.Pixbuf(parcel.Bitmap);
 				parcels_access.Clear();
 				parcels_ban.Clear();
@@ -407,6 +412,26 @@ namespace omvviewerlight
 				int id=(int)mod.GetValue(iter,6);
 				Console.WriteLine("Requesting parcel prim owners for sim "+MainClass.client.Network.CurrentSim.Name+" parcel :"+id.ToString());
 				MainClass.client.Parcels.ObjectOwnersRequest(MainClass.client.Network.CurrentSim,id);
+			}
+		}
+
+		protected virtual void OnButtonReturnSelectedClicked (object sender, System.EventArgs e)
+		{
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+			if(this.treeview_objectlist.Selection.GetSelected(out mod,out iter))			
+			{
+				UUID id=(UUID)mod.GetValue(iter,2);
+			    MessageDialog md2 = new Gtk.MessageDialog(MainClass.win, DialogFlags.DestroyWithParent, MessageType.Question, ButtonsType.YesNo, true, "Are you sure you want to return the selected objects?");
+				ResponseType result2 = (ResponseType)md2.Run();
+				md2.Destroy();				
+				if(result2==ResponseType.Yes)
+				{
+					List <UUID> ownerIDs=new List<UUID>();
+					ownerIDs.Add(id);
+					MainClass.client.Parcels.ReturnObjects(MainClass.client.Network.CurrentSim,selectedparcel,ObjectReturnType.List,ownerIDs);
+				}	
 			}
 		}
 			

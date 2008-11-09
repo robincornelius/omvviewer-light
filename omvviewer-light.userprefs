@@ -1,17 +1,25 @@
-﻿<UserCombinePreferences version="1.0" filename="/home/robin/libsecondlife/omvviewer-light/omvviewer-light.mds">
+﻿<UserCombinePreferences version="1.0" filename="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light.mds">
   <Files>
     <File name="Welcome" />
+    <File name="omvviewer-light/ObjectsLayout.cs" line="607" column="5" />
+    <File name="omvviewer-light/MainWindow.cs" line="280" column="10" />
+    <File name="omvviewer-light/Inventory.cs" line="364" column="8" />
+    <File name="omvviewer-light/ParcelMgr.cs" line="137" column="14" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
-      <Node expanded="True" />
+      <Node expanded="True">
+        <Node name="omvviewer-light" expanded="True">
+          <Node name="ParcelMgr.cs" selected="True" />
+        </Node>
+      </Node>
     </ViewMemento>
     <ViewMemento id="ClassPad">
       <Node />
     </ViewMemento>
   </Views>
   <Properties>
-    <Property key="ActiveWindow" value="Welcome" />
+    <Property key="ActiveWindow" value="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light/ParcelMgr.cs" />
     <Property key="ActiveConfiguration" value="Debug" />
   </Properties>
 </UserCombinePreferences>
