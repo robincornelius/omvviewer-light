@@ -1,5 +1,5 @@
 /*
-omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife(tm)
+omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(tm)
     Copyright (C) 2008  Robin Cornelius <robin.cornelius@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -61,9 +61,9 @@ namespace omvviewerlight
 
         List<UUID> rcvd_names = new List<UUID>();
 
-		Gdk.Pixbuf folder_open = Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.inv_folder_plain_open.tga");
-		Gdk.Pixbuf tick = Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.tick.tga");
-		Gdk.Pixbuf cross = Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.cross.tga");
+		Gdk.Pixbuf folder_open = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_folder_plain_open.tga");
+		Gdk.Pixbuf tick = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.tick.tga");
+		Gdk.Pixbuf cross = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.cross.tga");
 		
 		public GroupInfo(Group group) : 
 				base(Gtk.WindowType.Toplevel)

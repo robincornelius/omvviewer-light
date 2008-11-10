@@ -1,5 +1,5 @@
 /*
-omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife(tm)
+omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(tm)
     Copyright (C) 2008  Robin Cornelius <robin.cornelius@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -36,6 +36,11 @@ using System.Resources;
 
 
 using System;
+
+
+using System.ComponentModel;
+
+using System.Data;
 using System.Reflection;
 
 
@@ -60,10 +65,21 @@ namespace omvviewerlight
             
             try
             {
+                Assembly a = Assembly.GetExecutingAssembly();
+
+                // get a list of resource names from the manifest
+                string[] resNames = a.GetManifestResourceNames();
+
+                foreach (string s in resNames)
+                {
+                    Console.WriteLine("Got resource :" + s);
+
+                }
+
                 client = new GridClient();
 				name_cache=new AVNameCache();
                 Application.Init();
-                Gtk.Window.DefaultIcon = Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.viewericon.xpm");
+                Gtk.Window.DefaultIcon = Gdk.Pixbuf.LoadFromResource("viewericon.xpm");
     
 
                 win = new MainWindow();

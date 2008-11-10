@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Properties {
+namespace omvviewerlight.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

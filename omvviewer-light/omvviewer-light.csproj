@@ -9,7 +9,7 @@
     <ApplicationIcon>omvviewer-light.ico</ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>omvviewer-light</AssemblyName>
+    <AssemblyName>omvviewerlight</AssemblyName>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
@@ -18,7 +18,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>
     </AppDesignerFolder>
-    <RootNamespace>omvviewer-light</RootNamespace>
+    <RootNamespace>omvviewerlight</RootNamespace>
     <StartupObject>omvviewerlight.MainClass</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -56,7 +56,7 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\omvviewer-light.XML</DocumentationFile>
+    <DocumentationFile>bin\omvviewerlight.xml</DocumentationFile>
     <DebugSymbols>False</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <Optimize>True</Optimize>
@@ -76,7 +76,7 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <DocumentationFile>bin\omvviewer-light.XML</DocumentationFile>
+    <DocumentationFile>bin\omvviewerlight.xml</DocumentationFile>
     <DebugSymbols>True</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <Optimize>False</Optimize>
@@ -290,7 +290,9 @@
     <Content Include="openjpeg-dotnet.dll" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="art\status_search_btn.png" />
+    <EmbeddedResource Include="art\status_search_btn.png">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
     <Content Include="libopenjpeg-dotnet-2.1.3.0-x86_64.so" />
     <Content Include="libopenjpeg-dotnet-2.1.3.0.dylib" />
     <Content Include="libopenjpeg-dotnet-2.1.3.0.so" />
@@ -305,86 +307,245 @@
   <ItemGroup>
     <None Include="app.config" />
     <EmbeddedResource Include="art\arrow.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\blank_arrow.tga" />
-    <EmbeddedResource Include="art\closebox.tga" />
-    <EmbeddedResource Include="art\cross.tga" />
-    <EmbeddedResource Include="art\down_arrow.tga" />
-    <EmbeddedResource Include="art\ff_edit_theirs.tga" />
-    <EmbeddedResource Include="art\icn_voice-groupfocus.tga" />
-    <EmbeddedResource Include="art\icn_voice-groupfocus2.tga" />
-    <EmbeddedResource Include="art\icn_voice-pvtfocus.tga" />
-    <EmbeddedResource Include="art\icon_avatar_offline.tga" />
-    <EmbeddedResource Include="art\icon_avatar_online.tga" />
-    <EmbeddedResource Include="art\icon_event.tga" />
-    <EmbeddedResource Include="art\icon_group.tga" />
-    <EmbeddedResource Include="art\icon_place.tga" />
-    <EmbeddedResource Include="art\inv_folder_animation.tga" />
-    <EmbeddedResource Include="art\inv_folder_bodypart.tga" />
-    <EmbeddedResource Include="art\inv_folder_callingcard.tga" />
-    <EmbeddedResource Include="art\inv_folder_clothing.tga" />
-    <EmbeddedResource Include="art\inv_folder_gesture.tga" />
-    <EmbeddedResource Include="art\inv_folder_landmark.tga" />
-    <EmbeddedResource Include="art\inv_folder_lostandfound.tga" />
-    <EmbeddedResource Include="art\inv_folder_notecard.tga" />
-    <EmbeddedResource Include="art\inv_folder_object.tga" />
-    <EmbeddedResource Include="art\inv_folder_plain_closed.tga" />
-    <EmbeddedResource Include="art\inv_folder_plain_open.tga" />
-    <EmbeddedResource Include="art\inv_folder_script.tga" />
-    <EmbeddedResource Include="art\inv_folder_snapshot.tga" />
-    <EmbeddedResource Include="art\inv_folder_sound.tga" />
-    <EmbeddedResource Include="art\inv_folder_texture.tga" />
-    <EmbeddedResource Include="art\inv_folder_trash.tga" />
-    <EmbeddedResource Include="art\inv_item_animation.tga" />
-    <EmbeddedResource Include="art\inv_item_attach.tga" />
-    <EmbeddedResource Include="art\inv_item_callingcard_offline.tga" />
-    <EmbeddedResource Include="art\inv_item_callingcard_online.tga" />
-    <EmbeddedResource Include="art\inv_item_clothing.tga" />
-    <EmbeddedResource Include="art\inv_item_eyes.tga" />
-    <EmbeddedResource Include="art\inv_item_gesture.tga" />
-    <EmbeddedResource Include="art\inv_item_gloves.tga" />
-    <EmbeddedResource Include="art\inv_item_hair.tga" />
-    <EmbeddedResource Include="art\inv_item_jacket.tga" />
-    <EmbeddedResource Include="art\inv_item_landmark.tga" />
-    <EmbeddedResource Include="art\inv_item_landmark_visited.tga" />
-    <EmbeddedResource Include="art\inv_item_notecard.tga" />
-    <EmbeddedResource Include="art\inv_item_object.tga" />
-    <EmbeddedResource Include="art\inv_item_object_multi.tga" />
-    <EmbeddedResource Include="art\inv_item_pants.tga" />
-    <EmbeddedResource Include="art\inv_item_script.tga" />
-    <EmbeddedResource Include="art\inv_item_script_dangerous.tga" />
-    <EmbeddedResource Include="art\inv_item_shape.tga" />
-    <EmbeddedResource Include="art\inv_item_shirt.tga" />
-    <EmbeddedResource Include="art\inv_item_shoes.tga" />
-    <EmbeddedResource Include="art\inv_item_skin.tga" />
-    <EmbeddedResource Include="art\inv_item_skirt.tga" />
-    <EmbeddedResource Include="art\inv_item_snapshot.tga" />
-    <EmbeddedResource Include="art\inv_item_socks.tga" />
-    <EmbeddedResource Include="art\inv_item_sound.tga" />
-    <EmbeddedResource Include="art\inv_item_texture.tga" />
-    <EmbeddedResource Include="art\inv_item_underpants.tga" />
-    <EmbeddedResource Include="art\inv_item_undershirt.tga" />
-    <EmbeddedResource Include="art\item_object.tga" />
-    <EmbeddedResource Include="art\map_avatar_8.tga" />
-    <EmbeddedResource Include="art\map_avatar_above_8.tga" />
-    <EmbeddedResource Include="art\map_avatar_below_8.tga" />
-    <EmbeddedResource Include="art\map_avatar_me_8.tga" />
-    <EmbeddedResource Include="art\map_home.tga" />
-    <EmbeddedResource Include="art\parcel.tga" />
-    <EmbeddedResource Include="art\parcelindex.tga" />
-    <EmbeddedResource Include="art\status_health.tga" />
-    <EmbeddedResource Include="art\status_money.tga" />
-    <EmbeddedResource Include="art\status_no_build.tga" />
-    <EmbeddedResource Include="art\status_no_fly.tga" />
-    <EmbeddedResource Include="art\status_no_push.tga" />
-    <EmbeddedResource Include="art\status_no_scripts.tga" />
-    <EmbeddedResource Include="art\status_no_voice.tga" />
-    <EmbeddedResource Include="art\status_script_debug.tga" />
-    <EmbeddedResource Include="art\status_voice.tga" />
-    <EmbeddedResource Include="art\tick.tga" />
-    <EmbeddedResource Include="art\trying.tga" />
-    <EmbeddedResource Include="art\up_arrow.tga" />
-    <EmbeddedResource Include="art\viewericon.xpm" />
+    <EmbeddedResource Include="art\blank_arrow.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\closebox.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\cross.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\down_arrow.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\ff_edit_theirs.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\icn_voice-groupfocus.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\icn_voice-groupfocus2.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\icn_voice-pvtfocus.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\icon_avatar_offline.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\icon_avatar_online.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\icon_event.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\icon_group.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\icon_place.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_folder_animation.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_folder_bodypart.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_folder_callingcard.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_folder_clothing.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_folder_gesture.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_folder_landmark.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_folder_lostandfound.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_folder_notecard.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_folder_object.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_folder_plain_closed.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_folder_plain_open.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_folder_script.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_folder_snapshot.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_folder_sound.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_folder_texture.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_folder_trash.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_animation.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_attach.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_callingcard_offline.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_callingcard_online.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_clothing.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_eyes.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_gesture.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_gloves.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_hair.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_jacket.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_landmark.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_landmark_visited.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_notecard.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_object.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_object_multi.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_pants.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_script.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_script_dangerous.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_shape.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_shirt.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_shoes.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_skin.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_skirt.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_snapshot.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_socks.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_sound.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_texture.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_underpants.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\inv_item_undershirt.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\item_object.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\map_avatar_8.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\map_avatar_above_8.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\map_avatar_below_8.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\map_avatar_me_8.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\map_home.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\parcel.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\parcelindex.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\status_health.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\status_money.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\status_no_build.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\status_no_fly.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\status_no_push.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\status_no_scripts.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\status_no_voice.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\status_script_debug.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\status_voice.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\tick.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\trying.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\up_arrow.tga">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\viewericon.xpm">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

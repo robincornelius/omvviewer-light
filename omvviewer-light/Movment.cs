@@ -1,5 +1,5 @@
 /*
-omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife(tm)
+omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(tm)
     Copyright (C) 2008  Robin Cornelius <robin.cornelius@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -109,7 +109,8 @@ namespace omvviewerlight
 		protected virtual void OnButtonFwdReleased (object sender, System.EventArgs e)
 		{
 			MainClass.client.Self.Movement.AtNeg=true;
-            MainClass.client.Self.Movement.SendUpdate(false);
+            MainClass.client.Self.Movement.SendUpdate(false);
+
 		}
 
 		protected virtual void OnSpinbuttonDirectionChangeValue (object o, Gtk.ChangeValueArgs args)

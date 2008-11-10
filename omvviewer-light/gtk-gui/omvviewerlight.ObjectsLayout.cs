@@ -172,7 +172,7 @@ namespace omvviewerlight {
             w7.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w8 = new Gtk.Image();
-            w8.Pixbuf = Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.status_search_btn.png");
+            w8.Pixbuf = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.status_search_btn.png");
             w7.Add(w8);
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w10 = new Gtk.Label();
@@ -249,7 +249,7 @@ namespace omvviewerlight {
             w20.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w21 = new Gtk.Image();
-            w21.Pixbuf = Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.status_money.tga");
+            w21.Pixbuf = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.status_money.tga");
             w20.Add(w21);
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w23 = new Gtk.Label();
@@ -287,7 +287,7 @@ namespace omvviewerlight {
             w30.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w31 = new Gtk.Image();
-            w31.Pixbuf = Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.status_money.tga");
+            w31.Pixbuf = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.status_money.tga");
             w30.Add(w31);
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w33 = new Gtk.Label();

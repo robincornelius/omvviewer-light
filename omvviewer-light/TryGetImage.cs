@@ -1,5 +1,5 @@
 /*
-omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife(tm)
+omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(tm)
     Copyright (C) 2008  Robin Cornelius <robin.cornelius@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -51,7 +51,7 @@ namespace omvviewerlight
             img_height = height;
 		
 			
-			Gdk.Pixbuf buf=Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.trying.tga");
+			Gdk.Pixbuf buf=Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.trying.tga");
 			target_image.Pixbuf=buf.ScaleSimple(width,height,Gdk.InterpType.Bilinear);
 
 			if(asset!=UUID.Zero)

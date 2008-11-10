@@ -1,5 +1,5 @@
 /*
-omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife(tm)
+omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(tm)
     Copyright (C) 2008  Robin Cornelius <robin.cornelius@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -68,7 +68,8 @@ namespace omvviewerlight
 		{
 
             if (key == UUID.Zero)
-                return;
+                return;
+
 			if(group==true)
 			{
 				group_target=key;

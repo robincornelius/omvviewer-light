@@ -1,5 +1,5 @@
 /*
-omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife(tm)
+omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(tm)
     Copyright (C) 2008  Robin Cornelius <robin.cornelius@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -55,7 +55,7 @@ namespace omvviewerlight
 		
 		Gtk.Label addtabwithicon(string filename,string label,Gtk.Widget contents)
 	    {
-			Gtk.Image image=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewer-light.art."+filename));
+			Gtk.Image image=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewerlight.art."+filename));
 			image.SetSizeRequest(16,16);
 			Gtk.Label lable=new Gtk.Label(label);
 			Gtk.HBox box=new Gtk.HBox();

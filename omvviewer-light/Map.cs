@@ -1,5 +1,5 @@
 /*
-omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife(tm)
+omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(tm)
     Copyright (C) 2008  Robin Cornelius <robin.cornelius@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -45,10 +45,10 @@ namespace omvviewerlight
 		int channels;
 		int width;
 		int height;
-		Gtk.Image avatar=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.map_avatar_8.tga"));
-		Gtk.Image avatar_me=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.map_avatar_me_8.tga"));
-		Gtk.Image avatar_above=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.map_avatar_above_8.tga"));
-		Gtk.Image avatar_below=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.map_avatar_below_8.tga"));
+		Gtk.Image avatar=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.map_avatar_8.tga"));
+		Gtk.Image avatar_me=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.map_avatar_me_8.tga"));
+		Gtk.Image avatar_above=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.map_avatar_above_8.tga"));
+		Gtk.Image avatar_below=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.map_avatar_below_8.tga"));
         UUID lastsim = new UUID();
 		
 		public Map()
@@ -302,7 +302,7 @@ namespace omvviewerlight
 				void getmap()
 		{
 			Gtk.Application.Invoke(delegate {		
-			Gdk.Pixbuf pb=new Pixbuf(Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.trying.tga"),0,0,256,256);
+			Gdk.Pixbuf pb=new Pixbuf(Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.trying.tga"),0,0,256,256);
           
             lock (image)
             {

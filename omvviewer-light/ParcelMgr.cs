@@ -1,5 +1,5 @@
 /*
-omvviewer-light a Text based client to metaverses such as Linden Labs Secondlife(tm)
+omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(tm)
     Copyright (C) 2008  Robin Cornelius <robin.cornelius@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -117,7 +117,7 @@ namespace omvviewerlight
 
                     nextcol = 0;
                    
-                    this.parcel_map = Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.trying.tga");
+                    this.parcel_map = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.trying.tga");
                     this.image9.Pixbuf = this.parcel_map;
 
                     populate_tree();
@@ -193,7 +193,7 @@ namespace omvviewerlight
                          byte[] data = new byte[4 * 32 * 16];
                          uint col = colmap[thiscol];
 
-                         Gdk.Pixbuf pb = Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.parcelindex.tga");
+                         Gdk.Pixbuf pb = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.parcelindex.tga");
                          sbyte* ps;
                          ps = (sbyte*)pb.Pixels;
 
@@ -303,7 +303,7 @@ namespace omvviewerlight
 			nextcol=0;
 			Gtk.Application.Invoke(delegate
             {
-				this.parcel_map = Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.trying.tga");
+				this.parcel_map = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.trying.tga");
 				this.image9.Pixbuf=this.parcel_map;
 			});
 
