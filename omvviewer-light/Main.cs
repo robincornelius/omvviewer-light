@@ -34,13 +34,7 @@ using System.Configuration;
 using System.Configuration.Assemblies;
 using System.Resources;
 
-
-using System;
-
-
-using System.ComponentModel;
-
-using System.Data;
+using System;
 using System.Reflection;
 
 
@@ -65,6 +59,7 @@ namespace omvviewerlight
             
             try
             {
+/*
                 Assembly a = Assembly.GetExecutingAssembly();
 
                 // get a list of resource names from the manifest
@@ -75,11 +70,12 @@ namespace omvviewerlight
                     Console.WriteLine("Got resource :" + s);
 
                 }
+*/
 
                 client = new GridClient();
 				name_cache=new AVNameCache();
                 Application.Init();
-                Gtk.Window.DefaultIcon = Gdk.Pixbuf.LoadFromResource("viewericon.xpm");
+                Gtk.Window.DefaultIcon = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.viewericon.xpm");
     
 
                 win = new MainWindow();
