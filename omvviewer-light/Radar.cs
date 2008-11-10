@@ -480,21 +480,53 @@ namespace omvviewerlight
 
                         if (MainClass.client.Network.Simulators[i].ObjectsAvatars.TryGetValue(targetLocalID, out targetAv))
                         {
-                            float distance = 0.0f;
-
-                            if (MainClass.client.Network.Simulators[i] == MainClass.client.Network.CurrentSim)
-                            {
-                                distance = Vector3.Distance(targetAv.Position, MainClass.client.Self.SimPosition);
-                            }
+                            float distance = 0.0f;	
+							Vector3 targetpos;
+							targetpos.X=0;
+							targetpos.Y=0;
+							targetpos.Z=0;
+							
+							if(targetAv.ParentID!=0)
+							{
+								
+								if(!MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary.ContainsKey(targetAv.ParentID))
+								{
+									Console.WriteLine("AV is seated and i can't find the parent prim in dictionay");
+									Active=false;
+									return false;
+								}
+								else
+								{
+									Vector3 pos;
+									Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[targetAv.ParentID];
+									targetpos=pos = Vector3.Transform(targetAv.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
+									if (MainClass.client.Network.Simulators[i] == MainClass.client.Network.CurrentSim)
+									{
+										distance = Vector3.Distance(pos, MainClass.client.Self.SimPosition);
+									}					
+								}				
+							}			
+							else
+							{
+								if (MainClass.client.Network.Simulators[i] == MainClass.client.Network.CurrentSim)
+								{
+									distance = Vector3.Distance(targetAv.Position, MainClass.client.Self.SimPosition);
+									targetpos=targetAv.Position;
+								}
+							}
+							
+                           
 
                             if (distance > 2.5)
                             {
+								
+								
                                 uint regionX, regionY;
                                 Utils.LongToUInts(MainClass.client.Network.Simulators[i].Handle, out regionX, out regionY);
 
-                                double xTarget = (double)targetAv.Position.X + (double)regionX;
-                                double yTarget = (double)targetAv.Position.Y + (double)regionY;
-                                double zTarget = targetAv.Position.Z;
+                                double xTarget = (double)targetpos.X + (double)regionX;
+                                double yTarget = (double)targetpos.Y + (double)regionY;
+                                double zTarget = targetpos.Z;
 
                                 Logger.DebugLog(String.Format("[Autopilot] {0} meters away from the target, starting autopilot to <{1},{2},{3}>",
                                     distance, xTarget, yTarget, zTarget), MainClass.client);
