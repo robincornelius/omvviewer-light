@@ -205,8 +205,7 @@ namespace omvviewerlight
             {
                 if (this.av_tree.ContainsKey(update.LocalID))
                 {
-
-                    calcdistance(update.LocalID);
+                    calcdistance(update.LocalID); 
                 }
             }
 		}

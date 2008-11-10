@@ -76,27 +76,35 @@ namespace omvviewerlight
 		
 		int numericsort(Gtk.TreeModel model, Gtk.TreeIter a, Gtk.TreeIter b)
 		{
-			string nameA = (string)store.GetValue(a, 1);
-            string nameB = (string)store.GetValue(b, 1);
 
-            float Pa = (float)store.GetValue(a, 3);
-            float Pb =(float)store.GetValue(b, 3);
+            float Pa;
+            float.TryParse((string)store.GetValue(a, 2), out Pa);
+            float Pb;
+            float.TryParse((string)store.GetValue(b, 2), out Pb);
 
 			int tSortColumnId;
             Gtk.SortType order;
-			
-           		
+
+            store.GetSortColumnId(out tSortColumnId, out order);
+	
             if (Pa == Pb)
-            {
                return 0;
+		
+            if(order==Gtk.SortType.Ascending)
+            {
+                if (Pa > Pb)
+                   return -1;
+                else
+                    return 1;
             }
-
-						
-            if (Pa > Pb)
-               return -1;
-
-            return 1;
-		}
+            else
+            {
+                 if (Pa > Pb)
+                   return 1;
+                 else
+                    return -1;
+            }
+        }
 				
 			void onPlaces(UUID query,List <OpenMetaverse.DirectoryManager.PlacesSearchData> matchedplaces)
 			{
