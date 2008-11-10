@@ -17,9 +17,9 @@ namespace omvviewerlight
 
         public MyTreeViewColumn(string title, Gtk.CellRenderer cell,string prop,int col) : base (title,cell,prop,col)
         {
-            up_arrow = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.up_arrow.tga");
-            down_arrow = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.down_arrow.tga");
-            blank_arrow = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.blank_arrow.tga");
+            up_arrow = MainClass.GetResource("up_arrow.tga");
+            down_arrow = MainClass.GetResource("down_arrow.tga");
+            blank_arrow = MainClass.GetResource("blank_arrow.tga");
             model_col = col;
             col_icon = new Gtk.Image(up_arrow);
             Gtk.HBox hb = new Gtk.HBox();

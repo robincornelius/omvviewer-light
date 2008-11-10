@@ -62,7 +62,7 @@ namespace omvviewerlight
 		    this.label_partner.Text="";
 			this.label_pay.Text="";
 			this.label_status.Text="";	
-			Gdk.Pixbuf buf=Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.trying.tga");
+			Gdk.Pixbuf buf=MainClass.GetResource("trying.tga");
 			this.image3.Pixbuf=buf.ScaleSimple(128,128,Gdk.InterpType.Bilinear);
 			
 			this.image7.Pixbuf=buf.ScaleSimple(128,128,Gdk.InterpType.Bilinear);

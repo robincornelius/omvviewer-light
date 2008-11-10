@@ -49,14 +49,21 @@ namespace omvviewerlight
 
 		public static AVNameCache name_cache;
 
-		public static string art_location=System.AppDomain.CurrentDomain.BaseDirectory;
-		
-		public static void Main (string[] args)
-		{
+        static bool monodevelop = false;
 
-            bool hiddenconsole = false;
-			// Now boot the libsecondlife layer so it is global to our namespace
-            
+		public static string art_location=System.AppDomain.CurrentDomain.BaseDirectory;
+
+        // This is stupid
+        public static Gdk.Pixbuf GetResource(string name)
+        {
+            if(!monodevelop)
+                return Gdk.Pixbuf.LoadFromResource(name);
+            else
+                return Gdk.Pixbuf.LoadFromResource("omvviewerlight.art." + name);          
+        }
+
+		public static void Main (string[] args)
+		{        
             try
             {
                 Assembly a = Assembly.GetExecutingAssembly();
@@ -64,16 +71,14 @@ namespace omvviewerlight
                 // get a list of resource names from the manifest
                 string[] resNames = a.GetManifestResourceNames();
 
-                foreach (string s in resNames)
-                {
-                    Console.WriteLine("Got resource :" + s);
-
-                }
+                string check = resNames[0];
+                if(check.Contains("omvviewerlight.art."))
+                    monodevelop = true;
 
                 client = new GridClient();
 				name_cache=new AVNameCache();
                 Application.Init();
-                Gtk.Window.DefaultIcon = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.viewericon.xpm");
+                Gtk.Window.DefaultIcon = MainClass.GetResource("viewericon.xpm");
     
 
                 win = new MainWindow();

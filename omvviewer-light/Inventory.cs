@@ -53,32 +53,32 @@ namespace omvviewerlight
 		String[] SearchFolders = { "" };
 		//initialize our list to store the folder contents
 		Gtk.TreeStore inventory = new Gtk.TreeStore (typeof(Gdk.Pixbuf),typeof (string), typeof (UUID),typeof(InventoryBase));		
-		Gdk.Pixbuf folder_closed = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_folder_plain_closed.tga");
-		Gdk.Pixbuf folder_open = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_folder_plain_open.tga");
-		Gdk.Pixbuf item_landmark = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_item_landmark.tga");
-		Gdk.Pixbuf item_animation = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_item_animation.tga");
-		Gdk.Pixbuf item_clothing = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_item_clothing.tga");
-        Gdk.Pixbuf item_object = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_item_object.tga");
-        Gdk.Pixbuf item_gesture = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_item_gesture.tga");
-        Gdk.Pixbuf item_notecard = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_item_notecard.tga");
-        Gdk.Pixbuf item_script = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_item_script.tga");
-        Gdk.Pixbuf item_snapshot = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_item_snapshot.tga");
-        Gdk.Pixbuf item_sound = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_item_sound.tga");
-        Gdk.Pixbuf item_callingcard = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_item_callingcard_offline.tga");
+		Gdk.Pixbuf folder_closed = MainClass.GetResource("inv_folder_plain_closed.tga");
+		Gdk.Pixbuf folder_open = MainClass.GetResource("inv_folder_plain_open.tga");
+		Gdk.Pixbuf item_landmark = MainClass.GetResource("inv_item_landmark.tga");
+		Gdk.Pixbuf item_animation = MainClass.GetResource("inv_item_animation.tga");
+		Gdk.Pixbuf item_clothing = MainClass.GetResource("inv_item_clothing.tga");
+        Gdk.Pixbuf item_object = MainClass.GetResource("inv_item_object.tga");
+        Gdk.Pixbuf item_gesture = MainClass.GetResource("inv_item_gesture.tga");
+        Gdk.Pixbuf item_notecard = MainClass.GetResource("inv_item_notecard.tga");
+        Gdk.Pixbuf item_script = MainClass.GetResource("inv_item_script.tga");
+        Gdk.Pixbuf item_snapshot = MainClass.GetResource("inv_item_snapshot.tga");
+        Gdk.Pixbuf item_sound = MainClass.GetResource("inv_item_sound.tga");
+        Gdk.Pixbuf item_callingcard = MainClass.GetResource("inv_item_callingcard_offline.tga");
 
-        Gdk.Pixbuf folder_texture = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_folder_texture.tga");
-        Gdk.Pixbuf folder_sound = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_folder_sound.tga");
-        Gdk.Pixbuf folder_animation = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_folder_animation.tga");
-        Gdk.Pixbuf folder_gesture = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_folder_gesture.tga");
-        Gdk.Pixbuf folder_snapshot = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_folder_snapshot.tga");
-        Gdk.Pixbuf folder_trash = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_folder_trash.tga");
-        Gdk.Pixbuf folder_notecard = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_folder_notecard.tga");
-        Gdk.Pixbuf folder_script = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_folder_script.tga");
-        Gdk.Pixbuf folder_lostandfound = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_folder_lostandfound.tga");
-        Gdk.Pixbuf folder_landmark = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_folder_landmark.tga");
-        Gdk.Pixbuf folder_bodypart = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_folder_bodypart.tga");
-        Gdk.Pixbuf folder_callingcard = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_folder_callingcard.tga");
-        Gdk.Pixbuf folder_clothing = Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_folder_clothing.tga");
+        Gdk.Pixbuf folder_texture = MainClass.GetResource("inv_folder_texture.tga");
+        Gdk.Pixbuf folder_sound = MainClass.GetResource("inv_folder_sound.tga");
+        Gdk.Pixbuf folder_animation = MainClass.GetResource("inv_folder_animation.tga");
+        Gdk.Pixbuf folder_gesture = MainClass.GetResource("inv_folder_gesture.tga");
+        Gdk.Pixbuf folder_snapshot = MainClass.GetResource("inv_folder_snapshot.tga");
+        Gdk.Pixbuf folder_trash = MainClass.GetResource("inv_folder_trash.tga");
+        Gdk.Pixbuf folder_notecard = MainClass.GetResource("inv_folder_notecard.tga");
+        Gdk.Pixbuf folder_script = MainClass.GetResource("inv_folder_script.tga");
+        Gdk.Pixbuf folder_lostandfound = MainClass.GetResource("inv_folder_lostandfound.tga");
+        Gdk.Pixbuf folder_landmark = MainClass.GetResource("inv_folder_landmark.tga");
+        Gdk.Pixbuf folder_bodypart = MainClass.GetResource("inv_folder_bodypart.tga");
+        Gdk.Pixbuf folder_callingcard = MainClass.GetResource("inv_folder_callingcard.tga");
+        Gdk.Pixbuf folder_clothing = MainClass.GetResource("inv_folder_clothing.tga");
 
 
         public void kill()
@@ -315,7 +315,7 @@ namespace omvviewerlight
                         if(item is InventoryLandmark)
                         {
 							Gtk.ImageMenuItem menu_tp_lm = new ImageMenuItem("Teleport to Landmark");
-							menu_tp_lm.Image=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.icon_place.tga"));
+							menu_tp_lm.Image=new Gtk.Image(MainClass.GetResource("icon_place.tga"));
 							menu_tp_lm.ButtonPressEvent += new ButtonPressEventHandler(Teleporttolandmark);
                             menu.Append(menu_tp_lm);
                         }
@@ -324,9 +324,9 @@ namespace omvviewerlight
                         {
                             Gtk.MenuItem menu_wear_folder = new MenuItem("Wear folder contents");
                             Gtk.ImageMenuItem menu_give_folder = new ImageMenuItem("Give folder to user");
-							menu_give_folder.Image=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.ff_edit_theirs.tga"));
+							menu_give_folder.Image=new Gtk.Image(MainClass.GetResource("ff_edit_theirs.tga"));
                             Gtk.ImageMenuItem menu_delete_folder = new ImageMenuItem("Delete Folder");
-							menu_delete_folder.Image=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_folder_trash.tga"));
+							menu_delete_folder.Image=new Gtk.Image(MainClass.GetResource("inv_folder_trash.tga"));
 
                             menu_delete_folder.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
                             menu_give_folder.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
@@ -343,10 +343,10 @@ namespace omvviewerlight
                         {
 						
 						    Gtk.ImageMenuItem menu_give_item = new ImageMenuItem("Give item to user");
-							menu_give_item.Image=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.ff_edit_theirs.tga"));
+							menu_give_item.Image=new Gtk.Image(MainClass.GetResource("ff_edit_theirs.tga"));
 							
                             Gtk.ImageMenuItem menu_delete_item = new ImageMenuItem("Delete item");
-							menu_delete_item.Image=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.inv_folder_trash.tga"));
+							menu_delete_item.Image=new Gtk.Image(MainClass.GetResource("inv_folder_trash.tga"));
 
                             menu_give_item.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
                             menu_delete_item.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);

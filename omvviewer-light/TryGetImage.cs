@@ -51,7 +51,7 @@ namespace omvviewerlight
             img_height = height;
 		
 			
-			Gdk.Pixbuf buf=Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.trying.tga");
+			Gdk.Pixbuf buf=MainClass.GetResource("trying.tga");
 			target_image.Pixbuf=buf.ScaleSimple(width,height,Gdk.InterpType.Bilinear);
 
 			if(asset!=UUID.Zero)

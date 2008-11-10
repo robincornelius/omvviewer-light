@@ -45,10 +45,10 @@ namespace omvviewerlight
 		int channels;
 		int width;
 		int height;
-		Gtk.Image avatar=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.map_avatar_8.tga"));
-		Gtk.Image avatar_me=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.map_avatar_me_8.tga"));
-		Gtk.Image avatar_above=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.map_avatar_above_8.tga"));
-		Gtk.Image avatar_below=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.map_avatar_below_8.tga"));
+		Gtk.Image avatar=new Gtk.Image(MainClass.GetResource("map_avatar_8.tga"));
+		Gtk.Image avatar_me=new Gtk.Image(MainClass.GetResource("map_avatar_me_8.tga"));
+		Gtk.Image avatar_above=new Gtk.Image(MainClass.GetResource("map_avatar_above_8.tga"));
+		Gtk.Image avatar_below=new Gtk.Image(MainClass.GetResource("map_avatar_below_8.tga"));
         UUID lastsim = new UUID();
 		
 		public Map()
@@ -302,7 +302,7 @@ namespace omvviewerlight
 				void getmap()
 		{
 			Gtk.Application.Invoke(delegate {		
-			Gdk.Pixbuf pb=new Pixbuf(Gdk.Pixbuf.LoadFromResource("omvviewerlight.art.trying.tga"),0,0,256,256);
+			Gdk.Pixbuf pb=new Pixbuf(MainClass.GetResource("trying.tga"),0,0,256,256);
           
             lock (image)
             {
