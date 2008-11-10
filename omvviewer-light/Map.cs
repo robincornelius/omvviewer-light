@@ -45,10 +45,10 @@ namespace omvviewerlight
 		int channels;
 		int width;
 		int height;
-		Gtk.Image avatar=new Gtk.Image(MainClass.GetResource("map_avatar_8.tga"));
-		Gtk.Image avatar_me=new Gtk.Image(MainClass.GetResource("map_avatar_me_8.tga"));
-		Gtk.Image avatar_above=new Gtk.Image(MainClass.GetResource("map_avatar_above_8.tga"));
-		Gtk.Image avatar_below=new Gtk.Image(MainClass.GetResource("map_avatar_below_8.tga"));
+		static Gtk.Image avatar=new Gtk.Image(MainClass.GetResource("map_avatar_8.tga"));
+        static Gtk.Image avatar_me = new Gtk.Image(MainClass.GetResource("map_avatar_me_8.tga"));
+        static Gtk.Image avatar_above = new Gtk.Image(MainClass.GetResource("map_avatar_above_8.tga"));
+        static Gtk.Image avatar_below = new Gtk.Image(MainClass.GetResource("map_avatar_below_8.tga"));
         UUID lastsim = new UUID();
 		
 		public Map()
