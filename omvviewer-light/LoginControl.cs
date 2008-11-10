@@ -37,7 +37,7 @@ namespace omvviewerlight
 		LoginParams login;
 		
 		bool trying;
-
+        
         ~LoginControl()
         {
             //This is ugly but works. GC should be called when we need it as we want to do this
@@ -191,8 +191,24 @@ namespace omvviewerlight
 			Gtk.Application.Invoke(delegate {
 				this.button_login.Label="Login";
 				this.enablebuttons();
-			});			
-			
+                if (!MainClass.win.Visible)
+                {
+                    MainClass.win.trayIcon.Blinking = true;
+                    MainClass.win.UrgencyHint = true;
+                    MainClass.win.trayIcon.Blinking = true;
+
+                   
+                }
+
+                if (MainClass.userlogout == false)
+                {
+                    Gtk.MessageDialog md = new Gtk.MessageDialog(MainClass.win, Gtk.DialogFlags.Modal, Gtk.MessageType.Warning, Gtk.ButtonsType.Close, false, "You have been disconnected from the current simulator");
+                    md.Run();
+                    md.Destroy();
+                }
+
+                MainClass.userlogout = false;
+			});
 		}
 		
 		/// <summary>Called any time the login status changes, will eventually
@@ -220,8 +236,11 @@ namespace omvviewerlight
                 MainClass.client.Throttle.Cloud = 0;
                 MainClass.client.Throttle.Wind = 0;
                 MainClass.client.Throttle.Land = 0;
+                MainClass.userlogout = false;
           
-              }		
+              }
+
+           
 		}
 
 		void onLogMessage(object obj, OpenMetaverse.Helpers.LogLevel level)
@@ -345,6 +364,7 @@ namespace omvviewerlight
 }
 			else
 			{
+                MainClass.userlogout = true;
 				MainClass.client.Network.Logout();
 			}
 		}

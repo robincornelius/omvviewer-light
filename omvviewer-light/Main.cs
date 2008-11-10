@@ -41,7 +41,8 @@ namespace omvviewerlight
 {
 	class MainClass
 	{
-		
+        public static bool userlogout = false;
+
     	public static GridClient client;
 		public static MainWindow win;
 

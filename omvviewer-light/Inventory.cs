@@ -465,7 +465,7 @@ namespace omvviewerlight
              {
 				 Console.Write("Adding item "+item.ToString()+"\n");
 				 Gdk.Pixbuf buf = getprettyicon(item);
-				
+
                  if (!assetmap.ContainsKey(item.UUID))
                  {
                      Gtk.TreeIter iter2 = inventory.AppendValues(args.Iter, buf, item.Name, item.UUID, item);

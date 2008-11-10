@@ -207,7 +207,9 @@ public partial class MainWindow: Gtk.Window
 			
 			if(MainClass.client.Network.Connected)
 			{
+                MainClass.userlogout = true;
 				LogoutDlg ld = new LogoutDlg();
+                ld.Modal = false;
 				ld.Run();
 			}
 				
