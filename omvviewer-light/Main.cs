@@ -32,6 +32,11 @@ using System.Collections;
 using System.Text;
 using System.Configuration;
 using System.Configuration.Assemblies;
+using System.Resources;
+
+
+using System;
+using System.Reflection;
 
 
 
@@ -58,7 +63,8 @@ namespace omvviewerlight
                 client = new GridClient();
 				name_cache=new AVNameCache();
                 Application.Init();
-				Gtk.Window.DefaultIcon=Gdk.Pixbuf.LoadFromResource("viewericon.xpm");
+                Gtk.Window.DefaultIcon = Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.viewericon.xpm");
+    
 
                 win = new MainWindow();
                 win.Show();

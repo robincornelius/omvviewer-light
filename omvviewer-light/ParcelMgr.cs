@@ -117,7 +117,7 @@ namespace omvviewerlight
 
                     nextcol = 0;
                    
-                    this.parcel_map = Gdk.Pixbuf.LoadFromResource("trying.tga");
+                    this.parcel_map = Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.trying.tga");
                     this.image9.Pixbuf = this.parcel_map;
 
                     populate_tree();
@@ -193,7 +193,7 @@ namespace omvviewerlight
                          byte[] data = new byte[4 * 32 * 16];
                          uint col = colmap[thiscol];
 
-                         Gdk.Pixbuf pb = Gdk.Pixbuf.LoadFromResource("parcelindex.tga");
+                         Gdk.Pixbuf pb = Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.parcelindex.tga");
                          sbyte* ps;
                          ps = (sbyte*)pb.Pixels;
 
@@ -303,7 +303,7 @@ namespace omvviewerlight
 			nextcol=0;
 			Gtk.Application.Invoke(delegate
             {
-				this.parcel_map = Gdk.Pixbuf.LoadFromResource("trying.tga");
+				this.parcel_map = Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.trying.tga");
 				this.image9.Pixbuf=this.parcel_map;
 			});
 

@@ -61,9 +61,9 @@ namespace omvviewerlight
 
         List<UUID> rcvd_names = new List<UUID>();
 
-		Gdk.Pixbuf folder_open = Gdk.Pixbuf.LoadFromResource("inv_folder_plain_open.tga");
-		Gdk.Pixbuf tick = Gdk.Pixbuf.LoadFromResource("tick.tga");
-		Gdk.Pixbuf cross = Gdk.Pixbuf.LoadFromResource("cross.tga");
+		Gdk.Pixbuf folder_open = Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.inv_folder_plain_open.tga");
+		Gdk.Pixbuf tick = Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.tick.tga");
+		Gdk.Pixbuf cross = Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.cross.tga");
 		
 		public GroupInfo(Group group) : 
 				base(Gtk.WindowType.Toplevel)
@@ -584,35 +584,48 @@ namespace omvviewerlight
 					
 			        iterx = store.AppendValues(folder_open, "Parcel Access", GroupPowers.None);
     				test=(powers & GroupPowers.LandManageAllowed) == GroupPowers.LandManageAllowed;
-					store.AppendValues(iterx,test?tick:cross,"Manage parcel Access lists",GroupPowers.LandManageAllowed);    				test=(powers & GroupPowers.LandManageBanned) == GroupPowers.LandManageBanned;
-					store.AppendValues(iterx,test?tick:cross,"Manage Ban lists",GroupPowers.LandManageBanned);    				test=(powers & GroupPowers.LandEjectAndFreeze) == GroupPowers.LandEjectAndFreeze;
-					store.AppendValues(iterx,test?tick:cross,"Eject and freeze Residents on parcel",GroupPowers.LandEjectAndFreeze);					
+					store.AppendValues(iterx,test?tick:cross,"Manage parcel Access lists",GroupPowers.LandManageAllowed);
+    				test=(powers & GroupPowers.LandManageBanned) == GroupPowers.LandManageBanned;
+					store.AppendValues(iterx,test?tick:cross,"Manage Ban lists",GroupPowers.LandManageBanned);
+    				test=(powers & GroupPowers.LandEjectAndFreeze) == GroupPowers.LandEjectAndFreeze;
+					store.AppendValues(iterx,test?tick:cross,"Eject and freeze Residents on parcel",GroupPowers.LandEjectAndFreeze);
+					
                     iterx = store.AppendValues(folder_open, "Parcel Content", GroupPowers.None);
                     test=(powers & GroupPowers.ReturnGroupOwned) == GroupPowers.ReturnGroupOwned;
-					store.AppendValues(iterx,test?tick:cross,"Return objects owner by group",GroupPowers.ReturnGroupSet);                    test=(powers & GroupPowers.ReturnGroupSet) == GroupPowers.ReturnGroupSet;
-					store.AppendValues(iterx,test?tick:cross,"Return objects set to group",GroupPowers.ReturnGroupSet);                    test=(powers & GroupPowers.ReturnNonGroup) == GroupPowers.ReturnNonGroup;
-					store.AppendValues(iterx,test?tick:cross,"Return non-group objects",GroupPowers.ReturnNonGroup);                    test=(powers & GroupPowers.LandGardening) == GroupPowers.LandGardening;
-			        store.AppendValues(iterx,test?tick:cross,"Landscaping using Linden Plants",GroupPowers.LandGardening);					
+					store.AppendValues(iterx,test?tick:cross,"Return objects owner by group",GroupPowers.ReturnGroupSet);
+                    test=(powers & GroupPowers.ReturnGroupSet) == GroupPowers.ReturnGroupSet;
+					store.AppendValues(iterx,test?tick:cross,"Return objects set to group",GroupPowers.ReturnGroupSet);
+                    test=(powers & GroupPowers.ReturnNonGroup) == GroupPowers.ReturnNonGroup;
+					store.AppendValues(iterx,test?tick:cross,"Return non-group objects",GroupPowers.ReturnNonGroup);
+                    test=(powers & GroupPowers.LandGardening) == GroupPowers.LandGardening;
+			        store.AppendValues(iterx,test?tick:cross,"Landscaping using Linden Plants",GroupPowers.LandGardening);
+					
                     iterx = store.AppendValues(folder_open, "Object Managment", GroupPowers.None);
                     test=(powers & GroupPowers.DeedObject) == GroupPowers.DeedObject;
-					store.AppendValues(iterx,test?tick:cross,"Deed objects to group",GroupPowers.DeedObject);			        test=(powers & GroupPowers.ObjectManipulate) == GroupPowers.ObjectManipulate;
-					store.AppendValues(iterx,test?tick:cross,"Manipulate (move,copy,modify) group objetcs",GroupPowers.ObjectManipulate);                    test=(powers & GroupPowers.ObjectSetForSale) == GroupPowers.ObjectSetForSale;
+					store.AppendValues(iterx,test?tick:cross,"Deed objects to group",GroupPowers.DeedObject);
+			        test=(powers & GroupPowers.ObjectManipulate) == GroupPowers.ObjectManipulate;
+					store.AppendValues(iterx,test?tick:cross,"Manipulate (move,copy,modify) group objetcs",GroupPowers.ObjectManipulate);
+                    test=(powers & GroupPowers.ObjectSetForSale) == GroupPowers.ObjectSetForSale;
 					store.AppendValues(iterx,test?tick:cross,"Set group objects for sale",GroupPowers.ObjectSetForSale);
 
                     iterx = store.AppendValues(folder_open, "Notices", GroupPowers.None);
 					test=(powers & GroupPowers.SendNotices) == GroupPowers.SendNotices;
-					store.AppendValues(iterx,test?tick:cross,"Send Notices",GroupPowers.SendNotices);                    test=(powers & GroupPowers.ReceiveNotices) == GroupPowers.ReceiveNotices;
+					store.AppendValues(iterx,test?tick:cross,"Send Notices",GroupPowers.SendNotices);
+                    test=(powers & GroupPowers.ReceiveNotices) == GroupPowers.ReceiveNotices;
 					store.AppendValues(iterx,test?tick:cross,"Receive Notices and view past Notices",GroupPowers.ReceiveNotices);
 
                     iterx = store.AppendValues(folder_open, "Proposals", GroupPowers.None);
                     test=(powers & GroupPowers.StartProposal) == GroupPowers.StartProposal;
-					store.AppendValues(iterx,test?tick:cross,"Create Proposals",GroupPowers.StartProposal);                    test=(powers & GroupPowers.VoteOnProposal) == GroupPowers.VoteOnProposal;
+					store.AppendValues(iterx,test?tick:cross,"Create Proposals",GroupPowers.StartProposal);
+                    test=(powers & GroupPowers.VoteOnProposal) == GroupPowers.VoteOnProposal;
 					store.AppendValues(iterx,test?tick:cross,"Vote on Proposals",GroupPowers.VoteOnProposal);
 
                     iterx = store.AppendValues(folder_open, "Chat", GroupPowers.None);
 			        test=(powers & GroupPowers.JoinChat) == GroupPowers.JoinChat;
-			        store.AppendValues(iterx,test?tick:cross,"Join Group Chat",GroupPowers.JoinChat);			        test=(powers & GroupPowers.AllowVoiceChat) == GroupPowers.AllowVoiceChat;
-					store.AppendValues(iterx,test?tick:cross,"Join Group Voice Chat",GroupPowers.AllowVoiceChat);    
+			        store.AppendValues(iterx,test?tick:cross,"Join Group Chat",GroupPowers.JoinChat);
+			        test=(powers & GroupPowers.AllowVoiceChat) == GroupPowers.AllowVoiceChat;
+					store.AppendValues(iterx,test?tick:cross,"Join Group Voice Chat",GroupPowers.AllowVoiceChat);
+    
 				this.treeview_allowed_ability1.ExpandAll();
 				
 				

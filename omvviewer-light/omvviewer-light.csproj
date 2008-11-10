@@ -222,6 +222,11 @@
     <Compile Include="ProfileVIew.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Radar.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -278,85 +283,6 @@
     <Content Include="omvviewer-light.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="map_avatar_8.tga" />
-    <Content Include="status_search_btn.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="arrow.tga" />
-    <Content Include="closebox.tga" />
-    <Content Include="cross.tga" />
-    <Content Include="icn_voice-groupfocus.tga" />
-    <Content Include="icn_voice-groupfocus2.tga" />
-    <Content Include="icn_voice-pvtfocus.tga" />
-    <Content Include="icon_avatar_offline.tga" />
-    <Content Include="icon_avatar_online.tga" />
-    <Content Include="icon_event.tga" />
-    <Content Include="icon_group.tga" />
-    <Content Include="icon_place.tga" />
-    <Content Include="inv_folder_animation.tga" />
-    <Content Include="inv_folder_bodypart.tga" />
-    <Content Include="inv_folder_callingcard.tga" />
-    <Content Include="inv_folder_clothing.tga" />
-    <Content Include="inv_folder_gesture.tga" />
-    <Content Include="inv_folder_landmark.tga" />
-    <Content Include="inv_folder_lostandfound.tga" />
-    <Content Include="inv_folder_notecard.tga" />
-    <Content Include="inv_folder_object.tga" />
-    <Content Include="inv_folder_plain_closed.tga" />
-    <Content Include="inv_folder_plain_open.tga" />
-    <Content Include="inv_folder_script.tga" />
-    <Content Include="inv_folder_snapshot.tga" />
-    <Content Include="inv_folder_sound.tga" />
-    <Content Include="inv_folder_texture.tga" />
-    <Content Include="inv_folder_trash.tga" />
-    <Content Include="inv_item_animation.tga" />
-    <Content Include="inv_item_attach.tga" />
-    <Content Include="inv_item_callingcard_offline.tga" />
-    <Content Include="inv_item_callingcard_online.tga" />
-    <Content Include="inv_item_clothing.tga" />
-    <Content Include="inv_item_eyes.tga" />
-    <Content Include="inv_item_gesture.tga" />
-    <Content Include="inv_item_gloves.tga" />
-    <Content Include="inv_item_hair.tga" />
-    <Content Include="inv_item_jacket.tga" />
-    <Content Include="inv_item_landmark.tga" />
-    <Content Include="inv_item_landmark_visited.tga" />
-    <Content Include="inv_item_notecard.tga" />
-    <Content Include="inv_item_object.tga" />
-    <Content Include="inv_item_object_multi.tga" />
-    <Content Include="inv_item_pants.tga" />
-    <Content Include="inv_item_script.tga" />
-    <Content Include="inv_item_script_dangerous.tga" />
-    <Content Include="inv_item_shape.tga" />
-    <Content Include="inv_item_shirt.tga" />
-    <Content Include="inv_item_shoes.tga" />
-    <Content Include="inv_item_skin.tga" />
-    <Content Include="inv_item_skirt.tga" />
-    <Content Include="inv_item_snapshot.tga" />
-    <Content Include="inv_item_socks.tga" />
-    <Content Include="inv_item_sound.tga" />
-    <Content Include="inv_item_texture.tga" />
-    <Content Include="inv_item_underpants.tga" />
-    <Content Include="inv_item_undershirt.tga" />
-    <Content Include="item_object.tga" />
-    <Content Include="map_avatar_above_8.tga" />
-    <Content Include="map_avatar_below_8.tga" />
-    <Content Include="map_avatar_me_8.tga" />
-    <Content Include="map_home.tga" />
-    <Content Include="status_health.tga" />
-    <Content Include="status_money.tga" />
-    <Content Include="status_no_build.tga" />
-    <Content Include="status_no_fly.tga" />
-    <Content Include="status_no_push.tga" />
-    <Content Include="status_no_scripts.tga" />
-    <Content Include="status_no_voice.tga" />
-    <Content Include="status_script_debug.tga" />
-    <Content Include="status_voice.tga" />
-    <Content Include="tick.tga" />
-    <Content Include="trying.tga" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="viewericon.xpm" />
     <Content Include="Artwork-licence.txt" />
     <Content Include="GNU-GPLv3.txt" />
     <Content Include="gridlist.txt" />
@@ -364,6 +290,7 @@
     <Content Include="openjpeg-dotnet.dll" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="art\status_search_btn.png" />
     <Content Include="libopenjpeg-dotnet-2.1.3.0-x86_64.so" />
     <Content Include="libopenjpeg-dotnet-2.1.3.0.dylib" />
     <Content Include="libopenjpeg-dotnet-2.1.3.0.so" />
@@ -371,9 +298,97 @@
     <Content Include="OpenMetaverse.dll.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="blank_arrow.tga" />
-    <None Include="down_arrow.tga" />
-    <None Include="up_arrow.tga" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <EmbeddedResource Include="art\arrow.tga">
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\blank_arrow.tga" />
+    <EmbeddedResource Include="art\closebox.tga" />
+    <EmbeddedResource Include="art\cross.tga" />
+    <EmbeddedResource Include="art\down_arrow.tga" />
+    <EmbeddedResource Include="art\ff_edit_theirs.tga" />
+    <EmbeddedResource Include="art\icn_voice-groupfocus.tga" />
+    <EmbeddedResource Include="art\icn_voice-groupfocus2.tga" />
+    <EmbeddedResource Include="art\icn_voice-pvtfocus.tga" />
+    <EmbeddedResource Include="art\icon_avatar_offline.tga" />
+    <EmbeddedResource Include="art\icon_avatar_online.tga" />
+    <EmbeddedResource Include="art\icon_event.tga" />
+    <EmbeddedResource Include="art\icon_group.tga" />
+    <EmbeddedResource Include="art\icon_place.tga" />
+    <EmbeddedResource Include="art\inv_folder_animation.tga" />
+    <EmbeddedResource Include="art\inv_folder_bodypart.tga" />
+    <EmbeddedResource Include="art\inv_folder_callingcard.tga" />
+    <EmbeddedResource Include="art\inv_folder_clothing.tga" />
+    <EmbeddedResource Include="art\inv_folder_gesture.tga" />
+    <EmbeddedResource Include="art\inv_folder_landmark.tga" />
+    <EmbeddedResource Include="art\inv_folder_lostandfound.tga" />
+    <EmbeddedResource Include="art\inv_folder_notecard.tga" />
+    <EmbeddedResource Include="art\inv_folder_object.tga" />
+    <EmbeddedResource Include="art\inv_folder_plain_closed.tga" />
+    <EmbeddedResource Include="art\inv_folder_plain_open.tga" />
+    <EmbeddedResource Include="art\inv_folder_script.tga" />
+    <EmbeddedResource Include="art\inv_folder_snapshot.tga" />
+    <EmbeddedResource Include="art\inv_folder_sound.tga" />
+    <EmbeddedResource Include="art\inv_folder_texture.tga" />
+    <EmbeddedResource Include="art\inv_folder_trash.tga" />
+    <EmbeddedResource Include="art\inv_item_animation.tga" />
+    <EmbeddedResource Include="art\inv_item_attach.tga" />
+    <EmbeddedResource Include="art\inv_item_callingcard_offline.tga" />
+    <EmbeddedResource Include="art\inv_item_callingcard_online.tga" />
+    <EmbeddedResource Include="art\inv_item_clothing.tga" />
+    <EmbeddedResource Include="art\inv_item_eyes.tga" />
+    <EmbeddedResource Include="art\inv_item_gesture.tga" />
+    <EmbeddedResource Include="art\inv_item_gloves.tga" />
+    <EmbeddedResource Include="art\inv_item_hair.tga" />
+    <EmbeddedResource Include="art\inv_item_jacket.tga" />
+    <EmbeddedResource Include="art\inv_item_landmark.tga" />
+    <EmbeddedResource Include="art\inv_item_landmark_visited.tga" />
+    <EmbeddedResource Include="art\inv_item_notecard.tga" />
+    <EmbeddedResource Include="art\inv_item_object.tga" />
+    <EmbeddedResource Include="art\inv_item_object_multi.tga" />
+    <EmbeddedResource Include="art\inv_item_pants.tga" />
+    <EmbeddedResource Include="art\inv_item_script.tga" />
+    <EmbeddedResource Include="art\inv_item_script_dangerous.tga" />
+    <EmbeddedResource Include="art\inv_item_shape.tga" />
+    <EmbeddedResource Include="art\inv_item_shirt.tga" />
+    <EmbeddedResource Include="art\inv_item_shoes.tga" />
+    <EmbeddedResource Include="art\inv_item_skin.tga" />
+    <EmbeddedResource Include="art\inv_item_skirt.tga" />
+    <EmbeddedResource Include="art\inv_item_snapshot.tga" />
+    <EmbeddedResource Include="art\inv_item_socks.tga" />
+    <EmbeddedResource Include="art\inv_item_sound.tga" />
+    <EmbeddedResource Include="art\inv_item_texture.tga" />
+    <EmbeddedResource Include="art\inv_item_underpants.tga" />
+    <EmbeddedResource Include="art\inv_item_undershirt.tga" />
+    <EmbeddedResource Include="art\item_object.tga" />
+    <EmbeddedResource Include="art\map_avatar_8.tga" />
+    <EmbeddedResource Include="art\map_avatar_above_8.tga" />
+    <EmbeddedResource Include="art\map_avatar_below_8.tga" />
+    <EmbeddedResource Include="art\map_avatar_me_8.tga" />
+    <EmbeddedResource Include="art\map_home.tga" />
+    <EmbeddedResource Include="art\parcel.tga" />
+    <EmbeddedResource Include="art\parcelindex.tga" />
+    <EmbeddedResource Include="art\status_health.tga" />
+    <EmbeddedResource Include="art\status_money.tga" />
+    <EmbeddedResource Include="art\status_no_build.tga" />
+    <EmbeddedResource Include="art\status_no_fly.tga" />
+    <EmbeddedResource Include="art\status_no_push.tga" />
+    <EmbeddedResource Include="art\status_no_scripts.tga" />
+    <EmbeddedResource Include="art\status_no_voice.tga" />
+    <EmbeddedResource Include="art\status_script_debug.tga" />
+    <EmbeddedResource Include="art\status_voice.tga" />
+    <EmbeddedResource Include="art\tick.tga" />
+    <EmbeddedResource Include="art\trying.tga" />
+    <EmbeddedResource Include="art\up_arrow.tga" />
+    <EmbeddedResource Include="art\viewericon.xpm" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <PropertyGroup>

@@ -225,7 +225,7 @@ namespace omvviewerlight {
             w15.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w16 = new Gtk.Image();
-            w16.Pixbuf = Gdk.Pixbuf.LoadFromResource("icon_place.tga");
+            w16.Pixbuf = Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.icon_place.tga");
             w15.Add(w16);
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w18 = new Gtk.Label();
@@ -251,7 +251,7 @@ namespace omvviewerlight {
             w24.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w25 = new Gtk.Image();
-            w25.Pixbuf = Gdk.Pixbuf.LoadFromResource("map_home.tga");
+            w25.Pixbuf = Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.map_home.tga");
             w24.Add(w25);
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w27 = new Gtk.Label();

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Properties {
+namespace omvviewer_light {
     using System;
     
     
@@ -57,6 +57,580 @@ namespace Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        internal static byte[] arrow {
+            get {
+                object obj = ResourceManager.GetObject("arrow", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] blank_arrow {
+            get {
+                object obj = ResourceManager.GetObject("blank_arrow", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] closebox {
+            get {
+                object obj = ResourceManager.GetObject("closebox", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] cross {
+            get {
+                object obj = ResourceManager.GetObject("cross", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] down_arrow {
+            get {
+                object obj = ResourceManager.GetObject("down_arrow", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] ff_edit_theirs {
+            get {
+                object obj = ResourceManager.GetObject("ff_edit_theirs", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] icn_voice_groupfocus {
+            get {
+                object obj = ResourceManager.GetObject("icn_voice_groupfocus", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] icn_voice_groupfocus2 {
+            get {
+                object obj = ResourceManager.GetObject("icn_voice_groupfocus2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] icn_voice_pvtfocus {
+            get {
+                object obj = ResourceManager.GetObject("icn_voice_pvtfocus", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] icon_avatar_offline {
+            get {
+                object obj = ResourceManager.GetObject("icon_avatar_offline", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] icon_avatar_online {
+            get {
+                object obj = ResourceManager.GetObject("icon_avatar_online", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] icon_event {
+            get {
+                object obj = ResourceManager.GetObject("icon_event", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] icon_group {
+            get {
+                object obj = ResourceManager.GetObject("icon_group", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] icon_place {
+            get {
+                object obj = ResourceManager.GetObject("icon_place", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_folder_animation {
+            get {
+                object obj = ResourceManager.GetObject("inv_folder_animation", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_folder_bodypart {
+            get {
+                object obj = ResourceManager.GetObject("inv_folder_bodypart", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_folder_callingcard {
+            get {
+                object obj = ResourceManager.GetObject("inv_folder_callingcard", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_folder_clothing {
+            get {
+                object obj = ResourceManager.GetObject("inv_folder_clothing", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_folder_gesture {
+            get {
+                object obj = ResourceManager.GetObject("inv_folder_gesture", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_folder_landmark {
+            get {
+                object obj = ResourceManager.GetObject("inv_folder_landmark", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_folder_lostandfound {
+            get {
+                object obj = ResourceManager.GetObject("inv_folder_lostandfound", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_folder_notecard {
+            get {
+                object obj = ResourceManager.GetObject("inv_folder_notecard", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_folder_object {
+            get {
+                object obj = ResourceManager.GetObject("inv_folder_object", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_folder_plain_closed {
+            get {
+                object obj = ResourceManager.GetObject("inv_folder_plain_closed", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_folder_plain_open {
+            get {
+                object obj = ResourceManager.GetObject("inv_folder_plain_open", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_folder_script {
+            get {
+                object obj = ResourceManager.GetObject("inv_folder_script", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_folder_snapshot {
+            get {
+                object obj = ResourceManager.GetObject("inv_folder_snapshot", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_folder_sound {
+            get {
+                object obj = ResourceManager.GetObject("inv_folder_sound", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_folder_texture {
+            get {
+                object obj = ResourceManager.GetObject("inv_folder_texture", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_folder_trash {
+            get {
+                object obj = ResourceManager.GetObject("inv_folder_trash", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_animation {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_animation", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_attach {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_attach", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_callingcard_offline {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_callingcard_offline", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_callingcard_online {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_callingcard_online", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_clothing {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_clothing", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_eyes {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_eyes", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_gesture {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_gesture", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_gloves {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_gloves", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_hair {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_hair", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_jacket {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_jacket", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_landmark {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_landmark", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_landmark_visited {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_landmark_visited", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_notecard {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_notecard", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_object {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_object", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_object_multi {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_object_multi", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_pants {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_pants", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_script {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_script", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_script_dangerous {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_script_dangerous", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_shape {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_shape", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_shirt {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_shirt", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_shoes {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_shoes", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_skin {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_skin", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_skirt {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_skirt", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_snapshot {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_snapshot", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_socks {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_socks", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_sound {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_sound", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_texture {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_texture", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_underpants {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_underpants", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] inv_item_undershirt {
+            get {
+                object obj = ResourceManager.GetObject("inv_item_undershirt", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] item_object {
+            get {
+                object obj = ResourceManager.GetObject("item_object", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] map_avatar_8 {
+            get {
+                object obj = ResourceManager.GetObject("map_avatar_8", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] map_avatar_above_8 {
+            get {
+                object obj = ResourceManager.GetObject("map_avatar_above_8", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] map_avatar_below_8 {
+            get {
+                object obj = ResourceManager.GetObject("map_avatar_below_8", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] map_avatar_me_8 {
+            get {
+                object obj = ResourceManager.GetObject("map_avatar_me_8", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] map_home {
+            get {
+                object obj = ResourceManager.GetObject("map_home", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] parcel {
+            get {
+                object obj = ResourceManager.GetObject("parcel", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] parcelindex {
+            get {
+                object obj = ResourceManager.GetObject("parcelindex", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] status_health {
+            get {
+                object obj = ResourceManager.GetObject("status_health", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] status_money {
+            get {
+                object obj = ResourceManager.GetObject("status_money", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] status_no_build {
+            get {
+                object obj = ResourceManager.GetObject("status_no_build", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] status_no_fly {
+            get {
+                object obj = ResourceManager.GetObject("status_no_fly", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] status_no_push {
+            get {
+                object obj = ResourceManager.GetObject("status_no_push", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] status_no_scripts {
+            get {
+                object obj = ResourceManager.GetObject("status_no_scripts", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] status_no_voice {
+            get {
+                object obj = ResourceManager.GetObject("status_no_voice", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] status_script_debug {
+            get {
+                object obj = ResourceManager.GetObject("status_script_debug", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap status_search_btn {
+            get {
+                object obj = ResourceManager.GetObject("status_search_btn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap status_search_btn1 {
+            get {
+                object obj = ResourceManager.GetObject("status_search_btn1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static byte[] status_voice {
+            get {
+                object obj = ResourceManager.GetObject("status_voice", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] tick {
+            get {
+                object obj = ResourceManager.GetObject("tick", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] trying {
+            get {
+                object obj = ResourceManager.GetObject("trying", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] up_arrow {
+            get {
+                object obj = ResourceManager.GetObject("up_arrow", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] viewericon {
+            get {
+                object obj = ResourceManager.GetObject("viewericon", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

@@ -45,15 +45,16 @@ namespace omvviewerlight
 		int channels;
 		int width;
 		int height;
-		Gtk.Image avatar=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("map_avatar_8.tga"));
-		Gtk.Image avatar_me=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("map_avatar_me_8.tga"));
-		Gtk.Image avatar_above=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("map_avatar_above_8.tga"));
-		Gtk.Image avatar_below=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("map_avatar_below_8.tga"));
+		Gtk.Image avatar=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.map_avatar_8.tga"));
+		Gtk.Image avatar_me=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.map_avatar_me_8.tga"));
+		Gtk.Image avatar_above=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.map_avatar_above_8.tga"));
+		Gtk.Image avatar_below=new Gtk.Image(Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.map_avatar_below_8.tga"));
         UUID lastsim = new UUID();
 		
 		public Map()
 		{           
-			this.Build();
+			this.Build();
+
 			MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
 			MainClass.client.Objects.OnNewAvatar += new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
 			MainClass.client.Objects.OnObjectUpdated += new OpenMetaverse.ObjectManager.ObjectUpdatedCallback(onUpdate);
@@ -221,7 +222,8 @@ namespace omvviewerlight
                     }
 			//});
 			
-		}
+		}
+
 		void onNewSim(Simulator lastsim)
 	    {
 			Console.Write("New simulator :"+MainClass.client.Network.CurrentSim.Name +" requesting grid layer for terrain \n");
@@ -294,12 +296,13 @@ namespace omvviewerlight
 					}
 				}
 			}	
-		}
+		}
+
 				
 				void getmap()
 		{
 			Gtk.Application.Invoke(delegate {		
-			Gdk.Pixbuf pb=new Pixbuf(Gdk.Pixbuf.LoadFromResource("trying.tga"),0,0,256,256);
+			Gdk.Pixbuf pb=new Pixbuf(Gdk.Pixbuf.LoadFromResource("omvviewer-light.art.trying.tga"),0,0,256,256);
           
             lock (image)
             {

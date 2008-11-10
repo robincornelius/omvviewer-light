@@ -1,101 +1,601 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
-		Microsoft ResX Schema
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
 
-		Version 1.3
-
-		The primary goals of this format is to allow a simple XML format 
-		that is mostly human readable. The generation and parsing of the 
-		various data types are done through the TypeConverter classes 
-		associated with the data types.
-
-		Example:
-
-		... ado.net/XML headers & schema ...
-		<resheader name="resmimetype">text/microsoft-resx</resheader>
-		<resheader name="version">1.3</resheader>
-		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-		<data name="Name1">this is my long string</data>
-		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-			[base64 mime encoded serialized .NET Framework object]
-		</data>
-		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-			[base64 mime encoded string representing a byte array form of the .NET Framework object]
-		</data>
-
-		There are any number of "resheader" rows that contain simple 
-		name/value pairs.
-
-		Each data row contains a name, and value. The row also contains a 
-		type or mimetype. Type corresponds to a .NET class that support 
-		text/value conversion through the TypeConverter architecture. 
-		Classes that don't support this are serialized and stored with the 
-		mimetype set.
-
-		The mimetype is used for serialized objects, and tells the 
-		ResXResourceReader how to depersist the object. This is currently not 
-		extensible. For a given mimetype the value must be set accordingly:
-
-		Note - application/x-microsoft.net.object.binary.base64 is the format 
-		that the ResXResourceWriter will generate, however the reader can 
-		read any of the formats listed below.
-
-		mimetype: application/x-microsoft.net.object.binary.base64
-		value   : The object must be serialized with 
-			: System.Serialization.Formatters.Binary.BinaryFormatter
-			: and then encoded with base64 encoding.
-
-		mimetype: application/x-microsoft.net.object.soap.base64
-		value   : The object must be serialized with 
-			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-			: and then encoded with base64 encoding.
-
-		mimetype: application/x-microsoft.net.object.bytearray.base64
-		value   : The object must be serialized into a byte array 
-			: using a System.ComponentModel.TypeConverter
-			: and then encoded with base64 encoding.
-	-->
-	
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>1.3</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\arrow.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="arrow1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\arrow.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="blank_arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\blank_arrow.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="blank_arrow1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\blank_arrow.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="closebox" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\closebox.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="closebox1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\closebox.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="cross" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\cross.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="cross1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\cross.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="down_arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\down_arrow.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="down_arrow1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\down_arrow.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ff_edit_theirs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\ff_edit_theirs.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ff_edit_theirs1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\ff_edit_theirs.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icn_voice-groupfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\icn_voice-groupfocus.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icn_voice-groupfocus2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\icn_voice-groupfocus2.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icn_voice-pvtfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\icn_voice-pvtfocus.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icn_voice_groupfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\icn_voice-groupfocus.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icn_voice_groupfocus2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\icn_voice-groupfocus2.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icn_voice_pvtfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\icn_voice-pvtfocus.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_avatar_offline" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\icon_avatar_offline.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_avatar_offline1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\icon_avatar_offline.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_avatar_online" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\icon_avatar_online.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_avatar_online1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\icon_avatar_online.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_event" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\icon_event.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_event1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\icon_event.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_group" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\icon_group.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_group1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\icon_group.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_place" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\icon_place.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_place1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\icon_place.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_animation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_animation.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_animation1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_animation.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_bodypart" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_bodypart.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_bodypart1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_bodypart.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_callingcard" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_callingcard.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_callingcard1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_callingcard.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_clothing" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_clothing.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_clothing1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_clothing.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_gesture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_gesture.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_gesture1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_gesture.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_landmark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_landmark.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_landmark1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_landmark.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_lostandfound" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_lostandfound.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_lostandfound1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_lostandfound.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_notecard" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_notecard.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_notecard1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_notecard.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_object" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_object.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_object1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_object.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_plain_closed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_plain_closed.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_plain_closed1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_plain_closed.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_plain_open" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_plain_open.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_plain_open1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_plain_open.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_script" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_script.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_script1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_script.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_snapshot" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_snapshot.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_snapshot1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_snapshot.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_sound" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_sound.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_sound1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_sound.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_texture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_texture.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_texture1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_texture.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_trash" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_trash.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_folder_trash1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_folder_trash.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_animation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_animation.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_animation1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_animation.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_attach" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_attach.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_attach1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_attach.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_callingcard_offline" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_callingcard_offline.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_callingcard_offline1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_callingcard_offline.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_callingcard_online" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_callingcard_online.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_callingcard_online1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_callingcard_online.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_clothing" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_clothing.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_clothing1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_clothing.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_eyes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_eyes.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_eyes1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_eyes.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_gesture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_gesture.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_gesture1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_gesture.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_gloves" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_gloves.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_gloves1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_gloves.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_hair" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_hair.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_hair1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_hair.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_jacket" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_jacket.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_jacket1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_jacket.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_landmark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_landmark.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_landmark1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_landmark.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_landmark_visited" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_landmark_visited.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_landmark_visited1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_landmark_visited.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_notecard" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_notecard.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_notecard1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_notecard.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_object" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_object.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_object1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_object.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_object_multi" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_object_multi.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_object_multi1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_object_multi.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_pants" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_pants.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_pants1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_pants.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_script" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_script.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_script1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_script.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_script_dangerous" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_script_dangerous.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_script_dangerous1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_script_dangerous.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_shape" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_shape.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_shape1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_shape.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_shirt" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_shirt.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_shirt1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_shirt.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_shoes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_shoes.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_shoes1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_shoes.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_skin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_skin.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_skin1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_skin.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_skirt" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_skirt.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_skirt1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_skirt.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_snapshot" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_snapshot.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_snapshot1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_snapshot.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_socks" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_socks.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_socks1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_socks.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_sound" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_sound.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_sound1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_sound.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_texture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_texture.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_texture1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_texture.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_underpants" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_underpants.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_underpants1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_underpants.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_undershirt" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_undershirt.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="inv_item_undershirt1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\inv_item_undershirt.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="item_object" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\item_object.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="item_object1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\item_object.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="map_avatar_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\map_avatar_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="map_avatar_81" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\map_avatar_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="map_avatar_above_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\map_avatar_above_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="map_avatar_above_81" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\map_avatar_above_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="map_avatar_below_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\map_avatar_below_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="map_avatar_below_81" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\map_avatar_below_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="map_avatar_me_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\map_avatar_me_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="map_avatar_me_81" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\map_avatar_me_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="map_home" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\map_home.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="map_home1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\map_home.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="parcel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\parcel.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="parcel1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\parcel.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="parcelindex" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\parcelindex.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="parcelindex1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\parcelindex.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="status_health" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\status_health.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="status_health1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\status_health.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="status_money" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\status_money.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="status_money1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\status_money.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="status_no_build" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\status_no_build.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="status_no_build1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\status_no_build.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="status_no_fly" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\status_no_fly.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="status_no_fly1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\status_no_fly.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="status_no_push" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\status_no_push.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="status_no_push1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\status_no_push.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="status_no_scripts" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\status_no_scripts.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="status_no_scripts1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\status_no_scripts.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="status_no_voice" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\status_no_voice.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="status_no_voice1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\status_no_voice.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="status_script_debug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\status_script_debug.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="status_script_debug1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\status_script_debug.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="status_search_btn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\status_search_btn.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="status_voice" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\status_voice.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="status_voice1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\status_voice.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tick" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\tick.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tick1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\tick.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="trying" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\trying.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="trying1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\trying.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="up_arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\up_arrow.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="up_arrow1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\up_arrow.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="viewericon.xpm" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\viewericon.xpm;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
 </root>
