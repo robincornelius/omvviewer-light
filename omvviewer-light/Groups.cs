@@ -92,12 +92,7 @@ namespace omvviewerlight
 
             (cell as Gtk.CellRendererText).Text = text;
 
-        }
-
-
-		//REFACTOR ME, MAINCLASS IS DUPLICATING
-
-		void onGroups(Dictionary<UUID,Group> groups)
+        }		void onGroups(Dictionary<UUID,Group> groups)
 		{
 			
 			Gtk.Application.Invoke(delegate {

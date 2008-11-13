@@ -7,7 +7,7 @@ omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    This program is distributed in thOe hope that it will be useful,
+    This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
@@ -247,8 +247,10 @@ public partial class MainWindow: Gtk.Window
 
     void Self_OnAvatarSitResponse(UUID objectID, bool autoPilot, Vector3 cameraAtOffset, Vector3 cameraEyeOffset, bool forceMouselook, Vector3 sitPosition, Quaternion sitRotation)
     {
-        // we sat down
-        togglesat();
+		Gtk.Application.Invoke(delegate{
+	        // we sat down
+	        togglesat();
+		});
     }
 
     public void stand()
@@ -537,10 +539,8 @@ public partial class MainWindow: Gtk.Window
 		if(sequenceID==int.MaxValue)
 			   return;
 			
-		this.current_parcelid=parcel.LocalID;
-			
+		this.current_parcelid=parcel.LocalID;			
 		this.is_parcel_owner=(parcel.OwnerID==MainClass.client.Self.AgentID);
-
         this.parcel_owner_name = "Waiting....";
         this.parcel_group = "Waiting....";
 
@@ -567,13 +567,11 @@ public partial class MainWindow: Gtk.Window
 	
 	void onLogin(LoginStatus login, string message)
 	{
-
-
         if (login == LoginStatus.Success)
         {
             MainClass.client.Self.RequestBalance();
-            //MainClass.client.Parcels.RequestAllSimParcels(MainClass.client.Network.CurrentSim);
-            Gtk.Application.Invoke(delegate
+
+			Gtk.Application.Invoke(delegate
             {
                 OnUpdateStatus();
                 this.AvaiableAction.Sensitive = true;
@@ -600,10 +598,10 @@ public partial class MainWindow: Gtk.Window
             });
         }
         Gtk.Application.Invoke(delegate
-            {
-                this.statusbar1.Pop(1);
-                this.statusbar1.Push(1, login.ToString());
-            });
+        {
+            this.statusbar1.Pop(1);
+            this.statusbar1.Push(1, login.ToString());
+        });
 	}
 	
 	bool OnUpdateStatus()
@@ -665,12 +663,8 @@ public partial class MainWindow: Gtk.Window
         ud.go();
 
 		button.Clicked += new EventHandler(cs.clickclosed);
-		this.notebook.SwitchPage += new SwitchPageHandler(cs.onSwitchPage);
-		
-
+		this.notebook.SwitchPage += new SwitchPageHandler(cs.onSwitchPage);
 	}
-	
-	
 	
 	public void startGroupIM(UUID id)
 	{
@@ -701,13 +695,11 @@ public partial class MainWindow: Gtk.Window
 
 				active_ims.Add(target);
 			});
-		}		
-				
+		}					
 	}
 	   	
 	void onIM(InstantMessage im, Simulator sim)
 	{	
-		
         // Note to self, if i do implement a dispatcher here these two need to be dispatched but not open 
         // new IM tabs so don't treat the same as the rest below.
 		if(im.Dialog==OpenMetaverse.InstantMessageDialog.StartTyping)
@@ -820,8 +812,8 @@ public partial class MainWindow: Gtk.Window
 					if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(im.IMSessionID,out lable))
 						lable="Waiting...";
 							
-					   makeimwindow(lable,imc,true,im.IMSessionID);
-	
+					makeimwindow(lable,imc,true,im.IMSessionID);
+
 					active_ims.Add(im.IMSessionID);
 				});
 			}
@@ -841,12 +833,10 @@ public partial class MainWindow: Gtk.Window
 			});
 
             // Block here untill chat window is set up or else we can get multiple IMs stacking up in new windows
-            // from same user as set up code is run as an invoke
+			// from same user as set up code is run as an invoke (Does not seem to work corretly).
 
             ChatSetup.WaitOne(5000, false);
-
-		}
-		
+		}		
 	}
 
 	protected virtual void OnAvaiableActionActivated (object sender, System.EventArgs e)

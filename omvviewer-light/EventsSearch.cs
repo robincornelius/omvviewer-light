@@ -19,6 +19,7 @@ namespace omvviewerlight
 		UUID queryid;
 		Gtk.ListStore store;
         int events_found;
+		OpenMetaverse.DirectoryManager.EventInfo selected_event;
 		
 		public EventsSearch()
 		
@@ -50,7 +51,9 @@ namespace omvviewerlight
 			this.combobox_category.InsertText(0,OpenMetaverse.DirectoryManager.EventCategories.All.ToString());
 
 			this.combobox_category.Active=0;
-		
+			this.button_notify.Sensitive=false;
+			this.button_teleport.Sensitive=false;
+			
 		}
 
 		void onEventInfo(OpenMetaverse.DirectoryManager.EventInfo anevent)
@@ -66,6 +69,9 @@ namespace omvviewerlight
                 ud.go();	
 				this.entry_duration.Text=anevent.Duration.ToString();
 				this.textview_eventinfo.Buffer.Text=anevent.Desc;
+                selected_event=anevent;
+			    this.button_notify.Sensitive=false;
+			    this.button_teleport.Sensitive=true;
 				
 			});
 		}
@@ -96,7 +102,9 @@ namespace omvviewerlight
 			store.Clear();
 			this.label_info.Text="Searching..........";
             events_found = 0;
-			
+			this.button_notify.Sensitive=false;
+			this.button_teleport.Sensitive=false;
+						
 			//OpenMetaverse.Parcel.ParcelCategory pcat;
 			//pcat=OpenMetaverse.Parcel.ParcelCategory.Any;
 			queryid=UUID.Random();
@@ -117,6 +125,28 @@ namespace omvviewerlight
 				anevent=(OpenMetaverse.DirectoryManager.EventsSearchData)mod.GetValue(iter,2);
 				MainClass.client.Directory.EventInfoRequest(anevent.ID);
 			}
+        }
+
+        protected virtual void OnButtonTeleportClicked (object sender, System.EventArgs e)
+		{
+			string sim=selected_event.SimName;
+			Vector3d pos=selected_event.GlobalPos;
+            float local_x,local_y;
+			OpenMetaverse.Helpers.GlobalPosToRegionHandle((float)pos.X,(float)pos.Y,out local_x,out local_y);
+			Vector3 local_pos;
+			local_pos.X=local_x;
+			local_pos.Y=local_y;
+            local_pos.Z=(float)pos.Z;			
+
+		    TeleportProgress tp = new TeleportProgress();
+			tp.Show();
+			tp.teleport(sim,local_pos);
+
+        }
+
+        protected virtual void OnButtonNotifyClicked (object sender, System.EventArgs e)
+		{
+
         }
 	}
 }

@@ -47,7 +47,6 @@ namespace omvviewerlight
 
 		public LoginControl()
 		{
-
 			this.Build();
 			MainClass.client.Network.OnConnected += new OpenMetaverse.NetworkManager.ConnectedCallback(onConnected);
 			MainClass.client.Network.OnDisconnected += new OpenMetaverse.NetworkManager.DisconnectedCallback(onDisconnected);
@@ -123,8 +122,6 @@ namespace omvviewerlight
                 this.entry_location.Text=MainClass.ReadSetting("login_location");
 
             }
-
-
 		}
 
         void oncleanuptime()
@@ -195,9 +192,7 @@ namespace omvviewerlight
                 {
                     MainClass.win.trayIcon.Blinking = true;
                     MainClass.win.UrgencyHint = true;
-                    MainClass.win.trayIcon.Blinking = true;
-
-                   
+                    MainClass.win.trayIcon.Blinking = true;      
                 }
 
                 if (MainClass.userlogout == false)
@@ -227,7 +222,6 @@ namespace omvviewerlight
 					this.enablebuttons();
 			    });			
 	
-			//This can take ages, should be threaded
 			if(LoginStatus.Success==login)
 			{
 				Console.Write("Login status login\n");                          
@@ -236,11 +230,8 @@ namespace omvviewerlight
                 MainClass.client.Throttle.Cloud = 0;
                 MainClass.client.Throttle.Wind = 0;
                 MainClass.client.Throttle.Land = 0;
-                MainClass.userlogout = false;
-          
+                MainClass.userlogout = false;          
               }
-
-           
 		}
 
 		void onLogMessage(object obj, OpenMetaverse.Helpers.LogLevel level)
@@ -290,13 +281,11 @@ namespace omvviewerlight
 		void appearencethread()
 		{
             AutoResetEvent appearanceEvent = new AutoResetEvent(false);
-            AppearanceManager.AppearanceUpdatedCallback callback =
-                delegate(Primitive.TextureEntry te) { appearanceEvent.Set(); };
+            AppearanceManager.AppearanceUpdatedCallback callback = delegate(Primitive.TextureEntry te) { appearanceEvent.Set(); };
             MainClass.client.Appearance.OnAppearanceUpdated += callback;
 
 			Console.Write("Appearence thread go\n");
 			MainClass.client.Appearance.SetPreviousAppearance(false);
-
         }
 		
 		protected virtual void OnButton1Clicked (object sender, System.EventArgs e)

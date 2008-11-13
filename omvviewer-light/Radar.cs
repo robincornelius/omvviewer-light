@@ -165,9 +165,8 @@ namespace omvviewerlight
                     return;
 
 				Gtk.Application.Invoke(delegate
-				{
-                    
-                        store.Clear();
+				{                   
+                    store.Clear();
 				});
 				
                     lock (av_tree)
@@ -186,14 +185,14 @@ namespace omvviewerlight
 										
 				Gtk.Application.Invoke(delegate
 				{
-				   
                    store.Clear();
 				});
 			
-                   lock (av_tree)
-                   {
-                       av_tree.Clear();
-			       }
+                
+			lock (av_tree)
+            {
+                av_tree.Clear();
+			}
 
             if (MainClass.client.Network.CurrentSim != null)
             lastsim = MainClass.client.Network.CurrentSim.ID;
@@ -515,15 +514,14 @@ namespace omvviewerlight
 								}
 							}
 							
-                           
-
+               
                             if (distance > 2.5)
                             {
 								
 								
                                 uint regionX, regionY;
                                 Utils.LongToUInts(MainClass.client.Network.Simulators[i].Handle, out regionX, out regionY);
-
+								
                                 double xTarget = (double)targetpos.X + (double)regionX;
                                 double yTarget = (double)targetpos.Y + (double)regionY;
                                 double zTarget = targetpos.Z;

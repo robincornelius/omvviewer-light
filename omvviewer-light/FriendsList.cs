@@ -37,8 +37,6 @@ namespace omvviewerlight
 		
 		public FriendsList()
 		{
-			
-			
 			Console.Write("Building friends list window\n");
 			this.Build();
 			store= new Gtk.ListStore (typeof(Gdk.Pixbuf),typeof(string),typeof(string),typeof(bool));
@@ -49,7 +47,6 @@ namespace omvviewerlight
             store.SetSortColumnId(1, SortType.Ascending);
             store.SetSortFunc(1,sortfunc);
 			
-			//online_img=new Gdk.Pixbuf;
 			online_img=MainClass.GetResource("icon_avatar_online.tga");
 			offline_img=MainClass.GetResource("icon_avatar_offline.tga");
 				
@@ -68,7 +65,6 @@ namespace omvviewerlight
             bool Pa = (bool)store.GetValue(a, 3);
             bool Pb =(bool)store.GetValue(b, 3);
 
-
             if (Pa == Pb)
             {
                return string.Compare(nameA, nameB);
@@ -78,15 +74,16 @@ namespace omvviewerlight
                return -1;
 
             return 1;
-
-
         }
 
         void Friends_OnFriendshipTerminated(UUID agentID, string agentName)
         {
             Gtk.Application.Invoke(delegate
             {
+				lock(store)
+				{
                     populate_list();
+				}
             });
         }
 
@@ -94,9 +91,12 @@ namespace omvviewerlight
         {
             Gtk.Application.Invoke(delegate
             {
-                if (accepted == true)
-                    populate_list();
-            });
+				lock(store)
+				{
+					if (accepted == true)
+						populate_list();
+				}
+			});
         }	
 		
 		void onLogin(LoginStatus status,string message)
@@ -104,18 +104,23 @@ namespace omvviewerlight
 			if(LoginStatus.Success==status)
 			{
 				Gtk.Application.Invoke(delegate {
-                store.Clear();
-				populate_list();
-				store.Foreach(myfunc);
+					lock(store)
+					{
+						store.Clear();
+						populate_list();
+						store.Foreach(myfunc);
+					}				
 				});
 			}
 		}
 		
 		void onFriendOnline(FriendInfo friend)
 		{
-			//Untill i can find a better way to access the store directly
-			Gtk.Application.Invoke(delegate {			
-				store.Foreach(myfunc);
+			Gtk.Application.Invoke(delegate {
+				lock(store)
+				{
+					store.Foreach(myfunc);
+				}
 			});
 		
 		}
@@ -123,7 +128,10 @@ namespace omvviewerlight
 		void onFriendOffline(FriendInfo friend)
 		{
 			Gtk.Application.Invoke(delegate {			
-				store.Foreach(myfunc);
+				lock(store)
+				{
+					store.Foreach(myfunc);
+				}
 			});	
 		}
 		
@@ -162,7 +170,6 @@ namespace omvviewerlight
 			
 			if(treeview_friends.Selection.GetSelected(out mod,out iter))			
 			   {
-				//ALL i want is a fucking UUID
 				string id=(string)mod.GetValue(iter,2);
 				UUID lid=(UUID)id;
 				FriendInfo finfo;
@@ -182,7 +189,6 @@ namespace omvviewerlight
 			
 			if(treeview_friends.Selection.GetSelected(out mod,out iter))			
 			{
-				//ALL i want is a fucking UUID
 				string id=(string)mod.GetValue(iter,2);
 				UUID lid=(UUID)id;
 				FriendInfo finfo;
@@ -210,7 +216,6 @@ namespace omvviewerlight
 			
 			if(treeview_friends.Selection.GetSelected(out mod,out iter))			
 			{
-				//ALL i want is a fucking UUID
 				string id=(string)mod.GetValue(iter,2);
 				UUID lid=(UUID)id;
 				FriendInfo finfo;
@@ -238,7 +243,6 @@ namespace omvviewerlight
 			
 			if(treeview_friends.Selection.GetSelected(out mod,out iter))			
 			{
-				//ALL i want is a fucking UUID
 				string id=(string)mod.GetValue(iter,2);
 				UUID lid=(UUID)id;
 				FriendInfo finfo;
@@ -281,11 +285,9 @@ namespace omvviewerlight
 			//beter work out who we have selected
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
-			
-			
+				
 			if(treeview_friends.Selection.GetSelected(out mod,out iter))			
 			{
-				//ALL i want is a fucking UUID
 				string id=(string)mod.GetValue(iter,2);
 				UUID lid=(UUID)id;
 				MainClass.win.startIM(lid);
@@ -308,7 +310,6 @@ namespace omvviewerlight
 
 		protected virtual void OnButtonPayClicked (object sender, System.EventArgs e)
 		{
-
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
 			
@@ -333,10 +334,7 @@ namespace omvviewerlight
 				ProfileVIew profile=new ProfileVIew(lid);
 				profile.Show();
 			}
-
-		
 		}
-		
 	}
 }
 

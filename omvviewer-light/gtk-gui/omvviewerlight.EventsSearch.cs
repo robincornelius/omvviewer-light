@@ -77,6 +77,12 @@ namespace omvviewerlight {
         
         private Gtk.TextView textview_eventinfo;
         
+        private Gtk.HBox hbox6;
+        
+        private Gtk.Button button_teleport;
+        
+        private Gtk.Button button_notify;
+        
         protected virtual void Build() {
             Stetic.Gui.Initialize(this);
             // Widget omvviewerlight.EventsSearch
@@ -165,11 +171,11 @@ namespace omvviewerlight {
             // Container child GtkAlignment.Gtk.Container+ContainerChild
             Gtk.HBox w9 = new Gtk.HBox();
             w9.Spacing = 2;
-            // Container child GtkHBox1.Gtk.Container+ContainerChild
+            // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w10 = new Gtk.Image();
             w10.Pixbuf = Gdk.Pixbuf.LoadFromResource("status_search_btn.png");
             w9.Add(w10);
-            // Container child GtkHBox1.Gtk.Container+ContainerChild
+            // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w12 = new Gtk.Label();
             w12.LabelProp = Mono.Unix.Catalog.GetString("Search");
             w12.UseUnderline = true;
@@ -391,6 +397,54 @@ namespace omvviewerlight {
             this.vbox1.Add(this.hbox5);
             Gtk.Box.BoxChild w39 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox5]));
             w39.Position = 4;
+            // Container child vbox1.Gtk.Box+BoxChild
+            this.hbox6 = new Gtk.HBox();
+            this.hbox6.Name = "hbox6";
+            this.hbox6.Spacing = 6;
+            // Container child hbox6.Gtk.Box+BoxChild
+            this.button_teleport = new Gtk.Button();
+            this.button_teleport.Sensitive = false;
+            this.button_teleport.CanFocus = true;
+            this.button_teleport.Name = "button_teleport";
+            this.button_teleport.UseUnderline = true;
+            // Container child button_teleport.Gtk.Container+ContainerChild
+            Gtk.Alignment w40 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            Gtk.HBox w41 = new Gtk.HBox();
+            w41.Spacing = 2;
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Image w42 = new Gtk.Image();
+            w42.Pixbuf = Gdk.Pixbuf.LoadFromResource("icon_place.tga");
+            w41.Add(w42);
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Label w44 = new Gtk.Label();
+            w44.LabelProp = Mono.Unix.Catalog.GetString("Teleport");
+            w44.UseUnderline = true;
+            w41.Add(w44);
+            w40.Add(w41);
+            this.button_teleport.Add(w40);
+            this.hbox6.Add(this.button_teleport);
+            Gtk.Box.BoxChild w48 = ((Gtk.Box.BoxChild)(this.hbox6[this.button_teleport]));
+            w48.Position = 0;
+            w48.Expand = false;
+            w48.Fill = false;
+            // Container child hbox6.Gtk.Box+BoxChild
+            this.button_notify = new Gtk.Button();
+            this.button_notify.Sensitive = false;
+            this.button_notify.CanFocus = true;
+            this.button_notify.Name = "button_notify";
+            this.button_notify.UseUnderline = true;
+            this.button_notify.Label = Mono.Unix.Catalog.GetString("Notify");
+            this.hbox6.Add(this.button_notify);
+            Gtk.Box.BoxChild w49 = ((Gtk.Box.BoxChild)(this.hbox6[this.button_notify]));
+            w49.Position = 1;
+            w49.Expand = false;
+            w49.Fill = false;
+            this.vbox1.Add(this.hbox6);
+            Gtk.Box.BoxChild w50 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox6]));
+            w50.Position = 5;
+            w50.Expand = false;
+            w50.Fill = false;
             this.Add(this.vbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
@@ -398,6 +452,8 @@ namespace omvviewerlight {
             this.Show();
             this.button_search.Clicked += new System.EventHandler(this.OnButtonSearchClicked);
             this.treeview1.CursorChanged += new System.EventHandler(this.OnTreeview1CursorChanged);
+            this.button_teleport.Clicked += new System.EventHandler(this.OnButtonTeleportClicked);
+            this.button_notify.Clicked += new System.EventHandler(this.OnButtonNotifyClicked);
         }
     }
 }
