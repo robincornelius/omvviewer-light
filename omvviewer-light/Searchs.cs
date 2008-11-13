@@ -65,7 +65,9 @@ namespace omvviewerlight
 		
 			foreach(OpenMetaverse.DirectoryManager.AgentSearchData person in people)
 			{
-                    
+
+                if (person.AgentID == UUID.Zero)
+                    continue;
 					store.AppendValues (person.Online,person.FirstName+" "+person.LastName,person.AgentID);		
 					if(!MainClass.name_cache.av_names.ContainsKey(person.AgentID))
 						MainClass.name_cache.av_names.Add(person.AgentID,person.FirstName+" "+person.LastName);
