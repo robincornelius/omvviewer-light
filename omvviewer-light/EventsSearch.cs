@@ -33,6 +33,7 @@ namespace omvviewerlight
 			treeview1.Model=store;
 			
 			MainClass.client.Directory.OnEventsReply += new OpenMetaverse.DirectoryManager.EventReplyCallback(onEvents);
+
 		}
 
         void onEvents(UUID query,List <OpenMetaverse.DirectoryManager.EventsSearchData> matchedevents)
@@ -65,8 +66,7 @@ namespace omvviewerlight
 			//OpenMetaverse.Parcel.ParcelCategory pcat;
 			//pcat=OpenMetaverse.Parcel.ParcelCategory.Any;
 			queryid=UUID.Random();
-			MainClass.client.Directory.StartEventsSearch(entry1.Text,true,OpenMetaverse.DirectoryManager.EventCategories.All);
-			
+			MainClass.client.Directory.StartEventsSearch(entry1.Text,true,"",0,OpenMetaverse.DirectoryManager.EventCategories.All,queryid);			
         }
 	
 		

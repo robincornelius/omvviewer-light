@@ -83,11 +83,11 @@ namespace omvviewerlight
             people_found = 0;
 		
 			queryid=UUID.Random();
-			OpenMetaverse.DirectoryManager.DirFindFlags findFlags;
+            OpenMetaverse.DirectoryManager.DirFindFlags findFlags;
 			findFlags=OpenMetaverse.DirectoryManager.DirFindFlags.People;
 			string searchText;
 			searchText=entry1.Text;
-			int queryStart=1;
+			int queryStart=0;
 
 			store.Clear();
 			MainClass.client.Directory.StartPeopleSearch(findFlags,searchText,queryStart,queryid);
@@ -95,13 +95,11 @@ namespace omvviewerlight
 
 		protected virtual void OnButton2Clicked (object sender, System.EventArgs e)
 		{
-						//beter work out who we have selected
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;			
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
-				//ALL i want is a fucking UUID
 				UUID id=(UUID)mod.GetValue(iter,2);
 				MainClass.win.startIM(id);
 			}

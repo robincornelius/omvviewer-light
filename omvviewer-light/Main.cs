@@ -57,9 +57,9 @@ namespace omvviewerlight
         public static Gdk.Pixbuf GetResource(string name)
         {
             if(!monodevelop)
-                return MainClass.GetResource(name);
+                return Gdk.Pixbuf.LoadFromResource(name);
             else
-                return MainClass.GetResource("omvviewerlight.art." + name);          
+                return Gdk.Pixbuf.LoadFromResource("omvviewerlight.art." + name);          
         }
 
 		public static void Main (string[] args)

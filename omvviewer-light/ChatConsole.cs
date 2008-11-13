@@ -58,12 +58,23 @@ namespace omvviewerlight
 			dosetup();
             this.im_session_id = UUID.Zero;
             this.im_key = UUID.Zero;
+            MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);		
 			MainClass.client.Self.OnChat += new OpenMetaverse.AgentManager.ChatCallback(onChat);
             MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
 		}
 
 
-		
+        void onLogin(LoginStatus status, string message)
+        {
+            if (LoginStatus.Success == status)
+            {
+                Gtk.Application.Invoke(delegate
+                {
+                    this.textview_chat.Buffer.Clear();
+                });
+            }
+        }
+
 		public ChatConsole(InstantMessage im)
 		{
 			dosetup();

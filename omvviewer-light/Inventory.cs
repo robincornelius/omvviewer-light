@@ -83,6 +83,7 @@ namespace omvviewerlight
 
         public void kill()
         {
+
             this.treeview_inv.RowExpanded -= new Gtk.RowExpandedHandler(onRowExpanded);
             this.treeview_inv.RowCollapsed -= new Gtk.RowCollapsedHandler(onRowCollapsed);
             MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
@@ -386,11 +387,6 @@ namespace omvviewerlight
 			{
 				Gtk.Application.Invoke(delegate {
 					inventory.Clear();
-					//Gtk.TreeIter iter = inventory.AppendValues(folder_closed,"Inventory", MainClass.client.Inventory.Store.RootFolder.UUID);
-					//inventory.AppendValues(iter,folder_closed, "Waiting...", MainClass.client.Inventory.Store.RootFolder.UUID,null);
-										
-					//Gtk.TreeIter iter2 = inventory.AppendValues(folder_closed, "Library", MainClass.client.Inventory.Store.LibraryFolder.UUID);
-					//inventory.AppendValues(iter2, folder_closed, "Waiting...", MainClass.client.Inventory.Store.LibraryFolder.UUID, null);
 					populate_top_level_inv();				
 				});
 			}
