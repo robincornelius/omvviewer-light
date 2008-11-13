@@ -88,6 +88,26 @@ namespace omvviewerlight
             catch(Exception e)
             {
 
+                Console.Write("The application died in a big heap\n This is the debug i caught :-");
+                Console.Write("-----------------------------------------------\n");
+                Console.Write(e.Message + "\n");
+                Console.Write(e.Source + "\n");
+                Console.Write(e.StackTrace + "\n");
+                Console.Write(e.TargetSite + "\n");
+                Exception ee;
+                ee = e.InnerException;
+
+                while (ee != null)
+                {
+                    Console.Write("-----------------------------------------------\n");
+                    Console.Write(ee.Message + "\n");
+                    Console.Write(ee.Source + "\n");
+                    Console.Write(ee.StackTrace + "\n");
+                    Console.Write(ee.TargetSite + "\n");
+                    ee = ee.InnerException;
+                }
+                
+
                 StreamWriter sw = new StreamWriter("crashlog.txt", true, Encoding.ASCII);
                 sw.WriteLine("Crash report");
                 sw.Write("-----------------------------------------------\n");
@@ -108,26 +128,8 @@ namespace omvviewerlight
                     eee = eee.InnerException;
                 }
 
-                /*
-                Console.Write("The application died in a big heap\n This is the debug i caught :-");
-                Console.Write("-----------------------------------------------\n");
-                Console.Write(e.Message+"\n");
-                Console.Write(e.Source+"\n");
-                Console.Write(e.StackTrace+"\n");
-                Console.Write(e.TargetSite+"\n");
-                Exception ee;
-                ee = e.InnerException;
-
-                while (ee != null)
-                {
-                    Console.Write("-----------------------------------------------\n");
-                    Console.Write(ee.Message + "\n");
-                    Console.Write(ee.Source + "\n");
-                    Console.Write(ee.StackTrace + "\n");
-                    Console.Write(ee.TargetSite + "\n");
-                    ee = ee.InnerException;
-                }
-                */
+                
+             
 
              
                 sw.Close();
