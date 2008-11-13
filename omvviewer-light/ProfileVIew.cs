@@ -202,6 +202,12 @@ namespace omvviewerlight
 				}
 			}														
 		});
-		}	
+		}
+
+		protected virtual void OnButtonAddfriendClicked (object sender, System.EventArgs e)
+		{
+		 MainClass.client.Friends.OfferFriendship(resident);
+		}
+	
 	}
 }
