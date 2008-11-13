@@ -35,6 +35,7 @@ using System.Configuration.Assemblies;
 using System.Resources;
 using System.ComponentModel;
 using System.Reflection;
+using System.IO;
 
 
 namespace omvviewerlight
@@ -86,7 +87,28 @@ namespace omvviewerlight
             }
             catch(Exception e)
             {
-          
+
+                StreamWriter sw = new StreamWriter("crashlog.txt", true, Encoding.ASCII);
+                sw.WriteLine("Crash report");
+                sw.Write("-----------------------------------------------\n");
+                sw.Write(e.Message + "\n");
+                sw.Write(e.Source + "\n");
+                sw.Write(e.StackTrace + "\n");
+                sw.Write(e.TargetSite + "\n");
+                Exception eee;
+                eee = e.InnerException;
+
+                while (eee != null)
+                {
+                    sw.Write("-----------------------------------------------\n");
+                    sw.Write(eee.Message + "\n");
+                    sw.Write(eee.Source + "\n");
+                    sw.Write(eee.StackTrace + "\n");
+                    sw.Write(eee.TargetSite + "\n");
+                    eee = eee.InnerException;
+                }
+
+                /*
                 Console.Write("The application died in a big heap\n This is the debug i caught :-");
                 Console.Write("-----------------------------------------------\n");
                 Console.Write(e.Message+"\n");
@@ -105,6 +127,10 @@ namespace omvviewerlight
                     Console.Write(ee.TargetSite + "\n");
                     ee = ee.InnerException;
                 }
+                */
+
+             
+                sw.Close();
 
                
             }

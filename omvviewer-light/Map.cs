@@ -73,7 +73,6 @@ namespace omvviewerlight
 					
        	         }
              }	
-		
 		}
 
         bool kickrefresh()
