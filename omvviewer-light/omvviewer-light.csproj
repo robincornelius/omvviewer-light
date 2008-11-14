@@ -154,6 +154,7 @@
     <Compile Include="Groups.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GroupSearch.cs" />
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="gtk-gui\MainWindow.cs" />
     <Compile Include="gtk-gui\omvviewerlight.aPick.cs" />
@@ -165,6 +166,7 @@
     <Compile Include="gtk-gui\omvviewerlight.FriendsList.cs" />
     <Compile Include="gtk-gui\omvviewerlight.GroupInfo.cs" />
     <Compile Include="gtk-gui\omvviewerlight.Groups.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.GroupSearch.cs" />
     <Compile Include="gtk-gui\omvviewerlight.Inventory.cs" />
     <Compile Include="gtk-gui\omvviewerlight.Location.cs" />
     <Compile Include="gtk-gui\omvviewerlight.LoginControl.cs" />
