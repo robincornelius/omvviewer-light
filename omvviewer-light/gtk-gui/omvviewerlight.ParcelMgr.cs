@@ -264,7 +264,7 @@ namespace omvviewerlight {
             this.label_parcelgroup = new Gtk.Label();
             this.label_parcelgroup.Name = "label_parcelgroup";
             this.label_parcelgroup.Xalign = 0F;
-            this.label_parcelgroup.LabelProp = Mono.Unix.Catalog.GetString("label5");
+            this.label_parcelgroup.LabelProp = "";
             this.vbox9.Add(this.label_parcelgroup);
             Gtk.Box.BoxChild w11 = ((Gtk.Box.BoxChild)(this.vbox9[this.label_parcelgroup]));
             w11.Position = 1;

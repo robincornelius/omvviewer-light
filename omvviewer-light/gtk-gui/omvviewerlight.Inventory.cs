@@ -235,7 +235,7 @@ namespace omvviewerlight {
             this.label_saleprice.Name = "label_saleprice";
             this.label_saleprice.Xalign = 0F;
             this.label_saleprice.Yalign = 0F;
-            this.label_saleprice.LabelProp = Mono.Unix.Catalog.GetString("label5");
+            this.label_saleprice.LabelProp = "";
             this.vbox5.Add(this.label_saleprice);
             Gtk.Box.BoxChild w14 = ((Gtk.Box.BoxChild)(this.vbox5[this.label_saleprice]));
             w14.Position = 4;

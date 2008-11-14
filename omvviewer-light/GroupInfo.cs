@@ -29,8 +29,7 @@ using Gtk;
 
 namespace omvviewerlight
 {
-	
-	
+		
 	public partial class GroupInfo : Gtk.Window
 	{
 		//Dictionary <UUID, GroupRole> grouproles;
@@ -47,11 +46,15 @@ namespace omvviewerlight
         Gtk.TreeStore store_abilities;
         Gtk.TreeStore store_roles_with_ability;
         Gtk.TreeStore store_members_with_ability;
+        
+		Gtk.TreeStore store_groupland;
 		
         UUID request_members;
         UUID request_titles;
         UUID request_roles;
         UUID request_roles_members;
+		
+        List <UUID> recieved_notices=new List<UUID>();		
 
 		bool already_member=false;
         bool nobody_cares = false;
@@ -142,14 +145,21 @@ namespace omvviewerlight
 			this.showpowers(this.store_abilities,powers);
 			this.treeview_abilities.ExpandAll();
 			
+			
+            this.store_groupland=new Gtk.TreeStore(typeof(string),typeof(string),typeof(string));			
+            this.treeview_groupland.AppendColumn("Parcel name",new CellRendererText(), "text", 0);
+            this.treeview_groupland.AppendColumn("Region",new CellRendererText(), "text", 1);
+            this.treeview_groupland.AppendColumn("Area",new CellRendererText(), "text", 2);
+            			
+
 			MainClass.client.Groups.OnGroupProfile += new OpenMetaverse.GroupManager.GroupProfileCallback(onGroupProfile);
             MainClass.client.Groups.OnGroupMembers += new OpenMetaverse.GroupManager.GroupMembersCallback(onGroupMembers);
             MainClass.client.Groups.OnGroupTitles += new OpenMetaverse.GroupManager.GroupTitlesCallback(onGroupTitles);
             MainClass.client.Groups.OnGroupRoles += new OpenMetaverse.GroupManager.GroupRolesCallback(onGroupRoles);
             MainClass.client.Groups.OnGroupRolesMembers += new OpenMetaverse.GroupManager.GroupRolesMembersCallback(onGroupRolesMembers);
-            MainClass.client.Groups.OnGroupNoticesList += new GroupManager.GroupNoticesListCallback(Groups_OnGroupNoticesList);
-
-			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);			
+			MainClass.client.Groups.OnGroupNoticesList += new GroupManager.GroupNoticesListCallback(Groups_OnGroupNoticesList);            MainClass.client.Groups.OnGroupAccountSummary += new OpenMetaverse.GroupManager.GroupAccountSummaryCallback(onAccountSummary);			
+           		
+            MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);			
 			
 			MainClass.client.Groups.RequestGroupProfile(groupID);
 
@@ -168,8 +178,9 @@ namespace omvviewerlight
 	            request_roles_members = groupID;
 	            request_titles = groupID;
 	            //request_members = group.ID;
-
-	            MainClass.client.Groups.RequestGroupNoticeList(groupID);
+				
+				MainClass.client.Groups.RequestGroupNoticeList(groupID);
+               // MainClass.client.Groups.RequestGroupAccountSummary(groupID,7,1);
 			}
 			else
 			{
@@ -190,24 +201,48 @@ namespace omvviewerlight
 	
 			this.notebook1.Page=0;
 			this.notebook2.Page=0;
-			
-		}
+            this.label_char_count.Text="";
+						
+  	   }
+		
+		void onAccountSummary(GroupAccountSummary summary)
+		{
+				Gtk.Application.Invoke(delegate{
+                this.label_group_balance.Text=summary.Balance.ToString();
+				this.label_grouptaxcurrent.Text=summary.GroupTaxCurrent.ToString();
+				this.label_grouptaxesitmate.Text=summary.GroupTaxEstimate.ToString();
+				this.label_landtaxcurrent.Text=summary.LandTaxCurrent.ToString();
+				this.label_landtaxestimate.Text=summary.LandTaxEstimate.ToString();
+                this.label_total_credits.Text=summary.TotalCredits.ToString();
+                this.label_total_debits.Text=summary.TotalDebits.ToString();
+		 
+          });		
+	    }
+		
 
         void Groups_OnGroupNoticesList(UUID groupID, GroupNoticeList notice)
         {
-            if (groupID != this.groupkey)
-                return;
-            Console.Write("Notice list entry: From: "+notice.FromName+"\nSubject: "+notice.Subject + "\n");
+			if (groupID != this.groupkey)
+			return;
+			
+			if(!this.recieved_notices.Contains(notice.NoticeID))
+				{
+                this.recieved_notices.Add(notice.NoticeID);
+					Gtk.Application.Invoke(delegate{
+				this.notice_list.AppendValues(notice.FromName, notice.Subject, notice.NoticeID);
 
-            this.notice_list.AppendValues(notice.FromName, notice.Subject, notice.NoticeID);
-        }
+                Console.Write("Notice list entry: From: "+notice.FromName+"\nSubject: "+notice.Subject + "\n");
+			});
+             } 
+       }
 
 		void onGroupRolesMembers(List<KeyValuePair<UUID,UUID>> rolesmember)
 		{
 			Console.Write("Group roles members recieved\n");
 			Gtk.Application.Invoke(delegate{
 			this.button_invite.Sensitive=checkaccess(MainClass.client.Self.AgentID,GroupPowers.Invite);
-			});
+			this.button_send_notice.Sensitive=checkaccess(MainClass.client.Self.AgentID,GroupPowers.SendNotices);	
+             });
 			
 			//rolesmembers=rolesmember;
 		}
@@ -249,6 +284,9 @@ namespace omvviewerlight
             Console.Write("Group titles recieved\n");
 
 			Gtk.Application.Invoke(delegate {	
+			group_titles.Clear();
+			combobox_active_title.Clear();
+				
 			    foreach(KeyValuePair  <UUID,OpenMetaverse.GroupTitle> title in titles)
 			    {
                     group_titles.Add(title.Key, title.Value);
@@ -791,7 +829,32 @@ namespace omvviewerlight
 					
           return false;
         }
-		
 
+		protected virtual void OnButtonSendNoticeClicked (object sender, System.EventArgs e)
+		{
+			if(this.button_send_notice.Label=="Create new notice")
+				{
+			 this.button_send_notice.Label="Send notice";
+					this.textview_notice.Editable=true;
+                this.entry1.Editable=true;	
+                this.entry1.Text="";
+                this.textview_notice.Buffer.Clear();
+		    }
+			else
+				{
+				this.button_send_notice.Label="Create new notice";
+			   GroupNotice notice=new GroupNotice();
+                 string msg= this.textview_notice.Buffer.Text;
+				notice.Message=msg.Replace("\n","\r\n");
+				notice.OwnerID=MainClass.client.Self.AgentID;
+                notice.Subject=this.entry1.Text;
+				notice.AttachmentID=UUID.Zero;  
+                MainClass.client.Groups.SendGroupNotice(this.groupkey,notice);
+                this.textview_notice.Editable=false;
+                this.entry1.Editable=false;	
+		       
+      }
+		
+		}
 	}
 }
