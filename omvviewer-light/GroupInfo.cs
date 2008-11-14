@@ -65,6 +65,8 @@ namespace omvviewerlight
 		Gdk.Pixbuf folder_open = MainClass.GetResource("inv_folder_plain_open.tga");
 		Gdk.Pixbuf tick = MainClass.GetResource("tick.tga");
 		Gdk.Pixbuf cross = MainClass.GetResource("cross.tga");
+
+        Dictionary<UUID, OpenMetaverse.GroupTitle> group_titles=new Dictionary<UUID, OpenMetaverse.GroupTitle>();
 		
 		public GroupInfo(UUID groupID,bool mine) : 
 				base(Gtk.WindowType.Toplevel)
@@ -248,6 +250,7 @@ namespace omvviewerlight
 			Gtk.Application.Invoke(delegate {	
 			    foreach(KeyValuePair  <UUID,OpenMetaverse.GroupTitle> title in titles)
 			    {
+                    group_titles.Add(title.Key, title.Value);
 				    this.combobox_active_title.InsertText(0,title.Value.Title);
 				    if(title.Value.Selected)
 						    this.combobox_active_title.Active=0;
@@ -379,8 +382,11 @@ namespace omvviewerlight
 
 		protected virtual void OnComboboxActiveTitleChanged (object sender, System.EventArgs e)
 		{
-			//MainClass.client.Groups.ActivateTitle(
-		
+            foreach (KeyValuePair <UUID,GroupTitle>title in group_titles)
+            {
+                if(title.Value.Title==this.combobox_active_title.ActiveText)
+                    MainClass.client.Groups.ActivateTitle(this.groupkey,title.Key);
+            }
 		}
 
 		protected virtual void OnCheckbuttonGroupNoticesClicked (object sender, System.EventArgs e)
