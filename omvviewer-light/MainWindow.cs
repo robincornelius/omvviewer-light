@@ -199,9 +199,23 @@ public partial class MainWindow: Gtk.Window
    [GLib.ConnectBefore]
     void MainWindow_DeleteEvent(object o, DeleteEventArgs args)
     {
-		
-		CloseMinimiseDlg cmd = new CloseMinimiseDlg();
-		ResponseType result = (ResponseType)cmd.Run();
+
+		bool hidewindow=false;
+		bool.TryParse(MainClass.ReadSetting("hideminimse"),out hidewindow);
+		ResponseType result=ResponseType.Close;
+		CloseMinimiseDlg cmd=new CloseMinimiseDlg();
+		if(!hidewindow)
+		{
+		    result = (ResponseType)cmd.Run();			
+		}
+		else
+		{
+			bool minimise=false;
+			bool.TryParse(MainClass.ReadSetting("defaultminimise"),out minimise);
+			if(minimise==true)
+				result=ResponseType.Accept;
+				
+		}
 		
 		if(result==ResponseType.Cancel)
 		{
@@ -1043,6 +1057,12 @@ public partial class MainWindow: Gtk.Window
            tab_search.kill();
            MainClass.WriteSetting("tab_search", "off");
         }	
+	}
+
+	protected virtual void OnPreferencesActionActivated (object sender, System.EventArgs e)
+	{
+		Preferences p=new Preferences();
+        p.Show();
 	}
 	
 }

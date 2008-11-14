@@ -42,6 +42,9 @@ namespace omvviewerlight
 {
 	class MainClass
 	{
+		public delegate void PrefUpdate();
+        public static event PrefUpdate OnPrefUpdate;
+
         public static bool userlogout = false;
 
     	public static GridClient client;
@@ -60,8 +63,7 @@ namespace omvviewerlight
                 return Gdk.Pixbuf.aLoadFromResource(name);
             else
                 return Gdk.Pixbuf.aLoadFromResource("omvviewerlight.art." + name);          
-        }
-
+        }		
 		public static void Main (string[] args)
 		{        
             try
@@ -217,8 +219,12 @@ namespace omvviewerlight
             return appSettings.Get(key);
 
         }
-
-
+		
+		public static void kick_preferences()
+		{
+		    if(OnPrefUpdate!=null)
+	            OnPrefUpdate();
+        }
 
 	}
 }

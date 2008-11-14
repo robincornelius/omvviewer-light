@@ -48,6 +48,8 @@ namespace omvviewerlight
 		bool istyping=false;
 		bool istypingsent=false;
 
+		bool showtimestamps=true;
+		
 		public Gtk.Label tabLabel;
 		public UUID im_key=OpenMetaverse.UUID.Zero;
 		public UUID im_session_id=OpenMetaverse.UUID.Zero;
@@ -61,9 +63,14 @@ namespace omvviewerlight
             MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);		
 			MainClass.client.Self.OnChat += new OpenMetaverse.AgentManager.ChatCallback(onChat);
             MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
+			MainClass.OnPrefUpdate += new MainClass.PrefUpdate(onPrefChange);
 		}
 
-
+        void onPrefChange()
+		{
+			bool.TryParse(MainClass.ReadSetting("timestamps"),out showtimestamps);
+		}
+		
         void onLogin(LoginStatus status, string message)
         {
             if (LoginStatus.Success == status)
@@ -503,8 +510,7 @@ namespace omvviewerlight
 				{
 					MainClass.win.UrgencyHint = true;
 				}
-				});
-
+				});
         }
 
         void displaychat(string message, string name, TextTag message_tag, TextTag name_tag)
@@ -536,10 +542,17 @@ namespace omvviewerlight
             if (message.Length > 3)
                 if (message.Substring(0, 3) == "/me")
                     emote=true;
-
+			
+			if(this.showtimestamps)
+			{
+				iter = textview_chat.Buffer.EndIter;				
+				DateTime CurrTime = DateTime.Now;
+			    string time = string.Format("[{0}:{1}] " , CurrTime.Hour,CurrTime.Minute);
+				textview_chat.Buffer.Insert(ref iter,time);
+            }
             if (emote == false)
             {
-                iter = textview_chat.Buffer.EndIter;
+				iter = textview_chat.Buffer.EndIter;
                 buffer = name+" ";
                 textview_chat.Buffer.InsertWithTags(ref iter, buffer, name_tag);
                 iter = textview_chat.Buffer.EndIter;

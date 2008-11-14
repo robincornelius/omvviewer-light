@@ -93,11 +93,11 @@ namespace omvviewerlight
 		
 		void onGridRegion(GridRegion region)
 		{
-		//	Console.Write("Got grid layer reply, requesting texture :"+region.MapImageID.ToString()+"\n");
-		//	Gdk.Pixbuf pb= new Gdk.Pixbuf("trying.tga");
-			
-        	getmap();
-		}
+			getmap();
+			Console.Write("Got grid layer reply, requesting texture :"+region.MapImageID.ToString()+"\n");
+			//Gdk.Pixbuf pb= new Gdk.Pixbuf("trying.tga");
+			//TryGetImage image=new TryGetImage(this.basemap,region.MapImageID,350,350);
+ 		}
 				
 		void onGridLayer(GridLayer layer)
 	    {
@@ -111,7 +111,10 @@ namespace omvviewerlight
 
                 if (MainClass.client.Network.CurrentSim.ID == lastsim)
                     return;
-                Gtk.Application.Invoke(delegate
+				
+				MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Terrain);
+                MainClass.client.Grid.RequestMapLayer(GridLayerType.Terrain);                
+				Gtk.Application.Invoke(delegate
                 {
                     drawavs();
                 });
@@ -171,7 +174,10 @@ namespace omvviewerlight
 
                 lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
                 {
-                    foreach (KeyValuePair<uint, Avatar> kvp in MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
+					//LOCKING ISSUES HERE STILL!
+					List <uint> removelist=new List<uint>();
+					
+					foreach (KeyValuePair<uint, Avatar> kvp in MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
                     {
                         if (kvp.Value.LocalID != MainClass.client.Self.LocalID)
                         {
@@ -181,8 +187,8 @@ namespace omvviewerlight
                                 if (!MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary.ContainsKey(kvp.Value.ParentID))
                                 {
 									Console.WriteLine("Could not find parent prim for AV, killing\n");
-                                     MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.Remove(kvp.Value.LocalID);
-                                    continue;
+									removelist.Add(kvp.Value.LocalID);
+									continue;
                                 }
                                 Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[kvp.Value.ParentID];
                                 pos = Vector3.Transform(kvp.Value.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
@@ -201,10 +207,15 @@ namespace omvviewerlight
 
                         }
                     }
+					
+					foreach(uint id in removelist)
+					{
+                          MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.Remove(id);
+					}
                 }
 
 			
-                 }
+             }
 
             lock (image)
             {

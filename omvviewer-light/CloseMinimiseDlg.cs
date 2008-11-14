@@ -13,6 +13,7 @@ namespace omvviewerlight
 	public partial class CloseMinimiseDlg : Gtk.Dialog
 	{
 		
+		bool save=false;
 		public CloseMinimiseDlg()
 		{
 			this.Build();
@@ -20,10 +21,28 @@ namespace omvviewerlight
 
 		protected virtual void OnCheckbutton1Clicked (object sender, System.EventArgs e)
 		{
-			if(this.checkbutton1.Active)
-				MainClass.WriteSetting("Remember_close","true");
-			else
-				MainClass.WriteSetting("Remember_close","false");
+			   MainClass.WriteSetting("hideminimse",this.checkbutton1.Active.ToString());
+			   save=true;
+		}
+
+		protected virtual void OnButton9Clicked (object sender, System.EventArgs e)
+		{
+			if(save)
+			{
+				  MainClass.WriteSetting("defaultclose",save.ToString());
+				  MainClass.WriteSetting("defaultminimise",false.ToString());
+
+			}
+		}
+
+		protected virtual void OnButtonCancelClicked (object sender, System.EventArgs e)
+		{
+			if(save)
+			{
+				  MainClass.WriteSetting("defaultminimise",save.ToString());
+				  MainClass.WriteSetting("defaultclose",false.ToString());
+
+			}		
 		}
 	}
 }

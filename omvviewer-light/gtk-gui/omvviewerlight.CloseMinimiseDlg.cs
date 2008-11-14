@@ -55,7 +55,6 @@ namespace omvviewerlight {
             w2.Fill = false;
             // Container child vbox2.Gtk.Box+BoxChild
             this.checkbutton1 = new Gtk.CheckButton();
-            this.checkbutton1.Sensitive = false;
             this.checkbutton1.CanFocus = true;
             this.checkbutton1.Name = "checkbutton1";
             this.checkbutton1.Label = Mono.Unix.Catalog.GetString("Remember this choice");
@@ -134,6 +133,8 @@ namespace omvviewerlight {
             this.DefaultHeight = 181;
             this.Show();
             this.checkbutton1.Clicked += new System.EventHandler(this.OnCheckbutton1Clicked);
+            this.button9.Clicked += new System.EventHandler(this.OnButton9Clicked);
+            this.buttonCancel.Clicked += new System.EventHandler(this.OnButtonCancelClicked);
         }
     }
 }

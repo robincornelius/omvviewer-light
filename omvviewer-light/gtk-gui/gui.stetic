@@ -69,6 +69,7 @@
         <property name="Type">Radio</property>
         <property name="Label" translatable="yes">Avaiable</property>
         <property name="ShortLabel" translatable="yes">Avaiable</property>
+        <property name="StockId">gtk-yes</property>
         <property name="DrawAsRadio">False</property>
         <property name="Active">True</property>
         <property name="Value">0</property>
@@ -148,6 +149,18 @@
         <property name="Active">False</property>
         <signal name="Toggled" handler="OnSearchActionToggled" />
       </action>
+      <action id="SettingsAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Settings</property>
+        <property name="ShortLabel" translatable="yes">Settings</property>
+      </action>
+      <action id="PreferencesAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Preferences</property>
+        <property name="ShortLabel" translatable="yes">Preferences</property>
+        <property name="StockId">gtk-properties</property>
+        <signal name="Activated" handler="OnPreferencesActionActivated" />
+      </action>
     </action-group>
     <property name="MemberName" />
     <property name="WidthRequest">800</property>
@@ -181,6 +194,9 @@
                 <node type="Menuitem" action="LocationAction" />
                 <node type="Menuitem" action="GroupsAction" />
                 <node type="Menuitem" action="SearchAction" />
+              </node>
+              <node type="Menu" action="SettingsAction">
+                <node type="Menuitem" action="PreferencesAction" />
               </node>
             </node>
           </widget>
@@ -7135,7 +7151,6 @@ or Minimise to the system tray area?</property>
             <child>
               <widget class="Gtk.CheckButton" id="checkbutton1">
                 <property name="MemberName" />
-                <property name="Sensitive">False</property>
                 <property name="CanFocus">True</property>
                 <property name="Label" translatable="yes">Remember this choice</property>
                 <property name="DrawIndicator">True</property>
@@ -7175,6 +7190,7 @@ or Minimise to the system tray area?</property>
             <property name="Type">StockItem</property>
             <property name="StockId">gtk-quit</property>
             <property name="ResponseId">-7</property>
+            <signal name="Clicked" handler="OnButton9Clicked" />
             <property name="label">gtk-quit</property>
           </widget>
           <packing>
@@ -7191,6 +7207,7 @@ or Minimise to the system tray area?</property>
             <property name="Label" translatable="yes">_Minimise</property>
             <property name="UseUnderline">True</property>
             <property name="ResponseId">-3</property>
+            <signal name="Clicked" handler="OnButtonCancelClicked" />
           </widget>
           <packing>
             <property name="Position">1</property>
@@ -7423,6 +7440,182 @@ time</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
           </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="omvviewerlight.Preferences" design-size="400 300">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">Preferences</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <child>
+      <widget class="Gtk.Notebook" id="notebook1">
+        <property name="MemberName" />
+        <property name="CanFocus">True</property>
+        <property name="CurrentPage">0</property>
+        <child>
+          <widget class="Gtk.VBox" id="vbox2">
+            <property name="MemberName" />
+            <property name="Spacing">6</property>
+            <child>
+              <widget class="Gtk.Frame" id="frame1">
+                <property name="MemberName" />
+                <property name="ShadowType">None</property>
+                <child>
+                  <widget class="Gtk.Alignment" id="GtkAlignment">
+                    <property name="MemberName" />
+                    <property name="Xalign">0</property>
+                    <property name="Yalign">0</property>
+                    <property name="LeftPadding">12</property>
+                    <child>
+                      <widget class="Gtk.VBox" id="vbox3">
+                        <property name="MemberName" />
+                        <property name="Spacing">6</property>
+                        <child>
+                          <widget class="Gtk.CheckButton" id="checkbutton_showtimestamps">
+                            <property name="MemberName" />
+                            <property name="CanFocus">True</property>
+                            <property name="Label" translatable="yes">Show time stamps in chat and IMs</property>
+                            <property name="DrawIndicator">True</property>
+                            <property name="HasLabel">True</property>
+                            <property name="UseUnderline">True</property>
+                            <signal name="Clicked" handler="OnCheckbuttonShowtimestampsClicked" />
+                          </widget>
+                          <packing>
+                            <property name="Position">0</property>
+                            <property name="AutoSize">True</property>
+                            <property name="Expand">False</property>
+                            <property name="Fill">False</property>
+                          </packing>
+                        </child>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+                <child>
+                  <widget class="Gtk.Label" id="GtkLabel1">
+                    <property name="MemberName" />
+                    <property name="LabelProp" translatable="yes">&lt;b&gt;Chat and IMs&lt;/b&gt;</property>
+                    <property name="UseMarkup">True</property>
+                  </widget>
+                  <packing>
+                    <property name="type">label_item</property>
+                  </packing>
+                </child>
+              </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Frame" id="frame2">
+                <property name="MemberName" />
+                <property name="ShadowType">None</property>
+                <child>
+                  <widget class="Gtk.Alignment" id="GtkAlignment1">
+                    <property name="MemberName" />
+                    <property name="Xalign">0</property>
+                    <property name="Yalign">0</property>
+                    <property name="LeftPadding">12</property>
+                    <child>
+                      <widget class="Gtk.VBox" id="vbox4">
+                        <property name="MemberName" />
+                        <property name="Spacing">6</property>
+                        <child>
+                          <widget class="Gtk.CheckButton" id="checkbutton_hideminimise">
+                            <property name="MemberName" />
+                            <property name="CanFocus">True</property>
+                            <property name="Label" translatable="yes">Hide minimise confirm</property>
+                            <property name="DrawIndicator">True</property>
+                            <property name="HasLabel">True</property>
+                            <property name="UseUnderline">True</property>
+                            <signal name="Clicked" handler="OnCheckbuttonHideminimiseClicked" />
+                          </widget>
+                          <packing>
+                            <property name="Position">0</property>
+                            <property name="AutoSize">True</property>
+                            <property name="Expand">False</property>
+                            <property name="Fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="Gtk.RadioButton" id="radiobutton1">
+                            <property name="MemberName" />
+                            <property name="CanFocus">True</property>
+                            <property name="Label" translatable="yes">Default is to minimise</property>
+                            <property name="Active">True</property>
+                            <property name="DrawIndicator">True</property>
+                            <property name="HasLabel">True</property>
+                            <property name="UseUnderline">True</property>
+                            <property name="Group">group1</property>
+                            <signal name="Activated" handler="OnRadiobutton1Activated" />
+                          </widget>
+                          <packing>
+                            <property name="Position">1</property>
+                            <property name="AutoSize">True</property>
+                            <property name="Expand">False</property>
+                            <property name="Fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="Gtk.RadioButton" id="radiobutton2">
+                            <property name="MemberName" />
+                            <property name="CanFocus">True</property>
+                            <property name="Label" translatable="yes">Default is to close</property>
+                            <property name="DrawIndicator">True</property>
+                            <property name="HasLabel">True</property>
+                            <property name="UseUnderline">True</property>
+                            <property name="Group">group1</property>
+                            <signal name="Activated" handler="OnRadiobutton2Activated" />
+                          </widget>
+                          <packing>
+                            <property name="Position">2</property>
+                            <property name="AutoSize">True</property>
+                            <property name="Expand">False</property>
+                            <property name="Fill">False</property>
+                          </packing>
+                        </child>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+                <child>
+                  <widget class="Gtk.Label" id="GtkLabel2">
+                    <property name="MemberName" />
+                    <property name="LabelProp" translatable="yes">&lt;b&gt;Minimise&lt;/b&gt;</property>
+                    <property name="UseMarkup">True</property>
+                  </widget>
+                  <packing>
+                    <property name="type">label_item</property>
+                  </packing>
+                </child>
+              </widget>
+              <packing>
+                <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+          </widget>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label2">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">page1</property>
+          </widget>
+          <packing>
+            <property name="type">tab</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <placeholder />
         </child>
       </widget>
     </child>
