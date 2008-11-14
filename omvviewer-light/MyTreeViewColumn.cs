@@ -15,6 +15,7 @@ namespace omvviewerlight
         Gdk.Pixbuf blank_arrow;
 
 
+
         public MyTreeViewColumn(string title, Gtk.CellRenderer cell,string prop,int col) : base (title,cell,prop,col)
         {
             up_arrow = MainClass.GetResource("up_arrow.tga");

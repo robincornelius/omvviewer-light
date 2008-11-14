@@ -21,12 +21,52 @@ namespace omvviewerlight
 			this.Build();
 			MainClass.client.Directory.OnDirGroupsReply+=new OpenMetaverse.DirectoryManager.DirGroupsReplyCallback(onGroupReply);
 		    store= new Gtk.ListStore (typeof(string),typeof(string),typeof(UUID));
-			
-			treeview1.AppendColumn("Name",new Gtk.CellRendererText(),"text",0);	
-			treeview1.AppendColumn("Members",new Gtk.CellRendererText(),"text",1);	
+
+            MyTreeViewColumn mycol;
+            mycol = new MyTreeViewColumn("Name", new Gtk.CellRendererText(), "text", 0);
+            mycol.setmodel(store);
+            treeview1.AppendColumn(mycol);
+
+            mycol = new MyTreeViewColumn("Members", new Gtk.CellRendererText(), "text", 1);
+            mycol.setmodel(store);
+            store.SetSortFunc(2, numericsort);
+            treeview1.AppendColumn(mycol);
+
 			treeview1.Model=store;
 
 		}
+
+        int numericsort(Gtk.TreeModel model, Gtk.TreeIter a, Gtk.TreeIter b)
+        {
+
+            float Pa;
+            float.TryParse((string)store.GetValue(a, 2), out Pa);
+            float Pb;
+            float.TryParse((string)store.GetValue(b, 2), out Pb);
+
+            int tSortColumnId;
+            Gtk.SortType order;
+
+            store.GetSortColumnId(out tSortColumnId, out order);
+
+            if (Pa == Pb)
+                return 0;
+
+            if (order == Gtk.SortType.Ascending)
+            {
+                if (Pa > Pb)
+                    return -1;
+                else
+                    return 1;
+            }
+            else
+            {
+                if (Pa > Pb)
+                    return 1;
+                else
+                    return -1;
+            }
+        }
 
 		void onGroupReply(UUID thisqueryid,List <OpenMetaverse.DirectoryManager.GroupSearchData> MatchedGroups)
 	    {

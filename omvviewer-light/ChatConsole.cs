@@ -412,6 +412,7 @@ namespace omvviewerlight
 			if(sourcetype==ChatSourceType.System)
 			{
 				Gtk.Application.Invoke(delegate {
+                    fromName = "Secondlife ";
                     displaychat(message, fromName, systemchat, systemchat);		
 				});
 				return;

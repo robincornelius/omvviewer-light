@@ -156,11 +156,9 @@ namespace omvviewerlight
 
 			lock(basemap)
             {
-
                 try
-					{
+				{
                     buf = (Gdk.Pixbuf)basemap.Pixbuf.Clone();
-                  // buf.ScaleSimple(512,512,InterpType.Bilinear);
                 }
                 catch (Exception e)
                 {

@@ -48,55 +48,40 @@ namespace omvviewerlight
             {
                 if (!getting.Contains(name) && !MainClass.name_cache.av_names.ContainsKey(name))
                 {
-                    //Console.Write("NO requesting\n");
                     getting.Add(name);
                     MainClass.client.Avatars.RequestAvatarName(name);
-                }
-                else
-                {
-                    // Console.Write("Already have or already getting\n");
                 }
             }
 		}
 		
 		public void reqnames(List <UUID> names)
 		{
+            List<UUID> request = new List<UUID>();
 
-            lock (getting)
+            lock (MainClass.name_cache.av_names)
             {
-                List<UUID> request = new List<UUID>();
-                foreach (UUID name in names)
+                lock (getting)
                 {
-                    //Console.Write("LIST Do we have " + name.ToString() + "\n");
-                    if (!getting.Contains(name) && !MainClass.name_cache.av_names.ContainsKey(name))
+                    lock (MainClass.name_cache.av_names)
                     {
-                        // Console.Write("LIST NO requesting\n");
-                        getting.Add(name);
-                        request.Add(name);
-                        //MainClass.client.Avatars.RequestAvatarName(name);
+                        foreach (UUID name in names)
+                        {
+                            if (!getting.Contains(name) && !MainClass.name_cache.av_names.ContainsKey(name))
+                            {
+                                getting.Add(name);
+                                request.Add(name);
+                            }
+                        }
                     }
-                    else
-                    {
-                        // Console.Write("LIST Already have or already getting\n");
-                    }
-
                 }
-            
-                // Possible libomv bug, dont request too many names in a single shot
-                for (int x = 0; x < request.Count; x = x + 100)
-                {
-                    List<UUID> request_temp = request.GetRange(x, (x + 100) < (request.Count - 1) ? 100 : 100-((x + 100)-(request.Count - 1)));
-                    MainClass.client.Avatars.RequestAvatarNames(request_temp); 
-              
-                }
-
-
-                
             }
-
-            
-			
-			
+                
+            // Possible libomv bug, dont request too many names in a single shot
+            for (int x = 0; x < request.Count; x = x + 100)
+            {
+                List<UUID> request_temp = request.GetRange(x, (x + 100) < (request.Count - 1) ? 100 : 100-((x + 100)-(request.Count - 1)));
+                MainClass.client.Avatars.RequestAvatarNames(request_temp); 
+            }  
 		}
 
 		void onAvatarNames(Dictionary <UUID,string>names)
@@ -113,7 +98,6 @@ namespace omvviewerlight
 					   
 					if(!av_names.ContainsKey(kvp.Key))
 					{
-	                    //Console.Write("GOT "+kvp.Key.ToString()+" = "+kvp.Value+"\n");
 						av_names.Add(kvp.Key,kvp.Value);
 					}
 				}	

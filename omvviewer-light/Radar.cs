@@ -46,8 +46,7 @@ namespace omvviewerlight
 		const float DISTANCE_BUFFER = 3f;
         uint targetLocalID = 0;
 		bool Active;
-		bool piloton=false;
-
+	
 		public Radar()
 		{      
 			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(uint));
@@ -95,9 +94,6 @@ namespace omvviewerlight
                             continue;
 
                         if (kvp.Value.ID == UUID.Zero)
-                            continue;
-
-                        if (kvp.Value.LocalID == null)
                             continue;
 
                         if (!this.av_tree.ContainsKey(kvp.Value.LocalID))
@@ -222,7 +218,7 @@ namespace omvviewerlight
                         {
                             // The agent *might* still be present under an old localID and we
                             // missed the kill
-                                uint localid=0;
+              
 							    List <uint> removelist=new List <uint>();
                                 foreach (KeyValuePair<uint, agent> av in av_tree)
                                 {
@@ -528,8 +524,6 @@ namespace omvviewerlight
 
                                 Logger.DebugLog(String.Format("[Autopilot] {0} meters away from the target, starting autopilot to <{1},{2},{3}>",
                                     distance, xTarget, yTarget, zTarget), MainClass.client);
-
-								piloton=true;
 									
 								Vector3 pos;
 								pos.X=(float)xTarget;

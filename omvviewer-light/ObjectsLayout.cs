@@ -54,9 +54,7 @@ namespace omvviewerlight
 		{
 			this.Build();
 			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(UUID));
-            Gtk.TreeViewColumn col;
-           
-      
+        
             MyTreeViewColumn mycol;
             mycol = new MyTreeViewColumn("Name",new Gtk.CellRendererText(), "text", 0);
             mycol.setmodel(store);

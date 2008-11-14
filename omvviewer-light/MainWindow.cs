@@ -59,7 +59,6 @@ public partial class MainWindow: Gtk.Window
 	bool is_parcel_owner;
 	public List<Group> current_groups=new List<Group>();
 
-    bool loggedout = false;
     string parcel_owner_name;
     string parcel_group;
     Tooltips tooltips1;

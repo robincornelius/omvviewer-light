@@ -135,6 +135,7 @@ namespace omvviewerlight
 			this.treeview_roles_with_ability.Model=this.store_roles_with_ability;
 
 			GroupPowers powers=new GroupPowers();
+            powers = (GroupPowers)0xffffffff;
 			this.showpowers(this.store_abilities,powers);
 			this.treeview_abilities.ExpandAll();
 			
@@ -149,7 +150,6 @@ namespace omvviewerlight
 			
 			MainClass.client.Groups.RequestGroupProfile(groupID);
 
-            Console.WriteLine("group id is " + groupID.ToString());
             rcvd_names.Clear();
 
             name_poll = true;
@@ -246,17 +246,12 @@ namespace omvviewerlight
             Console.Write("Group titles recieved\n");
 
 			Gtk.Application.Invoke(delegate {	
-
-			foreach(KeyValuePair  <UUID,OpenMetaverse.GroupTitle> title in titles)
-			{
-				this.combobox_active_title.InsertText(0,title.Value.Title);
-				Console.Write("Title : "+title.Value.Title+" : "+title.Value.Selected.ToString()+"\n");
-				if(title.Value.Selected)
-				{
-						this.combobox_active_title.Active=0;
-				}
-			}	
-		
+			    foreach(KeyValuePair  <UUID,OpenMetaverse.GroupTitle> title in titles)
+			    {
+				    this.combobox_active_title.InsertText(0,title.Value.Title);
+				    if(title.Value.Selected)
+						    this.combobox_active_title.Active=0;
+			    }	
 			});
 		}
 
@@ -264,9 +259,6 @@ namespace omvviewerlight
         {
 
             List<UUID> names = new List<UUID>();
-
-            //List<UUID> names = new List<UUID>(MainClass.client.Groups.GroupMembersCaches.Dictionary[request_members].Keys);
-            //MainClass.name_cache.reqnames(names);
 
             if (!MainClass.client.Groups.GroupMembersCaches.Dictionary.ContainsKey(request_members))
                 return name_poll;
@@ -330,9 +322,10 @@ namespace omvviewerlight
 			if(group.MembershipFee>0)
 				this.checkbutton_mature.Active=true;
 			
-		//	this.checkbutton_group_notices.Active=group.AcceptNotices;
+			this.checkbutton_group_notices.Active=group.AcceptNotices;
+            this.checkbutton_showinpofile.Active = group.AllowPublish;
+
 			this.checkbutton_openenrolement.Active=group.OpenEnrollment;
-			this.checkbutton_showinpofile.Active=group.AllowPublish;
 			this.checkbutton_showinsearch.Active=group.ShowInList;
 			this.checkbutton_mature.Active=group.MaturePublish;
 			this.textview_group_charter.Buffer.Text=group.Charter;
@@ -426,7 +419,6 @@ namespace omvviewerlight
 			if(this.treeview_members1.Selection.GetSelected(out mod,out iter))			
 			{
 				UUID id=(UUID)mod.GetValue(iter,3);
-				Console.Write("Selected id "+id.ToString()+"\n");
                 GroupMember member;
 				//Now populate the roles list
 
@@ -459,13 +451,12 @@ namespace omvviewerlight
 
 					foreach(KeyValuePair<UUID,UUID> rolesmember in rolesmembers)
 					{
-						if(rolesmember.Value==id && kvp.Value.ID==rolesmember.Key)
+						if((rolesmember.Value==id && kvp.Value.ID==rolesmember.Key) || kvp.Key==UUID.Zero)
 							ingroup=true;
 					}
 					
 					assigned_roles.AppendValues(ingroup,kvp.Value.Name,kvp.Value.ID);	
-				}
-									
+				}									
 			}
 		}
 
@@ -580,7 +571,7 @@ namespace omvviewerlight
 					test=(powers & GroupPowers.ChangeIdentity) == GroupPowers.ChangeIdentity; //?????????
 					store.AppendValues(iterx,test?tick:cross,"Assign and Remove Abilities",GroupPowers.ChangeIdentity);
                   
-                    return;
+  
 					iterx = store.AppendValues(folder_open, "Parcel Managment", GroupPowers.None);
 					test=(powers & GroupPowers.LandDeed) == GroupPowers.LandDeed; //?????????
 					store.AppendValues(iterx,test?tick:cross,"Deed land and buy land for group",GroupPowers.LandDeed);
@@ -613,7 +604,7 @@ namespace omvviewerlight
     				test=(powers & GroupPowers.AllowRez) == GroupPowers.AllowRez;
 					store.AppendValues(iterx,test?tick:cross,"Always allow Create Objects",GroupPowers.AllowRez);
     				test=(powers & GroupPowers.AllowLandmark) == GroupPowers.AllowLandmark;
-					store.AppendValues(iterx,test,"Always allow Create Landmarks",GroupPowers.AllowLandmark);
+                    store.AppendValues(iterx, test?tick:cross, "Always allow Create Landmarks", GroupPowers.AllowLandmark);
     				test=(powers & GroupPowers.AllowSetHome) == GroupPowers.AllowSetHome;
 					store.AppendValues(iterx,test?tick:cross,"Allow Set Home to Hete on group land",GroupPowers.AllowSetHome);
 					
@@ -667,13 +658,14 @@ namespace omvviewerlight
 				
 			}
 					
-					protected virtual void OnTreeviewAbilitiesCursorChanged (object sender, System.EventArgs e)
-					{
-					Gtk.TreeModel mod;
+		protected virtual void OnTreeviewAbilitiesCursorChanged (object sender, System.EventArgs e)
+		{
+			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
-					if(this.treeview_abilities.Selection.GetSelected(out mod,out iter))			
+			if(this.treeview_abilities.Selection.GetSelected(out mod,out iter))			
 			{
 				GroupPowers powers=(GroupPowers)mod.GetValue(iter,2);
+
                 //power should be singular
                 List<KeyValuePair<UUID,UUID>> rolesmembers;
                
@@ -681,6 +673,11 @@ namespace omvviewerlight
                     return;
 
 					this.store_members_with_ability.Clear();
+                    this.store_roles_with_ability.Clear();
+
+                    if (powers == GroupPowers.None)
+                        return;
+
 						Dictionary <UUID, GroupRole> grouproles;
 						MainClass.client.Groups.GroupRolesCaches.TryGetValue(request_roles,out grouproles);
 
@@ -703,7 +700,7 @@ namespace omvviewerlight
                      }
                 }
 				
-				this.store_roles_with_ability.Clear();
+				
                 foreach(KeyValuePair<UUID, GroupRole> role in grouproles)
                 {
                   
@@ -761,7 +758,6 @@ namespace omvviewerlight
 			{
             //Does this agent have the request power			
 		    Dictionary <UUID, GroupRole> grouproles;
-            Dictionary<UUID, GroupMember> groupmembers;
             List<KeyValuePair<UUID,UUID>> rolesmembers;
 	
                 if (!MainClass.client.Groups.GroupRolesCaches.TryGetValue(request_roles, out grouproles))
@@ -782,9 +778,7 @@ namespace omvviewerlight
 				{
 				if(rolesmember.Value==agent)
 					{
-                      Console.WriteLine("Checking role "+rolesmember.Key);
-					
-                 
+
 					   if(grouproles.TryGetValue(rolesmember.Key,out role))
 						{
 					        if((role.Powers & power) == power)

@@ -39,8 +39,7 @@ namespace omvviewerlight
         Gdk.Pixbuf parcel_map;
 		
 		TryGetImage getter;
-		
-		int sequence=0;
+
 		Dictionary <uint,uint> colmaptoid=new Dictionary<uint,uint>(); // map parcelid->colindex
         uint[] colmap = { 0x00FFFFFF, 0xFF00FFFF,0xFFFF00FF,0x55FFFFFF,0xaaFFFFFF,0xFF55FFFF,0xFFaaFFFF,0xFFFF55FF,0xFFFFaaFF,0xFFFFFFFF, 0x0000FFFF, 0xFF0000FF,0x00FF00FF, 0x5555FFFF, 0xFF5555FF,0x55FF55FF, 0xaaaaFFFF, 0xFFaaaaFF,0xaaFFaaFF};
    	    int nextcol=0;
@@ -245,7 +244,6 @@ namespace omvviewerlight
          sbyte* ps;
 
          uint[] colmap = { 0x00FFFFFF, 0xFF00FFFF, 0xFFFF00FF, 0x55FFFFFF, 0xaaFFFFFF, 0xFF55FFFF, 0xFFaaFFFF, 0xFFFF55FF, 0xFFFFaaFF, 0xFFFFFFFF, 0x0000FFFF, 0xFF0000FF, 0x00FF00FF, 0x5555FFFF, 0xFF5555FF, 0x55FF55FF, 0xaaaaFFFF, 0xFFaaaaFF, 0xaaFFaaFF };
-         int nextcol = 0;
 
          int srcwidth = parcel_map.Width;
          int srcheight = parcel_map.Height;

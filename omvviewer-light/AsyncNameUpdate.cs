@@ -100,13 +100,10 @@ namespace omvviewerlight
 		
 		void try_update_name_lable(UUID key)
 		{
-           // Console.Write("Try update KEY " + key.ToString() + "\n");
-
 			string name;
 			if(MainClass.name_cache.av_names.TryGetValue(key,out name))
 			{
 				Gtk.Application.Invoke(delegate {
-                   // Console.Write("Success! trying to throw callback\n");
 					if(onNameCallBack!=null)
 						onNameCallBack(name,this.callbackvalues1);			
 					AsynNamesUpdate_deinit();
@@ -114,7 +111,6 @@ namespace omvviewerlight
 			}
 			else
 			{
-                //Console.Write("Failed! kicking requester\n");
 				MainClass.name_cache.reqname(key);			
 			}
 		}
@@ -129,12 +125,10 @@ namespace omvviewerlight
 					if(onGroupNameCallBack!=null)
 						onGroupNameCallBack(name,this.callbackvalues1);			
 					AsynNamesUpdate_deinit();
-				});
-				
+				});	
 			}
 			else
 			{	
-				
 				MainClass.client.Groups.RequestGroupName(key);
 			}
 		}
