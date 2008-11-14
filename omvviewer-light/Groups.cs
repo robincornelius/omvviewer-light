@@ -73,7 +73,6 @@ namespace omvviewerlight
                     MainClass.client.Groups.RequestCurrentGroups();
                }
             }	
-			
 		}
 
 		void onGroupJoined(UUID group,bool success)
