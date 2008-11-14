@@ -39,8 +39,7 @@ namespace omvviewerlight
         public void kill()
         {
             MainClass.client.Groups.OnCurrentGroups -= new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
-	
-            Gtk.Notebook p;
+	        Gtk.Notebook p;
             p = (Gtk.Notebook)this.Parent;
             p.RemovePage(p.PageNum(this));
         }
@@ -64,7 +63,8 @@ namespace omvviewerlight
 	
 			//REFACTOR ME, MAINCLASS IS DUPLICATING
 			MainClass.client.Groups.OnCurrentGroups += new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
-			
+			MainClass.client.Groups.OnGroupJoined += new OpenMetaverse.GroupManager.GroupJoinedCallback(onGroupJoined);
+    		MainClass.client.Groups.OnGroupLeft += new OpenMetaverse.GroupManager.GroupLeftCallback(onGroupLeft);
 
             if (MainClass.client != null)
             {
@@ -76,6 +76,30 @@ namespace omvviewerlight
 			
 		}
 
+		void onGroupJoined(UUID group,bool success)
+		{
+			Gtk.Application.Invoke(delegate{				
+				if(success==true)
+				{
+					store.Clear();
+					this.groups_recieved.Clear();
+					MainClass.client.Groups.RequestCurrentGroups();
+				}			
+			});			
+		}
+		void onGroupLeft(UUID group,bool success)
+		{
+			Gtk.Application.Invoke(delegate{				
+				if(success==true)
+				{
+					store.Clear();
+					this.groups_recieved.Clear();
+					MainClass.client.Groups.RequestCurrentGroups();
+				}			
+			});			
+		}
+
+		
         private void RenderGroupName(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter)
         {
             bool active = (bool)model.GetValue(iter, 2);
@@ -137,7 +161,7 @@ namespace omvviewerlight
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
 				Group group=(Group)mod.GetValue(iter,1);
-				GroupInfo info=new GroupInfo(group);
+				GroupInfo info=new GroupInfo(group.ID,true);
 				info.Show();
 			}
 		}

@@ -101,20 +101,23 @@ namespace omvviewerlight
 
 		void onAvatarNames(Dictionary <UUID,string>names)
 		{
-			foreach(KeyValuePair <UUID,string> kvp in names)
+			lock(av_names)
 			{
-                lock(getting)
-                {
-				    if(getting.Contains(kvp.Key))
-			            getting.Remove(kvp.Key);
-				}
-				   
-				if(!av_names.ContainsKey(kvp.Key))
+				foreach(KeyValuePair <UUID,string> kvp in names)
 				{
-                    //Console.Write("GOT "+kvp.Key.ToString()+" = "+kvp.Value+"\n");
-					av_names.Add(kvp.Key,kvp.Value);
-				}
-			}	
+	                lock(getting)
+	                {
+					    if(getting.Contains(kvp.Key))
+				            getting.Remove(kvp.Key);
+					}
+					   
+					if(!av_names.ContainsKey(kvp.Key))
+					{
+	                    //Console.Write("GOT "+kvp.Key.ToString()+" = "+kvp.Value+"\n");
+						av_names.Add(kvp.Key,kvp.Value);
+					}
+				}	
+			}
 		
 		}
 		

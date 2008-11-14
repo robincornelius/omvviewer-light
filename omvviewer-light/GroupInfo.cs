@@ -53,6 +53,7 @@ namespace omvviewerlight
         UUID request_roles;
         UUID request_roles_members;
 
+		bool already_member=false;
         bool nobody_cares = false;
 
         bool name_poll = false;
@@ -65,13 +66,13 @@ namespace omvviewerlight
 		Gdk.Pixbuf tick = MainClass.GetResource("tick.tga");
 		Gdk.Pixbuf cross = MainClass.GetResource("cross.tga");
 		
-		public GroupInfo(Group group) : 
+		public GroupInfo(UUID groupID,bool mine) : 
 				base(Gtk.WindowType.Toplevel)
 		{
 			this.Build();
 
-			groupkey=group.ID;
-			
+			groupkey=groupID;
+			already_member=mine;
 			
 			store_members = new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(UUID));			
 			treeview_members.AppendColumn("Member name",new CellRendererText(),"text",0);
@@ -146,42 +147,42 @@ namespace omvviewerlight
 
 			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);			
 			
-			MainClass.client.Groups.RequestGroupProfile(group.ID);
+			MainClass.client.Groups.RequestGroupProfile(groupID);
 
-            Console.WriteLine("group id is " + group.ID.ToString());
+            Console.WriteLine("group id is " + groupID.ToString());
             rcvd_names.Clear();
 
             name_poll = true;
             Gtk.Timeout.Add(500, updategroupmembers);
-            request_members = MainClass.client.Groups.RequestGroupMembers(group.ID);
-            request_titles = MainClass.client.Groups.RequestGroupTitles(group.ID);
-            request_roles = MainClass.client.Groups.RequestGroupRoles(group.ID);  //this is indexed by group ID
-            request_roles_members = MainClass.client.Groups.RequestGroupRoleMembers(group.ID);
+            request_members = MainClass.client.Groups.RequestGroupMembers(groupID);
 
-            request_roles = group.ID; //CORRECT
-            request_roles_members = group.ID;
-            request_titles = group.ID;
-            //request_members = group.ID;
+			if(mine)
+			{
+				request_titles = MainClass.client.Groups.RequestGroupTitles(groupID);
+	            request_roles = MainClass.client.Groups.RequestGroupRoles(groupID);  //this is indexed by group ID
+	            request_roles_members = MainClass.client.Groups.RequestGroupRoleMembers(groupID);
+	            request_roles = groupID; //CORRECT
+	            request_roles_members = groupID;
+	            request_titles = groupID;
+	            //request_members = group.ID;
 
-            MainClass.client.Groups.RequestGroupNoticeList(group.ID);
+	            MainClass.client.Groups.RequestGroupNoticeList(groupID);
+			}
+			else
+			{
+				Gtk.Widget widg=this.notebook1.GetNthPage(1);
+				widg.Visible=false;
+				widg=this.notebook1.GetNthPage(2);
+				widg.Visible=false;
+				widg=this.notebook1.GetNthPage(3);
+				widg.Visible=false;
+				widg=this.notebook1.GetNthPage(4);
+				widg.Visible=false;
+			}
 			
-			TryGetImage img=new TryGetImage(this.image_group_emblem,group.InsigniaID,128,128);
-			this.label_name.Text=group.Name;
-	
-			AsyncNameUpdate ud=new AsyncNameUpdate(group.FounderID,false);  
-			ud.onNameCallBack += delegate(string namex,object[] values){this.label_foundedby.Text="Founded by "+namex;};
-            ud.go();
-
-			this.entry_enrollmentfee.Text=group.MembershipFee.ToString();
-			if(group.MembershipFee>0)
-				this.checkbutton_mature.Active=true;
+			this.button_join.Sensitive=false;
+			this.button_invite.Sensitive=false;
 			
-			this.checkbutton_group_notices.Active=group.AcceptNotices;
-			this.checkbutton_openenrolement.Active=group.OpenEnrollment;
-			this.checkbutton_showinpofile.Active=group.AllowPublish;
-			this.checkbutton_showinsearch.Active=group.ShowInList;
-			this.checkbutton_mature.Active=group.MaturePublish;
-			this.textview_group_charter.Buffer.Text=group.Charter;
             this.DeleteEvent += new DeleteEventHandler(GroupWindow_DeleteEvent);
 	
 			this.notebook1.Page=0;
@@ -201,7 +202,10 @@ namespace omvviewerlight
 		void onGroupRolesMembers(List<KeyValuePair<UUID,UUID>> rolesmember)
 		{
 			Console.Write("Group roles members recieved\n");
-
+			Gtk.Application.Invoke(delegate{
+			this.button_invite.Sensitive=checkaccess(MainClass.client.Self.AgentID,GroupPowers.Invite);
+			});
+			
 			//rolesmembers=rolesmember;
 		}
 		
@@ -215,6 +219,10 @@ namespace omvviewerlight
 			{
 				this.store_roles_list.AppendValues(kvp.Value.Name,kvp.Value.Title,"0",kvp.Value.ID);
 			}
+
+			Gtk.Application.Invoke(delegate{
+			this.button_invite.Sensitive=checkaccess(MainClass.client.Self.AgentID,GroupPowers.Invite);
+			});
 		}
 		
         [GLib.ConnectBefore]
@@ -334,6 +342,33 @@ namespace omvviewerlight
 				else
 					this.button_send_notice.Sensitive=false;
 		
+				
+			TryGetImage img=new TryGetImage(this.image_group_emblem,group.InsigniaID,128,128);
+			this.label_name.Text=group.Name;
+	
+			AsyncNameUpdate ud=new AsyncNameUpdate(group.FounderID,false);  
+			ud.onNameCallBack += delegate(string namex,object[] values){this.label_foundedby.Text="Founded by "+namex;};
+            ud.go();
+
+			this.entry_enrollmentfee.Text=group.MembershipFee.ToString();
+			if(group.MembershipFee>0)
+				this.checkbutton_mature.Active=true;
+			
+			this.checkbutton_group_notices.Active=group.AcceptNotices;			this.checkbutton_openenrolement.Active=group.OpenEnrollment;
+			this.checkbutton_showinpofile.Active=group.AllowPublish;
+			this.checkbutton_showinsearch.Active=group.ShowInList;
+			this.checkbutton_mature.Active=group.MaturePublish;
+			this.textview_group_charter.Buffer.Text=group.Charter;
+				
+			if(!this.already_member)
+			{
+				if(group.OpenEnrollment==true)
+                  this.button_join.Sensitive=true;		
+					
+					
+           }
+				
+
 			});
 		}
 		
@@ -684,5 +719,84 @@ namespace omvviewerlight
 
             }
         }
+
+		protected virtual void OnButtonJoinClicked (object sender, System.EventArgs e)
+		{
+           int cost=0;
+		   int.TryParse(this.entry_enrollmentfee.Text,out cost);
+		   if(cost>0)
+           {
+              Gtk.MessageDialog md= new Gtk.MessageDialog(MainClass.win,DialogFlags.Modal,MessageType.Question,ButtonsType.YesNo,false,"Are you sure you wish to join the group\n"+this.label_name.Text+"\n it will COST YOU L$"+cost.ToString());
+			  Gtk.ResponseType res=(ResponseType)md.Run();
+			  md.Destroy();
+			  if(res==Gtk.ResponseType.Yes)
+		         MainClass.client.Groups.RequestJoinGroup(this.groupkey); 
+		      }
+			  else
+		         MainClass.client.Groups.RequestJoinGroup(this.groupkey); 	
+		}
+
+		protected virtual void OnButtonInviteClicked (object sender, System.EventArgs e)
+		{
+			NamePicker np=new NamePicker(); 
+			List <UUID> roles=new List <UUID>();
+            roles.Add(UUID.Zero);
+			np.UserSel += delegate (UUID id,UUID asset,string item_name,string user_name){MainClass.client.Groups.Invite(this.groupkey,roles,id);};
+            np.Show();       			  	
+		}
+	
+		protected virtual void OnButtonLeaveClicked (object sender, System.EventArgs e)
+		{
+            Gtk.MessageDialog md= new Gtk.MessageDialog(MainClass.win,DialogFlags.Modal,MessageType.Question,ButtonsType.YesNo,false,"Are you sure you wish to leave the group\n"+this.label_name.Text);
+			Gtk.ResponseType res=(ResponseType)md.Run();
+			md.Destroy();
+			if(res==Gtk.ResponseType.Yes)
+            {
+			    MainClass.client.Groups.LeaveGroup(this.groupkey);	
+            }				
+			
+	    }
+		
+		bool checkaccess(UUID agent,OpenMetaverse.GroupPowers power)
+			{
+            //Does this agent have the request power			
+		    Dictionary <UUID, GroupRole> grouproles;
+            Dictionary<UUID, GroupMember> groupmembers;
+            List<KeyValuePair<UUID,UUID>> rolesmembers;
+	
+                if (!MainClass.client.Groups.GroupRolesCaches.TryGetValue(request_roles, out grouproles))
+                    return false;
+                if(!MainClass.client.Groups.GroupRolesMembersCaches.TryGetValue(request_roles_members, out rolesmembers))
+                     return false;
+			     GroupRole role;
+             // rolesmember.Value is the user UUID
+	         // .key is the group role UUID			
+					   if(grouproles.TryGetValue(UUID.Zero,out role))
+						{
+					        if((role.Powers & power) == power)
+					        return true;
+                        }
+			
+			
+			foreach(KeyValuePair <UUID,UUID> rolesmember in rolesmembers)
+				{
+				if(rolesmember.Value==agent)
+					{
+                      Console.WriteLine("Checking role "+rolesmember.Key);
+					
+                 
+					   if(grouproles.TryGetValue(rolesmember.Key,out role))
+						{
+					        if((role.Powers & power) == power)
+					        return true;
+                        }
+                }	
+			
+            } 			
+					
+          return false;
+        }
+		
+
 	}
 }

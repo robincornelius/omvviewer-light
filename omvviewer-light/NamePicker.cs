@@ -26,8 +26,7 @@ namespace omvviewerlight
 		public UUID asset;
 		public string item_name;
 		public string user_name;
-		
-		
+			
 		public NamePicker() : 
 				base(Gtk.WindowType.Toplevel)
 		{
@@ -37,10 +36,13 @@ namespace omvviewerlight
 			treeview1.Model=store;
 			store.SetSortColumnId(0,Gtk.SortType.Ascending);
 			
-			foreach(KeyValuePair<UUID,string> name in MainClass.name_cache.av_names)
+			lock(MainClass.name_cache.av_names)
 			{
-				store.AppendValues(name.Value,name.Key);
-				
+				foreach(KeyValuePair<UUID,string> name in MainClass.name_cache.av_names)
+				{
+					store.AppendValues(name.Value,name.Key);
+					
+				}
 			}
 		}
 		

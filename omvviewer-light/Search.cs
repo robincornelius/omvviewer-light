@@ -43,6 +43,10 @@ namespace omvviewerlight
 			
 			EventsSearch es=new EventsSearch();
 			this.addtabwithicon("icon_event.tga","Events",es);
+
+			GroupSearch gs=new GroupSearch();
+			this.addtabwithicon("icn_voice-pvtfocus.tga","Groups",gs);
+			
 			
 		}
 		
