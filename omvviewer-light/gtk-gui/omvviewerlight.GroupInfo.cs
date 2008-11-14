@@ -424,7 +424,6 @@ namespace omvviewerlight {
             w21.Fill = false;
             // Container child vbox2.Gtk.Box+BoxChild
             this.checkbutton_group_notices = new Gtk.CheckButton();
-            this.checkbutton_group_notices.Sensitive = false;
             this.checkbutton_group_notices.CanFocus = true;
             this.checkbutton_group_notices.Name = "checkbutton_group_notices";
             this.checkbutton_group_notices.Label = Mono.Unix.Catalog.GetString("Recieve notices");
@@ -437,7 +436,6 @@ namespace omvviewerlight {
             w22.Fill = false;
             // Container child vbox2.Gtk.Box+BoxChild
             this.checkbutton_showinpofile = new Gtk.CheckButton();
-            this.checkbutton_showinpofile.Sensitive = false;
             this.checkbutton_showinpofile.CanFocus = true;
             this.checkbutton_showinpofile.Name = "checkbutton_showinpofile";
             this.checkbutton_showinpofile.Label = Mono.Unix.Catalog.GetString("Show in profile");

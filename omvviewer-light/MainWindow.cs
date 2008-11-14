@@ -64,6 +64,8 @@ public partial class MainWindow: Gtk.Window
     Tooltips tooltips1;
     int lastparcelid = 0;
    
+	public List<AvatarGroup> avatarGroups=new List<AvatarGroup>();	
+	
     ~MainWindow()
     {
         if (trayIcon != null)
@@ -153,7 +155,8 @@ public partial class MainWindow: Gtk.Window
 		MainClass.client.Self.OnGroupChatLeft += new OpenMetaverse.AgentManager.GroupChatLeftCallback(onLeaveGroupChat);
         MainClass.client.Friends.OnFriendshipResponse += new FriendsManager.FriendshipResponseEvent(Friends_OnFriendshipResponse);
         MainClass.client.Friends.OnFriendshipTerminated += new FriendsManager.FriendshipTerminatedEvent(Friends_OnFriendshipTerminated);
-
+		MainClass.client.Avatars.OnAvatarGroups += new OpenMetaverse.AvatarManager.AvatarGroupsCallback(onAvatarGroups);
+		
 		//this.menubar1.get
 		
 		this.AvaiableAction.Activate();
@@ -181,6 +184,18 @@ public partial class MainWindow: Gtk.Window
 
 	}
 
+	void onAvatarGroups(UUID avatarID, List<AvatarGroup> avatarGroupsi)
+	{
+		Console.WriteLine("On Avatar groups");
+		// Only interested in self here;
+		if(avatarID!=MainClass.client.Self.AgentID)
+			return;
+		
+		Console.WriteLine("GOt list for self");
+		avatarGroups.AddRange(avatarGroupsi);
+		
+	}
+	
    [GLib.ConnectBefore]
     void MainWindow_DeleteEvent(object o, DeleteEventArgs args)
     {
@@ -569,6 +584,7 @@ public partial class MainWindow: Gtk.Window
         if (login == LoginStatus.Success)
         {
             MainClass.client.Self.RequestBalance();
+			MainClass.client.Avatars.RequestAvatarProperties(MainClass.client.Self.AgentID);
 
 			Gtk.Application.Invoke(delegate
             {

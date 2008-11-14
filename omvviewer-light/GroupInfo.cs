@@ -59,7 +59,8 @@ namespace omvviewerlight
         bool name_poll = false;
 		
 		UUID groupkey;
-
+		
+		
         List<UUID> rcvd_names = new List<UUID>();
 
 		Gdk.Pixbuf folder_open = MainClass.GetResource("inv_folder_plain_open.tga");
@@ -325,9 +326,18 @@ namespace omvviewerlight
 			if(group.MembershipFee>0)
 				this.checkbutton_mature.Active=true;
 			
-			this.checkbutton_group_notices.Active=group.AcceptNotices;
-            this.checkbutton_showinpofile.Active = group.AllowPublish;
-
+			    if(this.already_member==true)
+				{
+					foreach(AvatarGroup avgroup in MainClass.win.avatarGroups)
+					{		
+	 					if(avgroup.GroupID==this.groupkey)
+						{
+					        this.checkbutton_group_notices.Active=avgroup.AcceptNotices;													this.checkbutton_showinpofile.Active = avgroup.ListInProfile;
+	                        break;							
+						}
+				}
+			}
+				
 			this.checkbutton_openenrolement.Active=group.OpenEnrollment;
 			this.checkbutton_showinsearch.Active=group.ShowInList;
 			this.checkbutton_mature.Active=group.MaturePublish;
@@ -350,8 +360,7 @@ namespace omvviewerlight
 			if(group.MembershipFee>0)
 				this.checkbutton_mature.Active=true;
 			
-			this.checkbutton_group_notices.Active=group.AcceptNotices;			this.checkbutton_openenrolement.Active=group.OpenEnrollment;
-			this.checkbutton_showinpofile.Active=group.AllowPublish;
+			this.checkbutton_openenrolement.Active=group.OpenEnrollment;
 			this.checkbutton_showinsearch.Active=group.ShowInList;
 			this.checkbutton_mature.Active=group.MaturePublish;
 			this.textview_group_charter.Buffer.Text=group.Charter;
@@ -359,11 +368,11 @@ namespace omvviewerlight
 			if(!this.already_member)
 			{
 				if(group.OpenEnrollment==true)
-                  this.button_join.Sensitive=true;		
-					
-					
-           }
+					this.button_join.Sensitive=true;					
+            }
 				
+				this.checkbutton_group_notices.Sensitive=this.already_member;
+				this.checkbutton_showinpofile.Sensitive=this.already_member;
 
 			});
 		}
@@ -391,26 +400,12 @@ namespace omvviewerlight
 
 		protected virtual void OnCheckbuttonGroupNoticesClicked (object sender, System.EventArgs e)
 		{
-			if(this.checkbutton_group_notices.Active)
-			{
-//				MainClass.client.Groups.SendGroupNotice();
-	//			GroupNotice note;
-				
-			}
-			else
-			{
-			}
-			
+		     MainClass.client.Groups.setUserGroupFlags(this.groupkey,this.checkbutton_group_notices.Active,this.checkbutton_showinpofile.Active);	
 		}
 
 		protected virtual void OnCheckbuttonShowinpofileClicked (object sender, System.EventArgs e)
 		{
-			if(this.checkbutton_showinpofile.Active)
-			{
-			}
-			else
-			{
-			}
+		     MainClass.client.Groups.setUserGroupFlags(this.groupkey,this.checkbutton_group_notices.Active,this.checkbutton_showinpofile.Active);				
 		}
 
 		protected virtual void OnTreeviewMembers1CursorChanged (object sender, System.EventArgs e)

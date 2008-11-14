@@ -4065,7 +4065,6 @@ Resident Michelle2 Zenovka
                     <child>
                       <widget class="Gtk.CheckButton" id="checkbutton_group_notices">
                         <property name="MemberName" />
-                        <property name="Sensitive">False</property>
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">Recieve notices</property>
                         <property name="DrawIndicator">True</property>
@@ -4083,7 +4082,6 @@ Resident Michelle2 Zenovka
                     <child>
                       <widget class="Gtk.CheckButton" id="checkbutton_showinpofile">
                         <property name="MemberName" />
-                        <property name="Sensitive">False</property>
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">Show in profile</property>
                         <property name="DrawIndicator">True</property>

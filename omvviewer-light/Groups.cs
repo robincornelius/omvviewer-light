@@ -118,8 +118,9 @@ namespace omvviewerlight
         }		void onGroups(Dictionary<UUID,Group> groups)
 		{
 			
-			Gtk.Application.Invoke(delegate {
-				
+					Gtk.Application.Invoke(delegate {
+			    lock(this.groups_recieved)
+                {
 				foreach(KeyValuePair <UUID,Group> group in groups)
 				{
 					if(!this.groups_recieved.Contains(group.Value))
@@ -134,8 +135,9 @@ namespace omvviewerlight
 						    active_group_iter=iter;
 						
 						this.groups_recieved.Add(group.Value);
-					}
+				   }
 				}
+              }
 			});
 		}
 
