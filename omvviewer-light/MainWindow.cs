@@ -63,6 +63,8 @@ public partial class MainWindow: Gtk.Window
     string parcel_group;
     Tooltips tooltips1;
     int lastparcelid = 0;
+	
+	public TeleportTo tp_target_widget=null;
    
 	public List<AvatarGroup> avatarGroups=new List<AvatarGroup>();	
 	
@@ -113,7 +115,9 @@ public partial class MainWindow: Gtk.Window
 			Gtk.Menu menu = new Gtk.Menu(); 
 			    Gtk.ImageMenuItem menu_hide = new ImageMenuItem("Minimse");
 			  Gtk.ImageMenuItem menu_restore = new ImageMenuItem("Restore");
-			  Gtk.ImageMenuItem menu_quit = new ImageMenuItem("Quit");
+			AccelGroup ag=new AccelGroup();
+              Gtk.ImageMenuItem menu_quit = new ImageMenuItem("gtk-quit",ag);
+			
 			  menu_quit.ButtonPressEvent += new ButtonPressEventHandler(menu_quit_fn);
 			  menu_restore.ButtonPressEvent  += new ButtonPressEventHandler(menu_restore_fn);
 			  menu_hide.ButtonPressEvent  += new ButtonPressEventHandler(menu_hide_fn);

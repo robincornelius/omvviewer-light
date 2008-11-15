@@ -370,7 +370,8 @@
                 <property name="WidthRequest">100</property>
                 <property name="HeightRequest">50</property>
                 <property name="CanFocus">True</property>
-                <property name="Type">TextOnly</property>
+                <property name="Type">TextAndIcon</property>
+                <property name="Icon">stock:gtk-connect Menu</property>
                 <property name="Label" translatable="yes">Login</property>
                 <property name="UseUnderline">True</property>
                 <signal name="Clicked" handler="OnButton1Clicked" />
@@ -1295,6 +1296,23 @@ Shout</property>
                         <property name="Homogeneous">True</property>
                         <property name="Spacing">6</property>
                         <child>
+                          <widget class="Gtk.Button" id="button_autopilot">
+                            <property name="MemberName" />
+                            <property name="CanFocus">True</property>
+                            <property name="Type">TextAndIcon</property>
+                            <property name="Icon">stock:stock_draw-curved-connector-starts-with-arrow Menu</property>
+                            <property name="Label" translatable="yes">Move To</property>
+                            <property name="UseUnderline">True</property>
+                            <signal name="Clicked" handler="OnButtonAutopilotClicked" />
+                          </widget>
+                          <packing>
+                            <property name="Position">0</property>
+                            <property name="AutoSize">True</property>
+                            <property name="Expand">False</property>
+                            <property name="Fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
                           <widget class="Gtk.Button" id="button_teleport">
                             <property name="MemberName" />
                             <property name="CanFocus">True</property>
@@ -1306,7 +1324,7 @@ Shout</property>
                             <signal name="Clicked" handler="OnButtonTeleportClicked" />
                           </widget>
                           <packing>
-                            <property name="Position">0</property>
+                            <property name="Position">1</property>
                             <property name="AutoSize">True</property>
                             <property name="Expand">False</property>
                             <property name="Fill">False</property>
@@ -1323,7 +1341,7 @@ Shout</property>
                             <signal name="Clicked" handler="OnButtonTphomeClicked" />
                           </widget>
                           <packing>
-                            <property name="Position">1</property>
+                            <property name="Position">2</property>
                             <property name="AutoSize">True</property>
                             <property name="Expand">False</property>
                             <property name="Fill">False</property>
@@ -1342,7 +1360,7 @@ Shout</property>
               </widget>
             </child>
             <child>
-              <widget class="Gtk.Label" id="GtkLabel2">
+              <widget class="Gtk.Label" id="GtkLabel3">
                 <property name="MemberName" />
                 <property name="LabelProp" translatable="yes">&lt;b&gt;Teleport target&lt;/b&gt;</property>
                 <property name="UseMarkup">True</property>
@@ -7924,6 +7942,20 @@ time</property>
         <child>
           <placeholder />
         </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="omvviewerlight.art.TRest" design-size="400 300">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">TRest</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <child>
+      <widget class="Gtk.Button" id="button67">
+        <property name="MemberName" />
+        <property name="CanFocus">True</property>
+        <property name="Type">TextAndIcon</property>
+        <property name="Label" translatable="yes">button67</property>
+        <property name="UseUnderline">True</property>
       </widget>
     </child>
   </widget>

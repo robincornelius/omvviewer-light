@@ -35,6 +35,7 @@ namespace omvviewerlight
 	{
 		Dictionary<string,string> gridlist = new Dictionary<string,string>();
 		LoginParams login;
+		bool loginbut=true;
 		
 		bool trying;
         
@@ -185,8 +186,11 @@ namespace omvviewerlight
 		
 		void onDisconnected(OpenMetaverse.NetworkManager.DisconnectType reason, string message)
 		{
+			Console.WriteLine("on disconnected");
 			Gtk.Application.Invoke(delegate {
 				this.button_login.Label="Login";
+				this.loginbut=true;
+				this.trying=false;
 				this.enablebuttons();
                 if (!MainClass.win.Visible)
                 {
@@ -218,6 +222,8 @@ namespace omvviewerlight
 			if(LoginStatus.Failed==login)
 				Gtk.Application.Invoke(delegate {
 					this.button_login.Label="Login";
+					this.loginbut=true;
+				    button_login.Image=new Gtk.Image(Stetic.IconLoader.LoadIcon(this, "gtk-connect", Gtk.IconSize.Menu, 16));
 					this.trying=false;
 					this.enablebuttons();
 			    });			
@@ -280,11 +286,14 @@ namespace omvviewerlight
                 Gtk.Application.Invoke(delegate
                 {
                     this.button_login.Label = "Login";
+					this.loginbut=true;
+					this.trying=false;
                     this.enablebuttons();
                 });
 
                 try
                 {
+					Console.WriteLine("Trying to logout after login exception");
                     MainClass.client.Network.Logout();
                 }
                 catch (Exception ee)
@@ -309,8 +318,12 @@ namespace omvviewerlight
 		
 		protected virtual void OnButton1Clicked (object sender, System.EventArgs e)
 		{
-			if(button_login.Label=="Login")
+			Console.WriteLine("button 1 clicked "+button_login.Label);
+			if(this.loginbut==true)
 			{
+				this.button_login.Sensitive=false;
+				GLib.Timeout.Add(1000,debounce);
+
 				this.disablebuttons();
 				trying=true;
 				GLib.Timeout.Add(100,OnPulseProgress);
@@ -363,17 +376,21 @@ namespace omvviewerlight
 				
 				this.textview_log.Buffer.Clear();
 				button_login.Label="Logout";
+				this.loginbut=false;
+			    button_login.Image=new Gtk.Image(Stetic.IconLoader.LoadIcon(this, "gtk-disconnect", Gtk.IconSize.Menu, 16));
 				
 				login.URI=entry_loginuri.Text;
 
 				Thread loginRunner= new Thread(new ThreadStart(this.loginthread));                               		
 				loginRunner.Start();
 
-}
+            }
 			else
 			{
+				Console.WriteLine("Trying to logout user request");
                 MainClass.userlogout = true;
 				MainClass.client.Network.Logout();
+				this.trying=false;
 			}
 		}
 
@@ -421,6 +438,12 @@ namespace omvviewerlight
 
 			if(gridlist.TryGetValue(grid,out uri))
 		        this.entry_loginuri.Text=uri;
+		}
+		
+		bool debounce()
+		{
+				this.button_login.Sensitive=true;
+			    return false;
 		}
 	
 	}

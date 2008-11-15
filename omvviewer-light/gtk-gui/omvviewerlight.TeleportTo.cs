@@ -49,11 +49,13 @@ namespace omvviewerlight {
         
         private Gtk.HBox hbox2;
         
+        private Gtk.Button button_autopilot;
+        
         private Gtk.Button button_teleport;
         
         private Gtk.Button button_tphome;
         
-        private Gtk.Label GtkLabel2;
+        private Gtk.Label GtkLabel3;
         
         protected virtual void Build() {
             Stetic.Gui.Initialize(this);
@@ -214,79 +216,106 @@ namespace omvviewerlight {
             this.hbox2.Homogeneous = true;
             this.hbox2.Spacing = 6;
             // Container child hbox2.Gtk.Box+BoxChild
-            this.button_teleport = new Gtk.Button();
-            this.button_teleport.CanFocus = true;
-            this.button_teleport.Name = "button_teleport";
-            this.button_teleport.UseUnderline = true;
-            // Container child button_teleport.Gtk.Container+ContainerChild
+            this.button_autopilot = new Gtk.Button();
+            this.button_autopilot.CanFocus = true;
+            this.button_autopilot.Name = "button_autopilot";
+            this.button_autopilot.UseUnderline = true;
+            // Container child button_autopilot.Gtk.Container+ContainerChild
             Gtk.Alignment w14 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
             // Container child GtkAlignment.Gtk.Container+ContainerChild
             Gtk.HBox w15 = new Gtk.HBox();
             w15.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w16 = new Gtk.Image();
-            w16.Pixbuf = MainClass.GetResource("icon_place.tga");
+            w16.Pixbuf = Stetic.IconLoader.LoadIcon(this, "stock_draw-curved-connector-starts-with-arrow", Gtk.IconSize.Menu, 16);
             w15.Add(w16);
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w18 = new Gtk.Label();
-            w18.LabelProp = Mono.Unix.Catalog.GetString("Teleport");
+            w18.LabelProp = Mono.Unix.Catalog.GetString("Move To");
             w18.UseUnderline = true;
             w15.Add(w18);
             w14.Add(w15);
-            this.button_teleport.Add(w14);
-            this.hbox2.Add(this.button_teleport);
-            Gtk.Box.BoxChild w22 = ((Gtk.Box.BoxChild)(this.hbox2[this.button_teleport]));
+            this.button_autopilot.Add(w14);
+            this.hbox2.Add(this.button_autopilot);
+            Gtk.Box.BoxChild w22 = ((Gtk.Box.BoxChild)(this.hbox2[this.button_autopilot]));
             w22.Position = 0;
             w22.Expand = false;
             w22.Fill = false;
             // Container child hbox2.Gtk.Box+BoxChild
-            this.button_tphome = new Gtk.Button();
-            this.button_tphome.CanFocus = true;
-            this.button_tphome.Name = "button_tphome";
-            this.button_tphome.UseUnderline = true;
-            // Container child button_tphome.Gtk.Container+ContainerChild
+            this.button_teleport = new Gtk.Button();
+            this.button_teleport.CanFocus = true;
+            this.button_teleport.Name = "button_teleport";
+            this.button_teleport.UseUnderline = true;
+            // Container child button_teleport.Gtk.Container+ContainerChild
             Gtk.Alignment w23 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
             // Container child GtkAlignment.Gtk.Container+ContainerChild
             Gtk.HBox w24 = new Gtk.HBox();
             w24.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w25 = new Gtk.Image();
-            w25.Pixbuf = MainClass.GetResource("map_home.tga");
+            w25.Pixbuf = Gdk.Pixbuf.LoadFromResource("icon_place.tga");
             w24.Add(w25);
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w27 = new Gtk.Label();
-            w27.LabelProp = Mono.Unix.Catalog.GetString("Go Home");
+            w27.LabelProp = Mono.Unix.Catalog.GetString("Teleport");
             w27.UseUnderline = true;
             w24.Add(w27);
             w23.Add(w24);
-            this.button_tphome.Add(w23);
-            this.hbox2.Add(this.button_tphome);
-            Gtk.Box.BoxChild w31 = ((Gtk.Box.BoxChild)(this.hbox2[this.button_tphome]));
+            this.button_teleport.Add(w23);
+            this.hbox2.Add(this.button_teleport);
+            Gtk.Box.BoxChild w31 = ((Gtk.Box.BoxChild)(this.hbox2[this.button_teleport]));
             w31.Position = 1;
             w31.Expand = false;
             w31.Fill = false;
+            // Container child hbox2.Gtk.Box+BoxChild
+            this.button_tphome = new Gtk.Button();
+            this.button_tphome.CanFocus = true;
+            this.button_tphome.Name = "button_tphome";
+            this.button_tphome.UseUnderline = true;
+            // Container child button_tphome.Gtk.Container+ContainerChild
+            Gtk.Alignment w32 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            Gtk.HBox w33 = new Gtk.HBox();
+            w33.Spacing = 2;
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Image w34 = new Gtk.Image();
+            w34.Pixbuf = Gdk.Pixbuf.LoadFromResource("map_home.tga");
+            w33.Add(w34);
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Label w36 = new Gtk.Label();
+            w36.LabelProp = Mono.Unix.Catalog.GetString("Go Home");
+            w36.UseUnderline = true;
+            w33.Add(w36);
+            w32.Add(w33);
+            this.button_tphome.Add(w32);
+            this.hbox2.Add(this.button_tphome);
+            Gtk.Box.BoxChild w40 = ((Gtk.Box.BoxChild)(this.hbox2[this.button_tphome]));
+            w40.Position = 2;
+            w40.Expand = false;
+            w40.Fill = false;
             this.vbox5.Add(this.hbox2);
-            Gtk.Box.BoxChild w32 = ((Gtk.Box.BoxChild)(this.vbox5[this.hbox2]));
-            w32.Position = 3;
-            w32.Expand = false;
-            w32.Fill = false;
+            Gtk.Box.BoxChild w41 = ((Gtk.Box.BoxChild)(this.vbox5[this.hbox2]));
+            w41.Position = 3;
+            w41.Expand = false;
+            w41.Fill = false;
             this.GtkAlignment.Add(this.vbox5);
             this.frame1.Add(this.GtkAlignment);
-            this.GtkLabel2 = new Gtk.Label();
-            this.GtkLabel2.Name = "GtkLabel2";
-            this.GtkLabel2.LabelProp = Mono.Unix.Catalog.GetString("<b>Teleport target</b>");
-            this.GtkLabel2.UseMarkup = true;
-            this.frame1.LabelWidget = this.GtkLabel2;
+            this.GtkLabel3 = new Gtk.Label();
+            this.GtkLabel3.Name = "GtkLabel3";
+            this.GtkLabel3.LabelProp = Mono.Unix.Catalog.GetString("<b>Teleport target</b>");
+            this.GtkLabel3.UseMarkup = true;
+            this.frame1.LabelWidget = this.GtkLabel3;
             this.vbox2.Add(this.frame1);
-            Gtk.Box.BoxChild w35 = ((Gtk.Box.BoxChild)(this.vbox2[this.frame1]));
-            w35.Position = 1;
-            w35.Expand = false;
-            w35.Fill = false;
+            Gtk.Box.BoxChild w44 = ((Gtk.Box.BoxChild)(this.vbox2[this.frame1]));
+            w44.Position = 1;
+            w44.Expand = false;
+            w44.Fill = false;
             this.Add(this.vbox2);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
             }
             this.Show();
+            this.button_autopilot.Clicked += new System.EventHandler(this.OnButtonAutopilotClicked);
             this.button_teleport.Activated += new System.EventHandler(this.OnButtonTeleportActivated);
             this.button_teleport.Clicked += new System.EventHandler(this.OnButtonTeleportClicked);
             this.button_tphome.Clicked += new System.EventHandler(this.OnButtonTphomeClicked);

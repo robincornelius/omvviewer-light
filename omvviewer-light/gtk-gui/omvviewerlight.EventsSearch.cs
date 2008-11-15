@@ -173,7 +173,7 @@ namespace omvviewerlight {
             w9.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w10 = new Gtk.Image();
-            w10.Pixbuf = MainClass.GetResource("status_search_btn.png");
+            w10.Pixbuf = Gdk.Pixbuf.LoadFromResource("status_search_btn.png");
             w9.Add(w10);
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w12 = new Gtk.Label();
@@ -414,7 +414,7 @@ namespace omvviewerlight {
             w41.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w42 = new Gtk.Image();
-            w42.Pixbuf = MainClass.GetResource("icon_place.tga");
+            w42.Pixbuf = Gdk.Pixbuf.LoadFromResource("icon_place.tga");
             w41.Add(w42);
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w44 = new Gtk.Label();

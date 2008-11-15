@@ -168,7 +168,7 @@ namespace omvviewerlight
                     Console.WriteLine("Map, caught exception cloning pixbuf\n");
                     return;
                 }
-                    showme(buf,avatar_me.Pixbuf,MainClass.client.Self.SimPosition);				
+                 
 
 				int myz=(int)MainClass.client.Self.SimPosition.Z;
 
@@ -214,6 +214,8 @@ namespace omvviewerlight
 					}
                 }
 
+				//Draw me last so i am on top of the mele
+				showme(buf,avatar_me.Pixbuf,MainClass.client.Self.SimPosition);				
 			
              }
 
@@ -399,7 +401,14 @@ Console.WriteLine("CLICK");
 			
 		protected virtual void OnEventbox1ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-Console.WriteLine("EVENT BOX CLICK"+args.Event.X.ToString()+","+args.Event.Y.ToString());
+			Console.WriteLine("EVENT BOX CLICK"+args.Event.X.ToString()+","+args.Event.Y.ToString());
+			Vector3 pos;
+			pos.X=(float)(256.0*(args.Event.X/this.image.Pixbuf.Width));
+			pos.Y=(float)(256.0*(args.Event.Y/this.image.Pixbuf.Height));
+			pos.Z=0;
+			if(MainClass.win.tp_target_widget!=null)
+				MainClass.win.tp_target_widget.settarget(pos);
+				                                         
 		}
 	}
 }
