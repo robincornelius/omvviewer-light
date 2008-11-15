@@ -82,6 +82,24 @@ public partial class MainWindow: Gtk.Window
         }
     }
 
+ void menu_quit_fn(object o, ButtonPressEventArgs args)
+	{
+		MainClass.userlogout = true;
+		LogoutDlg ld = new LogoutDlg();
+        ld.Modal = false;
+	    ld.Run();
+		Gtk.Application.Quit();
+	}
+ void menu_hide_fn(object o, ButtonPressEventArgs args)
+	{
+		Visible=false;
+	}
+ void menu_restore_fn(object o, ButtonPressEventArgs args)
+	{
+		Visible=true;
+	}
+
+	
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
         Build();
@@ -90,8 +108,23 @@ public partial class MainWindow: Gtk.Window
 		trayIcon.Visible=true;
 		trayIcon.Tooltip="Disconnected";
 		trayIcon.Activate+= delegate{Visible=!Visible;};
-
         trayIcon.Activate += delegate { trayIcon.Blinking = false; this.UrgencyHint = false; };
+		trayIcon.PopupMenu += delegate { 
+			Gtk.Menu menu = new Gtk.Menu(); 
+			    Gtk.ImageMenuItem menu_hide = new ImageMenuItem("Minimse");
+			  Gtk.ImageMenuItem menu_restore = new ImageMenuItem("Restore");
+			  Gtk.ImageMenuItem menu_quit = new ImageMenuItem("Quit");
+			  menu_quit.ButtonPressEvent += new ButtonPressEventHandler(menu_quit_fn);
+			  menu_restore.ButtonPressEvent  += new ButtonPressEventHandler(menu_restore_fn);
+			  menu_hide.ButtonPressEvent  += new ButtonPressEventHandler(menu_hide_fn);
+			  if(MainClass.win.Visible)
+			      menu.Append(menu_hide);
+			  else				
+				menu.Append(menu_restore);
+			  menu.Append(menu_quit);
+			  menu.Popup();
+			  menu.ShowAll();
+		};
 				
 		this.Icon=MainClass.GetResource("viewericon.xpm");
 		status_location=new Gtk.Label("Location: Unknown (0,0,0)");
