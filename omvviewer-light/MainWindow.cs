@@ -213,8 +213,7 @@ public partial class MainWindow: Gtk.Window
 			bool minimise=false;
 			bool.TryParse(MainClass.ReadSetting("defaultminimise"),out minimise);
 			if(minimise==true)
-				result=ResponseType.Accept;
-				
+				result=ResponseType.Accept;		
 		}
 		
 		if(result==ResponseType.Cancel)
