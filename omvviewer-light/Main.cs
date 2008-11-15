@@ -218,7 +218,18 @@ namespace omvviewerlight
 
             return appSettings.Get(key);
 
-        }
+	   }
+		
+		public static bool checksettingexists(string key)
+	   {
+			 NameValueCollection appSettings =
+             ConfigurationManager.AppSettings;
+			if(appSettings.Get(key) == null)
+			return false;
+			
+            return true;
+		
+         }
 		
 		public static void kick_preferences()
 		{

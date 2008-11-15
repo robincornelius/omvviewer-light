@@ -227,9 +227,28 @@ namespace omvviewerlight
 				Console.Write("Login status login\n");                          
 				MainClass.client.Groups.RequestCurrentGroups();
 				MainClass.client.Self.RetrieveInstantMessages();
-                MainClass.client.Throttle.Cloud = 0;
-                MainClass.client.Throttle.Wind = 0;
-                MainClass.client.Throttle.Land = 0;
+				
+				if(MainClass.checksettingexists("throttle_asset"))
+				{
+					float tvalue;
+					float.TryParse(MainClass.ReadSetting("throttle_cloud"),out tvalue);
+				    MainClass.client.Throttle.Cloud = tvalue;
+						float.TryParse(MainClass.ReadSetting("throttle_wind"),out tvalue);
+	                MainClass.client.Throttle.Wind = tvalue;
+						float.TryParse(MainClass.ReadSetting("throttle_land"),out tvalue);
+	                MainClass.client.Throttle.Land = tvalue;
+						float.TryParse(MainClass.ReadSetting("throttle_asset"),out tvalue);
+					MainClass.client.Throttle.Asset = tvalue;
+						float.TryParse(MainClass.ReadSetting("throttle_resend"),out tvalue);
+					MainClass.client.Throttle.Resend = tvalue;
+						float.TryParse(MainClass.ReadSetting("throttle_task"),out tvalue);
+					MainClass.client.Throttle.Task= tvalue;
+						float.TryParse(MainClass.ReadSetting("throttle_texture"),out tvalue);
+					MainClass.client.Throttle.Texture=tvalue;	
+				}
+
+
+				
                 MainClass.userlogout = false;          
               }
 		}
