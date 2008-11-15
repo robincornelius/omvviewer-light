@@ -63,6 +63,8 @@ namespace omvviewerlight {
         
         private Gtk.VBox vbox6;
         
+        private Gtk.Label label1;
+        
         private Gtk.HScale hscale_cloud;
         
         private Gtk.HScale hscale_wind;
@@ -214,7 +216,7 @@ namespace omvviewerlight {
             this.label3.LabelProp = Mono.Unix.Catalog.GetString("Cloud");
             this.vbox5.Add(this.label3);
             Gtk.Box.BoxChild w12 = ((Gtk.Box.BoxChild)(this.vbox5[this.label3]));
-            w12.Position = 0;
+            w12.Position = 1;
             w12.Expand = false;
             w12.Fill = false;
             // Container child vbox5.Gtk.Box+BoxChild
@@ -223,7 +225,7 @@ namespace omvviewerlight {
             this.label4.LabelProp = Mono.Unix.Catalog.GetString("Wind");
             this.vbox5.Add(this.label4);
             Gtk.Box.BoxChild w13 = ((Gtk.Box.BoxChild)(this.vbox5[this.label4]));
-            w13.Position = 1;
+            w13.Position = 2;
             w13.Expand = false;
             w13.Fill = false;
             // Container child vbox5.Gtk.Box+BoxChild
@@ -232,7 +234,7 @@ namespace omvviewerlight {
             this.label5.LabelProp = Mono.Unix.Catalog.GetString("Land");
             this.vbox5.Add(this.label5);
             Gtk.Box.BoxChild w14 = ((Gtk.Box.BoxChild)(this.vbox5[this.label5]));
-            w14.Position = 2;
+            w14.Position = 3;
             w14.Expand = false;
             w14.Fill = false;
             // Container child vbox5.Gtk.Box+BoxChild
@@ -241,7 +243,7 @@ namespace omvviewerlight {
             this.label6.LabelProp = Mono.Unix.Catalog.GetString("Texture");
             this.vbox5.Add(this.label6);
             Gtk.Box.BoxChild w15 = ((Gtk.Box.BoxChild)(this.vbox5[this.label6]));
-            w15.Position = 3;
+            w15.Position = 4;
             w15.Expand = false;
             w15.Fill = false;
             // Container child vbox5.Gtk.Box+BoxChild
@@ -250,7 +252,7 @@ namespace omvviewerlight {
             this.label7.LabelProp = Mono.Unix.Catalog.GetString("Asset");
             this.vbox5.Add(this.label7);
             Gtk.Box.BoxChild w16 = ((Gtk.Box.BoxChild)(this.vbox5[this.label7]));
-            w16.Position = 4;
+            w16.Position = 5;
             w16.Expand = false;
             w16.Fill = false;
             // Container child vbox5.Gtk.Box+BoxChild
@@ -259,7 +261,7 @@ namespace omvviewerlight {
             this.label8.LabelProp = Mono.Unix.Catalog.GetString("Resend");
             this.vbox5.Add(this.label8);
             Gtk.Box.BoxChild w17 = ((Gtk.Box.BoxChild)(this.vbox5[this.label8]));
-            w17.Position = 5;
+            w17.Position = 6;
             w17.Expand = false;
             w17.Fill = false;
             // Container child vbox5.Gtk.Box+BoxChild
@@ -268,7 +270,7 @@ namespace omvviewerlight {
             this.label9.LabelProp = Mono.Unix.Catalog.GetString("Task");
             this.vbox5.Add(this.label9);
             Gtk.Box.BoxChild w18 = ((Gtk.Box.BoxChild)(this.vbox5[this.label9]));
-            w18.Position = 6;
+            w18.Position = 7;
             w18.Expand = false;
             w18.Fill = false;
             this.hbox1.Add(this.vbox5);
@@ -278,9 +280,19 @@ namespace omvviewerlight {
             w19.Fill = false;
             // Container child hbox1.Gtk.Box+BoxChild
             this.vbox6 = new Gtk.VBox();
+            this.vbox6.WidthRequest = 333;
             this.vbox6.Name = "vbox6";
             this.vbox6.Homogeneous = true;
             this.vbox6.Spacing = 6;
+            // Container child vbox6.Gtk.Box+BoxChild
+            this.label1 = new Gtk.Label();
+            this.label1.Name = "label1";
+            this.label1.LabelProp = Mono.Unix.Catalog.GetString("Bandwidth throttle control");
+            this.vbox6.Add(this.label1);
+            Gtk.Box.BoxChild w20 = ((Gtk.Box.BoxChild)(this.vbox6[this.label1]));
+            w20.Position = 0;
+            w20.Expand = false;
+            w20.Fill = false;
             // Container child vbox6.Gtk.Box+BoxChild
             this.hscale_cloud = new Gtk.HScale(null);
             this.hscale_cloud.CanFocus = true;
@@ -288,13 +300,15 @@ namespace omvviewerlight {
             this.hscale_cloud.Adjustment.Upper = 34000;
             this.hscale_cloud.Adjustment.PageIncrement = 1000;
             this.hscale_cloud.Adjustment.PageSize = 1000;
+            this.hscale_cloud.Adjustment.StepIncrement = 1;
             this.hscale_cloud.DrawValue = true;
+            this.hscale_cloud.Digits = 0;
             this.hscale_cloud.ValuePos = ((Gtk.PositionType)(2));
             this.vbox6.Add(this.hscale_cloud);
-            Gtk.Box.BoxChild w20 = ((Gtk.Box.BoxChild)(this.vbox6[this.hscale_cloud]));
-            w20.Position = 0;
-            w20.Expand = false;
-            w20.Fill = false;
+            Gtk.Box.BoxChild w21 = ((Gtk.Box.BoxChild)(this.vbox6[this.hscale_cloud]));
+            w21.Position = 1;
+            w21.Expand = false;
+            w21.Fill = false;
             // Container child vbox6.Gtk.Box+BoxChild
             this.hscale_wind = new Gtk.HScale(null);
             this.hscale_wind.CanFocus = true;
@@ -302,13 +316,15 @@ namespace omvviewerlight {
             this.hscale_wind.Adjustment.Upper = 34000;
             this.hscale_wind.Adjustment.PageIncrement = 1000;
             this.hscale_wind.Adjustment.PageSize = 1000;
+            this.hscale_wind.Adjustment.StepIncrement = 1;
             this.hscale_wind.DrawValue = true;
+            this.hscale_wind.Digits = 0;
             this.hscale_wind.ValuePos = ((Gtk.PositionType)(2));
             this.vbox6.Add(this.hscale_wind);
-            Gtk.Box.BoxChild w21 = ((Gtk.Box.BoxChild)(this.vbox6[this.hscale_wind]));
-            w21.Position = 1;
-            w21.Expand = false;
-            w21.Fill = false;
+            Gtk.Box.BoxChild w22 = ((Gtk.Box.BoxChild)(this.vbox6[this.hscale_wind]));
+            w22.Position = 2;
+            w22.Expand = false;
+            w22.Fill = false;
             // Container child vbox6.Gtk.Box+BoxChild
             this.hscale_land = new Gtk.HScale(null);
             this.hscale_land.CanFocus = true;
@@ -317,12 +333,13 @@ namespace omvviewerlight {
             this.hscale_land.Adjustment.PageIncrement = 1000;
             this.hscale_land.Adjustment.StepIncrement = 1000;
             this.hscale_land.DrawValue = true;
+            this.hscale_land.Digits = 0;
             this.hscale_land.ValuePos = ((Gtk.PositionType)(2));
             this.vbox6.Add(this.hscale_land);
-            Gtk.Box.BoxChild w22 = ((Gtk.Box.BoxChild)(this.vbox6[this.hscale_land]));
-            w22.Position = 2;
-            w22.Expand = false;
-            w22.Fill = false;
+            Gtk.Box.BoxChild w23 = ((Gtk.Box.BoxChild)(this.vbox6[this.hscale_land]));
+            w23.Position = 3;
+            w23.Expand = false;
+            w23.Fill = false;
             // Container child vbox6.Gtk.Box+BoxChild
             this.hscale_texture = new Gtk.HScale(null);
             this.hscale_texture.CanFocus = true;
@@ -331,14 +348,16 @@ namespace omvviewerlight {
             this.hscale_texture.Adjustment.Upper = 446000;
             this.hscale_texture.Adjustment.PageIncrement = 1000;
             this.hscale_texture.Adjustment.PageSize = 1000;
+            this.hscale_texture.Adjustment.StepIncrement = 1;
             this.hscale_texture.Adjustment.Value = 4000;
             this.hscale_texture.DrawValue = true;
+            this.hscale_texture.Digits = 0;
             this.hscale_texture.ValuePos = ((Gtk.PositionType)(2));
             this.vbox6.Add(this.hscale_texture);
-            Gtk.Box.BoxChild w23 = ((Gtk.Box.BoxChild)(this.vbox6[this.hscale_texture]));
-            w23.Position = 3;
-            w23.Expand = false;
-            w23.Fill = false;
+            Gtk.Box.BoxChild w24 = ((Gtk.Box.BoxChild)(this.vbox6[this.hscale_texture]));
+            w24.Position = 4;
+            w24.Expand = false;
+            w24.Fill = false;
             // Container child vbox6.Gtk.Box+BoxChild
             this.hscale_asset = new Gtk.HScale(null);
             this.hscale_asset.CanFocus = true;
@@ -347,14 +366,16 @@ namespace omvviewerlight {
             this.hscale_asset.Adjustment.Upper = 220000;
             this.hscale_asset.Adjustment.PageIncrement = 1000;
             this.hscale_asset.Adjustment.PageSize = 1000;
+            this.hscale_asset.Adjustment.StepIncrement = 1;
             this.hscale_asset.Adjustment.Value = 10000;
             this.hscale_asset.DrawValue = true;
+            this.hscale_asset.Digits = 0;
             this.hscale_asset.ValuePos = ((Gtk.PositionType)(2));
             this.vbox6.Add(this.hscale_asset);
-            Gtk.Box.BoxChild w24 = ((Gtk.Box.BoxChild)(this.vbox6[this.hscale_asset]));
-            w24.Position = 4;
-            w24.Expand = false;
-            w24.Fill = false;
+            Gtk.Box.BoxChild w25 = ((Gtk.Box.BoxChild)(this.vbox6[this.hscale_asset]));
+            w25.Position = 5;
+            w25.Expand = false;
+            w25.Fill = false;
             // Container child vbox6.Gtk.Box+BoxChild
             this.hscale_resend = new Gtk.HScale(null);
             this.hscale_resend.CanFocus = true;
@@ -365,12 +386,13 @@ namespace omvviewerlight {
             this.hscale_resend.Adjustment.StepIncrement = 1000;
             this.hscale_resend.Adjustment.Value = 10000;
             this.hscale_resend.DrawValue = true;
+            this.hscale_resend.Digits = 0;
             this.hscale_resend.ValuePos = ((Gtk.PositionType)(2));
             this.vbox6.Add(this.hscale_resend);
-            Gtk.Box.BoxChild w25 = ((Gtk.Box.BoxChild)(this.vbox6[this.hscale_resend]));
-            w25.Position = 5;
-            w25.Expand = false;
-            w25.Fill = false;
+            Gtk.Box.BoxChild w26 = ((Gtk.Box.BoxChild)(this.vbox6[this.hscale_resend]));
+            w26.Position = 6;
+            w26.Expand = false;
+            w26.Fill = false;
             // Container child vbox6.Gtk.Box+BoxChild
             this.hscale_task = new Gtk.HScale(null);
             this.hscale_task.CanFocus = true;
@@ -379,14 +401,16 @@ namespace omvviewerlight {
             this.hscale_task.Adjustment.Upper = 446000;
             this.hscale_task.Adjustment.PageIncrement = 1000;
             this.hscale_task.Adjustment.PageSize = 1000;
+            this.hscale_task.Adjustment.StepIncrement = 1;
             this.hscale_task.Adjustment.Value = 4000;
             this.hscale_task.DrawValue = true;
+            this.hscale_task.Digits = 0;
             this.hscale_task.ValuePos = ((Gtk.PositionType)(2));
             this.vbox6.Add(this.hscale_task);
-            Gtk.Box.BoxChild w26 = ((Gtk.Box.BoxChild)(this.vbox6[this.hscale_task]));
-            w26.Position = 6;
-            w26.Expand = false;
-            w26.Fill = false;
+            Gtk.Box.BoxChild w27 = ((Gtk.Box.BoxChild)(this.vbox6[this.hscale_task]));
+            w27.Position = 7;
+            w27.Expand = false;
+            w27.Fill = false;
             // Container child vbox6.Gtk.Box+BoxChild
             this.hbox3 = new Gtk.HBox();
             this.hbox3.Name = "hbox3";
@@ -398,27 +422,29 @@ namespace omvviewerlight {
             this.button_applythrottle.UseUnderline = true;
             this.button_applythrottle.Label = Mono.Unix.Catalog.GetString("Apply throttle settings");
             this.hbox3.Add(this.button_applythrottle);
-            Gtk.Box.BoxChild w27 = ((Gtk.Box.BoxChild)(this.hbox3[this.button_applythrottle]));
-            w27.Position = 1;
-            w27.Expand = false;
-            w27.Fill = false;
-            this.vbox6.Add(this.hbox3);
-            Gtk.Box.BoxChild w28 = ((Gtk.Box.BoxChild)(this.vbox6[this.hbox3]));
-            w28.Position = 7;
+            Gtk.Box.BoxChild w28 = ((Gtk.Box.BoxChild)(this.hbox3[this.button_applythrottle]));
+            w28.Position = 1;
             w28.Expand = false;
             w28.Fill = false;
+            this.vbox6.Add(this.hbox3);
+            Gtk.Box.BoxChild w29 = ((Gtk.Box.BoxChild)(this.vbox6[this.hbox3]));
+            w29.Position = 8;
+            w29.Expand = false;
+            w29.Fill = false;
             this.hbox1.Add(this.vbox6);
-            Gtk.Box.BoxChild w29 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox6]));
-            w29.Position = 1;
-            this.notebook1.Add(this.hbox1);
-            Gtk.Notebook.NotebookChild w30 = ((Gtk.Notebook.NotebookChild)(this.notebook1[this.hbox1]));
+            Gtk.Box.BoxChild w30 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox6]));
             w30.Position = 1;
+            w30.Expand = false;
+            w30.Fill = false;
+            this.notebook1.Add(this.hbox1);
+            Gtk.Notebook.NotebookChild w31 = ((Gtk.Notebook.NotebookChild)(this.notebook1[this.hbox1]));
+            w31.Position = 1;
             this.Add(this.notebook1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
             }
-            this.DefaultWidth = 400;
-            this.DefaultHeight = 362;
+            this.DefaultWidth = 401;
+            this.DefaultHeight = 401;
             this.Show();
             this.checkbutton_showtimestamps.Clicked += new System.EventHandler(this.OnCheckbuttonShowtimestampsClicked);
             this.checkbutton_hideminimise.Clicked += new System.EventHandler(this.OnCheckbuttonHideminimiseClicked);

@@ -7444,7 +7444,7 @@ time</property>
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Window" id="omvviewerlight.Preferences" design-size="400 362">
+  <widget class="Gtk.Window" id="omvviewerlight.Preferences" design-size="401 401">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Preferences</property>
     <property name="WindowPosition">CenterOnParent</property>
@@ -7620,12 +7620,15 @@ time</property>
                 <property name="Homogeneous">True</property>
                 <property name="Spacing">6</property>
                 <child>
+                  <placeholder />
+                </child>
+                <child>
                   <widget class="Gtk.Label" id="label3">
                     <property name="MemberName" />
                     <property name="LabelProp" translatable="yes">Cloud</property>
                   </widget>
                   <packing>
-                    <property name="Position">0</property>
+                    <property name="Position">1</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
@@ -7637,7 +7640,7 @@ time</property>
                     <property name="LabelProp" translatable="yes">Wind</property>
                   </widget>
                   <packing>
-                    <property name="Position">1</property>
+                    <property name="Position">2</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
@@ -7649,7 +7652,7 @@ time</property>
                     <property name="LabelProp" translatable="yes">Land</property>
                   </widget>
                   <packing>
-                    <property name="Position">2</property>
+                    <property name="Position">3</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
@@ -7661,7 +7664,7 @@ time</property>
                     <property name="LabelProp" translatable="yes">Texture</property>
                   </widget>
                   <packing>
-                    <property name="Position">3</property>
+                    <property name="Position">4</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
@@ -7673,7 +7676,7 @@ time</property>
                     <property name="LabelProp" translatable="yes">Asset</property>
                   </widget>
                   <packing>
-                    <property name="Position">4</property>
+                    <property name="Position">5</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
@@ -7685,7 +7688,7 @@ time</property>
                     <property name="LabelProp" translatable="yes">Resend</property>
                   </widget>
                   <packing>
-                    <property name="Position">5</property>
+                    <property name="Position">6</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
@@ -7697,7 +7700,7 @@ time</property>
                     <property name="LabelProp" translatable="yes">Task</property>
                   </widget>
                   <packing>
-                    <property name="Position">6</property>
+                    <property name="Position">7</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
@@ -7717,8 +7720,21 @@ time</property>
             <child>
               <widget class="Gtk.VBox" id="vbox6">
                 <property name="MemberName" />
+                <property name="WidthRequest">333</property>
                 <property name="Homogeneous">True</property>
                 <property name="Spacing">6</property>
+                <child>
+                  <widget class="Gtk.Label" id="label1">
+                    <property name="MemberName" />
+                    <property name="LabelProp" translatable="yes">Bandwidth throttle control</property>
+                  </widget>
+                  <packing>
+                    <property name="Position">0</property>
+                    <property name="AutoSize">True</property>
+                    <property name="Expand">False</property>
+                    <property name="Fill">False</property>
+                  </packing>
+                </child>
                 <child>
                   <widget class="Gtk.HScale" id="hscale_cloud">
                     <property name="MemberName" />
@@ -7726,11 +7742,13 @@ time</property>
                     <property name="Upper">34000</property>
                     <property name="PageIncrement">1000</property>
                     <property name="PageSize">1000</property>
+                    <property name="StepIncrement">1</property>
                     <property name="DrawValue">True</property>
+                    <property name="Digits">0</property>
                     <property name="ValuePos">Top</property>
                   </widget>
                   <packing>
-                    <property name="Position">0</property>
+                    <property name="Position">1</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
@@ -7743,11 +7761,13 @@ time</property>
                     <property name="Upper">34000</property>
                     <property name="PageIncrement">1000</property>
                     <property name="PageSize">1000</property>
+                    <property name="StepIncrement">1</property>
                     <property name="DrawValue">True</property>
+                    <property name="Digits">0</property>
                     <property name="ValuePos">Top</property>
                   </widget>
                   <packing>
-                    <property name="Position">1</property>
+                    <property name="Position">2</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
@@ -7761,10 +7781,11 @@ time</property>
                     <property name="PageIncrement">1000</property>
                     <property name="StepIncrement">1000</property>
                     <property name="DrawValue">True</property>
+                    <property name="Digits">0</property>
                     <property name="ValuePos">Top</property>
                   </widget>
                   <packing>
-                    <property name="Position">2</property>
+                    <property name="Position">3</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
@@ -7778,12 +7799,14 @@ time</property>
                     <property name="Upper">446000</property>
                     <property name="PageIncrement">1000</property>
                     <property name="PageSize">1000</property>
+                    <property name="StepIncrement">1</property>
                     <property name="Value">4000</property>
                     <property name="DrawValue">True</property>
+                    <property name="Digits">0</property>
                     <property name="ValuePos">Top</property>
                   </widget>
                   <packing>
-                    <property name="Position">3</property>
+                    <property name="Position">4</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
@@ -7797,12 +7820,14 @@ time</property>
                     <property name="Upper">220000</property>
                     <property name="PageIncrement">1000</property>
                     <property name="PageSize">1000</property>
+                    <property name="StepIncrement">1</property>
                     <property name="Value">10000</property>
                     <property name="DrawValue">True</property>
+                    <property name="Digits">0</property>
                     <property name="ValuePos">Top</property>
                   </widget>
                   <packing>
-                    <property name="Position">4</property>
+                    <property name="Position">5</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
@@ -7818,10 +7843,11 @@ time</property>
                     <property name="StepIncrement">1000</property>
                     <property name="Value">10000</property>
                     <property name="DrawValue">True</property>
+                    <property name="Digits">0</property>
                     <property name="ValuePos">Top</property>
                   </widget>
                   <packing>
-                    <property name="Position">5</property>
+                    <property name="Position">6</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
@@ -7835,12 +7861,14 @@ time</property>
                     <property name="Upper">446000</property>
                     <property name="PageIncrement">1000</property>
                     <property name="PageSize">1000</property>
+                    <property name="StepIncrement">1</property>
                     <property name="Value">4000</property>
                     <property name="DrawValue">True</property>
+                    <property name="Digits">0</property>
                     <property name="ValuePos">Top</property>
                   </widget>
                   <packing>
-                    <property name="Position">6</property>
+                    <property name="Position">7</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
@@ -7874,7 +7902,7 @@ time</property>
                     </child>
                   </widget>
                   <packing>
-                    <property name="Position">7</property>
+                    <property name="Position">8</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
@@ -7884,6 +7912,8 @@ time</property>
               <packing>
                 <property name="Position">1</property>
                 <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
               </packing>
             </child>
           </widget>
