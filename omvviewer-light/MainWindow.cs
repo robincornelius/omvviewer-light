@@ -22,6 +22,7 @@ omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(
 // To change standard headers go to Edit->Preferences->Coding->Standard Headers
 //
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Threading;
 using Gtk;
@@ -105,9 +106,7 @@ public partial class MainWindow: Gtk.Window
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
         Build();
-                  
-		//NotecardReader nd=new NotecardReader(UUID.Zero);
-		
+   		
 		trayIcon = new StatusIcon(MainClass.GetResource("viewericon.xpm"));
 		trayIcon.Visible=true;
 		trayIcon.Tooltip="Disconnected";

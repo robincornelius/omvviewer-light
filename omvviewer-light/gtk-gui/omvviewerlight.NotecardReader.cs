@@ -15,6 +15,8 @@ namespace omvviewerlight {
         
         private Gtk.VBox vbox1;
         
+        private Gtk.Entry entry_title;
+        
         private Gtk.ScrolledWindow GtkScrolledWindow;
         
         private Gtk.TextView textview_notecard;
@@ -30,19 +32,29 @@ namespace omvviewerlight {
             this.vbox1.Name = "vbox1";
             this.vbox1.Spacing = 6;
             // Container child vbox1.Gtk.Box+BoxChild
+            this.entry_title = new Gtk.Entry();
+            this.entry_title.CanFocus = true;
+            this.entry_title.Name = "entry_title";
+            this.entry_title.IsEditable = true;
+            this.entry_title.InvisibleChar = '●';
+            this.vbox1.Add(this.entry_title);
+            Gtk.Box.BoxChild w1 = ((Gtk.Box.BoxChild)(this.vbox1[this.entry_title]));
+            w1.Position = 0;
+            w1.Expand = false;
+            w1.Fill = false;
+            // Container child vbox1.Gtk.Box+BoxChild
             this.GtkScrolledWindow = new Gtk.ScrolledWindow();
             this.GtkScrolledWindow.Name = "GtkScrolledWindow";
             this.GtkScrolledWindow.ShadowType = ((Gtk.ShadowType)(1));
             // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
             this.textview_notecard = new Gtk.TextView();
-            this.textview_notecard.Buffer.Text = "if\n";
             this.textview_notecard.CanFocus = true;
             this.textview_notecard.Name = "textview_notecard";
             this.textview_notecard.WrapMode = ((Gtk.WrapMode)(2));
             this.GtkScrolledWindow.Add(this.textview_notecard);
             this.vbox1.Add(this.GtkScrolledWindow);
-            Gtk.Box.BoxChild w2 = ((Gtk.Box.BoxChild)(this.vbox1[this.GtkScrolledWindow]));
-            w2.Position = 1;
+            Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.vbox1[this.GtkScrolledWindow]));
+            w3.Position = 1;
             this.Add(this.vbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();

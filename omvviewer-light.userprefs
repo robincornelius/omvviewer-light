@@ -1,21 +1,20 @@
-﻿<UserCombinePreferences version="1.0" filename="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light.mds">
+﻿<UserCombinePreferences version="1.0" filename="/home/robin/libsecondlife/omvviewer-light/omvviewer-light.mds">
   <Files>
     <File name="Welcome" />
     <File name="omvviewer-light/GroupInfo.cs" line="823" column="1" />
-    <File name="omvviewer-light/Inventory.cs" line="136" column="32" />
-    <File name="omvviewer-light/MainWindow.cs" line="67" column="36" />
-    <File name="omvviewer-light/Groups.cs" line="142" column="16" />
+    <File name="omvviewer-light/Inventory.cs" line="390" column="70" />
+    <File name="omvviewer-light/MainWindow.cs" line="113" column="10" />
+    <File name="omvviewer-light/Groups.cs" line="47" column="1" />
     <File name="omvviewer-light/ProfileVIew.cs" line="54" column="1" />
     <File name="omvviewer-light/TeleportTo.cs" line="114" column="2" />
-    <File name="omvviewer-light/Map.cs" line="217" column="46" />
-    <File name="omvviewer-light/LoginControl.cs" line="218" column="16" />
-    <File name="omvviewer-light/Radar.cs" line="304" column="19" />
+    <File name="omvviewer-light/NotecardReader.cs" line="33" column="35" />
+    <File name="omvviewer-light/ChatConsole.cs" line="562" column="108" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
-          <Node name="Map.cs" selected="True" />
+          <Node name="NotecardReader.cs" selected="True" />
         </Node>
       </Node>
     </ViewMemento>
@@ -24,7 +23,7 @@
     </ViewMemento>
   </Views>
   <Properties>
-    <Property key="ActiveWindow" value="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light/Map.cs" />
+    <Property key="ActiveWindow" value="/home/robin/libsecondlife/omvviewer-light/omvviewer-light/NotecardReader.cs" />
     <Property key="ActiveConfiguration" value="Debug" />
   </Properties>
 </UserCombinePreferences>

@@ -13,18 +13,143 @@ using Gdk;
 
 namespace omvviewerlight
 {
+	public class EmbeddedData
+	{
+		public Dictionary <string,string> keys= new Dictionary <string,string>();
+		public Dictionary <string,EmbeddedData> blocks = new Dictionary <string,EmbeddedData>();
+		public List <EmbeddedData> unamed_blocks = new List <EmbeddedData>();
+		bool endfound=false;
+		
+		public EmbeddedData()
+		{
+			//Nothing exciting to do
+		}
+		
+		EmbeddedData addblock(string blockname)
+		{
+			EmbeddedData new_block=new EmbeddedData();
+			if(blockname=="count")
+			{
+				unamed_blocks.Add(new_block);
+			}
+			else
+			{
+				if(blocks.ContainsKey(blockname))
+				{
+					Console.WriteLine("Failed to create a block of name "+blockname);
+				}
+				else
+				{
+					blocks.Add(blockname,new_block);
+				}
+			}			
+
+			return new_block;
+		}
+
+		public int parsedata(string data)
+		{
+			int startoftext;
+			parseblock(data,0,out startoftext);
+			return startoftext;
+		}
+		
+		bool getblock(string blockname, out	EmbeddedData gotblock)
+		{
+			EmbeddedData block;
+
+			if(blocks.TryGetValue(blockname,out block))
+			{
+				gotblock=block;
+				return true;
+			}
+			gotblock=null;
+			return false;
+		}
+
+		public int parseblock(string block,int pos ,out int startoftext)
+		{
+			int lastpos=pos;
+			string key="";
+			int empos=0;
+			
+			while((pos=block.IndexOf("\n",pos+1))!=-1)
+			{
+				if(endfound==true)
+				    break;
+				
+				//Find each line by looking for the newline
+				//Console.WriteLine("pos is "+pos.ToString()+" lastpos is "+lastpos.ToString());
+				string line=block.Substring(lastpos,pos-lastpos);
+				string Value;
+				
+				if(line.IndexOf('{')!=-1)
+				{
+				   int stm;
+				   Console.WriteLine("New block ("+key+")");
+				   EmbeddedData new_block=addblock(key);
+				   lastpos=new_block.parseblock(block,pos+1,out stm)+1;
+				   pos=lastpos;
+				   if(lastpos==0)
+				   {
+						Console.WriteLine("End found true");
+						endfound=true;
+						startoftext=stm;
+						return -1;
+				   }
+				   continue;
+				}
+				   
+				if(line.IndexOf('}')!=-1)
+				{      
+					Console.WriteLine("End block");
+					startoftext=0;
+					return pos;
+				}
+				
+				//some keys have spaces, FFS
+				int seperator=line.LastIndexOf("\t");
+				if(seperator==-1)
+					seperator=line.LastIndexOf(" ");
+								
+				char [] trim={' ','\t'};
+				key=line.Substring(0,seperator);
+				key=key.Trim(trim);
+				Value=line.Substring(seperator);
+				Value=Value.Trim(trim);
+				this.keys.Add(key,Value);
+				lastpos=pos+1;
+				Console.WriteLine(key+" ---> "+Value);
+			
+				if(key.IndexOf("Text length")!=-1)
+				{
+					Console.WriteLine("Got text length marker its the end");
+					endfound=true;
+					startoftext=pos;
+					return -1;			
+				}
+			}
+			startoftext=0;
+			return -1;
+		}				
+	}
+	
 	public class EmbeddedInventory
 	{
 		public UUID asset_id;
 		public UUID parent_id;
 		public UUID item_id;
-		int index;
-		public EmbeddedInventory(UUID asset_idIN,UUID item_idIN,UUID parent_idIN,int indexIN)
+		public int index;
+		public string name;
+		public AssetType assettype;
+		public EmbeddedInventory(UUID asset_idIN,UUID item_idIN,UUID parent_idIN,int indexIN,string nameIN,AssetType typeIN)
 		{
 			asset_id=asset_idIN;
 			parent_id=parent_idIN;
 			item_id=item_idIN;
 			index=indexIN;
+			name=nameIN;
+			assettype=typeIN;
 		}
 	}
 	
@@ -33,8 +158,12 @@ namespace omvviewerlight
 		UUID target_asset;
 		UUID target_id;
 		UUID notecard_item_id;
-		Dictionary <Gtk.TextTag,UUID> iter_uuid_dict= new Dictionary <Gtk.TextTag,UUID>();
-				
+
+		EmbeddedData nd;	
+		
+		Dictionary <int,EmbeddedInventory> embedded_inv= new Dictionary <int,EmbeddedInventory>();
+		Dictionary <Gtk.TextTag,EmbeddedInventory> iter_uuid_dict= new Dictionary <Gtk.TextTag,EmbeddedInventory>();
+
 		public NotecardReader(UUID item,UUID target,UUID notecard_item_id_in) : 
 				base(Gtk.WindowType.Toplevel)
 		{
@@ -55,228 +184,164 @@ namespace omvviewerlight
 				target_id=ii.UUID;
 				Console.WriteLine("Asset id is "+ii.AssetUUID.ToString());
 				Console.WriteLine("Id is "+ii.UUID.ToString());
-				this.textview_notecard.Buffer.Text="Requesting asset, please wait....";
+			    Gtk.Application.Invoke(delegate{
+					this.textview_notecard.Buffer.Text="Requesting asset, please wait....";
+					this.entry_title.Text=ii.Name;
+				});
 				
-				MainClass.client.Assets.RequestInventoryAsset(ii,true);
+				MainClass.client.Assets.RequestInventoryAsset(ii,true);				
 			}
 			else
 			{
-				this.textview_notecard.Buffer.Text="Requesting asset, please wait....";
+			    Gtk.Application.Invoke(delegate{
+					this.textview_notecard.Buffer.Text="Opening embedded inventory, please wait....";
+				});
+				
 				Console.WriteLine("Asset not in store, requesting directly");				
 				Console.WriteLine("Notecard id "+this.target_id.ToString());
 				Console.WriteLine("Item id "+item.ToString());
 				Console.WriteLine("Folder id "+MainClass.client.Inventory.FindFolderForType(AssetType.Notecard));
-				MainClass.client.Inventory.RequestCopyItemFromNotecard(UUID.Zero,this.target_id,MainClass.client.Inventory.FindFolderForType(AssetType.Notecard),item);
+				MainClass.client.Inventory.RequestCopyItemFromNotecard(UUID.Zero,this.target_id,MainClass.client.Inventory.FindFolderForType(AssetType.Notecard),item,itemcopiedcallback);
 			}
 		}
+		
+		void itemcopiedcallback(InventoryBase item)
+		{
+			Console.WriteLine("item copied callback "+item.UUID.ToString());
 			
+			    InventoryItem ii = (InventoryItem)MainClass.client.Inventory.Store[item.UUID];			
+				target_asset=ii.AssetUUID;
+				target_id=ii.UUID;
+				Console.WriteLine("Asset id is "+ii.AssetUUID.ToString());
+				Console.WriteLine("Id is "+ii.UUID.ToString());
+			    Gtk.Application.Invoke(delegate{
+				
+			        this.textview_notecard.Buffer.Text="Requesting asset, please wait....";
+				    this.entry_title.Text=ii.Name;
+			});
+			
+				MainClass.client.Assets.RequestInventoryAsset(ii,true);
+		}
+		
 		void onAsset(AssetDownload transfer,Asset asset)
         {
 			Console.WriteLine("Asset retrieved id "+asset.AssetID.ToString());
-			Console.WriteLine("Transfer ID "+transfer.ID.ToString());
-			Console.WriteLine("Transfer AssetID "+transfer.AssetID.ToString());
-			
-		
-			//if(asset.AssetID!=target_asset);
-				//   return;
-			Console.WriteLine("Showing note");
-
+			Console.WriteLine("target_asset"+this.target_asset.ToString());
+			if(asset.AssetID!=target_asset)
+				return;
+			MainClass.client.Assets.OnAssetReceived -= new OpenMetaverse.AssetManager.AssetReceivedCallback(onAsset);
 			shownote(asset);
 		}
 	
-//		void shownote(string decode)
 		void shownote(Asset asset)
 		{
 			Gtk.Application.Invoke(delegate{
 
-			if(asset==null || asset.AssetData==null)
+				if(asset==null || asset.AssetData==null)
+					{
+						this.textview_notecard.Buffer.Text="Asset transfer failed";
+						Console.WriteLine("No asset data");
+						return;
+					}
+					
+				string decode=decodenote(Utils.BytesToString(asset.AssetData));
+					
+				this.textview_notecard.Buffer.Text=decode;
+
+				int link_pos=0;
+
+				while((link_pos=this.textview_notecard.Buffer.Text.IndexOf("\xdbc0",link_pos+2))!=-1)
 				{
-					this.textview_notecard.Buffer.Text="Asset transfer failed";
-					Console.WriteLine("No asset data");
-					return;
+					char []gg=this.textview_notecard.Buffer.Text.Substring(link_pos+1,1).ToCharArray();
+					int idx=gg[0];
+					idx=idx-0xdc00; //check here for other inventory types
+					Console.WriteLine("Found embedded index "+idx.ToString());
+					EmbeddedInventory inventory;
+						
+					if(this.embedded_inv.TryGetValue(idx,out inventory))
+				    {				
+						Console.WriteLine("GOt embedded item "+inventory.name);
+						Gtk.TextTag link_tag=new Gtk.TextTag("link"+idx.ToString());
+						link_tag.ForegroundGdk=new Gdk.Color(0,0,255);
+						link_tag.Underline=Pango.Underline.Single;
+						link_tag.TextEvent+=new TextEventHandler(onTextEvent);
+						this.textview_notecard.Buffer.TagTable.Add(link_tag);
+							
+						TextIter start=this.textview_notecard.Buffer.GetIterAtOffset(link_pos);
+						TextIter end=this.textview_notecard.Buffer.GetIterAtOffset(link_pos+1);
+						TextMark markstart = textview_notecard.Buffer.CreateMark("start", start, true);
+						TextMark markend = textview_notecard.Buffer.CreateMark("end", end, true);
+
+						this.textview_notecard.Buffer.Delete(start,end);
+						
+						start=this.textview_notecard.Buffer.GetIterAtMark(markstart);
+						end=this.textview_notecard.Buffer.GetIterAtMark(markend);
+							
+						this.textview_notecard.Buffer.InsertWithTags(start,inventory.name+" ",link_tag);
+						start=this.textview_notecard.Buffer.GetIterAtMark(markstart);
+						end=this.textview_notecard.Buffer.GetIterAtMark(markend);
+							
+						this.textview_notecard.Buffer.ApplyTag(link_tag,start,end);	
+
+						this.iter_uuid_dict.Add(link_tag,inventory);
+					
+					}
 				}
-				
-			string decode=decodenote(Utils.BytesToString(asset.AssetData));
-				
-			Console.WriteLine("Displaying note");
-				
-			this.textview_notecard.Buffer.Text=decode;
-
-			Console.WriteLine("Doing buffer find replace");
-
-			//	Gtk.TextTag
-			int link_pos=0;
-			int counter=0;
-			while((link_pos=this.textview_notecard.Buffer.Text.IndexOf("notecard://",link_pos+1))!=-1)
-			{
-				int mid_link_pos=this.textview_notecard.Buffer.Text.IndexOf("\":",link_pos);					
-				int end_link_pos=this.textview_notecard.Buffer.Text.IndexOf(" ",mid_link_pos);
-				int namestart=link_pos+12;
-				int nameend=mid_link_pos;
-					
-				string name=this.textview_notecard.Buffer.Text.Substring(namestart,nameend-namestart);
-				string sUUID=this.textview_notecard.Buffer.Text.Substring(nameend+2,36);
-				UUID theuuid=new UUID(sUUID);
-					
-				Console.WriteLine("Name is "+name+" UUID is "+sUUID);
-				Console.WriteLine("link at "+link_pos.ToString()+" "+mid_link_pos.ToString()+" "+end_link_pos.ToString());	
-					
-				Gtk.TextTag link_tag=new Gtk.TextTag("link"+counter.ToString());
-				link_tag.ForegroundGdk=new Gdk.Color(0,0,255);
-				link_tag.Underline=Pango.Underline.Single;
-				link_tag.TextEvent+=new TextEventHandler(onTextEvent);
-				this.textview_notecard.Buffer.TagTable.Add(link_tag);
-					
-				TextIter start=this.textview_notecard.Buffer.GetIterAtOffset(link_pos);
-				TextIter end=this.textview_notecard.Buffer.GetIterAtOffset(end_link_pos);
-				TextMark markstart = textview_notecard.Buffer.CreateMark("xyz", start, true);
-				TextMark markend = textview_notecard.Buffer.CreateMark("xyz2", end, true);
-					
-				this.textview_notecard.Buffer.Delete(start,end);
-				
-				start=this.textview_notecard.Buffer.GetIterAtMark(markstart);
-				end=this.textview_notecard.Buffer.GetIterAtMark(markend);
-					
-				this.textview_notecard.Buffer.InsertWithTags(start,name,link_tag);
-				start=this.textview_notecard.Buffer.GetIterAtMark(markstart);
-				end=this.textview_notecard.Buffer.GetIterAtMark(markend);
-					
-				this.textview_notecard.Buffer.ApplyTag(link_tag,start,end);	
-			
-				this.iter_uuid_dict.Add(link_tag,theuuid);
-				counter++;
-			}
+								
 			});
 		}
 		
 		void onTextEvent(object o, TextEventArgs args)
 		{
-			//Console.WriteLine("TextEvent " +args.Event.Type.ToString());
 			if(args.Event.Type==Gdk.EventType.ButtonPress)
 			{
 			    Console.WriteLine("CLick");
 				Console.WriteLine(o.ToString());
 				Gtk.TextTag tag=(Gtk.TextTag)o;
-				UUID theuuid;
-				if(this.iter_uuid_dict.TryGetValue(tag,out theuuid))
-				{
-					Console.Write("NEW UUID "+theuuid.ToString());
-					NotecardReader nr=new NotecardReader(theuuid,this.target_id,this.notecard_item_id);
+				EmbeddedInventory inventory;
+				if(this.iter_uuid_dict.TryGetValue(tag,out inventory))
+				{	
+					if(inventory.assettype==AssetType.Notecard)
+					{
+						Console.Write("NEW UUID "+inventory.item_id.ToString());
+						NotecardReader nr=new NotecardReader(inventory.item_id,this.target_id,this.notecard_item_id);
+					}
+					if(inventory.assettype==AssetType.Landmark)
+					{
+						Console.Write("New landmark");
+						TeleportProgress tp=new TeleportProgress();
+						tp.teleportassetid(inventory.asset_id,inventory.name);
+					}
+					
 				}
 			}			
 		}
 		
 		string decodenote(string note)
 		{
-			int depth=0;
-			bool firstfound=true;
-			int openingbck=note.IndexOf("{");
-			CharEnumerator cn=note.GetEnumerator();
-			int pos=0;
-			
-			List <int> opentoken=new List <int>();
-			List <int> closetoken=new List <int>();
-			
-			while(cn.MoveNext()==true)
+			nd=new EmbeddedData();
+			int stm=nd.parsedata(note);				
+			int index=0;
+		
+			foreach(EmbeddedData data in nd.blocks["Linden text version"].blocks["LLEmbeddedItems version"].unamed_blocks)
 			{
-				if(cn.Current=='{')
-				{
-//					Console.WriteLine("Found { at "+pos.ToString());
-					opentoken.Add(pos);
-					depth++;
-				}
-				
-				if(cn.Current=='}')
-				{
-//					Console.WriteLine("Found } at "+pos.ToString());
-					closetoken.Add(pos);
-					depth--;
-				}								
-				pos++;
-			}
-			
-			string version=note.Substring(0,opentoken[0]);
-			
-//			Console.WriteLine("Close -2 is "+closetoken[closetoken.Count-2].ToString());
-//			Console.WriteLine("Close -1 is "+closetoken[closetoken.Count-1].ToString());
-//			Console.WriteLine("Diff is "+(note.Length-closetoken[closetoken.Count-1]).ToString());
-			
-			string embedded=note.Substring(0,closetoken[closetoken.Count-2]);
-			
-			string bodyx=note.Substring(closetoken[closetoken.Count-2]+2);
-			
-//			Console.WriteLine("Version is "+version);
-			
-//			Console.WriteLine("end of length is "+(bodyx.Substring(2,bodyx.IndexOf('\n')).ToString()));
-			string length=bodyx.Substring(0,bodyx.IndexOf('\n'));
-			string body=bodyx.Substring(bodyx.IndexOf('\n'),(bodyx.Length-bodyx.IndexOf('\n'))-2);
-//			Console.WriteLine("Length string is "+length);
-//			Console.WriteLine("Body is "+body);
-			
-			pos=0;
-			
-			List <string> embedded_names=new List<string>();
-			List <UUID> embedded_asset=new List<UUID>();
-			List <int> embedded_asset_index=new List <int>();
-			//List <int> embedded_asset_pos
-			
-			// Now find the embedded notes;
-			while((pos=embedded.IndexOf("ext char index",pos+1))!=-1)
-			{
-				
-//				Console.WriteLine("POS IS "+pos.ToString());
-				int nl=embedded.IndexOf("\n",pos);
-				string indexer=embedded.Substring(pos,nl-pos);
-//				Console.WriteLine("Line is "+indexer+" Length is "+indexer.Length.ToString());
-				indexer=indexer.Substring(14);
-				int index;
-				int.TryParse(indexer,out index);
-//				Console.WriteLine("Index is "+index.ToString());
-				
-				//Now find the name and assetid of that
-				int namepos=embedded.IndexOf("name",pos);
-				int nameend=embedded.IndexOf("|",namepos);
-//				Console.WriteLine("namestart "+namepos.ToString()+" nameend is "+nameend.ToString());
-				string name=embedded.Substring(namepos+5,(nameend-namepos)-5);
-//				Console.WriteLine("Name is "+name+" Index is "+index.ToString());
-
-				int assetpos=embedded.IndexOf("item_id",pos);
-				int assetposend=embedded.IndexOf("\n",assetpos);
-				string asset=embedded.Substring(assetpos+8,(assetposend-assetpos)-8);
-
-				
-//			    int assetpos=embedded.IndexOf("asset_id",pos);
-//				int assetposend=embedded.IndexOf("\n",assetpos);
-//				string asset=embedded.Substring(assetpos+9,(assetposend-assetpos)-9);
-				
-				embedded_names.Add(name);
-				UUID id=new UUID(asset);
-				embedded_asset.Add(id);
-				
-			}
-			
-			// Now find replace the binary markers
-			// F4 80 80 80 is marker 0  // 80 80 81 is marker 1
-			Console.WriteLine("There are "+embedded_asset.Count.ToString()+" markers");
-			int posx=0;
-			
-			for(int x=0;x<embedded_asset.Count;x++)
-			{
-				char g='\xdbc0'; //next is dc00 + index
-				posx=body.IndexOf(g,posx+1);
-				CharEnumerator nc=body.GetEnumerator();
-				char []gg=body.Substring(posx+1,1).ToCharArray();
-				int idx=gg[0];
-				int idx2=idx-0xdc00;
-//				Console.WriteLine("Pos is at "+posx.ToString()+ "index is "+idx2.ToString());
-				embedded_asset_index.Add(idx2);
-				string find=new string(gg,0,1);
-				body=body.Replace(find," notecard://\""+embedded_names[idx2]+"\":"+embedded_asset[idx2]+" ");
+					UUID id=new UUID(data.blocks["inv_item"].keys["item_id"]);
+					UUID asset_id=new UUID(data.blocks["inv_item"].keys["asset_id"]);
+				    char [] trim={'|'};
+					string name=" "+data.blocks["inv_item"].keys["name"].TrimEnd(trim);
+				    string assettype=data.blocks["inv_item"].keys["type"];
+				    AssetType type=AssetType.Unknown;
+				    if(assettype=="notecard")
+					    type=AssetType.Notecard;
+				    if(assettype=="landmark")
+					    type=AssetType.Landmark;
+								
+					EmbeddedInventory item=new EmbeddedInventory(asset_id,id,UUID.Zero,index,name,type);			
+					embedded_inv.Add(index,item);		
+					index++;
 			}
 
-			    body=body.Replace("\xdbc0","");
-
-			return body;
-		}
+			return(note.Substring(stm,(note.Length-stm)-2)); //loose 2 bytes to remove the closing }
+		}			
 	}
 }

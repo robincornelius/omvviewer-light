@@ -118,6 +118,7 @@
                 <include name="Movment.cs" />
                 <include name="MyTreeViewColumn.cs" />
                 <include name="NamePicker.cs" />
+                <include name="NotecardReader.cs" />
                 <include name="ObjectsLayout.cs" />
                 <include name="ParcelMgr.cs" />
                 <include name="PayWindow.cs" />
@@ -151,6 +152,7 @@
                 <include name="gtk-gui/omvviewerlight.Map.cs" />
                 <include name="gtk-gui/omvviewerlight.Movment.cs" />
                 <include name="gtk-gui/omvviewerlight.NamePicker.cs" />
+                <include name="gtk-gui/omvviewerlight.NotecardReader.cs" />
                 <include name="gtk-gui/omvviewerlight.ObjectsLayout.cs" />
                 <include name="gtk-gui/omvviewerlight.PayWindow.cs" />
 		<include name="gtk-gui/omvviewerlight.ParcelMgr.cs" />

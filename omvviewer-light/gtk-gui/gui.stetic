@@ -7954,7 +7954,18 @@ time</property>
         <property name="MemberName" />
         <property name="Spacing">6</property>
         <child>
-          <placeholder />
+          <widget class="Gtk.Entry" id="entry_title">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">●</property>
+          </widget>
+          <packing>
+            <property name="Position">0</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
         </child>
         <child>
           <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
@@ -7965,8 +7976,7 @@ time</property>
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="ShowScrollbars">True</property>
-                <property name="Text" translatable="yes">if
-</property>
+                <property name="Text" translatable="yes" />
                 <property name="WrapMode">Word</property>
               </widget>
             </child>
