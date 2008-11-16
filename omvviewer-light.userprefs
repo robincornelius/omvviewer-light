@@ -1,14 +1,9 @@
 ﻿<UserCombinePreferences version="1.0" filename="/home/robin/libsecondlife/omvviewer-light/omvviewer-light.mds">
   <Files>
     <File name="Welcome" />
-    <File name="omvviewer-light/GroupInfo.cs" line="823" column="1" />
-    <File name="omvviewer-light/Inventory.cs" line="390" column="70" />
-    <File name="omvviewer-light/MainWindow.cs" line="113" column="10" />
-    <File name="omvviewer-light/Groups.cs" line="47" column="1" />
-    <File name="omvviewer-light/ProfileVIew.cs" line="54" column="1" />
-    <File name="omvviewer-light/TeleportTo.cs" line="114" column="2" />
-    <File name="omvviewer-light/NotecardReader.cs" line="33" column="35" />
-    <File name="omvviewer-light/ChatConsole.cs" line="562" column="108" />
+    <File name="omvviewer-light/MainWindow.cs" line="109" column="4" />
+    <File name="omvviewer-light/NotecardReader.cs" line="239" column="7" />
+    <File name="omvviewer-light/TeleportProgress.cs" line="18" column="1" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
