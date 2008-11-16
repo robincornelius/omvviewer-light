@@ -340,6 +340,14 @@ namespace omvviewerlight
                             menu.Append(menu_delete_folder);
                         }
 
+						if(item is InventoryNotecard)
+						{
+				             Gtk.MenuItem menu_read_note = new MenuItem("Open notecard");
+							menu_read_note.ButtonPressEvent+= new ButtonPressEventHandler(onOpenNotecard);
+							 menu.Append(menu_read_note);
+							
+						}
+						
                         if(item is InventoryItem)
                         {
 						
@@ -372,6 +380,17 @@ namespace omvviewerlight
             }
         }
 
+		void onOpenNotecard (object o, ButtonPressEventArgs args)
+		{
+          Gtk.TreeModel mod;
+            Gtk.TreeIter iter;
+            this.treeview_inv.Selection.GetSelected(out mod, out iter);
+            InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+  	
+			NotecardReader nr=new NotecardReader(item.UUID,UUID.Zero,UUID.Zero);
+			
+		}
+		
         void menu_attach_item_ButtonPressEvent(object o, ButtonPressEventArgs args)
         {
             Gtk.TreeModel mod;
@@ -465,7 +484,12 @@ namespace omvviewerlight
                  if (!assetmap.ContainsKey(item.UUID))
                  {
                      Gtk.TreeIter iter2 = inventory.AppendValues(args.Iter, buf, item.Name, item.UUID, item);
-                     assetmap.Add(item.UUID, iter2);
+					if(!assetmap.ContainsKey(item.UUID))
+					   assetmap.Add(item.UUID, iter2);
+					else
+					{
+						assetmap[item.UUID]=iter2;
+					}
                      if (item is InventoryFolder)
                      {
                           inventory.AppendValues(iter2, item_object, "Waiting...", UUID.Zero, null);

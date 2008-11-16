@@ -106,6 +106,8 @@ public partial class MainWindow: Gtk.Window
 	{
         Build();
                   
+		//NotecardReader nd=new NotecardReader(UUID.Zero);
+		
 		trayIcon = new StatusIcon(MainClass.GetResource("viewericon.xpm"));
 		trayIcon.Visible=true;
 		trayIcon.Tooltip="Disconnected";
