@@ -174,10 +174,12 @@
     <Compile Include="gtk-gui\omvviewerlight.Map.cs" />
     <Compile Include="gtk-gui\omvviewerlight.Movment.cs" />
     <Compile Include="gtk-gui\omvviewerlight.NamePicker.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.NotecardReader.cs" />
     <Compile Include="gtk-gui\omvviewerlight.ObjectsLayout.cs" />
     <Compile Include="gtk-gui\omvviewerlight.ParcelMgr.cs" />
     <Compile Include="gtk-gui\omvviewerlight.PayWindow.cs" />
     <Compile Include="gtk-gui\omvviewerlight.PlacesSearch.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.Preferences.cs" />
     <Compile Include="gtk-gui\omvviewerlight.ProfileVIew.cs" />
     <Compile Include="gtk-gui\omvviewerlight.Radar.cs" />
     <Compile Include="gtk-gui\omvviewerlight.ScriptDialogue.cs" />
@@ -211,6 +213,7 @@
     <Compile Include="NamePicker.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="NotecardReader.cs" />
     <Compile Include="ObjectsLayout.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -221,6 +224,7 @@
     <Compile Include="PlacesSearch.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Preferences.cs" />
     <Compile Include="ProfileVIew.cs">
       <SubType>Code</SubType>
     </Compile>
