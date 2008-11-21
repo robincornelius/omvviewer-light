@@ -547,7 +547,7 @@ namespace omvviewerlight
 			{
 				iter = textview_chat.Buffer.EndIter;				
 				DateTime CurrTime = DateTime.Now;
-			    string time = string.Format("[{0}:{1}] " , CurrTime.Hour,CurrTime.Minute);
+                string time = string.Format("[{0:D2}:{1:D2}] ", CurrTime.Hour, CurrTime.Minute);
 				textview_chat.Buffer.Insert(ref iter,time);
             }
             if (emote == false)
