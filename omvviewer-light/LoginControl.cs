@@ -55,6 +55,7 @@ namespace omvviewerlight
 			MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
                  
             OpenMetaverse.Logger.OnLogMessage += new OpenMetaverse.Logger.LogCallback(onLogMessage);
+			OpenMetaverse.Settings.LOG_LEVEL=OpenMetaverse.Helpers.LogLevel.Debug;
            
             this.entry_pass.Visibility=false;
 

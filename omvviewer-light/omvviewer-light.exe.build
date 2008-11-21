@@ -108,6 +108,7 @@
                 <include name="Friendshiprequest.cs" />
                 <include name="GroupInfo.cs" />
                 <include name="Groups.cs" />
+                <include name="GroupSearch.cs" />
                 <include name="Inventory.cs" />
                 <include name="Location.cs" />
                 <include name="LoginControl.cs" />
@@ -123,6 +124,7 @@
                 <include name="ParcelMgr.cs" />
                 <include name="PayWindow.cs" />
                 <include name="PlacesSearch.cs" />
+                <include name="Preferences.cs" />
                 <include name="ProfileVIew.cs" />
                 <include name="Radar.cs" />
                 <include name="ScriptDialogue.cs" />
@@ -145,6 +147,7 @@
                 <include name="gtk-gui/omvviewerlight.Friendshiprequest.cs" />
                 <include name="gtk-gui/omvviewerlight.GroupInfo.cs" />
                 <include name="gtk-gui/omvviewerlight.Groups.cs" />
+                <include name="gtk-gui/omvviewerlight.GroupSearch.cs" />    
                 <include name="gtk-gui/omvviewerlight.Inventory.cs" />
                 <include name="gtk-gui/omvviewerlight.Location.cs" />
                 <include name="gtk-gui/omvviewerlight.LoginControl.cs" />
@@ -157,6 +160,7 @@
                 <include name="gtk-gui/omvviewerlight.PayWindow.cs" />
 		<include name="gtk-gui/omvviewerlight.ParcelMgr.cs" />
                 <include name="gtk-gui/omvviewerlight.PlacesSearch.cs" />
+                <include name="gtk-gui/omvviewerlight.Preferences.cs" />
                 <include name="gtk-gui/omvviewerlight.ProfileVIew.cs" />
                 <include name="gtk-gui/omvviewerlight.Radar.cs" />
                 <include name="gtk-gui/omvviewerlight.ScriptDialogue.cs" />

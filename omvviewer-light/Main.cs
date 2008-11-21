@@ -78,7 +78,8 @@ namespace omvviewerlight
                 if(check.Contains("omvviewerlight.art."))
                     monodevelop = true;
 
-                client = new GridClient();
+				client = new GridClient();
+                client.Settings.USE_TEXTURE_CACHE=true;				
 				name_cache=new AVNameCache();
                 Application.Init();
                 Gtk.Window.DefaultIcon = MainClass.GetResource("viewericon.xpm");

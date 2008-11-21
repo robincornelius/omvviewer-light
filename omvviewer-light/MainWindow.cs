@@ -1102,4 +1102,43 @@ public partial class MainWindow: Gtk.Window
         p.Show();
 	}
 	
+        bool Inventory_OnObjectOffered(InstantMessage offerDetails, AssetType type, UUID objectID, bool fromTask)
+        {
+			
+			AutoResetEvent ObjectOfferEvent = new AutoResetEvent(false);
+			ResponseType object_offer_result=ResponseType.Yes;
+
+            string msg = "";
+			ResponseType result;
+            if (!fromTask)
+                msg = "The user "+offerDetails.FromAgentName + " has offered you\n" + offerDetails.Message + "\n Which is a " + type.ToString() + "\nPress Yes to accept or no to decline";
+            else
+                msg = "The object "+offerDetails.FromAgentName + " has offered you\n" + offerDetails.Message + "\n Which is a " + type.ToString() + "\nPress Yes to accept or no to decline";
+
+			
+			Application.Invoke(delegate {			
+					ObjectOfferEvent.Reset();
+
+					Gtk.MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.Modal, MessageType.Other, ButtonsType.YesNo, false, msg);
+				
+					result = (ResponseType)md.Run();
+					object_offer_result=result;
+				    md.Destroy();
+					ObjectOfferEvent.Set();
+			});
+			
+			
+		    ObjectOfferEvent.WaitOne(1000*3600,false);
+	
+           if (object_offer_result == ResponseType.Yes)
+		   {
+				return true;
+		   }
+		   else
+		{
+			    return false;
+			}			
+        }
+	
+	
 }

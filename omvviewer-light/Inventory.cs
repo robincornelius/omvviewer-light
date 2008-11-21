@@ -88,7 +88,6 @@ namespace omvviewerlight
             this.treeview_inv.RowCollapsed -= new Gtk.RowCollapsedHandler(onRowCollapsed);
             MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             this.treeview_inv.ButtonPressEvent -= new ButtonPressEventHandler(treeview_inv_ButtonPressEvent);
-            MainClass.client.Inventory.OnObjectOffered -= new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
     
             Gtk.Notebook p;
             p = (Gtk.Notebook)this.Parent;
@@ -105,8 +104,6 @@ namespace omvviewerlight
 			this.treeview_inv.RowCollapsed += new Gtk.RowCollapsedHandler(onRowCollapsed);
 			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             this.treeview_inv.ButtonPressEvent += new ButtonPressEventHandler(treeview_inv_ButtonPressEvent);
-
-            MainClass.client.Inventory.OnObjectOffered += new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
           
 			this.label_aquired.Text="";
 			this.label_createdby.Text="";
@@ -241,43 +238,6 @@ namespace omvviewerlight
             
         }
 
-        bool Inventory_OnObjectOffered(InstantMessage offerDetails, AssetType type, UUID objectID, bool fromTask)
-        {
-			
-			AutoResetEvent ObjectOfferEvent = new AutoResetEvent(false);
-			ResponseType object_offer_result=ResponseType.Yes;
-
-            string msg = "";
-			ResponseType result;
-            if (!fromTask)
-                msg = "The user "+offerDetails.FromAgentName + " has offered you\n" + offerDetails.Message + "\n Which is a " + type.ToString() + "\nPress Yes to accept or no to decline";
-            else
-                msg = "The object "+offerDetails.FromAgentName + " has offered you\n" + offerDetails.Message + "\n Which is a " + type.ToString() + "\nPress Yes to accept or no to decline";
-
-			
-			Application.Invoke(delegate {			
-					ObjectOfferEvent.Reset();
-
-					Gtk.MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.Modal, MessageType.Other, ButtonsType.YesNo, false, msg);
-				
-					result = (ResponseType)md.Run();
-					object_offer_result=result;
-				    md.Destroy();
-					ObjectOfferEvent.Set();
-			});
-			
-			
-		    ObjectOfferEvent.WaitOne(1000*3600,false);
-	
-           if (object_offer_result == ResponseType.Yes)
-		   {
-				return true;
-		   }
-		   else
-		{
-			    return false;
-			}			
-        }
 
         void Teleporttolandmark(object o, ButtonPressEventArgs args)
         {

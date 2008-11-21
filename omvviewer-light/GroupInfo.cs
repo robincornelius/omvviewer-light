@@ -101,7 +101,7 @@ namespace omvviewerlight
 			this.treeview_assigned_roles.Model=assigned_roles;
 			
             //Tree view for group notices
-            notice_list = new Gtk.ListStore(typeof(string), typeof(string), typeof(UUID));
+            notice_list = new Gtk.ListStore(typeof(string), typeof(string), typeof(UUID),typeof(GroupNoticeList));
             this.treeview_notice_list.AppendColumn("From", new CellRendererText(), "text", 0);
             this.treeview_notice_list.AppendColumn("Subject", new CellRendererText(), "text", 1);
             this.treeview_notice_list.Model = notice_list;
@@ -229,8 +229,8 @@ namespace omvviewerlight
 				{
                 this.recieved_notices.Add(notice.NoticeID);
 					Gtk.Application.Invoke(delegate{
-				this.notice_list.AppendValues(notice.FromName, notice.Subject, notice.NoticeID);
-
+				this.notice_list.AppendValues(notice.FromName, notice.Subject, notice.NoticeID,notice);
+                
                 Console.Write("Notice list entry: From: "+notice.FromName+"\nSubject: "+notice.Subject + "\n");
 			});
              } 
@@ -505,11 +505,20 @@ namespace omvviewerlight
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
 			
-			if(this.treeview_notice_list.Selection.GetSelected(out mod,out iter))			
+				if(this.treeview_notice_list.Selection.GetSelected(out mod,out iter))			
 			{
 				UUID id=(UUID)mod.GetValue(iter,2);
+				GroupNoticeList notice=(GroupNoticeList)mod.GetValue(iter,3);
 				MainClass.client.Groups.RequestGroupNotice(id);
-				this.entry1.Text=(string)mod.GetValue(iter,1);
+                this.entry1.Text=notice.Subject;
+				if(notice.HasAttachment)
+				{
+				this.entry_attachment.Text="Attachment :"+notice.AssetType.ToString();
+				}
+				else
+                {
+                this.entry_attachment.Text="";
+                }               
 			}
 		
 		}
@@ -519,7 +528,9 @@ namespace omvviewerlight
 			
 			if(im.Dialog!=OpenMetaverse.InstantMessageDialog.GroupNoticeRequested)
 				return;
-			textview_notice.Buffer.SetText(im.Message);
+		      
+            textview_notice.Buffer.SetText(im.Message);
+            
 		}
 
 		protected virtual void OnTreeviewRolesListCursorChanged (object sender, System.EventArgs e)
@@ -836,8 +847,8 @@ namespace omvviewerlight
 				{
 			 this.button_send_notice.Label="Send notice";
 					this.textview_notice.Editable=true;
-                this.entry1.Editable=true;	
-                this.entry1.Text="";
+                this.entry_attachment.Editable=true;	
+                this.entry_attachment.Text="";
                 this.textview_notice.Buffer.Clear();
 		    }
 			else
@@ -847,14 +858,32 @@ namespace omvviewerlight
                  string msg= this.textview_notice.Buffer.Text;
 				notice.Message=msg.Replace("\n","\r\n");
 				notice.OwnerID=MainClass.client.Self.AgentID;
-                notice.Subject=this.entry1.Text;
+                notice.Subject=this.entry_attachment.Text;
 				notice.AttachmentID=UUID.Zero;  
                 MainClass.client.Groups.SendGroupNotice(this.groupkey,notice);
                 this.textview_notice.Editable=false;
-                this.entry1.Editable=false;	
+                this.entry_attachment.Editable=false;	
 		       
       }
 		
+		}
+
+			protected virtual void OnButtonAttachmentClicked (object sender, System.EventArgs e)
+		    {
+			Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+            if(this.treeview_notice_list.Selection.GetSelected(out mod,out iter))			
+				{
+					GroupNoticeList notice=(GroupNoticeList)mod.GetValue(iter,3);
+					if(notice.AssetType==AssetType.Notecard)
+					{
+                   //NotecardReader nr=new NotecardReader(notice.
+                    GroupNotice note;
+                   
+}            
+
+            }
 		}
 	}
 }
