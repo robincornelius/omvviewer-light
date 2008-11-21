@@ -313,7 +313,7 @@ namespace omvviewerlight
             MainClass.client.Appearance.OnAppearanceUpdated += callback;
 
 			Console.Write("Appearence thread go\n");
-			MainClass.client.Appearance.SetPreviousAppearance(false);
+			MainClass.client.Appearance.SetPreviousAppearance(true);
         }
 		
 		protected virtual void OnButton1Clicked (object sender, System.EventArgs e)
