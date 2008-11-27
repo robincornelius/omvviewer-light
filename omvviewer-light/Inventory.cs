@@ -34,7 +34,7 @@ namespace omvviewerlight
 
     public partial class invthreaddata
     {
-        public UUID key;
+		public UUID key;
         public RowExpandedArgs args;
 		public string path;
 		public invthreaddata(UUID keyx, RowExpandedArgs argsx,string pathx)
@@ -48,6 +48,7 @@ namespace omvviewerlight
 	public partial class Inventory : Gtk.Bin
 	{
   	
+		public int no_items;
         Dictionary<invthreaddata, List<InventoryBase>> incomming = new Dictionary<invthreaddata, List<InventoryBase>>();  
 		Dictionary<UUID, Gtk.TreeIter> assetmap = new Dictionary<UUID, Gtk.TreeIter>();
 		String[] SearchFolders = { "" };
@@ -132,7 +133,6 @@ namespace omvviewerlight
 
 		void populate_top_level_inv()
 		{
-		
 				if( MainClass.client.Inventory.Store.Items!=null)
 					{
 						foreach(KeyValuePair <UUID, InventoryNode> kvp in MainClass.client.Inventory.Store.Items)
@@ -145,7 +145,6 @@ namespace omvviewerlight
 									{
 										Gtk.TreeIter iterx = inventory.AppendValues(folder_closed, kvp.Value.Data.Name, kvp.Value.Data.UUID);
 										inventory.AppendValues(iterx, folder_closed, "Waiting...", kvp.Value.Data.UUID, null);
-
 									}
 									Console.Write(kvp.Value.Data.ParentUUID.ToString() +" : ");
 								}
@@ -332,6 +331,13 @@ namespace omvviewerlight
 							menu.Append(menu_attach_item);
 						}
 
+						if(item is InventoryWearable)
+						{
+							Gtk.MenuItem menu_attach_item = new MenuItem("Wear");
+							menu_attach_item.ButtonPressEvent += new ButtonPressEventHandler(menu_wear_item_ButtonPressEvent);
+							menu.Append(menu_attach_item);				
+						}
+						
                         menu.Popup();
                         menu.ShowAll();
 						
@@ -351,6 +357,19 @@ namespace omvviewerlight
 			
 		}
 		
+			
+        void menu_wear_item_ButtonPressEvent(object o, ButtonPressEventArgs args)
+        {
+            Gtk.TreeModel mod;
+            Gtk.TreeIter iter;
+            this.treeview_inv.Selection.GetSelected(out mod, out iter);
+            InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+			List<InventoryBase> ibs=new List<InventoryBase>();
+			ibs.Add(item);
+
+			MainClass.client.Appearance.WearOutfit(ibs,true);
+        }
+		
         void menu_attach_item_ButtonPressEvent(object o, ButtonPressEventArgs args)
         {
             Gtk.TreeModel mod;
@@ -366,7 +385,11 @@ namespace omvviewerlight
 			{
 				Gtk.Application.Invoke(delegate {
 					inventory.Clear();
-					populate_top_level_inv();				
+					populate_top_level_inv();
+					this.no_items=0;
+					//Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
+					//invRunner.Start(MainClass.client.Inventory.Store.RootFolder.UUID);
+					//this.fetchinventory(MainClass.client.Inventory.Store.RootFolder.UUID);
 				});
 			}
 		}
@@ -393,52 +416,79 @@ namespace omvviewerlight
 			if(inventory.GetValue(args.Iter,0)==folder_closed)
                 inventory.SetValue(args.Iter,0,folder_open);
  
-            Console.Write("Trying to get child iter\n");
+ //           Console.Write("Trying to get child iter\n");
 
            // this.treeview_inv.QueueDraw();
             Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
             invthreaddata x = new invthreaddata(key,args,args.Path.ToString());
 
-		    Console.Write("Key is NOW "+key.ToString()+"\n");
-		    Console.Write("Path is NOW "+args.Path.ToString()+"\n");
-			Console.Write("ARgs is now"+args.ToString()+"\n"+"\n");        
+//		    Console.Write("Key is NOW "+key.ToString()+"\n");
+//		    Console.Write("Path is NOW "+args.Path.ToString()+"\n");
+//			Console.Write("ARgs is now"+args.ToString()+"\n"+"\n");        
 			
-            MainClass.client.Inventory.RequestFolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate);
+           // MainClass.client.Inventory.RequestFolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate);
 
 			invRunner.Start(x);
    		
 		}
+		
+		void fetchinventory(object x)
+		{
+			UUID start=(UUID)x;
+            MainClass.client.Inventory.RequestFolderContents(start, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate);
+	        List<InventoryBase> myObjects = MainClass.client.Inventory.FolderContents(start, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);			
+			if (myObjects == null)
+                return;
 
+			this.no_items+=myObjects.Count;
+			Gtk.Application.Invoke(delegate{
+				this.label_fetched.Text="fetched "+this.no_items.ToString()+" items";
+			});
+			List<InventoryBase> folders = new List<InventoryBase>();
+		
+			foreach (InventoryBase item in myObjects)
+            {
+                     if (item is InventoryFolder)
+                     {
+					    fetchinventory((object)item.UUID);
+				     }
+			}				
+			
+			return;
+		}
+		
         void UpdateRow(object x)
         {
 	        UUID key;
             Gtk.RowExpandedArgs args;
 			Gtk.TreePath path;
 			invthreaddata xx=(invthreaddata)x;
-    
             key = ((invthreaddata)x).key;
             args = ((invthreaddata)x).args;
-			string paths=((invthreaddata)x).path;
+			
+            List<InventoryBase> myObjects = MainClass.client.Inventory.FolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
+			
+            Gtk.Application.Invoke(delegate{			
+
+ 			string paths=((invthreaddata)x).path;
 			path=new Gtk.TreePath(paths);
 
-	        List<InventoryBase> myObjects = MainClass.client.Inventory.FolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
 			
 			incomming.Add(xx,myObjects);
 
 			Gtk.TreeIter childiter;
              
-            Console.Write("Path is "+path.ToString()+"\n");
+            //Console.Write("Path is "+path.ToString()+"\n");
 		    
 		    path.Down();
-	        Console.Write("Path down is "+path.ToString()+"\n");
+	        //Console.Write("Path down is "+path.ToString()+"\n");
 				
-
-             if (myObjects == null)
+            if (myObjects == null)
                 return;
 
              foreach (InventoryBase item in myObjects)
              {
-				 Console.Write("Adding item "+item.ToString()+"\n");
+				//Console.Write("Adding item "+item.ToString()+"\n");
 				 Gdk.Pixbuf buf = getprettyicon(item);
 
                  if (!assetmap.ContainsKey(item.UUID))
@@ -452,21 +502,25 @@ namespace omvviewerlight
 					}
                      if (item is InventoryFolder)
                      {
-                          inventory.AppendValues(iter2, item_object, "Waiting...", UUID.Zero, null);
+						inventory.AppendValues(iter2, item_object, "Waiting...", UUID.Zero, null);
                      }
                  }
                 //And tidy that waiting
                if (inventory.GetIter(out childiter, path))
                {
-                  Console.Write("We got a childiter for that\n");
-                  Console.Write("Value is =" + (string)inventory.GetValue(childiter, 1) + "\n");
+ //                 Console.Write("We got a childiter for that\n");
+//                  Console.Write("Value is =" + (string)inventory.GetValue(childiter, 1) + "\n");
                   if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
 
                   inventory.Remove(ref childiter);
                }
 
-			 }
+			}
+			
+});
         }
+		
+		
 		
         Gdk.Pixbuf getprettyfoldericon(InventoryFolder item)
         {
@@ -582,8 +636,7 @@ namespace omvviewerlight
                         ud2.go();
 
 						this.label_saleprice.Text=((InventoryItem)item).SalePrice.ToString();
-						
-			
+						
 					}
 		
 				 }
@@ -591,8 +644,19 @@ namespace omvviewerlight
 				
 			}
 		}
+
+		protected virtual void OnButtonSearchClicked (object sender, System.EventArgs e)
+		{
+			Gtk.TreeIter iter;
+			Gtk.TreeIter iterlast;
+			
+			this.inventory.GetIterFirst(out iter);
+			Gtk.TreePath path=this.inventory.GetPath(iter);
+			path.Next();
+			path.Down();
+			iterlast=iter;
 		
-		
-		
+			this.inventory.GetIter(out iter,path);		
+		}		
 	}
 }

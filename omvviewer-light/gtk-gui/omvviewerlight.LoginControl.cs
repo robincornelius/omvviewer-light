@@ -69,7 +69,7 @@ namespace omvviewerlight {
         
         private Gtk.Frame frame1;
         
-        private Gtk.Alignment GtkAlignment;
+        private Gtk.Alignment GtkAlignment1;
         
         private Gtk.TextView textview_loginmsg;
         
@@ -77,7 +77,7 @@ namespace omvviewerlight {
         
         private Gtk.Frame frame2;
         
-        private Gtk.Alignment GtkAlignment1;
+        private Gtk.Alignment GtkAlignment2;
         
         private Gtk.ScrolledWindow GtkScrolledWindow1;
         
@@ -355,18 +355,18 @@ namespace omvviewerlight {
             this.frame1.Name = "frame1";
             this.frame1.ShadowType = ((Gtk.ShadowType)(0));
             // Container child frame1.Gtk.Container+ContainerChild
-            this.GtkAlignment = new Gtk.Alignment(0F, 0F, 1F, 1F);
-            this.GtkAlignment.Name = "GtkAlignment";
-            this.GtkAlignment.LeftPadding = ((uint)(12));
-            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            this.GtkAlignment1 = new Gtk.Alignment(0F, 0F, 1F, 1F);
+            this.GtkAlignment1.Name = "GtkAlignment1";
+            this.GtkAlignment1.LeftPadding = ((uint)(12));
+            // Container child GtkAlignment1.Gtk.Container+ContainerChild
             this.textview_loginmsg = new Gtk.TextView();
             this.textview_loginmsg.HeightRequest = 35;
             this.textview_loginmsg.CanFocus = true;
             this.textview_loginmsg.Name = "textview_loginmsg";
             this.textview_loginmsg.Editable = false;
             this.textview_loginmsg.WrapMode = ((Gtk.WrapMode)(2));
-            this.GtkAlignment.Add(this.textview_loginmsg);
-            this.frame1.Add(this.GtkAlignment);
+            this.GtkAlignment1.Add(this.textview_loginmsg);
+            this.frame1.Add(this.GtkAlignment1);
             this.GtkLabel5 = new Gtk.Label();
             this.GtkLabel5.Name = "GtkLabel5";
             this.GtkLabel5.LabelProp = Mono.Unix.Catalog.GetString("<b>Login message</b>");
@@ -380,10 +380,10 @@ namespace omvviewerlight {
             this.frame2.Name = "frame2";
             this.frame2.ShadowType = ((Gtk.ShadowType)(0));
             // Container child frame2.Gtk.Container+ContainerChild
-            this.GtkAlignment1 = new Gtk.Alignment(0F, 0F, 1F, 1F);
-            this.GtkAlignment1.Name = "GtkAlignment1";
-            this.GtkAlignment1.LeftPadding = ((uint)(12));
-            // Container child GtkAlignment1.Gtk.Container+ContainerChild
+            this.GtkAlignment2 = new Gtk.Alignment(0F, 0F, 1F, 1F);
+            this.GtkAlignment2.Name = "GtkAlignment2";
+            this.GtkAlignment2.LeftPadding = ((uint)(12));
+            // Container child GtkAlignment2.Gtk.Container+ContainerChild
             this.GtkScrolledWindow1 = new Gtk.ScrolledWindow();
             this.GtkScrolledWindow1.Name = "GtkScrolledWindow1";
             this.GtkScrolledWindow1.ShadowType = ((Gtk.ShadowType)(1));
@@ -395,8 +395,8 @@ namespace omvviewerlight {
             this.textview_log.Editable = false;
             this.textview_log.WrapMode = ((Gtk.WrapMode)(2));
             this.GtkScrolledWindow1.Add(this.textview_log);
-            this.GtkAlignment1.Add(this.GtkScrolledWindow1);
-            this.frame2.Add(this.GtkAlignment1);
+            this.GtkAlignment2.Add(this.GtkScrolledWindow1);
+            this.frame2.Add(this.GtkAlignment2);
             this.GtkLabel6 = new Gtk.Label();
             this.GtkLabel6.Name = "GtkLabel6";
             this.GtkLabel6.LabelProp = Mono.Unix.Catalog.GetString("<b>Debug log</b>");
