@@ -490,10 +490,17 @@ namespace omvviewerlight
              {
 				//Console.Write("Adding item "+item.ToString()+"\n");
 				 Gdk.Pixbuf buf = getprettyicon(item);
+                 string msg="";
 
                  if (!assetmap.ContainsKey(item.UUID))
                  {
-                     Gtk.TreeIter iter2 = inventory.AppendValues(args.Iter, buf, item.Name, item.UUID, item);
+                     foreach( KeyValuePair <WearableType,OpenMetaverse.AppearanceManager.WearableData> kvp in MainClass.client.Appearance.Wearables.Dictionary)
+                     {
+                         if (kvp.Value.Item.UUID == item.UUID)
+                             msg = " (WORN) ";
+                     }
+
+                     Gtk.TreeIter iter2 = inventory.AppendValues(args.Iter, buf, item.Name+msg, item.UUID, item);
 					if(!assetmap.ContainsKey(item.UUID))
 					   assetmap.Add(item.UUID, iter2);
 					else

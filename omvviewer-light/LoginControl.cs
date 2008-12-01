@@ -155,11 +155,11 @@ namespace omvviewerlight
 			if(sim.ID==MainClass.client.Network.CurrentSim.ID)
 			{
 				this.trying=false;
-                Gtk.Application.Invoke(delegate
-                {
-                    Thread loginRunner = new Thread(new ThreadStart(this.appearencethread));
-                    loginRunner.Start();
-                });
+            //    Gtk.Application.Invoke(delegate
+             //   {
+             //       Thread loginRunner = new Thread(new ThreadStart(this.appearencethread));
+             //       loginRunner.Start();
+             //   });
 				
 			}	
 		}
@@ -254,6 +254,11 @@ namespace omvviewerlight
 					MainClass.client.Throttle.Texture=tvalue;	
 				}
 
+                    Gtk.Application.Invoke(delegate
+                   {
+                       Thread appearenceRunner = new Thread(new ThreadStart(this.appearencethread));
+                       appearenceRunner.Start();
+                   });
 
 				
                 MainClass.userlogout = false;          
@@ -309,9 +314,9 @@ namespace omvviewerlight
 		
 		void appearencethread()
 		{
-            AutoResetEvent appearanceEvent = new AutoResetEvent(false);
-            AppearanceManager.AppearanceUpdatedCallback callback = delegate(Primitive.TextureEntry te) { appearanceEvent.Set(); };
-            MainClass.client.Appearance.OnAppearanceUpdated += callback;
+    //        AutoResetEvent appearanceEvent = new AutoResetEvent(false);
+    //        AppearanceManager.AppearanceUpdatedCallback callback = delegate(Primitive.TextureEntry te) { appearanceEvent.Set(); };
+    //        MainClass.client.Appearance.OnAppearanceUpdated += callback;
 
 			Console.Write("Appearence thread go\n");
 			MainClass.client.Appearance.SetPreviousAppearance(true);

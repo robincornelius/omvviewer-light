@@ -270,8 +270,16 @@ namespace omvviewerlight
                             }
                         }
 						PrimsWaiting.Remove(properties.ObjectID);
-					    FetchedPrims.Add(properties.ObjectID,prim);
-                        store.AppendValues(prim.Properties.Name, prim.Properties.Description, Vector3.Distance(prim.Position, mypos).ToString(), prim.Properties.ObjectID);
+                        if(FetchedPrims.ContainsKey(properties.ObjectID))
+                        {
+                            Console.WriteLine("Trying to add a duplicate prim to FetchedPrims WTF? "+properties.ObjectID.ToString());
+                            return;
+                        }
+                        else
+                        {
+                            FetchedPrims.Add(properties.ObjectID,prim);
+                        }
+				        store.AppendValues(prim.Properties.Name, prim.Properties.Description, Vector3.Distance(prim.Position, mypos).ToString(), prim.Properties.ObjectID);
                         store.Foreach(myfunc);
 					
 						
