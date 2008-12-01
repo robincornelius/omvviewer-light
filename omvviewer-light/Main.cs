@@ -85,7 +85,8 @@ namespace omvviewerlight
                 Gtk.Window.DefaultIcon = MainClass.GetResource("viewericon.xpm");
     
 
-                win = new MainWindow();
+                win = new MainWindow(); 
+                
                 win.Show();
                 Application.Run();
             }
