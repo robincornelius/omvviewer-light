@@ -7,7 +7,7 @@
   <import>
     <widget-library name="../bin/omvviewer-light.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="MainWindow" design-size="812 629">
+  <widget class="Gtk.Window" id="MainWindow" design-size="811 629">
     <action-group name="Default">
       <action id="StatusAction">
         <property name="Type">Action</property>

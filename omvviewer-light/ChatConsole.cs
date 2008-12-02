@@ -73,10 +73,11 @@ namespace omvviewerlight
             if (im_key == UUID.Zero && im_session_id == UUID.Zero)
             {
                 //this is the main chat winddow, notify for all friends here
-                Gtk.Application.Invoke(delegate
-                {
-                    displaychat(friend.Name + "is online", "", onoffline, onoffline);
-                });
+               
+				AsyncNameUpdate ud=new AsyncNameUpdate(friend.UUID,false);  
+  				ud.onNameCallBack += delegate(string namex,object[] values){ displaychat(namex + " is online", "", onoffline, onoffline);	};
+                ud.go();
+				   
             }
             else if (im_key != UUID.Zero && im_key==friend.UUID)
             {
