@@ -37,6 +37,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.IO;
 using Gdk;
+using System.Windows.Forms;
 
 
 namespace omvviewerlight
@@ -66,7 +67,7 @@ namespace omvviewerlight
                 return Pixbuf.LoadFromResource("omvviewerlight.art." + name);          
         }		
 		public static void Main (string[] args)
-		{        
+		{
             try
             {
                 Assembly a = Assembly.GetExecutingAssembly();
@@ -75,24 +76,29 @@ namespace omvviewerlight
                 string[] resNames = a.GetManifestResourceNames();
 
                 string check = resNames[0];
-                if(check.Contains("omvviewerlight.art."))
+                if (check.Contains("omvviewerlight.art."))
                     monodevelop = true;
 
-				client = new GridClient();
-                client.Settings.USE_TEXTURE_CACHE=true;				
-				name_cache=new AVNameCache();
-                Application.Init();
+                client = new GridClient();
+                client.Settings.USE_TEXTURE_CACHE = true;
+                name_cache = new AVNameCache();
+                Gtk.Application.Init();
+
                 Gtk.Window.DefaultIcon = MainClass.GetResource("viewericon.xpm");
-    
 
-                win = new MainWindow(); 
-                
+                win = new MainWindow();
+
                 win.Show();
-                Application.Run();
+                Gtk.Application.Run();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
+                string extra="";
+                if (e.Message.Contains("Unable to load DLL 'libglib-"))
+                    extra = "\n\nPlease ensure Gtk# (GtkSharp) is installed as per the instructions at \nhttp://www.byteme.org.uk/omvviewer-light.html\nIf this error persists please contact Robin Cornelius <robin.cornelius@gmail.com> for help\n\n"; 
+            
 
+                MessageBox.Show("Message :"+e.Message +extra+ "\nSource:" + e.Source+"\n\nBacktrace:\n"+e.StackTrace, "Omvviewer-light - Critical Error");
                 Console.Write("The application died in a big heap\n This is the debug i caught :-");
                 Console.Write("-----------------------------------------------\n");
                 Console.Write(e.Message + "\n");
@@ -111,35 +117,6 @@ namespace omvviewerlight
                     Console.Write(ee.TargetSite + "\n");
                     ee = ee.InnerException;
                 }
-                
-
-                StreamWriter sw = new StreamWriter("crashlog.txt", true, Encoding.ASCII);
-                sw.WriteLine("Crash report");
-                sw.Write("-----------------------------------------------\n");
-                sw.Write(e.Message + "\n");
-                sw.Write(e.Source + "\n");
-                sw.Write(e.StackTrace + "\n");
-                sw.Write(e.TargetSite + "\n");
-                Exception eee;
-                eee = e.InnerException;
-
-                while (eee != null)
-                {
-                    sw.Write("-----------------------------------------------\n");
-                    sw.Write(eee.Message + "\n");
-                    sw.Write(eee.Source + "\n");
-                    sw.Write(eee.StackTrace + "\n");
-                    sw.Write(eee.TargetSite + "\n");
-                    eee = eee.InnerException;
-                }
-
-                
-             
-
-             
-                sw.Close();
-
-               
             }
 			
 		}

@@ -34,6 +34,7 @@ namespace omvviewerlight
 	    Gdk.Color col_red = new Gdk.Color(255,0,0);
 	    Gdk.Color col_blue = new Gdk.Color(0,0,255);
 	    Gdk.Color col_green = new Gdk.Color(0,255,0);
+        Gdk.Color col_yellow = new Gdk.Color(0, 255, 255);
 		Gtk.TextTag bold;
 		Gtk.TextTag avchat;
         Gtk.TextTag selfavchat;
@@ -41,6 +42,8 @@ namespace omvviewerlight
         Gtk.TextTag objectIMchat;
         Gtk.TextTag systemchat;
 		Gtk.TextTag ownerobjectchat;
+        Gtk.TextTag onoffline;
+
         Gtk.TextTag typing_tag;
 		TextMark preTyping;
 		TextMark postTyping;
@@ -64,7 +67,47 @@ namespace omvviewerlight
 			MainClass.client.Self.OnChat += new OpenMetaverse.AgentManager.ChatCallback(onChat);
             MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
 			MainClass.OnPrefUpdate += new MainClass.PrefUpdate(onPrefChange);
+            MainClass.client.Friends.OnFriendOffline += new FriendsManager.FriendOfflineEvent(Friends_OnFriendOffline);
+            MainClass.client.Friends.OnFriendOnline += new FriendsManager.FriendOnlineEvent(Friends_OnFriendOnline);
 		}
+
+        void Friends_OnFriendOnline(FriendInfo friend)
+        {
+            if (im_key == UUID.Zero && im_session_id == UUID.Zero)
+            {
+                //this is the main chat winddow, notify for all friends here
+                Gtk.Application.Invoke(delegate
+                {
+                    displaychat(friend.Name + "is online", "", onoffline, onoffline);
+                });
+            }
+            else if (im_key != UUID.Zero && im_key==friend.UUID)
+            {
+                Gtk.Application.Invoke(delegate
+                {
+                    displaychat(friend.Name + "is online", "", onoffline, onoffline);
+                });
+            }
+        }
+
+        void Friends_OnFriendOffline(FriendInfo friend)
+        {
+            if (im_key == UUID.Zero && im_session_id == UUID.Zero)
+            {
+                //this is the main chat winddow, notify for all friends here
+                Gtk.Application.Invoke(delegate
+                {
+                    displaychat(friend.Name + "is offline", "", onoffline, onoffline);
+                });
+            }
+            else if (im_key != UUID.Zero && im_key == friend.UUID)
+            {
+                Gtk.Application.Invoke(delegate
+                {
+                    displaychat(friend.Name + "is offline", "", onoffline, onoffline);
+                });
+            }
+        }
 
         void onPrefChange()
 		{
@@ -216,7 +259,9 @@ namespace omvviewerlight
 			ownerobjectchat=new Gtk.TextTag("ownerobjectchat");
             objectIMchat = new Gtk.TextTag("objectIMchat");
             typing_tag = new Gtk.TextTag("typing");
+            onoffline = new Gtk.TextTag("onoffline");
             
+         
 			bold.Weight=Pango.Weight.Bold;
             bold.FontDesc = Pango.FontDescription.FromString("Arial Bold");
 
@@ -231,6 +276,10 @@ namespace omvviewerlight
 			systemchat.ForegroundGdk=col_red;
 
             typing_tag.ForegroundGdk = col_blue;
+
+            onoffline.Weight = Pango.Weight.Bold;
+            onoffline.ForegroundGdk = col_yellow;
+
 			
 			textview_chat.Buffer.TagTable.Add(bold);
 			textview_chat.Buffer.TagTable.Add(avchat);
@@ -238,6 +287,7 @@ namespace omvviewerlight
 			textview_chat.Buffer.TagTable.Add(objectchat);
 			textview_chat.Buffer.TagTable.Add(ownerobjectchat);
             textview_chat.Buffer.TagTable.Add(typing_tag);
+            textview_chat.Buffer.TagTable.Add(onoffline);
 
 			//Console.Write("**** CHAT CONSOLE SETUP ****\n");
 
