@@ -157,23 +157,17 @@ public partial class MainWindow: Gtk.Window
 		c.passontablable(chat_tab_lable);
         this.notebook.SwitchPage += new SwitchPageHandler(c.onSwitchPage);
 
-        if (MainClass.ReadSetting("tab_location") == "active")
-            this.LocationAction.Active = true;
+            this.LocationAction.Active = MainClass.appsettings.tab_location;
 
-        if (MainClass.ReadSetting("tab_search") == "active")
-            this.SearchAction.Active = true;
+            this.SearchAction.Active = MainClass.appsettings.tab_search;
 
-        if (MainClass.ReadSetting("tab_groups") == "active")
-            this.GroupsAction.Active = true;
+            this.GroupsAction.Active = MainClass.appsettings.tab_groups;
     
-        if (MainClass.ReadSetting("tab_inv") == "active")
-            this.InventoryAction.Active = true;
+            this.InventoryAction.Active = MainClass.appsettings.tab_inv;
 
-        if (MainClass.ReadSetting("tab_objects") == "active")
-            this.ObjectsAction.Active = true;
+            this.ObjectsAction.Active = MainClass.appsettings.tab_objects;
     
-        if (MainClass.ReadSetting("tab_parcel") == "active")
-            this.ParcelAction.Active = true;
+            this.ParcelAction.Active = MainClass.appsettings.tab_parcel;
 	
 		
 		this.statusbar1.ShowAll();
@@ -238,8 +232,7 @@ public partial class MainWindow: Gtk.Window
     void MainWindow_DeleteEvent(object o, DeleteEventArgs args)
     {
 
-		bool hidewindow=false;
-		bool.TryParse(MainClass.ReadSetting("hideminimse"),out hidewindow);
+		bool hidewindow=MainClass.appsettings.minimise;
 		ResponseType result=ResponseType.Close;
 		CloseMinimiseDlg cmd=new CloseMinimiseDlg();
 		if(!hidewindow)
@@ -248,8 +241,7 @@ public partial class MainWindow: Gtk.Window
 		}
 		else
 		{
-			bool minimise=false;
-			bool.TryParse(MainClass.ReadSetting("defaultminimise"),out minimise);
+			bool minimise=MainClass.appsettings.default_minimim;
 			if(minimise==true)
 				result=ResponseType.Accept;		
 		}
@@ -995,13 +987,13 @@ public partial class MainWindow: Gtk.Window
             tab_parcels = new ParcelMgr();
             this.addtabwithicon("parcel.tga", "Parcel", tab_parcels);
             this.ParcelAction.Active = true;
-            MainClass.WriteSetting("tab_parcel", "active");
+            MainClass.appsettings.tab_parcel=true;
 
         }
         else
         {
             tab_parcels.kill();
-            MainClass.WriteSetting("tab_parcel", "off");
+            MainClass.appsettings.tab_parcel=false;
         }
 
 	}
@@ -1011,16 +1003,15 @@ public partial class MainWindow: Gtk.Window
         if (this.ObjectsAction.Active == true)
         {
             tab_objects = new ObjectsLayout();
-            this.addtabwithicon("item_object.tga", "Objects", tab_objects);
-            this.ObjectsAction.Active = true;
-            MainClass.WriteSetting("tab_objects", "active");
+			this.addtabwithicon("item_object.tga", "Objects", tab_objects);
+			this.ObjectsAction.Active=true;
+            MainClass.appsettings.tab_objects=true;
 
-	
         }
         else
         {
             tab_objects.kill();
-            MainClass.WriteSetting("tab_objects", "off");
+            MainClass.appsettings.tab_objects=false;
 
         }	   
 	}
@@ -1033,13 +1024,13 @@ public partial class MainWindow: Gtk.Window
             tab_inventory = new omvviewerlight.Inventory();
             this.addtabwithicon("inv_folder_plain_open.tga", "Inventory", tab_inventory);
             this.InventoryAction.Active = true;
-            MainClass.WriteSetting("tab_inv", "active");
+           MainClass.appsettings.tab_inv=true;
 
         }
         else
         {
             tab_inventory.kill();
-            MainClass.WriteSetting("tab_inv", "off");
+        MainClass.appsettings.tab_inv=false;
 
         }	  
   
@@ -1053,13 +1044,13 @@ public partial class MainWindow: Gtk.Window
 			tab_location=new Location();
 		    this.addtabwithicon("icon_place.tga","Location",tab_location);
 		    this.LocationAction.Active=true;
-            MainClass.WriteSetting("tab_location", "active");
+              MainClass.appsettings.tab_location=true;
 
 	    }
 		else
 		{
            tab_location.kill();
-           MainClass.WriteSetting("tab_location", "off");
+          MainClass.appsettings.tab_location=false;
         }	
 	
 	}
@@ -1071,12 +1062,12 @@ public partial class MainWindow: Gtk.Window
             tab_groups = new Groups();
             this.addtabwithicon("icn_voice-groupfocus.tga", "Groups", tab_groups);
             this.GroupsAction.Active = true;
-            MainClass.WriteSetting("tab_groups", "active");
+             MainClass.appsettings.tab_groups=true;
         }
         else
         {
             tab_groups.kill();
-            MainClass.WriteSetting("tab_groups", "off");
+          MainClass.appsettings.tab_groups=false;
         }	
 	}
 
@@ -1087,12 +1078,12 @@ public partial class MainWindow: Gtk.Window
 	        tab_search=new Search();
 			this.addtabwithicon("status_search_btn.png","Search",tab_search);
 		    this.SearchAction.Active=true;
-            MainClass.WriteSetting("tab_search", "active");
+             MainClass.appsettings.tab_search=true;
 	    }
 		else
 		{
            tab_search.kill();
-           MainClass.WriteSetting("tab_search", "off");
+                MainClass.appsettings.tab_search=false;
         }	
 	}
 

@@ -53,6 +53,8 @@ namespace omvviewerlight
 		public static MainWindow win;
 
 		public static AVNameCache name_cache;
+		public static MySettings appsettings;
+
 
         static bool monodevelop = false;
 
@@ -70,7 +72,8 @@ namespace omvviewerlight
 		{
             try
             {
-                Assembly a = Assembly.GetExecutingAssembly();
+				Assembly a = Assembly.GetExecutingAssembly();
+                appsettings= new MySettings();
 
                 // get a list of resource names from the manifest
                 string[] resNames = a.GetManifestResourceNames();
@@ -80,16 +83,22 @@ namespace omvviewerlight
                     monodevelop = true;
 
                 client = new GridClient();
-                client.Settings.USE_TEXTURE_CACHE = true;
+				client.Settings.USE_TEXTURE_CACHE = true;
+                string cache=System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData)+System.IO.Path.DirectorySeparatorChar+"omvviewer_cache";
+				
+                Console.WriteLine("Setting texture cache to :"+cache);
+				client.Settings.TEXTURE_CACHE_DIR=cache;
                 name_cache = new AVNameCache();
                 Gtk.Application.Init();
 
                 Gtk.Window.DefaultIcon = MainClass.GetResource("viewericon.xpm");
-
+				
                 win = new MainWindow();
 
                 win.Show();
-                Gtk.Application.Run();
+				Gtk.Application.Run();
+                appsettings.Save();
+
             }
             catch (Exception e)
             {
@@ -175,9 +184,11 @@ namespace omvviewerlight
                   i, keys[i], appSettings[i]);
 
         }
-
+/*
         public static void WriteSetting(string key, string value)
-        {
+			{
+		
+
            System.Configuration.Configuration config =
            ConfigurationManager.OpenExeConfiguration(
            ConfigurationUserLevel.None);
@@ -225,6 +236,8 @@ namespace omvviewerlight
 		    if(OnPrefUpdate!=null)
 	            OnPrefUpdate();
         }
+	            
+        */
 
 	}
 }

@@ -21,7 +21,7 @@ namespace omvviewerlight
 
 		protected virtual void OnCheckbutton1Clicked (object sender, System.EventArgs e)
 		{
-			   MainClass.WriteSetting("hideminimse",this.checkbutton1.Active.ToString());
+			   MainClass.appsettings.minimise=this.checkbutton1.Active;
 			   save=true;
 		}
 
@@ -29,9 +29,8 @@ namespace omvviewerlight
 		{
 			if(save)
 			{
-				  MainClass.WriteSetting("defaultclose",save.ToString());
-				  MainClass.WriteSetting("defaultminimise",false.ToString());
-
+				  MainClass.appsettings.default_close=true;
+				  MainClass.appsettings.default_minimim=false;
 			}
 		}
 
@@ -39,8 +38,8 @@ namespace omvviewerlight
 		{
 			if(save)
 			{
-				  MainClass.WriteSetting("defaultminimise",save.ToString());
-				  MainClass.WriteSetting("defaultclose",false.ToString());
+				  MainClass.appsettings.default_close=false;
+				  MainClass.appsettings.default_minimim=true;
 
 			}		
 		}

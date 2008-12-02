@@ -50,8 +50,6 @@ namespace omvviewerlight
 		
 		bool istyping=false;
 		bool istypingsent=false;
-
-		bool showtimestamps=true;
 		
 		public Gtk.Label tabLabel;
 		public UUID im_key=OpenMetaverse.UUID.Zero;
@@ -66,7 +64,6 @@ namespace omvviewerlight
             MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);		
 			MainClass.client.Self.OnChat += new OpenMetaverse.AgentManager.ChatCallback(onChat);
             MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
-			MainClass.OnPrefUpdate += new MainClass.PrefUpdate(onPrefChange);
             MainClass.client.Friends.OnFriendOffline += new FriendsManager.FriendOfflineEvent(Friends_OnFriendOffline);
             MainClass.client.Friends.OnFriendOnline += new FriendsManager.FriendOnlineEvent(Friends_OnFriendOnline);
 		}
@@ -109,11 +106,7 @@ namespace omvviewerlight
             }
         }
 
-        void onPrefChange()
-		{
-			bool.TryParse(MainClass.ReadSetting("timestamps"),out showtimestamps);
-		}
-		
+      		
         void onLogin(LoginStatus status, string message)
         {
             if (LoginStatus.Success == status)
@@ -593,7 +586,7 @@ namespace omvviewerlight
                 if (message.Substring(0, 3) == "/me")
                     emote=true;
 			
-			if(this.showtimestamps)
+			if(MainClass.appsettings.timestamps)
 			{
 				iter = textview_chat.Buffer.EndIter;				
 				DateTime CurrTime = DateTime.Now;

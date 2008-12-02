@@ -43,7 +43,8 @@ namespace omvviewerlight
         {
             //This is ugly but works. GC should be called when we need it as we want to do this
             //when the app is going down anyway
-            oncleanuptime();
+			//Console.WriteLine("Clean up time");
+			//oncleanuptime();
         }
 
 		public LoginControl()
@@ -59,14 +60,11 @@ namespace omvviewerlight
            
             this.entry_pass.Visibility=false;
 
-            entry_first.Text = MainClass.ReadSetting("First");
-            entry_last.Text = MainClass.ReadSetting("Last");
-            entry_pass.Text = MainClass.ReadSetting("Pass");
-            if (MainClass.ReadSetting("Remember pass") == "true")
-                this.checkbutton_rememberpass.Active = true;
-		    else
-                this.checkbutton_rememberpass.Active = false;
-			
+            entry_first.Text =  MainClass.appsettings.FirstName;
+            entry_last.Text = MainClass.appsettings.LastName;
+            entry_pass.Text = MainClass.appsettings.Password;
+            checkbutton_rememberpass.Active = MainClass.appsettings.remember_pass;
+		   
 			 StreamReader s=null;
 			 if(File.Exists(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory,"gridlist.txt")))
 			   s = File.OpenText(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory,"gridlist.txt"));
@@ -99,8 +97,8 @@ namespace omvviewerlight
                 Console.WriteLine(e.ToString());
 			}					
 			
-			int selected=0;
-			int.TryParse(MainClass.ReadSetting("Selected Grid"),out selected);			
+			int selected=MainClass.appsettings.SelectedGrid;
+	
 			try
 			{
 				combobox_grid.Active=selected;			
@@ -110,7 +108,7 @@ namespace omvviewerlight
 				
 			}
 
-            string target=MainClass.ReadSetting("login_location_choice");
+            string target=MainClass.appsettings.LoginLocationSetting;
 
             if (target == "home")
                 this.radiobutton1.Active = true;
@@ -121,31 +119,33 @@ namespace omvviewerlight
             if (target == "location")
             {
                 this.radiobutton1.Active = true;
-                this.entry_location.Text=MainClass.ReadSetting("login_location");
+                this.entry_location.Text=MainClass.appsettings.LoginLocation;
 
             }
 		}
 
         void oncleanuptime()
         {
+			
+			MainClass.appsettings.FirstName=entry_first.Text;
+		    MainClass.appsettings.LastName= entry_last.Text;
             // This is a shit place to do this
-            MainClass.WriteSetting("First", entry_first.Text);
-            MainClass.WriteSetting("Last", entry_last.Text);
-            if (this.checkbutton_rememberpass.Active)
+            
+            if(this.checkbutton_rememberpass.Active)
             {
-                MainClass.WriteSetting("pass", entry_pass.Text);
+               MainClass.appsettings.Password=entry_pass.Text;
             }
             else
             {
-                MainClass.WriteSetting("pass", "");
+                MainClass.appsettings.Password="";
             }
+			
+			MainClass.appsettings.Save();
 
-            if (this.checkbutton_rememberpass.Active == true)
-                MainClass.WriteSetting("Remember pass", "true");
-            else
-                MainClass.WriteSetting("Remember pass", "false");  
+            MainClass.appsettings.remember_pass=this.checkbutton_rememberpass.Active;
+             
 
-			    MainClass.WriteSetting("Selected Grid",combobox_grid.Active.ToString());
+			  MainClass.appsettings.SelectedGrid=combobox_grid.Active;
 		
 		}
 
@@ -235,24 +235,14 @@ namespace omvviewerlight
 				MainClass.client.Groups.RequestCurrentGroups();
 				MainClass.client.Self.RetrieveInstantMessages();
 				
-				if(MainClass.checksettingexists("throttle_asset"))
-				{
-					float tvalue;
-					float.TryParse(MainClass.ReadSetting("throttle_cloud"),out tvalue);
-				    MainClass.client.Throttle.Cloud = tvalue;
-						float.TryParse(MainClass.ReadSetting("throttle_wind"),out tvalue);
-	                MainClass.client.Throttle.Wind = tvalue;
-						float.TryParse(MainClass.ReadSetting("throttle_land"),out tvalue);
-	                MainClass.client.Throttle.Land = tvalue;
-						float.TryParse(MainClass.ReadSetting("throttle_asset"),out tvalue);
-					MainClass.client.Throttle.Asset = tvalue;
-						float.TryParse(MainClass.ReadSetting("throttle_resend"),out tvalue);
-					MainClass.client.Throttle.Resend = tvalue;
-						float.TryParse(MainClass.ReadSetting("throttle_task"),out tvalue);
-					MainClass.client.Throttle.Task= tvalue;
-						float.TryParse(MainClass.ReadSetting("throttle_texture"),out tvalue);
-					MainClass.client.Throttle.Texture=tvalue;	
-				}
+				MainClass.client.Throttle.Cloud = MainClass.appsettings.ThrottleCloud;
+			    MainClass.client.Throttle.Wind = MainClass.appsettings.ThrottleWind;
+			    MainClass.client.Throttle.Land =  MainClass.appsettings.ThrottleLand;
+				MainClass.client.Throttle.Asset =  MainClass.appsettings.ThrottleAsset;
+				MainClass.client.Throttle.Resend =  MainClass.appsettings.ThrottleResend;
+				MainClass.client.Throttle.Task=  MainClass.appsettings.ThrottleTask;
+				MainClass.client.Throttle.Texture= MainClass.appsettings.ThrottleTexture;	
+		  
 
                     Gtk.Application.Invoke(delegate
                    {
@@ -324,6 +314,7 @@ namespace omvviewerlight
 		
 		protected virtual void OnButton1Clicked (object sender, System.EventArgs e)
 		{
+			oncleanuptime();
 			Console.WriteLine("button 1 clicked "+button_login.Label);
 			if(this.loginbut==true)
 			{
@@ -365,19 +356,19 @@ namespace omvviewerlight
                 if (this.radiobutton1.Active)
                 {
                     login.Start = "home";
-                    MainClass.WriteSetting("login_location_choice", "home");
+					MainClass.appsettings.LoginLocationSetting="home";
                 }
                 if (this.radiobutton2.Active)
                 {
                     login.Start = "last";
-                    MainClass.WriteSetting("login_location_choice", "last");
+                    MainClass.appsettings.LoginLocationSetting="last";
                 }
 
                 if (this.radiobutton3.Active)
                 {
                     login.Start = this.entry_location.Text;
-                    MainClass.WriteSetting("login_location_choice", "location");
-                    MainClass.WriteSetting("login_location", entry_location.Text);
+					MainClass.appsettings.LoginLocationSetting="location";
+					MainClass.appsettings.LoginLocation=entry_location.Text;
                 }
 				
 				this.textview_log.Buffer.Clear();
