@@ -44,8 +44,8 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>index.html</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>0.30.0.%2a</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>0.42.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -310,6 +310,8 @@
     <Content Include="libopenjpeg-dotnet-2.1.3.0.so" />
     <Content Include="MonoPosixHelper.dll" />
     <Content Include="OpenMetaverse.dll.config" />
+    <Content Include="openmetaverse_data\avatar_lad.xml">
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -560,6 +562,65 @@
     <EmbeddedResource Include="art\viewericon.xpm">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
+    <Content Include="openmetaverse_data\blush_alpha.tga" />
+    <Content Include="openmetaverse_data\bodyfreckles_alpha.tga" />
+    <Content Include="openmetaverse_data\body_skingrain.tga" />
+    <Content Include="openmetaverse_data\bump_face_wrinkles.tga" />
+    <Content Include="openmetaverse_data\bump_head_base.tga" />
+    <Content Include="openmetaverse_data\bump_lowerbody_base.tga" />
+    <Content Include="openmetaverse_data\bump_pants_wrinkles.tga" />
+    <Content Include="openmetaverse_data\bump_shirt_wrinkles.tga" />
+    <Content Include="openmetaverse_data\bump_upperbody_base.tga" />
+    <Content Include="openmetaverse_data\eyebrows_alpha.tga" />
+    <Content Include="openmetaverse_data\eyeliner_alpha.tga" />
+    <Content Include="openmetaverse_data\eyeshadow_inner_alpha.tga" />
+    <Content Include="openmetaverse_data\eyeshadow_outer_alpha.tga" />
+    <Content Include="openmetaverse_data\eyewhite.tga" />
+    <Content Include="openmetaverse_data\facehair_chincurtains_alpha.tga" />
+    <Content Include="openmetaverse_data\facehair_moustache_alpha.tga" />
+    <Content Include="openmetaverse_data\facehair_sideburns_alpha.tga" />
+    <Content Include="openmetaverse_data\facehair_soulpatch_alpha.tga" />
+    <Content Include="openmetaverse_data\freckles_alpha.tga" />
+    <Content Include="openmetaverse_data\gloves_fingers_alpha.tga" />
+    <Content Include="openmetaverse_data\glove_length_alpha.tga" />
+    <Content Include="openmetaverse_data\head_alpha.tga" />
+    <Content Include="openmetaverse_data\head_color.tga" />
+    <Content Include="openmetaverse_data\head_hair.tga" />
+    <Content Include="openmetaverse_data\head_highlights_alpha.tga" />
+    <Content Include="openmetaverse_data\head_shading_alpha.tga" />
+    <Content Include="openmetaverse_data\head_skingrain.tga" />
+    <Content Include="openmetaverse_data\jacket_length_lower_alpha.tga" />
+    <Content Include="openmetaverse_data\jacket_length_upper_alpha.tga" />
+    <Content Include="openmetaverse_data\jacket_open_lower_alpha.tga" />
+    <Content Include="openmetaverse_data\jacket_open_upper_alpha.tga" />
+    <Content Include="openmetaverse_data\lipgloss_alpha.tga" />
+    <Content Include="openmetaverse_data\lipstick_alpha.tga" />
+    <Content Include="openmetaverse_data\lips_mask.tga" />
+    <Content Include="openmetaverse_data\lowerbody_color.tga" />
+    <Content Include="openmetaverse_data\lowerbody_highlights_alpha.tga" />
+    <Content Include="openmetaverse_data\lowerbody_shading_alpha.tga" />
+    <Content Include="openmetaverse_data\nailpolish_alpha.tga" />
+    <Content Include="openmetaverse_data\pants_length_alpha.tga" />
+    <Content Include="openmetaverse_data\pants_waist_alpha.tga" />
+    <Content Include="openmetaverse_data\rosyface_alpha.tga" />
+    <Content Include="openmetaverse_data\rouge_alpha.tga" />
+    <Content Include="openmetaverse_data\shirt_bottom_alpha.tga" />
+    <Content Include="openmetaverse_data\shirt_collar_alpha.tga" />
+    <Content Include="openmetaverse_data\shirt_collar_back_alpha.tga" />
+    <Content Include="openmetaverse_data\shirt_sleeve_alpha.tga" />
+    <Content Include="openmetaverse_data\shoe_height_alpha.tga" />
+    <Content Include="openmetaverse_data\skirt_length_alpha.tga" />
+    <Content Include="openmetaverse_data\skirt_slit_back_alpha.tga" />
+    <Content Include="openmetaverse_data\skirt_slit_front_alpha.tga" />
+    <Content Include="openmetaverse_data\skirt_slit_left_alpha.tga" />
+    <Content Include="openmetaverse_data\skirt_slit_right_alpha.tga" />
+    <Content Include="openmetaverse_data\underpants_trial_female.tga" />
+    <Content Include="openmetaverse_data\underpants_trial_male.tga" />
+    <Content Include="openmetaverse_data\undershirt_trial_female.tga" />
+    <Content Include="openmetaverse_data\upperbodyfreckles_alpha.tga" />
+    <Content Include="openmetaverse_data\upperbody_color.tga" />
+    <Content Include="openmetaverse_data\upperbody_highlights_alpha.tga" />
+    <Content Include="openmetaverse_data\upperbody_shading_alpha.tga" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

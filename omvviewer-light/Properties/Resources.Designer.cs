@@ -144,6 +144,27 @@ namespace omvviewerlight.Properties {
             }
         }
         
+        internal static byte[] icn_voice_groupfocus {
+            get {
+                object obj = ResourceManager.GetObject("icn_voice_groupfocus", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] icn_voice_groupfocus2 {
+            get {
+                object obj = ResourceManager.GetObject("icn_voice_groupfocus2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] icn_voice_pvtfocus {
+            get {
+                object obj = ResourceManager.GetObject("icn_voice_pvtfocus", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
         internal static byte[] icon_avatar_offline {
             get {
                 object obj = ResourceManager.GetObject("icon_avatar_offline", resourceCulture);
@@ -1131,43 +1152,10 @@ namespace omvviewerlight.Properties {
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to /* XPM */
-        ///static char * viewericon_xpm[] = {
-        ///&quot;32 32 662 2&quot;,
-        ///&quot;  	c None&quot;,
-        ///&quot;. 	c #2594FF&quot;,
-        ///&quot;+ 	c #2693FF&quot;,
-        ///&quot;@ 	c #2894FF&quot;,
-        ///&quot;# 	c #2996FF&quot;,
-        ///&quot;$ 	c #2B98FF&quot;,
-        ///&quot;% 	c #2C9AFF&quot;,
-        ///&quot;&amp; 	c #2E99FF&quot;,
-        ///&quot;* 	c #319AFF&quot;,
-        ///&quot;= 	c #319BFF&quot;,
-        ///&quot;- 	c #329CFF&quot;,
-        ///&quot;; 	c #339EFF&quot;,
-        ///&quot;&gt; 	c #349EFF&quot;,
-        ///&quot;, 	c #329DFF&quot;,
-        ///&quot;&apos; 	c #3099FF&quot;,
-        ///&quot;) 	c #2D99FF&quot;,
-        ///&quot;! 	c #2A97FF&quot;,
-        ///&quot;~ 	c #2191FF&quot;,
-        ///&quot;{ 	c #2692FF&quot;,
-        ///&quot;] 	c #2994FF&quot;,
-        ///&quot;^ 	c #2A96FF&quot;,
-        ///&quot;/ 	c #2B9AFF&quot;,
-        ///&quot;( 	c #329BFF&quot;,
-        ///&quot;_ 	c #359FFF&quot;,
-        ///&quot;: 	c #35A0FF&quot;,
-        ///&quot;&lt; 	c #36A0FF&quot;,
-        ///&quot;[ 	c #359EFF&quot;,
-        ///&quot;} 	c #2E98FF&quot;,
-        ///&quot;| 	c # [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string viewericon_xpm {
+        internal static byte[] viewericon {
             get {
-                return ResourceManager.GetString("viewericon.xpm", resourceCulture);
+                object obj = ResourceManager.GetObject("viewericon", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

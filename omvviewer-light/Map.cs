@@ -163,7 +163,7 @@ namespace omvviewerlight
 				{
                     buf = (Gdk.Pixbuf)basemap.Pixbuf.Clone();
                 }
-                catch (Exception e)
+                catch
                 {
                     Console.WriteLine("Map, caught exception cloning pixbuf\n");
                     return;

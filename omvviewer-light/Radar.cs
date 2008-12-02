@@ -307,7 +307,7 @@ namespace omvviewerlight
 	                        if (av_tree.ContainsKey(id))
 	                            store.SetValue(av_tree[id].iter, 2, MainClass.cleandistance(dist.ToString(), 1));
 	                    }
-	                    catch (Exception e)
+	                    catch
 	                    {
 	                        Console.WriteLine("Exceptioned on store setvalue for radar");
 

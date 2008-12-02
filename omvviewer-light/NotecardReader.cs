@@ -89,7 +89,7 @@ namespace omvviewerlight
 		{
 			int lastpos=pos;
 			string key="";
-			int empos=0;
+			
 			
 			while((pos=block.IndexOf("\n",pos+1))!=-1)
 			{

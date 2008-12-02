@@ -126,9 +126,9 @@ public partial class MainWindow: Gtk.Window
 			      menu.Append(menu_hide);
 			  else				
 				menu.Append(menu_restore);
-			  menu.Append(menu_quit);
-			  menu.Popup();
-			  menu.ShowAll();
+              menu.Append(menu_quit);
+              menu.ShowAll();
+              menu.Popup();
 		};
 				
 		this.Icon=MainClass.GetResource("viewericon.xpm");

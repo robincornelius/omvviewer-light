@@ -154,15 +154,6 @@
   <data name="ff_edit_theirs1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\art\ff_edit_theirs.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="icn_voice-groupfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\icn_voice-groupfocus.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="icn_voice-groupfocus2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\icn_voice-groupfocus2.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="icn_voice-pvtfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\icn_voice-pvtfocus.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="icn_voice_groupfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\art\icn_voice-groupfocus.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -595,7 +586,7 @@
   <data name="up_arrow1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\art\up_arrow.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="viewericon.xpm" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\viewericon.xpm;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="viewericon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\viewericon.xpm;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

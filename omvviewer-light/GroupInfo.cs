@@ -879,7 +879,7 @@ namespace omvviewerlight
 					if(notice.AssetType==AssetType.Notecard)
 					{
                    //NotecardReader nr=new NotecardReader(notice.
-                    GroupNotice note;
+                  
                    
 }            
 
