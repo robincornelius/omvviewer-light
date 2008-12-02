@@ -33,7 +33,7 @@ namespace omvviewerlight
 	{
 	
 		Gtk.ListStore store;
-		List<Group> groups_recieved=new List<Group>();
+		Dictionary <UUID,Group> groups_recieved=new	Dictionary <UUID,Group>();
 		Gtk.TreeIter active_group_iter;
 
         public void kill()
@@ -118,12 +118,12 @@ namespace omvviewerlight
         }		void onGroups(Dictionary<UUID,Group> groups)
 		{
 			
-					Gtk.Application.Invoke(delegate {
+				Gtk.Application.Invoke(delegate {
 			    lock(this.groups_recieved)
                 {
 				foreach(KeyValuePair <UUID,Group> group in groups)
 				{
-					if(!this.groups_recieved.Contains(group.Value))
+					if(!this.groups_recieved.ContainsKey(group.Key))
 					{
                         bool active = false;
 						if(MainClass.client.Self.ActiveGroup==group.Value.ID)
@@ -134,7 +134,7 @@ namespace omvviewerlight
 						if(active)
 						    active_group_iter=iter;
 						
-						this.groups_recieved.Add(group.Value);
+						this.groups_recieved.Add(group.Key,group.Value);
 				   }
 				}
               }
