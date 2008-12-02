@@ -178,7 +178,7 @@ namespace omvviewerlight
 
         public static void WriteSetting(string key, string value)
         {
-            System.Configuration.Configuration config =
+           System.Configuration.Configuration config =
            ConfigurationManager.OpenExeConfiguration(
            ConfigurationUserLevel.None);
 
@@ -190,14 +190,23 @@ namespace omvviewerlight
 
         public static string ReadSetting(string key)
         {
-            NameValueCollection appSettings =
-             ConfigurationManager.AppSettings;
+            System.Configuration.Configuration config =ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            KeyValueConfigurationCollection appSettings = config.AppSettings.Settings;
+            KeyValueConfigurationElement element;
 
-            if (appSettings.Get(key) == null)
+            try
+            {
+               element = appSettings[key];
+            }
+            catch
+            {
                 return "";
+            }
 
-            return appSettings.Get(key);
-
+            if (element != null)
+                return element.Value;
+            else
+                return "";
 	   }
 		
 		public static bool checksettingexists(string key)
