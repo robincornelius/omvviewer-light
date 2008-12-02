@@ -92,8 +92,7 @@ namespace omvviewerlight {
             // Container child omvviewerlight.Preferences.Gtk.Container+ContainerChild
             this.notebook1 = new Gtk.Notebook();
             this.notebook1.CanFocus = true;
-            this.notebook1.Name = "notebook1";
-            this.notebook1.CurrentPage = 1;
+            this.notebook1.CurrentPage = 0;
             // Container child notebook1.Gtk.Notebook+NotebookChild
             this.vbox2 = new Gtk.VBox();
             this.vbox2.Name = "vbox2";
@@ -198,7 +197,7 @@ namespace omvviewerlight {
             // Notebook tab
             this.label2 = new Gtk.Label();
             this.label2.Name = "label2";
-            this.label2.LabelProp = Mono.Unix.Catalog.GetString("page1");
+            this.label2.LabelProp = Mono.Unix.Catalog.GetString("General");
             this.notebook1.SetTabLabel(this.vbox2, this.label2);
             this.label2.ShowAll();
             // Container child notebook1.Gtk.Notebook+NotebookChild

@@ -7590,7 +7590,7 @@ time</property>
       <widget class="Gtk.Notebook" id="notebook1">
         <property name="MemberName" />
         <property name="CanFocus">True</property>
-        <property name="CurrentPage">1</property>
+        <property name="CurrentPage">0</property>
         <child>
           <widget class="Gtk.VBox" id="vbox2">
             <property name="MemberName" />
@@ -7742,7 +7742,7 @@ time</property>
         <child>
           <widget class="Gtk.Label" id="label2">
             <property name="MemberName" />
-            <property name="LabelProp" translatable="yes">page1</property>
+            <property name="LabelProp" translatable="yes">General</property>
           </widget>
           <packing>
             <property name="type">tab</property>

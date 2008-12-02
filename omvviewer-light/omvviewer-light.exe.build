@@ -175,6 +175,7 @@
                     <include name="${project::get-base-directory()}" />
                     <include name="${build.dir}" />
                 </lib>
+                <include name="System.Windows.Forms.dll" />
                 <include name="System.dll" />
                 <include name="System.Configuration.dll" />
                 <include name="System.Drawing.dll" />
