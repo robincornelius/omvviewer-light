@@ -5,9 +5,11 @@
 //
 
 using System;
+using Gtk;
+using Gdk;
+
 namespace omvviewerlight
 {
-	
 	public partial class Preferences : Gtk.Window
 	{
 		
@@ -17,9 +19,17 @@ namespace omvviewerlight
 			this.Build();
 			this.checkbutton_showtimestamps.Active=MainClass.appsettings.timestamps;			
 			this.checkbutton_hideminimise.Active=MainClass.appsettings.minimise;
-			this.radiobutton1.Active=MainClass.appsettings.default_minimim;
-			this.radiobutton2.Active=MainClass.appsettings.default_close;
-			
+            this.DeleteEvent += new DeleteEventHandler(OnDeleteEvent);
+
+            if (MainClass.appsettings.default_minimim)
+            {
+                this.radiobutton1.Active=true;
+            }
+            else
+            {
+                this.radiobutton2.Active=true;
+            }
+						
 			this.hscale_asset.Value=     MainClass.client.Throttle.Asset;
 			this.hscale_cloud.Value=    MainClass.client.Throttle.Cloud;
 			this.hscale_land.Value=     MainClass.client.Throttle.Land;
@@ -33,30 +43,30 @@ namespace omvviewerlight
 				protected virtual void OnCheckbuttonShowtimestampsClicked (object sender, System.EventArgs e)
 				{
 			          MainClass.appsettings.timestamps=checkbutton_showtimestamps.Active;
-                      MainClass.appsettings.Save();
+                     
 			         
 		        }
 
 				protected virtual void OnCheckbuttonHideminimiseClicked (object sender, System.EventArgs e)
 				{
                      MainClass.appsettings.minimise=this.checkbutton_hideminimise.Active;
-                     MainClass.appsettings.Save();
+               
 			        
 		        }
 
 				protected virtual void OnRadiobutton1Activated (object sender, System.EventArgs e)
 				{
-			          MainClass.appsettings.default_minimim=this.radiobutton1.Active;
-			          MainClass.appsettings.default_close=this.radiobutton2.Active;
-                      MainClass.appsettings.Save();
+			          MainClass.appsettings.default_minimim=true;
+			          MainClass.appsettings.default_close=false;
+                    
 			         
 		        }
 
 				protected virtual void OnRadiobutton2Activated (object sender, System.EventArgs e)
 				{
-			          MainClass.appsettings.default_minimim=this.radiobutton1.Active;
-			          MainClass.appsettings.default_close=this.radiobutton2.Active;
-                      MainClass.appsettings.Save();
+			          MainClass.appsettings.default_minimim=false;
+			          MainClass.appsettings.default_close=true;
+                   
 			         
 		        }
 
@@ -79,8 +89,23 @@ namespace omvviewerlight
 			MainClass.client.Throttle.Texture=(float)this.hscale_texture.Value;  
 			MainClass.client.Throttle.Wind=(float)this.hscale_wind.Value;
 			
-			       MainClass.appsettings.Save();
+	
 				
 				}
+
+
+                [GLib.ConnectBefore]
+                void OnDeleteEvent(object o, DeleteEventArgs args)
+                {
+
+                    MainClass.appsettings.default_minimim = this.radiobutton1.Active;
+                    MainClass.appsettings.default_close = this.radiobutton2.Active;
+                    MainClass.appsettings.Save();
+
+                }
+
 	}
+
+
+    
 }

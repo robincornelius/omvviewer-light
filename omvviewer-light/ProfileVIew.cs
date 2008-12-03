@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using OpenMetaverse;
+using Gtk;
 
 
 namespace omvviewerlight
@@ -55,6 +56,7 @@ namespace omvviewerlight
 			MainClass.client.Avatars.OnAvatarPicks += new OpenMetaverse.AvatarManager.AvatarPicksCallback(onPicks);
 			MainClass.client.Avatars.OnPickInfo += new OpenMetaverse.AvatarManager.PickInfoCallback(onPickInfo);
 			MainClass.client.Avatars.RequestAvatarPicks(key);
+            this.DeleteEvent += new DeleteEventHandler(OnDeleteEvent);
 			
 			this.label_born.Text="";
 			this.label_identified.Text="";
@@ -68,6 +70,19 @@ namespace omvviewerlight
 			this.image7.Pixbuf=buf.ScaleSimple(128,128,Gdk.InterpType.Bilinear);
 			
 		}
+
+        [GLib.ConnectBefore]
+        void OnDeleteEvent(object o, DeleteEventArgs args)
+        {
+            picks_waiting.Clear();
+            MainClass.client.Avatars.OnAvatarProperties -= new OpenMetaverse.AvatarManager.AvatarPropertiesCallback(onAvatarProperties);
+            MainClass.client.Avatars.OnAvatarNames -= new OpenMetaverse.AvatarManager.AvatarNamesCallback(on_avnames);
+            MainClass.client.Avatars.OnAvatarPicks -= new OpenMetaverse.AvatarManager.AvatarPicksCallback(onPicks);
+            MainClass.client.Avatars.OnPickInfo -= new OpenMetaverse.AvatarManager.PickInfoCallback(onPickInfo);
+            this.DeleteEvent -= new DeleteEventHandler(OnDeleteEvent);
+            Console.WriteLine("Profile view go bye bye");
+
+        }
 	
 		void onPickInfo(UUID pick,ProfilePick info)
 		{				

@@ -23,6 +23,7 @@ omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(
 //
 
 using System;
+using System.Threading;
 using OpenMetaverse;
 using OpenMetaverse.Imaging;
 using Gdk;
@@ -36,6 +37,8 @@ namespace omvviewerlight
 		Gtk.Image target_image;
         int img_width;
         int img_height;
+        ImageDownload this_image;
+        AssetTexture this_asset;
 		
 		public TryGetImage(Gtk.Image target,UUID asset,int width,int height)
 		{
@@ -57,26 +60,20 @@ namespace omvviewerlight
 			if(asset!=UUID.Zero)
 					MainClass.client.Assets.RequestImage(asset,OpenMetaverse.ImageType.Normal,1013000.0f, 0,0);	
 						
-	}
+	    }
 		
 		public void abort()
 	   {
 			MainClass.client.Assets.OnImageReceived -= new OpenMetaverse.AssetManager.ImageReceivedCallback(onGotImage);
 			MainClass.client.Assets.OnImageReceiveProgress -= new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
-	
        }
 			                                               
         void onProgress(UUID image, int recieved, int total,int lastpacket)
 		{
 			if(target_asset!=image)
-			return;
-			
-            //Console.WriteLine("Progress recieved "+recieved.ToString()+" of "+total.ToString()+" last "+lastpacket.ToString());
-			
-            progress(target_image.Pixbuf,(float)total/(float)lastpacket);
-			
+			    return;
 
-	
+            progress(target_image.Pixbuf,(float)total/(float)lastpacket);
 	}
 		
 		unsafe void progress(Gdk.Pixbuf bufdest,float progress)
@@ -102,87 +99,81 @@ namespace omvviewerlight
 			for(y=(height-20);y<(height-5);y++)
 			{
 				for(x=0;x<((float)widthx);x++)
-					{
+				{
                     
 					p=pixels+((y)*rowstride)+((x)* channels);
-                        p[0]=255;
-						p[1]=255;
-					    p[2]=255;
-					    p[3]=255;
-
+                    p[0]=255;
+					p[1]=255;
+					p[2]=255;
+					p[3]=255;
                 }	
-				
-			
-		}
-			
-        Gtk.Application.Invoke(delegate
-				{
-				
-			target_image.QueueDraw();
-       });
+		    }
+
+            Gtk.Application.Invoke(delegate
+            {
+                target_image.QueueDraw();
+            });		
+        }
+
+        void decodethread()
+        {
+
+            if (!this_image.Success)
+            {
+                Console.Write("Failed to download image\n");
+                return;
+            }
+
+            if (this_asset.AssetID != target_asset)
+                return;
+
+            MainClass.client.Assets.OnImageReceived -= new OpenMetaverse.AssetManager.ImageReceivedCallback(onGotImage);
+            MainClass.client.Assets.OnImageReceiveProgress -= new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
 
 
-			
-			
-         
-			
+            Console.Write("Downloaded asset " + this_asset.AssetID.ToString() + "\n");
+            byte[] tgaFile = null;
+            try
+            {
+                ManagedImage imgData;
+                OpenJPEG.DecodeToImage(this_image.AssetData, out imgData);
+                tgaFile = imgData.ExportTGA();
+            }
+            catch (Exception e)
+            {
+                Console.Write("\n*****************\n" + e.Message + "\n");
+            }
+           
+            Gdk.Pixbuf buf = new Gdk.Pixbuf(tgaFile).ScaleSimple(img_width, img_height, Gdk.InterpType.Bilinear);;
+            Console.Write("Decoded\n");
+
+            Gtk.Application.Invoke(delegate
+            {
+                try
+                {
+                    if (target_image != null) // this has managed to get set to null
+                    {
+                        if (target_image.Pixbuf != null)
+                        {
+                            target_image.Pixbuf = buf;
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.Write("*** Image decode blew whist trying to write image into pixbuf ***\n");
+                    Console.WriteLine(e.Message);
+                }
+            });
         }
 		                                  
 		void onGotImage(ImageDownload image,AssetTexture asset)
 		{
-	
-			if(!image.Success)
-			{
-				Console.Write("Failed to download image\n");
-				return;
-			}
-			
-			if(asset.AssetID!=target_asset)
-				return;
-
-            MainClass.client.Assets.OnImageReceived -= new OpenMetaverse.AssetManager.ImageReceivedCallback(onGotImage);
-			MainClass.client.Assets.OnImageReceiveProgress -= new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
-
-				
-				Console.Write("Downloaded asset "+asset.AssetID.ToString()+"\n");
-                byte[] tgaFile=null;
-				try
-				{	    
-					ManagedImage imgData;
-					OpenJPEG.DecodeToImage(image.AssetData, out imgData);
-					tgaFile = imgData.ExportTGA();
-                }
-                catch (Exception e)
-                {
-                    Console.Write("\n*****************\n" + e.Message + "\n");
-                }
-
-                Gtk.Application.Invoke(delegate
-                {	
-					try
-					{
-					    Gdk.Pixbuf buf=new Gdk.Pixbuf(tgaFile);
-						Console.Write("Decoded\n");
-						int x;
-	                    if (target_image!=null) // this has managed to get set to null
-	                    {
-	                        if (target_image.Pixbuf != null)
-	                        {
-	                            x = target_image.Pixbuf.Width;
-	                            target_image.Pixbuf = buf.ScaleSimple(img_width, img_height, Gdk.InterpType.Bilinear);
-	                        }
-	                    }
-					}
-					catch(Exception e)
-					{
-						Console.Write("*** Image decode blew whist trying to write image into pixbuf ***\n");
-						Console.WriteLine(e.Message);
-			}
-		});
-			
-			//target_image=null;
-
-	
+            this_image = image;
+            this_asset = asset;
+            Thread decode = new Thread(new ThreadStart(this.decodethread));
+            Console.WriteLine("Begining a decode thread for asset "+asset.AssetID.ToString());
+            decode.Start();
 		}	
 	}
 }

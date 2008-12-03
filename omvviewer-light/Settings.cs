@@ -129,15 +129,15 @@ namespace omvviewerlight
 		[UserScopedSettingAttribute()]
 		public bool default_minimim
 		{
-			get { try{return (bool)this["default_minimim"];} catch{return true;}  }
+            get { try { return (bool)this["default_minimim"]; } catch { return true; } }
 			set { this["default_minimim"] = value; }
 		}
 		
 		[UserScopedSettingAttribute()]
 		public bool default_close
 		{
-			get { try{return (bool)this["default_close"];} catch{return true;}  }
-			set { this["default_close"] = value; }
+			get { try{return (bool)this["default_close"];} catch{return false;}  }
+            set { this["default_close"] = value; }
 		}
 		
 		
