@@ -82,6 +82,7 @@ namespace omvviewerlight
             {
 				lock(store)
 				{
+                    // Needs testing!
                     populate_list();
 				}
             });
@@ -93,8 +94,14 @@ namespace omvviewerlight
             {
 				lock(store)
 				{
-					if (accepted == true)
-						populate_list();
+                    if (accepted == true)
+                    {
+                        Gtk.TreeIter iter = store.AppendValues(online_img, agentName, agentID.ToString(), true);
+                        AsyncNameUpdate ud = new AsyncNameUpdate(agentID, false);
+                        ud.addparameters(iter);
+                        ud.onNameCallBack += delegate(string namex, object[] values) { Gtk.TreeIter iterx = (Gtk.TreeIter)values[0]; store.SetValue(iterx, 1, namex); };
+                        ud.go();
+                    }
 				}
 			});
         }	
