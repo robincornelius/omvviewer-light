@@ -45,7 +45,7 @@
     <WebPage>index.html</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>0.42.0.0</ApplicationVersion>
+    <ApplicationVersion>0.43.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -305,9 +305,6 @@
     <EmbeddedResource Include="art\status_search_btn.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <Content Include="libopenjpeg-dotnet-2.1.3.0-x86_64.so" />
-    <Content Include="libopenjpeg-dotnet-2.1.3.0.dylib" />
-    <Content Include="libopenjpeg-dotnet-2.1.3.0.so" />
     <Content Include="MonoPosixHelper.dll" />
     <Content Include="OpenMetaverse.dll.config" />
     <Content Include="openmetaverse_data\avatar_lad.xml">
@@ -621,6 +618,9 @@
     <Content Include="openmetaverse_data\upperbody_color.tga" />
     <Content Include="openmetaverse_data\upperbody_highlights_alpha.tga" />
     <Content Include="openmetaverse_data\upperbody_shading_alpha.tga" />
+    <Content Include="libopenjpeg-dotnet-2.1.3.0-dotnet-1-x86_64.so" />
+    <Content Include="libopenjpeg-dotnet-2.1.3.0-dotnet-1.dylib" />
+    <Content Include="libopenjpeg-dotnet-2.1.3.0-dotnet-1.so" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

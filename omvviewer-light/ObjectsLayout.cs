@@ -94,7 +94,10 @@ namespace omvviewerlight
 
         void Self_OnAvatarSitResponse(UUID objectID, bool autoPilot, Vector3 cameraAtOffset, Vector3 cameraEyeOffset, bool forceMouselook, Vector3 sitPosition, Quaternion sitRotation)
         {
-            this.button_siton.Label = "Stand";
+            Gtk.Application.Invoke(delegate
+            {
+                this.button_siton.Label = "Stand";
+            });
         }
 
         int sort_Vector3(Gtk.TreeModel model, Gtk.TreeIter a, Gtk.TreeIter b)

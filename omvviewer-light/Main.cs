@@ -84,8 +84,8 @@ namespace omvviewerlight
 
                 client = new GridClient();
 				client.Settings.USE_TEXTURE_CACHE = true;
-                
-                string cache=System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData)+System.IO.Path.DirectorySeparatorChar+"omvviewer_cache";
+                client.Settings.setresourcedir(System.AppDomain.CurrentDomain.BaseDirectory);
+                string cache = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + System.IO.Path.DirectorySeparatorChar + "omvviewer-light" + System.IO.Path.DirectorySeparatorChar + "omvviewer_cache";
 				
                 Console.WriteLine("Setting texture cache to :"+cache);
 				client.Settings.TEXTURE_CACHE_DIR=cache;
