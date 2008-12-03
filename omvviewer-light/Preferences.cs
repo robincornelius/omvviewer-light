@@ -32,13 +32,15 @@ namespace omvviewerlight
 
 				protected virtual void OnCheckbuttonShowtimestampsClicked (object sender, System.EventArgs e)
 				{
-			          MainClass.appsettings.timestamps=checkbutton_showtimestamps.Active;			
+			          MainClass.appsettings.timestamps=checkbutton_showtimestamps.Active;
+                      MainClass.appsettings.Save();
 			         
 		        }
 
 				protected virtual void OnCheckbuttonHideminimiseClicked (object sender, System.EventArgs e)
 				{
                      MainClass.appsettings.minimise=this.checkbutton_hideminimise.Active;
+                     MainClass.appsettings.Save();
 			        
 		        }
 
@@ -46,6 +48,7 @@ namespace omvviewerlight
 				{
 			          MainClass.appsettings.default_minimim=this.radiobutton1.Active;
 			          MainClass.appsettings.default_close=this.radiobutton2.Active;
+                      MainClass.appsettings.Save();
 			         
 		        }
 
@@ -53,6 +56,7 @@ namespace omvviewerlight
 				{
 			          MainClass.appsettings.default_minimim=this.radiobutton1.Active;
 			          MainClass.appsettings.default_close=this.radiobutton2.Active;
+                      MainClass.appsettings.Save();
 			         
 		        }
 
