@@ -559,6 +559,7 @@ public partial class MainWindow: Gtk.Window
         Parcel parcel;
         Vector3 pos = MainClass.client.Self.RelativePosition;
         int parcelid = MainClass.client.Network.CurrentSim.ParcelMap[(int)(64.0 * (pos.Y/256.0)), (int)(64.0 * (pos.X/256))];
+        
         if (!callback && parcelid == lastparcelid)
             return;
 
