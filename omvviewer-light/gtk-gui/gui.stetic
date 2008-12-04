@@ -2666,7 +2666,7 @@ Resident Michelle2 Zenovka
         <property name="MemberName" />
         <property name="WidthRequest">160</property>
         <property name="CanFocus">True</property>
-        <property name="CurrentPage">0</property>
+        <property name="CurrentPage">1</property>
         <child>
           <widget class="Gtk.VBox" id="vbox1">
             <property name="MemberName" />
@@ -2689,10 +2689,16 @@ Resident Michelle2 Zenovka
                 <property name="MemberName" />
                 <property name="Spacing">6</property>
                 <child>
-                  <widget class="Gtk.Image" id="image7">
+                  <widget class="Gtk.EventBox" id="eventbox1">
                     <property name="MemberName" />
-                    <property name="WidthRequest">128</property>
-                    <property name="HeightRequest">128</property>
+                    <signal name="ButtonPressEvent" handler="OnEventbox1ButtonPressEvent" />
+                    <child>
+                      <widget class="Gtk.Image" id="image7">
+                        <property name="MemberName" />
+                        <property name="WidthRequest">128</property>
+                        <property name="HeightRequest">128</property>
+                      </widget>
+                    </child>
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -3016,10 +3022,16 @@ Resident Michelle2 Zenovka
             <property name="MemberName" />
             <property name="Spacing">6</property>
             <child>
-              <widget class="Gtk.Image" id="image3">
+              <widget class="Gtk.EventBox" id="eventbox2">
                 <property name="MemberName" />
-                <property name="WidthRequest">128</property>
-                <property name="HeightRequest">128</property>
+                <signal name="ButtonPressEvent" handler="OnEventbox2ButtonPressEvent" />
+                <child>
+                  <widget class="Gtk.Image" id="image3">
+                    <property name="MemberName" />
+                    <property name="WidthRequest">128</property>
+                    <property name="HeightRequest">128</property>
+                  </widget>
+                </child>
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -3117,10 +3129,16 @@ Resident Michelle2 Zenovka
         <property name="MemberName" />
         <property name="Spacing">6</property>
         <child>
-          <widget class="Gtk.Image" id="image2">
+          <widget class="Gtk.EventBox" id="eventbox3">
             <property name="MemberName" />
-            <property name="WidthRequest">128</property>
-            <property name="HeightRequest">128</property>
+            <signal name="ButtonPressEvent" handler="OnEventbox3ButtonPressEvent" />
+            <child>
+              <widget class="Gtk.Image" id="image2">
+                <property name="MemberName" />
+                <property name="WidthRequest">128</property>
+                <property name="HeightRequest">128</property>
+              </widget>
+            </child>
           </widget>
           <packing>
             <property name="Position">0</property>

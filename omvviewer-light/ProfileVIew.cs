@@ -223,6 +223,25 @@ namespace omvviewerlight
 		{
 		 MainClass.client.Friends.OfferFriendship(resident);
 		}
+
+		protected virtual void OnEventbox1ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+			if(this.profile_pic==UUID.Zero)
+				return;
+
+			TexturePreview tp= new TexturePreview(this.profile_pic,this.label_name.Text,false);
+			tp.ShowAll();
+		}
+
+		protected virtual void OnEventbox2ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+			if(this.firstlife_pic==UUID.Zero)
+				return;
+			
+			TexturePreview tp= new TexturePreview(this.firstlife_pic,this.label_name.Text,false);
+			tp.ShowAll();
+
+		}
 	
 	}
 }

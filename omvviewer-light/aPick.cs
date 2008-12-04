@@ -32,6 +32,7 @@ namespace omvviewerlight
 	{
 		Vector3d picpos;
 		string sim;
+		UUID picimage;
 		
 		public aPick(UUID image,string name,string desc,string info,string simname,Vector3d pos)
 		{
@@ -41,6 +42,7 @@ namespace omvviewerlight
 			this.textview1.Buffer.Text=desc;
 			sim=simname;
 			picpos=pos;
+			picimage=image;
 			TryGetImage pic=new TryGetImage(this.image2,image,128,128);
 		}
 
@@ -55,6 +57,16 @@ namespace omvviewerlight
 			tp.Show();
 			tp.teleport(sim,pos);
 					
+		}
+
+		protected virtual void OnEventbox3ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+			if(this.picimage==UUID.Zero)
+				return;
+
+			TexturePreview tp= new TexturePreview(this.picimage,label_sim.Text,false);
+			tp.ShowAll();
+
 		}
 	}
 }

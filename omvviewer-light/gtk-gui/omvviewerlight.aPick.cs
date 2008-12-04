@@ -15,6 +15,8 @@ namespace omvviewerlight {
         
         private Gtk.VBox vbox1;
         
+        private Gtk.EventBox eventbox3;
+        
         private Gtk.Image image2;
         
         private Gtk.Label label_sim;
@@ -39,24 +41,28 @@ namespace omvviewerlight {
             this.vbox1.Name = "vbox1";
             this.vbox1.Spacing = 6;
             // Container child vbox1.Gtk.Box+BoxChild
+            this.eventbox3 = new Gtk.EventBox();
+            this.eventbox3.Name = "eventbox3";
+            // Container child eventbox3.Gtk.Container+ContainerChild
             this.image2 = new Gtk.Image();
             this.image2.WidthRequest = 128;
             this.image2.HeightRequest = 128;
             this.image2.Name = "image2";
-            this.vbox1.Add(this.image2);
-            Gtk.Box.BoxChild w1 = ((Gtk.Box.BoxChild)(this.vbox1[this.image2]));
-            w1.Position = 0;
-            w1.Expand = false;
-            w1.Fill = false;
+            this.eventbox3.Add(this.image2);
+            this.vbox1.Add(this.eventbox3);
+            Gtk.Box.BoxChild w2 = ((Gtk.Box.BoxChild)(this.vbox1[this.eventbox3]));
+            w2.Position = 0;
+            w2.Expand = false;
+            w2.Fill = false;
             // Container child vbox1.Gtk.Box+BoxChild
             this.label_sim = new Gtk.Label();
             this.label_sim.Name = "label_sim";
             this.label_sim.LabelProp = Mono.Unix.Catalog.GetString("label1");
             this.vbox1.Add(this.label_sim);
-            Gtk.Box.BoxChild w2 = ((Gtk.Box.BoxChild)(this.vbox1[this.label_sim]));
-            w2.Position = 1;
-            w2.Expand = false;
-            w2.Fill = false;
+            Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.vbox1[this.label_sim]));
+            w3.Position = 1;
+            w3.Expand = false;
+            w3.Fill = false;
             // Container child vbox1.Gtk.Box+BoxChild
             this.GtkScrolledWindow = new Gtk.ScrolledWindow();
             this.GtkScrolledWindow.Name = "GtkScrolledWindow";
@@ -69,17 +75,17 @@ namespace omvviewerlight {
             this.textview1.WrapMode = ((Gtk.WrapMode)(2));
             this.GtkScrolledWindow.Add(this.textview1);
             this.vbox1.Add(this.GtkScrolledWindow);
-            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.vbox1[this.GtkScrolledWindow]));
-            w4.Position = 2;
+            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox1[this.GtkScrolledWindow]));
+            w5.Position = 2;
             // Container child vbox1.Gtk.Box+BoxChild
             this.label_info = new Gtk.Label();
             this.label_info.Name = "label_info";
             this.label_info.LabelProp = Mono.Unix.Catalog.GetString("label2");
             this.vbox1.Add(this.label_info);
-            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox1[this.label_info]));
-            w5.Position = 3;
-            w5.Expand = false;
-            w5.Fill = false;
+            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.vbox1[this.label_info]));
+            w6.Position = 3;
+            w6.Expand = false;
+            w6.Fill = false;
             // Container child vbox1.Gtk.Box+BoxChild
             this.hbox1 = new Gtk.HBox();
             this.hbox1.Name = "hbox1";
@@ -91,20 +97,21 @@ namespace omvviewerlight {
             this.button_teleport.UseUnderline = true;
             this.button_teleport.Label = Mono.Unix.Catalog.GetString("Teleport");
             this.hbox1.Add(this.button_teleport);
-            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox1[this.button_teleport]));
-            w6.Position = 0;
-            w6.Expand = false;
-            w6.Fill = false;
-            this.vbox1.Add(this.hbox1);
-            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
-            w7.Position = 4;
+            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.hbox1[this.button_teleport]));
+            w7.Position = 0;
             w7.Expand = false;
             w7.Fill = false;
+            this.vbox1.Add(this.hbox1);
+            Gtk.Box.BoxChild w8 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
+            w8.Position = 4;
+            w8.Expand = false;
+            w8.Fill = false;
             this.Add(this.vbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
             }
             this.Show();
+            this.eventbox3.ButtonPressEvent += new Gtk.ButtonPressEventHandler(this.OnEventbox3ButtonPressEvent);
             this.button_teleport.Clicked += new System.EventHandler(this.OnButtonTeleportClicked);
         }
     }
