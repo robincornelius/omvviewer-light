@@ -44,7 +44,7 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>index.html</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationRevision>4</ApplicationRevision>
     <ApplicationVersion>0.43.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -188,6 +188,7 @@
     <Compile Include="gtk-gui\omvviewerlight.Searches.cs" />
     <Compile Include="gtk-gui\omvviewerlight.TeleportProgress.cs" />
     <Compile Include="gtk-gui\omvviewerlight.TeleportTo.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.TexturePreview.cs" />
     <Compile Include="Inventory.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -260,6 +261,7 @@
     <Compile Include="TeleportTo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TexturePreview.cs" />
     <Compile Include="TryGetImage.cs">
       <SubType>Code</SubType>
     </Compile>
