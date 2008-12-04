@@ -1,13 +1,18 @@
 ﻿<UserCombinePreferences version="1.0" filename="/home/robin/libsecondlife/omvviewer-light/omvviewer-light.mds">
   <Files>
     <File name="Welcome" />
-    <File name="omvviewer-light/Inventory.cs" line="420" column="1" />
+    <File name="omvviewer-light/Inventory.cs" line="409" column="5" />
+    <File name="omvviewer-light/Main.cs" line="86" column="16" />
+    <File name="omvviewer-light/ChatConsole.cs" line="106" column="10" />
+    <File name="omvviewer-light/Map.cs" line="54" column="15" />
+    <File name="omvviewer-light/LoginControl.cs" line="156" column="5" />
+    <File name="omvviewer-light/ObjectsLayout.cs" line="314" column="5" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
-          <Node name="Inventory.cs" selected="True" />
+          <Node name="ObjectsLayout.cs" selected="True" />
         </Node>
       </Node>
     </ViewMemento>
@@ -16,7 +21,7 @@
     </ViewMemento>
   </Views>
   <Properties>
-    <Property key="ActiveWindow" value="/home/robin/libsecondlife/omvviewer-light/omvviewer-light/Inventory.cs" />
+    <Property key="ActiveWindow" value="/home/robin/libsecondlife/omvviewer-light/omvviewer-light/ObjectsLayout.cs" />
     <Property key="ActiveConfiguration" value="Debug" />
   </Properties>
 </UserCombinePreferences>

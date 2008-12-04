@@ -311,6 +311,7 @@ namespace omvviewerlight
 				UUID id=(UUID)mod.GetValue(iter,3);
 		
 				Primitive prim;
+				
 				if(FetchedPrims.TryGetValue(id,out prim))
 				{
 				Console.WriteLine(prim.ToString());
