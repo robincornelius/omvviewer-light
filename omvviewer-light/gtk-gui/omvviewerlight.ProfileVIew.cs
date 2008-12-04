@@ -321,7 +321,7 @@ namespace omvviewerlight {
             w23.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w24 = new Gtk.Image();
-            w24.Pixbuf = MainClass.GetResource("icn_voice-groupfocus.tga");
+            w24.Pixbuf = Gdk.Pixbuf.LoadFromResource("icn_voice-groupfocus.tga");
             w23.Add(w24);
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w26 = new Gtk.Label();
@@ -342,14 +342,14 @@ namespace omvviewerlight {
             this.button_pay.UseUnderline = true;
             // Container child button_pay.Gtk.Container+ContainerChild
             Gtk.Alignment w31 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
-            // Container child GtkAlignment2.Gtk.Container+ContainerChild
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
             Gtk.HBox w32 = new Gtk.HBox();
             w32.Spacing = 2;
-            // Container child GtkHBox1.Gtk.Container+ContainerChild
+            // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w33 = new Gtk.Image();
-            w33.Pixbuf = MainClass.GetResource("status_money.tga");
+            w33.Pixbuf = Gdk.Pixbuf.LoadFromResource("status_money.tga");
             w32.Add(w33);
-            // Container child GtkHBox1.Gtk.Container+ContainerChild
+            // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w35 = new Gtk.Label();
             w35.LabelProp = Mono.Unix.Catalog.GetString("Pay");
             w35.UseUnderline = true;
@@ -368,14 +368,14 @@ namespace omvviewerlight {
             this.button_teleport.UseUnderline = true;
             // Container child button_teleport.Gtk.Container+ContainerChild
             Gtk.Alignment w40 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
-            // Container child GtkAlignment3.Gtk.Container+ContainerChild
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
             Gtk.HBox w41 = new Gtk.HBox();
             w41.Spacing = 2;
-            // Container child GtkHBox2.Gtk.Container+ContainerChild
+            // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w42 = new Gtk.Image();
-            w42.Pixbuf = MainClass.GetResource("icon_place.tga");
+            w42.Pixbuf = Gdk.Pixbuf.LoadFromResource("icon_place.tga");
             w41.Add(w42);
-            // Container child GtkHBox2.Gtk.Container+ContainerChild
+            // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w44 = new Gtk.Label();
             w44.LabelProp = Mono.Unix.Catalog.GetString("Teleport");
             w44.UseUnderline = true;

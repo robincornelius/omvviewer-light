@@ -95,14 +95,14 @@ namespace omvviewerlight
                 //this is the main chat winddow, notify for all friends here
                 Gtk.Application.Invoke(delegate
                 {
-                    displaychat(friend.Name + "is offline", "", onoffline, onoffline);
+                    displaychat(friend.Name + " is offline", "", onoffline, onoffline);
                 });
             }
             else if (im_key != UUID.Zero && im_key == friend.UUID)
             {
                 Gtk.Application.Invoke(delegate
                 {
-                    displaychat(friend.Name + "is offline", "", onoffline, onoffline);
+                    displaychat(friend.Name + " is offline", "", onoffline, onoffline);
                 });
             }
         }

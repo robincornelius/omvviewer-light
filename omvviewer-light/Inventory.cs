@@ -66,6 +66,22 @@ namespace omvviewerlight
         Gdk.Pixbuf item_snapshot = MainClass.GetResource("inv_item_snapshot.tga");
         Gdk.Pixbuf item_sound = MainClass.GetResource("inv_item_sound.tga");
         Gdk.Pixbuf item_callingcard = MainClass.GetResource("inv_item_callingcard_offline.tga");
+		
+		Gdk.Pixbuf item_clothing_eyes = MainClass.GetResource("inv_item_eyes.tga");
+		Gdk.Pixbuf item_clothing_gloves = MainClass.GetResource("inv_item_gloves.tga");
+		Gdk.Pixbuf item_clothing_hair= MainClass.GetResource("inv_item_hair.tga");
+		Gdk.Pixbuf item_clothing_jacket= MainClass.GetResource("inv_item_jacket.tga");
+		Gdk.Pixbuf item_clothing_pants= MainClass.GetResource("inv_item_pants.tga");
+		Gdk.Pixbuf item_clothing_shoes= MainClass.GetResource("inv_item_shoes.tga");
+		Gdk.Pixbuf item_clothing_skin= MainClass.GetResource("inv_item_skin.tga");
+		Gdk.Pixbuf item_clothing_skirt= MainClass.GetResource("inv_item_skirt.tga");
+		Gdk.Pixbuf item_clothing_underpants= MainClass.GetResource("inv_item_underpants.tga");
+	//	Gdk.Pixbuf item_clothing_underskirt= MainClass.GetResource("inv_item_underskirt.tga");
+		Gdk.Pixbuf item_clothing_undershirt= MainClass.GetResource("inv_item_undershirt.tga");
+	
+		Gdk.Pixbuf item_clothing_shirt= MainClass.GetResource("inv_item_shirt.tga");
+		Gdk.Pixbuf item_clothing_socks= MainClass.GetResource("inv_item_socks.tga");
+		Gdk.Pixbuf item_clothing_shape= MainClass.GetResource("inv_item_shape.tga");
 
         Gdk.Pixbuf folder_texture = MainClass.GetResource("inv_folder_texture.tga");
         Gdk.Pixbuf folder_sound = MainClass.GetResource("inv_folder_sound.tga");
@@ -105,7 +121,8 @@ namespace omvviewerlight
 			this.treeview_inv.RowCollapsed += new Gtk.RowCollapsedHandler(onRowCollapsed);
 			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             this.treeview_inv.ButtonPressEvent += new ButtonPressEventHandler(treeview_inv_ButtonPressEvent);
-          
+			MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
+
 			this.label_aquired.Text="";
 			this.label_createdby.Text="";
 			this.label_name.Text="";
@@ -383,7 +400,15 @@ namespace omvviewerlight
             Gtk.TreeIter iter;
             this.treeview_inv.Selection.GetSelected(out mod, out iter);
             InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+
 			List<InventoryBase> ibs=new List<InventoryBase>();
+			
+			foreach(KeyValuePair <WearableType, OpenMetaverse.AppearanceManager.WearableData> kvp in  MainClass.client.Appearance.Wearables.Dictionary)
+			{
+				ibs.Add((InventoryBase)kvp.Value.Item);
+			}
+				
+			
 			ibs.Add(item);
 
 			MainClass.client.Appearance.WearOutfit(ibs,true);
@@ -398,18 +423,26 @@ namespace omvviewerlight
             MainClass.client.Appearance.Attach((InventoryItem)item, AttachmentPoint.Default);
         }
 
-        void onLogin(LoginStatus status, string message)
+		void onEventQueue(Simulator sim)
 		{
-			if(LoginStatus.Success==status)
+			if(sim.ID==MainClass.client.Network.CurrentSim.ID)
 			{
 				Gtk.Application.Invoke(delegate {
 					inventory.Clear();
 					populate_top_level_inv();
 					this.no_items=0;
-					//Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
-					//invRunner.Start(MainClass.client.Inventory.Store.RootFolder.UUID);
-					//this.fetchinventory(MainClass.client.Inventory.Store.RootFolder.UUID);
+					Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
+					invRunner.Start(MainClass.client.Inventory.Store.RootFolder.UUID);
+					this.fetchinventory(MainClass.client.Inventory.Store.RootFolder.UUID);
 				});
+				 
+			}
+		}
+		
+        void onLogin(LoginStatus status, string message)
+		{
+			if(LoginStatus.Success==status)
+			{
 			}
 		}
 				
@@ -605,8 +638,59 @@ namespace omvviewerlight
 				return this.item_animation;
 			
 			if(item is OpenMetaverse.InventoryWearable)
-				return this.item_clothing;
+			{
+				OpenMetaverse.InventoryWearable wearable=(OpenMetaverse.InventoryWearable)item;
+				switch(wearable.WearableType)
+				{
+				case WearableType.Eyes:
+                return this.item_clothing_eyes;					
+                break;	
+				case WearableType.Gloves:
+                return this.item_clothing_gloves;					
+                break;	
+				case WearableType.Hair:
+                return this.item_clothing_hair;					
+                break;	
+				case WearableType.Jacket:
+                return this.item_clothing_jacket;					
+                break;	
+				case WearableType.Pants:
+                return this.item_clothing_pants;					
+                break;	
+				case WearableType.Shape:
+                return this.item_clothing_shape;					
+                break;	
+				case WearableType.Shirt:
+                return this.item_clothing_shirt;					
+                break;	
+				case WearableType.Shoes:
+                return this.item_clothing_shoes;					
+                break;	
+				case WearableType.Skin:
+				return this.item_clothing_skin;					
+                break;	
+				case WearableType.Skirt:
+				return this.item_clothing_skirt;					
+				break;	
+				case WearableType.Socks:
+				return this.item_clothing_socks;					
+				break;	
+				case WearableType.Underpants:
+				return this.item_clothing_underpants;					
+                break;	
+				case WearableType.Undershirt:
+				return this.item_clothing_undershirt;					
+                break;	
+					
 
+
+				
+				default:
+				return this.item_clothing;
+	            break;
+                }				
+                
+            }
             if (item is OpenMetaverse.InventoryGesture)
                 return this.item_gesture;
 
