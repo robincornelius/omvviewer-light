@@ -133,6 +133,7 @@
                 <include name="Settings.cs" />
                 <include name="TeleportProgress.cs" />
                 <include name="TeleportTo.cs" />
+		<include name="TexturePreview.cs" />
                 <include name="TryGetImage.cs" />
                 <include name="aPick.cs" />
                 <include name="Properties/Resources.Designer.cs" />
@@ -168,7 +169,8 @@
                 <include name="gtk-gui/omvviewerlight.Searches.cs" />
                 <include name="gtk-gui/omvviewerlight.TeleportProgress.cs" />
                 <include name="gtk-gui/omvviewerlight.TeleportTo.cs" />
-                <include name="gtk-gui/omvviewerlight.aPick.cs" />
+		<include name="gtk-gui/omvviewerlight.TexturePreview.cs" />                
+		<include name="gtk-gui/omvviewerlight.aPick.cs" />
             </sources>
             <references basedir="${project::get-base-directory()}">
                 <lib>

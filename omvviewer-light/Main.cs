@@ -83,12 +83,18 @@ namespace omvviewerlight
                     monodevelop = true;
 
                 client = new GridClient();
-				client.Settings.USE_TEXTURE_CACHE = true;
-                client.Settings.setresourcedir(System.AppDomain.CurrentDomain.BaseDirectory);
-                string cache = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + System.IO.Path.DirectorySeparatorChar + "omvviewer-light" + System.IO.Path.DirectorySeparatorChar + "omvviewer_cache";
+		client.Settings.USE_TEXTURE_CACHE = true;
+
+		string res_dir=System.AppDomain.CurrentDomain.BaseDirectory+"openmetaverse_data";
+
+                client.Settings.setresourcedir(res_dir);
+
+		Console.WriteLine("Setting resource dir to "+res_dir);      
+          
+		string cache = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + System.IO.Path.DirectorySeparatorChar + "omvviewer-light" + System.IO.Path.DirectorySeparatorChar + "omvviewer_cache";
 				
                 Console.WriteLine("Setting texture cache to :"+cache);
-				client.Settings.TEXTURE_CACHE_DIR=cache;
+		client.Settings.TEXTURE_CACHE_DIR=cache;
               
                 name_cache = new AVNameCache();
                 Gtk.Application.Init();
