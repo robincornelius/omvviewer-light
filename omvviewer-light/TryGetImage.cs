@@ -39,23 +39,38 @@ namespace omvviewerlight
         int img_height;
         ImageDownload this_image;
         AssetTexture this_asset;
+		bool scale=false;
+		
+		public TryGetImage(Gtk.Image target,UUID asset)
+		{
+			TryGetImageWork(target,asset,true,256,256);
+		}
 		
 		public TryGetImage(Gtk.Image target,UUID asset,int width,int height)
+		{
+			TryGetImageWork(target,asset,false,width,height);
+		}
+		
+		public void TryGetImageWork(Gtk.Image target,UUID asset,bool auto,int width,int height)
 		{
 			if(target==null)
 				return;
 			
 			MainClass.client.Assets.OnImageReceived += new OpenMetaverse.AssetManager.ImageReceivedCallback(onGotImage);
 			MainClass.client.Assets.OnImageReceiveProgress += new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
+			scale=auto;
 			
 			target_asset=asset;
 			target_image=target;
             img_width = width;
             img_height = height;
 		
-			
 			Gdk.Pixbuf buf=MainClass.GetResource("trying.tga");
-			target_image.Pixbuf=buf.ScaleSimple(width,height,Gdk.InterpType.Bilinear);
+
+			if(auto)
+				target_image.Pixbuf=buf;				
+			else
+				target_image.Pixbuf=buf.ScaleSimple(width,height,Gdk.InterpType.Bilinear);
 
 			if(asset!=UUID.Zero)
 					MainClass.client.Assets.RequestImage(asset,OpenMetaverse.ImageType.Normal,1013000.0f, 0,0);	
@@ -144,7 +159,13 @@ namespace omvviewerlight
                 Console.Write("\n*****************\n" + e.Message + "\n");
             }
            
-            Gdk.Pixbuf buf = new Gdk.Pixbuf(tgaFile).ScaleSimple(img_width, img_height, Gdk.InterpType.Bilinear);;
+			Gdk.Pixbuf buf;
+				
+			if(this.scale)
+				buf = new Gdk.Pixbuf(tgaFile);
+			else
+				buf = new Gdk.Pixbuf(tgaFile).ScaleSimple(img_width, img_height, Gdk.InterpType.Bilinear);;
+					
             Console.Write("Decoded\n");
 
             Gtk.Application.Invoke(delegate
@@ -156,7 +177,11 @@ namespace omvviewerlight
                         if (target_image.Pixbuf != null)
                         {
                             target_image.Pixbuf = buf;
-                        }
+							if(scale)
+							{
+									
+							}
+						}
                     }
                 }
                 catch (Exception e)

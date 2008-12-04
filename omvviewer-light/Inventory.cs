@@ -306,6 +306,14 @@ namespace omvviewerlight
 							 menu.Append(menu_read_note);
 							
 						}
+
+						if(item is InventoryTexture || item is InventorySnapshot)
+						{
+				             Gtk.MenuItem menu_view_texture = new MenuItem("View texture");
+							 menu_view_texture.ButtonPressEvent+= new ButtonPressEventHandler(onViewTexture);
+							 menu.Append(menu_view_texture);							
+						}
+						
 						
                         if(item is InventoryItem)
                         {
@@ -357,7 +365,18 @@ namespace omvviewerlight
 			
 		}
 		
+		void onViewTexture (object o, ButtonPressEventArgs args)
+		{
+            Gtk.TreeModel mod;
+            Gtk.TreeIter iter;
+            this.treeview_inv.Selection.GetSelected(out mod, out iter);
+            InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+			TexturePreview tp=new TexturePreview(item.UUID,item.Name,true);
+			tp.ShowAll();
 			
+		}
+
+		
         void menu_wear_item_ButtonPressEvent(object o, ButtonPressEventArgs args)
         {
             Gtk.TreeModel mod;
