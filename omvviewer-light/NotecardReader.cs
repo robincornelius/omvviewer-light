@@ -182,6 +182,12 @@ namespace omvviewerlight
 		Dictionary <int,EmbeddedInventory> embedded_inv= new Dictionary <int,EmbeddedInventory>();
 		Dictionary <Gtk.TextTag,EmbeddedInventory> iter_uuid_dict= new Dictionary <Gtk.TextTag,EmbeddedInventory>();
 
+		~NotecardReader()
+		{
+			Console.WriteLine("NotecardReader Cleaned up");
+		}		
+		
+		
 		public NotecardReader(UUID item,UUID target,UUID notecard_item_id_in) : 
 				base(Gtk.WindowType.Toplevel)
 		{

@@ -49,12 +49,22 @@ namespace omvviewerlight
 			
 			
 		}
+
+		~Search()
+		{
+			Console.WriteLine("Search cleaned up");
+		}
 		
-        public void kill()
+        public void Dispose()
 		{
 			Gtk.Notebook p;
 			p=(Gtk.Notebook)this.Parent;
 			p.RemovePage(p.PageNum(this));
+			
+			//TODO KILL CHILD SEARCHES FROM HERE
+			
+			Finalize();
+			System.GC.SuppressFinalize(this);
 		}
 		
 		Gtk.Label addtabwithicon(string filename,string label,Gtk.Widget contents)

@@ -47,6 +47,12 @@ namespace omvviewerlight
         uint targetLocalID = 0;
 		bool Active;
 	
+		~Radar()
+		{
+			Console.WriteLine("Radar Cleaned up");
+		}		
+		
+		
 		public Radar()
 		{      
 			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(uint));

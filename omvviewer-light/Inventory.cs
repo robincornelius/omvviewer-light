@@ -43,7 +43,7 @@ namespace omvviewerlight
 			path = pathx;
 		}
     }
-
+	
 	public partial class Inventory : Gtk.Bin
 	{ 	
 		public int no_items;
@@ -95,19 +95,28 @@ namespace omvviewerlight
         Gdk.Pixbuf folder_callingcard = MainClass.GetResource("inv_folder_callingcard.tga");
         Gdk.Pixbuf folder_clothing = MainClass.GetResource("inv_folder_clothing.tga");
 
-
-        public void kill()
-        {
-
+		~Inventory()
+		{
+			Console.WriteLine("Inventory Cleaned up");
+		}
+	    	
+        public void Dispose()
+		{
+            Console.WriteLine("Running cleanup code for inventory");
+			
             this.treeview_inv.RowExpanded -= new Gtk.RowExpandedHandler(onRowExpanded);
             this.treeview_inv.RowCollapsed -= new Gtk.RowCollapsedHandler(onRowCollapsed);
             MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-            this.treeview_inv.ButtonPressEvent -= new ButtonPressEventHandler(treeview_inv_ButtonPressEvent);
-    
+            this.treeview_inv.ButtonPressEvent -= new ButtonPressEventHandler(treeview_inv_ButtonPressEvent);			
+			MainClass.client.Network.OnEventQueueRunning -= new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
+			
             Gtk.Notebook p;
             p = (Gtk.Notebook)this.Parent;
             p.RemovePage(p.PageNum(this));
-        }
+			
+			Finalize();
+			System.GC.SuppressFinalize(this);
+		}
 
 		public Inventory()
 		{

@@ -36,12 +36,16 @@ namespace omvviewerlight
 			this.Build();
 		}
 		
-		public void kill()
+		public void Dispose()
 		{
 			Gtk.Notebook p;
 			p=(Gtk.Notebook)this.Parent;
 			p.RemovePage(p.PageNum(this));
 			
+			//Todo kill child widgets
+			Finalize();
+			System.GC.SuppressFinalize(this);
+
 		}
 	}
 }

@@ -38,8 +38,12 @@ namespace omvviewerlight
         Dictionary<UUID, Primitive> PrimsWaiting = new Dictionary<UUID, Primitive>();
         Dictionary<UUID, Primitive> FetchedPrims = new Dictionary<UUID, Primitive>();
 		
+		~ObjectsLayout()
+		{
+			Console.WriteLine("ObjectsLayout Cleaned up");
+		}		
 
-        public void kill()
+        public void Dispose()
         {
             MainClass.client.Objects.OnObjectProperties -= new OpenMetaverse.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
             MainClass.client.Groups.OnGroupNames -= new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
@@ -48,7 +52,10 @@ namespace omvviewerlight
             Gtk.Notebook p;
             p = (Gtk.Notebook)this.Parent;
             p.RemovePage(p.PageNum(this));
-        }
+			
+			Finalize();
+			System.GC.SuppressFinalize(this);
+		}
 
 		public ObjectsLayout()
 		{

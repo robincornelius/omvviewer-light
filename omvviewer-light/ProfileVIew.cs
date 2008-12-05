@@ -71,6 +71,12 @@ namespace omvviewerlight
 			
 		}
 
+		~ProfileVIew()
+		{
+			Console.WriteLine("ProfileView Cleaned up");
+		}		
+		
+		
         [GLib.ConnectBefore]
         void OnDeleteEvent(object o, DeleteEventArgs args)
         {

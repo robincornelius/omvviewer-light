@@ -49,7 +49,12 @@ namespace omvviewerlight
 		
 		Dictionary <int,Gtk.TreeIter> parcel_to_tree =new Dictionary <int,Gtk.TreeIter>();
 
-        public void kill()
+		~ParcelMgr()
+		{
+			Console.WriteLine("ParcelMgr Cleaned up");
+		}		
+		
+        public void Dispose()
         {
             MainClass.client.Parcels.OnParcelInfo -= new OpenMetaverse.ParcelManager.ParcelInfoCallback(onParcelInfo);
             MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
@@ -60,6 +65,10 @@ namespace omvviewerlight
             Gtk.Notebook p;
             p = (Gtk.Notebook)this.Parent;
             p.RemovePage(p.PageNum(this));
+			
+			Finalize();
+			System.GC.SuppressFinalize(this);
+
         }
 
 		public ParcelMgr()

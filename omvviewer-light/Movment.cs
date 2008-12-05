@@ -34,7 +34,12 @@ namespace omvviewerlight
 	{
 
         Quaternion rotation;
+		~Movment()
+		{
+			Console.WriteLine("Movement Cleaned up");
+		}		
 
+		
 		public Movment()
 		{
 			this.Build();			

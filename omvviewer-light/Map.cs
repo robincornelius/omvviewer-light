@@ -75,6 +75,12 @@ namespace omvviewerlight
              }	
 		}
 
+		~Map()
+		{
+			Console.WriteLine("Map Cleaned up");
+		}		
+		
+		
         bool kickrefresh()
         {
 

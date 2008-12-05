@@ -953,38 +953,17 @@ public partial class MainWindow: Gtk.Window
 			});
 
 		}
-/*	
-	bool parcelallowed(Simulator sim,int parcelid)
-	{
-        //If avatar owns the parcel they are allowed.
-        //If they are in the group that owns the parcel AND have the correct group permissions AND have the group tag they are allowed
-	   if(sim.Parcels.Dictionary.ContainsKey(parcelid))
-	    {
-		   if(sim.Parcels.Dictionary[parcelid].OwnerID==MainClass.client.Self.AgentID)
-			  return true;
-
-           if (sim.Parcels.Dictionary[parcelid].OwnerID == MainClass.client.Self.ActiveGroup)
-           {
-              // if(MainClass.client.Self.ActiveGroupPowers==GroupPowers.ReturnGroupOwned
-
-           }
-			
-			//   if(this.current_groups.Contains(sim.Parcels.Dictionary[parcelid].GroupID))
-			   {
- 				     //Avatar is in the group of this land but do they have permission todo stuff?
-			         //assume yes for the moment
-			 //        return true; 
-   			   }
-		}
-		
-           return false;
-    }
-*/
 	
 	protected virtual void OnParcelActionToggled (object sender, System.EventArgs e)
 	{
         if (this.ParcelAction.Active == true)
         {
+			if(tab_parcels!=null)
+		    {
+                tab_parcels.Dispose();
+			    tab_parcels=null;	
+            }
+			
             tab_parcels = new ParcelMgr();
             this.addtabwithicon("parcel.tga", "Parcel", tab_parcels);
             this.ParcelAction.Active = true;
@@ -992,8 +971,12 @@ public partial class MainWindow: Gtk.Window
 
         }
         else
-        {
-            tab_parcels.kill();
+		{
+			if(tab_parcels!=null)
+		    {
+                tab_parcels.Dispose();
+			    tab_parcels=null;	
+            }
             MainClass.appsettings.tab_parcel=false;
         }
 
@@ -1003,6 +986,12 @@ public partial class MainWindow: Gtk.Window
 	{
         if (this.ObjectsAction.Active == true)
         {
+			if(tab_objects!=null)
+		    {
+                tab_objects.Dispose();
+			    tab_objects=null;	
+            }
+			
             tab_objects = new ObjectsLayout();
 			this.addtabwithicon("item_object.tga", "Objects", tab_objects);
 			this.ObjectsAction.Active=true;
@@ -1011,9 +1000,12 @@ public partial class MainWindow: Gtk.Window
         }
         else
         {
-            tab_objects.kill();
+			if(tab_objects!=null)
+		    {
+                tab_objects.Dispose();
+			    tab_objects=null;	
+            }
             MainClass.appsettings.tab_objects=false;
-
         }	   
 	}
 
@@ -1021,28 +1013,38 @@ public partial class MainWindow: Gtk.Window
 	{
 
         if (this.InventoryAction.Active == true)
-        {
+		{
+			if(tab_inventory!=null)
+			{
+				tab_inventory.Dispose();
+                tab_inventory=null;
+            }
             tab_inventory = new omvviewerlight.Inventory();
             this.addtabwithicon("inv_folder_plain_open.tga", "Inventory", tab_inventory);
             this.InventoryAction.Active = true;
-           MainClass.appsettings.tab_inv=true;
+            MainClass.appsettings.tab_inv=true;
 
         }
         else
         {
-            tab_inventory.kill();
-        MainClass.appsettings.tab_inv=false;
-
+            tab_inventory.Dispose();
+            MainClass.appsettings.tab_inv=false;
+            tab_inventory=null;
         }	  
   
 	}
 
 	protected virtual void OnLocationActionToggled (object sender, System.EventArgs e)
-		{
-		
-         if(this.LocationAction.Active==true)
+	{	
+        if(this.LocationAction.Active==true)
         {
-			tab_location=new Location();
+			if(tab_location!=null)
+			{
+				tab_location.Dispose();
+                tab_location=null;
+            }
+
+ 		    tab_location=new Location();
 		    this.addtabwithicon("icon_place.tga","Location",tab_location);
 		    this.LocationAction.Active=true;
               MainClass.appsettings.tab_location=true;
@@ -1050,8 +1052,12 @@ public partial class MainWindow: Gtk.Window
 	    }
 		else
 		{
-           tab_location.kill();
-          MainClass.appsettings.tab_location=false;
+		    if(tab_location!=null)
+			{
+				tab_location.Dispose();
+                tab_location=null;
+             }
+             MainClass.appsettings.tab_location=false;
         }	
 	
 	}
@@ -1059,7 +1065,13 @@ public partial class MainWindow: Gtk.Window
 	protected virtual void OnGroupsActionToggled (object sender, System.EventArgs e)
 	{
         if (this.GroupsAction.Active == true)
-        {
+		{
+			if(tab_groups!=null)
+			{
+				tab_groups.Dispose();
+                tab_groups=null;
+            }
+
             tab_groups = new Groups();
             this.addtabwithicon("icn_voice-groupfocus.tga", "Groups", tab_groups);
             this.GroupsAction.Active = true;
@@ -1067,8 +1079,12 @@ public partial class MainWindow: Gtk.Window
         }
         else
         {
-            tab_groups.kill();
-          MainClass.appsettings.tab_groups=false;
+			if(tab_groups!=null)
+			{
+				tab_groups.Dispose();
+                tab_groups=null;
+            }
+            MainClass.appsettings.tab_groups=false;
         }	
 	}
 
@@ -1076,6 +1092,12 @@ public partial class MainWindow: Gtk.Window
     {	
 		if(this.SearchAction.Active==true)
         {
+			if(tab_search!=null)
+			{
+				tab_search.Dispose();
+                tab_search=null;
+            }
+			
 	        tab_search=new Search();
 			this.addtabwithicon("status_search_btn.png","Search",tab_search);
 		    this.SearchAction.Active=true;
@@ -1083,8 +1105,12 @@ public partial class MainWindow: Gtk.Window
 	    }
 		else
 		{
-           tab_search.kill();
-                MainClass.appsettings.tab_search=false;
+			if(tab_search!=null)
+			{
+				tab_search.Dispose();
+                tab_search=null;
+            }
+            MainClass.appsettings.tab_search=false;
         }	
 	}
 
