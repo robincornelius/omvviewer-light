@@ -38,7 +38,7 @@ namespace omvviewerlight
 	{
 		private const String MAP_IMG_URL = "http://secondlife.com/apps/mapapi/grid/map_image/";
 		private const int GRID_Y_OFFSET = 1279;
-
+		bool running=true;
 	    Gtk.Image basemap;
 
 		int rowstride;
@@ -54,7 +54,7 @@ namespace omvviewerlight
 		public Map()
 		{           
 			this.Build();
-
+			
 			MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
 			MainClass.client.Objects.OnNewAvatar += new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
 			MainClass.client.Objects.OnObjectUpdated += new OpenMetaverse.ObjectManager.ObjectUpdatedCallback(onUpdate);
@@ -80,13 +80,27 @@ namespace omvviewerlight
 			Console.WriteLine("Map Cleaned up");
 		}		
 		
+		public void Dispose()
+		{
+			running=false;
+			MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
+			MainClass.client.Objects.OnNewAvatar -= new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
+			MainClass.client.Objects.OnObjectUpdated -= new OpenMetaverse.ObjectManager.ObjectUpdatedCallback(onUpdate);
+            MainClass.client.Self.OnTeleport -= new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
+			MainClass.client.Grid.OnGridLayer -= new OpenMetaverse.GridManager.GridLayerCallback(onGridLayer);
+			MainClass.client.Grid.OnGridRegion -= new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
+			
+			Finalize();
+			System.GC.SuppressFinalize(this);
+		}
+
 		
         bool kickrefresh()
         {
 
+			if(running==false)
+				return false;
 
-
-           // Console.WriteLine("Kicking map refresh");
             Gtk.Application.Invoke(delegate
                {
                    if (MainClass.client.Network.CurrentSim != null)

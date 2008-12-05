@@ -43,11 +43,6 @@ namespace omvviewerlight
 			this.Build();
 			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(string),typeof(Vector3),typeof(UUID));
 			
-		//	treeview1.AppendColumn("Name",new Gtk.CellRendererText(),"text",0);
-		//	treeview1.AppendColumn("Sim",new Gtk.CellRendererText(),"text",1);		
-		//	treeview1.AppendColumn("Trafic",new Gtk.CellRendererText(),"text",2);		
-		//	treeview1.AppendColumn("Loc",new Gtk.CellRendererText(),"text",3);
-
             MyTreeViewColumn mycol;
             mycol = new MyTreeViewColumn("Name", new Gtk.CellRendererText(), "text", 0);
             mycol.setmodel(store);
@@ -70,11 +65,18 @@ namespace omvviewerlight
 			treeview1.Model=store;
             store.SetSortColumnId(0, Gtk.SortType.Ascending);
 
-			MainClass.client.Directory.OnPlacesReply += new OpenMetaverse.DirectoryManager.PlacesReplyCallback(onPlaces);
-		
-			
+			MainClass.client.Directory.OnPlacesReply += new OpenMetaverse.DirectoryManager.PlacesReplyCallback(onPlaces);
 		}
 		
+		public void Dispose()
+		{
+			
+			MainClass.client.Directory.OnPlacesReply -= new OpenMetaverse.DirectoryManager.PlacesReplyCallback(onPlaces);			
+			Finalize();
+			System.GC.SuppressFinalize(this);
+		}
+		
+
 		int numericsort(Gtk.TreeModel model, Gtk.TreeIter a, Gtk.TreeIter b)
 		{
 

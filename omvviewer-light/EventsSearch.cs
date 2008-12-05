@@ -56,6 +56,16 @@ namespace omvviewerlight
 			
 		}
 
+		public void Dispose()
+		{
+			
+			MainClass.client.Directory.OnEventsReply -= new OpenMetaverse.DirectoryManager.EventReplyCallback(onEvents);
+			MainClass.client.Directory.OnEventInfo -= new OpenMetaverse.DirectoryManager.EventInfoCallback(onEventInfo);
+			
+			Finalize();
+			System.GC.SuppressFinalize(this);
+		}
+		
 		void onEventInfo(OpenMetaverse.DirectoryManager.EventInfo anevent)
 	    {
 				Gtk.Application.Invoke(delegate {

@@ -87,9 +87,13 @@ namespace omvviewerlight
             MainClass.client.Avatars.OnPickInfo -= new OpenMetaverse.AvatarManager.PickInfoCallback(onPickInfo);
             this.DeleteEvent -= new DeleteEventHandler(OnDeleteEvent);
             Console.WriteLine("Profile view go bye bye");
+			this.Destroy();	
+			Finalize();
+			System.GC.SuppressFinalize(this);
 
         }
-	
+			
+		
 		void onPickInfo(UUID pick,ProfilePick info)
 		{				
 			if(!this.picks_waiting.Contains(pick))

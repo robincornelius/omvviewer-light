@@ -46,7 +46,7 @@ namespace omvviewerlight
 		const float DISTANCE_BUFFER = 3f;
         uint targetLocalID = 0;
 		bool Active;
-	
+		bool running=true;
 		~Radar()
 		{
 			Console.WriteLine("Radar Cleaned up");
@@ -80,9 +80,27 @@ namespace omvviewerlight
             Gtk.Timeout.Add(10000, kickrefresh);
 		}
 
+		public void Dispose()
+		{
+			running=false;
+			MainClass.client.Objects.OnNewAvatar -= new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
+			MainClass.client.Objects.OnObjectKilled -= new OpenMetaverse.ObjectManager.KillObjectCallback(onKillObject);
+			MainClass.client.Objects.OnObjectUpdated -= new OpenMetaverse.ObjectManager.ObjectUpdatedCallback(onUpdate);			
+			MainClass.client.Self.OnChat -= new OpenMetaverse.AgentManager.ChatCallback(onChat);
+			MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+			MainClass.client.Self.OnTeleport -= new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
+			
+			Finalize();
+			System.GC.SuppressFinalize(this);
+		}
+		
+		
         bool kickrefresh()
         {
 
+			if(running==false)
+				return false;
+			
 			if (MainClass.client.Network.CurrentSim == null)
                 return true;
 

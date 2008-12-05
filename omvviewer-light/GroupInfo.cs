@@ -203,8 +203,31 @@ namespace omvviewerlight
 			this.notebook2.Page=0;
             this.label_char_count.Text="";
 						
-  	   }
+	}
 		
+        [GLib.ConnectBefore]
+        void OnDeleteEvent(object o, DeleteEventArgs args)
+		{
+			MainClass.client.Groups.OnGroupProfile -= new OpenMetaverse.GroupManager.GroupProfileCallback(onGroupProfile);
+            MainClass.client.Groups.OnGroupMembers -= new OpenMetaverse.GroupManager.GroupMembersCallback(onGroupMembers);
+            MainClass.client.Groups.OnGroupTitles -= new OpenMetaverse.GroupManager.GroupTitlesCallback(onGroupTitles);
+            MainClass.client.Groups.OnGroupRoles -= new OpenMetaverse.GroupManager.GroupRolesCallback(onGroupRoles);
+            MainClass.client.Groups.OnGroupRolesMembers -= new OpenMetaverse.GroupManager.GroupRolesMembersCallback(onGroupRolesMembers);
+			MainClass.client.Groups.OnGroupNoticesList -= new GroupManager.GroupNoticesListCallback(Groups_OnGroupNoticesList);            MainClass.client.Groups.OnGroupAccountSummary -= new OpenMetaverse.GroupManager.GroupAccountSummaryCallback(onAccountSummary);			
+           		
+			MainClass.client.Self.OnInstantMessage -= new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);			
+
+            Console.WriteLine("GroupInfo view go bye bye");
+            this.Destroy();	
+			Finalize();
+			System.GC.SuppressFinalize(this);
+		}
+			
+		~GroupInfo()
+        {
+           Console.WriteLine("Group info cleaned up");
+        }
+
 		void onAccountSummary(GroupAccountSummary summary)
 		{
 				Gtk.Application.Invoke(delegate{

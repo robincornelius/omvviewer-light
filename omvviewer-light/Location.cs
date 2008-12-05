@@ -42,6 +42,10 @@ namespace omvviewerlight
 			p=(Gtk.Notebook)this.Parent;
 			p.RemovePage(p.PageNum(this));
 			
+			this.map1.Dispose();
+			this.radar1.Dispose();
+			this.teleportto1.Dispose();
+			
 			//Todo kill child widgets
 			Finalize();
 			System.GC.SuppressFinalize(this);

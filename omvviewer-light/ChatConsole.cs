@@ -303,21 +303,19 @@ namespace omvviewerlight
 				if(MainClass.win.active_ims.Contains(im_session_id))
 					MainClass.client.Self.RequestLeaveGroupChat(im_session_id);		
 			
-		//	Console.Write("ref count is "+this.RefCount.ToString()+"\n");
 			nb.RemovePage(pageno);
-			//Console.Write("ref count is "+this.RefCount.ToString()+"\n");
 			
+	        MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);		
 			MainClass.client.Self.OnChat -= new OpenMetaverse.AgentManager.ChatCallback(onChat);
             MainClass.client.Self.OnInstantMessage -= new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
-			MainClass.client.Self.OnGroupChatJoin -= new OpenMetaverse.AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
-			
-			//Console.Write("Trying to destroy chat window\n");
-			
-			 MainClass.win.getnotebook().SwitchPage -=  new SwitchPageHandler(onSwitchPage);
-			
-			//	Console.Write("ref count is "+this.RefCount.ToString()+"\n");
-			this.Destroy();
+            MainClass.client.Friends.OnFriendOffline -= new FriendsManager.FriendOfflineEvent(Friends_OnFriendOffline);
+            MainClass.client.Friends.OnFriendOnline -= new FriendsManager.FriendOnlineEvent(Friends_OnFriendOnline);
 		
+			MainClass.win.getnotebook().SwitchPage -=  new SwitchPageHandler(onSwitchPage);
+			
+			this.Destroy();	
+			Finalize();
+			System.GC.SuppressFinalize(this);
 		}
 		
 		

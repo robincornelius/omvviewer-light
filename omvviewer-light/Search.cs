@@ -31,20 +31,25 @@ namespace omvviewerlight
 	public partial class Search : Gtk.Bin
 	{
 		
+		Searches s;
+		PlacesSearch ps;
+		EventsSearch es;
+		GroupSearch gs;
+		
 		public Search()
 		{
 			this.Build();
 			// Fuck stupid notebook tabs and monodeveop have to do it myself
-			Searches s=new Searches();
+			s=new Searches();
             this.addtabwithicon("icn_voice-pvtfocus.tga","People",s);
 			
-			PlacesSearch ps=new PlacesSearch();
+			ps=new PlacesSearch();
 			this.addtabwithicon("icon_place.tga","Places",ps);
 			
-			EventsSearch es=new EventsSearch();
+			es=new EventsSearch();
 			this.addtabwithicon("icon_event.tga","Events",es);
 
-			GroupSearch gs=new GroupSearch();
+			gs=new GroupSearch();
             this.addtabwithicon("icn_voice-groupfocus.tga", "Groups", gs);
 			
 			
@@ -61,7 +66,19 @@ namespace omvviewerlight
 			p=(Gtk.Notebook)this.Parent;
 			p.RemovePage(p.PageNum(this));
 			
-			//TODO KILL CHILD SEARCHES FROM HERE
+			//TODO KILL CHILD SEARCHES FROM HERE?
+			if(s!=null)
+				s.Dispose();
+			s=null;
+			if(ps!=null)
+				ps.Dispose();
+			ps=null;
+			if(es!=null)
+				es.Dispose();
+			es=null;
+			if(gs!=null)
+				gs.Dispose();
+			gs=null;
 			
 			Finalize();
 			System.GC.SuppressFinalize(this);

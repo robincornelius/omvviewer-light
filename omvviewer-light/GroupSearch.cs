@@ -36,6 +36,16 @@ namespace omvviewerlight
 
 		}
 
+		public void Dispose()
+		{
+			
+			MainClass.client.Directory.OnDirGroupsReply-=new OpenMetaverse.DirectoryManager.DirGroupsReplyCallback(onGroupReply);
+			
+			Finalize();
+			System.GC.SuppressFinalize(this);
+		}
+		
+
         int numericsort(Gtk.TreeModel model, Gtk.TreeIter a, Gtk.TreeIter b)
         {
 
