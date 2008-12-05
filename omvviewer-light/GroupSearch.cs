@@ -36,13 +36,13 @@ namespace omvviewerlight
 
 		}
 
-		public void Dispose()
+		new public void Dispose()
 		{
 			
 			MainClass.client.Directory.OnDirGroupsReply-=new OpenMetaverse.DirectoryManager.DirGroupsReplyCallback(onGroupReply);
 			
-			Finalize();
-			System.GC.SuppressFinalize(this);
+			//Finalize();
+			//System.GC.SuppressFinalize(this);
 		}
 		
 

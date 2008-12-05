@@ -44,10 +44,7 @@ namespace omvviewerlight
 {
 	class MainClass
 	{
-		public delegate void PrefUpdate();
-        public static event PrefUpdate OnPrefUpdate;
-
-        public static bool userlogout = false;
+		public static bool userlogout = false;
 
     	public static GridClient client;
 		public static MainWindow win;

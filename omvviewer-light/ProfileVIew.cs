@@ -88,8 +88,8 @@ namespace omvviewerlight
             this.DeleteEvent -= new DeleteEventHandler(OnDeleteEvent);
             Console.WriteLine("Profile view go bye bye");
 			this.Destroy();	
-			Finalize();
-			System.GC.SuppressFinalize(this);
+			//Finalize();
+			//System.GC.SuppressFinalize(this);
 
         }
 			

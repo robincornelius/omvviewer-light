@@ -80,7 +80,7 @@ namespace omvviewerlight
 			Console.WriteLine("Map Cleaned up");
 		}		
 		
-		public void Dispose()
+		new public void Dispose()
 		{
 			running=false;
 			MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
@@ -90,8 +90,8 @@ namespace omvviewerlight
 			MainClass.client.Grid.OnGridLayer -= new OpenMetaverse.GridManager.GridLayerCallback(onGridLayer);
 			MainClass.client.Grid.OnGridRegion -= new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
 			
-			Finalize();
-			System.GC.SuppressFinalize(this);
+			//Finalize();
+			//System.GC.SuppressFinalize(this);
 		}
 
 		

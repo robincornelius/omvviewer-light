@@ -36,14 +36,14 @@ namespace omvviewerlight
 		Dictionary <UUID,Group> groups_recieved=new	Dictionary <UUID,Group>();
 		Gtk.TreeIter active_group_iter;
 
-        public void Dispose()
+        new public void Dispose()
         {
             MainClass.client.Groups.OnCurrentGroups -= new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
 	        Gtk.Notebook p;
             p = (Gtk.Notebook)this.Parent;
             p.RemovePage(p.PageNum(this));
-			Finalize();
-			System.GC.SuppressFinalize(this);
+			//Finalize();
+			//System.GC.SuppressFinalize(this);
         }
 
 		public Groups()

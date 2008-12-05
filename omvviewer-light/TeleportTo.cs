@@ -41,13 +41,13 @@ namespace omvviewerlight
         }
 		
 		
-		public void Dispose()
+		new public void Dispose()
 		{
             MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
             MainClass.client.Objects.OnObjectUpdated += new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);    
 
-			Finalize();
-			System.GC.SuppressFinalize(this);
+			//Finalize();
+			//System.GC.SuppressFinalize(this);
 		}
 		
 		

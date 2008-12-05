@@ -314,8 +314,8 @@ namespace omvviewerlight
 			MainClass.win.getnotebook().SwitchPage -=  new SwitchPageHandler(onSwitchPage);
 			
 			this.Destroy();	
-			Finalize();
-			System.GC.SuppressFinalize(this);
+			//Finalize();
+			//System.GC.SuppressFinalize(this);
 		}
 		
 		

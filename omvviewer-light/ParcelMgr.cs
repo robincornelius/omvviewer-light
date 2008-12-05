@@ -54,7 +54,7 @@ namespace omvviewerlight
 			Console.WriteLine("ParcelMgr Cleaned up");
 		}		
 		
-        public void Dispose()
+        new public void Dispose()
         {
             MainClass.client.Parcels.OnParcelInfo -= new OpenMetaverse.ParcelManager.ParcelInfoCallback(onParcelInfo);
             MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
@@ -66,8 +66,8 @@ namespace omvviewerlight
             p = (Gtk.Notebook)this.Parent;
             p.RemovePage(p.PageNum(this));
 			
-			Finalize();
-			System.GC.SuppressFinalize(this);
+			//Finalize();
+			//System.GC.SuppressFinalize(this);
 
         }
 

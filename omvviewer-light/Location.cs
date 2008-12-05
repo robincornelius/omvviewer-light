@@ -36,7 +36,7 @@ namespace omvviewerlight
 			this.Build();
 		}
 		
-		public void Dispose()
+		new public void Dispose()
 		{
 			Gtk.Notebook p;
 			p=(Gtk.Notebook)this.Parent;
@@ -47,8 +47,8 @@ namespace omvviewerlight
 			this.teleportto1.Dispose();
 			
 			//Todo kill child widgets
-			Finalize();
-			System.GC.SuppressFinalize(this);
+			//Finalize();
+			//System.GC.SuppressFinalize(this);
 
 		}
 	}

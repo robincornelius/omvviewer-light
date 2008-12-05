@@ -100,7 +100,7 @@ namespace omvviewerlight
 			Console.WriteLine("Inventory Cleaned up");
 		}
 	    	
-        public void Dispose()
+        new public void Dispose()
 		{
             Console.WriteLine("Running cleanup code for inventory");
 			
@@ -114,8 +114,8 @@ namespace omvviewerlight
             p = (Gtk.Notebook)this.Parent;
             p.RemovePage(p.PageNum(this));
 			
-			Finalize();
-			System.GC.SuppressFinalize(this);
+			//Finalize();
+			//System.GC.SuppressFinalize(this);
 		}
 
 		public Inventory()
@@ -651,50 +651,46 @@ namespace omvviewerlight
 				{
 				case WearableType.Eyes:
                 return this.item_clothing_eyes;					
-                break;	
+              
 				case WearableType.Gloves:
                 return this.item_clothing_gloves;					
-                break;	
+              
 				case WearableType.Hair:
                 return this.item_clothing_hair;					
-                break;	
+                
 				case WearableType.Jacket:
                 return this.item_clothing_jacket;					
-                break;	
+              
 				case WearableType.Pants:
                 return this.item_clothing_pants;					
-                break;	
+              
 				case WearableType.Shape:
                 return this.item_clothing_shape;					
-                break;	
+             
 				case WearableType.Shirt:
                 return this.item_clothing_shirt;					
-                break;	
+               
 				case WearableType.Shoes:
                 return this.item_clothing_shoes;					
-                break;	
+               
 				case WearableType.Skin:
 				return this.item_clothing_skin;					
-                break;	
+            
 				case WearableType.Skirt:
 				return this.item_clothing_skirt;					
-				break;	
+				
 				case WearableType.Socks:
 				return this.item_clothing_socks;					
-				break;	
+					
 				case WearableType.Underpants:
 				return this.item_clothing_underpants;					
-                break;	
+              
 				case WearableType.Undershirt:
 				return this.item_clothing_undershirt;					
-                break;	
-					
-
-
-				
+             	
 				default:
 				return this.item_clothing;
-	            break;
+	         
                 }				
                 
             }

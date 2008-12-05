@@ -80,7 +80,7 @@ namespace omvviewerlight
             Gtk.Timeout.Add(10000, kickrefresh);
 		}
 
-		public void Dispose()
+		new public void Dispose()
 		{
 			running=false;
 			MainClass.client.Objects.OnNewAvatar -= new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
@@ -90,8 +90,8 @@ namespace omvviewerlight
 			MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
 			MainClass.client.Self.OnTeleport -= new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
 			
-			Finalize();
-			System.GC.SuppressFinalize(this);
+			//Finalize();
+			//System.GC.SuppressFinalize(this);
 		}
 		
 		

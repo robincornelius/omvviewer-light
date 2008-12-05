@@ -60,7 +60,7 @@ namespace omvviewerlight
 			Console.WriteLine("Search cleaned up");
 		}
 		
-        public void Dispose()
+        new public void Dispose()
 		{
 			Gtk.Notebook p;
 			p=(Gtk.Notebook)this.Parent;
@@ -80,8 +80,8 @@ namespace omvviewerlight
 				gs.Dispose();
 			gs=null;
 			
-			Finalize();
-			System.GC.SuppressFinalize(this);
+			//Finalize();
+			//System.GC.SuppressFinalize(this);
 		}
 		
 		Gtk.Label addtabwithicon(string filename,string label,Gtk.Widget contents)

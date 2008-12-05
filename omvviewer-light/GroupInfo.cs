@@ -219,8 +219,8 @@ namespace omvviewerlight
 
             Console.WriteLine("GroupInfo view go bye bye");
             this.Destroy();	
-			Finalize();
-			System.GC.SuppressFinalize(this);
+			//Finalize();
+			//System.GC.SuppressFinalize(this);
 		}
 			
 		~GroupInfo()

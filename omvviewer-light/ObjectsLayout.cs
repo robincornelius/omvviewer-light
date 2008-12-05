@@ -43,7 +43,7 @@ namespace omvviewerlight
 			Console.WriteLine("ObjectsLayout Cleaned up");
 		}		
 
-        public void Dispose()
+        new public void Dispose()
         {
             MainClass.client.Objects.OnObjectProperties -= new OpenMetaverse.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
             MainClass.client.Groups.OnGroupNames -= new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
@@ -53,8 +53,8 @@ namespace omvviewerlight
             p = (Gtk.Notebook)this.Parent;
             p.RemovePage(p.PageNum(this));
 			
-			Finalize();
-			System.GC.SuppressFinalize(this);
+			//Finalize();
+			//System.GC.SuppressFinalize(this);
 		}
 
 		public ObjectsLayout()

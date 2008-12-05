@@ -68,12 +68,12 @@ namespace omvviewerlight
 			MainClass.client.Directory.OnPlacesReply += new OpenMetaverse.DirectoryManager.PlacesReplyCallback(onPlaces);
 		}
 		
-		public void Dispose()
+		new public void Dispose()
 		{
 			
-			MainClass.client.Directory.OnPlacesReply -= new OpenMetaverse.DirectoryManager.PlacesReplyCallback(onPlaces);			
-			Finalize();
-			System.GC.SuppressFinalize(this);
+			MainClass.client.Directory.OnPlacesReply -= new OpenMetaverse.DirectoryManager.PlacesReplyCallback(onPlaces);
+			//Finalize();
+			//System.GC.SuppressFinalize(this);
 		}
 		
 
