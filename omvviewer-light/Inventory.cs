@@ -31,7 +31,6 @@ using Gtk;
 
 namespace omvviewerlight
 {
-
     public partial class invthreaddata
     {
 		public UUID key;
@@ -46,8 +45,7 @@ namespace omvviewerlight
     }
 
 	public partial class Inventory : Gtk.Bin
-	{
-  	
+	{ 	
 		public int no_items;
         Dictionary<invthreaddata, List<InventoryBase>> incomming = new Dictionary<invthreaddata, List<InventoryBase>>();  
 		Dictionary<UUID, Gtk.TreeIter> assetmap = new Dictionary<UUID, Gtk.TreeIter>();

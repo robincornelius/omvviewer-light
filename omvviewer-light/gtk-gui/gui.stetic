@@ -1607,7 +1607,7 @@ Shout</property>
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="omvviewerlight.PlacesSearch" design-size="1446 304">
+  <widget class="Gtk.Bin" id="omvviewerlight.PlacesSearch" design-size="1446 307">
     <property name="MemberName" />
     <child>
       <widget class="Gtk.VBox" id="vbox1">
@@ -1725,10 +1725,16 @@ Shout</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Image" id="image_parcel">
+                  <widget class="Gtk.EventBox" id="eventbox3">
                     <property name="MemberName" />
-                    <property name="WidthRequest">175</property>
-                    <property name="HeightRequest">175</property>
+                    <signal name="ButtonPressEvent" handler="OnEventbox3ButtonPressEvent" />
+                    <child>
+                      <widget class="Gtk.Image" id="image_parcel">
+                        <property name="MemberName" />
+                        <property name="WidthRequest">175</property>
+                        <property name="HeightRequest">175</property>
+                      </widget>
+                    </child>
                   </widget>
                   <packing>
                     <property name="Position">1</property>
@@ -6420,7 +6426,7 @@ permissions</property>
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="omvviewerlight.ParcelMgr" design-size="832 514">
+  <widget class="Gtk.Bin" id="omvviewerlight.ParcelMgr" design-size="832 516">
     <property name="MemberName" />
     <child>
       <widget class="Gtk.VBox" id="vbox1">
@@ -6643,10 +6649,16 @@ permissions</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="Gtk.Image" id="image9">
+                      <widget class="Gtk.EventBox" id="eventbox1">
                         <property name="MemberName" />
-                        <property name="WidthRequest">256</property>
-                        <property name="HeightRequest">256</property>
+                        <signal name="ButtonPressEvent" handler="OnEventbox1ButtonPressEvent" />
+                        <child>
+                          <widget class="Gtk.Image" id="image9">
+                            <property name="MemberName" />
+                            <property name="WidthRequest">256</property>
+                            <property name="HeightRequest">256</property>
+                          </widget>
+                        </child>
                       </widget>
                       <packing>
                         <property name="Position">1</property>
@@ -6683,10 +6695,16 @@ permissions</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="Gtk.Image" id="image_parcelsnap">
+                      <widget class="Gtk.EventBox" id="eventbox2">
                         <property name="MemberName" />
-                        <property name="WidthRequest">256</property>
-                        <property name="HeightRequest">256</property>
+                        <signal name="ButtonPressEvent" handler="OnEventbox2ButtonPressEvent" />
+                        <child>
+                          <widget class="Gtk.Image" id="image_parcelsnap">
+                            <property name="MemberName" />
+                            <property name="WidthRequest">256</property>
+                            <property name="HeightRequest">256</property>
+                          </widget>
+                        </child>
                       </widget>
                       <packing>
                         <property name="Position">1</property>

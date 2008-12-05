@@ -38,6 +38,8 @@ namespace omvviewerlight
 		Gtk.TreeStore parcel_prim_owners;
         Gdk.Pixbuf parcel_map;
 		
+		UUID parcel_image=UUID.Zero;
+		
 		TryGetImage getter;
 
 		Dictionary <uint,uint> colmaptoid=new Dictionary<uint,uint>(); // map parcelid->colindex
@@ -347,15 +349,20 @@ namespace omvviewerlight
 						this.entry_primsowner.Text=parcel.OwnerPrims.ToString();
 						this.entry_primsother.Text=parcel.OtherPrims.ToString();
 						this.entry_totalprims.Text=parcel.TotalPrims.ToString();
+
+						this.parcel_image=parcel.SnapshotID;
 						
 						if(parcel.SnapshotID!=UUID.Zero)
 						{
 							if(getter!=null)
 								getter.abort();
-							
+
 							TryGetImage i = new TryGetImage(this.image_parcelsnap,parcel.SnapshotID,256,256);
 							getter=i;
-							
+						}
+						else
+						{
+							this.image_parcelsnap.Clear();
 						}
 					
 						AsyncNameUpdate ud;
@@ -487,6 +494,18 @@ namespace omvviewerlight
 				}	
 			}
 		}
+
+		protected virtual void OnEventbox1ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+		}
+
+		protected virtual void OnEventbox2ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+			if(this.parcel_image==UUID.Zero)
+				return;
 			
+			TexturePreview tp= new TexturePreview(this.parcel_image,"Parcel snapsnot",false);
+			tp.ShowAll();
+		}
 	}
 }

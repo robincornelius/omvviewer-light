@@ -36,6 +36,7 @@ namespace omvviewerlight
 		Gtk.ListStore store;
         int places_found;
 		TryGetImage getter;
+		UUID current_image=UUID.Zero;
 		
 		public PlacesSearch()
 		{
@@ -177,6 +178,8 @@ namespace omvviewerlight
 			{
 				UUID id=(UUID)mod.GetValue(iter,5);
 
+				this.current_image=id;
+				
 				if(getter!=null)
 					getter.abort();
 							
@@ -185,6 +188,11 @@ namespace omvviewerlight
 				
 			}
 		}
-				
+
+		protected virtual void OnEventbox3ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+			TexturePreview tp= new TexturePreview(this.current_image,"Location snapsnot",false);
+			tp.ShowAll();
+		}				
 	}
 }
