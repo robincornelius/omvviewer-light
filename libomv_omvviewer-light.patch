@@ -1,0 +1,289 @@
+Index: GroupManager.cs
+===================================================================
+--- GroupManager.cs	(revision 2369)
++++ GroupManager.cs	(working copy)
+@@ -1124,6 +1124,21 @@
+             Client.Network.SendPacket(p);
+         }
+ 
++        /// <summary>Set preferences for recieving group notices and listing group in prfile</summary>
++        /// <param name="groupID">The group to modify user preference on</param>
++        /// <param name="rcv_notices">Weather to recieve group notices from this group</param>
++        /// <param name="show_in_profile">Weather to list this group in your profile</param>        
++        public void setUserGroupFlags(UUID groupID, bool rcv_notices, bool show_in_profile)
++        {
++            SetGroupAcceptNoticesPacket p = new SetGroupAcceptNoticesPacket();
++            p.AgentData.AgentID = Client.Self.AgentID;
++            p.AgentData.SessionID = Client.Self.SessionID;
++            p.Data.GroupID = groupID;
++            p.Data.AcceptNotices = rcv_notices;
++            p.NewData.ListInProfile = show_in_profile;
++            Client.Network.SendPacket(p);
++        }
++
+         #region Packet Handlers
+ 
+         private void GroupDataHandler(Packet packet, Simulator simulator)
+@@ -1227,8 +1242,6 @@
+                 // If nothing is registered to receive this RequestID drop the data
+                 if (GroupMembersRequests.Contains(members.GroupData.RequestID))
+                 {
+-                    GroupMembersRequests.Remove(members.GroupData.RequestID);
+-
+                     lock (GroupMembersCaches)
+                     {
+                         if (!GroupMembersCaches.TryGetValue(members.GroupData.RequestID, out groupMemberCache))
+@@ -1251,6 +1264,10 @@
+                             groupMemberCache[block.AgentID] = groupMember;
+                         }
+                     }
++
++
++                    if (groupMemberCache.Count >= members.GroupData.MemberCount)
++                        GroupMembersRequests.Remove(members.GroupData.RequestID);
+                 }
+             }
+ 
+Index: InventoryManager.cs
+===================================================================
+--- InventoryManager.cs	(revision 2369)
++++ InventoryManager.cs	(working copy)
+@@ -787,7 +787,7 @@
+         #endregion Events
+ 
+         private GridClient _Client;
+-        private Inventory _Store;
++        public Inventory _Store;
+         //private Random _RandNumbers = new Random();
+         private object _CallbacksLock = new object();
+         private uint _CallbackPos;
+@@ -1836,7 +1836,7 @@
+         /// <param name="notecardID"></param>
+         /// <param name="folderID"></param>
+         /// <param name="itemID"></param>
+-        public void RequestCopyItemFromNotecard(UUID objectID, UUID notecardID, UUID folderID, UUID itemID)
++        public void RequestCopyItemFromNotecard(UUID objectID, UUID notecardID, UUID folderID, UUID itemID,ItemCopiedCallback callback)
+         {
+             CopyInventoryFromNotecardPacket copy = new CopyInventoryFromNotecardPacket();
+             copy.AgentData.AgentID = _Client.Self.AgentID;
+@@ -1848,7 +1848,9 @@
+             copy.InventoryData = new CopyInventoryFromNotecardPacket.InventoryDataBlock[1];
+             copy.InventoryData[0] = new CopyInventoryFromNotecardPacket.InventoryDataBlock();
+             copy.InventoryData[0].FolderID = folderID;
+-            copy.InventoryData[0].ItemID = itemID;
++            copy.InventoryData[0].ItemID = itemID;
++
++            _ItemCopiedCallbacks[0] = callback;
+ 
+             _Client.Network.SendPacket(copy);
+         }
+Index: AppearanceManager.cs
+===================================================================
+--- AppearanceManager.cs	(revision 2369)
++++ AppearanceManager.cs	(working copy)
+@@ -616,20 +616,27 @@
+             Assets.OnAssetUploaded += uploadCallback;
+ 
+             // Download assets for what we are wearing and fill in AgentTextures
++            Console.WriteLine("Getting wearables");
++
+             DownloadWearableAssets();
+             WearablesDownloadedEvent.WaitOne();
++            Console.WriteLine("Got all wearables");
+ 
+             // Unregister the asset download callback
+             Assets.OnAssetReceived -= assetCallback;
+ 
+             // Check if anything needs to be rebaked
+             if (bake) RequestCachedBakes();
+-
++
++            Console.WriteLine("Sending agent is now wearing");
+             // Tell the sim what we are wearing
+             SendAgentIsNowWearing();
++
++            Console.WriteLine("Waiting for bakes");
+ 
+             // Wait for cached layer check to finish
+             if (bake) CachedResponseEvent.WaitOne();
++            Console.WriteLine("Got bakes");
+ 
+             // Unregister the image download and asset upload callbacks
+             Assets.OnImageReceived -= imageCallback;
+@@ -641,11 +648,13 @@
+ 
+             Primitive.TextureEntry te = null;
+ 
+-            ObjectManager.NewAvatarCallback updateCallback =
++       ObjectManager.NewAvatarCallback updateCallback =
+                 delegate(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
+                 {
+                     if (avatar.LocalID == Client.Self.LocalID)
+                     {
++                        Console.WriteLine("Got a new avatar for self");
++
+                         if (avatar.Textures.FaceTextures != null)
+                         {
+                             bool match = true;
+@@ -684,15 +693,23 @@
+                     }
+                 };
+             Client.Objects.OnNewAvatar += updateCallback;
++
++            Console.WriteLine("Sending SendAgentSetApperance");
+ 
+             // Send all of the visual params and textures for our agent
+             SendAgentSetAppearance();
++
++            Console.WriteLine("Waiting for object update");
+ 
+             // Wait for the ObjectUpdate to come in for our avatar after changing appearance
+             if (UpdateEvent.WaitOne(1000 * 60, false))
+-            {
++            {
++                Console.WriteLine("Got an update");
++
+                 if (OnAppearanceUpdated != null)
+-                {
++                {
++                    Console.WriteLine("Trying OnAppearanceUpdated()");
++
+                     try { OnAppearanceUpdated(te); }
+                     catch (Exception e) { Logger.Log(e.Message, Helpers.LogLevel.Error, Client, e); }
+                 }
+@@ -700,10 +717,12 @@
+             else
+             {
+                 Logger.Log("Timed out waiting for our appearance to update on the simulator", Helpers.LogLevel.Warning, Client);
+-            }
+-
+-            Client.Objects.OnNewAvatar -= updateCallback;
+-
++            }
++
++            Client.Objects.OnNewAvatar -= updateCallback;
++
++            Logger.Log("Finished setting appearance", Helpers.LogLevel.Info, Client);
++
+             #endregion Send Appearance
+         }
+ 
+@@ -1030,19 +1049,35 @@
+         }
+ 
+         private void UploadBake(Baker bake)
+-        {
++        {
++            if(bake.BakedTexture.AssetID==UUID.Zero)
++            {
++                Logger.Log("UploadBake(): Warning possible Linden Default textures in use, skipping this baked upload",Helpers.LogLevel.Warning, Client);
++                return;
++            }
++
++            lock (PendingUploads)
++            {
++                if(PendingUploads.ContainsKey(bake.BakedTexture.AssetID))
++                {
++                    Logger.Log("UploadBake(): Skipping Asset id "+bake.BakedTexture.AssetID.ToString()+" Already in progress",Helpers.LogLevel.Info, Client);
++                    return;
++                }             
++                    PendingUploads.Add(bake.BakedTexture.AssetID, BakeTypeToAgentTextureIndex(bake.BakeType));
++		    }
++
+             // Upload the completed layer data
+             Assets.RequestUpload(bake.BakedTexture, true);
+ 
+             Logger.DebugLog(String.Format("Bake {0} completed. Uploading asset {1}", bake.BakeType,
+                 bake.BakedTexture.AssetID.ToString()), Client);
+ 
+-            // Add it to a pending uploads list
+-            lock (PendingUploads) PendingUploads.Add(bake.BakedTexture.AssetID, BakeTypeToAgentTextureIndex(bake.BakeType));
+         }
+ 
+         private int AddImageDownload(TextureIndex index)
+-        {
++        {
++            Console.WriteLine("AddImageDownload()");
++
+             UUID image = AgentTextures[(int)index];
+ 
+             if (image != UUID.Zero)
+Index: Inventory.cs
+===================================================================
+--- Inventory.cs	(revision 2369)
++++ Inventory.cs	(working copy)
+@@ -145,7 +145,7 @@
+ 
+         private GridClient Client;
+         //private InventoryManager Manager;
+-        private Dictionary<UUID, InventoryNode> Items = new Dictionary<UUID, InventoryNode>();
++        public Dictionary<UUID, InventoryNode> Items = new Dictionary<UUID, InventoryNode>();
+ 
+         public Inventory(GridClient client, InventoryManager manager)
+             : this(client, manager, client.Self.AgentID) { }
+Index: AssetManager.cs
+===================================================================
+--- AssetManager.cs	(revision 2369)
++++ AssetManager.cs	(working copy)
+@@ -851,6 +851,8 @@
+             upload.AssetID = assetID;
+             upload.Size = data.Length;
+             upload.XferID = 0;
++
++            Transfers[upload.ID]=upload;
+ 
+             // Build and send the upload packet
+             AssetUploadRequestPacket request = new AssetUploadRequestPacket();
+Index: Simulator.cs
+===================================================================
+--- Simulator.cs	(revision 2369)
++++ Simulator.cs	(working copy)
+@@ -868,8 +868,8 @@
+             // Check if this packet came from the server we expected it to come from
+             if (!remoteEndPoint.Address.Equals(((IPEndPoint)buffer.RemoteEndPoint).Address))
+             {
+-                Logger.Log("Received " + buffer.DataLength + " bytes of data from unrecognized source " +
+-                    ((IPEndPoint)buffer.RemoteEndPoint).ToString(), Helpers.LogLevel.Warning, Client);
++               // Logger.Log("Received " + buffer.DataLength + " bytes of data from unrecognized source " +
++                //    ((IPEndPoint)buffer.RemoteEndPoint).ToString(), Helpers.LogLevel.Warning, Client);
+                 return;
+             }
+ 
+Index: Settings.cs
+===================================================================
+--- Settings.cs	(revision 2369)
++++ Settings.cs	(working copy)
+@@ -47,9 +47,6 @@
+         /// <summary>Beta grid login server</summary>
+         public const string ADITI_LOGIN_SERVER = "https://login.aditi.lindenlab.com/cgi-bin/login.cgi";
+ 
+-        /// <summary>The relative directory where external resources are kept</summary>
+-        public const string RESOURCE_DIR = "openmetaverse_data";
+-
+         /// <summary>Login server to connect to</summary>
+         public string LOGIN_SERVER = AGNI_LOGIN_SERVER;
+ 
+@@ -263,8 +260,11 @@
+         /// </summary>
+         public bool USE_TEXTURE_CACHE = false;
+ 
++        /// <summary>The relative directory where external resources are kept</summary>
++        public static string RESOURCE_DIR = "openmetaverse_data";
++
+         /// <summary>Path to store cached texture data</summary>
+-        public string TEXTURE_CACHE_DIR = RESOURCE_DIR + "/cache";
++        public string TEXTURE_CACHE_DIR =  "openmetaverse_data/cache";
+ 
+         /// <summary>Maximum size cached files are allowed to take on disk (bytes)</summary>
+         public long TEXTURE_CACHE_MAX_SIZE = 1024 * 1024 * 1024; // 1GB
+@@ -333,5 +333,10 @@
+         }
+ 
+         #endregion
++
++	public void setresourcedir(string dir)
++	{
++		RESOURCE_DIR=dir;
++	}
+     }
+ }
