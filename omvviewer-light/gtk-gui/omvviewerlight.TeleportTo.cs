@@ -253,7 +253,7 @@ namespace omvviewerlight {
             w24.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w25 = new Gtk.Image();
-            w25.Pixbuf = MainClass.GetResource("icon_place.tga");
+            w25.Pixbuf = Gdk.Pixbuf.LoadFromResource("icon_place.tga");
             w24.Add(w25);
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w27 = new Gtk.Label();
@@ -279,7 +279,7 @@ namespace omvviewerlight {
             w33.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w34 = new Gtk.Image();
-            w34.Pixbuf = MainClass.GetResource("map_home.tga");
+            w34.Pixbuf = Gdk.Pixbuf.LoadFromResource("map_home.tga");
             w33.Add(w34);
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w36 = new Gtk.Label();
@@ -315,6 +315,9 @@ namespace omvviewerlight {
                 this.Child.ShowAll();
             }
             this.Show();
+            this.spinbutton_x.ValueChanged += new System.EventHandler(this.OnSpinbuttonXValueChanged);
+            this.spinbutton_y.ValueChanged += new System.EventHandler(this.OnSpinbuttonYValueChanged);
+            this.spinbutton_z.ValueChanged += new System.EventHandler(this.OnSpinbuttonZValueChanged);
             this.button_autopilot.Clicked += new System.EventHandler(this.OnButtonAutopilotClicked);
             this.button_teleport.Activated += new System.EventHandler(this.OnButtonTeleportActivated);
             this.button_teleport.Clicked += new System.EventHandler(this.OnButtonTeleportClicked);

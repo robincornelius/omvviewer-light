@@ -24,14 +24,14 @@ namespace omvviewerlight
 			abort=false;
 			Thread logoutRunner = new Thread(new ThreadStart(logout));
             logoutRunner.Start();
-			Gtk.Timeout.Add(100,tick);
+			GLib.Timeout.Add(100,tick);
 	
 		}
 		
 		void logout()
 		{
 			MainClass.client.Network.Logout();
-            Gtk.Timeout.Add(5000, killme);
+            GLib.Timeout.Add(5000, killme);
             
 		}
 

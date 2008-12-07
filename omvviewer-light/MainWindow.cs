@@ -66,7 +66,8 @@ public partial class MainWindow: Gtk.Window
     int lastparcelid = 0;
 	
 	public TeleportTo tp_target_widget=null;
-   
+    public Map map_widget=null;
+	
 	public List<AvatarGroup> avatarGroups=new List<AvatarGroup>();	
 	
     ~MainWindow()
@@ -376,7 +377,10 @@ public partial class MainWindow: Gtk.Window
 	void onAlertMessage(string message)
 	{
 		if(message=="Autopilot canceled")
+		{
+			Console.WriteLine("Autopilot cancled");
 			return;
+		}
 		
 		Gtk.Application.Invoke(delegate {						
 			string msg;

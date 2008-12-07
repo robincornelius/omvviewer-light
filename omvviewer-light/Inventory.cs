@@ -163,15 +163,12 @@ namespace omvviewerlight
 						{
 							if(kvp.Value.Data!=null)
 							{
-								if(kvp.Value.Data.ParentUUID!=null)
+								if(kvp.Value.Data.ParentUUID==UUID.Zero)
 								{
-									if(kvp.Value.Data.ParentUUID==UUID.Zero)
-									{
-										Gtk.TreeIter iterx = inventory.AppendValues(folder_closed, kvp.Value.Data.Name, kvp.Value.Data.UUID);
-										inventory.AppendValues(iterx, folder_closed, "Waiting...", kvp.Value.Data.UUID, null);
-									}
-									Console.Write(kvp.Value.Data.ParentUUID.ToString() +" : ");
+									Gtk.TreeIter iterx = inventory.AppendValues(folder_closed, kvp.Value.Data.Name, kvp.Value.Data.UUID);
+									inventory.AppendValues(iterx, folder_closed, "Waiting...", kvp.Value.Data.UUID, null);
 								}
+								Console.Write(kvp.Value.Data.ParentUUID.ToString() +" : ");
 							}
 						}
 		         }

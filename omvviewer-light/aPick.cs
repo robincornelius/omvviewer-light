@@ -43,7 +43,7 @@ namespace omvviewerlight
 			sim=simname;
 			picpos=pos;
 			picimage=image;
-			TryGetImage pic=new TryGetImage(this.image2,image,128,128);
+			new TryGetImage(this.image2,image,128,128);
 		}
 
 		protected virtual void OnButtonTeleportClicked (object sender, System.EventArgs e)

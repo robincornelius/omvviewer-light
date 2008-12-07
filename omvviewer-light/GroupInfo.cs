@@ -166,7 +166,7 @@ namespace omvviewerlight
             rcvd_names.Clear();
 
             name_poll = true;
-            Gtk.Timeout.Add(500, updategroupmembers);
+            GLib.Timeout.Add(500, updategroupmembers);
             request_members = MainClass.client.Groups.RequestGroupMembers(groupID);
 
 			if(mine)
@@ -197,7 +197,7 @@ namespace omvviewerlight
 			this.button_join.Sensitive=false;
 			this.button_invite.Sensitive=false;
 			
-            this.DeleteEvent += new DeleteEventHandler(GroupWindow_DeleteEvent);
+            this.DeleteEvent += new DeleteEventHandler(OnDeleteEvent);
 	
 			this.notebook1.Page=0;
 			this.notebook2.Page=0;
@@ -218,7 +218,7 @@ namespace omvviewerlight
 			MainClass.client.Self.OnInstantMessage -= new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);			
 
             Console.WriteLine("GroupInfo view go bye bye");
-            this.Destroy();	
+            //this.Destroy();	
 			//Finalize();
 			//System.GC.SuppressFinalize(this);
 		}

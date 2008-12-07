@@ -49,11 +49,27 @@ namespace omvviewerlight
         static Gtk.Image avatar_me = new Gtk.Image(MainClass.GetResource("map_avatar_me_8.tga"));
         static Gtk.Image avatar_above = new Gtk.Image(MainClass.GetResource("map_avatar_above_8.tga"));
         static Gtk.Image avatar_below = new Gtk.Image(MainClass.GetResource("map_avatar_below_8.tga"));
-        UUID lastsim = new UUID();
+        static Gtk.Image avatar_friend = new Gtk.Image(MainClass.GetResource("map_avatar_friend_8.tga"));
+        static Gtk.Image avatar_friend_below = new Gtk.Image(MainClass.GetResource("map_avatar_friend_above_8.tga"));
+        static Gtk.Image avatar_friend_above = new Gtk.Image(MainClass.GetResource("map_avatar_friend_below_8.tga"));
+        static Gtk.Image avatar_target = new Gtk.Image(MainClass.GetResource("map_avatar_target_8.tga"));
+
+		UUID lastsim = new UUID();
+		Vector3 targetpos;
+		UUID terrain_map_ID;
+		UUID objects_map_ID;
+		UUID forsale_map_ID;
+	    Gtk.Image terrian_map;
+	    Gtk.Image objects_map;
+	    Gtk.Image forsale_map;
 		
 		public Map()
 		{           
 			this.Build();
+			
+			this.terrain_map_ID=UUID.Zero;
+			this.objects_map_ID=UUID.Zero;
+			this.forsale_map_ID=UUID.Zero;
 			
 			MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
 			MainClass.client.Objects.OnNewAvatar += new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
@@ -61,16 +77,17 @@ namespace omvviewerlight
             MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
 			MainClass.client.Grid.OnGridLayer += new OpenMetaverse.GridManager.GridLayerCallback(onGridLayer);
 			MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
+			MainClass.client.Grid.OnGridItems += new OpenMetaverse.GridManager.GridItemsCallback(onGridItems);
 			Gtk.Timeout.Add(10000, kickrefresh);			
+			this.targetpos.X=-1;
 			
 			if(MainClass.client!=null)
 			{
 				if(MainClass.client.Network.LoginStatusCode==OpenMetaverse.LoginStatus.Success)
                 {	
-					    MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Terrain);
-		          
-                  this.label1.Text = MainClass.client.Network.CurrentSim.Name;
-					
+					    //MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Terrain);
+					    MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Objects);
+					   this.label1.Text = MainClass.client.Network.CurrentSim.Name;
        	         }
              }	
 		}
@@ -111,16 +128,46 @@ namespace omvviewerlight
 
         }
 		
+		void onGridItems(GridItemType type, List<OpenMetaverse.GridItem> items)
+		{
+	
+			
+		}
+		
 		void onGridRegion(GridRegion region)
 		{
 			getmap();
-			Console.Write("Got grid layer reply, requesting texture :"+region.MapImageID.ToString()+"\n");
-			//Gdk.Pixbuf pb= new Gdk.Pixbuf("trying.tga");
-			//TryGetImage image=new TryGetImage(this.basemap,region.MapImageID,350,350);
- 		}
+			Console.Write("Got grid region reply, requesting texture :"+region.MapImageID.ToString()+"\n");
+			
+			if(this.objects_map_ID==UUID.Zero)
+			{
+				Console.WriteLine("Assuming this is an objects overlay");
+				this.objects_map_ID=region.MapImageID;
+				Gdk.Pixbuf pb= MainClass.GetResource("trying.tga");
+				objects_map = new Gtk.Image(pb);
+				this.image.Pixbuf=pb;
+				new TryGetImage(this.objects_map,region.MapImageID,350,350);
+				rowstride = objects_map.Pixbuf.Rowstride;
+	            channels = objects_map.Pixbuf.NChannels;
+	            width = objects_map.Pixbuf.Width;
+	            height = objects_map.Pixbuf.Height;
+
+				MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Terrain);				
+			}else if(this.terrain_map_ID==UUID.Zero)
+			{
+				Console.WriteLine("Assuming this is a terrian overlay");
+				Gdk.Pixbuf pb= MainClass.GetResource("trying.tga");
+				terrian_map = new Gtk.Image(pb);				
+				new TryGetImage(this.terrian_map,region.MapImageID,350,350);
+			}
+			
+		}
 				
 		void onGridLayer(GridLayer layer)
 	    {
+			
+			//layer.ImageID
+			Console.Write("Got grid layer reply, requesting texture :"+layer.ImageID.ToString()+"\n");
 			
 		}
 
@@ -132,8 +179,15 @@ namespace omvviewerlight
                 if (MainClass.client.Network.CurrentSim.ID == lastsim)
                     return;
 				
-				MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Terrain);
-                MainClass.client.Grid.RequestMapLayer(GridLayerType.Terrain);                
+			this.terrain_map_ID=UUID.Zero;
+			this.objects_map_ID=UUID.Zero;
+			this.forsale_map_ID=UUID.Zero;
+
+				MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Objects);
+      //          MainClass.client.Grid.RequestMapLayer(GridLayerType.Terrain);                
+       //         MainClass.client.Grid.RequestMapLayer(GridLayerType.Objects);
+				
+
 				Gtk.Application.Invoke(delegate
                 {
                     drawavs();
@@ -169,6 +223,8 @@ namespace omvviewerlight
 		void drawavs()
 		{
 
+		  basemap=this.objects_map;
+			
           if (basemap == null)
               return;
 
@@ -218,13 +274,26 @@ namespace omvviewerlight
                                 pos = kvp.Value.Position;
                             }
 
+							if(MainClass.client.Friends.FriendList.Dictionary.ContainsKey(kvp.Value.ID))
+							{
+                            if (pos.Z - myz > 5)
+                                showme(buf, avatar_friend_above.Pixbuf, pos);
+                            else if (pos.Z - myz < -5)
+                                showme(buf, avatar_friend_below.Pixbuf, pos);
+                            else
+                                showme(buf, avatar_friend.Pixbuf, pos);
+								
+							}
+							else
+							{
                             if (pos.Z - myz > 5)
                                 showme(buf, avatar_above.Pixbuf, pos);
                             else if (pos.Z - myz < -5)
                                 showme(buf, avatar_below.Pixbuf, pos);
                             else
                                 showme(buf, avatar.Pixbuf, pos);
-
+							}
+							
                         }
                     }
 					
@@ -236,7 +305,10 @@ namespace omvviewerlight
 
 				//Draw me last so i am on top of the mele
 				showme(buf,avatar_me.Pixbuf,MainClass.client.Self.SimPosition);				
-			
+				
+				if(this.targetpos.X!=-1)
+					showme(buf,avatar_target.Pixbuf,this.targetpos);				
+						
              }
 
             lock (image)
@@ -256,6 +328,7 @@ namespace omvviewerlight
 
 		void onNewSim(Simulator lastsim)
 	    {
+			MainClass.win.map_widget=this;
 			Console.Write("New simulator :"+MainClass.client.Network.CurrentSim.Name +" requesting grid layer for terrain \n");
 		    MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Terrain);
 			Gtk.Application.Invoke(delegate
@@ -331,16 +404,16 @@ namespace omvviewerlight
 				
 				void getmap()
 		{
-			Gtk.Application.Invoke(delegate {		
-			Gdk.Pixbuf pb=new Pixbuf(MainClass.GetResource("trying.tga"),0,0,256,256);
+			//Gtk.Application.Invoke(delegate {		
+			//Gdk.Pixbuf pb=new Pixbuf(MainClass.GetResource("trying.tga"),0,0,256,256);
           
-            lock (image)
-            {
-                this.image.Pixbuf = pb.ScaleSimple(350,350,InterpType.Bilinear);
-            }
-			Thread mapdownload= new Thread(new ThreadStart(this.getmap_threaded));                               
-			mapdownload.Start();
-			});
+            //lock (image)
+            //{
+              //  this.image.Pixbuf = pb.ScaleSimple(350,350,InterpType.Bilinear);
+            //}
+			//Thread mapdownload= new Thread(new ThreadStart(this.getmap_threaded));                               
+			//mapdownload.Start();
+			//});
 			
 		}
 		
@@ -383,10 +456,7 @@ namespace omvviewerlight
                     {
                  
                     image.Pixbuf = (Gdk.Pixbuf)basemap.Pixbuf.ScaleSimple(350,350,InterpType.Bilinear);
-                    basemap.Pixbuf=basemap.Pixbuf.ScaleSimple(350,350,InterpType.Bilinear);                                 
-                    // image.Pixbuf = (Gdk.Pixbuf)basemap.Pixbuf.Clone();
-                        //image.Pixbuf=image.Pixbuf.ScaleSimple(512,512,InterpType.Bilinear);
-                        
+                    basemap.Pixbuf=basemap.Pixbuf.ScaleSimple(350,350,InterpType.Bilinear);                                                         
                     }
                     rowstride = basemap.Pixbuf.Rowstride;
                     channels = basemap.Pixbuf.NChannels;
@@ -413,11 +483,6 @@ namespace omvviewerlight
 				return ;
             }	
 		}
-
-		protected virtual void OnImageButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
-		{
-Console.WriteLine("CLICK");
-		}
 			
 		protected virtual void OnEventbox1ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
@@ -426,9 +491,22 @@ Console.WriteLine("CLICK");
 			pos.X=(float)(256.0*(args.Event.X/this.image.Pixbuf.Width));
 			pos.Y=(float)(256.0*(args.Event.Y/this.image.Pixbuf.Height));
 			pos.Z=0;
+
+			pos.Y=255-pos.Y;
+
+			targetpos=pos;
+			
 			if(MainClass.win.tp_target_widget!=null)
 				MainClass.win.tp_target_widget.settarget(pos);
-				                                         
+			
+			this.drawavs();
+			
+		}
+		
+		public void showtarget(Vector3 pos)
+		{
+			targetpos=pos;
+			this.drawavs();
 		}
 	}
 }

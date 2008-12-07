@@ -32,13 +32,22 @@ namespace omvviewerlight
 	{
 		
 		bool userclicked=false;
+		bool target=false;
+		bool localupdate=false;
+		
 		public TeleportTo()
 		{
 			this.Build();		
             MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
             MainClass.client.Objects.OnObjectUpdated += new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);    
-      
-        }
+			if(MainClass.client!=null)
+			{
+				if(MainClass.client.Network.LoginStatusCode==OpenMetaverse.LoginStatus.Success)
+                {	
+					MainClass.win.tp_target_widget=this; //MEMORY LEAK, needs to be killed if this widget is removed
+				}
+			}			
+		}
 		
 		
 		new public void Dispose()
@@ -60,11 +69,24 @@ namespace omvviewerlight
                 {
 					if(userclicked==false)
 					{
+					localupdate=true;
 					this.spinbutton_x.Value = MainClass.client.Self.SimPosition.X;
                     this.spinbutton_y.Value = MainClass.client.Self.SimPosition.Y;
                     this.spinbutton_z.Value = MainClass.client.Self.SimPosition.Z;
+					localupdate=false;
 					}
-                });
+
+					if(target=true)
+					{
+						if(Math.Abs(MainClass.client.Self.SimPosition.X-spinbutton_x.Value)<1)
+							if(Math.Abs(MainClass.client.Self.SimPosition.Y-spinbutton_y.Value)<1)
+						    {
+							   target=false;
+							   MainClass.client.Self.AutoPilotCancel();
+						    }
+						
+					}
+				});
 
             }
         }
@@ -72,14 +94,17 @@ namespace omvviewerlight
         void onNewSim(Simulator lastsim)
         {
 		
-				userclicked=false;
+		   userclicked=false;
            Gtk.Application.Invoke(delegate
             {
+				this.localupdate=true;
 	            this.spinbutton_x.Value = MainClass.client.Self.SimPosition.X;
 	            this.spinbutton_y.Value = MainClass.client.Self.SimPosition.Y;
 	            this.spinbutton_z.Value = MainClass.client.Self.SimPosition.Z;
+				this.localupdate=false;				
 				this.entry_simname.Text=MainClass.client.Network.CurrentSim.Name;
-				      MainClass.win.tp_target_widget=this; //MEMORY LEAK, needs to be killed if this widget is removed
+				MainClass.win.tp_target_widget=this; //MEMORY LEAK, needs to be killed if this widget is removed
+				MainClass.client.Self.AutoPilotCancel();
 			});    
 		}
 
@@ -88,6 +113,7 @@ namespace omvviewerlight
 			if(MainClass.client.Network.LoginStatusCode==OpenMetaverse.LoginStatus.Success)
 			{
 				this.label_current.Text="Current Location: "+MainClass.client.Network.CurrentSim.Name+" "+MainClass.client.Self.SimPosition;
+				MainClass.client.Self.AutoPilotCancel();
 			}
 			
 			return true;
@@ -99,7 +125,7 @@ namespace omvviewerlight
 
 		protected virtual void OnButtonTeleportClicked (object sender, System.EventArgs e)
 		{
-				userclicked=false;
+			userclicked=false;
 			Vector3 pos;
 			pos=new Vector3();
 			pos.X=(float)this.spinbutton_x.Value;
@@ -113,7 +139,7 @@ namespace omvviewerlight
 
 		protected virtual void OnButtonTphomeClicked (object sender, System.EventArgs e)
 		{
-				userclicked=false;
+			userclicked=false;
 			TeleportProgress tp = new TeleportProgress();
 			tp.Show();
 			tp.teleporthome();
@@ -121,6 +147,7 @@ namespace omvviewerlight
 
 		protected virtual void OnButtonAutopilotClicked (object sender, System.EventArgs e)
 		{
+			Console.WriteLine("Autopilot on");
 			userclicked=false;
 			Vector3 pos;
 			pos=new Vector3();
@@ -134,7 +161,7 @@ namespace omvviewerlight
 			double xTarget = (double)pos.X + (double)regionX;
             double yTarget = (double)pos.Y + (double)regionY;
             double zTarget = pos.Z;
-			
+
 			MainClass.client.Self.Movement.TurnToward(pos);			
             MainClass.client.Self.AutoPilot(xTarget, yTarget, zTarget);
 			
@@ -142,10 +169,47 @@ namespace omvviewerlight
 		
 		public void settarget(Vector3 pos)
 		{
+			Console.WriteLine("Set target from map");
 			userclicked=true;
 			this.spinbutton_x.Value=pos.X;
-			this.spinbutton_y.Value=256-pos.Y;
+			this.spinbutton_y.Value=pos.Y;
 			this.spinbutton_z.Value=pos.Z;
+			target=true;
+		}
+
+
+		void updatemap()
+		{
+			if(localupdate)
+				return;
+			
+			userclicked=true;
+			target=false;
+			Vector3 pos=new Vector3();
+			pos.X=(float)this.spinbutton_x.Value;
+			pos.Y=(float)this.spinbutton_y.Value;
+			pos.Z=(float)this.spinbutton_z.Value;
+			MainClass.win.map_widget.showtarget(pos);
+			
+			
+		}
+
+		protected virtual void OnSpinbuttonXValueChanged (object sender, System.EventArgs e)
+		{
+			updatemap();
+
+		}
+
+		protected virtual void OnSpinbuttonYValueChanged (object sender, System.EventArgs e)
+		{
+			updatemap();
+
+		}
+
+		protected virtual void OnSpinbuttonZValueChanged (object sender, System.EventArgs e)
+		{
+			updatemap();
+
 		}
 	}
 }

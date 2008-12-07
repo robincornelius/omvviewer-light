@@ -67,7 +67,6 @@ namespace omvviewerlight {
             }
             this.Show();
             this.eventbox1.ButtonPressEvent += new Gtk.ButtonPressEventHandler(this.OnEventbox1ButtonPressEvent);
-            this.image.ButtonPressEvent += new Gtk.ButtonPressEventHandler(this.OnImageButtonPressEvent);
         }
     }
 }

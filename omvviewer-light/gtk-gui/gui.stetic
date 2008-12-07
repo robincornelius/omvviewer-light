@@ -1238,6 +1238,7 @@ Shout</property>
                             <property name="ClimbRate">1</property>
                             <property name="Numeric">True</property>
                             <property name="Value">128</property>
+                            <signal name="ValueChanged" handler="OnSpinbuttonXValueChanged" />
                           </widget>
                           <packing>
                             <property name="Position">0</property>
@@ -1256,6 +1257,7 @@ Shout</property>
                             <property name="ClimbRate">1</property>
                             <property name="Numeric">True</property>
                             <property name="Value">128</property>
+                            <signal name="ValueChanged" handler="OnSpinbuttonYValueChanged" />
                           </widget>
                           <packing>
                             <property name="Position">1</property>
@@ -1274,6 +1276,7 @@ Shout</property>
                             <property name="ClimbRate">1</property>
                             <property name="Numeric">True</property>
                             <property name="Value">50</property>
+                            <signal name="ValueChanged" handler="OnSpinbuttonZValueChanged" />
                           </widget>
                           <packing>
                             <property name="Position">2</property>
@@ -1415,7 +1418,6 @@ Shout</property>
                 <property name="HeightRequest">350</property>
                 <property name="Events">ButtonPressMask</property>
                 <property name="ExtensionEvents">All</property>
-                <signal name="ButtonPressEvent" handler="OnImageButtonPressEvent" />
               </widget>
             </child>
           </widget>
