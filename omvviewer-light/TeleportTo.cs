@@ -147,24 +147,28 @@ namespace omvviewerlight
 
 		protected virtual void OnButtonAutopilotClicked (object sender, System.EventArgs e)
 		{
-			Console.WriteLine("Autopilot on");
-			userclicked=false;
-			Vector3 pos;
-			pos=new Vector3();
-			pos.X=(float)this.spinbutton_x.Value;
-			pos.Y=(float)this.spinbutton_y.Value;
-			pos.Z=(float)this.spinbutton_z.Value;
+		
 			
-  		    uint regionX, regionY;
-            Utils.LongToUInts(MainClass.client.Network.CurrentSim.Handle, out regionX, out regionY);
-
-			double xTarget = (double)pos.X + (double)regionX;
-            double yTarget = (double)pos.Y + (double)regionY;
-            double zTarget = pos.Z;
-
-			MainClass.client.Self.Movement.TurnToward(pos);			
-            MainClass.client.Self.AutoPilot(xTarget, yTarget, zTarget);
-			
+			if(this.button_autopilot.Label=="Move To")
+			{			
+				Console.WriteLine("Autopilot on");
+				userclicked=false;
+				Vector3 pos;
+				pos=new Vector3();
+				pos.X=(float)this.spinbutton_x.Value;
+				pos.Y=(float)this.spinbutton_y.Value;
+				pos.Z=(float)this.spinbutton_z.Value;	
+	  		    AutoPilot.set_target_pos(pos);
+				this.button_autopilot.Label="Stop";
+				this.button_autopilot.Image=new Gtk.Image(Stetic.IconLoader.LoadIcon(this, "gtk-cancel", Gtk.IconSize.Menu, 16));
+				
+			}
+			else
+			{
+				AutoPilot.stop();
+				this.button_autopilot.Label="Move To";	
+				this.button_autopilot.Image=new Gtk.Image(Stetic.IconLoader.LoadIcon(this, "stock_draw-curved-connector-starts-with-arrow", Gtk.IconSize.Menu, 16));
+			}
 		}
 		
 		public void settarget(Vector3 pos)

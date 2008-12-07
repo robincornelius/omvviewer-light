@@ -1,13 +1,15 @@
-﻿<UserCombinePreferences version="1.0" filename="/home/robin/libsecondlife/omvviewer-light/omvviewer-light.mds">
+﻿<UserCombinePreferences version="1.0" filename="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light.mds">
   <Files>
     <File name="Welcome" />
     <File name="omvviewer-light/Map.cs" line="343" column="12" />
+    <File name="omvviewer-light/TeleportTo.cs" line="159" column="42" />
+    <File name="omvviewer-light/AutoPilot.cs" line="34" column="3" />
   </Files>
   <Views>
     <ViewMemento id="ProjectPad">
       <Node expanded="True">
         <Node name="omvviewer-light" expanded="True">
-          <Node name="Resources" expanded="True" selected="True" />
+          <Node name="AutoPilot.cs" selected="True" />
         </Node>
       </Node>
     </ViewMemento>
@@ -16,7 +18,7 @@
     </ViewMemento>
   </Views>
   <Properties>
-    <Property key="ActiveWindow" value="/home/robin/libsecondlife/omvviewer-light/omvviewer-light/Map.cs" />
+    <Property key="ActiveWindow" value="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light/AutoPilot.cs" />
     <Property key="ActiveConfiguration" value="Debug" />
   </Properties>
 </UserCombinePreferences>

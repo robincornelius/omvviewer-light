@@ -44,8 +44,7 @@ namespace omvviewerlight
         private Dictionary<uint, agent> av_tree = new Dictionary<uint, agent>();
         UUID lastsim = new UUID();
 		const float DISTANCE_BUFFER = 3f;
-        uint targetLocalID = 0;
-		bool Active;
+
 		bool running=true;
 		~Radar()
 		{
@@ -434,19 +433,14 @@ namespace omvviewerlight
 			
 			if(this.button1.Label=="STOP")
 			{
-				Active=false;
-				this.button1.Label="Follow";
+				AutoPilot.stop();
 				return;
 			}
 			
 			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
-				uint localid=(uint)mod.GetValue(iter,3);
-				
-				this.targetLocalID=localid;
-			
-				Active=true;
-				Gtk.Timeout.Add(1000,Think);
+				uint localid=(uint)mod.GetValue(iter,3);		
+				AutoPilot.set_target_avatar(localid);
 				this.button1.Label="STOP";
 			}
 		}
@@ -483,93 +477,6 @@ namespace omvviewerlight
 						}					
 					}					
 				}		
-			}
-		}
-		
-		bool Think()
-		{
-            if (Active)
-            {
-				
-                lock (MainClass.client.Network.Simulators)
-                {
-                    for (int i = 0; i < MainClass.client.Network.Simulators.Count; i++)
-                    {
-                        Avatar targetAv;
-
-                        if (MainClass.client.Network.Simulators[i].ObjectsAvatars.TryGetValue(targetLocalID, out targetAv))
-                        {
-                            float distance = 0.0f;	
-							Vector3 targetpos;
-							targetpos.X=0;
-							targetpos.Y=0;
-							targetpos.Z=0;
-							
-							if(targetAv.ParentID!=0)
-							{
-								
-								if(!MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary.ContainsKey(targetAv.ParentID))
-								{
-									Console.WriteLine("AV is seated and i can't find the parent prim in dictionay");
-									Active=false;
-									return false;
-								}
-								else
-								{
-									Vector3 pos;
-									Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[targetAv.ParentID];
-									targetpos=pos = Vector3.Transform(targetAv.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
-									if (MainClass.client.Network.Simulators[i] == MainClass.client.Network.CurrentSim)
-									{
-										distance = Vector3.Distance(pos, MainClass.client.Self.SimPosition);
-									}					
-								}				
-							}			
-							else
-							{
-								if (MainClass.client.Network.Simulators[i] == MainClass.client.Network.CurrentSim)
-								{
-									distance = Vector3.Distance(targetAv.Position, MainClass.client.Self.SimPosition);
-									targetpos=targetAv.Position;
-								}
-							}
-							
-               
-                            if (distance > 2.5)
-                            {
-								
-								
-                                uint regionX, regionY;
-                                Utils.LongToUInts(MainClass.client.Network.Simulators[i].Handle, out regionX, out regionY);
-								
-                                double xTarget = (double)targetpos.X + (double)regionX;
-                                double yTarget = (double)targetpos.Y + (double)regionY;
-                                double zTarget = targetpos.Z;
-
-                                Logger.DebugLog(String.Format("[Autopilot] {0} meters away from the target, starting autopilot to <{1},{2},{3}>",
-                                    distance, xTarget, yTarget, zTarget), MainClass.client);
-									
-								Vector3 pos;
-								pos.X=(float)xTarget;
-								pos.Y=(float)yTarget;
-								pos.Z=(float)zTarget;
-									
-								MainClass.client.Self.Movement.TurnToward(pos);			
-                                MainClass.client.Self.AutoPilot(xTarget, yTarget, zTarget);
-							}
-                            else
-                            {
-								Logger.DebugLog("Stopping autopilot");
-                            }
-                        }
-                    }
-                }
-				return true;
-            }
-			else
-			{
-				MainClass.client.Self.AutoPilotCancel();
-				return false;
 			}
 		}
 		
