@@ -48,6 +48,7 @@ namespace omvviewerlight
             MainClass.client.Objects.OnObjectProperties -= new OpenMetaverse.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
             MainClass.client.Groups.OnGroupNames -= new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
             MainClass.client.Self.OnAvatarSitResponse -= new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
+			AutoPilot.onAutoPilotFinished-=new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
 
             Gtk.Notebook p;
             p = (Gtk.Notebook)this.Parent;
@@ -89,14 +90,11 @@ namespace omvviewerlight
 			this.label_pos.Text="";
 		    this.label_float_text.Text="";
             treeview1.HeadersClickable = true;
-          
-			
+          			
 			MainClass.client.Objects.OnObjectProperties += new OpenMetaverse.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
 			MainClass.client.Groups.OnGroupNames += new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
             MainClass.client.Self.OnAvatarSitResponse += new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
-
-
-
+			AutoPilot.onAutoPilotFinished+=new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
 		}
 
         void Self_OnAvatarSitResponse(UUID objectID, bool autoPilot, Vector3 cameraAtOffset, Vector3 cameraEyeOffset, bool forceMouselook, Vector3 sitPosition, Quaternion sitRotation)
@@ -290,9 +288,7 @@ namespace omvviewerlight
                             FetchedPrims.Add(properties.ObjectID,prim);
                         }
 				        store.AppendValues(prim.Properties.Name, prim.Properties.Description, Vector3.Distance(prim.Position, mypos).ToString(), prim.Properties.ObjectID);
-                        store.Foreach(myfunc);
-					
-						
+                        store.Foreach(myfunc);	
 				});
 				
 				}
@@ -658,28 +654,30 @@ namespace omvviewerlight
 		{
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
+		
+			if(this.button_moveto.Label=="Stop")
+			{
+				AutoPilot.stop();
+				return;
+			}
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
 				UUID id=(UUID)mod.GetValue(iter,3);
 				Primitive prim;
-				
+					
 				if(FetchedPrims.TryGetValue(id,out prim))
 				{
-					uint regionX, regionY;
-                    Utils.LongToUInts(MainClass.client.Network.CurrentSim.Handle, out regionX, out regionY);
-					double xTarget = (double)prim.Position.X + (double)regionX;
-                    double yTarget = (double)prim.Position.Y + (double)regionY;
-                    double zTarget = prim.Position.Z;
-					
-					MainClass.client.Self.Movement.TurnToward(prim.Position);			
-                    MainClass.client.Self.AutoPilot(xTarget, yTarget, zTarget);
-					
+					AutoPilot.set_target_pos(prim.Position);
+					this.button_moveto.Label="Stop";				
 				}
-					
 			}
 			
 		}
-	
+
+		void onAutoPilotFinished()
+		{
+			this.button_moveto.Label="Move to";
+		}
 	}
 }

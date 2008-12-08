@@ -10,8 +10,6 @@ using GLib;
 
 namespace omvviewerlight
 {
-	
-	
 	static class AutoPilot
 	{
 		enum TargetType{
@@ -26,7 +24,10 @@ namespace omvviewerlight
 		static UUID target_object;
 		static uint target_avatar;
 		static Vector3 target_pos;
-		
+
+		public delegate void AutoPilotFinished();
+        public static event AutoPilotFinished onAutoPilotFinished;
+
 		public static void init()
 		{
 			Active=false;
@@ -35,6 +36,9 @@ namespace omvviewerlight
 		public static void stop()
 		{
 			MainClass.client.Self.AutoPilotCancel();
+			if(onAutoPilotFinished!=null)
+				onAutoPilotFinished();
+			
 			Active=false;			
 		}
 		
@@ -175,8 +179,10 @@ namespace omvviewerlight
                  else
 				 {
 					 Active=false;
-					 return false;
+					 if(onAutoPilotFinished!=null)
+						onAutoPilotFinished();
 				     Logger.DebugLog("Stopping autopilot");
+					return false;
                  }
                         
 				return true;
@@ -185,7 +191,9 @@ namespace omvviewerlight
 			{
 				 Logger.DebugLog("NOT ACTIVE Stopping autopilot");
 				Active=false;
-	            return false;
+				if(onAutoPilotFinished!=null)
+					onAutoPilotFinished();
+				return false;
 			}
 			
 		}	

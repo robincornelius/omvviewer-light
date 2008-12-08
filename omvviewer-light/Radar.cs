@@ -28,7 +28,6 @@ using OpenMetaverse;
 
 namespace omvviewerlight
 {
-
     public class agent 
     {
         public OpenMetaverse.Avatar avatar;
@@ -74,6 +73,8 @@ namespace omvviewerlight
 	
 			MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
 
+			AutoPilot.onAutoPilotFinished+=new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
+			
 			this.store.SetSortFunc(2,sort_Vector3);	
             store.SetSortColumnId(2,Gtk.SortType.Ascending);
             Gtk.Timeout.Add(10000, kickrefresh);
@@ -88,6 +89,7 @@ namespace omvviewerlight
 			MainClass.client.Self.OnChat -= new OpenMetaverse.AgentManager.ChatCallback(onChat);
 			MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
 			MainClass.client.Self.OnTeleport -= new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
+			AutoPilot.onAutoPilotFinished-=new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
 			
 			//Finalize();
 			//System.GC.SuppressFinalize(this);
@@ -479,6 +481,10 @@ namespace omvviewerlight
 				}		
 			}
 		}
-		
+
+		void onAutoPilotFinished()
+		{
+			this.button1.Label="Follow";
+		}
 	}
 }

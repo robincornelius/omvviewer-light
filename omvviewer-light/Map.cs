@@ -78,6 +78,7 @@ namespace omvviewerlight
 			MainClass.client.Grid.OnGridLayer += new OpenMetaverse.GridManager.GridLayerCallback(onGridLayer);
 			MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
 			MainClass.client.Grid.OnGridItems += new OpenMetaverse.GridManager.GridItemsCallback(onGridItems);
+			AutoPilot.onAutoPilotFinished += new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
 			Gtk.Timeout.Add(10000, kickrefresh);			
 			this.targetpos.X=-1;
 			
@@ -106,6 +107,7 @@ namespace omvviewerlight
             MainClass.client.Self.OnTeleport -= new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
 			MainClass.client.Grid.OnGridLayer -= new OpenMetaverse.GridManager.GridLayerCallback(onGridLayer);
 			MainClass.client.Grid.OnGridRegion -= new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
+			AutoPilot.onAutoPilotFinished -= new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
 			
 			//Finalize();
 			//System.GC.SuppressFinalize(this);
@@ -507,6 +509,12 @@ namespace omvviewerlight
 		{
 			targetpos=pos;
 			this.drawavs();
+		}
+		
+		void onAutoPilotFinished()
+		{
+			targetpos.X=-1;
+			this.drawavs();			
 		}
 	}
 }

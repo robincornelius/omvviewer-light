@@ -40,6 +40,10 @@ namespace omvviewerlight
 			this.Build();		
             MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
             MainClass.client.Objects.OnObjectUpdated += new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);    
+			AutoPilot.onAutoPilotFinished += new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
+			this.button_autopilot.Label="Move To";	
+			this.button_autopilot.Image=new Gtk.Image(Stetic.IconLoader.LoadIcon(this, "stock_draw-curved-connector-starts-with-arrow", Gtk.IconSize.Menu, 16));
+
 			if(MainClass.client!=null)
 			{
 				if(MainClass.client.Network.LoginStatusCode==OpenMetaverse.LoginStatus.Success)
@@ -54,6 +58,7 @@ namespace omvviewerlight
 		{
             MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
             MainClass.client.Objects.OnObjectUpdated += new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);    
+			AutoPilot.onAutoPilotFinished -= new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
 
 			//Finalize();
 			//System.GC.SuppressFinalize(this);
@@ -194,8 +199,6 @@ namespace omvviewerlight
 			pos.Y=(float)this.spinbutton_y.Value;
 			pos.Z=(float)this.spinbutton_z.Value;
 			MainClass.win.map_widget.showtarget(pos);
-			
-			
 		}
 
 		protected virtual void OnSpinbuttonXValueChanged (object sender, System.EventArgs e)
@@ -214,6 +217,14 @@ namespace omvviewerlight
 		{
 			updatemap();
 
+		}
+		
+		void onAutoPilotFinished()
+		{
+			Gtk.Application.Invoke(delegate {
+				this.button_autopilot.Label="Move To";	
+				this.button_autopilot.Image=new Gtk.Image(Stetic.IconLoader.LoadIcon(this, "stock_draw-curved-connector-starts-with-arrow", Gtk.IconSize.Menu, 16));
+		 });
 		}
 	}
 }
