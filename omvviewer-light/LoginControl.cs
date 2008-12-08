@@ -155,6 +155,8 @@ namespace omvviewerlight
 			if(sim.ID==MainClass.client.Network.CurrentSim.ID)
 			{
 				this.trying=false;
+				MainClass.client.Self.Movement.Flags=0;
+				MainClass.client.Self.Movement.SendUpdate();
             //    Gtk.Application.Invoke(delegate
              //   {
              //       Thread loginRunner = new Thread(new ThreadStart(this.appearencethread));
