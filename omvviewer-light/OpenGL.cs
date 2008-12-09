@@ -97,14 +97,13 @@ namespace omvviewerlight
 			
 			List<string> renderers = RenderingLoader.ListRenderers(System.AppDomain.CurrentDomain.BaseDirectory);			
 			Render.Plugin = RenderingLoader.LoadRenderer(renderers[0]);
-		
 			
 			MainGL();
 		}
 				
         public void SampleDisplay()
         {				
-           // Gl.glClearColor(0f, 0.5f, 1f, 1f);
+            Gl.glClearColor(0f, 0.5f, 1f, 1f);
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 			RenderScene();
             Glut.glutSwapBuffers();
@@ -118,7 +117,7 @@ namespace omvviewerlight
 				this.ondotextures=null;
 			}
 			
-			//Gl.glClearColor(0f, 0.5f, 1f, 1f);
+			Gl.glClearColor(0f, 0.5f, 1f, 1f);
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 			RenderScene();
             Glut.glutSwapBuffers();			
@@ -138,7 +137,7 @@ namespace omvviewerlight
             SetPerspective();
 
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
-          Gl.glPopMatrix();
+            Gl.glPopMatrix();
 
             // Set the center of the glControl as the default pivot point
            // LastPivot = glControl.PointToScreen(new Point(nWidth/2, nHeight/2));
@@ -397,7 +396,7 @@ namespace omvviewerlight
 		
 			void onUpdate(Simulator simulator, ObjectUpdate update, ulong regionHandle, ushort timeDilation)
 			{
-				if (update.LocalID == MainClass.client.Self.LocalID)
+	/*			if (update.LocalID == MainClass.client.Self.LocalID)
 				{
 				Vector3 far;
 				far=MainClass.client.Self.RelativePosition;
@@ -406,6 +405,8 @@ namespace omvviewerlight
                    this.Camera.Position=MainClass.client.Self.RelativePosition;
                    this.Camera.FocalPoint=far;			
                 }
+                   
+                   */
              }
 
         private void InitOpenGL()
