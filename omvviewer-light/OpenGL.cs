@@ -97,12 +97,13 @@ namespace omvviewerlight
 			
 			List<string> renderers = RenderingLoader.ListRenderers(System.AppDomain.CurrentDomain.BaseDirectory);			
 			Render.Plugin = RenderingLoader.LoadRenderer(renderers[0]);
-			
 			MainGL();
 		}
 				
         public void SampleDisplay()
-        {				
+        {		
+
+			
             Gl.glClearColor(0f, 0.5f, 1f, 1f);
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 			RenderScene();
@@ -111,6 +112,8 @@ namespace omvviewerlight
 
         void SampleIdle()
 		{ 
+	
+			
 			if(this.ondotextures!=null)
 			{
 				this.ondotextures();
@@ -174,6 +177,8 @@ namespace omvviewerlight
             {
                 // Calculate the distance to move to/away
                 float dist = (float)(Delta / 120) * 10.0f;
+				
+				Console.WriteLine("Zoom");
 
                 if (Vector3.Distance(Camera.Position, Camera.FocalPoint) > dist)
                 {
@@ -217,8 +222,9 @@ namespace omvviewerlight
 
                 // Calculate the deltas from the center of the control to the current position
                 int deltaX = (int)((mouse.X - LastPivot.X) * -0.5d);
-                int deltaY = (int)((mouse.Y - LastPivot.Y) * -0.5d);
+				int deltaY = (int)((mouse.Y - LastPivot.Y) * -0.5d);
 
+Console.WriteLine("Motion callback");
                 // Translate so the focal point is the origin
                 Vector3 altered = Camera.Position - Camera.FocalPoint;
 
@@ -445,8 +451,9 @@ namespace omvviewerlight
             Array.Sort<HeightmapLookupValue>(LookupHeightTable);
         }
 
-        private void InitCamera()
+			private void InitCamera()
         {
+Console.WriteLine("Init camera");
             Camera = new sCamera();
             Camera.Position = new Vector3(128f, -192f, 90f);
             Camera.FocalPoint = new Vector3(128f, 128f, 0f);
@@ -594,8 +601,8 @@ namespace omvviewerlight
         }
 
         private void Objects_OnNewPrim(Simulator simulator, Primitive prim, ulong regionHandle, ushort timeDilation)
-        {
-			
+			{
+
 			//Console.WriteLine("New prim");
 			
             RenderablePrim render = new RenderablePrim();
@@ -679,8 +686,9 @@ namespace omvviewerlight
             //UpdatePrimProgress();
         }
 
-        private void Terrain_OnLandPatch(Simulator simulator, int x, int y, int width, float[] data)
-		{
+			private void Terrain_OnLandPatch(Simulator simulator, int x, int y, int width, float[] data)
+			{
+
            // Console.WriteLine("OnLandPatch");
             if (MainClass.client != null && MainClass.client.Network.CurrentSim == simulator)
             {
@@ -1402,7 +1410,7 @@ StartRender:
         // |  2  6 10 14 |
         // |  3  7 11 15 |
 
-        public static float[] CreateTranslationMatrix(Vector3 v)
+				public static float[] CreateTranslationMatrix(Vector3 v)
         {
             float[] mat = new float[16];
 
@@ -1459,7 +1467,7 @@ StartRender:
             return mat;
         }
 
-        public static float[] CreateScaleMatrix(Vector3 v)
+				public static float[] CreateScaleMatrix(Vector3 v)
         {
             float[] mat = new float[16];
 
