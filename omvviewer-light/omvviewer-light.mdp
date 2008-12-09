@@ -194,7 +194,6 @@
     <ProjectReference type="Gac" localcopy="True" refto="gtk-dotnet, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <ProjectReference type="Assembly" localcopy="True" refto="bin/Tao.FreeGlut.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="bin/Tao.OpenGl.dll" />
-    <ProjectReference type="Assembly" localcopy="True" refto="bin/shapes.dll" />
   </References>
   <GtkDesignInfo isWidgetLibrary="True" gtkVersion="2.12.1">
     <ExportedWidgets>

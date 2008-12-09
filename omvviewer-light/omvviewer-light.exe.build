@@ -76,6 +76,10 @@
 		 <include name="art/map_avatar_8.tga" /> 
 		 <include name="art/map_avatar_above_8.tga" /> 
 		 <include name="art/map_avatar_below_8.tga" /> 
+		 <include name="art/map_avatar_friend_8.tga" /> 
+		 <include name="art/map_avatar_friend_above_8.tga" /> 
+		 <include name="art/map_avatar_friend_below_8.tga" /> 
+         <include name="art/map_avatar_target_8.tga" />
 		 <include name="art/map_avatar_me_8.tga" /> 
 		 <include name="art/map_home.tga" /> 
 		 <include name="art/parcelindex.tga" /> 

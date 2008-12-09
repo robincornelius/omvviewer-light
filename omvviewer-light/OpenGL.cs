@@ -95,7 +95,7 @@ namespace omvviewerlight
 		void run()			
 		{
 			
-			List<string> renderers = RenderingLoader.ListRenderers(".");			
+			List<string> renderers = RenderingLoader.ListRenderers(System.AppDomain.CurrentDomain.BaseDirectory);			
 			Render.Plugin = RenderingLoader.LoadRenderer(renderers[0]);
 			InitializeObjects();
             InitHeightmap(0);
