@@ -783,7 +783,7 @@ Console.WriteLine("Init camera");
 
                 RenderTerrain();
                 RenderPrims();
-               // RenderAvatars();
+                RenderAvatars();
 
                 Gl.glDisableClientState(Gl.GL_TEXTURE_COORD_ARRAY);
                 Gl.glDisableClientState(Gl.GL_VERTEX_ARRAY);
