@@ -97,17 +97,14 @@ namespace omvviewerlight
 			
 			List<string> renderers = RenderingLoader.ListRenderers(System.AppDomain.CurrentDomain.BaseDirectory);			
 			Render.Plugin = RenderingLoader.LoadRenderer(renderers[0]);
-			InitializeObjects();
-            InitHeightmap(0);
-			InitOpenGL();
-            InitCamera();
+		
 			
 			MainGL();
 		}
 				
         public void SampleDisplay()
         {				
-            Gl.glClearColor(0f, 0.5f, 1f, 1f);
+           // Gl.glClearColor(0f, 0.5f, 1f, 1f);
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 			RenderScene();
             Glut.glutSwapBuffers();
@@ -121,7 +118,7 @@ namespace omvviewerlight
 				this.ondotextures=null;
 			}
 			
-			Gl.glClearColor(0f, 0.5f, 1f, 1f);
+			//Gl.glClearColor(0f, 0.5f, 1f, 1f);
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 			RenderScene();
             Glut.glutSwapBuffers();			
@@ -129,10 +126,8 @@ namespace omvviewerlight
 
         void SampleReshape(int nWidth, int nHeight)
         {						
-
-			Gtk.Application.Invoke(delegate{
 				
-				Gl.glClearColor(0.39f, 0.58f, 0.93f, 1.0f);
+			Gl.glClearColor(0.39f, 0.58f, 0.93f, 1.0f);
 
             Gl.glViewport(0, 0,  nWidth, nHeight);
 
@@ -143,13 +138,13 @@ namespace omvviewerlight
             SetPerspective();
 
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
-            Gl.glPopMatrix();
+          Gl.glPopMatrix();
 
             // Set the center of the glControl as the default pivot point
            // LastPivot = glControl.PointToScreen(new Point(nWidth/2, nHeight/2));
            LastPivot = new Point(nWidth/2, nHeight/2);
 				
-				});
+			
 		}
 
         void SampleKeyboard(byte cChar, int nMouseX, int nMouseY)
@@ -282,8 +277,13 @@ namespace omvviewerlight
 
 			Glut.glutIdleFunc(new Glut.IdleCallback(this.SampleIdle));
 			Glut.glutMouseFunc(new Glut.MouseCallback(this.MouseCallback));			
-            Glut.glutMotionFunc(new Glut.MotionCallback(this.MotionCallback));
+			Glut.glutMotionFunc(new Glut.MotionCallback(this.MotionCallback));
 			
+	        InitializeObjects();
+            InitHeightmap(0);
+			InitOpenGL();
+            InitCamera();			
+
 
 	        try
 			{
