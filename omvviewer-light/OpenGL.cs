@@ -600,14 +600,14 @@ Console.WriteLine("Init camera");
             }
         }
 
-        private void Objects_OnNewPrim(Simulator simulator, Primitive prim, ulong regionHandle, ushort timeDilation)
+			private void Objects_OnNewPrim(Simulator simulator, Primitive prim, ulong regionHandle, ushort timeDilation)
 			{
 
 			//Console.WriteLine("New prim");
 			
             RenderablePrim render = new RenderablePrim();
             render.Prim = prim;
-            render.Mesh = Render.Plugin.GenerateFacetedMesh(prim, DetailLevel.High);
+            render.Mesh = Render.Plugin.GenerateFacetedMesh(prim, DetailLevel.Highest);
 
             // Create a FaceData struct for each face that stores the 3D data
             // in a Tao.OpenGL friendly format
