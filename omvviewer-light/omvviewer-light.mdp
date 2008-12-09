@@ -174,6 +174,8 @@
     <File name="art/map_avatar_friend_above_8.tga" subtype="Code" buildaction="EmbedAsResource" />
     <File name="art/map_avatar_friend_below_8.tga" subtype="Code" buildaction="EmbedAsResource" />
     <File name="AutoPilot.cs" subtype="Code" buildaction="Compile" />
+    <File name="OpenGL.cs" subtype="Code" buildaction="Compile" />
+    <File name="TexturePipeline.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
@@ -188,6 +190,11 @@
     <ProjectReference type="Assembly" localcopy="True" refto="bin/OpenMetaverse.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="bin/OpenMetaverseTypes.dll" />
     <ProjectReference type="Gac" localcopy="True" refto="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference type="Assembly" localcopy="True" refto="bin/OpenMetaverse.StructuredData.dll" />
+    <ProjectReference type="Gac" localcopy="True" refto="gtk-dotnet, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <ProjectReference type="Assembly" localcopy="True" refto="bin/Tao.FreeGlut.dll" />
+    <ProjectReference type="Assembly" localcopy="True" refto="bin/Tao.OpenGl.dll" />
+    <ProjectReference type="Assembly" localcopy="True" refto="bin/shapes.dll" />
   </References>
   <GtkDesignInfo isWidgetLibrary="True" gtkVersion="2.12.1">
     <ExportedWidgets>

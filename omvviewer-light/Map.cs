@@ -141,36 +141,24 @@ namespace omvviewerlight
 			getmap();
 			Console.Write("Got grid region reply, requesting texture :"+region.MapImageID.ToString()+"\n");
 			
-			if(this.objects_map_ID==UUID.Zero)
-			{
-				Console.WriteLine("Assuming this is an objects overlay");
-				this.objects_map_ID=region.MapImageID;
-				Gdk.Pixbuf pb= MainClass.GetResource("trying.tga");
-				objects_map = new Gtk.Image(pb);
-				this.image.Pixbuf=pb;
-				new TryGetImage(this.objects_map,region.MapImageID,350,350);
-				rowstride = objects_map.Pixbuf.Rowstride;
-	            channels = objects_map.Pixbuf.NChannels;
-	            width = objects_map.Pixbuf.Width;
-	            height = objects_map.Pixbuf.Height;
-
-				MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Terrain);				
-			}else if(this.terrain_map_ID==UUID.Zero)
-			{
-				Console.WriteLine("Assuming this is a terrian overlay");
-				Gdk.Pixbuf pb= MainClass.GetResource("trying.tga");
-				terrian_map = new Gtk.Image(pb);				
-				new TryGetImage(this.terrian_map,region.MapImageID,350,350);
-			}
+			Console.WriteLine("Assuming this is an objects overlay");
+			this.objects_map_ID=region.MapImageID;
+			Gdk.Pixbuf pb= MainClass.GetResource("trying.tga");
+			objects_map = new Gtk.Image(pb);
+			this.image.Pixbuf=pb;
 			
+			new TryGetImage(this.objects_map,region.MapImageID,350,350);
+
+			rowstride = objects_map.Pixbuf.Rowstride;
+	        channels = objects_map.Pixbuf.NChannels;
+	        width = objects_map.Pixbuf.Width;
+	        height = objects_map.Pixbuf.Height;
 		}
 				
 		void onGridLayer(GridLayer layer)
 	    {
-			
 			//layer.ImageID
-			Console.Write("Got grid layer reply, requesting texture :"+layer.ImageID.ToString()+"\n");
-			
+			Console.Write("Got grid layer reply, requesting texture :"+layer.ImageID.ToString()+"\n");	
 		}
 
 		void onTeleport(string Message, OpenMetaverse.AgentManager.TeleportStatus status,OpenMetaverse.AgentManager.TeleportFlags flags)
@@ -279,9 +267,9 @@ namespace omvviewerlight
 							if(MainClass.client.Friends.FriendList.Dictionary.ContainsKey(kvp.Value.ID))
 							{
                             if (pos.Z - myz > 5)
-                                showme(buf, avatar_friend_above.Pixbuf, pos);
-                            else if (pos.Z - myz < -5)
                                 showme(buf, avatar_friend_below.Pixbuf, pos);
+                            else if (pos.Z - myz < -5)
+                                showme(buf, avatar_friend_above.Pixbuf, pos);
                             else
                                 showme(buf, avatar_friend.Pixbuf, pos);
 								
@@ -289,9 +277,9 @@ namespace omvviewerlight
 							else
 							{
                             if (pos.Z - myz > 5)
-                                showme(buf, avatar_above.Pixbuf, pos);
-                            else if (pos.Z - myz < -5)
                                 showme(buf, avatar_below.Pixbuf, pos);
+                            else if (pos.Z - myz < -5)
+                                showme(buf, avatar_above.Pixbuf, pos);
                             else
                                 showme(buf, avatar.Pixbuf, pos);
 							}

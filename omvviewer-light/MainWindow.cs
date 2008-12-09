@@ -1148,8 +1148,7 @@ public partial class MainWindow: Gtk.Window
 				    md.Destroy();
 					ObjectOfferEvent.Set();
 			});
-			
-			
+			
 		    ObjectOfferEvent.WaitOne(1000*3600,false);
 	
            if (object_offer_result == ResponseType.Yes)
@@ -1161,6 +1160,11 @@ public partial class MainWindow: Gtk.Window
 			    return false;
 			}			
         }
-	
-	
+
+        protected virtual void OnBrowserActionActivated (object sender, System.EventArgs e)
+		{
+		
+        OpenGL mgl=new OpenGL();
+              
+        }	
 }
