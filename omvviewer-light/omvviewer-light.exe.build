@@ -99,6 +99,7 @@
             <sources failonempty="true">
                 <include name="AVNameCache.cs" />
                 <include name="AssemblyInfo.cs" />
+                <include name="AutoPilot.cs" />                
                 <include name="AsyncNameUpdate.cs" />
                 <include name="ChatConsole.cs" />
                 <include name="ChatLayout.cs" />
@@ -133,7 +134,9 @@
                 <include name="Settings.cs" />
                 <include name="TeleportProgress.cs" />
                 <include name="TeleportTo.cs" />
-		<include name="TexturePreview.cs" />
+                <include name="TexturePipeline.cs" />
+                <include name="OpenGL.cs" />
+		        <include name="TexturePreview.cs" />
                 <include name="TryGetImage.cs" />
                 <include name="aPick.cs" />
                 <include name="Properties/Resources.Designer.cs" />
@@ -184,7 +187,11 @@
                 <include name="Mono.Posix.dll" />
                 <include name="OpenMetaverse.dll" />
                 <include name="OpenMetaverseTypes.dll" />
+                <include name="OpenMetaverseTypes.dll" />
+                <include name="OpenMetaverse.StructuredData.dll" />
                 <include name="log4net.dll" />
+                <include name="Tao.OpenGl.dll" />
+                <include name="Tao.FreeGlut.dll" />
             </references><pkg-references> <package name="gtk-sharp-2.0"/> </pkg-references>
             <nowarn>
                 <warning number="1591" />
