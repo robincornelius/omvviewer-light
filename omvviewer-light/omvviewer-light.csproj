@@ -102,6 +102,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\OpenMetaverse.dll</HintPath>
     </Reference>
+    <Reference Include="OpenMetaverse.StructuredData, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="OpenMetaverseTypes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\OpenMetaverseTypes.dll</HintPath>
@@ -122,10 +123,13 @@
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Tao.FreeGlut, Version=2.4.0.2, Culture=neutral, PublicKeyToken=6e602a6ad6c0d06d, processorArchitecture=MSIL" />
+    <Reference Include="Tao.OpenGl, Version=3.0.0.0, Culture=neutral, PublicKeyToken=1ca010269a4501ef, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoPilot.cs" />
     <Compile Include="AVNameCache.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -219,6 +223,7 @@
     <Compile Include="ObjectsLayout.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="OpenGL.cs" />
     <Compile Include="ParcelMgr.cs" />
     <Compile Include="PayWindow.cs">
       <SubType>Code</SubType>
@@ -261,6 +266,7 @@
     <Compile Include="TeleportTo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TexturePipeline.cs" />
     <Compile Include="TexturePreview.cs" />
     <Compile Include="TryGetImage.cs">
       <SubType>Code</SubType>
