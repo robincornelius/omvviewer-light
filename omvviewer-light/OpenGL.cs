@@ -27,14 +27,10 @@ namespace omvviewerlight
 		const float DEG_TO_RAD = 0.0174532925f;
         const uint TERRAIN_START = (uint)Int32.MaxValue + 1;
 
-        //ContextMenu ExportPrimMenu;
-        //ContextMenu ExportTerrainMenu;
-
-        //GridMainClass.client MainClass.client;
         sCamera Camera;
         Dictionary<uint, Primitive> RenderFoliageList = new Dictionary<uint, Primitive>();
         Dictionary<uint, RenderablePrim> RenderPrimList = new Dictionary<uint, RenderablePrim>();
-        //Dictionary<UUID, GlacialComponents.Controls.GLItem> DownloadList = new Dictionary<UUID, GlacialComponents.Controls.GLItem>();
+
         EventHandler IdleEvent;
 
 		int specialkey=0;
@@ -391,36 +387,11 @@ Console.WriteLine("Motion callback");
         private void InitializeObjects()
         {
             InitLists();
-
-//            if (DownloadList != null)
-//                lock (DownloadList)
-//                    DownloadList.Clear();
-
             // Initialize the SL MainClass.client
 
 			MainClass.client.Settings.ALWAYS_DECODE_OBJECTS = true;
             MainClass.client.Settings.ALWAYS_REQUEST_OBJECTS = true;
 
-			
-/*			
-			MainClass.client = new GridMainClass.client();
-            MainClass.client.Settings.MULTIPLE_SIMS = false;
-            MainClass.client.Settings.SEND_AGENT_UPDATES = true;
-            MainClass.client.Settings.USE_TEXTURE_CACHE = true;
-			//FIXME
-			//MainClass.client.Settings.TEXTURE_CACHE_DIR = Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "cache";
-            
-			MainClass.client.Settings.ALWAYS_REQUEST_PARCEL_ACL = false;
-            MainClass.client.Settings.ALWAYS_REQUEST_PARCEL_DWELL = false;
-            // Crank up the throttle on texture downloads
-            MainClass.client.Throttle.Texture = 446000.0f;
-
-            // FIXME: Write our own avatar tracker so we don't double store prims
-            MainClass.client.Settings.OBJECT_TRACKING = false; // We use our own object tracking system
-            MainClass.client.Settings.AVATAR_TRACKING = true; //but we want to use the libsl avatar system
-*/
-            MainClass.client.Network.OnLogin += new NetworkManager.LoginCallback(Network_OnLogin);
-            MainClass.client.Network.OnDisconnected += new NetworkManager.DisconnectedCallback(Network_OnDisconnected);
             MainClass.client.Network.OnCurrentSimChanged += new NetworkManager.CurrentSimChangedCallback(Network_OnCurrentSimChanged);
             MainClass.client.Network.OnEventQueueRunning += new NetworkManager.EventQueueRunningCallback(Network_OnEventQueueRunning);
             MainClass.client.Objects.OnNewPrim += new ObjectManager.NewPrimCallback(Objects_OnNewPrim);
@@ -442,23 +413,6 @@ Console.WriteLine("Motion callback");
 
             // Setup the libsl camera to match our Camera struct
             UpdateCamera();
-   //         glControl_Resize(null, null);
-
-            /*
-            // Enable lighting
-            Gl.glEnable(Gl.GL_LIGHTING);
-            Gl.glEnable(Gl.GL_LIGHT0);
-            float[] lightPosition = { 128.0f, 64.0f, 96.0f, 0.0f };
-            Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_POSITION, lightPosition);
-
-            // Setup ambient property
-            float[] ambientLight = { 0.2f, 0.2f, 0.2f, 0.0f };
-            Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_AMBIENT, ambientLight);
-
-            // Setup specular property
-            float[] specularLight = { 0.5f, 0.5f, 0.5f, 0.0f };
-            Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_SPECULAR, specularLight);
-            */
 	}
 		
 			void onUpdate(Simulator simulator, ObjectUpdate update, ulong regionHandle, ushort timeDilation)
@@ -483,8 +437,7 @@ Console.WriteLine("Motion callback");
 
                 Console.WriteLine("Position is now " + MainClass.client.Self.RelativePosition.ToString() + " rotation is " + MainClass.client.Self.RelativeRotation.ToString() + " Camera target is " + far.ToString());
                 }
-                   
-                   
+                       
              }
 
         private void InitOpenGL()
@@ -742,7 +695,7 @@ Console.WriteLine("Motion callback");
 
         private void Objects_OnObjectKilled(Simulator simulator, uint objectID)
         {
-            //
+            
         }
 
         private void Parcels_OnSimParcelsDownloaded(Simulator simulator, InternalDictionary<int, Parcel> simParcels, int[,] parcelMap)
@@ -754,8 +707,6 @@ Console.WriteLine("Motion callback");
                 {
                     TotalPrims += parcel.TotalPrims;
                 });
-
-            //UpdatePrimProgress();
         }
 
 			private void Terrain_OnLandPatch(Simulator simulator, int x, int y, int width, float[] data)
@@ -775,56 +726,18 @@ Console.WriteLine("Motion callback");
             }
         }
 
-        private void Network_OnLogin(LoginStatus login, string message)
-        {
-            if (login == LoginStatus.Success)
-            {
-                // Success!
-            }
-            else if (login == LoginStatus.Failed)
-            {
-                Gtk.Application.Invoke(delegate
-                    {
-                    //    MessageBox.Show(String.Format("Error logging in ({0}): {1}",
-                    //        MainClass.client.Network.LoginErrorKey, MainClass.client.Network.LoginMessage));
-                    //    cmdLogin.Text = "Login";
-                    //    txtFirst.Enabled = txtLast.Enabled = txtPass.Enabled = true;
-                    });
-            }
-        }
-
-        private void Network_OnDisconnected(NetworkManager.DisconnectType reason, string message)
-        {
-           Gtk.Application.Invoke(delegate
-                {
-                 //   cmdTeleport.Enabled = false;
-                 //   DoLogout();
-                });
-        }
-
         private void Network_OnCurrentSimChanged(Simulator PreviousSimulator)
         {
             Console.WriteLine("CurrentSim set to " + MainClass.client.Network.CurrentSim + ", downloading parcel information");
-            
-//             Gtk.Application.Invoke(delegate{ txtSim.Text = MainClass.client.Network.CurrentSim.Name; });
 
             InitHeightmap(0);
-            InitLists();
-
-            // Disable teleports until the new event queue comes online
-          //  if (!MainClass.client.Network.CurrentSim.Caps.IsEventQueueRunning)
-          //      BeginInvoke((MethodInvoker)delegate() { cmdTeleport.Enabled = false; });
+            InitLists();     
         }
 
         private void Network_OnEventQueueRunning(Simulator simulator)
         {
-          //  if (simulator == MainClass.client.Network.CurrentSim)
-          //      BeginInvoke((MethodInvoker)delegate() { cmdTeleport.Enabled = true; });
-
-            // Now seems like a good time to start requesting parcel information
-			MainClass.client.Parcels.RequestAllSimParcels(MainClass.client.Network.CurrentSim, false, 100);
-             
-            
+          // Now seems like a good time to start requesting parcel information
+			MainClass.client.Parcels.RequestAllSimParcels(MainClass.client.Network.CurrentSim, false, 100); 
         }
 
         private void RenderScene()
@@ -967,7 +880,7 @@ Console.WriteLine("Motion callback");
                                 {
                                     if (hx < 15)
                                     {
-                                        // Vertex 1
+                                        // Vertex 1 stitch to X neighbour
                                         height = Heightmap[hy, hx + 1].Data[y * 16];
                                         color = height / MaxHeight;
                                         red = (selected) ? 1f : color;
@@ -993,7 +906,7 @@ Console.WriteLine("Motion callback");
                                 {
                                     if (hy < 15)
                                     {
-                                        // Vertex 2
+                                        // Vertex 2 //Stich to Y neighbout
                                         height = Heightmap[hy + 1, hx].Data[x];
                                         color = height / MaxHeight;
                                         red = (selected) ? 1f : color;
@@ -1021,7 +934,7 @@ Console.WriteLine("Motion callback");
                                     {
                                         if (hy < 15)
                                         {
-                                            // Vertex 3
+                                            // Vertex 3 stitch to Y neighbour
                                             height = Heightmap[hy + 1, hx].Data[(x + 1)];
                                             color = height / MaxHeight;
                                             red = (selected) ? 1f : color;
@@ -1038,7 +951,7 @@ Console.WriteLine("Motion callback");
                                     {
                                         if (hx < 15)
                                         {
-                                            // Vertex 3
+                                            // Vertex 3 stitch to X neighbour
                                             height = Heightmap[hy, hx + 1].Data[(y + 1) * 16];
                                             color = height / MaxHeight;
                                             red = (selected) ? 1f : color;
@@ -1052,7 +965,7 @@ Console.WriteLine("Motion callback");
                                     {
                                         if (hx < 15 && hy < 15)
                                         {
-                                            // Vertex 3
+                                            // Vertex 3 stitch to X and Y neighbour
                                             height = Heightmap[hy + 1, hx + 1].Data[0];
                                             color = height / MaxHeight;
                                             red = (selected) ? 1f : color;
@@ -1337,74 +1250,12 @@ StartRender:
 
         private void TextureDownloader_OnDownloadProgress(UUID image, int recieved, int total)
 		{
-/*
-            lock (DownloadList)
-            {
-                GlacialComponents.Controls.GLItem item;
-                if (DownloadList.TryGetValue(image, out item))
-                {
-                    // Update an existing item
-                    BeginInvoke(
-                        (MethodInvoker)delegate()
-                        {
-                            ProgressBar prog = (ProgressBar)item.SubItems[1].Control;
-                            if (total >= recieved)
-                                prog.Value = (int)Math.Round((((double)recieved / (double)total) * 100.0d));
-                        });
-                }
-                else
-                {
-                    // Progress bar
-                    ProgressBar prog = new ProgressBar();
-                    prog.Minimum = 0;
-                    prog.Maximum = 100;
-                    if (total >= recieved)
-                        prog.Value = (int)Math.Round((((double)recieved / (double)total) * 100.0d));
-                    else
-                        prog.Value = 0;
 
-                    // List item
-                    item = new GlacialComponents.Controls.GLItem();
-                    item.SubItems[0].Text = image.ToString();
-                    item.SubItems[1].Control = prog;
-
-                    DownloadList[image] = item;
-
-                    BeginInvoke(
-                        (MethodInvoker)delegate()
-                        {
-                            lstDownloads.Items.Add(item);
-                            lstDownloads.Invalidate();
-                        });
-                }
-            }
-*/  
         }
 
         #endregion Texture Downloading
 
-        private void DoLogout()
-        {
-            if (MainClass.client != null && MainClass.client.Network.Connected)
-            {
-                MainClass.client.Network.Logout();
-                return;
-            }
-
-            // Clear the download list
-            //lstDownloads.Items.Clear();
-
-            // Set the login button back to login state
-            //cmdLogin.Text = "Login";
-
-            // Shutdown the texture downloader
-            if (TextureDownloader != null)
-                TextureDownloader.Shutdown();
-
-            // Enable input controls
-//            txtFirst.Enabled = txtLast.Enabled = txtPass.Enabled = true;
-        }
-		
+  
 /*
         private void glControl_MouseClick(object sender, MouseEventArgs e)
         {
