@@ -202,18 +202,16 @@ namespace omvviewerlight
 		
 		void onLogin(LoginStatus status,string message)
 		{
-			if(status==LoginStatus.Success)
-										
+			if(status==LoginStatus.ConnectingToSim)
+			{					
 				Gtk.Application.Invoke(delegate
 				{
-                   store.Clear();
+					   Console.WriteLine("Clearing all radar lists");
+	                   store.Clear();
+					   av_tree.Clear();
+					   av_typing.Clear();
 				});
-			
-                
-			lock (av_tree)
-            {
-                av_tree.Clear();
-			}
+			}		
 
             if (MainClass.client.Network.CurrentSim != null)
             lastsim = MainClass.client.Network.CurrentSim.ID;
