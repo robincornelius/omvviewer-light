@@ -487,11 +487,23 @@
   <data name="map_avatar_below_81" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\art\map_avatar_below_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="map_avatar_friend_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\map_avatar_friend_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="map_avatar_friend_above_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\map_avatar_friend_above_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="map_avatar_friend_below_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\map_avatar_friend_below_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="map_avatar_me_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\art\map_avatar_me_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="map_avatar_me_81" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\art\map_avatar_me_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="map_avatar_target_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\art\map_avatar_target_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="map_home" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\art\map_home.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

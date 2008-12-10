@@ -921,6 +921,27 @@ namespace omvviewerlight.Properties {
             }
         }
         
+        internal static byte[] map_avatar_friend_8 {
+            get {
+                object obj = ResourceManager.GetObject("map_avatar_friend_8", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] map_avatar_friend_above_8 {
+            get {
+                object obj = ResourceManager.GetObject("map_avatar_friend_above_8", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] map_avatar_friend_below_8 {
+            get {
+                object obj = ResourceManager.GetObject("map_avatar_friend_below_8", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
         internal static byte[] map_avatar_me_8 {
             get {
                 object obj = ResourceManager.GetObject("map_avatar_me_8", resourceCulture);
@@ -931,6 +952,13 @@ namespace omvviewerlight.Properties {
         internal static byte[] map_avatar_me_81 {
             get {
                 object obj = ResourceManager.GetObject("map_avatar_me_81", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] map_avatar_target_8 {
+            get {
+                object obj = ResourceManager.GetObject("map_avatar_target_8", resourceCulture);
                 return ((byte[])(obj));
             }
         }

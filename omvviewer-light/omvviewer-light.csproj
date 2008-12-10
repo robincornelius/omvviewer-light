@@ -629,6 +629,10 @@
     <Content Include="libopenjpeg-dotnet-2.1.3.0-dotnet-1-x86_64.so" />
     <Content Include="libopenjpeg-dotnet-2.1.3.0-dotnet-1.dylib" />
     <Content Include="libopenjpeg-dotnet-2.1.3.0-dotnet-1.so" />
+    <EmbeddedResource Include="art\map_avatar_friend_8.tga" />
+    <EmbeddedResource Include="art\map_avatar_friend_above_8.tga" />
+    <EmbeddedResource Include="art\map_avatar_friend_below_8.tga" />
+    <EmbeddedResource Include="art\map_avatar_target_8.tga" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
