@@ -386,7 +386,7 @@ Console.WriteLine("Motion callback");
 			{
                 Console.WriteLine("Close2");
 			    abort=true;
-                Glut.glutDestroyWindow(winno);
+              //  Glut.glutDestroyWindow(winno);
                
             }
             private void close()
