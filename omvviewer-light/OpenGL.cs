@@ -154,21 +154,67 @@ namespace omvviewerlight
         {
 			Console.WriteLine("key "+cChar.ToString());
         }
- 
+
+        void keyup(byte cChar, int x, int y)
+        {
+
+            Console.WriteLine("up key " + cChar.ToString());
+
+        }
+
+        void specialkeyup(int key, int x, int y)
+        {
+
+            Console.WriteLine("special up key " + key.ToString());
+
+            switch (key)
+            {
+                case 101:
+                    MainClass.client.Self.Movement.AtPos = false;
+                    break;
+                case 102:
+                    MainClass.client.Self.Movement.TurnLeft = false;
+                    break;
+                case 103:
+                    MainClass.client.Self.Movement.AtNeg = false;
+                    break;
+                case 104:
+                    MainClass.client.Self.Movement.TurnRight = false;
+                    break;
+                default:
+                    break;
+
+            }
+
+            MainClass.client.Self.Movement.SendUpdate();
+   
+        }
+
         void SampleSpecial(int nSpecial, int nMouseX, int nMouseY)
 		{
             Console.WriteLine("Special key "+nSpecial.ToString());
 			specialkey=nSpecial;
-			if(specialkey==101) //zoom in
-				{
-			zoom(5);
-}
-			if(specialkey==103) //zoom out
-				{
-				zoom(-5);
-			
-}
 
+            switch (nSpecial)
+            {
+                case 101:
+                    MainClass.client.Self.Movement.AtPos = true;
+                    break;
+                case 102: 
+                    MainClass.client.Self.Movement.TurnLeft = true;
+                    break;
+                case 103:
+                    MainClass.client.Self.Movement.AtNeg = true;
+                    break;
+                case 104:
+                    MainClass.client.Self.Movement.TurnRight = true;
+                    break;
+                default:
+                    break;
+            }
+
+            MainClass.client.Self.Movement.SendUpdate();
+        
 	    }
 		
 		void zoom(float Delta)
@@ -255,7 +301,6 @@ Console.WriteLine("Motion callback");
                 // Update the pivot point
                 LastPivot = mouse;
             }
-
        }
 
         /// <summary>
@@ -282,6 +327,8 @@ Console.WriteLine("Motion callback");
 			Glut.glutReshapeFunc(new Glut.ReshapeCallback(this.SampleReshape));
 			Glut.glutKeyboardFunc(new Glut.KeyboardCallback(this.SampleKeyboard));
 			Glut.glutSpecialFunc(new Glut.SpecialCallback(this.SampleSpecial));
+            Glut.glutKeyboardUpFunc(new Glut.KeyboardUpCallback(this.keyup));
+            Glut.glutSpecialUpFunc(new Glut.SpecialUpCallback(this.specialkeyup));
 
 			Glut.glutIdleFunc(new Glut.IdleCallback(this.SampleIdle));
 			Glut.glutMouseFunc(new Glut.MouseCallback(this.MouseCallback));			
@@ -416,17 +463,28 @@ Console.WriteLine("Motion callback");
 		
 			void onUpdate(Simulator simulator, ObjectUpdate update, ulong regionHandle, ushort timeDilation)
 			{
-	/*			if (update.LocalID == MainClass.client.Self.LocalID)
+				if (update.LocalID == MainClass.client.Self.LocalID)
 				{
 				Vector3 far;
-				far=MainClass.client.Self.RelativePosition;
-				far.X-=40;
-             
-                   this.Camera.Position=MainClass.client.Self.RelativePosition;
-                   this.Camera.FocalPoint=far;			
+                Vector3 displacment;
+
+                displacment = MainClass.client.Self.RelativePosition;
+                displacment.X +=40;
+
+                displacment = (displacment - MainClass.client.Self.RelativePosition);
+
+                Quaternion rot = MainClass.client.Self.RelativeRotation;
+                displacment = displacment * rot;
+
+                far = MainClass.client.Self.RelativePosition + displacment;
+
+                this.Camera.Position=MainClass.client.Self.RelativePosition;
+                this.Camera.FocalPoint=far;
+
+                Console.WriteLine("Position is now " + MainClass.client.Self.RelativePosition.ToString() + " rotation is " + MainClass.client.Self.RelativeRotation.ToString() + " Camera target is " + far.ToString());
                 }
                    
-                   */
+                   
              }
 
         private void InitOpenGL()
@@ -797,7 +855,7 @@ Console.WriteLine("Motion callback");
 
                 RenderTerrain();
                 RenderPrims();
-                RenderAvatars();
+                //RenderAvatars();
 
                 Gl.glDisableClientState(Gl.GL_TEXTURE_COORD_ARRAY);
                 Gl.glDisableClientState(Gl.GL_VERTEX_ARRAY);

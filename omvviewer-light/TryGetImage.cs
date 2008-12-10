@@ -172,6 +172,7 @@ namespace omvviewerlight
             {
                 try
                 {
+                    abort(); //clear the callbacks
                     if (target_image != null) // this has managed to get set to null
                     {
                         if (target_image.Pixbuf != null)
@@ -194,6 +195,11 @@ namespace omvviewerlight
 		                                  
 		void onGotImage(ImageDownload image,AssetTexture asset)
 		{
+            if (asset == null || image == null)
+            {
+                Console.WriteLine("Try get image got a null asset");
+                return;
+            }
             this_image = image;
             this_asset = asset;
             Thread decode = new Thread(new ThreadStart(this.decodethread));
