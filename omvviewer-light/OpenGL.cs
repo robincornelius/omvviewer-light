@@ -921,13 +921,13 @@ Console.WriteLine("Motion callback");
             if (Heightmap != null)
             {
                 int i = 0;
-
+  
                 // No texture
                 Gl.glBindTexture(Gl.GL_TEXTURE_2D, 0);
 
                 for (int hy = 0; hy < 16; hy++)
                 {
-                    for (int hx = 0; hx < 16; hx++)
+                    for (int hx = 0; hx < 15; hx++)
                     {
                         int patchName = (int)(TERRAIN_START + i);
                         Gl.glPushName(patchName);
@@ -936,11 +936,11 @@ Console.WriteLine("Motion callback");
                         // Check if this patch is currently selected
                         bool selected = (LastHit == patchName);
 
-                        for (int y = 0; y < 15; y++)
+                        for (int y = 0; y < 16; y++)
                         {
                             Gl.glBegin(Gl.GL_TRIANGLE_STRIP);
 
-                            for (int x = 0; x < 15; x++)
+                            for (int x = 0; x < 16; x++)
                             {
                                 // Vertex 0
                                 float height = Heightmap[hy, hx].Data[y * 16 + x];
@@ -951,32 +951,119 @@ Console.WriteLine("Motion callback");
                                 Gl.glTexCoord2f(0f, 0f);
                                 Gl.glVertex3f(hx * 16 + x, hy * 16 + y, height);
 
-                                // Vertex 1
-                                height = Heightmap[hy, hx].Data[y * 16 + (x + 1)];
-                                color = height / MaxHeight;
-                                red = (selected) ? 1f : color;
 
-                                Gl.glColor3f(red, color, color);
-                                Gl.glTexCoord2f(1f, 0f);
-                                Gl.glVertex3f(hx * 16 + x + 1, hy * 16 + y, height);
+                                if (x != 15)
+                                {
+                                    // Vertex 1
+                                    height = Heightmap[hy, hx].Data[y * 16 + (x + 1)];
+                                    color = height / MaxHeight;
+                                    red = (selected) ? 1f : color;
 
-                                // Vertex 2
-                                height = Heightmap[hy, hx].Data[(y + 1) * 16 + x];
-                                color = height / MaxHeight;
-                                red = (selected) ? 1f : color;
+                                    Gl.glColor3f(red, color, color);
+                                    Gl.glTexCoord2f(1f, 0f);
+                                    Gl.glVertex3f(hx * 16 + x + 1, hy * 16 + y, height);
+                                }
+                                else
+                                {
+                                    if (hx < 15)
+                                    {
+                                        // Vertex 1
+                                        height = Heightmap[hy, hx + 1].Data[y * 16];
+                                        color = height / MaxHeight;
+                                        red = (selected) ? 1f : color;
 
-                                Gl.glColor3f(red, color, color);
-                                Gl.glTexCoord2f(0f, 1f);
-                                Gl.glVertex3f(hx * 16 + x, hy * 16 + y + 1, height);
+                                        Gl.glColor3f(red, color, color);
+                                        Gl.glTexCoord2f(1f, 0f);
+                                        Gl.glVertex3f((hx + 1) * 16, hy * 16 + y, height);
+                                    }
+                                }
 
-                                // Vertex 3
-                                height = Heightmap[hy, hx].Data[(y + 1) * 16 + (x + 1)];
-                                color = height / MaxHeight;
-                                red = (selected) ? 1f : color;
+                                if (y != 15)
+                                {
+                                    // Vertex 2
+                                    height = Heightmap[hy, hx].Data[(y + 1) * 16 + x];
+                                    color = height / MaxHeight;
+                                    red = (selected) ? 1f : color;
 
-                                Gl.glColor3f(red, color, color);
-                                Gl.glTexCoord2f(1f, 1f);
-                                Gl.glVertex3f(hx * 16 + x + 1, hy * 16 + y + 1, height);
+                                    Gl.glColor3f(red, color, color);
+                                    Gl.glTexCoord2f(0f, 1f);
+                                    Gl.glVertex3f(hx * 16 + x, hy * 16 + y + 1, height);
+                                }
+                                else
+                                {
+                                    if (hy < 15)
+                                    {
+                                        // Vertex 2
+                                        height = Heightmap[hy + 1, hx].Data[x];
+                                        color = height / MaxHeight;
+                                        red = (selected) ? 1f : color;
+
+                                        Gl.glColor3f(red, color, color);
+                                        Gl.glTexCoord2f(0f, 1f);
+                                        Gl.glVertex3f(hx * 16 + x, (hy + 1) * 16, height);
+                                    }
+                                }
+
+                                if (x != 15 )
+                                {
+                                    if (y != 15)
+                                    {
+                                        // Vertex 3
+                                        height = Heightmap[hy, hx].Data[(y + 1) * 16 + (x + 1)];
+                                        color = height / MaxHeight;
+                                        red = (selected) ? 1f : color;
+
+                                        Gl.glColor3f(red, color, color);
+                                        Gl.glTexCoord2f(1f, 1f);
+                                        Gl.glVertex3f(hx * 16 + x + 1, hy * 16 + y + 1, height);
+                                    }
+                                    else
+                                    {
+                                        if (hy < 15)
+                                        {
+                                            // Vertex 3
+                                            height = Heightmap[hy + 1, hx].Data[(x + 1)];
+                                            color = height / MaxHeight;
+                                            red = (selected) ? 1f : color;
+
+                                            Gl.glColor3f(red, color, color);
+                                            Gl.glTexCoord2f(1f, 1f);
+                                            Gl.glVertex3f(hx * 16 + x + 1, (hy + 1) * 16, height);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (y != 15)
+                                    {
+                                        if (hx < 15)
+                                        {
+                                            // Vertex 3
+                                            height = Heightmap[hy, hx + 1].Data[(y + 1) * 16];
+                                            color = height / MaxHeight;
+                                            red = (selected) ? 1f : color;
+
+                                            Gl.glColor3f(red, color, color);
+                                            Gl.glTexCoord2f(1f, 1f);
+                                            Gl.glVertex3f((hx + 1) * 16, hy * 16 + y + 1, height);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (hx < 15 && hy < 15)
+                                        {
+                                            // Vertex 3
+                                            height = Heightmap[hy + 1, hx + 1].Data[0];
+                                            color = height / MaxHeight;
+                                            red = (selected) ? 1f : color;
+
+                                            Gl.glColor3f(red, color, color);
+                                            Gl.glTexCoord2f(1f, 1f);
+                                            Gl.glVertex3f((hx + 1) * 16, (hy + 1) * 16, height);
+                                        }
+                                    }
+                                }
+
                             }
 
                             Gl.glEnd();
