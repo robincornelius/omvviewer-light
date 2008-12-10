@@ -62,6 +62,9 @@ namespace omvviewerlight
         bool Pivoting = false;
         Point LastPivot;
 
+		int winno;
+		bool abort=false;
+		
         //
         const int SELECT_BUFSIZE = 512;
         int[] SelectBuffer = new int[SELECT_BUFSIZE];
@@ -103,6 +106,8 @@ namespace omvviewerlight
         public void SampleDisplay()
         {		
 
+			if(abort)
+				return;
 			
             Gl.glClearColor(0f, 0.5f, 1f, 1f);
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
@@ -113,6 +118,8 @@ namespace omvviewerlight
         void SampleIdle()
 		{ 
 	
+			if(abort)
+				return;
 			
 			if(this.ondotextures!=null)
 			{
@@ -128,7 +135,11 @@ namespace omvviewerlight
 
         void SampleReshape(int nWidth, int nHeight)
         {						
-				
+			
+
+			if(abort)
+			return;
+
 			Gl.glClearColor(0.39f, 0.58f, 0.93f, 1.0f);
 
             Gl.glViewport(0, 0,  nWidth, nHeight);
@@ -272,8 +283,9 @@ Console.WriteLine("Motion callback");
 			Glut.glutInit();
 
 			Glut.glutWMCloseFunc(new Glut.WindowCloseCallback(this.close));			
-			Glut.glutCreateWindow("Hello world!");
+			winno=Glut.glutCreateWindow("Hello world!");
 			Glut.glutWMCloseFunc(new Glut.WindowCloseCallback(this.close));
+            Glut.glutCloseFunc(new Glut.CloseCallback(this.close2));
          
             Glut.glutDisplayFunc(new Glut.DisplayCallback(this.SampleDisplay));
 			Glut.glutReshapeFunc(new Glut.ReshapeCallback(this.SampleReshape));
@@ -291,9 +303,11 @@ Console.WriteLine("Motion callback");
 
 
 	        try
-			{
+				{
 			 	Glut.glutMainLoop();
-                
+                Console.WriteLine("Main Loop exit");
+                Tao.FreeGlut.Glut.glutDestroyWindow(winno);
+      
 			}
 			catch
 			{
@@ -301,9 +315,23 @@ Console.WriteLine("Motion callback");
             Console.WriteLine("glutMainLoop() termination works fine!\n");
 	}
 		
-		private void close()
-		{
+			private void close2()
+			{
+			abort=true;
 			Console.WriteLine("Glut.Close");
+            Tao.FreeGlut.Glut.glutHideWindow();
+            Tao.FreeGlut.Glut.glutLeaveMainLoop();
+			//  Tao.FreeGlut.Glut.glutDestroyWindow(winno);
+			
+             Thread.Sleep(5000);
+             }
+
+			private void close()
+			{
+            abort=true;
+             
+            // 
+		
             Console.WriteLine("I want to continute");            
 		}
 		
