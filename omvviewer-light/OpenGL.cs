@@ -105,9 +105,6 @@ namespace omvviewerlight
 				
         public void SampleDisplay()
         {		
-
-			if(abort)
-				return;
 			
             Gl.glClearColor(0f, 0.5f, 1f, 1f);
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
@@ -118,9 +115,6 @@ namespace omvviewerlight
         void SampleIdle()
 		{ 
 	
-			if(abort)
-				return;
-			
 			if(this.ondotextures!=null)
 			{
 				this.ondotextures();
@@ -135,10 +129,6 @@ namespace omvviewerlight
 
         void SampleReshape(int nWidth, int nHeight)
         {						
-			
-
-			if(abort)
-			return;
 
 			Gl.glClearColor(0.39f, 0.58f, 0.93f, 1.0f);
 
@@ -276,14 +266,15 @@ Console.WriteLine("Motion callback");
 		{
 			int menuID, subMenuA, subMenuB;
 		
-            Glut.glutInitDisplayString("stencil~2 rgb double depth>=16 samples");
+            Glut.glutInitDisplayString("rgb double samples");
 			Glut.glutInitDisplayMode(Glut.GLUT_RGB | Glut.GLUT_DOUBLE | Glut.GLUT_DEPTH);
             Glut.glutInitWindowPosition(100, 100);
-         
-			Glut.glutInit();
 
-			Glut.glutWMCloseFunc(new Glut.WindowCloseCallback(this.close));			
-			winno=Glut.glutCreateWindow("Hello world!");
+
+			Glut.glutInit();
+            Glut.glutSetOption(Glut.GLUT_ACTION_ON_WINDOW_CLOSE, Glut.GLUT_ACTION_CONTINUE_EXECUTION);
+  	
+			winno=Glut.glutCreateWindow("3D Browser");
 			Glut.glutWMCloseFunc(new Glut.WindowCloseCallback(this.close));
             Glut.glutCloseFunc(new Glut.CloseCallback(this.close2));
          
@@ -303,38 +294,33 @@ Console.WriteLine("Motion callback");
 
 
 	        try
-				{
+            {
 			 	Glut.glutMainLoop();
                 Console.WriteLine("Main Loop exit");
-                Tao.FreeGlut.Glut.glutDestroyWindow(winno);
-      
 			}
 			catch
 			{
 			}
             Console.WriteLine("glutMainLoop() termination works fine!\n");
+
+            if (this.TextureDownloader != null)
+                this.TextureDownloader.Shutdown();
 	}
 		
 			private void close2()
 			{
-			abort=true;
-			Console.WriteLine("Glut.Close");
-            Tao.FreeGlut.Glut.glutHideWindow();
-            Tao.FreeGlut.Glut.glutLeaveMainLoop();
-			//  Tao.FreeGlut.Glut.glutDestroyWindow(winno);
-			
-             Thread.Sleep(5000);
-             }
+                Console.WriteLine("Close2");
+			    abort=true;
+                Glut.glutDestroyWindow(winno);
+               
+            }
+            private void close()
+            {
+                Console.WriteLine("Close");
+                abort = true;
+            }
 
-			private void close()
-			{
-            abort=true;
-             
-            // 
-		
-            Console.WriteLine("I want to continute");            
-		}
-		
+	
        private void InitLists()
 			
         {
@@ -481,7 +467,7 @@ Console.WriteLine("Motion callback");
 
 			private void InitCamera()
         {
-Console.WriteLine("Init camera");
+            Console.WriteLine("Init camera");
             Camera = new sCamera();
             Camera.Position = new Vector3(128f, -192f, 90f);
             Camera.FocalPoint = new Vector3(128f, 128f, 0f);
