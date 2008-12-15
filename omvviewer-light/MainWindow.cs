@@ -153,10 +153,10 @@ public partial class MainWindow: Gtk.Window
 		this.Title="omvviewerlight v0.44";
 		
 		// Fuck stupid notebook tabs and monodeveop have to do it myself
-		ChatLayout c=new ChatLayout();
-        chat_tab_lable=this.addtabwithicon("icn_voice-pvtfocus.tga","Chat",c);        
-		c.passontablable(chat_tab_lable);
-        this.notebook.SwitchPage += new SwitchPageHandler(c.onSwitchPage);
+//		ChatLayout c=new ChatLayout();
+//        chat_tab_lable=this.addtabwithicon("icn_voice-pvtfocus.tga","Chat",c);        
+//		c.passontablable(chat_tab_lable);
+ //       this.notebook.SwitchPage += new SwitchPageHandler(c.onSwitchPage);
 
             this.LocationAction.Active = MainClass.appsettings.tab_location;
 

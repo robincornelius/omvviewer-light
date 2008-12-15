@@ -147,7 +147,8 @@ namespace omvviewerlight
 			objects_map = new Gtk.Image(pb);
 			this.image.Pixbuf=pb;
 			
-			new TryGetImage(this.objects_map,region.MapImageID,350,350);
+		//	new TryGetImage(this.objects_map,region.MapImageID,350,350);
+			new TryGetImage(this.objects_map,MainClass.client.Network.CurrentSim.TerrainDetail0,350,350);
 
 			rowstride = objects_map.Pixbuf.Rowstride;
 	        channels = objects_map.Pixbuf.NChannels;

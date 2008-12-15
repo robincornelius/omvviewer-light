@@ -108,6 +108,7 @@ namespace omvviewerlight
 		
 		void onLogin(LoginStatus status,string message)
 		{
+						
 			if(LoginStatus.Success==status)
 			{
 				Gtk.Application.Invoke(delegate {

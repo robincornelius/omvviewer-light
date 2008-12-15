@@ -426,12 +426,12 @@ Console.WriteLine("Motion callback");
 
             MainClass.client.Network.OnCurrentSimChanged += new NetworkManager.CurrentSimChangedCallback(Network_OnCurrentSimChanged);
             MainClass.client.Network.OnEventQueueRunning += new NetworkManager.EventQueueRunningCallback(Network_OnEventQueueRunning);
-            MainClass.client.Objects.OnNewPrim += new ObjectManager.NewPrimCallback(Objects_OnNewPrim);
-            MainClass.client.Objects.OnNewFoliage += new ObjectManager.NewFoliageCallback(Objects_OnNewFoliage);
-            MainClass.client.Objects.OnObjectKilled += new ObjectManager.KillObjectCallback(Objects_OnObjectKilled);
+            //MainClass.client.Objects.OnNewPrim += new ObjectManager.NewPrimCallback(Objects_OnNewPrim);
+            //MainClass.client.Objects.OnNewFoliage += new ObjectManager.NewFoliageCallback(Objects_OnNewFoliage);
+            //MainClass.client.Objects.OnObjectKilled += new ObjectManager.KillObjectCallback(Objects_OnObjectKilled);
 			MainClass.client.Terrain.OnLandPatch += new TerrainManager.LandPatchCallback(Terrain_OnLandPatch);
-			MainClass.client.Parcels.OnSimParcelsDownloaded += new ParcelManager.SimParcelsDownloaded(Parcels_OnSimParcelsDownloaded);
-            MainClass.client.Objects.OnObjectUpdated += new OpenMetaverse.ObjectManager.ObjectUpdatedCallback(onUpdate);
+		//	MainClass.client.Parcels.OnSimParcelsDownloaded += new ParcelManager.SimParcelsDownloaded(Parcels_OnSimParcelsDownloaded);
+            //MainClass.client.Objects.OnObjectUpdated += new OpenMetaverse.ObjectManager.ObjectUpdatedCallback(onUpdate);
 
             // Initialize the texture download pipeline
             if (TextureDownloader != null)
@@ -798,8 +798,8 @@ Console.WriteLine("Motion callback");
                 // Push the world matrix
                 Gl.glPushMatrix();
 
-                RenderTerrain();
-                RenderPrims();
+              //  RenderTerrain();
+              //  RenderPrims();
                 //RenderAvatars();
 
                 Gl.glDisableClientState(Gl.GL_TEXTURE_COORD_ARRAY);
