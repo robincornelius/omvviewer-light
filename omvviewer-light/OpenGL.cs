@@ -760,7 +760,17 @@ Console.WriteLine("Motion callback");
 
         private void Network_OnCurrentSimChanged(Simulator PreviousSimulator)
         {
-            Console.WriteLine("CurrentSim set to " + MainClass.client.Network.CurrentSim + ", downloading parcel information");
+			Console.WriteLine("CurrentSim set to " + MainClass.client.Network.CurrentSim + ", downloading parcel information");
+            Console.WriteLine("Detail0 is "+MainClass.client.Network.CurrentSim.TerrainDetail0.ToString());
+            Console.WriteLine("Detail1 is "+MainClass.client.Network.CurrentSim.TerrainDetail1.ToString());
+            Console.WriteLine("Detail2 is "+MainClass.client.Network.CurrentSim.TerrainDetail2.ToString());
+            Console.WriteLine("Detail3 is "+MainClass.client.Network.CurrentSim.TerrainDetail3.ToString());
+
+            TextureDownloader.RequestTexture(MainClass.client.Network.CurrentSim.TerrainDetail0);
+            TextureDownloader.RequestTexture(MainClass.client.Network.CurrentSim.TerrainDetail1);
+            TextureDownloader.RequestTexture(MainClass.client.Network.CurrentSim.TerrainDetail2);
+            TextureDownloader.RequestTexture(MainClass.client.Network.CurrentSim.TerrainDetail3);
+
 
             InitHeightmap(0);
             InitLists();     
@@ -924,7 +934,7 @@ Console.WriteLine("Motion callback");
                         color = height / (MaxHeight/2.0f);
                         red = (selected) ? 1f : color;
                         Gl.glColor3f(red, color, color);
-                        Gl.glTexCoord2f(1f, 0f);
+                        Gl.glTexCoord2f(0f, 1f);
 						Gl.glVertex3f(lxx, lyy, height);
                         lyy++;
                         lxx--;
@@ -933,7 +943,7 @@ Console.WriteLine("Motion callback");
                         color = height / (MaxHeight/2.0f);
                         red = (selected) ? 1f : color;
                         Gl.glColor3f(red, color, color);	
-                        Gl.glTexCoord2f(1f, 1f);
+                        Gl.glTexCoord2f(1f, 0f);
 						Gl.glVertex3f(lxx, lyy, height);
 						lyy--;
 						lxx++;
@@ -941,7 +951,7 @@ Console.WriteLine("Motion callback");
 						height= Heightmap[(int)lyy/16, (int)lxx/16].Data[(lyy%16) * 16 + (lxx%16)];
                         color = height / (MaxHeight/2.0f);
                         red = (selected) ? 1f : color;
-                        Gl.glTexCoord2f(0f, 1f);
+                        Gl.glTexCoord2f(1f, 1f);
 						Gl.glVertex3f(lxx, lyy, height);
       
                 }
