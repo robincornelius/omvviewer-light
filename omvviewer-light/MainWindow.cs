@@ -68,8 +68,12 @@ public partial class MainWindow: Gtk.Window
 	public TeleportTo tp_target_widget=null;
     public Map map_widget=null;
 	
-	public List<AvatarGroup> avatarGroups=new List<AvatarGroup>();	
-	
+	public List<AvatarGroup> avatarGroups=new List<AvatarGroup>();
+
+    public List<InstantMessage> im_queue = new List<InstantMessage>();
+    public Dictionary<UUID, ChatConsole> im_windows = new Dictionary<UUID, ChatConsole>();
+    public List<UUID> im_registering = new List<UUID>();
+
     ~MainWindow()
     {
         if (trayIcon != null)
@@ -883,22 +887,30 @@ public partial class MainWindow: Gtk.Window
 			return;
 		}
 		
+
 		if(!active_ims.Contains(im.FromAgentID) && !active_ims.Contains(im.IMSessionID))
 		{
-            AutoResetEvent ChatSetup = new AutoResetEvent(false);
+            lock (MainClass.win.im_queue)
+            {
+                if (im_windows.ContainsKey(im.FromAgentID))
+                    return; // Do nothing handler is registered
 
-			Gtk.Application.Invoke(delegate {						
-				ChatConsole imc=new ChatConsole(im);
-				
-                makeimwindow("Waiting...",imc,false,im.FromAgentID);
-				active_ims.Add(im.FromAgentID);
-                ChatSetup.Set();
-			});
+                im_queue.Add(im);
 
-            // Block here untill chat window is set up or else we can get multiple IMs stacking up in new windows
-			// from same user as set up code is run as an invoke (Does not seem to work corretly).
+                if (im_registering.Contains(im.FromAgentID))
+                    Console.WriteLine("Got 2nd IM when we are still processing window");
+                else
+                {
+                    im_registering.Add(im.FromAgentID);
+                    Gtk.Application.Invoke(delegate
+                    {
+                        ChatConsole imc = new ChatConsole(im);
 
-            ChatSetup.WaitOne(5000, false);
+                        makeimwindow("Waiting...", imc, false, im.FromAgentID);
+                        active_ims.Add(im.FromAgentID);
+                    });
+                }
+            }
 		}		
 	}
 

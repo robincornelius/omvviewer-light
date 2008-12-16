@@ -795,7 +795,7 @@ Console.WriteLine("Motion callback");
 //                    StartPicking(ClickX, ClickY);
 
                 // Setup wireframe or solid fill drawing mode
-                Gl.glPolygonMode(Gl.GL_FRONT, Gl.GL_LINE);
+                Gl.glPolygonMode(Gl.GL_FRONT_AND_BACK, Gl.GL_FILL);
 
                 // Position the camera
                 Glu.gluLookAt(
@@ -921,7 +921,6 @@ Console.WriteLine("Motion callback");
                          lxx=xx;
 						 lyy=yy;
 						
-						
 						height= Heightmap[(int)lyy/16, (int)lxx/16].Data[(lyy%16) * 16 + (lxx%16)];
                         color = height / (MaxHeight/2.0f);
                         red = (selected) ? 1f : color;
@@ -951,6 +950,7 @@ Console.WriteLine("Motion callback");
 						height= Heightmap[(int)lyy/16, (int)lxx/16].Data[(lyy%16) * 16 + (lxx%16)];
                         color = height / (MaxHeight/2.0f);
                         red = (selected) ? 1f : color;
+                        Gl.glColor3f(red, color, color);	
                         Gl.glTexCoord2f(1f, 1f);
 						Gl.glVertex3f(lxx, lyy, height);
       

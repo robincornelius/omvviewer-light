@@ -26,6 +26,7 @@ using System;
 using OpenMetaverse;
 using Gtk;
 
+
 namespace omvviewerlight
 {
 	public partial class TeleportTo : Gtk.Bin

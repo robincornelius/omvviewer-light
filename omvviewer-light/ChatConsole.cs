@@ -121,26 +121,49 @@ namespace omvviewerlight
 
 		public ChatConsole(InstantMessage im)
 		{
-			dosetup();
-			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
-			if(im.GroupIM)
-			{
-				this.im_session_id=im.IMSessionID;
-				im_key=UUID.Zero;
-                MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
-				MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
-			}
-			else
-			{
-				im_key=im.FromAgentID;				
-			}
+            lock (MainClass.win.im_queue)
+            {
+                dosetup();
+                if (im.GroupIM)
+                {
+                    this.im_session_id = im.IMSessionID;
+                    im_key = UUID.Zero;
+                    MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
+                    MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
+                    onIM(im, null);
+                }
+                else
+                {
+                    im_key = im.FromAgentID;
+                    foreach (InstantMessage qim in MainClass.win.im_queue)
+                    {
+                        if (qim.FromAgentID == im_key)
+                            onIM(qim, null);
+                    }
 
-			// Pass the message on to the chat system as the event will not have been triggered as its
-            // only just registered.
-			onIM(im,null);
+                    MainClass.win.im_queue.RemoveAll(TestRemove);
+                    //fetch any IM's in the queue
+
+                    MainClass.win.im_windows.Add(im.FromAgentID, this);
+                    if (MainClass.win.im_registering.Contains(im.FromAgentID))
+                        MainClass.win.im_registering.Remove(im.FromAgentID);
+                }
+
+                MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
+
+
+                // Pass the message on to the chat system as the event will not have been triggered as its
+                // only just registered.
+            }
 		}
 
-       
+        bool TestRemove(InstantMessage x)
+        {
+            if(x.FromAgentID==im_key)
+                return true;
+
+            return false;
+        }
 		
 		public void onSwitchPage(object o, SwitchPageArgs args)
 		{
