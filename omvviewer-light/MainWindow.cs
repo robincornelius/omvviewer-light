@@ -115,8 +115,12 @@ public partial class MainWindow: Gtk.Window
 		trayIcon = new StatusIcon(MainClass.GetResource("viewericon.xpm"));
 		trayIcon.Visible=true;
 		trayIcon.Tooltip="Disconnected";
-		trayIcon.Activate+= delegate{Visible=!Visible;};
+		trayIcon.Activate+= delegate{
+            Visible=!Visible;
+            this.Deiconify();
+        };
         trayIcon.Activate += delegate { trayIcon.Blinking = false; this.UrgencyHint = false; };
+
 		trayIcon.PopupMenu += delegate { 
 			Gtk.Menu menu = new Gtk.Menu(); 
 			    Gtk.ImageMenuItem menu_hide = new ImageMenuItem("Minimse");

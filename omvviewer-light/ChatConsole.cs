@@ -567,7 +567,7 @@ namespace omvviewerlight
         {
             Gtk.Application.Invoke(delegate
             {
-                if (!MainClass.win.Visible)
+                if (!MainClass.win.Visible || MainClass.win.IsActive==false)
                 {
                     MainClass.win.trayIcon.Blinking = true;
                     MainClass.win.UrgencyHint = true;
