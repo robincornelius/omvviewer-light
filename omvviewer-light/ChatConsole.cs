@@ -318,6 +318,9 @@ namespace omvviewerlight
 			nb =(Gtk.Notebook)this.Parent;
 			pageno=nb.PageNum((Gtk.Widget)this);
 
+            if(MainClass.win.im_windows.ContainsKey(this.im_key))
+                MainClass.win.im_windows.Remove(this.im_key);
+
 		    if(im_key!=OpenMetaverse.UUID.Zero)
 				if(MainClass.win.active_ims.Contains(im_key))
 					MainClass.win.active_ims.Remove(im_key);	
