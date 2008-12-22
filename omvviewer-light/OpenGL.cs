@@ -119,8 +119,8 @@ namespace omvviewerlight
 		
 		public OpenGL()
 		{
-			 Thread loginRunner = new Thread(new ThreadStart(this.run));
-             loginRunner.Start();	
+			 //Thread loginRunner = new Thread(new ThreadStart(this.run));
+             //loginRunner.Start();	
 		}
 
 		void run()			

@@ -27,7 +27,7 @@
     <ManifestCertificateThumbprint>0DB8568C639B078DA9EBBB6B1FDAC8FAC1426128</ManifestCertificateThumbprint>
     <SignAssembly>false</SignAssembly>
     <GenerateManifests>true</GenerateManifests>
-    <PublishUrl>publish\</PublishUrl>
+    <PublishUrl>http://www.byteme.org.uk/omvviewer-light/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -37,7 +37,6 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://www.byteme.org.uk/omvviewer-light/</InstallUrl>
     <SupportUrl>http://jira.byteme.org.uk</SupportUrl>
     <ProductName>omvviewer-light</ProductName>
     <PublisherName>omvviewer-light</PublisherName>
