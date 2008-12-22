@@ -435,9 +435,9 @@ namespace omvviewerlight
 					inventory.Clear();
 					populate_top_level_inv();
 					this.no_items=0;
-					Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
-					invRunner.Start(MainClass.client.Inventory.Store.RootFolder.UUID);
-					this.fetchinventory(MainClass.client.Inventory.Store.RootFolder.UUID);
+					//Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
+					//invRunner.Start(MainClass.client.Inventory.Store.RootFolder.UUID);
+					//this.fetchinventory(MainClass.client.Inventory.Store.RootFolder.UUID);
 				});
 				 
 			}
