@@ -321,7 +321,7 @@ namespace omvviewerlight
 	    {
 			MainClass.win.map_widget=this;
 			Console.Write("New simulator :"+MainClass.client.Network.CurrentSim.Name +" requesting grid layer for terrain \n");
-		    MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Terrain);
+		    MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Objects);
 			Gtk.Application.Invoke(delegate
                 {            
                   this.label1.Text = MainClass.client.Network.CurrentSim.Name;
@@ -414,7 +414,7 @@ namespace omvviewerlight
               HttpWebResponse response = null;
               String imgURL = "";
 	          GridRegion currRegion;			
-			  MainClass.client.Grid.GetGridRegion(MainClass.client.Network.CurrentSim.Name, GridLayerType.Terrain, out currRegion);
+			  MainClass.client.Grid.GetGridRegion(MainClass.client.Network.CurrentSim.Name, GridLayerType.Objects, out currRegion);
 		try
             {
                 //Form the URL using the sim coordinates

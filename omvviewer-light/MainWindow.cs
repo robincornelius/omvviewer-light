@@ -44,8 +44,9 @@ public partial class MainWindow: Gtk.Window
     ObjectsLayout tab_objects;
     omvviewerlight.Inventory tab_inventory;
     ParcelMgr tab_parcels;
-		
-	
+
+    ChatLayout chat;
+			
 	Gtk.Label status_location;
 	Gtk.HBox status_balance;
 	Gtk.Label status_balance_lable;
@@ -160,11 +161,10 @@ public partial class MainWindow: Gtk.Window
 
 		this.Title="omvviewerlight v0.44";
 		
-		// Fuck stupid notebook tabs and monodeveop have to do it myself
-		ChatLayout c=new ChatLayout();
-        chat_tab_lable=this.addtabwithicon("icn_voice-pvtfocus.tga","Chat",c);        
-		c.passontablable(chat_tab_lable);
-       this.notebook.SwitchPage += new SwitchPageHandler(c.onSwitchPage);
+	       chat=new ChatLayout();
+           chat_tab_lable=this.addtabwithicon("icn_voice-pvtfocus.tga","Chat",chat);        
+	       chat.passontablable(chat_tab_lable);
+           this.notebook.SwitchPage += new SwitchPageHandler(chat.onSwitchPage);
 
             this.LocationAction.Active = MainClass.appsettings.tab_location;
 
@@ -781,10 +781,10 @@ public partial class MainWindow: Gtk.Window
 
 		if(im.Dialog==OpenMetaverse.InstantMessageDialog.GroupNoticeRequested)
 			return;
-		
-		if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryOffered)
-			return;
-			
+
+        if (im.Dialog == OpenMetaverse.InstantMessageDialog.InventoryOffered)
+            return;
+    
 		if(im.Dialog==OpenMetaverse.InstantMessageDialog.TaskInventoryOffered)
 			return;
 		
@@ -792,8 +792,8 @@ public partial class MainWindow: Gtk.Window
 		{
 			Gtk.Application.Invoke(delegate {	
 				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Info,ButtonsType.Ok,im.FromAgentName+" accepted your inventory offer");
-				ResponseType result=(ResponseType)md.Run();
-				md.Destroy();
+                md.Response += delegate { md.Destroy(); };
+                md.ShowAll();
 			});
 			return;
 		}
@@ -802,8 +802,8 @@ public partial class MainWindow: Gtk.Window
 		{
 			Gtk.Application.Invoke(delegate {	
 				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Info,ButtonsType.Ok,im.FromAgentName+" accepted your inventory offer");
-				ResponseType result=(ResponseType)md.Run();
-				md.Destroy();
+                md.Response += delegate { md.Destroy(); };
+                md.ShowAll();
 			});
 			return;
 		}
@@ -813,9 +813,8 @@ public partial class MainWindow: Gtk.Window
 			//Hmm need to handle this differently than a standard IM
 			Gtk.Application.Invoke(delegate {	
 				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Info,ButtonsType.Ok,"GROUP NOTICE\nFrom:"+im.FromAgentName+"\n"+im.Message);
-				ResponseType result=(ResponseType)md.Run();
-				md.Destroy();
-				
+                md.Response += delegate { md.Destroy(); };
+                md.ShowAll();	
 			});
 			return;
 		}

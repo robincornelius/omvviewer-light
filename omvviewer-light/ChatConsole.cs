@@ -40,7 +40,7 @@ namespace omvviewerlight
         Gtk.TextTag selfavchat;
 		Gtk.TextTag objectchat;
         Gtk.TextTag objectIMchat;
-        Gtk.TextTag systemchat;
+        public Gtk.TextTag systemchat;
 		Gtk.TextTag ownerobjectchat;
         Gtk.TextTag onoffline;
 
@@ -347,8 +347,41 @@ namespace omvviewerlight
 		
 		void onIM(InstantMessage im, Simulator sim)
 		{
-			//Not group IM ignore messages not destine for im_key
-			
+            if ((this.im_session_id == UUID.Zero) && (im_key == UUID.Zero))
+            {
+                //we are the chat console not an IM window;
+                //We handle Some types of IM packet here
+                if (im.Dialog == OpenMetaverse.InstantMessageDialog.InventoryOffered)
+                {
+                    Gtk.Application.Invoke(delegate
+                    {
+                        displaychat(im.Message, im.FromAgentName, objectIMchat, objectIMchat);
+                    });
+                    return;
+
+                }
+
+                if (im.Dialog == OpenMetaverse.InstantMessageDialog.TaskInventoryOffered)
+                {
+                    Gtk.Application.Invoke(delegate
+                    {
+                        displaychat(im.Message, im.FromAgentName, objectIMchat, objectIMchat);
+                    });
+                    return;
+                }
+
+                if (im.IMSessionID == UUID.Zero)
+                {
+                    Gtk.Application.Invoke(delegate
+                    {
+                        displaychat(im.Message, im.FromAgentName, objectIMchat, objectIMchat);
+                    });
+                }
+
+                return;
+            }
+
+            //Not group IM ignore messages not destine for im_key
 			if(im.GroupIM==true)
 			{
 				if(im.IMSessionID!=this.im_session_id)
@@ -415,26 +448,8 @@ namespace omvviewerlight
             // Is this from an object?
             //null session ID
 
-            if (im.IMSessionID == UUID.Zero)
-            {
-                //Its an object message, display in chat not IM
-                if ((this.im_key == UUID.Zero) && (this.im_session_id ==UUID.Zero))
-                {
-                    // We are the chat console not an IM tab
-                    Gtk.Application.Invoke(delegate
-                    {
-                        displaychat(im.Message, im.FromAgentName, objectIMchat, objectIMchat); 
-                    });
- 
-                    return;
-
-
-                }
-
-
-            }
            
-
+           
             Gtk.Application.Invoke(delegate
             {
                 displaychat(im.Message, im.FromAgentName, avchat, bold); 
@@ -581,7 +596,7 @@ namespace omvviewerlight
 				});
         }
 
-        void displaychat(string message, string name, TextTag message_tag, TextTag name_tag)
+        public void displaychat(string message, string name, TextTag message_tag, TextTag name_tag)
         {
             string buffer;
             TextIter iter;
