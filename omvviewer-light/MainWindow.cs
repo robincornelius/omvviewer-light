@@ -791,7 +791,7 @@ public partial class MainWindow: Gtk.Window
 		if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryAccepted)
 		{
 			Gtk.Application.Invoke(delegate {	
-				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.Modal,MessageType.Info,ButtonsType.Ok,im.FromAgentName+" accepted your inventory offer");
+				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Info,ButtonsType.Ok,im.FromAgentName+" accepted your inventory offer");
 				ResponseType result=(ResponseType)md.Run();
 				md.Destroy();
 			});
@@ -801,7 +801,7 @@ public partial class MainWindow: Gtk.Window
 		if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryAccepted)
 		{
 			Gtk.Application.Invoke(delegate {	
-				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.Modal,MessageType.Info,ButtonsType.Ok,im.FromAgentName+" accepted your inventory offer");
+				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Info,ButtonsType.Ok,im.FromAgentName+" accepted your inventory offer");
 				ResponseType result=(ResponseType)md.Run();
 				md.Destroy();
 			});
