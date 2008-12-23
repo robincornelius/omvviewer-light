@@ -188,6 +188,9 @@ namespace omvviewerlight
 			    if(this.tabLabel!=null)
 				    this.tabLabel.ModifyFg(type,col);				
 			}
+
+            MainClass.win.UrgencyHint = false;
+            MainClass.win.trayIcon.Blinking = false;
 		}
 
         void onGroupChatJoin(UUID groupChatSessionID, string sessionName, UUID tmpSessionID, bool success)
