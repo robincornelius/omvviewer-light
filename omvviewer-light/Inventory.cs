@@ -4,7 +4,7 @@ omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    the Free Software Foundation, either version 2 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -166,6 +166,7 @@ namespace omvviewerlight
 								if(kvp.Value.Data.ParentUUID==UUID.Zero)
 								{
 									Gtk.TreeIter iterx = inventory.AppendValues(folder_closed, kvp.Value.Data.Name, kvp.Value.Data.UUID);
+							        Console.Write("Creating top level folder "+kvp.Value.Data.Name+" : "+MainClass.client.Inventory.Store.Items[kvp.Value.Data.UUID].ToString());
 									inventory.AppendValues(iterx, folder_closed, "Waiting...", kvp.Value.Data.UUID, null);
 								}
 								Console.Write(kvp.Value.Data.ParentUUID.ToString() +" : ");
@@ -258,6 +259,26 @@ namespace omvviewerlight
             
         }
 
+		void FixBorkedFolder(object o, ButtonPressEventArgs args)
+		{
+			  Gtk.TreeModel mod;
+			    Gtk.TreeIter iter;
+
+               
+                if (this.treeview_inv.Selection.GetSelected(out mod, out iter))
+                {   
+					
+					
+					
+					    UUID id=(UUID)mod.GetValue(iter, 2);
+						Console.WriteLine("ID is "+id.ToString());
+						InventoryBase item = (InventoryBase)MainClass.client.Inventory.Store.Items[id].Data;
+			
+			            MainClass.client.Inventory.MoveFolder(id,MainClass.client.Inventory.Store.RootFolder.UUID);
+				
+				
+			}
+		}
 
         void Teleporttolandmark(object o, ButtonPressEventArgs args)
         {
@@ -284,15 +305,48 @@ namespace omvviewerlight
                 Gtk.TreeModel mod;
 			    Gtk.TreeIter iter;
 
+				Console.WriteLine("ROOT IS "+MainClass.client.Inventory.Store.RootFolder.UUID.ToString());
+				
                
                 if (this.treeview_inv.Selection.GetSelected(out mod, out iter))
                 {   
+					
+					if(mod.GetValue(iter,3)==null)
+					{
+						
+						UUID id=(UUID)mod.GetValue(iter, 2);
+						Console.WriteLine("This ID is "+id.ToString());
+						InventoryBase item = (InventoryBase)MainClass.client.Inventory.Store.Items[id].Data;
+							
+						if(item.ParentUUID==UUID.Zero)
+						{
+							if(item.UUID==MainClass.client.Inventory.Store.RootFolder.UUID)
+								return;
+							if(item.UUID==MainClass.client.Inventory.Store.LibraryFolder.UUID)
+								return;
+							Gtk.Menu menu = new Gtk.Menu();
+							Gtk.ImageMenuItem menu_tp_lm = new ImageMenuItem("Move borked folder");
+							menu_tp_lm.Image=new Gtk.Image(MainClass.GetResource("icon_place.tga"));
+							menu_tp_lm.ButtonPressEvent += new ButtonPressEventHandler(FixBorkedFolder);
+                            menu.Append(menu_tp_lm);
+							menu.Popup();
+							menu.ShowAll();
+							
+						}
+						
+						
+					}
+					
 					if(mod.GetValue(iter,3)!=null)
                     {
                         Gtk.Menu menu = new Gtk.Menu();
     
                         InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
 
+						Console.WriteLine("Item is "+item.ToString()+" ID is "+item.UUID.ToString());
+					
+						Console.WriteLine("Item parent is "+item.ToString()+" ID is "+item.ParentUUID.ToString());
+						
                         if(item is InventoryLandmark)
                         {
 							Gtk.ImageMenuItem menu_tp_lm = new ImageMenuItem("Teleport to Landmark");
@@ -303,6 +357,8 @@ namespace omvviewerlight
                        
                         if (item is InventoryFolder)
                         {
+                            Gtk.MenuItem menu_debork = new MenuItem("Debork folder");
+							
                             Gtk.MenuItem menu_wear_folder = new MenuItem("Wear folder contents");
                             Gtk.ImageMenuItem menu_give_folder = new ImageMenuItem("Give folder to user");
 							menu_give_folder.Image=new Gtk.Image(MainClass.GetResource("ff_edit_theirs.tga"));
@@ -312,9 +368,11 @@ namespace omvviewerlight
                             menu_delete_folder.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
                             menu_give_folder.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
                             menu_wear_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_ware_ButtonPressEvent);
-                            
+                            menu_debork.ButtonPressEvent += new ButtonPressEventHandler(FixBorkedFolder);
+							
 							Gtk.Label x=new Gtk.Label("Folder Item");
 							
+							menu.Append(menu_debork);
 							menu.Append(menu_wear_folder);
                             menu.Append(menu_give_folder);
                             menu.Append(menu_delete_folder);
