@@ -823,17 +823,21 @@ public partial class MainWindow: Gtk.Window
 		{
 			Gtk.Application.Invoke(delegate {	
 				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,im.FromAgentName+" has invited you to join a group\n"+im.Message+"\nPress yes to accept or no to decline");
-                ResponseType result=(ResponseType)md.Run();
-				if(result==ResponseType.Yes)
+				md.Response += delegate(object o,ResponseArgs args) 
 				{
-                    MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im.FromAgentID,"",im.IMSessionID,InstantMessageDialog.GroupInvitationAccept,InstantMessageOnline.Offline,MainClass.client.Self.RelativePosition,MainClass.client.Network.CurrentSim.ID,null);
-			    }
-				else
-				{
-                    MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im.FromAgentID,"",im.IMSessionID,InstantMessageDialog.GroupInvitationDecline,InstantMessageOnline.Offline,MainClass.client.Self.RelativePosition,MainClass.client.Network.CurrentSim.ID,null);
-		     	
-                }
-				md.Destroy();
+					if(args.ResponseId==ResponseType.Yes)
+					{
+	                    MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im.FromAgentID,"",im.IMSessionID,InstantMessageDialog.GroupInvitationAccept,InstantMessageOnline.Offline,MainClass.client.Self.RelativePosition,MainClass.client.Network.CurrentSim.ID,null);
+				    }
+					else
+					{
+	                    MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im.FromAgentID,"",im.IMSessionID,InstantMessageDialog.GroupInvitationDecline,InstantMessageOnline.Offline,MainClass.client.Self.RelativePosition,MainClass.client.Network.CurrentSim.ID,null);
+			     	
+	                }
+					md.Destroy();	
+         		};	
+				md.ShowAll();	
+
                 return;				
             });			
         }		
@@ -843,17 +847,19 @@ public partial class MainWindow: Gtk.Window
 			//Hmm need to handle this differently than a standard IM
 			Gtk.Application.Invoke(delegate {	
 				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,im.FromAgentName+" would like you to join them\n"+im.Message+"\nPress yes to teleport or no to ignore");
-				ResponseType result=(ResponseType)md.Run();
-				if(result==ResponseType.Yes)
-				{
-					MainClass.client.Self.TeleportLureRespond(im.FromAgentID,true);
-				}
-				else
-				{
-					MainClass.client.Self.TeleportLureRespond(im.FromAgentID,false);
-				}
-				md.Destroy();
-				
+				md.Response += delegate(object o,ResponseArgs args) 
+                {
+					if(args.ResponseId==ResponseType.Yes)
+					{
+						MainClass.client.Self.TeleportLureRespond(im.FromAgentID,true);
+					}
+					else
+					{
+						MainClass.client.Self.TeleportLureRespond(im.FromAgentID,false);
+					}
+					md.Destroy();
+			     };
+	             md.ShowAll();	
 			});
 			
 			return;
