@@ -199,7 +199,8 @@ namespace omvviewerlight
 			pos.X=(float)this.spinbutton_x.Value;
 			pos.Y=(float)this.spinbutton_y.Value;
 			pos.Z=(float)this.spinbutton_z.Value;
-			MainClass.win.map_widget.showtarget(pos);
+			if(MainClass.win.map_widget!=null)
+				MainClass.win.map_widget.showtarget(pos);
 		}
 
 		protected virtual void OnSpinbuttonXValueChanged (object sender, System.EventArgs e)
