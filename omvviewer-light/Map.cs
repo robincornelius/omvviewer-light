@@ -88,7 +88,8 @@ namespace omvviewerlight
                 {	
 					    //MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Terrain);
 					    MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Objects);
-					   this.label1.Text = MainClass.client.Network.CurrentSim.Name;
+					    this.label1.Text = MainClass.client.Network.CurrentSim.Name;
+						MainClass.win.map_widget=this;
        	         }
              }	
 		}
