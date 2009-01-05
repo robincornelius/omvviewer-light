@@ -350,6 +350,9 @@ namespace omvviewerlight
 		
 		void onIM(InstantMessage im, Simulator sim)
 		{
+			
+			Console.WriteLine("New IM recieved "+im.ToString());
+			
             if ((this.im_session_id == UUID.Zero) && (im_key == UUID.Zero))
             {
                 //we are the chat console not an IM window;
@@ -463,7 +466,7 @@ namespace omvviewerlight
 		void onChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourcetype,string fromName, UUID id, UUID ownerid, Vector3 position)
 		{
 
-			if(type==ChatType.StartTyping || type==ChatType.StopTyping || type==ChatType.Debug ||type==ChatType.OwnerSay)
+			if(type==ChatType.StartTyping || type==ChatType.StopTyping || type==ChatType.Debug)
 				return;
 
 			if(message=="")
