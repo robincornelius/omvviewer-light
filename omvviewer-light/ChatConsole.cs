@@ -74,8 +74,8 @@ namespace omvviewerlight
             {
                 //this is the main chat winddow, notify for all friends here
                
-				AsyncNameUpdate ud=new AsyncNameUpdate(friend.UUID,false);  
-  				ud.onNameCallBack += delegate(string namex,object[] values){ displaychat(namex + " is online", "", onoffline, onoffline);	};
+				AsyncNameUpdate ud=new AsyncNameUpdate(friend.UUID,false);
+                ud.onNameCallBack += delegate(string namex, object[] values) { displaychat("is online", namex, onoffline, onoffline); };
                 ud.go();
 				   
             }
@@ -83,7 +83,7 @@ namespace omvviewerlight
             {
                 Gtk.Application.Invoke(delegate
                 {
-                    displaychat(friend.Name + "is online", "", onoffline, onoffline);
+                    displaychat("is online", friend.Name, onoffline, onoffline);
                 });
             }
         }
@@ -95,14 +95,14 @@ namespace omvviewerlight
                 //this is the main chat winddow, notify for all friends here
                 Gtk.Application.Invoke(delegate
                 {
-                    displaychat(friend.Name + " is offline", "", onoffline, onoffline);
+                    displaychat("is offline", friend.Name, onoffline, onoffline);
                 });
             }
             else if (im_key != UUID.Zero && im_key == friend.UUID)
             {
                 Gtk.Application.Invoke(delegate
                 {
-                    displaychat(friend.Name + " is offline", "", onoffline, onoffline);
+                    displaychat("is offline", friend.Name, onoffline, onoffline);
                 });
             }
         }
@@ -114,7 +114,7 @@ namespace omvviewerlight
             {
                 Gtk.Application.Invoke(delegate
                 {
-                    this.textview_chat.Buffer.Clear();
+                    //this.textview_chat.Buffer.Clear();
                 });
             }
         }
@@ -352,7 +352,20 @@ namespace omvviewerlight
 		{
 			
 			Console.WriteLine("New IM recieved "+im.ToString());
-			
+
+            if (im.Dialog == OpenMetaverse.InstantMessageDialog.InventoryOffered)
+            {
+                displaychat(im.FromAgentName+" gave you "+im.Message, "(new inventory)", this.systemchat,this.systemchat);
+                return;
+            }
+
+            if (im.Dialog == OpenMetaverse.InstantMessageDialog.TaskInventoryOffered)
+            {
+                displaychat(im.FromAgentName + " gave you " + im.Message, "(new inventory)", this.systemchat, this.systemchat);
+                return;
+            }
+            
+
             if ((this.im_session_id == UUID.Zero) && (im_key == UUID.Zero))
             {
                 //we are the chat console not an IM window;

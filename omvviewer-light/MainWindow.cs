@@ -499,6 +499,7 @@ public partial class MainWindow: Gtk.Window
                 {
                     MainClass.client.Friends.DeclineFriendship(agentID, sessionid);
                 }
+
                 md.Destroy();
             };
             md.ShowAll();	
