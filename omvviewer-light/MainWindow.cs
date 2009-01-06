@@ -60,6 +60,7 @@ public partial class MainWindow: Gtk.Window
 	public int current_parcelid;
 	bool is_parcel_owner;
 	public List<Group> current_groups=new List<Group>();
+    int current_parcel_dwell;
 
     string parcel_owner_name;
     string parcel_group;
@@ -197,6 +198,8 @@ public partial class MainWindow: Gtk.Window
         MainClass.client.Friends.OnFriendshipResponse += new FriendsManager.FriendshipResponseEvent(Friends_OnFriendshipResponse);
         MainClass.client.Friends.OnFriendshipTerminated += new FriendsManager.FriendshipTerminatedEvent(Friends_OnFriendshipTerminated);
 		MainClass.client.Avatars.OnAvatarGroups += new OpenMetaverse.AvatarManager.AvatarGroupsCallback(onAvatarGroups);
+
+        MainClass.client.Parcels.OnParcelDwell += new ParcelManager.ParcelDwellCallback(Parcels_OnParcelDwell);
 		
 		//this.menubar1.get
 		
@@ -224,6 +227,15 @@ public partial class MainWindow: Gtk.Window
         this.statusbar1.Push(1, "Logged out");
 
 	}
+
+    void Parcels_OnParcelDwell(UUID parcelID, int localID, float dwell)
+    {
+        if (this.current_parcelid == localID)
+        {
+            current_parcel_dwell = (int)dwell;
+            this.updatestatusinfo(true);
+        }
+   }
 
 	void onAvatarGroups(UUID avatarID, List<AvatarGroup> avatarGroupsi)
 	{
@@ -394,8 +406,8 @@ public partial class MainWindow: Gtk.Window
 			string msg;
 			msg="<b>ALERT FROM SECONDLIFE</b>\n"+message;
 			MessageDialog md= new Gtk.MessageDialog(this,DialogFlags.Modal,MessageType.Info,ButtonsType.Close,true,msg);
-			ResponseType result=(ResponseType)md.Run();
-            md.Destroy();
+            md.Response += delegate { md.Destroy(); };
+            md.ShowAll();
 		});	
 	}
 	
@@ -447,17 +459,20 @@ public partial class MainWindow: Gtk.Window
 			string msg;
 			msg="The object : "+objectName+"Owner by :"+objectOwner+"Would like to \n"+message+"\n Would you like to allow this?";
 			MessageDialog md= new Gtk.MessageDialog(this,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,true,msg);
-			ResponseType result=(ResponseType)md.Run();
-			if(result==ResponseType.Yes)
-			{
-				MainClass.client.Self.ScriptQuestionReply(sim,itemID,taskID,questions);
-			}
-			else
-			{
-				MainClass.client.Self.ScriptQuestionReply(sim,itemID,taskID,ScriptPermission.None);
-			}
-			md.Destroy();
-			
+            md.Response += delegate(object o, ResponseArgs args)
+            {
+                if (args.ResponseId == ResponseType.Yes)
+                {
+                    MainClass.client.Self.ScriptQuestionReply(sim, itemID, taskID, questions);
+                }
+                else
+                {
+                    MainClass.client.Self.ScriptQuestionReply(sim, itemID, taskID, ScriptPermission.None);
+                }
+                md.Destroy();
+            };
+
+            md.ShowAll();	
 		});
 	}
 	
@@ -473,16 +488,20 @@ public partial class MainWindow: Gtk.Window
 			string msg;
 			msg="You have recieved a friendship request from "+agentname+"\n They would like to become your friend \n do you want to accept?";
 			MessageDialog md= new Gtk.MessageDialog(this,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,true,msg);
-			ResponseType result=(ResponseType)md.Run();
-			if(result==ResponseType.Yes)
-			{
-				MainClass.client.Friends.AcceptFriendship(agentID,sessionid);
-			}
-			else
-			{
-				MainClass.client.Friends.DeclineFriendship(agentID,sessionid);
-			}
-			md.Destroy();
+
+            md.Response += delegate(object o, ResponseArgs args)
+            {
+                if (args.ResponseId == ResponseType.Yes)
+                {
+                    MainClass.client.Friends.AcceptFriendship(agentID, sessionid);
+                }
+                else
+                {
+                    MainClass.client.Friends.DeclineFriendship(agentID, sessionid);
+                }
+                md.Destroy();
+            };
+            md.ShowAll();	
 		});			
 	}
 			
@@ -595,7 +614,7 @@ public partial class MainWindow: Gtk.Window
                     + "\nGroup : " + this.parcel_group
                     + "\nSize : " + size.ToString()
                     + "\nPrims : " + prims.ToString()
-                    + "\nTraffic : " + parcel.Dwell.ToString()
+                    + "\nTraffic : " + this.current_parcel_dwell.ToString()
                     + "\nArea : " + parcel.Area.ToString();
 
         tooltips1.SetTip(this.statusbar1, tooltext, null);
@@ -614,10 +633,19 @@ public partial class MainWindow: Gtk.Window
         this.parcel_owner_name = "Waiting....";
         this.parcel_group = "Waiting....";
 
-        AsyncNameUpdate an = new AsyncNameUpdate(parcel.OwnerID, false);
-        an.onNameCallBack += delegate(string namex, object[] values) { this.parcel_owner_name = namex; updatestatusinfo(true); };
-        an.go();
 
+        if (parcel.IsGroupOwned == false)
+        {
+            AsyncNameUpdate an;
+            an = new AsyncNameUpdate(parcel.OwnerID, false);
+            an.onNameCallBack += delegate(string namex, object[] values) { this.parcel_owner_name = namex; updatestatusinfo(true); };
+            an.go();
+        }
+        else
+        {
+            this.parcel_owner_name = "(group)";
+        }
+         
         AsyncNameUpdate an2 = new AsyncNameUpdate(parcel.GroupID, true);
         an2.onGroupNameCallBack += delegate(string namex, object[] values) { this.parcel_group = namex; updatestatusinfo(true); };
         an2.go();
