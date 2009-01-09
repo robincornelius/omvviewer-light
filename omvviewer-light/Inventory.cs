@@ -357,7 +357,7 @@ namespace omvviewerlight
                        
                         if (item is InventoryFolder)
                         {
-                            Gtk.MenuItem menu_debork = new MenuItem("Debork folder");
+                            //Gtk.MenuItem menu_debork = new MenuItem("Debork folder");
 							
                             Gtk.MenuItem menu_wear_folder = new MenuItem("Wear folder contents");
                             Gtk.ImageMenuItem menu_give_folder = new ImageMenuItem("Give folder to user");
@@ -368,11 +368,11 @@ namespace omvviewerlight
                             menu_delete_folder.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
                             menu_give_folder.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
                             menu_wear_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_ware_ButtonPressEvent);
-                            menu_debork.ButtonPressEvent += new ButtonPressEventHandler(FixBorkedFolder);
+                            //menu_debork.ButtonPressEvent += new ButtonPressEventHandler(FixBorkedFolder);
 							
 							Gtk.Label x=new Gtk.Label("Folder Item");
 							
-							menu.Append(menu_debork);
+							//menu.Append(menu_debork);
 							menu.Append(menu_wear_folder);
                             menu.Append(menu_give_folder);
                             menu.Append(menu_delete_folder);
