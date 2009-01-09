@@ -28,11 +28,10 @@ namespace omvviewerlight
         Gtk.Image col_icon;
         int model_col;
         Gtk.ListStore model;
+        Gtk.TreeStore model2;
         Gdk.Pixbuf up_arrow;
         Gdk.Pixbuf down_arrow;
         Gdk.Pixbuf blank_arrow;
-
-
 
         public MyTreeViewColumn(string title, Gtk.CellRenderer cell,string prop,int col) : base (title,cell,prop,col)
         {
@@ -58,43 +57,68 @@ namespace omvviewerlight
             m.SortColumnChanged += new EventHandler(m_SortColumnChanged);
         }
 
+        public void setmodel(Gtk.TreeStore m)
+        {
+            model2 = m;
+            m.SortColumnChanged += new EventHandler(m_SortColumnChanged);
+        }
+
         void m_SortColumnChanged(object sender, EventArgs e)
         {
 
-            int tSortColumnId;
+            int tSortColumnId=0;
             SortType order;
-            model.GetSortColumnId(out tSortColumnId, out order);
+            if(model!=null)
+                model.GetSortColumnId(out tSortColumnId, out order);
+            if(model2!=null)
+                model2.GetSortColumnId(out tSortColumnId, out order);
+
             if(tSortColumnId!=model_col)
                 col_icon.Pixbuf = blank_arrow;
         }
 
         void col_clicked(object sender, EventArgs e)
         {
-            if (model == null)
+            if (model == null && model2==null)
                 return;
 
-            int tSortColumnId;
-            SortType order;
-
-            model.GetSortColumnId(out tSortColumnId, out order);
+            int tSortColumnId=0;
+            SortType order=SortType.Ascending;
+            
+            if(model!=null)
+                model.GetSortColumnId(out tSortColumnId, out order);
+            if (model2 != null)
+                model2.GetSortColumnId(out tSortColumnId, out order);
 
             if (tSortColumnId == model_col)
             {
                 if (order == Gtk.SortType.Ascending)
                 {
-                    model.SetSortColumnId(model_col, Gtk.SortType.Descending);
+                    if(model!=null)
+                        model.SetSortColumnId(model_col, Gtk.SortType.Descending);
+                    if (model2 != null)
+                        model2.SetSortColumnId(model_col, Gtk.SortType.Descending);
+
                     col_icon.Pixbuf = down_arrow;
                 }
                 else
                 {
-                    model.SetSortColumnId(model_col, Gtk.SortType.Ascending);
+                    if(model!=null)
+                        model.SetSortColumnId(model_col, Gtk.SortType.Ascending);
+                    if (model2 != null)
+                        model2.SetSortColumnId(model_col, Gtk.SortType.Ascending);
+
                     col_icon.Pixbuf = up_arrow;
                 }
 
                 return;
             }
 
-            model.SetSortColumnId(model_col, Gtk.SortType.Ascending);
+            if(model!=null)
+                model.SetSortColumnId(model_col, Gtk.SortType.Ascending);
+            if (model2 != null)
+                model2.SetSortColumnId(model_col, Gtk.SortType.Ascending);
+
             col_icon.Pixbuf = up_arrow;
         }
 

@@ -62,6 +62,8 @@ namespace omvviewerlight
         Gdk.Pixbuf item_notecard = MainClass.GetResource("inv_item_notecard.tga");
         Gdk.Pixbuf item_script = MainClass.GetResource("inv_item_script.tga");
         Gdk.Pixbuf item_snapshot = MainClass.GetResource("inv_item_snapshot.tga");
+        Gdk.Pixbuf item_texture = MainClass.GetResource("inv_item_texture.tga");
+
         Gdk.Pixbuf item_sound = MainClass.GetResource("inv_item_sound.tga");
         Gdk.Pixbuf item_callingcard = MainClass.GetResource("inv_item_callingcard_offline.tga");
 		
@@ -74,7 +76,6 @@ namespace omvviewerlight
 		Gdk.Pixbuf item_clothing_skin= MainClass.GetResource("inv_item_skin.tga");
 		Gdk.Pixbuf item_clothing_skirt= MainClass.GetResource("inv_item_skirt.tga");
 		Gdk.Pixbuf item_clothing_underpants= MainClass.GetResource("inv_item_underpants.tga");
-	//	Gdk.Pixbuf item_clothing_underskirt= MainClass.GetResource("inv_item_underskirt.tga");
 		Gdk.Pixbuf item_clothing_undershirt= MainClass.GetResource("inv_item_undershirt.tga");
 	
 		Gdk.Pixbuf item_clothing_shirt= MainClass.GetResource("inv_item_shirt.tga");
@@ -94,6 +95,16 @@ namespace omvviewerlight
         Gdk.Pixbuf folder_bodypart = MainClass.GetResource("inv_folder_bodypart.tga");
         Gdk.Pixbuf folder_callingcard = MainClass.GetResource("inv_folder_callingcard.tga");
         Gdk.Pixbuf folder_clothing = MainClass.GetResource("inv_folder_clothing.tga");
+
+        bool specialfoldersfirst = true;
+
+        enum foldersorttype
+        {
+            SORT_NAME,
+            SORT_DATE
+        };
+
+        foldersorttype preferedsort = foldersorttype.SORT_DATE;
 
 		~Inventory()
 		{
@@ -121,13 +132,22 @@ namespace omvviewerlight
 		public Inventory()
 		{
 			this.Build();		
-			treeview_inv.AppendColumn("",new CellRendererPixbuf(),"pixbuf",0);
-			treeview_inv.AppendColumn("Name",new  Gtk.CellRendererText(),"text",1);
-			treeview_inv.Model=inventory;
-			this.treeview_inv.RowExpanded += new Gtk.RowExpandedHandler(onRowExpanded);
+			
+            treeview_inv.AppendColumn("",new CellRendererPixbuf(),"pixbuf",0);
+            MyTreeViewColumn col = new MyTreeViewColumn("Name", new Gtk.CellRendererText(), "text", 1);
+			//treeview_inv.AppendColumn("Name",new  Gtk.CellRendererText(),"text",1);
+            col.setmodel(inventory);
+            treeview_inv.InsertColumn(col, 1);
+            treeview_inv.Model=inventory;
+
+            this.treeview_inv.RowExpanded += new Gtk.RowExpandedHandler(onRowExpanded);
 			this.treeview_inv.RowCollapsed += new Gtk.RowCollapsedHandler(onRowCollapsed);
-			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             this.treeview_inv.ButtonPressEvent += new ButtonPressEventHandler(treeview_inv_ButtonPressEvent);
+
+            this.inventory.SetSortFunc(1, sortinventoryfunc);
+            this.inventory.SetSortColumnId(1, SortType.Ascending);
+
+            MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
 			MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
 
 			this.label_aquired.Text="";
@@ -140,20 +160,77 @@ namespace omvviewerlight
             {
                 if (MainClass.client.Network.LoginStatusCode == OpenMetaverse.LoginStatus.Success)
                 {
-                    inventory.Clear();
-					
-              //      Gtk.TreeIter iter = inventory.AppendValues(folder_closed, "Inventory", MainClass.client.Inventory.Store.RootFolder.UUID);
-               //     inventory.AppendValues(iter, folder_closed, "Waiting...", MainClass.client.Inventory.Store.RootFolder.UUID, null);
-
-				//	Gtk.TreeIter iter2 = inventory.AppendValues(folder_closed, "Library", MainClass.client.Inventory.Store.LibraryFolder.UUID);
-				//	inventory.AppendValues(iter2, folder_closed, "Waiting...", MainClass.client.Inventory.Store.LibraryFolder.UUID, null);
-				
-				populate_top_level_inv();
-					
-					
+                    inventory.Clear();			
+				    populate_top_level_inv();
 				}
             }	
 		}
+
+        int sortinventoryfunc(Gtk.TreeModel model, Gtk.TreeIter a, Gtk.TreeIter b)
+        {
+            int colid;
+            SortType order;
+            int aa=1;
+            int bb=-1;
+            this.inventory.GetSortColumnId(out colid, out order);
+            if (order == SortType.Ascending)
+            {
+                aa = -1;
+                bb = 1;
+            }
+
+            // We probably want to sort my name or date, and may want to group special folders first
+            InventoryBase itema = (InventoryBase)this.inventory.GetValue(a, 3);
+            InventoryBase itemb = (InventoryBase)this.inventory.GetValue(b, 3);
+
+            if (itema == null || itemb == null)
+                return 0;
+
+            if (specialfoldersfirst)
+            {
+                if (itema is InventoryFolder && itemb is InventoryFolder)
+                {
+                    if (((InventoryFolder)itema).PreferredType != ((InventoryFolder)itemb).PreferredType)
+                     {
+                        // we are comparing a standard folder to a special folder
+                        if(((InventoryFolder)itema).PreferredType==AssetType.Unknown)
+                            return aa;
+
+                        return bb;
+                    }
+                }
+
+                if (this.preferedsort == foldersorttype.SORT_NAME)
+                {
+                    int ret=string.Compare(itema.Name, itemb.Name);
+                    if(ret==1)
+                        return aa;
+                    if(ret==-1)
+                        return bb;
+                }
+
+                if (this.preferedsort == foldersorttype.SORT_DATE)
+                {
+                    if (itema is InventoryItem && itemb is InventoryItem)
+                    {
+                        if (((InventoryItem)itema).CreationDate > ((InventoryItem)itemb).CreationDate)
+                            return aa;
+                        return bb;
+                    }
+                    else
+                    {
+                        int ret = string.Compare(itema.Name, itemb.Name);
+                        if(ret==1)
+                            return aa;
+                        if(ret==-1)
+                            return bb;
+                    }
+                }
+
+            }
+
+            return 0;
+        }
 
 		void populate_top_level_inv()
 		{
@@ -165,7 +242,7 @@ namespace omvviewerlight
 							{
 								if(kvp.Value.Data.ParentUUID==UUID.Zero)
 								{
-									Gtk.TreeIter iterx = inventory.AppendValues(folder_closed, kvp.Value.Data.Name, kvp.Value.Data.UUID);
+									Gtk.TreeIter iterx = inventory.AppendValues(folder_closed, kvp.Value.Data.Name, kvp.Value.Data.UUID,null);
 							        Console.Write("Creating top level folder "+kvp.Value.Data.Name+" : "+MainClass.client.Inventory.Store.Items[kvp.Value.Data.UUID].ToString());
 									inventory.AppendValues(iterx, folder_closed, "Waiting...", kvp.Value.Data.UUID, null);
 								}
@@ -521,7 +598,7 @@ namespace omvviewerlight
 				image=getprettyfoldericon((InventoryFolder)item);	
 			}
 			
-			inventory.SetValue(args.Iter,0,item);
+			inventory.SetValue(args.Iter,0,image);
 		}
 
 		void onRowExpanded(object o,Gtk.RowExpandedArgs args)
@@ -530,20 +607,9 @@ namespace omvviewerlight
 			if(inventory.GetValue(args.Iter,0)==folder_closed)
                 inventory.SetValue(args.Iter,0,folder_open);
  
- //           Console.Write("Trying to get child iter\n");
-
-           // this.treeview_inv.QueueDraw();
             Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
             invthreaddata x = new invthreaddata(key,args,args.Path.ToString());
-
-//		    Console.Write("Key is NOW "+key.ToString()+"\n");
-//		    Console.Write("Path is NOW "+args.Path.ToString()+"\n");
-//			Console.Write("ARgs is now"+args.ToString()+"\n"+"\n");        
-			
-           // MainClass.client.Inventory.RequestFolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate);
-
 			invRunner.Start(x);
-   		
 		}
 		
 		void fetchinventory(object x)
@@ -587,22 +653,18 @@ namespace omvviewerlight
  			string paths=((invthreaddata)x).path;
 			path=new Gtk.TreePath(paths);
 
-			
+
 			incomming.Add(xx,myObjects);
 
 			Gtk.TreeIter childiter;
              
-            //Console.Write("Path is "+path.ToString()+"\n");
-		    
 		    path.Down();
-	        //Console.Write("Path down is "+path.ToString()+"\n");
 				
             if (myObjects == null)
                 return;
 
              foreach (InventoryBase item in myObjects)
              {
-				//Console.Write("Adding item "+item.ToString()+"\n");
 				 Gdk.Pixbuf buf = getprettyicon(item);
                  string msg="";
 
@@ -614,7 +676,7 @@ namespace omvviewerlight
                              msg = " (WORN) ";
                      }
 
-                     Gtk.TreeIter iter2 = inventory.AppendValues(args.Iter, buf, item.Name+msg, item.UUID, item);
+                    Gtk.TreeIter iter2 = inventory.AppendValues(args.Iter, buf, item.Name+msg, item.UUID, item);
 					if(!assetmap.ContainsKey(item.UUID))
 					   assetmap.Add(item.UUID, iter2);
 					else
@@ -623,16 +685,13 @@ namespace omvviewerlight
 					}
                      if (item is InventoryFolder)
                      {
-						inventory.AppendValues(iter2, item_object, "Waiting...", UUID.Zero, null);
+						inventory.AppendValues(iter2, item_object, "Waiting...", item.UUID, null);
                      }
                  }
                 //And tidy that waiting
                if (inventory.GetIter(out childiter, path))
                {
- //                 Console.Write("We got a childiter for that\n");
-//                  Console.Write("Value is =" + (string)inventory.GetValue(childiter, 1) + "\n");
                   if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
-
                   inventory.Remove(ref childiter);
                }
 
@@ -761,6 +820,9 @@ namespace omvviewerlight
             if (item is OpenMetaverse.InventorySnapshot)
                 return this.item_snapshot;
 
+            if (item is OpenMetaverse.InventoryTexture)
+                return this.item_texture;
+
             if (item is OpenMetaverse.InventorySound)
                 return this.item_sound;
 
@@ -782,30 +844,46 @@ namespace omvviewerlight
                  {
 					InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
 					this.label_name.Text=item.Name;
-					
-					if(item is InventoryItem)
-					{
-						this.label_createdby.Text=((InventoryItem)item).CreatorID.ToString();
-						this.label_aquired.Text=((InventoryItem)item).CreationDate.ToString();
-						this.checkbutton_copy.Active=OpenMetaverse.PermissionMask.Copy==(((InventoryItem)item).Permissions.OwnerMask&OpenMetaverse.PermissionMask.Copy);
-						this.checkbutton_mod.Active=OpenMetaverse.PermissionMask.Modify==(((InventoryItem)item).Permissions.OwnerMask&OpenMetaverse.PermissionMask.Modify);
-						this.checkbutton_trans.Active=OpenMetaverse.PermissionMask.Transfer==(((InventoryItem)item).Permissions.OwnerMask&OpenMetaverse.PermissionMask.Transfer);
-					
-						this.checkbutton_copynext.Active=OpenMetaverse.PermissionMask.Copy==(((InventoryItem)item).Permissions.NextOwnerMask&OpenMetaverse.PermissionMask.Copy);
-						this.checkbutton_modnext.Active=OpenMetaverse.PermissionMask.Modify==(((InventoryItem)item).Permissions.NextOwnerMask&OpenMetaverse.PermissionMask.Modify);
-						this.checkbutton_transnext.Active=OpenMetaverse.PermissionMask.Transfer==(((InventoryItem)item).Permissions.NextOwnerMask&OpenMetaverse.PermissionMask.Transfer);
-					
-						AsyncNameUpdate ud=new AsyncNameUpdate((UUID)((InventoryItem)item).CreatorID.ToString(),false);
-						ud.onNameCallBack += delegate(string name,object[] values){this.label_createdby.Text=name;};
+                    
+                    if (item is InventoryItem)
+                    {
+                        this.label_createdby.Text = ((InventoryItem)item).CreatorID.ToString();
+                        this.label_aquired.Text = ((InventoryItem)item).CreationDate.ToString();
+                        this.checkbutton_copy.Active = OpenMetaverse.PermissionMask.Copy == (((InventoryItem)item).Permissions.OwnerMask & OpenMetaverse.PermissionMask.Copy);
+                        this.checkbutton_mod.Active = OpenMetaverse.PermissionMask.Modify == (((InventoryItem)item).Permissions.OwnerMask & OpenMetaverse.PermissionMask.Modify);
+                        this.checkbutton_trans.Active = OpenMetaverse.PermissionMask.Transfer == (((InventoryItem)item).Permissions.OwnerMask & OpenMetaverse.PermissionMask.Transfer);
+
+                        this.checkbutton_copynext.Active = OpenMetaverse.PermissionMask.Copy == (((InventoryItem)item).Permissions.NextOwnerMask & OpenMetaverse.PermissionMask.Copy);
+                        this.checkbutton_modnext.Active = OpenMetaverse.PermissionMask.Modify == (((InventoryItem)item).Permissions.NextOwnerMask & OpenMetaverse.PermissionMask.Modify);
+                        this.checkbutton_transnext.Active = OpenMetaverse.PermissionMask.Transfer == (((InventoryItem)item).Permissions.NextOwnerMask & OpenMetaverse.PermissionMask.Transfer);
+
+                        AsyncNameUpdate ud = new AsyncNameUpdate((UUID)((InventoryItem)item).CreatorID.ToString(), false);
+                        ud.onNameCallBack += delegate(string name, object[] values) { this.label_createdby.Text = name; };
                         ud.go();
 
-						AsyncNameUpdate ud2=new AsyncNameUpdate(((InventoryItem)item).GroupID,true);
-						ud2.onNameCallBack += delegate(string name,object[] values){this.label_group.Text=name;};
+                        AsyncNameUpdate ud2 = new AsyncNameUpdate(((InventoryItem)item).GroupID, true);
+                        ud2.onNameCallBack += delegate(string name, object[] values) { this.label_group.Text = name; };
                         ud2.go();
 
-						this.label_saleprice.Text=((InventoryItem)item).SalePrice.ToString();
-						
-					}
+                        this.label_saleprice.Text = ((InventoryItem)item).SalePrice.ToString();
+                    }
+                    else
+                    {
+                        this.label_saleprice.Text = "";
+                        this.label_createdby.Text = "";
+                        this.label_aquired.Text = "";
+                        this.checkbutton_mod.Active=false;
+                        this.checkbutton_trans.Active=false;
+                        this.checkbutton_copynext.Active=false;
+                        this.checkbutton_modnext.Active=false;
+                        this.checkbutton_transnext.Active = false;
+                        this.label_group.Text = "";
+                        this.label_createdby.Text = "";
+                        
+
+
+
+                    }
 		
 				 }
 				
