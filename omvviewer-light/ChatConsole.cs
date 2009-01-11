@@ -497,7 +497,11 @@ namespace omvviewerlight
 			if(sourcetype==ChatSourceType.Agent)
 			{
 				Gtk.Application.Invoke(delegate {						
-                    displaychat(message, fromName, avchat, bold);	
+                    displaychat(message, fromName, avchat, bold);
+					if(id!=MainClass.client.Self.AgentID)
+					{
+						MainClass.client.Self.LookAtEffect(MainClass.client.Self.AgentID,id,Vector3d.Zero,LookAtType.Mouselook,UUID.Random());
+					}
 				});
 				return;
 			}
