@@ -97,7 +97,7 @@
 		 <include name="art/tick.tga" /> 
 		 <include name="art/trying.tga" /> 
 		 <include name="art/up_arrow.tga" /> 
-		 <include name="art/viewericon.xpm" />
+		 <include name="art/omvviewer-light.xpm" />
 
             </resources>
             <sources failonempty="true">
