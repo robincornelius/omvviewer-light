@@ -342,9 +342,10 @@ public partial class MainWindow: Gtk.Window
 		{
             this.SittingAction.Sensitive=true;			
             this.SittingAction.Activate();
-		    this.SittingAction.Sensitive=false;			
+		    this.SittingAction.Sensitive=false;
 		}
-        this.SittingAction.Activate();		
+		else
+			this.SittingAction.Activate();		
     }	
 
     void Friends_OnFriendshipTerminated(UUID agentID, string agentName)
@@ -972,25 +973,31 @@ public partial class MainWindow: Gtk.Window
 
 	protected virtual void OnStandingActionActivated (object sender, System.EventArgs e)
 	{
-		MainClass.client.Self.Stand();
-        MainClass.client.Self.Fly(false);			
-        MainClass.client.Self.Crouch(false); 
+		if(this.StandingAction.Active==true)
+        { 
+			MainClass.client.Self.Stand();
+	        MainClass.client.Self.Fly(false);			
+			MainClass.client.Self.Crouch(false); 
+        }
 	}
 
 	protected virtual void OnGroundSitActionActivated (object sender, System.EventArgs e)
 	{
-         MainClass.client.Self.SitOnGround();
+	     if(this.GroundSitAction.Active==true)		
+             MainClass.client.Self.SitOnGround();
 	}
 
 	protected virtual void OnCrouchActionActivated (object sender, System.EventArgs e)
 	{
-         MainClass.client.Self.Crouch(true); 
+         if(this.CrouchAction.Active==true)		
+             MainClass.client.Self.Crouch(true); 
 	}
 
 	protected virtual void OnFlyActionActivated (object sender, System.EventArgs e)
 	{
-	      MainClass.client.Self.Fly(true);	
-}
+          if(this.FlyAction.Active==true)
+	          MainClass.client.Self.Fly(true);	
+    }
 	
     void onGroups(Dictionary<UUID,Group> groups)
 		{

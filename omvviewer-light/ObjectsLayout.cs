@@ -504,7 +504,7 @@ namespace omvviewerlight
                 return;
             }
 
-		Gtk.TreeModel mod;
+			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
 			
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
@@ -514,8 +514,7 @@ namespace omvviewerlight
 				
 				if(FetchedPrims.TryGetValue(id,out prim))
 				{
-					//MainClass.client.Self.sit
-					MainClass.client.Self.RequestSit(prim.ID,Vector3.Zero);
+					MainClass.client.Self.RequestSit(prim.ID,Vector3.Zero);		
 				}
 			}
 		
