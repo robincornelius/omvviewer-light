@@ -42,6 +42,7 @@ namespace omvviewerlight
 		static UUID target_object;
 		static uint target_avatar;
 		static Vector3 target_pos;
+		static bool follow=false;
 
 		public delegate void AutoPilotFinished();
         public static event AutoPilotFinished onAutoPilotFinished;
@@ -57,7 +58,8 @@ namespace omvviewerlight
 			if(onAutoPilotFinished!=null)
 				onAutoPilotFinished();
 			
-			Active=false;			
+			Active=false;
+			follow=false;
 		}
 		
 		public static void set_target_object (UUID tobject)
@@ -66,16 +68,16 @@ namespace omvviewerlight
 			type=TargetType.TARGET_OBJECT;
 			target_object=tobject;
 			Active=true;
-			GLib.Timeout.Add(1000,Think);
+			GLib.Timeout.Add(100,Think);
 		}
 		
-		public static void set_target_avatar (uint localid)
+		public static void set_target_avatar (uint localid,bool followon)
 		{
 			type=TargetType.TARGET_AVATAR;
 			target_avatar=localid;
 			Active=true;
-			GLib.Timeout.Add(1000,Think);
-
+			GLib.Timeout.Add(100,Think);
+			follow=followon;
 		}
 		
 		public static void set_target_pos (Vector3 pos)
@@ -83,7 +85,7 @@ namespace omvviewerlight
 			type=TargetType.TARGET_POS;
 			target_pos=pos;
 			Active=true;
-			GLib.Timeout.Add(1000,Think);
+			GLib.Timeout.Add(100,Think);
 		}
 		
 		static Vector3 get_av_pos(uint targetLocalID,out float distance,out Simulator sim)
@@ -157,7 +159,8 @@ namespace omvviewerlight
 						
              double xTarget = (double)targetpos.X + (double)regionX;
              double yTarget = (double)targetpos.Y + (double)regionY;
-             double zTarget = targetpos.Z;
+
+			double zTarget = targetpos.Z;
             
 			 Vector3 pos;
 			 pos.X=(float)xTarget;
@@ -178,6 +181,10 @@ namespace omvviewerlight
 				if(type==TargetType.TARGET_AVATAR)
 				{
 					targetpos=get_av_pos(target_avatar,out distance,out sim);
+					distance = Vector3.Distance(targetpos, MainClass.client.Self.SimPosition);	
+					Console.WriteLine("Avatar Target at "+targetpos.ToString());
+					Console.WriteLine("I'm at "+MainClass.client.Self.SimPosition.ToString());
+					Console.WriteLine("Distance is "+distance.ToString());
 				}
 				else				
 				{
@@ -189,17 +196,23 @@ namespace omvviewerlight
 				
                 if (distance > 2.5)
 				{
-					Logger.DebugLog("Autopilot think");
+					Console.WriteLine("Autopilot think");
 				    Vector3 targetglobal=localtoglobalpos(targetpos,sim);
-                    MainClass.client.Self.Movement.TurnToward(targetpos);			
-                    MainClass.client.Self.AutoPilot(targetglobal.X, targetglobal.Y, targetglobal.Z);
-				 }
-                 else
+	                MainClass.client.Self.Movement.TurnToward(targetpos);
+					MainClass.client.Self.Movement.AtPos=true;
+					MainClass.client.Self.Movement.SendUpdate();
+					//MainClass.client.Self.AutoPilotCancel();
+	                //MainClass.client.Self.AutoPilot(targetglobal.X, targetglobal.Y, targetglobal.Z);
+						
+				}
+                 else if (follow==false)
 				 {
 					 Active=false;
+					 MainClass.client.Self.Movement.AtPos=false;
+					 MainClass.client.Self.Movement.SendUpdate();
 					 if(onAutoPilotFinished!=null)
 						onAutoPilotFinished();
-				     Logger.DebugLog("Stopping autopilot");
+				     Console.WriteLine("Stopping autopilot");
 					return false;
                  }
                         
@@ -207,7 +220,9 @@ namespace omvviewerlight
             }
 			else
 			{
-				 Logger.DebugLog("NOT ACTIVE Stopping autopilot");
+				Console.WriteLine("NOT ACTIVE Stopping autopilot");
+				MainClass.client.Self.Movement.AtPos=false;				
+				MainClass.client.Self.Movement.SendUpdate();			
 				Active=false;
 				if(onAutoPilotFinished!=null)
 					onAutoPilotFinished();

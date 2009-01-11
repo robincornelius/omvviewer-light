@@ -440,7 +440,7 @@ namespace omvviewerlight
 			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
 				uint localid=(uint)mod.GetValue(iter,3);		
-				AutoPilot.set_target_avatar(localid);
+				AutoPilot.set_target_avatar(localid,true);
 				this.button1.Label="STOP";
 			}
 		}
