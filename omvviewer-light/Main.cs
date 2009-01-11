@@ -97,7 +97,7 @@ namespace omvviewerlight
                 name_cache = new AVNameCache();
                 Gtk.Application.Init();
 
-                Gtk.Window.DefaultIcon = MainClass.GetResource("viewericon.xpm");
+                Gtk.Window.DefaultIcon = MainClass.GetResource("omvviewer-light.xpm");
 				
                 win = new MainWindow();
 

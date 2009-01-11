@@ -114,7 +114,7 @@ public partial class MainWindow: Gtk.Window
 	{
         Build();
    		
-		trayIcon = new StatusIcon(MainClass.GetResource("viewericon.xpm"));
+		trayIcon = new StatusIcon(MainClass.GetResource("omvviewer-light.xpm"));
 		trayIcon.Visible=true;
 		trayIcon.Tooltip="Disconnected";
 		trayIcon.Activate+= delegate{
@@ -142,7 +142,7 @@ public partial class MainWindow: Gtk.Window
               menu.Popup();
 		};
 				
-		this.Icon=MainClass.GetResource("viewericon.xpm");
+		this.Icon=MainClass.GetResource("omvviewer-light.xpm");
 		status_location=new Gtk.Label("Location: Unknown (0,0,0)");
 		
 		status_balance=new Gtk.HBox();
