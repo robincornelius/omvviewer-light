@@ -54,6 +54,8 @@ namespace omvviewerlight
 		public Gtk.Label tabLabel;
 		public UUID im_key=OpenMetaverse.UUID.Zero;
 		public UUID im_session_id=OpenMetaverse.UUID.Zero;
+		bool lookatrunning=false;
+		UUID lookat;
 		
 		
 		public ChatConsole()
@@ -500,7 +502,13 @@ namespace omvviewerlight
                     displaychat(message, fromName, avchat, bold);
 					if(id!=MainClass.client.Self.AgentID)
 					{
-						MainClass.client.Self.LookAtEffect(MainClass.client.Self.AgentID,id,Vector3d.Zero,LookAtType.Mouselook,UUID.Random());
+						if(lookatrunning==false)
+						{
+							this.lookat=UUID.Random();
+							MainClass.client.Self.LookAtEffect(MainClass.client.Self.AgentID,id,Vector3d.Zero,LookAtType.Mouselook,lookat);
+							Gtk.Timeout.Add(3000,ClearLookAt);
+							lookatrunning=true;
+						}
 					}
 				});
 				return;
@@ -530,6 +538,15 @@ namespace omvviewerlight
 				});
 				return;
 			}
+			
+		}
+		
+		bool ClearLookAt()
+		{
+			
+			MainClass.client.Self.LookAtEffect(MainClass.client.Self.AgentID,UUID.Zero,Vector3d.Zero,LookAtType.Clear,lookat);
+			lookatrunning=false;
+			return false;
 			
 		}
 
