@@ -11,7 +11,7 @@
             <fileset basedir=".">
             </fileset>
         </copy>
-        <csc target="winexe" debug="${build.debug}" unsafe="True" define="TRACE" main="" output="${build.dir}/${project::get-name()}.exe">
+        <csc codepage="utf8" target="winexe" debug="${build.debug}" unsafe="True" define="TRACE" main="" output="${build.dir}/${project::get-name()}.exe">
             <resources prefix="omvviewerlight.art" dynamicprefix="false" >
 		 <include name="art/arrow.tga" /> 
 		 <include name="art/blank_arrow.tga" /> 
