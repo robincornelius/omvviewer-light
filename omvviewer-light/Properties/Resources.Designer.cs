@@ -977,6 +977,13 @@ namespace omvviewerlight.Properties {
             }
         }
         
+        internal static byte[] omvviewer_light {
+            get {
+                object obj = ResourceManager.GetObject("omvviewer_light", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
         internal static byte[] parcel {
             get {
                 object obj = ResourceManager.GetObject("parcel", resourceCulture);
@@ -1176,13 +1183,6 @@ namespace omvviewerlight.Properties {
         internal static byte[] up_arrow1 {
             get {
                 object obj = ResourceManager.GetObject("up_arrow1", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        internal static byte[] viewericon {
-            get {
-                object obj = ResourceManager.GetObject("viewericon", resourceCulture);
                 return ((byte[])(obj));
             }
         }
