@@ -97,6 +97,7 @@ namespace omvviewerlight
         Gdk.Pixbuf folder_clothing = MainClass.GetResource("inv_folder_clothing.tga");
 
         bool specialfoldersfirst = true;
+        bool inventoryloaded = false;
 
         enum foldersorttype
         {
@@ -160,6 +161,7 @@ namespace omvviewerlight
             {
                 if (MainClass.client.Network.LoginStatusCode == OpenMetaverse.LoginStatus.Success)
                 {
+                    inventoryloaded = true;
                     inventory.Clear();			
 				    populate_top_level_inv();
 				}
@@ -566,14 +568,19 @@ namespace omvviewerlight
 		{
 			if(sim.ID==MainClass.client.Network.CurrentSim.ID)
 			{
-				Gtk.Application.Invoke(delegate {
-					inventory.Clear();
-					populate_top_level_inv();
-					this.no_items=0;
-					//Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
-					//invRunner.Start(MainClass.client.Inventory.Store.RootFolder.UUID);
-					//this.fetchinventory(MainClass.client.Inventory.Store.RootFolder.UUID);
-				});
+                if (inventoryloaded == false)
+                {
+                    inventoryloaded = true;
+                    Gtk.Application.Invoke(delegate
+                    {
+                        inventory.Clear();
+                        populate_top_level_inv();
+                        this.no_items = 0;
+                        //Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
+                        //invRunner.Start(MainClass.client.Inventory.Store.RootFolder.UUID);
+                        //this.fetchinventory(MainClass.client.Inventory.Store.RootFolder.UUID);
+                    });
+                }
 				 
 			}
 		}
