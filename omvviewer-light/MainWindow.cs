@@ -817,7 +817,9 @@ public partial class MainWindow: Gtk.Window
     
 		if(im.Dialog==OpenMetaverse.InstantMessageDialog.TaskInventoryOffered)
 			return;
-		
+
+        im.Message.Replace("&", "&amp");
+
 		if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryAccepted)
 		{
 			Gtk.Application.Invoke(delegate {	

@@ -567,7 +567,7 @@
     <EmbeddedResource Include="art\map_avatar_friend_above_8.tga" />
     <EmbeddedResource Include="art\map_avatar_friend_below_8.tga" />
     <EmbeddedResource Include="art\map_avatar_target_8.tga" />
-    <None Include="art\omvviewer-light.xpm" />
+    <EmbeddedResource Include="art\omvviewer-light.xpm" />
     <None Include="openmetaverse_data\blush_alpha.tga" />
     <None Include="openmetaverse_data\bodyfreckles_alpha.tga" />
     <None Include="openmetaverse_data\body_skingrain.tga" />
