@@ -542,17 +542,9 @@ namespace omvviewerlight
             this.treeview_inv.Selection.GetSelected(out mod, out iter);
             InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
 
-			List<InventoryBase> ibs=new List<InventoryBase>();
-			
-			foreach(KeyValuePair <WearableType, OpenMetaverse.AppearanceManager.WearableData> kvp in  MainClass.client.Appearance.Wearables.Dictionary)
-			{
-				ibs.Add((InventoryBase)kvp.Value.Item);
-			}
-				
-			
-			ibs.Add(item);
-
-			MainClass.client.Appearance.WearOutfit(ibs,true);
+            List<InventoryBase> ibs=new List<InventoryBase>();
+            ibs.Add(item);
+            MainClass.client.Appearance.AddToOutfit(ibs,true);
         }
 		
         void menu_attach_item_ButtonPressEvent(object o, ButtonPressEventArgs args)
@@ -681,6 +673,12 @@ namespace omvviewerlight
                      {
                          if (kvp.Value.Item.UUID == item.UUID)
                              msg = " (WORN) ";
+                     }
+
+                     foreach (KeyValuePair<uint, Primitive> kvp in MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary)
+                     {
+                         if((kvp.Value.ID==item.UUID))
+                             msg = " (ATTACHED) ";
                      }
 
                     Gtk.TreeIter iter2 = inventory.AppendValues(args.Iter, buf, item.Name+msg, item.UUID, item);
