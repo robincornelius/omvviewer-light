@@ -67,7 +67,7 @@ namespace omvviewerlight
 			MainClass.client.Objects.OnNewAvatar += new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
 			MainClass.client.Objects.OnObjectKilled += new OpenMetaverse.ObjectManager.KillObjectCallback(onKillObject);
 			MainClass.client.Objects.OnObjectUpdated += new OpenMetaverse.ObjectManager.ObjectUpdatedCallback(onUpdate);
-			
+
 			MainClass.client.Self.OnChat += new OpenMetaverse.AgentManager.ChatCallback(onChat);
 			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
 	
@@ -306,7 +306,24 @@ namespace omvviewerlight
                     return;
 
                 Avatar av = MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[id];
-               
+
+                Vector3 self_pos;
+
+                lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
+                {
+                    // Cope if *we* are sitting on someting
+                    if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID != 0)
+                    {
+                        Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID];
+                        self_pos = Vector3.Transform(MainClass.client.Self.RelativePosition, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
+                    }
+                    else
+                    {
+                        self_pos = MainClass.client.Self.RelativePosition;
+                    }
+                }
+                
+                //Cope if *they* are sitting on something
                 if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[id].ParentID != 0)
                 {
                     if (!MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary.ContainsKey(MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[id].ParentID))
@@ -314,11 +331,11 @@ namespace omvviewerlight
 
                     Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[av.ParentID];
                     Vector3 av_pos = Vector3.Transform(av.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
-                    dist = Vector3.Distance(MainClass.client.Self.RelativePosition, av_pos);
+                    dist = Vector3.Distance(self_pos, av_pos);
                 }
                 else
                 {
-                    dist = Vector3.Distance(MainClass.client.Self.RelativePosition, av.Position);
+                    dist = Vector3.Distance(self_pos, av.Position);
                 }
 
 				Gtk.Application.Invoke(delegate

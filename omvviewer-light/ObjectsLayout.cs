@@ -203,9 +203,25 @@ namespace omvviewerlight
 			UUID key=(UUID)store.GetValue(iter,3);			
 			if(FetchedPrims.ContainsKey(key))
 			{
+
+                Vector3 self_pos;
+                lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
+                {
+                    // Cope if *we* are sitting on someting
+                    if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID != 0)
+                    {
+                        Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID];
+                        self_pos = Vector3.Transform(MainClass.client.Self.RelativePosition, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
+                    }
+                    else
+                    {
+                        self_pos = MainClass.client.Self.RelativePosition;
+                    }
+                }
+
 				store.SetValue(iter,0,FetchedPrims[key].Properties.Name);
 				store.SetValue(iter,1,FetchedPrims[key].Properties.Description);
-				store.SetValue(iter,2,Vector3.Distance(FetchedPrims[key].Position,MainClass.client.Self.RelativePosition).ToString());
+				store.SetValue(iter,2,Vector3.Distance(FetchedPrims[key].Position,self_pos).ToString());
 				store.SetValue(iter,3,FetchedPrims[key].Properties.ObjectID);
 				
 			}
@@ -263,20 +279,21 @@ namespace omvviewerlight
                 if (PrimsWaiting.TryGetValue(properties.ObjectID, out prim)) {
                     prim.Properties = properties;
 					Gtk.Application.Invoke(delegate {
-                        Avatar av;
-                        Vector3 mypos;
-                        mypos=MainClass.client.Self.RelativePosition;
-                        if(MainClass.client.Network.CurrentSim.ObjectsAvatars.TryGetValue(MainClass.client.Self.LocalID, out av))
+                        Vector3 self_pos;
+                        lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
                         {
-                            if (av.ParentID!=0)
+                            // Cope if *we* are sitting on someting
+                            if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID != 0)
                             {
-                                Primitive sitprim;
-                                if(MainClass.client.Network.CurrentSim.ObjectsPrimitives.TryGetValue(av.ParentID,out sitprim))
-                                {
-                                    mypos = Vector3.Transform(av.Position, Matrix4.CreateFromQuaternion(sitprim.Rotation)) + sitprim.Position;
-                                }
+                                Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID];
+                                self_pos = Vector3.Transform(MainClass.client.Self.RelativePosition, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
+                            }
+                            else
+                            {
+                                self_pos = MainClass.client.Self.RelativePosition;
                             }
                         }
+
 						PrimsWaiting.Remove(properties.ObjectID);
                         if(FetchedPrims.ContainsKey(properties.ObjectID))
                         {
@@ -287,7 +304,7 @@ namespace omvviewerlight
                         {
                             FetchedPrims.Add(properties.ObjectID,prim);
                         }
-				        store.AppendValues(prim.Properties.Name, prim.Properties.Description, Vector3.Distance(prim.Position, mypos).ToString(), prim.Properties.ObjectID);
+				        store.AppendValues(prim.Properties.Name, prim.Properties.Description, Vector3.Distance(prim.Position, self_pos).ToString(), prim.Properties.ObjectID);
                         store.Foreach(myfunc);	
 				});
 				
