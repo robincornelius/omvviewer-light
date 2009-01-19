@@ -312,6 +312,9 @@ namespace omvviewerlight
                 lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
                 {
                     // Cope if *we* are sitting on someting
+                    if (!MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.ContainsKey(MainClass.client.Self.LocalID))
+                        return; //bollocks, we are not in the Dictionary yet
+
                     if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID != 0)
                     {
                         Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID];
