@@ -95,7 +95,6 @@ namespace omvviewerlight
 			//System.GC.SuppressFinalize(this);
 		}
 		
-		
         bool kickrefresh()
         {
 
@@ -110,8 +109,7 @@ namespace omvviewerlight
 			
 			lock(MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
 			{
-                lock(av_tree)
-                {
+                
                     foreach (KeyValuePair<uint, Avatar> kvp in MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
                     {
                         //Seen this fire with some kind of null
@@ -126,13 +124,9 @@ namespace omvviewerlight
                             agent theagent = new agent();
                             theagent.avatar = kvp.Value;
                             Gtk.TreeIter iter;
-                            lock (av_tree)
-                            {
-								iter = store.AppendValues("", kvp.Value.Name, "", kvp.Value.LocalID);
-                                theagent.iter = iter;
-
-                                av_tree.Add(kvp.Value.LocalID, theagent);
-                            }
+					        iter = store.AppendValues("", kvp.Value.Name, "", kvp.Value.LocalID);
+                            theagent.iter = iter;
+                            av_tree.Add(kvp.Value.LocalID, theagent);
                             calcdistance(kvp.Value.LocalID);
                         }
                         else
@@ -141,7 +135,7 @@ namespace omvviewerlight
                         }
                     }
 
-	            }
+	            
 			}
             
             return true;
@@ -190,10 +184,10 @@ namespace omvviewerlight
                     store.Clear();
 				});
 				
-                    lock (av_tree)
-                    {
-                       av_tree.Clear();
-                    }
+                lock (av_tree)
+                {
+                   av_tree.Clear();
+                }
 
                 if (MainClass.client.Network.CurrentSim != null)
                  lastsim=MainClass.client.Network.CurrentSim.ID;
@@ -231,12 +225,11 @@ namespace omvviewerlight
 		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
 		{
 			Gtk.Application.Invoke(delegate
-			{
-	        
-            lock(av_tree)
-			{
-					lock(MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
-					{
+			{  
+                lock(av_tree)
+			    {
+				    lock(MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
+				    {
                         if (!this.av_tree.ContainsKey(avatar.LocalID))
                         {
                             // The agent *might* still be present under an old localID and we
@@ -247,39 +240,27 @@ namespace omvviewerlight
                                 {
                                     if (av.Value.avatar.ID == avatar.ID)
                                     {
-                                        
                                         MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.Remove(av.Key);
-									    removelist.Add(av.Key);
-								        //av_tree.Remove(av.Key); 
+                                        removelist.Add(av.Key);
                                     }
                                 }
-							
-							    foreach(uint id in removelist)
-							{
+							foreach(uint id in removelist)
 								av_tree.Remove(id); 
-								
-							}
-                                                                   
-                            
 
                             agent theagent = new agent();
                             theagent.avatar = avatar;
                             Gtk.TreeIter iter;
 					        
-			                        iter = store.AppendValues("", avatar.Name, "", avatar.LocalID);
-	                                theagent.iter = iter;
+			                iter = store.AppendValues("", avatar.Name, "", avatar.LocalID);
+	                        theagent.iter = iter;
 
-	                                av_tree.Add(avatar.LocalID, theagent);
-						            calcdistance(avatar.LocalID);
-                            
-					}
-}
-			}
-     		        });
-			
-                
-            
-		}
+	                        av_tree.Add(avatar.LocalID, theagent);
+						    calcdistance(avatar.LocalID);
+					    }
+                    }
+		        }
+            });    
+	    }
 		
 		void onKillObject(Simulator simulator, uint objectID)
 		{
@@ -343,19 +324,16 @@ namespace omvviewerlight
 
 				Gtk.Application.Invoke(delegate
 				{
-					lock (av_tree)
+	                try
 	                {
-	                    try
-	                    {
-	                        if (av_tree.ContainsKey(id))
-	                            store.SetValue(av_tree[id].iter, 2, MainClass.cleandistance(dist.ToString(), 1));
-	                    }
-	                    catch
-	                    {
-	                        Console.WriteLine("Exceptioned on store setvalue for radar");
+	                    if (av_tree.ContainsKey(id))
+	                        store.SetValue(av_tree[id].iter, 2, MainClass.cleandistance(dist.ToString(), 1));
+	                }
+	                catch
+	                {
+	                    Console.WriteLine("Exceptioned on store setvalue for radar");
 
-	                    }
-					}
+	                }
 				});
 			}
         }
