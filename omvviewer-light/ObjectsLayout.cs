@@ -33,7 +33,8 @@ namespace omvviewerlight
 	
 	public partial class ObjectsLayout : Gtk.Bin
 	{
-	
+
+        bool sat = false;
 		Gtk.ListStore store;	
         Dictionary<UUID, Primitive> PrimsWaiting = new Dictionary<UUID, Primitive>();
         Dictionary<UUID, Primitive> FetchedPrims = new Dictionary<UUID, Primitive>();
@@ -95,13 +96,35 @@ namespace omvviewerlight
 			MainClass.client.Groups.OnGroupNames += new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
             MainClass.client.Self.OnAvatarSitResponse += new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
 			AutoPilot.onAutoPilotFinished+=new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
+            MainClass.client.Objects.OnObjectUpdated += new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);
+
 		}
+
+        void Objects_OnObjectUpdated(Simulator simulator, ObjectUpdate update, ulong regionHandle, ushort timeDilation)
+        {
+            if (update.LocalID == MainClass.client.Self.LocalID)
+            {
+                if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID == 0)
+                {
+                    //Console.WriteLine("** Update is " + update.ToString() + " \nbyes are " + update.State.ToString() + "\n parent is " + MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID);
+                    if (sat == true)
+                    {
+                        sat = false;
+                        Gtk.Application.Invoke(delegate
+                        {
+                            this.button_siton.Label = "Sit";
+                        });
+                    }
+                }
+            }
+        }
 
         void Self_OnAvatarSitResponse(UUID objectID, bool autoPilot, Vector3 cameraAtOffset, Vector3 cameraEyeOffset, bool forceMouselook, Vector3 sitPosition, Quaternion sitRotation)
         {
             Gtk.Application.Invoke(delegate
             {
                 this.button_siton.Label = "Stand";
+                sat = true;
             });
         }
 
