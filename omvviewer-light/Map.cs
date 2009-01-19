@@ -250,6 +250,7 @@ namespace omvviewerlight
                         if (kvp.Value.LocalID != MainClass.client.Self.LocalID)
                         {
                             Vector3 pos;
+                           
                             if (kvp.Value.ParentID != 0)
                             {
                                 if (!MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary.ContainsKey(kvp.Value.ParentID))
