@@ -377,13 +377,22 @@ namespace omvviewerlight
 						AsyncNameUpdate ud;
 						
 						this.label_parcelowner.Text="Waiting...";
-						ud=new AsyncNameUpdate(parcel.OwnerID,false);  
-						ud.onNameCallBack += delegate(string namex,object[] values){this.label_parcelowner.Text=namex;};
-                        ud.go();
+
+                        if (parcel.IsGroupOwned == false)
+                        {
+                            AsyncNameUpdate an;
+                            an = new AsyncNameUpdate(parcel.OwnerID, false);
+                            an.onNameCallBack += delegate(string namex, object[] values) { this.label_parcelowner.Text = namex; };
+                            an.go();
+                        }
+                        else
+                        {
+                            this.label_parcelowner.Text = "(group)";
+                        }
 					
-						this.label_parcelowner.Text="Waiting...";
-						ud=new AsyncNameUpdate(parcel.GroupID,true);  
-						ud.onNameCallBack += delegate(string namex,object[] values){this.label_parcelowner.Text=namex;};
+						this.label_parcelgroup.Text="Waiting...";
+						ud=new AsyncNameUpdate(parcel.GroupID,true);
+                        ud.onNameCallBack += delegate(string namex, object[] values) { this.label_parcelgroup.Text = namex; };
                         ud.go();
 						
 						if(entry.AgentID==UUID.Zero)
@@ -419,7 +428,9 @@ namespace omvviewerlight
 
 						if (parcel.OwnerID == MainClass.client.Self.ActiveGroup)
 						{
-						     //Seems viewing the object list is stricter than just returning, need to be owner, or the land needs to be deeded to group
+						     // need to be parcel owner, or the land needs to be deeded to group
+                             // TODO if deeded to group we should also check we have approprate powers
+                             // within that group.
 							 allowed=true;
 						}
 
