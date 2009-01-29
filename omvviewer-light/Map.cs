@@ -41,10 +41,6 @@ namespace omvviewerlight
 		bool running=true;
 	    Gtk.Image basemap;
 
-		int rowstride;
-		int channels;
-		int width;
-		int height;
 		static Gtk.Image avatar=new Gtk.Image(MainClass.GetResource("map_avatar_8.tga"));
         static Gtk.Image avatar_me = new Gtk.Image(MainClass.GetResource("map_avatar_me_8.tga"));
         static Gtk.Image avatar_above = new Gtk.Image(MainClass.GetResource("map_avatar_above_8.tga"));
@@ -121,12 +117,9 @@ namespace omvviewerlight
 			if(running==false)
 				return false;
 
-            Gtk.Application.Invoke(delegate
-               {
-                   if (MainClass.client.Network.CurrentSim != null)
-                       drawavs();
-               });
-
+            if (MainClass.client.Network.CurrentSim != null)
+                drawavs();
+              
             return true;
 
         }
@@ -139,7 +132,6 @@ namespace omvviewerlight
 		
 		void onGridRegion(GridRegion region)
 		{
-			getmap();
 			Console.Write("Got grid region reply, requesting texture :"+region.MapImageID.ToString()+"\n");
 			
 			Console.WriteLine("Assuming this is an objects overlay");
@@ -149,12 +141,6 @@ namespace omvviewerlight
 			this.image.Pixbuf=pb;
 			
 			new TryGetImage(this.objects_map,region.MapImageID,350,350);
-		//	new TryGetImage(this.objects_map,MainClass.client.Network.CurrentSim.TerrainDetail0,350,350);
-
-			rowstride = objects_map.Pixbuf.Rowstride;
-	        channels = objects_map.Pixbuf.NChannels;
-	        width = objects_map.Pixbuf.Width;
-	        height = objects_map.Pixbuf.Height;
 		}
 				
 		void onGridLayer(GridLayer layer)
@@ -175,15 +161,12 @@ namespace omvviewerlight
 			this.objects_map_ID=UUID.Zero;
 			this.forsale_map_ID=UUID.Zero;
 
-				MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Objects);
-      //          MainClass.client.Grid.RequestMapLayer(GridLayerType.Terrain);                
-       //         MainClass.client.Grid.RequestMapLayer(GridLayerType.Objects);
-				
+			MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Objects);
 
-				Gtk.Application.Invoke(delegate
-                {
-                    drawavs();
-                });
+			Gtk.Application.Invoke(delegate
+            {
+                 drawavs();
+            });
 
                 if(MainClass.client.Network.CurrentSim !=null)
                     lastsim = MainClass.client.Network.CurrentSim.ID;
@@ -242,7 +225,6 @@ namespace omvviewerlight
 
                 lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
                 {
-					//LOCKING ISSUES HERE STILL!
 					List <uint> removelist=new List<uint>();
 					
 					foreach (KeyValuePair<uint, Avatar> kvp in MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
@@ -307,16 +289,8 @@ namespace omvviewerlight
             lock (image)
             {
                 image.Pixbuf = buf;
-            }
-
-			//		Gtk.Application.Invoke(delegate
-             //   {
-                    lock (image)
-                    {
-                        image.QueueDraw();
-                    }
-			//});
-			
+                image.QueueDraw();
+			}
 		}
 
 		void onNewSim(Simulator lastsim)
@@ -371,10 +345,10 @@ namespace omvviewerlight
 			int srcrowsstride=src.Rowstride;
 			int schannels=src.NChannels;
 			
-			if(x<0 || x>=width)
+			if(x<0 || x>=bufdest.Width)
 				return;
 			
-			if(y<0 || y>=height)
+			if(y<0 || y>=bufdest.Height)
 				return;
 					
 			for(int sx=0;sx<srcwidth;sx++)
@@ -382,7 +356,7 @@ namespace omvviewerlight
 				for(int sy=0;sy<srcheight;sy++)
 				{				
 					ps=spixels+((sy)*srcrowsstride)+((sx)* schannels);
-					p=pixels+((sy+y)*rowstride)+((sx+x)* channels);
+					p=pixels+((sy+y)*bufdest.Rowstride)+((sx+x)* bufdest.NChannels);
 					
 					if(ps[3]!=0) //Alpha merge
 					{
@@ -394,89 +368,6 @@ namespace omvviewerlight
 			}	
 		}
 
-				
-				void getmap()
-		{
-			//Gtk.Application.Invoke(delegate {		
-			//Gdk.Pixbuf pb=new Pixbuf(MainClass.GetResource("trying.tga"),0,0,256,256);
-          
-            //lock (image)
-            //{
-              //  this.image.Pixbuf = pb.ScaleSimple(350,350,InterpType.Bilinear);
-            //}
-			//Thread mapdownload= new Thread(new ThreadStart(this.getmap_threaded));                               
-			//mapdownload.Start();
-			//});
-			
-		}
-		
-		void getmap_threaded()
-		{
-			  HttpWebRequest request = null;
-              HttpWebResponse response = null;
-              String imgURL = "";
-	          GridRegion currRegion;			
-			  MainClass.client.Grid.GetGridRegion(MainClass.client.Network.CurrentSim.Name, GridLayerType.Objects, out currRegion);
-		try
-            {
-                //Form the URL using the sim coordinates
-                imgURL = MAP_IMG_URL + currRegion.X.ToString() + "-" +
-                        (GRID_Y_OFFSET - currRegion.Y).ToString() + "-1-0.jpg";
-                //Make the http request
-                request = (HttpWebRequest)HttpWebRequest.Create(imgURL);
-                request.Timeout = 5000;
-                request.ReadWriteTimeout = 20000;
-				response = (HttpWebResponse)request.GetResponse();
-
-
-                if (basemap != null)
-                {
-                    lock (basemap)
-                    {
-                        lock (image)
-                        {
-                            basemap = new Gtk.Image(response.GetResponseStream());
-                        }
-			}
-			}
-                else
-                    basemap = new Gtk.Image(response.GetResponseStream());
-                
-          
-						lock (basemap)
-						{
-						lock (image)
-                    {
-                 
-                    image.Pixbuf = (Gdk.Pixbuf)basemap.Pixbuf.ScaleSimple(350,350,InterpType.Bilinear);
-                    basemap.Pixbuf=basemap.Pixbuf.ScaleSimple(350,350,InterpType.Bilinear);                                                         
-                    }
-                    rowstride = basemap.Pixbuf.Rowstride;
-                    channels = basemap.Pixbuf.NChannels;
-                    width = basemap.Pixbuf.Width;
-                    height = basemap.Pixbuf.Height;
-                }
-                Gtk.Application.Invoke(delegate
-                   {
-                       drawavs(); //already deligated inside	
-                   });
-                return;
-					
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-
-                Gtk.Application.Invoke(delegate
-                {
-                    Gtk.MessageDialog msg = new Gtk.MessageDialog(MainClass.win, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "Error Downloading Web Map Image");
-                    msg.Run();
-                    msg.Destroy();
-                });
-				return ;
-            }	
-		}
-			
 		protected virtual void OnEventbox1ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
 			Console.WriteLine("EVENT BOX CLICK"+args.Event.X.ToString()+","+args.Event.Y.ToString());
