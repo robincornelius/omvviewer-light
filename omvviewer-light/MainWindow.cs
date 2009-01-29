@@ -232,8 +232,11 @@ public partial class MainWindow: Gtk.Window
     {
         if (this.current_parcelid == localID)
         {
-            current_parcel_dwell = (int)dwell;
-            this.updatestatusinfo(true);
+            Gtk.Application.Invoke(delegate
+            {
+                current_parcel_dwell = (int)dwell;
+                this.updatestatusinfo(true);
+            });
         }
    }
 
