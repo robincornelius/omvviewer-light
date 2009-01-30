@@ -160,7 +160,7 @@ public partial class MainWindow: Gtk.Window
 		this.statusbar1.PackStart(status_parcel);
 		this.statusbar1.PackStart(status_balance);
 
-		this.Title="omvviewer light v0.45";
+		this.Title="omvviewer light v0.45.1";
 		
 	       chat=new ChatLayout();
            chat_tab_lable=this.addtabwithicon("icn_voice-pvtfocus.tga","Chat",chat);        
