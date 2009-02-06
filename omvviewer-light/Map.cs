@@ -334,38 +334,46 @@ namespace omvviewerlight
 
 		unsafe void mergedrawxy(Gdk.Pixbuf bufdest,Gdk.Pixbuf src,int x,int y)
 		{
-    
-			sbyte * pixels=(sbyte *)bufdest.Pixels;
-			sbyte * spixels=(sbyte *)src.Pixels;
-			sbyte * p;			
-			sbyte * ps;			
-			
-			int srcwidth=src.Width;
-			int srcheight=src.Height;
-			int srcrowsstride=src.Rowstride;
-			int schannels=src.NChannels;
-			
-			if(x<0 || x>=bufdest.Width)
-				return;
-			
-			if(y<0 || y>=bufdest.Height)
-				return;
-					
-			for(int sx=0;sx<srcwidth;sx++)
-			{
-				for(int sy=0;sy<srcheight;sy++)
-				{				
-					ps=spixels+((sy)*srcrowsstride)+((sx)* schannels);
-					p=pixels+((sy+y)*bufdest.Rowstride)+((sx+x)* bufdest.NChannels);
-					
-					if(ps[3]!=0) //Alpha merge
-					{
-						p[0]=ps[0];
-						p[1]=ps[1];
-						p[2]=ps[2];
-					}
-				}
-			}	
+
+            try
+            {
+
+                sbyte* pixels = (sbyte*)bufdest.Pixels;
+                sbyte* spixels = (sbyte*)src.Pixels;
+                sbyte* p;
+                sbyte* ps;
+
+                int srcwidth = src.Width;
+                int srcheight = src.Height;
+                int srcrowsstride = src.Rowstride;
+                int schannels = src.NChannels;
+
+                if (x < 0 || x >= bufdest.Width)
+                    return;
+
+                if (y < 0 || y >= bufdest.Height)
+                    return;
+
+                for (int sx = 0; sx < srcwidth; sx++)
+                {
+                    for (int sy = 0; sy < srcheight; sy++)
+                    {
+                        ps = spixels + ((sy) * srcrowsstride) + ((sx) * schannels);
+                        p = pixels + ((sy + y) * bufdest.Rowstride) + ((sx + x) * bufdest.NChannels);
+
+                        if (ps[3] != 0) //Alpha merge
+                        {
+                            p[0] = ps[0];
+                            p[1] = ps[1];
+                            p[2] = ps[2];
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Log("Exception in map! " + e.Message, Helpers.LogLevel.Error);
+            }
 		}
 
 		protected virtual void OnEventbox1ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
