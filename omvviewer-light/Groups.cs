@@ -1,6 +1,6 @@
 /*
 omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(tm)
-    Copyright (C) 2008  Robin Cornelius <robin.cornelius@gmail.com>
+    Copyright (C) 2008,2009  Robin Cornelius <robin.cornelius@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -117,7 +117,9 @@ namespace omvviewerlight
 
             (cell as Gtk.CellRendererText).Text = text;
 
-        }		void onGroups(Dictionary<UUID,Group> groups)
+        }
+
+		void onGroups(Dictionary<UUID,Group> groups)
 		{
 			
 				Gtk.Application.Invoke(delegate {

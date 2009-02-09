@@ -1,6 +1,6 @@
 /*
 omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(tm)
-    Copyright (C) 2008  Robin Cornelius <robin.cornelius@gmail.com>
+    Copyright (C) 2008,2009  Robin Cornelius <robin.cornelius@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -94,7 +94,8 @@ namespace omvviewerlight
 				
 				AsyncNameUpdate ud=new AsyncNameUpdate(anevent.Creator,false);  
 				ud.onNameCallBack += delegate(string namex,object[] values){this.entry_organiser.Text=namex;};
-                ud.go();	
+                ud.go();
+	
 				this.entry_duration.Text=anevent.Duration.ToString();
 				this.textview_eventinfo.Buffer.Text=anevent.Desc;
                 selected_event=anevent;

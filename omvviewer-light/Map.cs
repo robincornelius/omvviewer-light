@@ -1,6 +1,6 @@
 /*
 omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(tm)
-    Copyright (C) 2008  Robin Cornelius <robin.cornelius@gmail.com>
+    Copyright (C) 2008,2009  Robin Cornelius <robin.cornelius@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -306,29 +306,37 @@ namespace omvviewerlight
 	
 		void showme(Gdk.Pixbuf buf,Gdk.Pixbuf src,Vector3 pos)
 		{
-			int tx,ty;
-			tx=(int)pos.X;
-			ty=(int)(256.0-pos.Y);
-			
-            tx=(int)(((double)tx/256.0)*(double)buf.Width);
-            ty=(int)(((double)ty/256.0)*(double)buf.Height);
+            try
+            {
+                int tx, ty;
+                tx = (int)pos.X;
+                ty = (int)(256.0 - pos.Y);
 
-			tx=tx-4;
-			ty=ty-4;
-			
-			if(tx>buf.Width-8)
-				tx=buf.Width-8;
-			
-			if(ty>buf.Height-8)
-			   ty=buf.Height-8;
-			
-			if(tx<8)
-				tx=8;
-			
-			if(ty<8)
-				ty=8;
-			
-			mergedrawxy(buf,src,tx,ty);
+                tx = (int)(((double)tx / 256.0) * (double)buf.Width);
+                ty = (int)(((double)ty / 256.0) * (double)buf.Height);
+
+                tx = tx - 4;
+                ty = ty - 4;
+
+                if (tx > buf.Width - 8)
+                    tx = buf.Width - 8;
+
+                if (ty > buf.Height - 8)
+                    ty = buf.Height - 8;
+
+                if (tx < 8)
+                    tx = 8;
+
+                if (ty < 8)
+                    ty = 8;
+
+                mergedrawxy(buf, src, tx, ty);
+            }
+            catch (Exception e)
+            {
+
+                Logger.Log("Exception in map! " + e.Message, Helpers.LogLevel.Error);
+            }
 						
 		}
 

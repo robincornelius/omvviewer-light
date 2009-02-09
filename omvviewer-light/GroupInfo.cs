@@ -1,6 +1,6 @@
 /*
 omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(tm)
-    Copyright (C) 2008  Robin Cornelius <robin.cornelius@gmail.com>
+    Copyright (C) 2008,2009  Robin Cornelius <robin.cornelius@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,7 +29,8 @@ using Gtk;
 
 namespace omvviewerlight
 {
-		
+	
+	
 	public partial class GroupInfo : Gtk.Window
 	{
 		//Dictionary <UUID, GroupRole> grouproles;
@@ -157,7 +158,8 @@ namespace omvviewerlight
             MainClass.client.Groups.OnGroupTitles += new OpenMetaverse.GroupManager.GroupTitlesCallback(onGroupTitles);
             MainClass.client.Groups.OnGroupRoles += new OpenMetaverse.GroupManager.GroupRolesCallback(onGroupRoles);
             MainClass.client.Groups.OnGroupRolesMembers += new OpenMetaverse.GroupManager.GroupRolesMembersCallback(onGroupRolesMembers);
-			MainClass.client.Groups.OnGroupNoticesList += new GroupManager.GroupNoticesListCallback(Groups_OnGroupNoticesList);            MainClass.client.Groups.OnGroupAccountSummary += new OpenMetaverse.GroupManager.GroupAccountSummaryCallback(onAccountSummary);			
+			MainClass.client.Groups.OnGroupNoticesList += new GroupManager.GroupNoticesListCallback(Groups_OnGroupNoticesList);
+            MainClass.client.Groups.OnGroupAccountSummary += new OpenMetaverse.GroupManager.GroupAccountSummaryCallback(onAccountSummary);			
            		
             MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);			
 			
@@ -213,7 +215,8 @@ namespace omvviewerlight
             MainClass.client.Groups.OnGroupTitles -= new OpenMetaverse.GroupManager.GroupTitlesCallback(onGroupTitles);
             MainClass.client.Groups.OnGroupRoles -= new OpenMetaverse.GroupManager.GroupRolesCallback(onGroupRoles);
             MainClass.client.Groups.OnGroupRolesMembers -= new OpenMetaverse.GroupManager.GroupRolesMembersCallback(onGroupRolesMembers);
-			MainClass.client.Groups.OnGroupNoticesList -= new GroupManager.GroupNoticesListCallback(Groups_OnGroupNoticesList);            MainClass.client.Groups.OnGroupAccountSummary -= new OpenMetaverse.GroupManager.GroupAccountSummaryCallback(onAccountSummary);			
+			MainClass.client.Groups.OnGroupNoticesList -= new GroupManager.GroupNoticesListCallback(Groups_OnGroupNoticesList);
+            MainClass.client.Groups.OnGroupAccountSummary -= new OpenMetaverse.GroupManager.GroupAccountSummaryCallback(onAccountSummary);			
            		
 			MainClass.client.Self.OnInstantMessage -= new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);			
 
@@ -393,7 +396,8 @@ namespace omvviewerlight
 					{		
 	 					if(avgroup.GroupID==this.groupkey)
 						{
-					        this.checkbutton_group_notices.Active=avgroup.AcceptNotices;													this.checkbutton_showinpofile.Active = avgroup.ListInProfile;
+					        this.checkbutton_group_notices.Active=avgroup.AcceptNotices;						
+							this.checkbutton_showinpofile.Active = avgroup.ListInProfile;
 	                        break;							
 						}
 				}
