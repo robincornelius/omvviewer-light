@@ -71,4 +71,8 @@
     <itemgroups />
     <signals />
   </object>
+  <object type="omvviewerlight.LocalRegion" palette-category="omvviewer-light" allow-children="false" base-type="Gtk.Bin">
+    <itemgroups />
+    <signals />
+  </object>
 </objects>

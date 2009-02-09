@@ -71,9 +71,9 @@ namespace omvviewerlight
 			MainClass.client.Objects.OnNewAvatar += new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
 			MainClass.client.Objects.OnObjectUpdated += new OpenMetaverse.ObjectManager.ObjectUpdatedCallback(onUpdate);
             MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
-			MainClass.client.Grid.OnGridLayer += new OpenMetaverse.GridManager.GridLayerCallback(onGridLayer);
+			//MainClass.client.Grid.OnGridLayer += new OpenMetaverse.GridManager.GridLayerCallback(onGridLayer);
 			MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
-			MainClass.client.Grid.OnGridItems += new OpenMetaverse.GridManager.GridItemsCallback(onGridItems);
+			//MainClass.client.Grid.OnGridItems += new OpenMetaverse.GridManager.GridItemsCallback(onGridItems);
 			AutoPilot.onAutoPilotFinished += new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
 			Gtk.Timeout.Add(10000, kickrefresh);			
 			this.targetpos.X=-1;
@@ -102,7 +102,7 @@ namespace omvviewerlight
 			MainClass.client.Objects.OnNewAvatar -= new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
 			MainClass.client.Objects.OnObjectUpdated -= new OpenMetaverse.ObjectManager.ObjectUpdatedCallback(onUpdate);
             MainClass.client.Self.OnTeleport -= new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
-			MainClass.client.Grid.OnGridLayer -= new OpenMetaverse.GridManager.GridLayerCallback(onGridLayer);
+			//MainClass.client.Grid.OnGridLayer -= new OpenMetaverse.GridManager.GridLayerCallback(onGridLayer);
 			MainClass.client.Grid.OnGridRegion -= new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
 			AutoPilot.onAutoPilotFinished -= new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
 			
@@ -132,21 +132,24 @@ namespace omvviewerlight
 		
 		void onGridRegion(GridRegion region)
 		{
-			Console.Write("Got grid region reply, requesting texture :"+region.MapImageID.ToString()+"\n");
-			
-			Console.WriteLine("Assuming this is an objects overlay");
-			this.objects_map_ID=region.MapImageID;
-			Gdk.Pixbuf pb= MainClass.GetResource("trying.tga");
-			objects_map = new Gtk.Image(pb);
-			this.image.Pixbuf=pb;
-			
-			new TryGetImage(this.objects_map,region.MapImageID,350,350);
+			if(region.RegionHandle==MainClass.client.Network.CurrentSim.Handle)
+			{
+				Console.Write("Got grid region reply, requesting texture :"+region.MapImageID.ToString()+"\n");
+				
+				Console.WriteLine("Assuming this is an objects overlay");
+				this.objects_map_ID=region.MapImageID;
+				Gdk.Pixbuf pb= MainClass.GetResource("trying.tga");
+				objects_map = new Gtk.Image(pb);
+				this.image.Pixbuf=pb;
+				
+				new TryGetImage(this.objects_map,region.MapImageID,350,350);
+			}
 		}
 				
 		void onGridLayer(GridLayer layer)
 	    {
 			//layer.ImageID
-			Console.Write("Got grid layer reply, requesting texture :"+layer.ImageID.ToString()+"\n");	
+		//	Console.Write("Got grid layer reply, requesting texture :"+layer.ImageID.ToString()+"\n");	
 		}
 
 		void onTeleport(string Message, OpenMetaverse.AgentManager.TeleportStatus status,OpenMetaverse.AgentManager.TeleportFlags flags)

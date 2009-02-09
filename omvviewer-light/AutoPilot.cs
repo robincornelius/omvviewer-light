@@ -160,7 +160,7 @@ namespace omvviewerlight
              double xTarget = (double)targetpos.X + (double)regionX;
              double yTarget = (double)targetpos.Y + (double)regionY;
 
-			double zTarget = targetpos.Z;
+			 double zTarget = targetpos.Z;
             
 			 Vector3 pos;
 			 pos.X=(float)xTarget;
