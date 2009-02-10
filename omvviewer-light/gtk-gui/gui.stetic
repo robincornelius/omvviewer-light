@@ -1871,6 +1871,8 @@ Shout</property>
               <packing>
                 <property name="Position">0</property>
                 <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
               </packing>
             </child>
             <child>
@@ -8215,7 +8217,7 @@ time</property>
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="omvviewerlight.LocalRegion" design-size="312 328">
+  <widget class="Gtk.Bin" id="omvviewerlight.LocalRegion" design-size="312 300">
     <property name="MemberName" />
     <child>
       <widget class="Gtk.VBox" id="vbox3">
@@ -8228,11 +8230,16 @@ time</property>
               <widget class="Gtk.HBox" id="hbox4">
                 <property name="MemberName" />
                 <child>
-                  <widget class="Gtk.Image" id="image1">
+                  <widget class="Gtk.EventBox" id="eventbox1">
                     <property name="MemberName" />
-                    <property name="WidthRequest">100</property>
-                    <property name="HeightRequest">100</property>
-                    <property name="Pixbuf">stock:gtk-home Menu</property>
+                    <signal name="ButtonPressEvent" handler="OnEventbox1ButtonPressEvent" />
+                    <child>
+                      <widget class="Gtk.Image" id="image1">
+                        <property name="MemberName" />
+                        <property name="WidthRequest">100</property>
+                        <property name="HeightRequest">100</property>
+                      </widget>
+                    </child>
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -8242,10 +8249,16 @@ time</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Image" id="image2">
+                  <widget class="Gtk.EventBox" id="eventbox2">
                     <property name="MemberName" />
-                    <property name="WidthRequest">100</property>
-                    <property name="HeightRequest">100</property>
+                    <signal name="ButtonPressEvent" handler="OnEventbox2ButtonPressEvent" />
+                    <child>
+                      <widget class="Gtk.Image" id="image2">
+                        <property name="MemberName" />
+                        <property name="WidthRequest">100</property>
+                        <property name="HeightRequest">100</property>
+                      </widget>
+                    </child>
                   </widget>
                   <packing>
                     <property name="Position">1</property>
@@ -8255,10 +8268,16 @@ time</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Image" id="image3">
+                  <widget class="Gtk.EventBox" id="eventbox3">
                     <property name="MemberName" />
-                    <property name="WidthRequest">100</property>
-                    <property name="HeightRequest">100</property>
+                    <signal name="ButtonPressEvent" handler="OnEventbox3ButtonPressEvent" />
+                    <child>
+                      <widget class="Gtk.Image" id="image3">
+                        <property name="MemberName" />
+                        <property name="WidthRequest">100</property>
+                        <property name="HeightRequest">100</property>
+                      </widget>
+                    </child>
                   </widget>
                   <packing>
                     <property name="Position">2</property>
@@ -8281,10 +8300,16 @@ time</property>
                 <property name="WidthRequest">100</property>
                 <property name="HeightRequest">100</property>
                 <child>
-                  <widget class="Gtk.Image" id="image4">
+                  <widget class="Gtk.EventBox" id="eventbox4">
                     <property name="MemberName" />
-                    <property name="WidthRequest">100</property>
-                    <property name="HeightRequest">100</property>
+                    <signal name="ButtonPressEvent" handler="OnEventbox4ButtonPressEvent" />
+                    <child>
+                      <widget class="Gtk.Image" id="image4">
+                        <property name="MemberName" />
+                        <property name="WidthRequest">100</property>
+                        <property name="HeightRequest">100</property>
+                      </widget>
+                    </child>
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -8294,10 +8319,16 @@ time</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Image" id="image5">
+                  <widget class="Gtk.EventBox" id="eventbox5">
                     <property name="MemberName" />
-                    <property name="WidthRequest">100</property>
-                    <property name="HeightRequest">100</property>
+                    <signal name="ButtonPressEvent" handler="OnEventbox5ButtonPressEvent" />
+                    <child>
+                      <widget class="Gtk.Image" id="image5">
+                        <property name="MemberName" />
+                        <property name="WidthRequest">100</property>
+                        <property name="HeightRequest">100</property>
+                      </widget>
+                    </child>
                   </widget>
                   <packing>
                     <property name="Position">1</property>
@@ -8307,10 +8338,16 @@ time</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Image" id="image6">
+                  <widget class="Gtk.EventBox" id="eventbox6">
                     <property name="MemberName" />
-                    <property name="WidthRequest">100</property>
-                    <property name="HeightRequest">100</property>
+                    <signal name="ButtonPressEvent" handler="OnEventbox6ButtonPressEvent" />
+                    <child>
+                      <widget class="Gtk.Image" id="image6">
+                        <property name="MemberName" />
+                        <property name="WidthRequest">100</property>
+                        <property name="HeightRequest">100</property>
+                      </widget>
+                    </child>
                   </widget>
                   <packing>
                     <property name="Position">2</property>
@@ -8331,10 +8368,16 @@ time</property>
               <widget class="Gtk.HBox" id="hbox6">
                 <property name="MemberName" />
                 <child>
-                  <widget class="Gtk.Image" id="image7">
+                  <widget class="Gtk.EventBox" id="eventbox7">
                     <property name="MemberName" />
-                    <property name="WidthRequest">100</property>
-                    <property name="HeightRequest">100</property>
+                    <signal name="ButtonPressEvent" handler="OnEventbox7ButtonPressEvent" />
+                    <child>
+                      <widget class="Gtk.Image" id="image7">
+                        <property name="MemberName" />
+                        <property name="WidthRequest">100</property>
+                        <property name="HeightRequest">100</property>
+                      </widget>
+                    </child>
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -8344,10 +8387,16 @@ time</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Image" id="image8">
+                  <widget class="Gtk.EventBox" id="eventbox8">
                     <property name="MemberName" />
-                    <property name="WidthRequest">100</property>
-                    <property name="HeightRequest">100</property>
+                    <signal name="ButtonPressEvent" handler="OnEventbox8ButtonPressEvent" />
+                    <child>
+                      <widget class="Gtk.Image" id="image8">
+                        <property name="MemberName" />
+                        <property name="WidthRequest">100</property>
+                        <property name="HeightRequest">100</property>
+                      </widget>
+                    </child>
                   </widget>
                   <packing>
                     <property name="Position">1</property>
@@ -8357,10 +8406,16 @@ time</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Image" id="image9">
+                  <widget class="Gtk.EventBox" id="eventbox9">
                     <property name="MemberName" />
-                    <property name="WidthRequest">100</property>
-                    <property name="HeightRequest">100</property>
+                    <signal name="ButtonPressEvent" handler="OnEventbox9ButtonPressEvent" />
+                    <child>
+                      <widget class="Gtk.Image" id="image9">
+                        <property name="MemberName" />
+                        <property name="WidthRequest">100</property>
+                        <property name="HeightRequest">100</property>
+                      </widget>
+                    </child>
                   </widget>
                   <packing>
                     <property name="Position">2</property>
@@ -8384,9 +8439,6 @@ time</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
           </packing>
-        </child>
-        <child>
-          <placeholder />
         </child>
       </widget>
     </child>

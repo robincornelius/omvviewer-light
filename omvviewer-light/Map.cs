@@ -40,6 +40,8 @@ namespace omvviewerlight
 		private const int GRID_Y_OFFSET = 1279;
 		bool running=true;
 	    Gtk.Image basemap;
+		GridRegion current_region;
+		GridRegion agent_region;
 
 		static Gtk.Image avatar=new Gtk.Image(MainClass.GetResource("map_avatar_8.tga"));
         static Gtk.Image avatar_me = new Gtk.Image(MainClass.GetResource("map_avatar_me_8.tga"));
@@ -71,9 +73,7 @@ namespace omvviewerlight
 			MainClass.client.Objects.OnNewAvatar += new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
 			MainClass.client.Objects.OnObjectUpdated += new OpenMetaverse.ObjectManager.ObjectUpdatedCallback(onUpdate);
             MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
-			//MainClass.client.Grid.OnGridLayer += new OpenMetaverse.GridManager.GridLayerCallback(onGridLayer);
 			MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
-			//MainClass.client.Grid.OnGridItems += new OpenMetaverse.GridManager.GridItemsCallback(onGridItems);
 			AutoPilot.onAutoPilotFinished += new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
 			Gtk.Timeout.Add(10000, kickrefresh);			
 			this.targetpos.X=-1;
@@ -82,7 +82,6 @@ namespace omvviewerlight
 			{
 				if(MainClass.client.Network.LoginStatusCode==OpenMetaverse.LoginStatus.Success)
                 {	
-					    //MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Terrain);
 					    MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Objects);
 					    this.label1.Text = MainClass.client.Network.CurrentSim.Name;
 						MainClass.win.map_widget=this;
@@ -102,7 +101,6 @@ namespace omvviewerlight
 			MainClass.client.Objects.OnNewAvatar -= new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
 			MainClass.client.Objects.OnObjectUpdated -= new OpenMetaverse.ObjectManager.ObjectUpdatedCallback(onUpdate);
             MainClass.client.Self.OnTeleport -= new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
-			//MainClass.client.Grid.OnGridLayer -= new OpenMetaverse.GridManager.GridLayerCallback(onGridLayer);
 			MainClass.client.Grid.OnGridRegion -= new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
 			AutoPilot.onAutoPilotFinished -= new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
 			
@@ -116,24 +114,30 @@ namespace omvviewerlight
 
 			if(running==false)
 				return false;
-
-            if (MainClass.client.Network.CurrentSim != null)
-                drawavs();
+			
+	            if (MainClass.client.Network.CurrentSim != null)
+	                drawavs();
               
             return true;
 
         }
 		
-		void onGridItems(GridItemType type, List<OpenMetaverse.GridItem> items)
+        public void changeregion(GridRegion region)
 		{
-	
-			
+			current_region=region;
+			this.objects_map_ID=region.MapImageID;
+			Gdk.Pixbuf pb= MainClass.GetResource("trying.tga");
+			objects_map = new Gtk.Image(pb);
+			this.image.Pixbuf=pb;	
+			new TryGetImage(this.objects_map,region.MapImageID,350,350);
 		}
 		
 		void onGridRegion(GridRegion region)
 		{
 			if(region.RegionHandle==MainClass.client.Network.CurrentSim.Handle)
 			{
+				current_region=region;
+				agent_region=region;
 				Console.Write("Got grid region reply, requesting texture :"+region.MapImageID.ToString()+"\n");
 				
 				Console.WriteLine("Assuming this is an objects overlay");
@@ -146,12 +150,6 @@ namespace omvviewerlight
 			}
 		}
 				
-		void onGridLayer(GridLayer layer)
-	    {
-			//layer.ImageID
-		//	Console.Write("Got grid layer reply, requesting texture :"+layer.ImageID.ToString()+"\n");	
-		}
-
 		void onTeleport(string Message, OpenMetaverse.AgentManager.TeleportStatus status,OpenMetaverse.AgentManager.TeleportFlags flags)
 	    {
 			if(status==OpenMetaverse.AgentManager.TeleportStatus.Finished)
@@ -178,29 +176,28 @@ namespace omvviewerlight
 				
 		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
 		{
-
-            Gtk.Application.Invoke(delegate
-				{
-				
-					lock(MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
-                        if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.ContainsKey(update.LocalID))
-                            drawavs();
-                });
-
-}
+	            Gtk.Application.Invoke(delegate
+					{
+					
+						lock(MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
+	                        if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.ContainsKey(update.LocalID))
+	                            drawavs();
+	                });			
+       }
 		
 		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
 		{
-            Gtk.Application.Invoke(delegate
-                {
-                    drawavs();
-                });
+			
+	            Gtk.Application.Invoke(delegate
+	                {
+	                    drawavs();
+	                });
 		}
 
 			
 		void drawavs()
 		{
-
+		
 		  basemap=this.objects_map;
 			
           if (basemap == null)
@@ -209,8 +206,21 @@ namespace omvviewerlight
           if (basemap.Pixbuf == null)
 			return;
           
-          Gdk.Pixbuf buf;
-
+			Gdk.Pixbuf buf;
+			Simulator draw_sim=null;
+			lock(MainClass.client.Network.Simulators)
+			{
+				foreach(Simulator sim in MainClass.client.Network.Simulators)
+				{
+					if(sim.Name==current_region.Name)
+                    {
+						draw_sim=sim;
+                        break;
+                    }
+				
+				}
+  		   }
+		 
 			lock(basemap)
             {
                 try
@@ -223,14 +233,14 @@ namespace omvviewerlight
                     return;
                 }
                  
-
 				int myz=(int)MainClass.client.Self.SimPosition.Z;
-
+				
+                if(draw_sim!=null)
                 lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
                 {
 					List <uint> removelist=new List<uint>();
 					
-					foreach (KeyValuePair<uint, Avatar> kvp in MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
+					foreach (KeyValuePair<uint, Avatar> kvp in draw_sim.ObjectsAvatars.Dictionary)
                     {
                         if (kvp.Value.LocalID != MainClass.client.Self.LocalID)
                         {
@@ -238,13 +248,13 @@ namespace omvviewerlight
                            
                             if (kvp.Value.ParentID != 0)
                             {
-                                if (!MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary.ContainsKey(kvp.Value.ParentID))
+                                if (!draw_sim.ObjectsPrimitives.Dictionary.ContainsKey(kvp.Value.ParentID))
                                 {
 									Console.WriteLine("Could not find parent prim for AV, killing\n");
 									removelist.Add(kvp.Value.LocalID);
 									continue;
                                 }
-                                Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[kvp.Value.ParentID];
+                                Primitive parent = draw_sim.ObjectsPrimitives.Dictionary[kvp.Value.ParentID];
                                 pos = Vector3.Transform(kvp.Value.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
                             }
                             else
@@ -277,12 +287,13 @@ namespace omvviewerlight
 					
 					foreach(uint id in removelist)
 					{
-                          MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.Remove(id);
+                          draw_sim.ObjectsAvatars.Dictionary.Remove(id);
 					}
                 }
 
 				//Draw me last so i am on top of the mele
-				showme(buf,avatar_me.Pixbuf,MainClass.client.Self.SimPosition);				
+                if(draw_sim!=null)
+				     showme(buf,avatar_me.Pixbuf,MainClass.client.Self.SimPosition);				
 				
 				if(this.targetpos.X!=-1)
 					showme(buf,avatar_target.Pixbuf,this.targetpos);				
@@ -302,9 +313,9 @@ namespace omvviewerlight
 			Console.Write("New simulator :"+MainClass.client.Network.CurrentSim.Name +" requesting grid layer for terrain \n");
 		    MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Objects);
 			Gtk.Application.Invoke(delegate
-                {            
+            {           
                   this.label1.Text = MainClass.client.Network.CurrentSim.Name;
-});
+			});
         }
 	
 		void showme(Gdk.Pixbuf buf,Gdk.Pixbuf src,Vector3 pos)

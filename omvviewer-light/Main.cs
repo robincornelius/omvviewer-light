@@ -85,7 +85,7 @@ namespace omvviewerlight
 
 		string res_dir=System.AppDomain.CurrentDomain.BaseDirectory+System.IO.Path.DirectorySeparatorChar +"openmetaverse_data";
 
-        OpenMetaverse.Settings.RESOURCE_DIR=res_dir;
+		OpenMetaverse.Settings.RESOURCE_DIR=res_dir;
         
 		Console.WriteLine("Setting resource dir to "+res_dir);      
           

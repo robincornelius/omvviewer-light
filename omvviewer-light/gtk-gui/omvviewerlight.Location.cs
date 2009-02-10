@@ -77,6 +77,8 @@ namespace omvviewerlight {
             this.vbox6.Add(this.localregion1);
             Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.vbox6[this.localregion1]));
             w4.Position = 0;
+            w4.Expand = false;
+            w4.Fill = false;
             // Container child vbox6.Gtk.Box+BoxChild
             this.radar1 = new omvviewerlight.Radar();
             this.radar1.WidthRequest = 275;

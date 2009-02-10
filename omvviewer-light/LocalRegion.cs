@@ -15,38 +15,41 @@ namespace omvviewerlight
 		uint cy;
 		uint cx;
 		bool requested=false;
+		GridRegion[] regions=new GridRegion[9];
 		public LocalRegion()
 		{
 			this.Build();
 			MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
 		    MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
-			MainClass.client.Grid.OnGridLayer += new OpenMetaverse.GridManager.GridLayerCallback(onGridLayer);
-		
+			requested=true;
 		}
 		
 		void onGridRegion(GridRegion region)
 		{
+			
 			Console.WriteLine("!!!!!!!!!!! GRID REGION cx is "+region.X.ToString()+" cy is "+region.Y.ToString());
 			Gtk.Application.Invoke(delegate {
 		
 			if(region.X==cx-1 && region.Y==cy+1)
 			{
 				this.image1.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image1,region.MapImageID,100,100);				
+				new TryGetImage(this.image1,region.MapImageID,100,100);	
+				regions[0]=region;
 			}
 
 			if(region.X==cx && region.Y==cy+1)
 			{
-				this.image2.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image2,region.MapImageID,100,100);				
+				this.image1.Pixbuf= MainClass.GetResource("trying.tga");
+				new TryGetImage(this.image1,region.MapImageID,100,100);	
+				regions[1]=region;
 			}
 			
 			if(region.X==cx+1 && region.Y==cy+1)
 			{
 				this.image3.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image3,region.MapImageID,100,100);				
+				new TryGetImage(this.image3,region.MapImageID,100,100);
+				regions[2]=region;
 			}
-
 			if(region.X==cx-1 && region.Y==cy)
 			{
 				this.image4.Pixbuf= MainClass.GetResource("trying.tga");
@@ -56,28 +59,31 @@ namespace omvviewerlight
 				if(region.X==cx+1 && region.Y==cy)
 			{
 				this.image6.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image6,region.MapImageID,100,100);				
+				new TryGetImage(this.image6,region.MapImageID,100,100);
+				regions[5]=region;
 			}
 
 				
 			if(region.X==cx-1 && region.Y==cy-1)
 			{
 				this.image7.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image7,region.MapImageID,100,100);				
+				new TryGetImage(this.image7,region.MapImageID,100,100);
+				regions[6]=region;
 			}
 
 			if(region.X==cx && region.Y==cy-1)
 			{
 				this.image8.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image8,region.MapImageID,100,100);				
+				new TryGetImage(this.image8,region.MapImageID,100,100);
+				regions[7]=region;
 			}
 			
 			if(region.X==cx+1 && region.Y==cy-1)
 			{
 				this.image9.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image9,region.MapImageID,100,100);				
+				new TryGetImage(this.image9,region.MapImageID,100,100);
+				regions[8]=region;
 			}
-				
 				
 			if(region.RegionHandle==MainClass.client.Network.CurrentSim.Handle)
 			{
@@ -85,12 +91,12 @@ namespace omvviewerlight
 					{
 						requested=false;
 						this.image5.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image5,region.MapImageID,100,100);				
-				cx=(uint)region.X;
-				cy=(uint)region.Y;
-				Console.WriteLine("Requesting neighbout grid");
-				MainClass.client.Grid.RequestMapBlocks(GridLayerType.Objects,(ushort)(region.X-1),(ushort)(region.Y-1),(ushort)(region.X+1),(ushort)(region.Y+1),false);
-					
+						new TryGetImage(this.image5,region.MapImageID,100,100);				
+						cx=(uint)region.X;
+						cy=(uint)region.Y;
+						Console.WriteLine("Requesting neighbout grid");
+						MainClass.client.Grid.RequestMapBlocks(GridLayerType.Objects,(ushort)(region.X-1),(ushort)(region.Y-1),(ushort)(region.X+1),(ushort)(region.Y+1),false);
+						regions[4]=region;
 					}
 				}
 				
@@ -98,15 +104,75 @@ namespace omvviewerlight
 		}
 		
 		void onNewSim(Simulator lastsim)
-	    {			
+	    {	
+			requested=true;
+			for(int x=0;x<9;x++)
+			{
+				regions[x]=new OpenMetaverse.GridRegion();
+				regions[x].Name="";
+			}
+			
+			//Don't request here we rely on the map widged doing so, as we are on the same page,
+			//this is a bit icky and we probably need underlying abstraction clases or master clases
+			//to handle the map image getting
 			requested=true;
         }
-		
-		void onGridLayer(GridLayer layer)
-	    {
-			//layer.ImageID
-			//Console.Write("Got grid layer reply, requesting texture :"+layer.ImageID.ToString()+"\n");	
+
+	
+
+		protected virtual void OnEventbox1ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+			if(regions[0].Name!="");
+			MainClass.win.map_widget.changeregion(regions[0]);
 		}
 
+		protected virtual void OnEventbox2ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+			if(regions[1].Name!="");
+			MainClass.win.map_widget.changeregion(regions[1]);
+		}
+
+		protected virtual void OnEventbox3ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+			if(regions[2].Name!="");
+			MainClass.win.map_widget.changeregion(regions[2]);
+		}
+
+		protected virtual void OnEventbox4ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+			if(regions[3].Name!="");
+			MainClass.win.map_widget.changeregion(regions[3]);
+		}
+
+		protected virtual void OnEventbox5ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+			if(regions[4].Name!="");
+			MainClass.win.map_widget.changeregion(regions[4]);
+		}
+
+		protected virtual void OnEventbox6ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+			if(regions[5].Name!="");
+			MainClass.win.map_widget.changeregion(regions[5]);
+		}
+
+		protected virtual void OnEventbox7ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+			if(regions[6].Name!="");
+			MainClass.win.map_widget.changeregion(regions[6]);
+		}
+
+		protected virtual void OnEventbox8ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+			if(regions[7].Name!="");
+			MainClass.win.map_widget.changeregion(regions[7]);
+		}
+
+		protected virtual void OnEventbox9ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+			if(regions[8].Name!="");
+			MainClass.win.map_widget.changeregion(regions[8]);
+		}
+		
 	}
 }
