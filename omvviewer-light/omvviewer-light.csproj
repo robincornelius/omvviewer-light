@@ -173,6 +173,7 @@
     <Compile Include="gtk-gui\omvviewerlight.Groups.cs" />
     <Compile Include="gtk-gui\omvviewerlight.GroupSearch.cs" />
     <Compile Include="gtk-gui\omvviewerlight.Inventory.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.LocalRegion.cs" />
     <Compile Include="gtk-gui\omvviewerlight.Location.cs" />
     <Compile Include="gtk-gui\omvviewerlight.LoginControl.cs" />
     <Compile Include="gtk-gui\omvviewerlight.LogoutDlg.cs" />
@@ -196,6 +197,7 @@
     <Compile Include="Inventory.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LocalRegion.cs" />
     <Compile Include="Location.cs">
       <SubType>Code</SubType>
     </Compile>
