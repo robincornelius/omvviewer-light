@@ -594,6 +594,17 @@ public partial class MainWindow: Gtk.Window
     {
         Parcel parcel;
         Vector3 pos = MainClass.client.Self.RelativePosition;
+        
+        //Clamp values, sim crossings can produce values outside the expected range my +-30m
+        if (pos.Y > 255)
+            pos.Y = 255;
+        if (pos.X > 255)
+            pos.X = 255;
+        if (pos.Y < 0)
+            pos.Y = 0;
+        if (pos.X < 0)
+            pos.X = 0;
+
         int parcelid = MainClass.client.Network.CurrentSim.ParcelMap[(int)(64.0 * (pos.Y/256.0)), (int)(64.0 * (pos.X/256))];
         
         if (!callback && parcelid == lastparcelid)

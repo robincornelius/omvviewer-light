@@ -170,11 +170,11 @@ namespace omvviewerlight
 				pos.Z=(float)this.spinbutton_z.Value;
                 if (validregion)
                 {
-                    AutoPilot.set_target_pos(pos,targetregion);
+                    AutoPilot.set_target_pos(AutoPilot.localtoglobalpos(pos,targetregion.RegionHandle));
                 }
                 else
                 {
-                    AutoPilot.set_target_pos(pos);
+                    AutoPilot.set_target_pos(AutoPilot.localtoglobalpos(pos, MainClass.client.Network.CurrentSim.Handle));
                 }
 
 				this.button_autopilot.Label="Stop";

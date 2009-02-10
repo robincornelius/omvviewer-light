@@ -707,7 +707,7 @@ namespace omvviewerlight
 					
 				if(FetchedPrims.TryGetValue(id,out prim))
 				{
-					AutoPilot.set_target_pos(prim.Position);
+                    AutoPilot.set_target_pos(AutoPilot.localtoglobalpos(prim.Position,MainClass.client.Network.CurrentSim.Handle));
 					this.button_moveto.Label="Stop";				
 				}
 			}

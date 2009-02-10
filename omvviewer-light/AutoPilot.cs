@@ -42,9 +42,8 @@ namespace omvviewerlight
 		static bool Active;
 		static UUID target_object;
 		static uint target_avatar;
-		static Vector3 target_pos;
+		static Vector3d target_pos_global;
 		static bool follow=false;
-        static GridRegion targetregion;
 
 		public delegate void AutoPilotFinished();
         public static event AutoPilotFinished onAutoPilotFinished;
@@ -82,26 +81,15 @@ namespace omvviewerlight
 			follow=followon;
 		}
 		
-		public static void set_target_pos (Vector3 pos)
+		public static void set_target_pos (Vector3d globalpos)
 		{
 			type=TargetType.TARGET_POS;
-			target_pos=pos;
+            target_pos_global = globalpos;
 			Active=true;
 			GLib.Timeout.Add(100,Think);
 		}
-
-        public static void set_target_pos(Vector3 pos,GridRegion region)
-        {
-            type = TargetType.TARGET_POS_REGION;
-            target_pos = pos;
-            targetregion = region;
-            Active = true;
-            GLib.Timeout.Add(100, Think);
-        }
-
-
-		
-		static Vector3 get_av_pos(uint targetLocalID,out float distance,out Simulator sim)
+	
+		static Vector3d get_av_pos(uint targetLocalID,out float distance,out Simulator sim)
 		{	
           lock (MainClass.client.Network.Simulators)
           {
@@ -122,7 +110,7 @@ namespace omvviewerlight
 						if(targetAv.ParentID!=0)
 						{
 						
-							if(!MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary.ContainsKey(targetAv.ParentID))
+							if(!MainClass.client.Network.Simulators[i].ObjectsPrimitives.Dictionary.ContainsKey(targetAv.ParentID))
 							{
 								Console.WriteLine("AV is seated and i can't find the parent prim in dictionay");
 								Active=false;
@@ -131,40 +119,36 @@ namespace omvviewerlight
 								x.Y=0;
 								x.Z=0;
 					
-								return targetpos;
+								return new Vector3d(targetpos);
 							}
 							else
 							{
 								Vector3 pos;
-								Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[targetAv.ParentID];
+								Primitive parent = MainClass.client.Network.Simulators[i].ObjectsPrimitives.Dictionary[targetAv.ParentID];
 								targetpos=pos = Vector3.Transform(targetAv.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
-								if (MainClass.client.Network.Simulators[i] == MainClass.client.Network.CurrentSim)
-								{
-									sim=MainClass.client.Network.Simulators[i];
-									distance = Vector3.Distance(pos, MainClass.client.Self.SimPosition);
-								}					
+								sim=MainClass.client.Network.Simulators[i];
+                          
+								distance = (float)Vector3d.Distance(new Vector3d(pos), MainClass.client.Self.GlobalPosition);
+													
 							}				
 						}			
 						else
 						{
-							if (MainClass.client.Network.Simulators[i] == MainClass.client.Network.CurrentSim)
-							{
 								sim=MainClass.client.Network.Simulators[i];
-								distance = Vector3.Distance(targetAv.Position, MainClass.client.Self.SimPosition);
+                                distance = (float)Vector3d.Distance(new Vector3d(targetAv.Position), MainClass.client.Self.GlobalPosition);
 								targetpos=targetAv.Position;
-							}
 						}
-					}			
-						
-					return targetpos;
+					}
+
+                    return new Vector3d(targetpos);
 				}
-				
-				return targetpos;
+
+                return new Vector3d(targetpos);
 					
 			}
 		}
 		
-		static Vector3 localtoglobalpos(Vector3 targetpos,ulong sim_handle)
+		public static Vector3d localtoglobalpos(Vector3 targetpos,ulong sim_handle)
 		{
 			
 			 uint regionX, regionY;
@@ -175,10 +159,10 @@ namespace omvviewerlight
 
 			 double zTarget = targetpos.Z;
             
-			 Vector3 pos;
-			 pos.X=(float)xTarget;
-			 pos.Y=(float)yTarget;
-			 pos.Z=(float)zTarget;
+			 Vector3d pos;
+			 pos.X=xTarget;
+			 pos.Y=yTarget;
+			 pos.Z=zTarget;
 			 return pos;
 		}
 		
@@ -189,36 +173,29 @@ namespace omvviewerlight
 				Avatar targetAv;
 			    Simulator sim=MainClass.client.Network.CurrentSim;
                 float distance = 0.0f;	
-				Vector3 targetpos;
+				Vector3d targetpos;
 				
 				if(type==TargetType.TARGET_AVATAR)
 				{
 					targetpos=get_av_pos(target_avatar,out distance,out sim);
-					distance = Vector3.Distance(targetpos, MainClass.client.Self.SimPosition);	
+					distance = (float)Vector3d.Distance(targetpos, new Vector3d(MainClass.client.Self.SimPosition));	
 					Console.WriteLine("Avatar Target at "+targetpos.ToString());
 					Console.WriteLine("I'm at "+MainClass.client.Self.SimPosition.ToString());
 					Console.WriteLine("Distance is "+distance.ToString());
 				}
 				else				
 				{
-					targetpos=target_pos;
+					targetpos=target_pos_global;
 					targetpos.Z=MainClass.client.Self.SimPosition.Z;
-					distance = Vector3.Distance(targetpos, MainClass.client.Self.SimPosition);					              
+                    distance = (float)Vector3d.Distance(targetpos, new Vector3d(MainClass.client.Self.SimPosition));					              
 				}
 				
                 if (distance > 2.5)
 				{
-                    Vector3 targetglobal;
+                    Vector3d targetglobal;
 					//Console.WriteLine("Autopilot think");
-                    if (type == TargetType.TARGET_POS_REGION)
-                    {
-                        targetglobal = localtoglobalpos(targetpos, targetregion.RegionHandle);
-                    }
-                    else
-                    {
-                        targetglobal = localtoglobalpos(targetpos, sim.Handle);
-                    }
-	                MainClass.client.Self.Movement.TurnToward(targetpos);
+                   
+	                MainClass.client.Self.Movement.TurnToward(new Vector3(targetpos));
 					MainClass.client.Self.Movement.AtPos=true;
 					MainClass.client.Self.Movement.SendUpdate();
 				}
