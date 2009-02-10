@@ -73,7 +73,7 @@ namespace omvviewerlight
 				target_image.Pixbuf=buf.ScaleSimple(width,height,Gdk.InterpType.Bilinear);
 
 			if(asset!=UUID.Zero)
-					MainClass.client.Assets.RequestImage(asset,OpenMetaverse.ImageType.Normal,1013000.0f, 0,0);	
+					MainClass.client.Assets.RequestImage(asset,OpenMetaverse.ImageType.Normal,99999000.0f, 0,0);	
 						
 	    }
 		
@@ -178,10 +178,7 @@ namespace omvviewerlight
                         if (target_image.Pixbuf != null)
                         {
                             target_image.Pixbuf = buf;
-							if(scale)
-							{
-									
-							}
+                            target_image.QueueDraw();
 						}
                     }
                 }

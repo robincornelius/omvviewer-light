@@ -33,7 +33,8 @@ namespace omvviewerlight
 		enum TargetType{
 		TARGET_AVATAR,
 		TARGET_OBJECT,
-		TARGET_POS
+		TARGET_POS,
+        TARGET_POS_REGION,
 	}
 		
 		static TargetType type;
@@ -43,6 +44,7 @@ namespace omvviewerlight
 		static uint target_avatar;
 		static Vector3 target_pos;
 		static bool follow=false;
+        static GridRegion targetregion;
 
 		public delegate void AutoPilotFinished();
         public static event AutoPilotFinished onAutoPilotFinished;
@@ -87,6 +89,17 @@ namespace omvviewerlight
 			Active=true;
 			GLib.Timeout.Add(100,Think);
 		}
+
+        public static void set_target_pos(Vector3 pos,GridRegion region)
+        {
+            type = TargetType.TARGET_POS_REGION;
+            target_pos = pos;
+            targetregion = region;
+            Active = true;
+            GLib.Timeout.Add(100, Think);
+        }
+
+
 		
 		static Vector3 get_av_pos(uint targetLocalID,out float distance,out Simulator sim)
 		{	
@@ -151,11 +164,11 @@ namespace omvviewerlight
 			}
 		}
 		
-		static Vector3 localtoglobalpos(Vector3 targetpos,Simulator sim)
+		static Vector3 localtoglobalpos(Vector3 targetpos,ulong sim_handle)
 		{
 			
 			 uint regionX, regionY;
-             Utils.LongToUInts(sim.Handle, out regionX, out regionY);
+             Utils.LongToUInts(sim_handle, out regionX, out regionY);
 						
              double xTarget = (double)targetpos.X + (double)regionX;
              double yTarget = (double)targetpos.Y + (double)regionY;
@@ -190,20 +203,24 @@ namespace omvviewerlight
 				{
 					targetpos=target_pos;
 					targetpos.Z=MainClass.client.Self.SimPosition.Z;
-					distance = Vector3.Distance(targetpos, MainClass.client.Self.SimPosition);					
-					               
+					distance = Vector3.Distance(targetpos, MainClass.client.Self.SimPosition);					              
 				}
 				
                 if (distance > 2.5)
 				{
-					Console.WriteLine("Autopilot think");
-				    Vector3 targetglobal=localtoglobalpos(targetpos,sim);
+                    Vector3 targetglobal;
+					//Console.WriteLine("Autopilot think");
+                    if (type == TargetType.TARGET_POS_REGION)
+                    {
+                        targetglobal = localtoglobalpos(targetpos, targetregion.RegionHandle);
+                    }
+                    else
+                    {
+                        targetglobal = localtoglobalpos(targetpos, sim.Handle);
+                    }
 	                MainClass.client.Self.Movement.TurnToward(targetpos);
 					MainClass.client.Self.Movement.AtPos=true;
 					MainClass.client.Self.Movement.SendUpdate();
-					//MainClass.client.Self.AutoPilotCancel();
-	                //MainClass.client.Self.AutoPilot(targetglobal.X, targetglobal.Y, targetglobal.Z);
-						
 				}
                  else if (follow==false)
 				 {

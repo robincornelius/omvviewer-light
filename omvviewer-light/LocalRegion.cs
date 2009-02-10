@@ -53,7 +53,8 @@ namespace omvviewerlight
 			if(region.X==cx-1 && region.Y==cy)
 			{
 				this.image4.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image4,region.MapImageID,100,100);				
+				new TryGetImage(this.image4,region.MapImageID,100,100);
+                regions[3] = region;
 			}
 
 				if(region.X==cx+1 && region.Y==cy)
@@ -111,7 +112,19 @@ namespace omvviewerlight
 				regions[x]=new OpenMetaverse.GridRegion();
 				regions[x].Name="";
 			}
-			
+
+            Gtk.Application.Invoke(delegate{
+                image1.Clear();
+                image2.Clear();
+                image3.Clear();
+                image4.Clear();
+                image5.Clear();
+                image6.Clear();
+                image7.Clear();
+                image8.Clear();
+                image9.Clear();
+            });
+
 			//Don't request here we rely on the map widged doing so, as we are on the same page,
 			//this is a bit icky and we probably need underlying abstraction clases or master clases
 			//to handle the map image getting

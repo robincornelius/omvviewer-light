@@ -35,6 +35,8 @@ namespace omvviewerlight
 		bool userclicked=false;
 		bool target=false;
 		bool localupdate=false;
+        GridRegion targetregion;
+        bool validregion = false;
 		
 		public TeleportTo()
 		{
@@ -101,6 +103,7 @@ namespace omvviewerlight
         {
 		
 		   userclicked=false;
+           validregion = false;
            Gtk.Application.Invoke(delegate
             {
 				this.localupdate=true;
@@ -111,7 +114,8 @@ namespace omvviewerlight
 				this.entry_simname.Text=MainClass.client.Network.CurrentSim.Name;
 				MainClass.win.tp_target_widget=this; //MEMORY LEAK, needs to be killed if this widget is removed
 				MainClass.client.Self.AutoPilotCancel();
-			});    
+			});
+           
 		}
 
 	    bool OnTimeout()
@@ -163,8 +167,16 @@ namespace omvviewerlight
 				pos=new Vector3();
 				pos.X=(float)this.spinbutton_x.Value;
 				pos.Y=(float)this.spinbutton_y.Value;
-				pos.Z=(float)this.spinbutton_z.Value;	
-	  		    AutoPilot.set_target_pos(pos);
+				pos.Z=(float)this.spinbutton_z.Value;
+                if (validregion)
+                {
+                    AutoPilot.set_target_pos(pos,targetregion);
+                }
+                else
+                {
+                    AutoPilot.set_target_pos(pos);
+                }
+
 				this.button_autopilot.Label="Stop";
 				this.button_autopilot.Image=new Gtk.Image(Stetic.IconLoader.LoadIcon(this, "gtk-cancel", Gtk.IconSize.Menu, 16));
 				
@@ -177,14 +189,17 @@ namespace omvviewerlight
 			}
 		}
 		
-		public void settarget(Vector3 pos)
+		public void settarget(Vector3 pos,GridRegion region)
 		{
 			Console.WriteLine("Set target from map");
 			userclicked=true;
+            this.entry_simname.Text = region.Name;
 			this.spinbutton_x.Value=pos.X;
 			this.spinbutton_y.Value=pos.Y;
 			this.spinbutton_z.Value=pos.Z;
 			target=true;
+            targetregion = region;
+            validregion = true;
 		}
 
 

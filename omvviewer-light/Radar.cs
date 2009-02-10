@@ -270,8 +270,12 @@ namespace omvviewerlight
 				{
 					lock(av_tree)
 					{
-						store.Remove(ref av_tree[objectID].iter);
-						av_tree.Remove(objectID);
+                            if (this.av_tree.ContainsKey(objectID)) //check again we are invoked so not constrained by the last test
+                            {
+						        store.Remove(ref av_tree[objectID].iter);
+						        av_tree.Remove(objectID);
+                            }
+                        
 					}
 				});
 			}

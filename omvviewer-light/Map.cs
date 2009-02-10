@@ -130,6 +130,7 @@ namespace omvviewerlight
 			objects_map = new Gtk.Image(pb);
 			this.image.Pixbuf=pb;	
 			new TryGetImage(this.objects_map,region.MapImageID,350,350);
+
 		}
 		
 		void onGridRegion(GridRegion region)
@@ -208,19 +209,17 @@ namespace omvviewerlight
           
 			Gdk.Pixbuf buf;
 			Simulator draw_sim=null;
-			lock(MainClass.client.Network.Simulators)
+			
+			foreach(Simulator sim in MainClass.client.Network.Simulators)
 			{
-				foreach(Simulator sim in MainClass.client.Network.Simulators)
-				{
-					if(sim.Name==current_region.Name)
-                    {
-						draw_sim=sim;
-                        break;
-                    }
+				if(sim.Name==current_region.Name)
+                   {
+					draw_sim=sim;
+                       break;
+                   }
 				
-				}
-  		   }
-		 
+			}
+  		   
 			lock(basemap)
             {
                 try
@@ -411,8 +410,7 @@ namespace omvviewerlight
 			targetpos=pos;
 			
 			if(MainClass.win.tp_target_widget!=null)
-				MainClass.win.tp_target_widget.settarget(pos);
-			
+				MainClass.win.tp_target_widget.settarget(pos,current_region);
 			this.drawavs();
 			
 		}
