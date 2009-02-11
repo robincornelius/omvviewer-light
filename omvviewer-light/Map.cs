@@ -129,7 +129,7 @@ namespace omvviewerlight
 			Gdk.Pixbuf pb= MainClass.GetResource("trying.tga");
 			objects_map = new Gtk.Image(pb);
 			this.image.Pixbuf=pb;	
-			new TryGetImage(this.objects_map,region.MapImageID,350,350);
+			new TryGetImage(this.objects_map,region.MapImageID,350,350,false);
 
 		}
 		
@@ -146,10 +146,19 @@ namespace omvviewerlight
 				Gdk.Pixbuf pb= MainClass.GetResource("trying.tga");
 				objects_map = new Gtk.Image(pb);
 				this.image.Pixbuf=pb;
-				
-				new TryGetImage(this.objects_map,region.MapImageID,350,350);
+				TryGetImage tgi=new TryGetImage(this.objects_map,region.MapImageID,350,350,true);
+                tgi.OnDecodeComplete += new TryGetImage.Decodecomplete(tgi_OnDecodeComplete);
+                tgi.go();
 			}
 		}
+
+        void tgi_OnDecodeComplete()
+        {
+            Gtk.Application.Invoke(delegate
+            {
+                drawavs();
+            });
+        }
 				
 		void onTeleport(string Message, OpenMetaverse.AgentManager.TeleportStatus status,OpenMetaverse.AgentManager.TeleportFlags flags)
 	    {
@@ -310,7 +319,7 @@ namespace omvviewerlight
 	    {
 			MainClass.win.map_widget=this;
 			Console.Write("New simulator :"+MainClass.client.Network.CurrentSim.Name +" requesting grid layer for terrain \n");
-		    MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Objects);
+		    //MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Objects);
 			Gtk.Application.Invoke(delegate
             {           
                   this.label1.Text = MainClass.client.Network.CurrentSim.Name;

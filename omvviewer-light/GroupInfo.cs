@@ -414,7 +414,7 @@ namespace omvviewerlight
 					this.button_send_notice.Sensitive=false;
 		
 				
-			TryGetImage img=new TryGetImage(this.image_group_emblem,group.InsigniaID,128,128);
+			TryGetImage img=new TryGetImage(this.image_group_emblem,group.InsigniaID,128,128,false);
 			this.label_name.Text=group.Name;
 	
 			AsyncNameUpdate ud=new AsyncNameUpdate(group.FounderID,false);  

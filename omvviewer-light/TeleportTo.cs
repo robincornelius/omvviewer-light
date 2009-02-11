@@ -177,6 +177,10 @@ namespace omvviewerlight
                     AutoPilot.set_target_pos(AutoPilot.localtoglobalpos(pos, MainClass.client.Network.CurrentSim.Handle));
                 }
 
+                Console.WriteLine("Autopilot target global is " + AutoPilot.localtoglobalpos(pos, MainClass.client.Network.CurrentSim.Handle).ToString());
+                Console.WriteLine("Agent is now local " + MainClass.client.Self.RelativePosition.ToString());
+                Console.WriteLine("Agent is now global " + MainClass.client.Self.GlobalPosition.ToString());
+
 				this.button_autopilot.Label="Stop";
 				this.button_autopilot.Image=new Gtk.Image(Stetic.IconLoader.LoadIcon(this, "gtk-cancel", Gtk.IconSize.Menu, 16));
 				

@@ -185,7 +185,7 @@ namespace omvviewerlight
 				if(getter!=null)
 					getter.abort();
 							
-				TryGetImage i = new TryGetImage(this.image_parcel,id,175,175);
+				TryGetImage i = new TryGetImage(this.image_parcel,id,175,175,false);
 				getter=i;
 				
 			}

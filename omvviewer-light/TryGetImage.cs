@@ -40,18 +40,21 @@ namespace omvviewerlight
         ImageDownload this_image;
         AssetTexture this_asset;
 		bool scale=false;
-		
-		public TryGetImage(Gtk.Image target,UUID asset)
+      
+        public delegate void Decodecomplete();
+        public event Decodecomplete OnDecodeComplete;
+
+        public TryGetImage(Gtk.Image target, UUID asset, bool asynccallback)
 		{
-			TryGetImageWork(target,asset,true,256,256);
+			TryGetImageWork(target,asset,true,256,256,false);
 		}
 		
-		public TryGetImage(Gtk.Image target,UUID asset,int width,int height)
+		public TryGetImage(Gtk.Image target,UUID asset,int width,int height,bool asynccallback)
 		{
-			TryGetImageWork(target,asset,false,width,height);
+			TryGetImageWork(target,asset,false,width,height,false);
 		}
-		
-		public void TryGetImageWork(Gtk.Image target,UUID asset,bool auto,int width,int height)
+
+        public void TryGetImageWork(Gtk.Image target, UUID asset, bool auto, int width, int height, bool asynccallback)
 		{
 			if(target==null)
 				return;
@@ -64,18 +67,33 @@ namespace omvviewerlight
 			target_image=target;
             img_width = width;
             img_height = height;
-		
-			Gdk.Pixbuf buf=MainClass.GetResource("trying.tga");
 
-			if(auto)
-				target_image.Pixbuf=buf;				
-			else
-				target_image.Pixbuf=buf.ScaleSimple(width,height,Gdk.InterpType.Bilinear);
+            if (asynccallback)
+            {
+                return;
+            }
 
-			if(asset!=UUID.Zero)
-					MainClass.client.Assets.RequestImage(asset,OpenMetaverse.ImageType.Normal,99999000.0f, 0,0);	
-						
+            dowork();	
 	    }
+
+        public void go()
+        {
+            dowork();
+        }
+
+        void dowork()
+        {
+            Gdk.Pixbuf buf = MainClass.GetResource("trying.tga");
+
+            if (scale)
+                target_image.Pixbuf = buf;
+            else
+                target_image.Pixbuf = buf.ScaleSimple(img_width, img_height, Gdk.InterpType.Bilinear);
+
+            if (target_asset != UUID.Zero)
+                MainClass.client.Assets.RequestImage(target_asset, OpenMetaverse.ImageType.Normal, 99999000.0f, 0, 0);	
+
+        }
 		
 		public void abort()
 	   {
@@ -123,7 +141,6 @@ namespace omvviewerlight
 					p[3]=255;
                 }	
 		    }
-
             Gtk.Application.Invoke(delegate
             {
                 target_image.QueueDraw();
@@ -144,7 +161,6 @@ namespace omvviewerlight
 
             MainClass.client.Assets.OnImageReceived -= new OpenMetaverse.AssetManager.ImageReceivedCallback(onGotImage);
             MainClass.client.Assets.OnImageReceiveProgress -= new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
-
 
             Console.Write("Downloaded asset " + this_asset.AssetID.ToString() + "\n");
             byte[] tgaFile = null;
@@ -172,13 +188,25 @@ namespace omvviewerlight
             {
                 try
                 {
-                    abort(); //clear the callbacks
                     if (target_image != null) // this has managed to get set to null
                     {
                         if (target_image.Pixbuf != null)
                         {
                             target_image.Pixbuf = buf;
+                            Console.WriteLine("TryGetImage:: Image Done queuing for a redraw");
                             target_image.QueueDraw();
+                            if (OnDecodeComplete!=null)
+                            {
+                                try
+                                {
+                                    OnDecodeComplete();
+                                    OnDecodeComplete = null;
+                                }
+                                catch
+                                {
+
+                                }
+                            }
 						}
                     }
                 }

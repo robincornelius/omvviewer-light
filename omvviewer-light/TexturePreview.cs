@@ -62,7 +62,7 @@ namespace omvviewerlight
 			}
 			else
 			{
-				TryGetImage tg= new TryGetImage(image,texture);
+				TryGetImage tg= new TryGetImage(image,texture,false);
 			}
 		}
 		
@@ -73,7 +73,7 @@ namespace omvviewerlight
 			if(asset.AssetID!=target_asset)
 				return;
 			MainClass.client.Assets.OnAssetReceived -= new OpenMetaverse.AssetManager.AssetReceivedCallback(onAsset);
-			TryGetImage tg= new TryGetImage(this.image,asset.AssetID);
+			TryGetImage tg= new TryGetImage(this.image,asset.AssetID,false);
 		}		
 	}
 }
