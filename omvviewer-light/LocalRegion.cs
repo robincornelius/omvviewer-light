@@ -33,6 +33,7 @@ namespace omvviewerlight
 			if(region.X==cx-1 && region.Y==cy+1)
 			{
 				this.image1.Pixbuf= MainClass.GetResource("trying.tga");
+				this.image1.TooltipText=region.Name;
 				new TryGetImage(this.image1,region.MapImageID,100,100,false);	
 				regions[0]=region;
 			}
@@ -40,6 +41,8 @@ namespace omvviewerlight
 			if(region.X==cx && region.Y==cy+1)
 			{
 				this.image2.Pixbuf= MainClass.GetResource("trying.tga");
+				this.image2.TooltipText=region.Name;
+
 				new TryGetImage(this.image2,region.MapImageID,100,100,false);	
 				regions[1]=region;
 			}
@@ -47,21 +50,27 @@ namespace omvviewerlight
 			if(region.X==cx+1 && region.Y==cy+1)
 			{
 				this.image3.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image3,region.MapImageID,100,100,false);
+				this.image3.TooltipText=region.Name;
+				
+					new TryGetImage(this.image3,region.MapImageID,100,100,false);
 				regions[2]=region;
 			}
 			if(region.X==cx-1 && region.Y==cy)
 			{
                 Console.WriteLine("Updaing map for cell 4 (3)");
 				this.image4.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image4,region.MapImageID,100,100,false);
+				this.image4.TooltipText=region.Name;
+				
+					new TryGetImage(this.image4,region.MapImageID,100,100,false);
                 regions[3] = region;
 			}
 
 				if(region.X==cx+1 && region.Y==cy)
 			{
 				this.image6.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image6,region.MapImageID,100,100,false);
+				this.image6.TooltipText=region.Name;
+				
+					new TryGetImage(this.image6,region.MapImageID,100,100,false);
 				regions[5]=region;
 			}
 
@@ -69,21 +78,27 @@ namespace omvviewerlight
 			if(region.X==cx-1 && region.Y==cy-1)
 			{
 				this.image7.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image7,region.MapImageID,100,100,false);
+				this.image7.TooltipText=region.Name;
+				
+					new TryGetImage(this.image7,region.MapImageID,100,100,false);
 				regions[6]=region;
 			}
 
 			if(region.X==cx && region.Y==cy-1)
 			{
 				this.image8.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image8,region.MapImageID,100,100,false);
+				this.image8.TooltipText=region.Name;
+				
+					new TryGetImage(this.image8,region.MapImageID,100,100,false);
 				regions[7]=region;
 			}
 			
 			if(region.X==cx+1 && region.Y==cy-1)
 			{
 				this.image9.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image9,region.MapImageID,100,100,false);
+				this.image9.TooltipText=region.Name;
+				
+					new TryGetImage(this.image9,region.MapImageID,100,100,false);
 				regions[8]=region;
 			}
 				
@@ -93,6 +108,8 @@ namespace omvviewerlight
 					{
 						requested=false;
 						this.image5.Pixbuf= MainClass.GetResource("trying.tga");
+				this.image5.TooltipText=region.Name;
+						
 						new TryGetImage(this.image5,region.MapImageID,100,100,false);				
 						cx=(uint)region.X;
 						cy=(uint)region.Y;
@@ -124,6 +141,16 @@ namespace omvviewerlight
                 image7.Clear();
                 image8.Clear();
                 image9.Clear();
+				image1.TooltipText="";
+				image2.TooltipText="";
+				image3.TooltipText="";
+				image4.TooltipText="";
+				image5.TooltipText="";
+				image6.TooltipText="";
+				image7.TooltipText="";
+				image8.TooltipText="";
+				image9.TooltipText="";
+				
                 requested = true;
                 Console.WriteLine("Requesting map region for current region");
                 MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name, GridLayerType.Objects);
