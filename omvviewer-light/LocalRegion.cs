@@ -134,55 +134,55 @@ namespace omvviewerlight
 
 		protected virtual void OnEventbox1ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-			if(regions[0].Name!="");
+			if(regions[0].Name!="")
 			MainClass.win.map_widget.changeregion(regions[0]);
 		}
 
 		protected virtual void OnEventbox2ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-			if(regions[1].Name!="");
+			if(regions[1].Name!="")
 			MainClass.win.map_widget.changeregion(regions[1]);
 		}
 
 		protected virtual void OnEventbox3ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-			if(regions[2].Name!="");
+			if(regions[2].Name!="")
 			MainClass.win.map_widget.changeregion(regions[2]);
 		}
 
 		protected virtual void OnEventbox4ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-			if(regions[3].Name!="");
+			if(regions[3].Name!="")
 			MainClass.win.map_widget.changeregion(regions[3]);
 		}
 
 		protected virtual void OnEventbox5ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-			if(regions[4].Name!="");
+			if(regions[4].Name!="")
 			MainClass.win.map_widget.changeregion(regions[4]);
 		}
 
 		protected virtual void OnEventbox6ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-			if(regions[5].Name!="");
+			if(regions[5].Name!="")
 			MainClass.win.map_widget.changeregion(regions[5]);
 		}
 
 		protected virtual void OnEventbox7ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-			if(regions[6].Name!="");
+			if(regions[6].Name!="")
 			MainClass.win.map_widget.changeregion(regions[6]);
 		}
 
 		protected virtual void OnEventbox8ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-			if(regions[7].Name!="");
+			if(regions[7].Name!="")
 			MainClass.win.map_widget.changeregion(regions[7]);
 		}
 
 		protected virtual void OnEventbox9ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-			if(regions[8].Name!="");
+			if(regions[8].Name!="")
 			MainClass.win.map_widget.changeregion(regions[8]);
 		}
 		
