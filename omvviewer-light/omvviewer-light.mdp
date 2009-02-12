@@ -2,7 +2,7 @@
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <CustomCommands>
-        <Command type="BeforeBuild" command="./fuckingmonodevelop.sh" workingdir="${ProjectDir}/gtk-gui/" externalConsole="True" pauseExternalConsole="True" />
+        <Command type="AfterBuild" command="gtk-gui/fuckingmonodevelop.sh" workingdir="${ProjectDir}/gtk-gui/" />
       </CustomCommands>
       <Output directory="bin/" assemblyKeyFile="." assembly="omvviewer-light" />
       <Build debugmode="True" target="Exe" />
@@ -11,7 +11,7 @@
     </Configuration>
     <Configuration name="Release" ctype="DotNetProjectConfiguration">
       <CustomCommands>
-        <Command type="BeforeBuild" command="./fuckingmonodevelop.sh" workingdir="${ProjectDir}/gtk-gui/" />
+        <Command type="AfterBuild" command="gtk-gui/fuckingmonodevelop.sh" workingdir="${ProjectDir}/gtk-gui/" />
       </CustomCommands>
       <Output directory="bin/" assemblyKeyFile="." assembly="omvviewer-light" />
       <Build debugmode="False" target="Exe" />
