@@ -75,8 +75,9 @@ namespace omvviewerlight
             MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
 			MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
 			AutoPilot.onAutoPilotFinished += new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
-			Gtk.Timeout.Add(10000, kickrefresh);			
+			GLib.Timeout.Add(10000, kickrefresh);			
 			this.targetpos.X=-1;
+			
 			
 			if(MainClass.client!=null)
 			{
@@ -245,8 +246,9 @@ namespace omvviewerlight
                 }
                  
 				int myz=(int)MainClass.client.Self.SimPosition.Z;
-				
+					
                 if(draw_sim!=null)
+ 
                 lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
                 {
 					List <uint> removelist=new List<uint>();

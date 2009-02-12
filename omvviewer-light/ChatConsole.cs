@@ -522,7 +522,7 @@ namespace omvviewerlight
 						{
 							this.lookat=UUID.Random();
 							MainClass.client.Self.LookAtEffect(MainClass.client.Self.AgentID,id,Vector3d.Zero,LookAtType.Mouselook,lookat);
-							Gtk.Timeout.Add(3000,ClearLookAt);
+							GLib.Timeout.Add(3000,ClearLookAt);
 							lookatrunning=true;
 						}
 					}

@@ -328,7 +328,7 @@ namespace omvviewerlight
 					if(inventory.assettype==AssetType.Notecard)
 					{
 						Console.Write("NEW UUID "+inventory.item_id.ToString());
-						NotecardReader nr=new NotecardReader(inventory.item_id,this.target_id,this.notecard_item_id);
+						new NotecardReader(inventory.item_id,this.target_id,this.notecard_item_id);
 					}
 					if(inventory.assettype==AssetType.Landmark)
 					{

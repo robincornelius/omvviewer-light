@@ -170,7 +170,6 @@ namespace omvviewerlight
 		{
             if (Active)
             {               
-				Avatar targetAv;
 			    Simulator sim=MainClass.client.Network.CurrentSim;
                 float distance = 0.0f;	
 				Vector3d targetpos;
