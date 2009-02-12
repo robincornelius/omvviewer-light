@@ -60,7 +60,7 @@ namespace omvviewerlight
         // This is stupid
         public static Gdk.Pixbuf GetResource(string name)
         {
-            if(!monodevelop)
+			if(!monodevelop)
                 return Pixbuf.LoadFromResource(name);
             else
                 return Pixbuf.LoadFromResource("omvviewerlight.art." + name);          
