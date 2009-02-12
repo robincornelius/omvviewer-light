@@ -129,7 +129,17 @@ namespace omvviewerlight
 			Gdk.Pixbuf pb= MainClass.GetResource("trying.tga");
 			objects_map = new Gtk.Image(pb);
 			this.image.Pixbuf=pb;	
-			new TryGetImage(this.objects_map,region.MapImageID,350,350,false);
+			TryGetImage tgi=new TryGetImage(this.objects_map,region.MapImageID,350,350,true);
+            tgi.OnDecodeComplete += new TryGetImage.Decodecomplete(delegate()
+			                                                       {
+				  Gtk.Application.Invoke(delegate
+            {
+                drawavs();
+            });
+				
+			});
+            tgi.go();
+			
 
 		}
 		
@@ -146,20 +156,13 @@ namespace omvviewerlight
 				Gdk.Pixbuf pb= MainClass.GetResource("trying.tga");
 				objects_map = new Gtk.Image(pb);
 				this.image.Pixbuf=pb;
-				TryGetImage tgi=new TryGetImage(this.objects_map,region.MapImageID,350,350,true);
-                tgi.OnDecodeComplete += new TryGetImage.Decodecomplete(tgi_OnDecodeComplete);
-                tgi.go();
+				
+				new TryGetImage(this.objects_map,region.MapImageID,350,350,false);
+
+				
 			}
 		}
-
-        void tgi_OnDecodeComplete()
-        {
-            Gtk.Application.Invoke(delegate
-            {
-                drawavs();
-            });
-        }
-				
+
 		void onTeleport(string Message, OpenMetaverse.AgentManager.TeleportStatus status,OpenMetaverse.AgentManager.TeleportFlags flags)
 	    {
 			if(status==OpenMetaverse.AgentManager.TeleportStatus.Finished)
