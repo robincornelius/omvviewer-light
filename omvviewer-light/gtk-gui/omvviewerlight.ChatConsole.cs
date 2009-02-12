@@ -15,6 +15,8 @@ namespace omvviewerlight {
         
         private Gtk.VBox vbox1;
         
+        private Gtk.HBox hbox2;
+        
         private Gtk.ScrolledWindow GtkScrolledWindow;
         
         private Gtk.TextView textview_chat;
@@ -35,19 +37,27 @@ namespace omvviewerlight {
             this.vbox1.Name = "vbox1";
             this.vbox1.Spacing = 6;
             // Container child vbox1.Gtk.Box+BoxChild
+            this.hbox2 = new Gtk.HBox();
+            this.hbox2.Name = "hbox2";
+            this.hbox2.Spacing = 6;
+            // Container child hbox2.Gtk.Box+BoxChild
             this.GtkScrolledWindow = new Gtk.ScrolledWindow();
             this.GtkScrolledWindow.Name = "GtkScrolledWindow";
             this.GtkScrolledWindow.ShadowType = ((Gtk.ShadowType)(1));
             // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
             this.textview_chat = new Gtk.TextView();
+            this.textview_chat.WidthRequest = 600;
             this.textview_chat.CanFocus = true;
             this.textview_chat.Name = "textview_chat";
             this.textview_chat.Editable = false;
             this.textview_chat.WrapMode = ((Gtk.WrapMode)(2));
             this.GtkScrolledWindow.Add(this.textview_chat);
-            this.vbox1.Add(this.GtkScrolledWindow);
-            Gtk.Box.BoxChild w2 = ((Gtk.Box.BoxChild)(this.vbox1[this.GtkScrolledWindow]));
+            this.hbox2.Add(this.GtkScrolledWindow);
+            Gtk.Box.BoxChild w2 = ((Gtk.Box.BoxChild)(this.hbox2[this.GtkScrolledWindow]));
             w2.Position = 0;
+            this.vbox1.Add(this.hbox2);
+            Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
+            w3.Position = 0;
             // Container child vbox1.Gtk.Box+BoxChild
             this.hbox1 = new Gtk.HBox();
             this.hbox1.Name = "hbox1";
@@ -60,10 +70,10 @@ namespace omvviewerlight {
             this.combobox_say_type.Name = "combobox_say_type";
             this.combobox_say_type.Active = 1;
             this.hbox1.Add(this.combobox_say_type);
-            Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.hbox1[this.combobox_say_type]));
-            w3.Position = 0;
-            w3.Expand = false;
-            w3.Fill = false;
+            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox1[this.combobox_say_type]));
+            w4.Position = 0;
+            w4.Expand = false;
+            w4.Fill = false;
             // Container child hbox1.Gtk.Box+BoxChild
             this.entry_chat = new Gtk.Entry();
             this.entry_chat.CanFocus = true;
@@ -71,13 +81,13 @@ namespace omvviewerlight {
             this.entry_chat.IsEditable = true;
             this.entry_chat.InvisibleChar = '●';
             this.hbox1.Add(this.entry_chat);
-            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox1[this.entry_chat]));
-            w4.Position = 1;
-            this.vbox1.Add(this.hbox1);
-            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
+            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.hbox1[this.entry_chat]));
             w5.Position = 1;
-            w5.Expand = false;
-            w5.Fill = false;
+            this.vbox1.Add(this.hbox1);
+            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
+            w6.Position = 1;
+            w6.Expand = false;
+            w6.Fill = false;
             this.Add(this.vbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
