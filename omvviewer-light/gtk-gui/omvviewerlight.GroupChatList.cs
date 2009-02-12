@@ -15,6 +15,8 @@ namespace omvviewerlight {
         
         private Gtk.VBox vbox3;
         
+        private Gtk.Label label1;
+        
         private Gtk.ScrolledWindow GtkScrolledWindow;
         
         private Gtk.TreeView treeview_members;
@@ -30,6 +32,15 @@ namespace omvviewerlight {
             this.vbox3.Name = "vbox3";
             this.vbox3.Spacing = 6;
             // Container child vbox3.Gtk.Box+BoxChild
+            this.label1 = new Gtk.Label();
+            this.label1.Name = "label1";
+            this.label1.LabelProp = Mono.Unix.Catalog.GetString("Group chat members");
+            this.vbox3.Add(this.label1);
+            Gtk.Box.BoxChild w1 = ((Gtk.Box.BoxChild)(this.vbox3[this.label1]));
+            w1.Position = 0;
+            w1.Expand = false;
+            w1.Fill = false;
+            // Container child vbox3.Gtk.Box+BoxChild
             this.GtkScrolledWindow = new Gtk.ScrolledWindow();
             this.GtkScrolledWindow.Name = "GtkScrolledWindow";
             this.GtkScrolledWindow.ShadowType = ((Gtk.ShadowType)(1));
@@ -41,8 +52,8 @@ namespace omvviewerlight {
             this.treeview_members.HeadersClickable = true;
             this.GtkScrolledWindow.Add(this.treeview_members);
             this.vbox3.Add(this.GtkScrolledWindow);
-            Gtk.Box.BoxChild w2 = ((Gtk.Box.BoxChild)(this.vbox3[this.GtkScrolledWindow]));
-            w2.Position = 0;
+            Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.vbox3[this.GtkScrolledWindow]));
+            w3.Position = 1;
             this.Add(this.vbox3);
             if ((this.Child != null)) {
                 this.Child.ShowAll();

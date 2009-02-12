@@ -902,7 +902,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="omvviewerlight.ChatConsole" design-size="420 300">
+  <widget class="Gtk.Bin" id="omvviewerlight.ChatConsole" design-size="620 300">
     <property name="MemberName" />
     <child>
       <widget class="Gtk.VBox" id="vbox1">
@@ -919,6 +919,7 @@
                 <child>
                   <widget class="Gtk.TextView" id="textview_chat">
                     <property name="MemberName" />
+                    <property name="WidthRequest">600</property>
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>
                     <property name="Editable">False</property>
@@ -8461,6 +8462,18 @@ time</property>
         <property name="MemberName" />
         <property name="Spacing">6</property>
         <child>
+          <widget class="Gtk.Label" id="label1">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Group chat members</property>
+          </widget>
+          <packing>
+            <property name="Position">0</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
           <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
             <property name="MemberName" />
             <property name="ShadowType">In</property>
@@ -8475,7 +8488,7 @@ time</property>
             </child>
           </widget>
           <packing>
-            <property name="Position">0</property>
+            <property name="Position">1</property>
             <property name="AutoSize">True</property>
           </packing>
         </child>

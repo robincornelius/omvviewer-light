@@ -130,7 +130,11 @@ namespace omvviewerlight
                 {
 					GroupChatList groupchatlist=new GroupChatList();
 					this.hbox2.PackEnd(groupchatlist);
+								groupchatlist.WidthRequest=150;
+
 					this.hbox2.ShowAll();
+								groupchatlist.WidthRequest=150;
+
 					groupchatlist.setsession(im.IMSessionID);
 					this.im_session_id = im.IMSessionID;
                     im_key = UUID.Zero;
@@ -269,9 +273,11 @@ namespace omvviewerlight
 			dosetup();
 			GroupChatList groupchatlist=new GroupChatList();
 			this.hbox2.PackEnd(groupchatlist);
+			groupchatlist.WidthRequest=150;
 			this.hbox2.ShowAll();
+			groupchatlist.WidthRequest=150;
 			groupchatlist.setsession(target);
-		
+			
 			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
 			im_key=UUID.Zero;			
 			MainClass.client.Self.RequestJoinGroupChat(target);

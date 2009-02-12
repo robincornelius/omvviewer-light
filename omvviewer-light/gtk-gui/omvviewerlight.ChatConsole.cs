@@ -46,6 +46,7 @@ namespace omvviewerlight {
             this.GtkScrolledWindow.ShadowType = ((Gtk.ShadowType)(1));
             // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
             this.textview_chat = new Gtk.TextView();
+            this.textview_chat.WidthRequest = 600;
             this.textview_chat.CanFocus = true;
             this.textview_chat.Name = "textview_chat";
             this.textview_chat.Editable = false;
