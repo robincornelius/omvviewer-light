@@ -37,7 +37,6 @@ namespace omvviewerlight
 		{
 			if(session!=thissession)
 				return;
-			Console.WriteLine(" Group chat : "+key.ToString()+" joined");	
 			lock(store)
 			{
 			Gtk.TreeIter iter = store.AppendValues("Waiting...",key);
@@ -55,7 +54,6 @@ namespace omvviewerlight
 			if(session!=thissession)
 			return;
 
-			Console.WriteLine(" Group chat : "+key.ToString()+" left");		
 			lock(store)
             {
 			store.Foreach(delegate(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
