@@ -80,7 +80,7 @@ namespace omvviewerlight
                     monodevelop = true;
 				
                
-                client = new GridClient();
+        client = new GridClient();
 		client.Settings.USE_TEXTURE_CACHE = true;
 
 		string res_dir=System.AppDomain.CurrentDomain.BaseDirectory+System.IO.Path.DirectorySeparatorChar +"openmetaverse_data";

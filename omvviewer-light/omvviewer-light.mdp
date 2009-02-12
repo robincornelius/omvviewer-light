@@ -1,12 +1,18 @@
 <Project name="omvviewer-light" fileversion="2.0" DefaultNamespace="omvviewerlight.art" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
+      <CustomCommands>
+        <Command type="BeforeBuild" command="./fuckingmonodevelop.sh" workingdir="${ProjectDir}/gtk-gui/" externalConsole="True" pauseExternalConsole="True" />
+      </CustomCommands>
       <Output directory="bin/" assemblyKeyFile="." assembly="omvviewer-light" />
       <Build debugmode="True" target="Exe" />
       <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
       <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="True" generateoverflowchecks="True" mainclass="" definesymbols="DEBUG" generatexmldocumentation="False" win32Icon="." ctype="CSharpCompilerParameters" />
     </Configuration>
     <Configuration name="Release" ctype="DotNetProjectConfiguration">
+      <CustomCommands>
+        <Command type="BeforeBuild" command="./fuckingmonodevelop.sh" workingdir="${ProjectDir}/gtk-gui/" />
+      </CustomCommands>
       <Output directory="bin/" assemblyKeyFile="." assembly="omvviewer-light" />
       <Build debugmode="False" target="Exe" />
       <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
