@@ -39,8 +39,8 @@ namespace omvviewerlight
 
 			if(region.X==cx && region.Y==cy+1)
 			{
-				this.image1.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image1,region.MapImageID,100,100,false);	
+				this.image2.Pixbuf= MainClass.GetResource("trying.tga");
+				new TryGetImage(this.image2,region.MapImageID,100,100,false);	
 				regions[1]=region;
 			}
 			
