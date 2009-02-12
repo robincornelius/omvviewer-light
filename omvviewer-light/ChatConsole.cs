@@ -265,8 +265,13 @@ namespace omvviewerlight
 		}
 
 		public ChatConsole(UUID target,bool igroup)
-		{
+		{			
 			dosetup();
+			GroupChatList groupchatlist=new GroupChatList();
+			this.hbox2.PackEnd(groupchatlist);
+			this.hbox2.ShowAll();
+			groupchatlist.setsession(target);
+		
 			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
 			im_key=UUID.Zero;			
 			MainClass.client.Self.RequestJoinGroupChat(target);

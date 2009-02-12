@@ -8455,6 +8455,7 @@ time</property>
   </widget>
   <widget class="Gtk.Bin" id="omvviewerlight.GroupChatList" design-size="300 300">
     <property name="MemberName" />
+    <property name="WidthRequest">150</property>
     <child>
       <widget class="Gtk.VBox" id="vbox3">
         <property name="MemberName" />

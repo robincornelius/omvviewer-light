@@ -38,11 +38,16 @@ namespace omvviewerlight
 			if(session!=thissession)
 				return;
 			Console.WriteLine(" Group chat : "+key.ToString()+" joined");	
-             Gtk.TreeIter iter = store.AppendValues("Waiting...");
+			lock(store)
+			{
+			Gtk.TreeIter iter = store.AppendValues("Waiting...",key);
 		     AsyncNameUpdate ud=new AsyncNameUpdate(key,false);  
 			 ud.addparameters(iter);
-			 ud.onNameCallBack += delegate(string namex,object[] values){Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; store.SetValue(iterx,0,namex);};
-             ud.go();
+           			
+				
+			 ud.onNameCallBack += delegate(string namex,object[] values){Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; lock(store){store.SetValue(iterx,0,namex);}};
+			ud.go();
+             }	
          }
 
 		void onGroupChatMemberLeft(UUID thissession, UUID key)
@@ -51,17 +56,19 @@ namespace omvviewerlight
 			return;
 
 			Console.WriteLine(" Group chat : "+key.ToString()+" left");		
-			
+			lock(store)
+            {
 			store.Foreach(delegate(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
             {
-				UUID id=(UUID) store.GetValue(iter,1);
+				UUID id=(UUID)store.GetValue(iter,1);
  				if(id==key)
                 {					
 				    store.Remove(ref iter);
 			        return false;
                 }
 			return true;	
-        });			
+			});	
+            }		
 			
 		}
 

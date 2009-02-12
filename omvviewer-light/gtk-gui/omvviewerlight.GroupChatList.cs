@@ -23,6 +23,7 @@ namespace omvviewerlight {
             Stetic.Gui.Initialize(this);
             // Widget omvviewerlight.GroupChatList
             Stetic.BinContainer.Attach(this);
+            this.WidthRequest = 150;
             this.Name = "omvviewerlight.GroupChatList";
             // Container child omvviewerlight.GroupChatList.Gtk.Container+ContainerChild
             this.vbox3 = new Gtk.VBox();
