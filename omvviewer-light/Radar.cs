@@ -312,20 +312,22 @@ namespace omvviewerlight
 				
 			//	lock(MainClass.client.Network.Simulators)
 				{
-					Simulator target_sim=null;
+				Simulator target_sim=null;
 				foreach(Simulator sim in MainClass.client.Network.Simulators)
 				{
 						if(sim.ObjectsAvatars.Dictionary.ContainsKey(id))
-							{
+						{
 							target_sim=sim;
 							break;						
                          }		
 					
 				}
 					
-				if(target_sim==null)
+					if(target_sim==null)
+						{
+Console.WriteLine("NO SIM FOR AV?");						
 					return;
-
+}
                 //Cope if *they* are sitting on something
                 if (target_sim.ObjectsAvatars.Dictionary[id].ParentID != 0)
                 {

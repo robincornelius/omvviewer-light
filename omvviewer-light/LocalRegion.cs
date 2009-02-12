@@ -61,7 +61,7 @@ namespace omvviewerlight
 				this.image4.Pixbuf= MainClass.GetResource("trying.tga");
 				this.image4.TooltipText=region.Name;
 				
-					new TryGetImage(this.image4,region.MapImageID,100,100,false);
+				new TryGetImage(this.image4,region.MapImageID,100,100,false);
                 regions[3] = region;
 			}
 
@@ -70,7 +70,7 @@ namespace omvviewerlight
 				this.image6.Pixbuf= MainClass.GetResource("trying.tga");
 				this.image6.TooltipText=region.Name;
 				
-					new TryGetImage(this.image6,region.MapImageID,100,100,false);
+				new TryGetImage(this.image6,region.MapImageID,100,100,false);
 				regions[5]=region;
 			}
 
