@@ -611,6 +611,7 @@ namespace omvviewerlight
             }
 
             MainClass.client.Self.Chat(outtext, channel, type);
+			MainClass.client.Self.AnimationStop(Animations.TYPE,true);
 			
 			this.entry_chat.Text="";
 			
@@ -722,8 +723,9 @@ namespace omvviewerlight
 					  //  Console.Write("\nSending typing message\n");
                         byte[] binaryBucket;
                         binaryBucket = new byte[0];
-		    			MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_key,"typing",im_session_id,InstantMessageDialog.StartTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
-				    	istypingsent=true;
+					    MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_key,"typing",im_session_id,InstantMessageDialog.StartTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
+					    MainClass.client.Self.AnimationStart(Animations.TYPE,true);
+                        istypingsent=true;
 					    GLib.Timeout.Add(10000,StopTyping);
 				    }
 
@@ -736,8 +738,10 @@ namespace omvviewerlight
 					  //  Console.Write("\nSending typing message\n");
                         byte[] binaryBucket;
                         binaryBucket = new byte[0];
-		    			MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_key,"",im_session_id,InstantMessageDialog.StopTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
-			istypingsent=false;
+			MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_key,"",im_session_id,InstantMessageDialog.StopTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
+					    MainClass.client.Self.AnimationStop(Animations.TYPE,true);
+ 			
+istypingsent=false;
 		     return false;	
 			
 		 
