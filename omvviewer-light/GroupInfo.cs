@@ -556,7 +556,7 @@ namespace omvviewerlight
 			if(im.Dialog!=OpenMetaverse.InstantMessageDialog.GroupNoticeRequested)
 				return;
 		      
-            textview_notice.Buffer.SetText(im.Message);
+            textview_notice.Buffer.Text=im.Message;
             
 		}
 

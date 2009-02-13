@@ -101,8 +101,8 @@ namespace omvviewerlight
 				targetpos.Z=0;
 				distance=0;
 				sim=MainClass.client.Network.CurrentSim;
-				
-				for (int i = 0; i < MainClass.client.Network.Simulators.Count; i++)
+				int i;
+				for (i = 0; i < MainClass.client.Network.Simulators.Count; i++)
 	            {
 				
 					if (MainClass.client.Network.Simulators[i].ObjectsAvatars.TryGetValue(targetLocalID, out targetAv))
@@ -170,7 +170,6 @@ namespace omvviewerlight
 		{
             if (Active)
             {               
-				Avatar targetAv;
 			    Simulator sim=MainClass.client.Network.CurrentSim;
                 float distance = 0.0f;	
 				Vector3d targetpos;

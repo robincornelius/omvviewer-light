@@ -33,7 +33,7 @@ namespace omvviewerlight
 	{
 
 		UUID target_asset;
-		UUID target_id;
+		
 		
 		public TexturePreview(UUID texture,string title,bool isasset) : 
 				base(Gtk.WindowType.Toplevel)
@@ -49,7 +49,7 @@ namespace omvviewerlight
 		                Console.WriteLine("asset in store, requesting");            
 						InventoryItem ii = (InventoryItem)MainClass.client.Inventory.Store[texture];			
 						target_asset=ii.AssetUUID;
-						target_id=ii.UUID;
+			
 						Console.WriteLine("Asset id is "+ii.AssetUUID.ToString());
 						Console.WriteLine("Id is "+ii.UUID.ToString());
 //					    Gtk.Application.Invoke(delegate{
@@ -62,7 +62,7 @@ namespace omvviewerlight
 			}
 			else
 			{
-				TryGetImage tg= new TryGetImage(image,texture,false);
+				new TryGetImage(image,texture,false);
 			}
 		}
 		
@@ -73,7 +73,7 @@ namespace omvviewerlight
 			if(asset.AssetID!=target_asset)
 				return;
 			MainClass.client.Assets.OnAssetReceived -= new OpenMetaverse.AssetManager.AssetReceivedCallback(onAsset);
-			TryGetImage tg= new TryGetImage(this.image,asset.AssetID,false);
+			new TryGetImage(this.image,asset.AssetID,false);
 		}		
 	}
 }

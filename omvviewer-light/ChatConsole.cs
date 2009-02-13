@@ -63,13 +63,13 @@ namespace omvviewerlight
 			dosetup();
             this.im_session_id = UUID.Zero;
             this.im_key = UUID.Zero;
-            MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);		
+			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);		
 			MainClass.client.Self.OnChat += new OpenMetaverse.AgentManager.ChatCallback(onChat);
             MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
             MainClass.client.Friends.OnFriendOffline += new FriendsManager.FriendOfflineEvent(Friends_OnFriendOffline);
             MainClass.client.Friends.OnFriendOnline += new FriendsManager.FriendOnlineEvent(Friends_OnFriendOnline);
 		}
-
+		
         void Friends_OnFriendOnline(FriendInfo friend)
         {
             if (im_key == UUID.Zero && im_session_id == UUID.Zero)
@@ -128,7 +128,15 @@ namespace omvviewerlight
                 dosetup();
                 if (im.GroupIM)
                 {
-                    this.im_session_id = im.IMSessionID;
+					GroupChatList groupchatlist=new GroupChatList();
+					this.hbox2.PackEnd(groupchatlist);
+								groupchatlist.WidthRequest=150;
+
+					this.hbox2.ShowAll();
+								groupchatlist.WidthRequest=150;
+
+					groupchatlist.setsession(im.IMSessionID);
+					this.im_session_id = im.IMSessionID;
                     im_key = UUID.Zero;
                     MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
                     MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
@@ -261,8 +269,15 @@ namespace omvviewerlight
 		}
 
 		public ChatConsole(UUID target,bool igroup)
-		{
+		{			
 			dosetup();
+			GroupChatList groupchatlist=new GroupChatList();
+			this.hbox2.PackEnd(groupchatlist);
+			groupchatlist.WidthRequest=150;
+			this.hbox2.ShowAll();
+			groupchatlist.WidthRequest=150;
+			groupchatlist.setsession(target);
+			
 			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
 			im_key=UUID.Zero;			
 			MainClass.client.Self.RequestJoinGroupChat(target);
@@ -273,6 +288,7 @@ namespace omvviewerlight
 		void dosetup()
 		{
 			this.Build();
+
 			bold=new Gtk.TextTag("bold");
 			avchat=new Gtk.TextTag("avchat");
             selfavchat = new Gtk.TextTag("selfavchat");
@@ -506,7 +522,7 @@ namespace omvviewerlight
 						{
 							this.lookat=UUID.Random();
 							MainClass.client.Self.LookAtEffect(MainClass.client.Self.AgentID,id,Vector3d.Zero,LookAtType.Mouselook,lookat);
-							Gtk.Timeout.Add(3000,ClearLookAt);
+							GLib.Timeout.Add(3000,ClearLookAt);
 							lookatrunning=true;
 						}
 					}
@@ -611,6 +627,7 @@ namespace omvviewerlight
             }
 
             MainClass.client.Self.Chat(outtext, channel, type);
+			MainClass.client.Self.AnimationStop(Animations.TYPE,true);
 			
 			this.entry_chat.Text="";
 			
@@ -722,8 +739,8 @@ namespace omvviewerlight
 					  //  Console.Write("\nSending typing message\n");
                         byte[] binaryBucket;
                         binaryBucket = new byte[0];
-		    			MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_key,"typing",im_session_id,InstantMessageDialog.StartTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
-				    	
+					    MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_key,"typing",im_session_id,InstantMessageDialog.StartTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
+					    MainClass.client.Self.AnimationStart(Animations.TYPE,true);
                         istypingsent=true;
 					    GLib.Timeout.Add(10000,StopTyping);
 				    }
@@ -737,8 +754,10 @@ namespace omvviewerlight
 					  //  Console.Write("\nSending typing message\n");
                         byte[] binaryBucket;
                         binaryBucket = new byte[0];
-		    			MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_key,"",im_session_id,InstantMessageDialog.StopTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
-			istypingsent=false;
+			MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_key,"",im_session_id,InstantMessageDialog.StopTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
+					    MainClass.client.Self.AnimationStop(Animations.TYPE,true);
+ 			
+istypingsent=false;
 		     return false;	
 			
 		 

@@ -176,12 +176,21 @@ namespace omvviewerlight
             }
            
 			Gdk.Pixbuf buf;
-				
+	
+			try
+			{
 			if(this.scale)
 				buf = new Gdk.Pixbuf(tgaFile);
 			else
 				buf = new Gdk.Pixbuf(tgaFile).ScaleSimple(img_width, img_height, Gdk.InterpType.Bilinear);;
-					
+			}
+			catch
+			{
+				//Something terribly wrong with decoded data
+				Logger.Log("ERROR: Openjpeg returned an invalid decode",Helpers.LogLevel.Error);
+				return;
+			}
+			
             Console.Write("Decoded\n");
 
             Gtk.Application.Invoke(delegate

@@ -33,6 +33,7 @@ namespace omvviewerlight
 			if(region.X==cx-1 && region.Y==cy+1)
 			{
 				this.image1.Pixbuf= MainClass.GetResource("trying.tga");
+				this.image1.TooltipText=region.Name;
 				new TryGetImage(this.image1,region.MapImageID,100,100,false);	
 				regions[0]=region;
 			}
@@ -40,6 +41,7 @@ namespace omvviewerlight
 			if(region.X==cx && region.Y==cy+1)
 			{
 				this.image2.Pixbuf= MainClass.GetResource("trying.tga");
+				this.image2.TooltipText=region.Name;
 				new TryGetImage(this.image2,region.MapImageID,100,100,false);	
 				regions[1]=region;
 			}
@@ -47,13 +49,17 @@ namespace omvviewerlight
 			if(region.X==cx+1 && region.Y==cy+1)
 			{
 				this.image3.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image3,region.MapImageID,100,100,false);
+				this.image3.TooltipText=region.Name;
+				
+					new TryGetImage(this.image3,region.MapImageID,100,100,false);
 				regions[2]=region;
 			}
 			if(region.X==cx-1 && region.Y==cy)
 			{
                 Console.WriteLine("Updaing map for cell 4 (3)");
 				this.image4.Pixbuf= MainClass.GetResource("trying.tga");
+				this.image4.TooltipText=region.Name;
+				
 				new TryGetImage(this.image4,region.MapImageID,100,100,false);
                 regions[3] = region;
 			}
@@ -61,6 +67,8 @@ namespace omvviewerlight
 				if(region.X==cx+1 && region.Y==cy)
 			{
 				this.image6.Pixbuf= MainClass.GetResource("trying.tga");
+				this.image6.TooltipText=region.Name;
+				
 				new TryGetImage(this.image6,region.MapImageID,100,100,false);
 				regions[5]=region;
 			}
@@ -69,21 +77,27 @@ namespace omvviewerlight
 			if(region.X==cx-1 && region.Y==cy-1)
 			{
 				this.image7.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image7,region.MapImageID,100,100,false);
+				this.image7.TooltipText=region.Name;
+				
+					new TryGetImage(this.image7,region.MapImageID,100,100,false);
 				regions[6]=region;
 			}
 
 			if(region.X==cx && region.Y==cy-1)
 			{
 				this.image8.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image8,region.MapImageID,100,100,false);
+				this.image8.TooltipText=region.Name;
+				
+					new TryGetImage(this.image8,region.MapImageID,100,100,false);
 				regions[7]=region;
 			}
 			
 			if(region.X==cx+1 && region.Y==cy-1)
 			{
 				this.image9.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image9,region.MapImageID,100,100,false);
+				this.image9.TooltipText=region.Name;
+				
+					new TryGetImage(this.image9,region.MapImageID,100,100,false);
 				regions[8]=region;
 			}
 				
@@ -93,6 +107,8 @@ namespace omvviewerlight
 					{
 						requested=false;
 						this.image5.Pixbuf= MainClass.GetResource("trying.tga");
+				this.image5.TooltipText=region.Name;
+						
 						new TryGetImage(this.image5,region.MapImageID,100,100,false);				
 						cx=(uint)region.X;
 						cy=(uint)region.Y;
@@ -124,6 +140,16 @@ namespace omvviewerlight
                 image7.Clear();
                 image8.Clear();
                 image9.Clear();
+				image1.TooltipText="";
+				image2.TooltipText="";
+				image3.TooltipText="";
+				image4.TooltipText="";
+				image5.TooltipText="";
+				image6.TooltipText="";
+				image7.TooltipText="";
+				image8.TooltipText="";
+				image9.TooltipText="";
+				
                 requested = true;
                 cx = 0;
                 cy = 0;
@@ -136,55 +162,55 @@ namespace omvviewerlight
 
 		protected virtual void OnEventbox1ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-			if(regions[0].Name!="");
+			if(regions[0].Name!="")
 			MainClass.win.map_widget.changeregion(regions[0]);
 		}
 
 		protected virtual void OnEventbox2ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-			if(regions[1].Name!="");
+			if(regions[1].Name!="")
 			MainClass.win.map_widget.changeregion(regions[1]);
 		}
 
 		protected virtual void OnEventbox3ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-			if(regions[2].Name!="");
+			if(regions[2].Name!="")
 			MainClass.win.map_widget.changeregion(regions[2]);
 		}
 
 		protected virtual void OnEventbox4ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-			if(regions[3].Name!="");
+			if(regions[3].Name!="")
 			MainClass.win.map_widget.changeregion(regions[3]);
 		}
 
 		protected virtual void OnEventbox5ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-			if(regions[4].Name!="");
+			if(regions[4].Name!="")
 			MainClass.win.map_widget.changeregion(regions[4]);
 		}
 
 		protected virtual void OnEventbox6ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-			if(regions[5].Name!="");
+			if(regions[5].Name!="")
 			MainClass.win.map_widget.changeregion(regions[5]);
 		}
 
 		protected virtual void OnEventbox7ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-			if(regions[6].Name!="");
+			if(regions[6].Name!="")
 			MainClass.win.map_widget.changeregion(regions[6]);
 		}
 
 		protected virtual void OnEventbox8ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-			if(regions[7].Name!="");
+			if(regions[7].Name!="")
 			MainClass.win.map_widget.changeregion(regions[7]);
 		}
 
 		protected virtual void OnEventbox9ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-			if(regions[8].Name!="");
+			if(regions[8].Name!="")
 			MainClass.win.map_widget.changeregion(regions[8]);
 		}
 		

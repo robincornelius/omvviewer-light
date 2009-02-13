@@ -233,8 +233,7 @@ namespace omvviewerlight
                         if (!this.av_tree.ContainsKey(avatar.LocalID))
                         {
                             // The agent *might* still be present under an old localID and we
-                            // missed the kill
-              
+                            // missed the kill
 							    List <uint> removelist=new List <uint>();
                                 foreach (KeyValuePair<uint, agent> av in av_tree)
                                 {
@@ -310,14 +309,32 @@ namespace omvviewerlight
                         self_pos = MainClass.client.Self.RelativePosition;
                     }
                 }
-                
+				
+			//	lock(MainClass.client.Network.Simulators)
+				{
+				Simulator target_sim=null;
+				foreach(Simulator sim in MainClass.client.Network.Simulators)
+				{
+						if(sim.ObjectsAvatars.Dictionary.ContainsKey(id))
+						{
+							target_sim=sim;
+							break;						
+                         }		
+					
+				}
+					
+					if(target_sim==null)
+						{
+Console.WriteLine("NO SIM FOR AV?");						
+					return;
+}
                 //Cope if *they* are sitting on something
-                if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[id].ParentID != 0)
+                if (target_sim.ObjectsAvatars.Dictionary[id].ParentID != 0)
                 {
-                    if (!MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary.ContainsKey(MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[id].ParentID))
+                    if (!target_sim.ObjectsPrimitives.Dictionary.ContainsKey(target_sim.ObjectsAvatars.Dictionary[id].ParentID))
                         return;
 
-                    Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[av.ParentID];
+                    Primitive parent = target_sim.ObjectsPrimitives.Dictionary[av.ParentID];
                     Vector3 av_pos = Vector3.Transform(av.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
                     dist = Vector3.Distance(self_pos, av_pos);
                 }
@@ -325,6 +342,8 @@ namespace omvviewerlight
                 {
                     dist = Vector3.Distance(self_pos, av.Position);
                 }
+				
+      			}
 
 				Gtk.Application.Invoke(delegate
 				{

@@ -75,8 +75,9 @@ namespace omvviewerlight
             MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
 			MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
 			AutoPilot.onAutoPilotFinished += new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
-			Gtk.Timeout.Add(10000, kickrefresh);			
+			GLib.Timeout.Add(10000, kickrefresh);			
 			this.targetpos.X=-1;
+			
 			
 			if(MainClass.client!=null)
 			{
@@ -129,11 +130,17 @@ namespace omvviewerlight
 			Gdk.Pixbuf pb= MainClass.GetResource("trying.tga");
 			objects_map = new Gtk.Image(pb);
 			this.image.Pixbuf=pb;	
-			
-            TryGetImage tgi = new TryGetImage(this.objects_map, region.MapImageID, 350, 350, true);
-            tgi.OnDecodeComplete += new TryGetImage.Decodecomplete(tgi_OnDecodeComplete);
-            tgi.go();
 
+			TryGetImage tgi=new TryGetImage(this.objects_map,region.MapImageID,350,350,true);
+            tgi.OnDecodeComplete += new TryGetImage.Decodecomplete(delegate()
+			{
+				  Gtk.Application.Invoke(delegate
+            {
+                drawavs();
+            });
+				
+			});
+            tgi.go();
 		}
 		
 		void onGridRegion(GridRegion region)
@@ -148,20 +155,12 @@ namespace omvviewerlight
 				this.objects_map_ID=region.MapImageID;
 				Gdk.Pixbuf pb= MainClass.GetResource("trying.tga");
 				objects_map = new Gtk.Image(pb);
+
 				this.image.Pixbuf=pb;
                 new TryGetImage(this.objects_map, region.MapImageID, 350, 350, false);
 			}
 		}
 
-        void tgi_OnDecodeComplete()
-        {
-            Console.WriteLine("MAP: Callback recieved forcing a redraw");
-            Gtk.Application.Invoke(delegate
-            {
-                drawavs();
-            });
-        }
-				
 		void onTeleport(string Message, OpenMetaverse.AgentManager.TeleportStatus status,OpenMetaverse.AgentManager.TeleportFlags flags)
 	    {
 			if(status==OpenMetaverse.AgentManager.TeleportStatus.Finished)
@@ -245,8 +244,9 @@ namespace omvviewerlight
                 }
                  
 				int myz=(int)MainClass.client.Self.SimPosition.Z;
-				
+					
                 if(draw_sim!=null)
+ 
                 lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
                 {
 					List <uint> removelist=new List<uint>();
