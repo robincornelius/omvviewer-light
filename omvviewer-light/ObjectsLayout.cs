@@ -272,15 +272,17 @@ namespace omvviewerlight
                             return ((prim.ParentID == 0) && (pos != Vector3d.Zero) && (Vector3d.Distance(pos, location) < radius));
                         }
                     );
+
+                    if (prims != null)
+                        RequestObjectProperties(prims, 250,sim);
                 }
             }
 
-            if(prims!=null)
-           	    RequestObjectProperties(prims, 250);
+           
 			
 		}
-		
-        private void RequestObjectProperties(List<Primitive> objects, int msPerRequest)
+
+        private void RequestObjectProperties(List<Primitive> objects, int msPerRequest, Simulator sim)
         {
             // Create an array of the local IDs of all the prims we are requesting properties for
             uint[] localids = new uint[objects.Count];
@@ -291,15 +293,14 @@ namespace omvviewerlight
 				{
 					PrimsWaiting.Clear();
 				    FetchedPrims.Clear();
-
-					for (int i = 0; i < objects.Count; ++i) {
+                  	for (int i = 0; i < objects.Count; ++i) {
 						localids[i] = objects[i].LocalID;
-						PrimsWaiting.Add(objects[i].ID, objects[i]);
+                        PrimsWaiting.Add(objects[i].ID, objects[i]);
 					}
 				}
 			}
-			
-            MainClass.client.Objects.SelectObjects(MainClass.client.Network.CurrentSim, localids);
+
+            MainClass.client.Objects.SelectObjects(sim, localids);
 
             //return AllPropertiesReceived.WaitOne(2000 + msPerRequest * objects.Count, false);
         }
