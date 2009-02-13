@@ -46,12 +46,12 @@ namespace omvviewerlight
 
         public TryGetImage(Gtk.Image target, UUID asset, bool asynccallback)
 		{
-			TryGetImageWork(target,asset,true,256,256,false);
+            TryGetImageWork(target, asset, true, 256, 256, asynccallback);
 		}
 		
 		public TryGetImage(Gtk.Image target,UUID asset,int width,int height,bool asynccallback)
 		{
-			TryGetImageWork(target,asset,false,width,height,false);
+            TryGetImageWork(target, asset, false, width, height, asynccallback);
 		}
 
         public void TryGetImageWork(Gtk.Image target, UUID asset, bool auto, int width, int height, bool asynccallback)
@@ -69,20 +69,20 @@ namespace omvviewerlight
             img_height = height;
 
             if (asynccallback)
-            {
                 return;
-            }
 
             dowork();	
 	    }
 
         public void go()
         {
+            Console.WriteLine("TryGetImage:: GO()");
             dowork();
         }
 
         void dowork()
         {
+            Console.WriteLine("TryGetImage:: DOWORK()");
             Gdk.Pixbuf buf = MainClass.GetResource("trying.tga");
 
             if (scale)
@@ -199,6 +199,7 @@ namespace omvviewerlight
                             {
                                 try
                                 {
+                                    Console.WriteLine("TryGetImage:: Fireing callback");
                                     OnDecodeComplete();
                                     OnDecodeComplete = null;
                                 }

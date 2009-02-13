@@ -129,7 +129,10 @@ namespace omvviewerlight
 			Gdk.Pixbuf pb= MainClass.GetResource("trying.tga");
 			objects_map = new Gtk.Image(pb);
 			this.image.Pixbuf=pb;	
-			new TryGetImage(this.objects_map,region.MapImageID,350,350,false);
+			
+            TryGetImage tgi = new TryGetImage(this.objects_map, region.MapImageID, 350, 350, true);
+            tgi.OnDecodeComplete += new TryGetImage.Decodecomplete(tgi_OnDecodeComplete);
+            tgi.go();
 
 		}
 		
@@ -146,14 +149,13 @@ namespace omvviewerlight
 				Gdk.Pixbuf pb= MainClass.GetResource("trying.tga");
 				objects_map = new Gtk.Image(pb);
 				this.image.Pixbuf=pb;
-				TryGetImage tgi=new TryGetImage(this.objects_map,region.MapImageID,350,350,true);
-                tgi.OnDecodeComplete += new TryGetImage.Decodecomplete(tgi_OnDecodeComplete);
-                tgi.go();
+                new TryGetImage(this.objects_map, region.MapImageID, 350, 350, false);
 			}
 		}
 
         void tgi_OnDecodeComplete()
         {
+            Console.WriteLine("MAP: Callback recieved forcing a redraw");
             Gtk.Application.Invoke(delegate
             {
                 drawavs();
@@ -207,7 +209,8 @@ namespace omvviewerlight
 			
 		void drawavs()
 		{
-		
+
+          Console.WriteLine("Draw AVS");
 		  basemap=this.objects_map;
 			
           if (basemap == null)
@@ -310,6 +313,7 @@ namespace omvviewerlight
 
             lock (image)
             {
+                Console.WriteLine("Updating the real image");
                 image.Pixbuf = buf;
                 image.QueueDraw();
 			}

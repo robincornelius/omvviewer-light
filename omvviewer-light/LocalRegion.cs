@@ -39,8 +39,8 @@ namespace omvviewerlight
 
 			if(region.X==cx && region.Y==cy+1)
 			{
-				this.image1.Pixbuf= MainClass.GetResource("trying.tga");
-				new TryGetImage(this.image1,region.MapImageID,100,100,false);	
+				this.image2.Pixbuf= MainClass.GetResource("trying.tga");
+				new TryGetImage(this.image2,region.MapImageID,100,100,false);	
 				regions[1]=region;
 			}
 			
@@ -125,6 +125,8 @@ namespace omvviewerlight
                 image8.Clear();
                 image9.Clear();
                 requested = true;
+                cx = 0;
+                cy = 0;
                 Console.WriteLine("Requesting map region for current region");
                 MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name, GridLayerType.Objects);
             });           

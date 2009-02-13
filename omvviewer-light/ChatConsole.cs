@@ -723,7 +723,8 @@ namespace omvviewerlight
                         byte[] binaryBucket;
                         binaryBucket = new byte[0];
 		    			MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_key,"typing",im_session_id,InstantMessageDialog.StartTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
-				    	istypingsent=true;
+				    	
+                        istypingsent=true;
 					    GLib.Timeout.Add(10000,StopTyping);
 				    }
 
