@@ -41,9 +41,10 @@ namespace omvviewerlight
 		
 		static bool Active;
 		static UUID target_object;
-		static uint target_avatar;
+        static UUID target_avatar;
 		static Vector3d target_pos_global;
 		static bool follow=false;
+
 
 		public delegate void AutoPilotFinished();
         public static event AutoPilotFinished onAutoPilotFinished;
@@ -72,10 +73,10 @@ namespace omvviewerlight
 			GLib.Timeout.Add(100,Think);
 		}
 		
-		public static void set_target_avatar (uint localid,bool followon)
+		public static void set_target_avatar (UUID target,bool followon)
 		{
 			type=TargetType.TARGET_AVATAR;
-			target_avatar=localid;
+			target_avatar=target;
 			Active=true;
 			GLib.Timeout.Add(100,Think);
 			follow=followon;
@@ -88,28 +89,65 @@ namespace omvviewerlight
 			Active=true;
 			GLib.Timeout.Add(100,Think);
 		}
-	
-		static Vector3d get_av_pos(uint targetLocalID,out float distance,out Simulator sim)
+
+        public static Avatar findavatarinsims(UUID findtarget)
+        {
+            Avatar target=null;
+
+            lock (MainClass.client.Network.Simulators)
+            {
+                for (int i = 0; i < MainClass.client.Network.Simulators.Count; i++)
+                {
+                    target = MainClass.client.Network.Simulators[i].ObjectsAvatars.Find
+                    (
+                        delegate(Avatar avatar)
+                        {
+                            return avatar.ID == findtarget;
+                        }
+                     );
+                     if(target!=null)
+                        return target;
+
+                }
+            }
+
+            return target;
+        }
+
+        static uint getlocalid(UUID id)
+        {
+            Avatar target = findavatarinsims(id);
+            if(target!=null)
+                return target.LocalID;
+
+            return 0;
+        }
+
+		static Vector3d get_av_pos(UUID targetID,out float distance)
 		{	
           lock (MainClass.client.Network.Simulators)
           {
-					
-				Avatar targetAv;
 				Vector3 targetpos;
 				targetpos.X=0;
 				targetpos.Y=0;
 				targetpos.Z=0;
 				distance=0;
-				sim=MainClass.client.Network.CurrentSim;
+				
 				int i;
 				for (i = 0; i < MainClass.client.Network.Simulators.Count; i++)
 	            {
+
+                    Avatar targetAv = MainClass.client.Network.Simulators[i].ObjectsAvatars.Find(
+                        delegate(Avatar avatar)
+                        {
+                            return avatar.ID == targetID;
+                        }
+                    );
 				
-					if (MainClass.client.Network.Simulators[i].ObjectsAvatars.TryGetValue(targetLocalID, out targetAv))
+                    if(targetAv!=null)
 					{
 						if(targetAv.ParentID!=0)
 						{
-						
 							if(!MainClass.client.Network.Simulators[i].ObjectsPrimitives.Dictionary.ContainsKey(targetAv.ParentID))
 							{
 								Console.WriteLine("AV is seated and i can't find the parent prim in dictionay");
@@ -126,15 +164,13 @@ namespace omvviewerlight
 								Vector3 pos;
 								Primitive parent = MainClass.client.Network.Simulators[i].ObjectsPrimitives.Dictionary[targetAv.ParentID];
 								targetpos=pos = Vector3.Transform(targetAv.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
-								sim=MainClass.client.Network.Simulators[i];
-                          
 								distance = (float)Vector3d.Distance(new Vector3d(pos), MainClass.client.Self.GlobalPosition);
 													
 							}				
 						}			
 						else
 						{
-								sim=MainClass.client.Network.Simulators[i];
+							
                                 distance = (float)Vector3d.Distance(new Vector3d(targetAv.Position), MainClass.client.Self.GlobalPosition);
 								targetpos=targetAv.Position;
 						}
@@ -176,7 +212,7 @@ namespace omvviewerlight
 				
 				if(type==TargetType.TARGET_AVATAR)
 				{
-					targetpos=get_av_pos(target_avatar,out distance,out sim);
+					targetpos=get_av_pos(target_avatar,out distance);
 					distance = (float)Vector3d.Distance(targetpos, new Vector3d(MainClass.client.Self.SimPosition));	
 					//Console.WriteLine("Avatar Target at "+targetpos.ToString());
 					//Console.WriteLine("I'm at "+MainClass.client.Self.SimPosition.ToString());

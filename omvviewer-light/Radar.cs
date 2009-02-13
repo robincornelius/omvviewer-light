@@ -53,7 +53,7 @@ namespace omvviewerlight
 		
 		public Radar()
 		{      
-			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(uint));
+			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(UUID));
 			this.Build();
 			Gtk.TreeViewColumn tvc;
 			treeview_radar.AppendColumn("",new Gtk.CellRendererText(),"text",0);
@@ -153,7 +153,7 @@ namespace omvviewerlight
                             agent theagent = new agent();
                             theagent.avatar = kvp.Value;
                             Gtk.TreeIter iter;
-                            iter = store.AppendValues("", kvp.Value.Name, "", kvp.Value.LocalID);
+                            iter = store.AppendValues("", kvp.Value.Name, "", kvp.Value.ID);
                             theagent.iter = iter;
                             av_tree.Add(kvp.Value.LocalID, theagent);
                             calcdistance(kvp.Value.LocalID);
@@ -278,7 +278,7 @@ namespace omvviewerlight
                             theagent.avatar = avatar;
                             Gtk.TreeIter iter;
 					        
-			                iter = store.AppendValues("", avatar.Name, "", avatar.LocalID);
+			                iter = store.AppendValues("", avatar.Name, "", avatar.ID);
 	                        theagent.iter = iter;
 
 	                        av_tree.Add(avatar.LocalID, theagent);
@@ -435,11 +435,11 @@ namespace omvviewerlight
 			
 			if(this.treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
-				uint localid=(uint)mod.GetValue(iter,3);
-				agent avatar;
-				if(av_tree.TryGetValue(localid,out avatar))
+                UUID id=(UUID)mod.GetValue(iter,3);
+                Avatar avatar = AutoPilot.findavatarinsims(id);
+				if(avatar!=null)
 				{
-					MainClass.win.startIM(avatar.avatar.ID);
+					MainClass.win.startIM(avatar.ID);
 				}
 			}		
 		}
@@ -452,11 +452,11 @@ namespace omvviewerlight
 			
 			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
-				uint localid=(uint)mod.GetValue(iter,3);
-				agent avatar;
-				if(av_tree.TryGetValue(localid,out avatar))
+                UUID id=(UUID)mod.GetValue(iter,3);
+                Avatar avatar = AutoPilot.findavatarinsims(id);
+				if(avatar!=null)
 				{
-					PayWindow pay=new PayWindow(avatar.avatar.ID,0);
+					PayWindow pay=new PayWindow(avatar.ID,0);
 					pay.Show();
 				}	
 			}		
@@ -469,11 +469,11 @@ namespace omvviewerlight
 			
 			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
-				uint localid=(uint)mod.GetValue(iter,3);
-				agent avatar;
-				if(av_tree.TryGetValue(localid,out avatar))
+                UUID id = (UUID)mod.GetValue(iter, 3);
+                Avatar avatar = AutoPilot.findavatarinsims(id);
+                if (avatar != null)
 				{
-					ProfileVIew p = new ProfileVIew(avatar.avatar.ID);
+					ProfileVIew p = new ProfileVIew(avatar.ID);
 					p.Show();
 				}						
 			}		
@@ -492,8 +492,8 @@ namespace omvviewerlight
 			
 			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
-				uint localid=(uint)mod.GetValue(iter,3);		
-				AutoPilot.set_target_avatar(localid,true);
+				UUID id=(UUID)mod.GetValue(iter,3);		
+				AutoPilot.set_target_avatar(id,true);
 				this.button1.Label="STOP";
 			}
 		}
@@ -505,27 +505,27 @@ namespace omvviewerlight
 			
 			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
-				uint localid=(uint)mod.GetValue(iter,3);
-				agent avatar;
-				if(av_tree.TryGetValue(localid,out avatar))
+				UUID id=(UUID)mod.GetValue(iter,3);
+                Avatar avatar = AutoPilot.findavatarinsims(id);
+				if(avatar!=null)
 				{
 					Vector3 pos;
 					
-					if(avatar.avatar.ParentID==0)
+					if(avatar.ParentID==0)
 					{
-						pos=avatar.avatar.Position;
+						pos=avatar.Position;
 						MainClass.client.Self.Movement.TurnToward(pos);					
 					}					
 					else
 					{
-						if(!MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary.ContainsKey(avatar.avatar.ParentID))
+						if(!MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary.ContainsKey(avatar.ParentID))
 						{
 							Console.WriteLine("AV is seated and i can't find the parent prim in dictionay");
 						}
 						else
 						{
-							Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[avatar.avatar.ParentID];
-							pos = Vector3.Transform(avatar.avatar.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
+							Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[avatar.ParentID];
+							pos = Vector3.Transform(avatar.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
 							MainClass.client.Self.Movement.TurnToward(pos);						
 						}					
 					}					
