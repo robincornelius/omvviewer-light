@@ -208,8 +208,6 @@ namespace omvviewerlight
 			
 		void drawavs()
 		{
-
-          Console.WriteLine("Draw AVS");
 		  basemap=this.objects_map;
 			
           if (basemap == null)
@@ -313,7 +311,6 @@ namespace omvviewerlight
 
             lock (image)
             {
-                Console.WriteLine("Updating the real image");
                 image.Pixbuf = buf;
                 image.QueueDraw();
 			}

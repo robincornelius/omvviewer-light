@@ -49,21 +49,23 @@ namespace omvviewerlight
                 MainClass.client.Grid.RequestMapBlocks(GridLayerType.Objects, (ushort)(region.X - 1), (ushort)(region.Y - 1), (ushort)(region.X + 1), (ushort)(region.Y + 1), false);
             }
 
-            int row = (int)2 - (((int)cx + (int)1) - (int)region.X); //FFS
-            int col = (int)2 - (((int)cx + (int)1) - (int)region.Y);
+            int col = (int)2 - (((int)cx + (int)1) - (int)region.X); //FFS
+            int row = (((int)cy + (int)1) - (int)region.Y);
+
+            Console.WriteLine("Row is " + row.ToString() + " Col is " + col.ToString());
 
             if (row < 0 || row > 2)
                 return;
             if (col < 0 || col > 2)
                 return;
 
-            int index = (col * 3) + row;
+            int index = (row * 3) + col;
 
             images[index].Pixbuf = MainClass.GetResource("trying.tga");
             Gtk.Tooltips name = new Gtk.Tooltips();
             name.SetTip(images[index], region.Name,"");
             name.Enable();
-            new TryGetImage(image1,region.MapImageID,100,100,false);	
+            new TryGetImage(images[index], region.MapImageID, 100, 100, false);	
 			regions[index]=region;
 	
 			});
@@ -72,25 +74,22 @@ namespace omvviewerlight
 		void onNewSim(Simulator lastsim)
 	    {	
 			requested=true;
-			for(int x=0;x<9;x++)
-			{
-				regions[x]=new OpenMetaverse.GridRegion();
-				regions[x].Name="";
-			}
+            cx = 0;
+            cy = 0;
 
             Gtk.Application.Invoke(delegate{
 
                 for (int x = 0; x < 9; x++)
                 {
+                    regions[x] = new OpenMetaverse.GridRegion();
+                    regions[x].Name = "";
                     images[x].Clear();
                     Gtk.Tooltips name = new Gtk.Tooltips();
                     name.SetTip(images[x], "Empty", "");
                     name.Enable();
                 }
 
-                requested = true;
-                cx = 0;
-                cy = 0;
+     
                 Console.WriteLine("Requesting map region for current region");
                 MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name, GridLayerType.Objects);
             });           

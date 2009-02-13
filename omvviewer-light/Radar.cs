@@ -72,13 +72,39 @@ namespace omvviewerlight
 			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
 	
 			MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
-
+            
 			AutoPilot.onAutoPilotFinished+=new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
+
+            MainClass.client.Network.OnSimDisconnected += new NetworkManager.SimDisconnectedCallback(Network_OnSimDisconnected);
 			
 			this.store.SetSortFunc(2,sort_Vector3);	
             store.SetSortColumnId(2,Gtk.SortType.Ascending);
             Gtk.Timeout.Add(10000, kickrefresh);
 		}
+
+        void Network_OnSimDisconnected(Simulator simulator, NetworkManager.DisconnectType reason)
+        {
+            lock (simulator.ObjectsAvatars.Dictionary)
+  
+            {
+                foreach (KeyValuePair<uint, Avatar> kvp in simulator.ObjectsAvatars.Dictionary)
+                {
+                    if (kvp.Value == null)
+                        continue;
+
+                    if (kvp.Value.ID == UUID.Zero)
+                        continue;
+                    lock (av_tree)
+                    {
+                        if (av_tree.ContainsKey(kvp.Value.LocalID))
+                        {
+                            store.Remove(ref av_tree[kvp.Value.LocalID].iter);
+                            av_tree.Remove(kvp.Value.LocalID);
+                        }
+                    }
+                }
+            }
+        }
 
 		new public void Dispose()
 		{
@@ -106,11 +132,14 @@ namespace omvviewerlight
 
             if (MainClass.client.Network.CurrentSim.ObjectsAvatars == null)
                 return true;
-			
-			lock(MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
-			{
-                
-                    foreach (KeyValuePair<uint, Avatar> kvp in MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
+
+            foreach (Simulator sim in MainClass.client.Network.Simulators)
+            {
+
+                lock (sim.ObjectsAvatars.Dictionary)
+                {
+
+                    foreach (KeyValuePair<uint, Avatar> kvp in sim.ObjectsAvatars.Dictionary)
                     {
                         //Seen this fire with some kind of null
                         if (kvp.Value == null)
@@ -124,7 +153,7 @@ namespace omvviewerlight
                             agent theagent = new agent();
                             theagent.avatar = kvp.Value;
                             Gtk.TreeIter iter;
-					        iter = store.AppendValues("", kvp.Value.Name, "", kvp.Value.LocalID);
+                            iter = store.AppendValues("", kvp.Value.Name, "", kvp.Value.LocalID);
                             theagent.iter = iter;
                             av_tree.Add(kvp.Value.LocalID, theagent);
                             calcdistance(kvp.Value.LocalID);
@@ -134,9 +163,9 @@ namespace omvviewerlight
                             calcdistance(kvp.Value.LocalID);
                         }
                     }
+                }
+            }
 
-	            
-			}
             
             return true;
 
@@ -160,7 +189,6 @@ namespace omvviewerlight
 
             if (distBs == "NaN")
                 return -1;
-
 
 			if(distA>distB)
 				return 1;
@@ -228,7 +256,7 @@ namespace omvviewerlight
 			{  
                 lock(av_tree)
 			    {
-				    lock(MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
+				    lock(simulator.ObjectsAvatars.Dictionary)
 				    {
                         if (!this.av_tree.ContainsKey(avatar.LocalID))
                         {
@@ -239,7 +267,7 @@ namespace omvviewerlight
                                 {
                                     if (av.Value.avatar.ID == avatar.ID)
                                     {
-                                        MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.Remove(av.Key);
+                                        simulator.ObjectsAvatars.Dictionary.Remove(av.Key);
                                         removelist.Add(av.Key);
                                     }
                                 }
@@ -274,7 +302,6 @@ namespace omvviewerlight
 						        store.Remove(ref av_tree[objectID].iter);
 						        av_tree.Remove(objectID);
                             }
-                        
 					}
 				});
 			}
@@ -285,12 +312,7 @@ namespace omvviewerlight
             if (this.av_tree.ContainsKey(id))
             {
                 double dist;
-                
-                if (!MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.ContainsKey(id))
-                    return;
-
-                Avatar av = MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[id];
-
+              
                 Vector3 self_pos;
 
                 lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
@@ -309,9 +331,12 @@ namespace omvviewerlight
                         self_pos = MainClass.client.Self.RelativePosition;
                     }
                 }
-				
-			//	lock(MainClass.client.Network.Simulators)
-				{
+
+                uint regionX, regionY;
+                Utils.LongToUInts(MainClass.client.Network.CurrentSim.Handle, out regionX, out regionY);
+                self_pos.X = self_pos.X + regionX;
+                self_pos.Y = self_pos.Y + regionY;
+                
 				Simulator target_sim=null;
 				foreach(Simulator sim in MainClass.client.Network.Simulators)
 				{
@@ -320,30 +345,37 @@ namespace omvviewerlight
 							target_sim=sim;
 							break;						
                          }		
-					
 				}
 					
-					if(target_sim==null)
-						{
-Console.WriteLine("NO SIM FOR AV?");						
-					return;
-}
+				if(target_sim==null)
+				{
+                    Console.WriteLine("NO SIM FOR AV?");						
+				    return;
+                }
+
+                Avatar av = target_sim.ObjectsAvatars.Dictionary[id];
+                Vector3 av_pos;
                 //Cope if *they* are sitting on something
                 if (target_sim.ObjectsAvatars.Dictionary[id].ParentID != 0)
                 {
                     if (!target_sim.ObjectsPrimitives.Dictionary.ContainsKey(target_sim.ObjectsAvatars.Dictionary[id].ParentID))
+                    {
+                        Console.WriteLine("Avatar is sitting but can't find parent prim");
                         return;
+                    }
 
                     Primitive parent = target_sim.ObjectsPrimitives.Dictionary[av.ParentID];
-                    Vector3 av_pos = Vector3.Transform(av.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
-                    dist = Vector3.Distance(self_pos, av_pos);
+                    av_pos = Vector3.Transform(av.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
                 }
                 else
                 {
-                    dist = Vector3.Distance(self_pos, av.Position);
+                    av_pos = av.Position;
                 }
-				
-      			}
+
+                Utils.LongToUInts(target_sim.Handle, out regionX, out regionY);
+                av_pos.X = av_pos.X + regionX;
+                av_pos.Y = av_pos.Y + regionY;
+                dist = Vector3.Distance(self_pos, av_pos);
 
 				Gtk.Application.Invoke(delegate
 				{
