@@ -33,8 +33,7 @@ namespace omvviewerlight
 		enum TargetType{
 		TARGET_AVATAR,
 		TARGET_OBJECT,
-		TARGET_POS,
-        TARGET_POS_REGION,
+		TARGET_POS
 	}
 		
 		static TargetType type;
@@ -183,6 +182,36 @@ namespace omvviewerlight
 					
 			}
 		}
+
+        public static Primitive findobject(UUID findtarget,out Simulator sim)
+        {
+            Primitive target=null;
+
+            lock (MainClass.client.Network.Simulators)
+            {
+                for (int i = 0; i < MainClass.client.Network.Simulators.Count; i++)
+                {
+                    
+                    target = MainClass.client.Network.Simulators[i].ObjectsPrimitives.Find
+                    (
+                        delegate(Primitive prim)
+                        {
+                            return prim.ID == findtarget;
+                        }
+                     );
+                     if(target!=null)
+                     {
+                        sim=MainClass.client.Network.Simulators[i];
+                        return target;
+                     }
+
+                }
+            }
+
+            sim=null;
+            return target;
+
+        }
 		
 		public static Vector3d localtoglobalpos(Vector3 targetpos,ulong sim_handle)
 		{
@@ -209,25 +238,42 @@ namespace omvviewerlight
 			    Simulator sim=MainClass.client.Network.CurrentSim;
                 float distance = 0.0f;	
 				Vector3d targetpos;
-				
-				if(type==TargetType.TARGET_AVATAR)
-				{
-					targetpos=get_av_pos(target_avatar,out distance);
-					distance = (float)Vector3d.Distance(targetpos, new Vector3d(MainClass.client.Self.SimPosition));	
-					//Console.WriteLine("Avatar Target at "+targetpos.ToString());
-					//Console.WriteLine("I'm at "+MainClass.client.Self.SimPosition.ToString());
-					//Console.WriteLine("Distance is "+distance.ToString());
-				}
-				else				
-				{
-					targetpos=target_pos_global;
-					targetpos.Z=MainClass.client.Self.SimPosition.Z;
-                    distance = (float)Vector3d.Distance(targetpos, new Vector3d(MainClass.client.Self.GlobalPosition));					              
-				}
-				
+
+                switch (type)
+                {
+                    case TargetType.TARGET_AVATAR:
+                        targetpos = get_av_pos(target_avatar, out distance);
+                        distance = (float)Vector3d.Distance(targetpos, new Vector3d(MainClass.client.Self.SimPosition));
+                        //Console.WriteLine("Avatar Target at "+targetpos.ToString());
+                        //Console.WriteLine("I'm at "+MainClass.client.Self.SimPosition.ToString());
+                        //Console.WriteLine("Distance is "+distance.ToString());
+                        break;
+                    case TargetType.TARGET_OBJECT:
+                        Simulator obj_sim;
+                        Primitive prim = findobject(target_object, out obj_sim);
+                        if (prim != null)
+                        {
+                            targetpos = localtoglobalpos(prim.Position, obj_sim.Handle);
+                        }
+                        else
+                        {
+                            targetpos = MainClass.client.Self.GlobalPosition;
+                        }
+                
+                        break;
+                    case TargetType.TARGET_POS:
+                        targetpos=target_pos_global;
+					    targetpos.Z=MainClass.client.Self.SimPosition.Z;
+                        distance = (float)Vector3d.Distance(targetpos, new Vector3d(MainClass.client.Self.GlobalPosition));					              
+                        break;
+                    default:
+                        targetpos = new Vector3d(MainClass.client.Self.GlobalPosition);
+                        break;
+                }
+
                 if (distance > 2.5)
 				{
-                    Vector3d targetglobal;
+                    
 					//Console.WriteLine("Autopilot think");
                     //Console.WriteLine("Target at " + targetpos.ToString());
                     //Console.WriteLine("I'm at Global" + MainClass.client.Self.GlobalPosition.ToString());
