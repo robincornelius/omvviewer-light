@@ -36,8 +36,6 @@ namespace omvviewerlight
 {
 	public partial class Map : Gtk.Bin
 	{
-		private const String MAP_IMG_URL = "http://secondlife.com/apps/mapapi/grid/map_image/";
-		private const int GRID_Y_OFFSET = 1279;
 		bool running=true;
 	    Gtk.Image basemap;
 		GridRegion current_region;
