@@ -269,7 +269,34 @@ namespace omvviewerlight
 			this.button_invite.Sensitive=checkaccess(MainClass.client.Self.AgentID,GroupPowers.Invite);
 			this.button_send_notice.Sensitive=checkaccess(MainClass.client.Self.AgentID,GroupPowers.SendNotices);	
              });
-			
+
+			store_roles_list.Foreach(delegate(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
+            {
+                UUID id = (UUID)store_roles_list.GetValue(iter, 3);
+                List<KeyValuePair<UUID,UUID>> roleslist=new List<KeyValuePair<UUID,UUID>>();
+                if (id == UUID.Zero)
+                {
+                    if (MainClass.client.Groups.GroupMembersCaches.Dictionary.ContainsKey(request_members))
+                    {
+                        int count = MainClass.client.Groups.GroupMembersCaches.Dictionary[request_members].Count;
+                        store_roles_list.SetValue(iter, 2, count.ToString());
+                    }
+                        return false;
+                }
+                if (MainClass.client.Groups.GroupRolesMembersCaches.TryGetValue(this.groupkey,out roleslist))
+                {
+                    int x = 0;
+                    foreach (KeyValuePair<UUID, UUID> kvp2 in roleslist)
+                    {
+                        if (kvp2.Key == id)
+                            x++;
+                    }
+                    store_roles_list.SetValue(iter, 2, x.ToString());
+                }
+
+                return false;
+            });
+
 			//rolesmembers=rolesmember;
 		}
 		
@@ -285,15 +312,27 @@ namespace omvviewerlight
                 //TO DO MOVE ME THERE
                 string count="";
                 List<KeyValuePair<UUID,UUID>> roleslist=new List<KeyValuePair<UUID,UUID>>();
-                if (MainClass.client.Groups.GroupRolesMembersCaches.TryGetValue(this.groupkey,out roleslist))
+                if (kvp.Key == UUID.Zero)
                 {
-                    int x = 0;
-                    foreach (KeyValuePair<UUID, UUID> kvp2 in roleslist)
+                    count = MainClass.client.Groups.GroupMembersCaches.Dictionary.Count.ToString();
+                }
+                else
+                {
+                    if (MainClass.client.Groups.GroupRolesMembersCaches.TryGetValue(this.groupkey, out roleslist))
                     {
-                        if (kvp2.Key == kvp.Value.ID)
-                            x++;
+                        int x = 0;
+                        List<UUID> seen = new List<UUID>();
+                        foreach (KeyValuePair<UUID, UUID> kvp2 in roleslist)
+                        {
+
+                            if (kvp2.Key == kvp.Value.ID && !seen.Contains(kvp2.Value))
+                            {
+                                x++;
+                                seen.Add(kvp2.Value);
+                            }
+                        }
+                        count = x.ToString();
                     }
-                    count = x.ToString();
                 }
 
 				this.store_roles_list.AppendValues(kvp.Value.Name,kvp.Value.Title,count,kvp.Value.ID);
@@ -388,6 +427,20 @@ namespace omvviewerlight
 
             Console.WriteLine("All group members recieved");
             name_poll = false;
+
+            store_roles_list.Foreach(delegate(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
+            {
+                UUID id = (UUID)store_roles_list.GetValue(iter, 3);
+                List<KeyValuePair<UUID, UUID>> roleslist = new List<KeyValuePair<UUID, UUID>>();
+                if (id == UUID.Zero)
+                {
+                    int count = MainClass.client.Groups.GroupMembersCaches.Dictionary[request_members].Count;
+                    store_roles_list.SetValue(iter, 2, count.ToString());
+                    return true;
+                }
+                return false;
+            });
+
             return;
 
 		}

@@ -62,9 +62,9 @@ namespace omvviewerlight
  				if(id==key)
                 {					
 				    store.Remove(ref iter);
-			        return false;
+			        return false; //???????? CHECK ME
                 }
-			return true;	
+			return true;	//?????????????? CHECK ME
 			});	
             }		
 			
