@@ -63,7 +63,7 @@ namespace omvviewerlight
         bool name_poll = false;
 		
 		UUID groupkey;
-		
+	
 		
         List<UUID> rcvd_names = new List<UUID>();
 
@@ -281,7 +281,22 @@ namespace omvviewerlight
 			
 			foreach(KeyValuePair <UUID,GroupRole> kvp in roles)
 			{
-				this.store_roles_list.AppendValues(kvp.Value.Name,kvp.Value.Title,"0",kvp.Value.ID);
+                //The count is not valid untill grouprolesmembers has returned *sigh*
+                //TO DO MOVE ME THERE
+                string count="";
+                List<KeyValuePair<UUID,UUID>> roleslist=new List<KeyValuePair<UUID,UUID>>();
+                if (MainClass.client.Groups.GroupRolesMembersCaches.TryGetValue(this.groupkey,out roleslist))
+                {
+                    int x = 0;
+                    foreach (KeyValuePair<UUID, UUID> kvp2 in roleslist)
+                    {
+                        if (kvp2.Key == kvp.Value.ID)
+                            x++;
+                    }
+                    count = x.ToString();
+                }
+
+				this.store_roles_list.AppendValues(kvp.Value.Name,kvp.Value.Title,count,kvp.Value.ID);
 			}
 
 			Gtk.Application.Invoke(delegate{
@@ -589,13 +604,18 @@ namespace omvviewerlight
 				
 				        this.store_roles_members.Clear();
 
+                        List<UUID> seen = new List<UUID>();
                         if (role.ID == UUID.Zero)
                         {
                             foreach (KeyValuePair<UUID, GroupMember> member in MainClass.client.Groups.GroupMembersCaches.Dictionary[request_members])
                             {
+                                if(seen.Contains(member.Key))
+                                    continue;
+
                                 string name = "";
                                 MainClass.name_cache.av_names.TryGetValue(member.Key, out name);
                                 this.store_roles_members.AppendValues(name);
+                                seen.Add(member.Key);
 
                             }
                             return;
@@ -606,10 +626,13 @@ namespace omvviewerlight
 					        // rolesmember.Value is the user UUID
 					        // .key is the group role UUIS
 						    if(rolesmember.Key==id)
-					        {    
+					        {
+                                if (seen.Contains(rolesmember.Value))
+                                    continue;
 						          string name="";
 						          MainClass.name_cache.av_names.TryGetValue(rolesmember.Value,out name);
 						          this.store_roles_members.AppendValues(name);
+                                  seen.Add(rolesmember.Value);
 					        }
 					    }
 
@@ -739,58 +762,92 @@ namespace omvviewerlight
 		{
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
-			if(this.treeview_abilities.Selection.GetSelected(out mod,out iter))			
-			{
-				GroupPowers powers=(GroupPowers)mod.GetValue(iter,2);
+			if(this.treeview_abilities.Selection.GetSelected(out mod,out iter))
+            {
+                GroupPowers powers = (GroupPowers)mod.GetValue(iter, 2);
 
                 //power should be singular
-                List<KeyValuePair<UUID,UUID>> rolesmembers;
-               
-                  if (!MainClass.client.Groups.GroupRolesMembersCaches.TryGetValue(request_roles_members, out rolesmembers))
+                List<KeyValuePair<UUID, UUID>> rolesmembers;
+
+                if (!MainClass.client.Groups.GroupRolesMembersCaches.TryGetValue(request_roles_members, out rolesmembers))
                     return;
 
-					this.store_members_with_ability.Clear();
-                    this.store_roles_with_ability.Clear();
+                this.store_members_with_ability.Clear();
+                this.store_roles_with_ability.Clear();
 
-                    if (powers == GroupPowers.None)
-                        return;
+                if (powers == GroupPowers.None)
+                    return;
 
-						Dictionary <UUID, GroupRole> grouproles;
-						MainClass.client.Groups.GroupRolesCaches.TryGetValue(request_roles,out grouproles);
+                Dictionary<UUID, GroupRole> grouproles;
+                MainClass.client.Groups.GroupRolesCaches.TryGetValue(request_roles, out grouproles);
 
-			    foreach(KeyValuePair<UUID,UUID> rolesmember in rolesmembers)
-			    {
-					 // rolesmember.Value is the user UUID
-				// .key is the group role UUIS
-				UUID user=rolesmember.Value;
-					UUID rolekey=rolesmember.Key;
-					GroupRole role;
+
+                List<UUID> seen = new List<UUID>();
+
+                foreach (KeyValuePair<UUID, UUID> rolesmember in rolesmembers)
+                {
+                    // rolesmember.Value is the user UUID
+                    // .key is the group role UUIS
+                    UUID user = rolesmember.Value;
+                    UUID rolekey = rolesmember.Key;
+                    GroupRole role;
                     if (!grouproles.TryGetValue(rolekey, out role))
                         continue;
-				if((role.Powers & powers) == powers)
-                     {
-                          string name="";
+                    if ((role.Powers & powers) == powers)
+                    {
+                        string name = "";
 
-                          if (!MainClass.name_cache.av_names.TryGetValue(user, out name))
-                              continue;
-                          this.store_members_with_ability.AppendValues(name);
-                     }
+                        if (!MainClass.name_cache.av_names.TryGetValue(user, out name))
+                            continue;
+
+                        if (seen.Contains(rolesmember.Value))
+                            continue;
+
+                        this.store_members_with_ability.AppendValues(name);
+                        seen.Add(rolesmember.Value);
+                    }
                 }
-				
-				
-                foreach(KeyValuePair<UUID, GroupRole> role in grouproles)
+
                 {
-                  
-       				if((role.Value.Powers & powers) == powers)
-                     {
-                       
-                          this.store_roles_with_ability.AppendValues(role.Value.Name);
-                     }
+                    GroupRole role;
+                    if (grouproles.TryGetValue(UUID.Zero, out role))
+                    {
+                        if ((role.Powers & powers) == powers)
+                        {
+                            foreach (KeyValuePair<UUID, GroupMember> member in MainClass.client.Groups.GroupMembersCaches.Dictionary[request_members])
+                            {
+                                if (seen.Contains(member.Key))
+                                    continue;
+
+                                string name = "";
+                                if (seen.Contains(member.Key))
+                                    continue;
+
+                                if (!MainClass.name_cache.av_names.TryGetValue(member.Key, out name))
+                                    continue;
+                                this.store_members_with_ability.AppendValues(name);
+                                seen.Add(member.Key);
+
+                            }
+                        }
+                    }
+                }
+
+
+
+
+
+                foreach (KeyValuePair<UUID, GroupRole> role in grouproles)
+                {
+
+                    if ((role.Value.Powers & powers) == powers)
+                    {
+
+                        this.store_roles_with_ability.AppendValues(role.Value.Name);
+                    }
 
 
                 }
-                
-
             }
         }
 
