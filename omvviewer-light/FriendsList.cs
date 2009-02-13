@@ -183,7 +183,7 @@ namespace omvviewerlight
 				FriendInfo finfo;
 				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 				{
-					this.checkbutton_modobjects.Active=finfo.CanModifyTheirObjects;
+                    this.checkbutton_modobjects.Active = finfo.CanModifyMyObjects;
 					this.checkbutton_onlinestatus.Active=finfo.CanSeeMeOnline;
 					this.checkbutton_map.Active=finfo.CanSeeMeOnMap;
 				}

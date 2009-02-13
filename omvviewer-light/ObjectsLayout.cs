@@ -257,17 +257,26 @@ namespace omvviewerlight
 			int.TryParse(this.entry1.Text,out radius);
 			store.Clear();
 			// *** get current location ***
-            Vector3 location = MainClass.client.Self.SimPosition;
+            Vector3d location = MainClass.client.Self.GlobalPosition;
+            List<Primitive> prims=null;
 
             // *** find all objects in radius ***
-            List<Primitive> prims = MainClass.client.Network.CurrentSim.ObjectsPrimitives.FindAll(
-                delegate(Primitive prim) {
-                    Vector3 pos = prim.Position;
-                    return ((prim.ParentID == 0) && (pos != Vector3.Zero) && (Vector3.Distance(pos, location) < radius));
+            lock (MainClass.client.Network.Simulators)
+            {
+                foreach (Simulator sim in MainClass.client.Network.Simulators)
+                {
+                    prims = sim.ObjectsPrimitives.FindAll(
+                        delegate(Primitive prim)
+                        {
+                            Vector3d pos=AutoPilot.localtoglobalpos(prim.Position, sim.Handle);
+                            return ((prim.ParentID == 0) && (pos != Vector3d.Zero) && (Vector3d.Distance(pos, location) < radius));
+                        }
+                    );
                 }
-            );
+            }
 
-           	RequestObjectProperties(prims, 250);
+            if(prims!=null)
+           	    RequestObjectProperties(prims, 250);
 			
 		}
 		
