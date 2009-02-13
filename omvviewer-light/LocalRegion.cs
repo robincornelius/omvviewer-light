@@ -16,9 +16,19 @@ namespace omvviewerlight
 		uint cx;
 		bool requested=false;
 		GridRegion[] regions=new GridRegion[9];
+        Gtk.Image[] images = new Gtk.Image[9];
 		public LocalRegion()
 		{
 			this.Build();
+            images[0] = this.image1;
+            images[1] = this.image2;
+            images[2] = this.image3;
+            images[3] = this.image4;
+            images[4] = this.image5;
+            images[5] = this.image6;
+            images[6] = this.image7;
+            images[7] = this.image8;
+            images[8] = this.image9;
 			MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
 		    MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
 			requested=true;
@@ -29,95 +39,33 @@ namespace omvviewerlight
 			
 			Console.WriteLine("!!!!!!!!!!! GRID REGION cx is "+region.X.ToString()+" cy is "+region.Y.ToString());
 			Gtk.Application.Invoke(delegate {
-		
-			if(region.X==cx-1 && region.Y==cy+1)
-			{
-				this.image1.Pixbuf= MainClass.GetResource("trying.tga");
-				this.image1.TooltipText=region.Name;
-				new TryGetImage(this.image1,region.MapImageID,100,100,false);	
-				regions[0]=region;
-			}
 
-			if(region.X==cx && region.Y==cy+1)
-			{
-				this.image2.Pixbuf= MainClass.GetResource("trying.tga");
-				this.image2.TooltipText=region.Name;
-				new TryGetImage(this.image2,region.MapImageID,100,100,false);	
-				regions[1]=region;
-			}
-			
-			if(region.X==cx+1 && region.Y==cy+1)
-			{
-				this.image3.Pixbuf= MainClass.GetResource("trying.tga");
-				this.image3.TooltipText=region.Name;
-				
-					new TryGetImage(this.image3,region.MapImageID,100,100,false);
-				regions[2]=region;
-			}
-			if(region.X==cx-1 && region.Y==cy)
-			{
-                Console.WriteLine("Updaing map for cell 4 (3)");
-				this.image4.Pixbuf= MainClass.GetResource("trying.tga");
-				this.image4.TooltipText=region.Name;
-				
-				new TryGetImage(this.image4,region.MapImageID,100,100,false);
-                regions[3] = region;
-			}
+            if (region.RegionHandle == MainClass.client.Network.CurrentSim.Handle && requested==true)
+            {
+                requested = false;
+                cx = (uint)region.X;
+                cy = (uint)region.Y;
+                Console.WriteLine("Requesting neighbour grid");
+                MainClass.client.Grid.RequestMapBlocks(GridLayerType.Objects, (ushort)(region.X - 1), (ushort)(region.Y - 1), (ushort)(region.X + 1), (ushort)(region.Y + 1), false);
+            }
 
-				if(region.X==cx+1 && region.Y==cy)
-			{
-				this.image6.Pixbuf= MainClass.GetResource("trying.tga");
-				this.image6.TooltipText=region.Name;
-				
-				new TryGetImage(this.image6,region.MapImageID,100,100,false);
-				regions[5]=region;
-			}
+            int row = (int)2 - (((int)cx + (int)1) - (int)region.X); //FFS
+            int col = (int)2 - (((int)cx + (int)1) - (int)region.Y);
 
-				
-			if(region.X==cx-1 && region.Y==cy-1)
-			{
-				this.image7.Pixbuf= MainClass.GetResource("trying.tga");
-				this.image7.TooltipText=region.Name;
-				
-					new TryGetImage(this.image7,region.MapImageID,100,100,false);
-				regions[6]=region;
-			}
+            if (row < 0 || row > 2)
+                return;
+            if (col < 0 || col > 2)
+                return;
 
-			if(region.X==cx && region.Y==cy-1)
-			{
-				this.image8.Pixbuf= MainClass.GetResource("trying.tga");
-				this.image8.TooltipText=region.Name;
-				
-					new TryGetImage(this.image8,region.MapImageID,100,100,false);
-				regions[7]=region;
-			}
-			
-			if(region.X==cx+1 && region.Y==cy-1)
-			{
-				this.image9.Pixbuf= MainClass.GetResource("trying.tga");
-				this.image9.TooltipText=region.Name;
-				
-					new TryGetImage(this.image9,region.MapImageID,100,100,false);
-				regions[8]=region;
-			}
-				
-			if(region.RegionHandle==MainClass.client.Network.CurrentSim.Handle)
-			{
-				if(requested==true)
-					{
-						requested=false;
-						this.image5.Pixbuf= MainClass.GetResource("trying.tga");
-				this.image5.TooltipText=region.Name;
-						
-						new TryGetImage(this.image5,region.MapImageID,100,100,false);				
-						cx=(uint)region.X;
-						cy=(uint)region.Y;
-						Console.WriteLine("Requesting neighbour grid");
-						MainClass.client.Grid.RequestMapBlocks(GridLayerType.Objects,(ushort)(region.X-1),(ushort)(region.Y-1),(ushort)(region.X+1),(ushort)(region.Y+1),false);
-						regions[4]=region;
-					}
-				}
-				
+            int index = (col * 3) + row;
+
+            images[index].Pixbuf = MainClass.GetResource("trying.tga");
+            Gtk.Tooltips name = new Gtk.Tooltips();
+            name.SetTip(images[index], region.Name,"");
+            name.Enable();
+            new TryGetImage(image1,region.MapImageID,100,100,false);	
+			regions[index]=region;
+	
 			});
 		}
 		
@@ -131,25 +79,15 @@ namespace omvviewerlight
 			}
 
             Gtk.Application.Invoke(delegate{
-                image1.Clear();
-                image2.Clear();
-                image3.Clear();
-                image4.Clear();
-                image5.Clear();
-                image6.Clear();
-                image7.Clear();
-                image8.Clear();
-                image9.Clear();
-				image1.TooltipText="";
-				image2.TooltipText="";
-				image3.TooltipText="";
-				image4.TooltipText="";
-				image5.TooltipText="";
-				image6.TooltipText="";
-				image7.TooltipText="";
-				image8.TooltipText="";
-				image9.TooltipText="";
-				
+
+                for (int x = 0; x < 9; x++)
+                {
+                    images[x].Clear();
+                    Gtk.Tooltips name = new Gtk.Tooltips();
+                    name.SetTip(images[x], "Empty", "");
+                    name.Enable();
+                }
+
                 requested = true;
                 cx = 0;
                 cy = 0;

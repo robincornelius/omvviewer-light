@@ -153,6 +153,7 @@
     <Compile Include="Friendshiprequest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GroupChatList.cs" />
     <Compile Include="GroupInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -169,6 +170,7 @@
     <Compile Include="gtk-gui\omvviewerlight.EventsSearch.cs" />
     <Compile Include="gtk-gui\omvviewerlight.Friendshiprequest.cs" />
     <Compile Include="gtk-gui\omvviewerlight.FriendsList.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.GroupChatList.cs" />
     <Compile Include="gtk-gui\omvviewerlight.GroupInfo.cs" />
     <Compile Include="gtk-gui\omvviewerlight.Groups.cs" />
     <Compile Include="gtk-gui\omvviewerlight.GroupSearch.cs" />
