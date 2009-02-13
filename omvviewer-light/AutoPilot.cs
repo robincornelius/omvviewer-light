@@ -178,23 +178,30 @@ namespace omvviewerlight
 				{
 					targetpos=get_av_pos(target_avatar,out distance,out sim);
 					distance = (float)Vector3d.Distance(targetpos, new Vector3d(MainClass.client.Self.SimPosition));	
-					Console.WriteLine("Avatar Target at "+targetpos.ToString());
-					Console.WriteLine("I'm at "+MainClass.client.Self.SimPosition.ToString());
-					Console.WriteLine("Distance is "+distance.ToString());
+					//Console.WriteLine("Avatar Target at "+targetpos.ToString());
+					//Console.WriteLine("I'm at "+MainClass.client.Self.SimPosition.ToString());
+					//Console.WriteLine("Distance is "+distance.ToString());
 				}
 				else				
 				{
 					targetpos=target_pos_global;
 					targetpos.Z=MainClass.client.Self.SimPosition.Z;
-                    distance = (float)Vector3d.Distance(targetpos, new Vector3d(MainClass.client.Self.SimPosition));					              
+                    distance = (float)Vector3d.Distance(targetpos, new Vector3d(MainClass.client.Self.GlobalPosition));					              
 				}
 				
                 if (distance > 2.5)
 				{
                     Vector3d targetglobal;
 					//Console.WriteLine("Autopilot think");
-                   
-	                MainClass.client.Self.Movement.TurnToward(new Vector3(targetpos));
+                    //Console.WriteLine("Target at " + targetpos.ToString());
+                    //Console.WriteLine("I'm at Global" + MainClass.client.Self.GlobalPosition.ToString());
+                    //Console.WriteLine("I'm at Local" + MainClass.client.Self.SimPosition.ToString());
+                    //Console.WriteLine("Distance is " + distance.ToString());
+                    //Console.WriteLine("Local vector is "+(new Vector3(targetpos)-new Vector3(MainClass.client.Self.GlobalPosition)).ToString());
+                    Vector3 heading=new Vector3(targetpos)-new Vector3(MainClass.client.Self.GlobalPosition);
+                    heading.Normalize();
+                    heading = MainClass.client.Self.SimPosition + heading;
+	                MainClass.client.Self.Movement.TurnToward(heading);
 					MainClass.client.Self.Movement.AtPos=true;
 					MainClass.client.Self.Movement.SendUpdate();
 				}

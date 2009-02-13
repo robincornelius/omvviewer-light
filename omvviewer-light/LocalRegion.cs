@@ -37,7 +37,7 @@ namespace omvviewerlight
 		void onGridRegion(GridRegion region)
 		{
 			
-			Console.WriteLine("!!!!!!!!!!! GRID REGION cx is "+region.X.ToString()+" cy is "+region.Y.ToString());
+			Console.WriteLine("GRID REGION cx is "+region.X.ToString()+" cy is "+region.Y.ToString());
 			Gtk.Application.Invoke(delegate {
 
             if (region.RegionHandle == MainClass.client.Network.CurrentSim.Handle && requested==true)
