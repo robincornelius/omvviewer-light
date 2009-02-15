@@ -63,6 +63,7 @@ namespace omvviewerlight {
             this.hbox5 = new Gtk.HBox();
             this.hbox5.Name = "hbox5";
             this.hbox5.Spacing = 6;
+            this.hbox5.BorderWidth = ((uint)(3));
             // Container child hbox5.Gtk.Box+BoxChild
             this.label11 = new Gtk.Label();
             this.label11.Name = "label11";
@@ -74,14 +75,16 @@ namespace omvviewerlight {
             w2.Fill = false;
             // Container child hbox5.Gtk.Box+BoxChild
             this.entry1 = new Gtk.Entry();
-            this.entry1.WidthRequest = 50;
             this.entry1.CanFocus = true;
             this.entry1.Name = "entry1";
             this.entry1.IsEditable = true;
+            this.entry1.WidthChars = 10;
+            this.entry1.MaxLength = 10;
             this.entry1.InvisibleChar = '●';
             this.hbox5.Add(this.entry1);
             Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.hbox5[this.entry1]));
             w3.Position = 1;
+            w3.Expand = false;
             // Container child hbox5.Gtk.Box+BoxChild
             this.label12 = new Gtk.Label();
             this.label12.Name = "label12";
@@ -94,7 +97,6 @@ namespace omvviewerlight {
             this.vbox4.Add(this.hbox5);
             Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox4[this.hbox5]));
             w5.Position = 0;
-            w5.Expand = false;
             w5.Fill = false;
             this.vbox3.Add(this.vbox4);
             Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.vbox3[this.vbox4]));
@@ -111,28 +113,58 @@ namespace omvviewerlight {
             this.button_pay.CanFocus = true;
             this.button_pay.Name = "button_pay";
             this.button_pay.UseUnderline = true;
-            this.button_pay.Label = Mono.Unix.Catalog.GetString("Pay");
+            // Container child button_pay.Gtk.Container+ContainerChild
+            Gtk.Alignment w7 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            Gtk.HBox w8 = new Gtk.HBox();
+            w8.Spacing = 2;
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Image w9 = new Gtk.Image();
+            w9.Pixbuf = MainClass.GetResource("status_money.tga");
+            w8.Add(w9);
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Label w11 = new Gtk.Label();
+            w11.LabelProp = Mono.Unix.Catalog.GetString("Pay");
+            w11.UseUnderline = true;
+            w8.Add(w11);
+            w7.Add(w8);
+            this.button_pay.Add(w7);
             this.hbox4.Add(this.button_pay);
-            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_pay]));
-            w7.Position = 0;
-            w7.Expand = false;
-            w7.Fill = false;
+            Gtk.Box.BoxChild w15 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_pay]));
+            w15.Position = 0;
+            w15.Expand = false;
+            w15.Fill = false;
             // Container child hbox4.Gtk.Box+BoxChild
             this.button_cancel = new Gtk.Button();
             this.button_cancel.CanFocus = true;
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.UseUnderline = true;
-            this.button_cancel.Label = Mono.Unix.Catalog.GetString("Cancel");
+            // Container child button_cancel.Gtk.Container+ContainerChild
+            Gtk.Alignment w16 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            Gtk.HBox w17 = new Gtk.HBox();
+            w17.Spacing = 2;
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Image w18 = new Gtk.Image();
+            w18.Pixbuf = Stetic.IconLoader.LoadIcon(this, "gtk-cancel", Gtk.IconSize.Menu, 16);
+            w17.Add(w18);
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Label w20 = new Gtk.Label();
+            w20.LabelProp = Mono.Unix.Catalog.GetString("Cancel");
+            w20.UseUnderline = true;
+            w17.Add(w20);
+            w16.Add(w17);
+            this.button_cancel.Add(w16);
             this.hbox4.Add(this.button_cancel);
-            Gtk.Box.BoxChild w8 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_cancel]));
-            w8.Position = 1;
-            w8.Expand = false;
-            w8.Fill = false;
+            Gtk.Box.BoxChild w24 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_cancel]));
+            w24.Position = 1;
+            w24.Expand = false;
+            w24.Fill = false;
             this.vbox3.Add(this.hbox4);
-            Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.vbox3[this.hbox4]));
-            w9.Position = 2;
-            w9.Expand = false;
-            w9.Fill = false;
+            Gtk.Box.BoxChild w25 = ((Gtk.Box.BoxChild)(this.vbox3[this.hbox4]));
+            w25.Position = 2;
+            w25.Expand = false;
+            w25.Fill = false;
             this.Add(this.vbox3);
             if ((this.Child != null)) {
                 this.Child.ShowAll();

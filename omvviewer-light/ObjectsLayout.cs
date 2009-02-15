@@ -274,7 +274,10 @@ namespace omvviewerlight
                     );
 
                     if (prims != null)
+					{
+						Console.WriteLine("Requesting properties for "+prims.Count.ToString()+" objects");
                         RequestObjectProperties(prims, 250,sim);
+					}
                 }
             }
 

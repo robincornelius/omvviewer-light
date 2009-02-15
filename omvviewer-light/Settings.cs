@@ -24,6 +24,7 @@ omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(
 
 using System;
 using System.Configuration;
+using Gdk;
 
 namespace omvviewerlight
 {
@@ -196,6 +197,47 @@ namespace omvviewerlight
 			set { this["tab_parcel"] = value; }
 		}
 
+		[UserScopedSettingAttribute()]
+		public int color_chat
+		{
+			get { try{return (int)this["xcolor_chat"];} catch{return (((0<<8)+0)<<8)+0;}  }
+			set { this["xcolor_chat"] = value; }
+		}	
+
+		[UserScopedSettingAttribute()]
+		public int color_chat_object
+		{
+			get { try{return (int)this["xcolor_chat_object"];} catch{return (((0<<8)+255)<<8)+0;}  }
+			set { this["xcolor_chat_object"] = value; }
+		}	
+		
+		[UserScopedSettingAttribute()]
+		public int color_chat_object_owner
+		{
+			get { try{return (int)this["xcolor_chat_object_owner"];} catch{return (((0<<8)+0)<<8)+255;}  }
+			set { this["xcolor_chat_object_owner"] = value; }
+		}	
+		
+		[UserScopedSettingAttribute()]
+		public int color_chat_system
+		{
+			get { try{return (int)this["xcolor_chat_system"];} catch{return (((255<<8)+0)<<8)+0;}  }
+			set { this["xcolor_chat_system"] = value; }
+		}	
+		
+		[UserScopedSettingAttribute()]
+		public int color_chat_typing
+		{
+			get { try{return (int)this["xcolor_chat_typing"];} catch{return (((0<<8)+255)<<8)+0;}  }
+			set { this["xcolor_chat_typing"] = value; }
+		}	
+		
+		[UserScopedSettingAttribute()]
+		public int color_chat_online
+		{
+			get { try{return (int)this["xcolor_chat_online"];} catch{return (((0<<8)+255)<<8)+255;}  }
+			set { this["xcolor_chat_online"] = value; }
+		}	
 		
 	}
 	
