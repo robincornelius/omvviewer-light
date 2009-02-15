@@ -165,6 +165,18 @@ namespace omvviewerlight
                 {
                 }
 
+                protected virtual void OnButtonCancelClicked (object sender, System.EventArgs e)
+                {
+                }
+
+                protected virtual void OnButtonApplyClicked (object sender, System.EventArgs e)
+                {
+                }
+
+                protected virtual void OnButtonOkClicked (object sender, System.EventArgs e)
+                {
+                }
+
 	}
 
 
