@@ -224,7 +224,11 @@ namespace omvviewerlight
 			if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 			{
                 store.SetValue(iter, 0, finfo.IsOnline ? MainClass.GetResource("icon_avatar_online.tga") : MainClass.GetResource("icon_avatar_offline.tga"));
-			    store.SetValue(iter, 7, finfo.IsOnline);
+				store.SetValue(iter, 2, finfo.CanSeeMeOnline ? this.img_see_my_status : img_blank);
+		        store.SetValue(iter, 3, finfo.CanSeeMeOnMap ? this.img_map_me : img_blank);
+		        store.SetValue(iter, 4, finfo.CanModifyMyObjects ? this.img_edit_mine : img_blank);
+		        store.SetValue(iter, 5, finfo.CanModifyTheirObjects ? this.img_edit_theirs : img_blank);			
+				store.SetValue(iter, 7, finfo.IsOnline);
             }
 			return false;
 		}
@@ -240,10 +244,9 @@ namespace omvviewerlight
 				UUID lid=(UUID)id;
 				FriendInfo finfo;
 				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
-				{
-					FriendRights rights=getrights(finfo);
+				{					Gtk.CheckMenuItem se=(Gtk.CheckMenuItem)sender;                    					FriendRights rights=getrights(finfo);
 
-					if(finfo.CanSeeMeOnline)
+					if(se.Active)
 						rights|=FriendRights.CanSeeOnline;
 					else
 						rights&=~FriendRights.CanSeeOnline;
@@ -267,8 +270,8 @@ namespace omvviewerlight
 				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 				{
 					FriendRights rights=getrights(finfo);
-
-					if(finfo.CanSeeMeOnMap)
+					Gtk.CheckMenuItem se=(Gtk.CheckMenuItem)sender;                    
+					if(se.Active)
 						rights|=FriendRights.CanSeeOnMap;
 					else
 						rights&=~FriendRights.CanSeeOnMap;
@@ -293,8 +296,8 @@ namespace omvviewerlight
 				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 				{
 					FriendRights rights=getrights(finfo);
-
-					if(finfo.CanModifyMyObjects)
+					Gtk.CheckMenuItem se=(Gtk.CheckMenuItem)sender;                    
+					if(se.Active)
 						rights|=FriendRights.CanModifyObjects;
 					else
 						rights&=~FriendRights.CanModifyObjects;
