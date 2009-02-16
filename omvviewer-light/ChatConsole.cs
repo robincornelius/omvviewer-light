@@ -302,11 +302,7 @@ namespace omvviewerlight
             selfavchat.Weight = Pango.Weight.Bold;
 
             selfavchat.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_system);
-
-
             objectchat.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_object);
-
-
             ownerobjectchat.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_object_owner);  
 			
 			systemchat.Weight=Pango.Weight.Ultrabold;
@@ -329,7 +325,6 @@ namespace omvviewerlight
             textview_chat.Buffer.TagTable.Add(onoffline);
 
 			//Console.Write("**** CHAT CONSOLE SETUP ****\n");
-
 		}
 
 

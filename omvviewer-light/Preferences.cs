@@ -49,26 +49,23 @@ namespace omvviewerlight
 			this.hscale_texture.Value=     MainClass.client.Throttle.Texture;
 			this.hscale_wind.Value=   MainClass.client.Throttle.Wind;
 			
-			long col=MainClass.appsettings.color_chat;
-			this.colorbutton_normal.Color=new Gdk.Color((byte)(col>>16 & 0x0000FF),(byte)(col>>8 & 0x0000FF),(byte)(col>>0 & 0x0000FF));
-     
-			col=MainClass.appsettings.color_chat_object;
-			this.colorbutton_object.Color=new Gdk.Color((byte)(col>>16 & 0x0000FF),(byte)(col>>8 & 0x0000FF),(byte)(col>>0 & 0x0000FF));
+			
+            this.colorbutton_normal.Color = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat);
 
-			col=MainClass.appsettings.color_chat_object_owner;
-			this.colorbutton_ownerim.Color=new Gdk.Color((byte)(col>>16 & 0x0000FF),(byte)(col>>8 & 0x0000FF),(byte)(col>>0 & 0x0000FF));
+
+            this.colorbutton_object.Color = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_object);
+
+            this.colorbutton_ownerim.Color =MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_object_owner);
 
 		//	col=MainClass.appsettings.color_chat_online;
 		//	this.col.Color=new Gdk.Color((byte)(col>>16 & 0x0000FF),(byte)(col>>8 & 0x0000FF),(byte)(col>>0 & 0x0000FF));
+
+            this.colorbutton_system.Color = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_system);
+
+            this.colorbutton_typing.Color =MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_typing);
      
-			col=MainClass.appsettings.color_chat_system;
-			this.colorbutton_system.Color=new Gdk.Color((byte)(col>>16 & 0x0000FF),(byte)(col>>8 & 0x0000FF),(byte)(col>>0 & 0x0000FF));
-    		
-			col=MainClass.appsettings.color_chat_typing;
-			this.colorbutton_typing.Color=new Gdk.Color((byte)(col>>16 & 0x0000FF),(byte)(col>>8 & 0x0000FF),(byte)(col>>0 & 0x0000FF));
-     
-			col=MainClass.appsettings.color_chat_online;
-			this.colorbutton_online.Color=new Gdk.Color((byte)(col>>16 & 0x0000FF),(byte)(col>>8 & 0x0000FF),(byte)(col>>0 & 0x0000FF));
+		
+			this.colorbutton_online.Color=MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_online);
 
 		}
 
