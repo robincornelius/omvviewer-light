@@ -189,6 +189,7 @@
     <File name="art/ff_edit_mine.tga" subtype="Code" buildaction="EmbedAsResource" />
     <File name="art/ff_visible_map.tga" subtype="Code" buildaction="EmbedAsResource" />
     <File name="art/ff_visible_online.tga" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/water.png" subtype="Code" buildaction="EmbedAsResource" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

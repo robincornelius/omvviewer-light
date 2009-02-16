@@ -54,7 +54,7 @@ namespace omvviewerlight
 			mycol.FixedWidth=24;
 			treeview_friends.AppendColumn(mycol);
 			
-			mycol = new MyTreeViewColumn("", new CellRendererText(), "text", 1);
+			mycol = new MyTreeViewColumn("Name", new CellRendererText(), "text", 1);
 			mycol.Expand=true;
 			mycol.setmodel(store);
             treeview_friends.AppendColumn(mycol);			

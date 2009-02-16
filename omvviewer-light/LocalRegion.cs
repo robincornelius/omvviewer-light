@@ -29,6 +29,12 @@ namespace omvviewerlight
             images[6] = this.image7;
             images[7] = this.image8;
             images[8] = this.image9;
+			
+			for (int x = 0; x < 9; x++)
+            {
+				images[x].HeightRequest=150;
+				images[x].WidthRequest=150;
+			}
 			MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
 		    MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
 			requested=true;
@@ -65,7 +71,7 @@ namespace omvviewerlight
             Gtk.Tooltips name = new Gtk.Tooltips();
             name.SetTip(images[index], region.Name,"");
             name.Enable();
-            new TryGetImage(images[index], region.MapImageID, 100, 100, false);	
+            new TryGetImage(images[index], region.MapImageID, 150, 150, false);	
 			regions[index]=region;
 	
 			});
@@ -84,6 +90,7 @@ namespace omvviewerlight
                     regions[x] = new OpenMetaverse.GridRegion();
                     regions[x].Name = "";
                     images[x].Clear();
+					images[x].Pixbuf=MainClass.GetResource("water.png");
                     Gtk.Tooltips name = new Gtk.Tooltips();
                     name.SetTip(images[x], "Empty", "");
                     name.Enable();
@@ -99,54 +106,80 @@ namespace omvviewerlight
 
 		protected virtual void OnEventbox1ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
+			if(MainClass.win.map_widget==null)
+				return;
 			if(regions[0].Name!="")
 			MainClass.win.map_widget.changeregion(regions[0]);
 		}
 
 		protected virtual void OnEventbox2ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
+			if(MainClass.win.map_widget==null)
+				return;
+
 			if(regions[1].Name!="")
 			MainClass.win.map_widget.changeregion(regions[1]);
 		}
 
 		protected virtual void OnEventbox3ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
+			if(MainClass.win.map_widget==null)
+				return;
+			
 			if(regions[2].Name!="")
 			MainClass.win.map_widget.changeregion(regions[2]);
 		}
 
 		protected virtual void OnEventbox4ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
+			if(MainClass.win.map_widget==null)
+				return;
+
 			if(regions[3].Name!="")
 			MainClass.win.map_widget.changeregion(regions[3]);
 		}
 
 		protected virtual void OnEventbox5ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
+			if(MainClass.win.map_widget==null)
+				return;
+			
 			if(regions[4].Name!="")
 			MainClass.win.map_widget.changeregion(regions[4]);
 		}
 
 		protected virtual void OnEventbox6ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
+			if(MainClass.win.map_widget==null)
+				return;
+
 			if(regions[5].Name!="")
 			MainClass.win.map_widget.changeregion(regions[5]);
 		}
 
 		protected virtual void OnEventbox7ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
+			if(MainClass.win.map_widget==null)
+				return;
+			
 			if(regions[6].Name!="")
 			MainClass.win.map_widget.changeregion(regions[6]);
 		}
 
 		protected virtual void OnEventbox8ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
+			if(MainClass.win.map_widget==null)
+				return;
+
 			if(regions[7].Name!="")
 			MainClass.win.map_widget.changeregion(regions[7]);
 		}
 
 		protected virtual void OnEventbox9ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
+			if(MainClass.win.map_widget==null)
+				return;
+			
 			if(regions[8].Name!="")
 			MainClass.win.map_widget.changeregion(regions[8]);
 		}

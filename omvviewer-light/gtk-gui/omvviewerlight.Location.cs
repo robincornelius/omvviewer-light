@@ -21,11 +21,15 @@ namespace omvviewerlight {
         
         private omvviewerlight.TeleportTo teleportto1;
         
-        private Gtk.VPaned vpaned1;
+        private Gtk.Notebook notebook1;
         
         private omvviewerlight.LocalRegion localregion1;
         
+        private Gtk.Label label3;
+        
         private omvviewerlight.Radar radar1;
+        
+        private Gtk.Label label4;
         
         protected virtual void Build() {
             Stetic.Gui.Initialize(this);
@@ -67,28 +71,40 @@ namespace omvviewerlight {
             w3.Expand = false;
             w3.Fill = false;
             // Container child hbox1.Gtk.Box+BoxChild
-            this.vpaned1 = new Gtk.VPaned();
-            this.vpaned1.CanFocus = true;
-            this.vpaned1.Name = "vpaned1";
-            this.vpaned1.Position = 300;
-            // Container child vpaned1.Gtk.Paned+PanedChild
+            this.notebook1 = new Gtk.Notebook();
+            this.notebook1.CanFocus = true;
+            this.notebook1.Name = "notebook1";
+            this.notebook1.CurrentPage = 0;
+            // Container child notebook1.Gtk.Notebook+NotebookChild
             this.localregion1 = new omvviewerlight.LocalRegion();
             this.localregion1.Events = ((Gdk.EventMask)(256));
             this.localregion1.Name = "localregion1";
-            this.vpaned1.Add(this.localregion1);
-            Gtk.Paned.PanedChild w4 = ((Gtk.Paned.PanedChild)(this.vpaned1[this.localregion1]));
-            w4.Resize = false;
-            // Container child vpaned1.Gtk.Paned+PanedChild
+            this.notebook1.Add(this.localregion1);
+            Gtk.Notebook.NotebookChild w4 = ((Gtk.Notebook.NotebookChild)(this.notebook1[this.localregion1]));
+            w4.TabFill = false;
+            // Notebook tab
+            this.label3 = new Gtk.Label();
+            this.label3.Name = "label3";
+            this.label3.LabelProp = Mono.Unix.Catalog.GetString("Region");
+            this.notebook1.SetTabLabel(this.localregion1, this.label3);
+            this.label3.ShowAll();
+            // Container child notebook1.Gtk.Notebook+NotebookChild
             this.radar1 = new omvviewerlight.Radar();
             this.radar1.WidthRequest = 275;
             this.radar1.Events = ((Gdk.EventMask)(256));
             this.radar1.Name = "radar1";
-            this.vpaned1.Add(this.radar1);
-            this.hbox1.Add(this.vpaned1);
-            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox1[this.vpaned1]));
+            this.notebook1.Add(this.radar1);
+            Gtk.Notebook.NotebookChild w5 = ((Gtk.Notebook.NotebookChild)(this.notebook1[this.radar1]));
+            w5.Position = 1;
+            // Notebook tab
+            this.label4 = new Gtk.Label();
+            this.label4.Name = "label4";
+            this.label4.LabelProp = Mono.Unix.Catalog.GetString("Radar");
+            this.notebook1.SetTabLabel(this.radar1, this.label4);
+            this.label4.ShowAll();
+            this.hbox1.Add(this.notebook1);
+            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox1[this.notebook1]));
             w6.Position = 1;
-            w6.Expand = false;
-            w6.Fill = false;
             this.Add(this.hbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
