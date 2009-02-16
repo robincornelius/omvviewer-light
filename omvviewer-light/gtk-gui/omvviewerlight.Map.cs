@@ -36,7 +36,7 @@ namespace omvviewerlight {
             // Container child vbox1.Gtk.Box+BoxChild
             this.label1 = new Gtk.Label();
             this.label1.Name = "label1";
-            this.label1.LabelProp = Mono.Unix.Catalog.GetString("label1");
+            this.label1.LabelProp = Mono.Unix.Catalog.GetString("Local simulator map");
             this.vbox1.Add(this.label1);
             Gtk.Box.BoxChild w1 = ((Gtk.Box.BoxChild)(this.vbox1[this.label1]));
             w1.Position = 0;

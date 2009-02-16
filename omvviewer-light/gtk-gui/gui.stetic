@@ -1367,7 +1367,7 @@ Shout</property>
         <child>
           <widget class="Gtk.Label" id="label1">
             <property name="MemberName" />
-            <property name="LabelProp" translatable="yes">label1</property>
+            <property name="LabelProp" translatable="yes">Local simulator map</property>
           </widget>
           <packing>
             <property name="Position">0</property>
