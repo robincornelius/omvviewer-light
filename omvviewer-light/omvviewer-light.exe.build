@@ -18,7 +18,10 @@
 		 <include name="art/closebox.tga" /> 
 		 <include name="art/cross.tga" /> 
 		 <include name="art/down_arrow.tga" /> 
-		 <include name="art/ff_edit_theirs.tga" /> 
+		 <include name="art/ff_edit_theirs.tga" />
+		 <include name="art/ff_edit_mine.tga" />
+ 		 <include name="art/ff_visible_map.tga" />
+		 <include name="art/ff_visible_online.tga" />
 		 <include name="art/icn_voice-groupfocus2.tga" /> 
 		 <include name="art/icn_voice-groupfocus.tga" /> 
 		 <include name="art/icn_voice-pvtfocus.tga" /> 
@@ -113,9 +116,11 @@
                 <include name="Friendshiprequest.cs" />
                 <include name="GroupInfo.cs" />
                 <include name="Groups.cs" />
+                <include name="GroupChatList.cs" />
                 <include name="GroupSearch.cs" />
                 <include name="Inventory.cs" />
                 <include name="Location.cs" />
+                <include name="LocalRegion.cs" />
                 <include name="LoginControl.cs" />
  		<include name="LogoutDlg.cs" />
                 <include name="Main.cs" />
@@ -155,9 +160,11 @@
                 <include name="gtk-gui/omvviewerlight.Friendshiprequest.cs" />
                 <include name="gtk-gui/omvviewerlight.GroupInfo.cs" />
                 <include name="gtk-gui/omvviewerlight.Groups.cs" />
+                <include name="gtk-gui/omvviewerlight.GroupChatList.cs" />
                 <include name="gtk-gui/omvviewerlight.GroupSearch.cs" />    
                 <include name="gtk-gui/omvviewerlight.Inventory.cs" />
                 <include name="gtk-gui/omvviewerlight.Location.cs" />
+                <include name="gtk-gui/omvviewerlight.LocalRegion.cs" />
                 <include name="gtk-gui/omvviewerlight.LoginControl.cs" />
  		<include name="gtk-gui/omvviewerlight.LogoutDlg.cs" />
                 <include name="gtk-gui/omvviewerlight.Map.cs" />
