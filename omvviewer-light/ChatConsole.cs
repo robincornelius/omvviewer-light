@@ -294,34 +294,31 @@ namespace omvviewerlight
             objectIMchat = new Gtk.TextTag("objectIMchat");
             typing_tag = new Gtk.TextTag("typing");
             onoffline = new Gtk.TextTag("onoffline");
-            
-			
-			long col=MainClass.appsettings.color_chat;
-			avchat.ForegroundGdk=new Gdk.Color((byte)(col>>16 & 0x0000FF),(byte)(col>>8 & 0x0000FF),(byte)(col>>0 & 0x0000FF));
-         
+
+            avchat.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat);
 			bold.Weight=Pango.Weight.Bold;
             bold.FontDesc = Pango.FontDescription.FromString("Arial Bold");
 
             selfavchat.Weight = Pango.Weight.Bold;
-		    col=MainClass.appsettings.color_chat_system;
-            selfavchat.ForegroundGdk = new Gdk.Color((byte)(col>>16 & 0x0000FF),(byte)(col>>8 & 0x0000FF),(byte)(col>>0 & 0x0000FF));
-		
-		    col=MainClass.appsettings.color_chat_object;        	
-			objectchat.ForegroundGdk=new Gdk.Color((byte)(col>>16 & 0x0000FF),(byte)(col>>8 & 0x0000FF),(byte)(col>>0 & 0x0000FF));
-			
-			col=MainClass.appsettings.color_chat_object_owner;  
-			ownerobjectchat.ForegroundGdk=new Gdk.Color((byte)(col>>16 & 0x0000FF),(byte)(col>>8 & 0x0000FF),(byte)(col>>0 & 0x0000FF));
+
+            selfavchat.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_system);
+
+
+            objectchat.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_object);
+
+
+            ownerobjectchat.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_object_owner);  
 			
 			systemchat.Weight=Pango.Weight.Ultrabold;
-		    col=MainClass.appsettings.color_chat_system;        
-			systemchat.ForegroundGdk=new Gdk.Color((byte)(col>>16 & 0x0000FF),(byte)(col>>8 & 0x0000FF),(byte)(col>>0 & 0x0000FF));
 
-		    col=MainClass.appsettings.color_chat_typing;
-            typing_tag.ForegroundGdk = new Gdk.Color((byte)(col>>16 & 0x0000FF),(byte)(col>>8 & 0x0000FF),(byte)(col>>0 & 0x0000FF));
+            systemchat.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_system);
+
+            typing_tag.ForegroundGdk =
+             MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_typing);
 
             onoffline.Weight = Pango.Weight.Bold;
-		    col=MainClass.appsettings.color_chat_online;        
-            onoffline.ForegroundGdk = new Gdk.Color((byte)(col>>16 & 0x0000FF),(byte)(col>>8 & 0x0000FF),(byte)(col>>0 & 0x0000FF));
+
+            onoffline.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_online);   
 			
 			textview_chat.Buffer.TagTable.Add(bold);
 			textview_chat.Buffer.TagTable.Add(avchat);

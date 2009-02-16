@@ -237,8 +237,17 @@ namespace omvviewerlight
 		{
 			get { try{return (int)this["xcolor_chat_online"];} catch{return (((0<<8)+255)<<8)+255;}  }
 			set { this["xcolor_chat_online"] = value; }
-		}	
-		
+		}
+
+        public Gdk.Color convertfromsetting(int col)
+        {
+            return new Gdk.Color((byte)(col >> 16 & 0x0000FF), (byte)(col >> 8 & 0x0000FF), (byte)(col >> 0 & 0x0000FF));
+        }
+
+        public int converttosetting(Gdk.Color col)
+        {
+            return (int)(((col.Red<<8)+col.Green)<<8)+col.Blue;
+        }
 	}
 	
 }
