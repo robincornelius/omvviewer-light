@@ -62,7 +62,7 @@ namespace omvviewerlight
 		public ObjectsLayout()
 		{
 			this.Build();
-			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(UUID));
+			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(UUID),typeof(ulong));
         
             MyTreeViewColumn mycol;
             mycol = new MyTreeViewColumn("Name",new Gtk.CellRendererText(), "text", 0);
@@ -260,6 +260,12 @@ namespace omvviewerlight
             Vector3d location = MainClass.client.Self.GlobalPosition;
             List<Primitive> prims=null;
 
+
+            lock (PrimsWaiting)
+            {
+                PrimsWaiting.Clear();
+                FetchedPrims.Clear();
+            }
             // *** find all objects in radius ***
             lock (MainClass.client.Network.Simulators)
             {
@@ -294,8 +300,6 @@ namespace omvviewerlight
 
 				lock (PrimsWaiting)
 				{
-					PrimsWaiting.Clear();
-				    FetchedPrims.Clear();
                   	for (int i = 0; i < objects.Count; ++i) {
 						localids[i] = objects[i].LocalID;
                         PrimsWaiting.Add(objects[i].ID, objects[i]);
@@ -310,47 +314,56 @@ namespace omvviewerlight
 
 		void Objects_OnObjectProperties(Simulator simulator, Primitive.ObjectProperties properties)
         {
-            lock (PrimsWaiting) {
-                Primitive prim;
-                if (PrimsWaiting.TryGetValue(properties.ObjectID, out prim)) {
-                    prim.Properties = properties;
-					Gtk.Application.Invoke(delegate {
-                        Vector3 self_pos;
-                        lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
+            try
+            {
+                lock (PrimsWaiting)
+                {
+                    Primitive prim;
+                    if (PrimsWaiting.TryGetValue(properties.ObjectID, out prim))
+                    {
+                        prim.Properties = properties;
+                        Gtk.Application.Invoke(delegate
                         {
-                            // Cope if *we* are sitting on someting
-                            if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID != 0)
+                            Vector3 self_pos;
+                            lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
                             {
-                                Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID];
-                                self_pos = Vector3.Transform(MainClass.client.Self.RelativePosition, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
+                                // Cope if *we* are sitting on someting
+                                if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID != 0)
+                                {
+                                    Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID];
+                                    self_pos = Vector3.Transform(MainClass.client.Self.RelativePosition, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
+                                }
+                                else
+                                {
+                                    self_pos = MainClass.client.Self.RelativePosition;
+                                }
+                            }
+
+                            PrimsWaiting.Remove(properties.ObjectID);
+                            if (FetchedPrims.ContainsKey(properties.ObjectID))
+                            {
+                                Console.WriteLine("Trying to add a duplicate prim to FetchedPrims WTF? " + properties.ObjectID.ToString());
+                                return;
                             }
                             else
                             {
-                                self_pos = MainClass.client.Self.RelativePosition;
+                                FetchedPrims.Add(properties.ObjectID, prim);
                             }
-                        }
+                            Gtk.Application.Invoke(delegate
+                            {
+                                store.AppendValues(prim.Properties.Name, prim.Properties.Description, Vector3d.Distance(AutoPilot.localtoglobalpos(prim.Position, simulator.Handle), AutoPilot.localtoglobalpos(self_pos, MainClass.client.Network.CurrentSim.Handle)).ToString(), prim.Properties.ObjectID, simulator.Handle);
+                            });
+                                //store.Foreach(myfunc);	
+                        });
 
-						PrimsWaiting.Remove(properties.ObjectID);
-                        if(FetchedPrims.ContainsKey(properties.ObjectID))
-                        {
-                            Console.WriteLine("Trying to add a duplicate prim to FetchedPrims WTF? "+properties.ObjectID.ToString());
-                            return;
-                        }
-                        else
-                        {
-                            FetchedPrims.Add(properties.ObjectID,prim);
-                        }
-				        store.AppendValues(prim.Properties.Name, prim.Properties.Description, Vector3.Distance(prim.Position, self_pos).ToString(), prim.Properties.ObjectID);
-                        store.Foreach(myfunc);	
-				});
-				
-				}
-              //  PrimsWaiting.Remove(properties.ObjectID);
-
-                //if (PrimsWaiting.Count == 0)
-                   // AllPropertiesReceived.Set();
-   
-                
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                // General messups, we can get here if we try to scan for objects too soon after login and ourself is not
+                // in the dictionary yet. Can't be bothered to test *every* object property if we are valid so just catch the exception
+                Logger.Log("Error: Scanning for object triggered exception: "+e.Message, Helpers.LogLevel.Error);
             }
         }
 
@@ -365,9 +378,10 @@ namespace omvviewerlight
 			if(treeview1.Selection.GetSelected(out mod,out iter))			
 			{
 				UUID id=(UUID)mod.GetValue(iter,3);
+                ulong handle=(ulong)mod.GetValue(iter,4);
 		
 				Primitive prim;
-				
+                
 				if(FetchedPrims.TryGetValue(id,out prim))
 				{
 				Console.WriteLine(prim.ToString());
@@ -441,7 +455,7 @@ namespace omvviewerlight
 					this.label_pos.Text=prim.Position.ToString();
 				
 					
-					this.label_distance.Text=Vector3.Distance(MainClass.client.Self.RelativePosition,prim.Position).ToString()+" m";
+					this.label_distance.Text=Vector3d.Distance(MainClass.client.Self.GlobalPosition,AutoPilot.localtoglobalpos(prim.Position,handle)).ToString()+" m";
 				
 					
 					this.button_take_copy.Sensitive=((prim.Flags & PrimFlags.ObjectCopy)==PrimFlags.ObjectCopy);
