@@ -106,6 +106,19 @@ namespace omvviewerlight
 			MainClass.client.Friends.OnFriendOffline += new OpenMetaverse.FriendsManager.FriendOfflineEvent(onFriendOffline);
             MainClass.client.Friends.OnFriendshipResponse += new FriendsManager.FriendshipResponseEvent(Friends_OnFriendshipResponse);
             MainClass.client.Friends.OnFriendshipTerminated += new FriendsManager.FriendshipTerminatedEvent(Friends_OnFriendshipTerminated);
+            MainClass.client.Friends.OnFriendRights += new FriendsManager.FriendRightsEvent(Friends_OnFriendRights);
+        }
+
+        void Friends_OnFriendRights(FriendInfo friend)
+        {
+            Gtk.Application.Invoke(delegate
+            {
+                lock (store)
+                {
+                    store.Foreach(myfunc);
+                }
+            });
+
         }
 
         int sortfunc(Gtk.TreeModel model, Gtk.TreeIter a, Gtk.TreeIter b)
@@ -245,7 +258,7 @@ namespace omvviewerlight
 				FriendInfo finfo;
 				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 				{					Gtk.CheckMenuItem se=(Gtk.CheckMenuItem)sender;                    					FriendRights rights=getrights(finfo);
-
+                    se.Active = !se.Active;
 					if(se.Active)
 						rights|=FriendRights.CanSeeOnline;
 					else
@@ -254,7 +267,7 @@ namespace omvviewerlight
 					MainClass.client.Friends.GrantRights(lid,rights);
 				}
 			}
-			
+          
 		}
 
 		protected virtual void OnCheckbuttonMapClicked (object sender, System.EventArgs e)
@@ -270,7 +283,8 @@ namespace omvviewerlight
 				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 				{
 					FriendRights rights=getrights(finfo);
-					Gtk.CheckMenuItem se=(Gtk.CheckMenuItem)sender;                    
+					Gtk.CheckMenuItem se=(Gtk.CheckMenuItem)sender;
+                    se.Active = !se.Active;
 					if(se.Active)
 						rights|=FriendRights.CanSeeOnMap;
 					else
@@ -280,7 +294,7 @@ namespace omvviewerlight
 						
 				}
 			}
-				
+          
 		}
 
 		protected virtual void OnCheckbuttonModobjectsClicked (object sender, System.EventArgs e)
@@ -296,17 +310,19 @@ namespace omvviewerlight
 				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 				{
 					FriendRights rights=getrights(finfo);
-					Gtk.CheckMenuItem se=(Gtk.CheckMenuItem)sender;                    
-					if(se.Active)
-						rights|=FriendRights.CanModifyObjects;
-					else
-						rights&=~FriendRights.CanModifyObjects;
+					Gtk.CheckMenuItem se=(Gtk.CheckMenuItem)sender;
+                    se.Active = !se.Active;
+
+                    if (se.Active)
+                        rights |= FriendRights.CanModifyObjects;
+                    else
+                        rights &= ~FriendRights.CanModifyObjects;
 	
 					MainClass.client.Friends.GrantRights(lid,rights);
 	
 				}
 			}
-		
+         
 		}
 
 		FriendRights getrights(FriendInfo finfo)
