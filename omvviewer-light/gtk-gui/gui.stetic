@@ -719,7 +719,7 @@
                 <property name="ShowScrollbars">True</property>
                 <property name="Reorderable">True</property>
                 <property name="HeadersClickable">True</property>
-                <signal name="CursorChanged" handler="OnTreeviewFriendsCursorChanged" />
+                <signal name="ButtonPressEvent" handler="OnTreeviewFriendsButtonPressEvent" />
               </widget>
             </child>
           </widget>
@@ -736,59 +736,6 @@
               <widget class="Gtk.VBox" id="vbox11">
                 <property name="MemberName" />
                 <property name="Spacing">6</property>
-                <child>
-                  <widget class="Gtk.CheckButton" id="checkbutton_onlinestatus">
-                    <property name="MemberName" />
-                    <property name="CanFocus">True</property>
-                    <property name="Label" translatable="yes">See my online status</property>
-                    <property name="Active">True</property>
-                    <property name="DrawIndicator">True</property>
-                    <property name="HasLabel">True</property>
-                    <property name="UseUnderline">True</property>
-                    <signal name="Clicked" handler="OnCheckbuttonOnlinestatusClicked" />
-                  </widget>
-                  <packing>
-                    <property name="Position">0</property>
-                    <property name="AutoSize">True</property>
-                    <property name="Expand">False</property>
-                    <property name="Fill">False</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="Gtk.CheckButton" id="checkbutton_map">
-                    <property name="MemberName" />
-                    <property name="CanFocus">True</property>
-                    <property name="Label" translatable="yes">See me on the map</property>
-                    <property name="Active">True</property>
-                    <property name="DrawIndicator">True</property>
-                    <property name="HasLabel">True</property>
-                    <property name="UseUnderline">True</property>
-                    <signal name="Clicked" handler="OnCheckbuttonMapClicked" />
-                  </widget>
-                  <packing>
-                    <property name="Position">1</property>
-                    <property name="AutoSize">True</property>
-                    <property name="Expand">False</property>
-                    <property name="Fill">False</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="Gtk.CheckButton" id="checkbutton_modobjects">
-                    <property name="MemberName" />
-                    <property name="CanFocus">True</property>
-                    <property name="Label" translatable="yes">Modify my objects</property>
-                    <property name="DrawIndicator">True</property>
-                    <property name="HasLabel">True</property>
-                    <property name="UseUnderline">True</property>
-                    <signal name="Clicked" handler="OnCheckbuttonModobjectsClicked" />
-                  </widget>
-                  <packing>
-                    <property name="Position">2</property>
-                    <property name="AutoSize">True</property>
-                    <property name="Expand">False</property>
-                    <property name="Fill">False</property>
-                  </packing>
-                </child>
                 <child>
                   <widget class="Gtk.HBox" id="hbox1">
                     <property name="MemberName" />
@@ -830,7 +777,7 @@
                     </child>
                   </widget>
                   <packing>
-                    <property name="Position">3</property>
+                    <property name="Position">0</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
@@ -1908,34 +1855,35 @@ Shout</property>
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="omvviewerlight.ChatLayout" design-size="524 346">
+  <widget class="Gtk.Bin" id="omvviewerlight.ChatLayout" design-size="1078 346">
     <property name="MemberName" />
     <child>
-      <widget class="Gtk.HBox" id="hbox2">
+      <widget class="Gtk.HPaned" id="hpaned1">
         <property name="MemberName" />
-        <property name="Spacing">6</property>
+        <property name="CanFocus">True</property>
+        <property name="Position">500</property>
         <child>
           <widget class="omvviewerlight.ChatConsole" id="chatconsole1">
             <property name="MemberName" />
+            <property name="WidthRequest">600</property>
             <property name="Events">ButtonPressMask</property>
           </widget>
           <packing>
-            <property name="Position">0</property>
-            <property name="AutoSize">True</property>
+            <property name="Resize">False</property>
           </packing>
         </child>
         <child>
-          <widget class="Gtk.VBox" id="vbox3">
+          <widget class="Gtk.VPaned" id="vpaned1">
             <property name="MemberName" />
-            <property name="Spacing">6</property>
+            <property name="CanFocus">True</property>
+            <property name="Position">275</property>
             <child>
               <widget class="omvviewerlight.FriendsList" id="friendslist1">
                 <property name="MemberName" />
                 <property name="Events">ButtonPressMask</property>
               </widget>
               <packing>
-                <property name="Position">0</property>
-                <property name="AutoSize">True</property>
+                <property name="Resize">False</property>
               </packing>
             </child>
             <child>
@@ -1943,18 +1891,8 @@ Shout</property>
                 <property name="MemberName" />
                 <property name="Events">ButtonPressMask</property>
               </widget>
-              <packing>
-                <property name="Position">1</property>
-                <property name="AutoSize">True</property>
-              </packing>
             </child>
           </widget>
-          <packing>
-            <property name="Position">1</property>
-            <property name="AutoSize">True</property>
-            <property name="Expand">False</property>
-            <property name="Fill">False</property>
-          </packing>
         </child>
       </widget>
     </child>
@@ -7823,7 +7761,6 @@ time</property>
                                 <property name="MemberName" />
                                 <property name="CanFocus">True</property>
                                 <property name="Label" translatable="yes">Default is to minimise</property>
-                                <property name="Active">True</property>
                                 <property name="DrawIndicator">True</property>
                                 <property name="HasLabel">True</property>
                                 <property name="UseUnderline">True</property>
