@@ -94,15 +94,15 @@ public partial class MainWindow {
         this.FlyAction.ShortLabel = Mono.Unix.Catalog.GetString("Fly");
         w2.Add(this.FlyAction, null);
         this.AvaiableAction = new Gtk.RadioAction("AvaiableAction", Mono.Unix.Catalog.GetString("Avaiable"), null, "gtk-yes", 0);
-        this.AvaiableAction.Group = this.BusyAction.Group;
+        this.AvaiableAction.Group = this.AwayAction.Group;
         this.AvaiableAction.ShortLabel = Mono.Unix.Catalog.GetString("Avaiable");
         w2.Add(this.AvaiableAction, null);
         this.StandingAction = new Gtk.RadioAction("StandingAction", Mono.Unix.Catalog.GetString("Standing"), null, null, 0);
-        this.StandingAction.Group = this.FlyAction.Group;
+        this.StandingAction.Group = this.CrouchAction.Group;
         this.StandingAction.ShortLabel = Mono.Unix.Catalog.GetString("Standing");
         w2.Add(this.StandingAction, null);
         this.SittingAction = new Gtk.RadioAction("SittingAction", Mono.Unix.Catalog.GetString("Sitting"), null, null, 0);
-        this.SittingAction.Group = this.FlyAction.Group;
+        this.SittingAction.Group = this.CrouchAction.Group;
         this.SittingAction.Sensitive = false;
         this.SittingAction.ShortLabel = Mono.Unix.Catalog.GetString("Sitting");
         w2.Add(this.SittingAction, null);

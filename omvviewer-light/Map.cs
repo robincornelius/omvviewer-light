@@ -407,6 +407,9 @@ namespace omvviewerlight
 
 		protected virtual void OnEventbox1ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
+			
+		    if(this.image==null || this.image.Pixbuf==null)
+                return;
 			Console.WriteLine("EVENT BOX CLICK"+args.Event.X.ToString()+","+args.Event.Y.ToString());
 			Vector3 pos;
 			pos.X=(float)(256.0*(args.Event.X/this.image.Pixbuf.Width));

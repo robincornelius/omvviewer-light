@@ -51,7 +51,7 @@ namespace omvviewerlight
 			mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 0);
             mycol.setmodel(store);
 			mycol.Expand=false;
-			mycol.FixedWidth=8;
+			mycol.FixedWidth=24;
 			treeview_friends.AppendColumn(mycol);
 			
 			mycol = new MyTreeViewColumn("", new CellRendererText(), "text", 1);
@@ -63,28 +63,32 @@ namespace omvviewerlight
             mycol.setmodel(store);
 			mycol.Expand=false;
 			mycol.Spacing=0;
-			mycol.FixedWidth=8;
+			mycol.FixedWidth=24;
+			mycol.Sizing=Gtk.TreeViewColumnSizing.Fixed;
 			treeview_friends.AppendColumn(mycol);
 			
 			mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 3);
             mycol.setmodel(store);
 			mycol.Expand=false;
 			mycol.Spacing=0;
-			mycol.FixedWidth=8;
+			mycol.Sizing=Gtk.TreeViewColumnSizing.Fixed;
+			mycol.FixedWidth=24;
 			treeview_friends.AppendColumn(mycol);
 			
 			mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 4);
             mycol.setmodel(store);
 			mycol.Expand=false;
 			mycol.Spacing=0;
-			mycol.FixedWidth=8;
+			mycol.FixedWidth=24;
+			mycol.Sizing=Gtk.TreeViewColumnSizing.Fixed;
 			treeview_friends.AppendColumn(mycol);
-	
+			
 			mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 5);
             mycol.setmodel(store);
 			mycol.Expand=false;
 			mycol.Spacing=0;
-			mycol.FixedWidth=8;
+			mycol.FixedWidth=24;
+			mycol.Sizing=Gtk.TreeViewColumnSizing.Fixed;
 			treeview_friends.AppendColumn(mycol);
 		
 			treeview_friends.Model=store;

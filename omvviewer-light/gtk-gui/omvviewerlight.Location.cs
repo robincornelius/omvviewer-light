@@ -21,7 +21,7 @@ namespace omvviewerlight {
         
         private omvviewerlight.TeleportTo teleportto1;
         
-        private Gtk.VBox vbox6;
+        private Gtk.VPaned vpaned1;
         
         private omvviewerlight.LocalRegion localregion1;
         
@@ -67,28 +67,25 @@ namespace omvviewerlight {
             w3.Expand = false;
             w3.Fill = false;
             // Container child hbox1.Gtk.Box+BoxChild
-            this.vbox6 = new Gtk.VBox();
-            this.vbox6.Name = "vbox6";
-            this.vbox6.Spacing = 6;
-            // Container child vbox6.Gtk.Box+BoxChild
+            this.vpaned1 = new Gtk.VPaned();
+            this.vpaned1.CanFocus = true;
+            this.vpaned1.Name = "vpaned1";
+            this.vpaned1.Position = 300;
+            // Container child vpaned1.Gtk.Paned+PanedChild
             this.localregion1 = new omvviewerlight.LocalRegion();
             this.localregion1.Events = ((Gdk.EventMask)(256));
             this.localregion1.Name = "localregion1";
-            this.vbox6.Add(this.localregion1);
-            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.vbox6[this.localregion1]));
-            w4.Position = 0;
-            w4.Expand = false;
-            w4.Fill = false;
-            // Container child vbox6.Gtk.Box+BoxChild
+            this.vpaned1.Add(this.localregion1);
+            Gtk.Paned.PanedChild w4 = ((Gtk.Paned.PanedChild)(this.vpaned1[this.localregion1]));
+            w4.Resize = false;
+            // Container child vpaned1.Gtk.Paned+PanedChild
             this.radar1 = new omvviewerlight.Radar();
             this.radar1.WidthRequest = 275;
             this.radar1.Events = ((Gdk.EventMask)(256));
             this.radar1.Name = "radar1";
-            this.vbox6.Add(this.radar1);
-            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox6[this.radar1]));
-            w5.Position = 1;
-            this.hbox1.Add(this.vbox6);
-            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox6]));
+            this.vpaned1.Add(this.radar1);
+            this.hbox1.Add(this.vpaned1);
+            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox1[this.vpaned1]));
             w6.Position = 1;
             w6.Expand = false;
             w6.Fill = false;
