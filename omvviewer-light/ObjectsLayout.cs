@@ -214,41 +214,9 @@ namespace omvviewerlight
 						Gtk.Application.Invoke(delegate {						
 							this.label_group.Text=group;
 						});
-					}			
-					
+					}					
 				}
-			}
-			
-		}
-						
-		bool myfunc(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
-		{
-			UUID key=(UUID)store.GetValue(iter,3);			
-			if(FetchedPrims.ContainsKey(key))
-			{
-
-                Vector3 self_pos;
-                lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
-                {
-                    // Cope if *we* are sitting on someting
-                    if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID != 0)
-                    {
-                        Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID];
-                        self_pos = Vector3.Transform(MainClass.client.Self.RelativePosition, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
-                    }
-                    else
-                    {
-                        self_pos = MainClass.client.Self.RelativePosition;
-                    }
-                }
-
-				store.SetValue(iter,0,FetchedPrims[key].Properties.Name);
-				store.SetValue(iter,1,FetchedPrims[key].Properties.Description);
-				store.SetValue(iter,2,Vector3.Distance(FetchedPrims[key].Position,self_pos).ToString());
-				store.SetValue(iter,3,FetchedPrims[key].Properties.ObjectID);
-				
-			}
-			return true;
+			}	
 		}
 
 		protected virtual void OnButtonSearchClicked (object sender, System.EventArgs e)
