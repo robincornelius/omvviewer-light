@@ -299,8 +299,9 @@ namespace omvviewerlight
                 }
 
 				//Draw me last so i am on top of the mele
-                if(draw_sim.Handle==current_region.RegionHandle)
-				     showme(buf,avatar_me.Pixbuf,MainClass.client.Self.SimPosition);				
+					if(draw_sim!=null)
+						if(draw_sim.Handle==current_region.RegionHandle)
+				            showme(buf,avatar_me.Pixbuf,MainClass.client.Self.SimPosition);				
 				
 				if(this.targetpos.X!=-1)
 					showme(buf,avatar_target.Pixbuf,this.targetpos);				
