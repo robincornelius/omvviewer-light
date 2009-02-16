@@ -41,21 +41,57 @@ namespace omvviewerlight
 		Gdk.Pixbuf img_blank;
 
 		public FriendsList()
-		{
+		{			
 			Console.Write("Building friends list window\n");
 			this.Build();
 			store= new Gtk.ListStore (typeof(Gdk.Pixbuf),typeof(string),typeof(Gdk.Pixbuf),typeof(Gdk.Pixbuf),typeof(Gdk.Pixbuf),typeof(Gdk.Pixbuf),typeof(string),typeof(bool));
+            
+			MyTreeViewColumn mycol;
+				
+			mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 0);
+            mycol.setmodel(store);
+			mycol.Expand=false;
+			mycol.FixedWidth=8;
+			treeview_friends.AppendColumn(mycol);
 			
-			treeview_friends.AppendColumn("Online",new CellRendererPixbuf(),"pixbuf",0);
-			treeview_friends.AppendColumn("Name",new Gtk.CellRendererText(),"text",1);		
-			treeview_friends.AppendColumn("",new CellRendererPixbuf(),"pixbuf",2);		
-			treeview_friends.AppendColumn("",new CellRendererPixbuf(),"pixbuf",3);		
-			treeview_friends.AppendColumn("",new CellRendererPixbuf(),"pixbuf",4);		
-			treeview_friends.AppendColumn("",new CellRendererPixbuf(),"pixbuf",5);		
+			mycol = new MyTreeViewColumn("", new CellRendererText(), "text", 1);
+			mycol.Expand=true;
+			mycol.setmodel(store);
+            treeview_friends.AppendColumn(mycol);			
 
+			mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 2);
+            mycol.setmodel(store);
+			mycol.Expand=false;
+			mycol.Spacing=0;
+			mycol.FixedWidth=8;
+			treeview_friends.AppendColumn(mycol);
+			
+			mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 3);
+            mycol.setmodel(store);
+			mycol.Expand=false;
+			mycol.Spacing=0;
+			mycol.FixedWidth=8;
+			treeview_friends.AppendColumn(mycol);
+			
+			mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 4);
+            mycol.setmodel(store);
+			mycol.Expand=false;
+			mycol.Spacing=0;
+			mycol.FixedWidth=8;
+			treeview_friends.AppendColumn(mycol);
+	
+			mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 5);
+            mycol.setmodel(store);
+			mycol.Expand=false;
+			mycol.Spacing=0;
+			mycol.FixedWidth=8;
+			treeview_friends.AppendColumn(mycol);
+		
 			treeview_friends.Model=store;
             store.SetSortColumnId(1, SortType.Ascending);
             store.SetSortFunc(1,sortfunc);
+			treeview_friends.HeadersClickable=true;
+			
 			
 			online_img=MainClass.GetResource("icon_avatar_online.tga");
 			offline_img=MainClass.GetResource("icon_avatar_offline.tga");
@@ -193,25 +229,6 @@ namespace omvviewerlight
 			return false;
 		}
 		
-		protected virtual void OnTreeviewFriendsCursorChanged (object sender, System.EventArgs e)
-		{
-			Gtk.TreeModel mod;
-			Gtk.TreeIter iter;
-			
-			if(treeview_friends.Selection.GetSelected(out mod,out iter))			
-			   {
-				string id=(string)mod.GetValue(iter,6);
-				UUID lid=(UUID)id;
-				FriendInfo finfo;
-				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
-				{
-                    this.checkbutton_modobjects.Active = finfo.CanModifyMyObjects;
-					this.checkbutton_onlinestatus.Active=finfo.CanSeeMeOnline;
-					this.checkbutton_map.Active=finfo.CanSeeMeOnMap;
-				}
-			}
-		}
-
 		protected virtual void OnCheckbuttonOnlinestatusClicked (object sender, System.EventArgs e)
 		{
 			Gtk.TreeModel mod;
@@ -223,9 +240,7 @@ namespace omvviewerlight
 				UUID lid=(UUID)id;
 				FriendInfo finfo;
 				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
-				{
-					finfo.CanSeeMeOnline=this.checkbutton_onlinestatus.Active;
-
+				{
 					FriendRights rights=getrights(finfo);
 
 					if(finfo.CanSeeMeOnline)
@@ -251,7 +266,6 @@ namespace omvviewerlight
 				FriendInfo finfo;
 				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 				{
-					finfo.CanSeeMeOnMap=this.checkbutton_map.Active;
 					FriendRights rights=getrights(finfo);
 
 					if(finfo.CanSeeMeOnMap)
@@ -278,7 +292,6 @@ namespace omvviewerlight
 				FriendInfo finfo;
 				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 				{
-					finfo.CanModifyMyObjects=this.checkbutton_modobjects.Active;
 					FriendRights rights=getrights(finfo);
 
 					if(finfo.CanModifyMyObjects)
@@ -363,6 +376,43 @@ namespace omvviewerlight
 					
 				ProfileVIew profile=new ProfileVIew(lid);
 				profile.Show();
+			}
+		}
+
+		[GLib.ConnectBefore]
+		protected virtual void OnTreeviewFriendsButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		{
+			if (args.Event.Button == 3)//Fuck this should be a define
+            {
+                Gtk.TreeModel mod;
+			    Gtk.TreeIter iter;
+	            if (this.treeview_friends.Selection.GetSelected(out mod, out iter))
+                {   
+					string id=(string)mod.GetValue(iter,6);
+					UUID lid=(UUID)id;
+					FriendInfo finfo;
+					if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
+					{
+						Gtk.CheckMenuItem see_me_online=new Gtk.CheckMenuItem("Can see my online status");
+					    see_me_online.Active=finfo.CanSeeMeOnline;
+						see_me_online.ButtonPressEvent+=new ButtonPressEventHandler(OnCheckbuttonOnlinestatusClicked);
+						                                                            
+						Gtk.CheckMenuItem see_me_on_map=new Gtk.CheckMenuItem("Can see on the map");
+					    see_me_on_map.Active=finfo.CanSeeMeOnMap;
+						see_me_on_map.ButtonPressEvent+=new ButtonPressEventHandler(OnCheckbuttonMapClicked);
+						
+						Gtk.CheckMenuItem modify_mine=new Gtk.CheckMenuItem("Can modify my objects");
+					    modify_mine.Active=finfo.CanModifyMyObjects;
+						modify_mine.ButtonPressEvent+=new ButtonPressEventHandler(OnCheckbuttonModobjectsClicked);
+							
+						Gtk.Menu menu = new Gtk.Menu();						
+	                    menu.Append(see_me_online);
+				        menu.Append(see_me_on_map);
+				        menu.Append(modify_mine);
+				    	menu.Popup();
+						menu.ShowAll();
+					}				
+					}
 			}
 		}
 	}

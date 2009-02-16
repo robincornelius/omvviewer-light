@@ -23,12 +23,6 @@ namespace omvviewerlight {
         
         private Gtk.VBox vbox11;
         
-        private Gtk.CheckButton checkbutton_onlinestatus;
-        
-        private Gtk.CheckButton checkbutton_map;
-        
-        private Gtk.CheckButton checkbutton_modobjects;
-        
         private Gtk.HBox hbox1;
         
         private Gtk.Button button_IM;
@@ -74,44 +68,6 @@ namespace omvviewerlight {
             this.vbox11.Name = "vbox11";
             this.vbox11.Spacing = 6;
             // Container child vbox11.Gtk.Box+BoxChild
-            this.checkbutton_onlinestatus = new Gtk.CheckButton();
-            this.checkbutton_onlinestatus.CanFocus = true;
-            this.checkbutton_onlinestatus.Name = "checkbutton_onlinestatus";
-            this.checkbutton_onlinestatus.Label = Mono.Unix.Catalog.GetString("See my online status");
-            this.checkbutton_onlinestatus.Active = true;
-            this.checkbutton_onlinestatus.DrawIndicator = true;
-            this.checkbutton_onlinestatus.UseUnderline = true;
-            this.vbox11.Add(this.checkbutton_onlinestatus);
-            Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.vbox11[this.checkbutton_onlinestatus]));
-            w3.Position = 0;
-            w3.Expand = false;
-            w3.Fill = false;
-            // Container child vbox11.Gtk.Box+BoxChild
-            this.checkbutton_map = new Gtk.CheckButton();
-            this.checkbutton_map.CanFocus = true;
-            this.checkbutton_map.Name = "checkbutton_map";
-            this.checkbutton_map.Label = Mono.Unix.Catalog.GetString("See me on the map");
-            this.checkbutton_map.Active = true;
-            this.checkbutton_map.DrawIndicator = true;
-            this.checkbutton_map.UseUnderline = true;
-            this.vbox11.Add(this.checkbutton_map);
-            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.vbox11[this.checkbutton_map]));
-            w4.Position = 1;
-            w4.Expand = false;
-            w4.Fill = false;
-            // Container child vbox11.Gtk.Box+BoxChild
-            this.checkbutton_modobjects = new Gtk.CheckButton();
-            this.checkbutton_modobjects.CanFocus = true;
-            this.checkbutton_modobjects.Name = "checkbutton_modobjects";
-            this.checkbutton_modobjects.Label = Mono.Unix.Catalog.GetString("Modify my objects");
-            this.checkbutton_modobjects.DrawIndicator = true;
-            this.checkbutton_modobjects.UseUnderline = true;
-            this.vbox11.Add(this.checkbutton_modobjects);
-            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox11[this.checkbutton_modobjects]));
-            w5.Position = 2;
-            w5.Expand = false;
-            w5.Fill = false;
-            // Container child vbox11.Gtk.Box+BoxChild
             this.hbox1 = new Gtk.HBox();
             this.hbox1.Name = "hbox1";
             this.hbox1.Homogeneous = true;
@@ -124,10 +80,10 @@ namespace omvviewerlight {
             this.button_IM.UseUnderline = true;
             this.button_IM.Label = Mono.Unix.Catalog.GetString("IM");
             this.hbox1.Add(this.button_IM);
-            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox1[this.button_IM]));
-            w6.Position = 0;
-            w6.Expand = false;
-            w6.Fill = false;
+            Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.hbox1[this.button_IM]));
+            w3.Position = 0;
+            w3.Expand = false;
+            w3.Fill = false;
             // Container child hbox1.Gtk.Box+BoxChild
             this.button_teleport = new Gtk.Button();
             this.button_teleport.WidthRequest = 80;
@@ -136,20 +92,20 @@ namespace omvviewerlight {
             this.button_teleport.UseUnderline = true;
             this.button_teleport.Label = Mono.Unix.Catalog.GetString("Teleport");
             this.hbox1.Add(this.button_teleport);
-            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.hbox1[this.button_teleport]));
-            w7.Position = 1;
-            w7.Expand = false;
-            w7.Fill = false;
+            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox1[this.button_teleport]));
+            w4.Position = 1;
+            w4.Expand = false;
+            w4.Fill = false;
             this.vbox11.Add(this.hbox1);
-            Gtk.Box.BoxChild w8 = ((Gtk.Box.BoxChild)(this.vbox11[this.hbox1]));
-            w8.Position = 3;
-            w8.Expand = false;
-            w8.Fill = false;
+            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox11[this.hbox1]));
+            w5.Position = 0;
+            w5.Expand = false;
+            w5.Fill = false;
             this.vbox8.Add(this.vbox11);
-            Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.vbox8[this.vbox11]));
-            w9.Position = 0;
-            w9.Expand = false;
-            w9.Fill = false;
+            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.vbox8[this.vbox11]));
+            w6.Position = 0;
+            w6.Expand = false;
+            w6.Fill = false;
             // Container child vbox8.Gtk.Box+BoxChild
             this.hbox3 = new Gtk.HBox();
             this.hbox3.Name = "hbox3";
@@ -163,10 +119,10 @@ namespace omvviewerlight {
             this.button_profile.UseUnderline = true;
             this.button_profile.Label = Mono.Unix.Catalog.GetString("Profile");
             this.hbox3.Add(this.button_profile);
-            Gtk.Box.BoxChild w10 = ((Gtk.Box.BoxChild)(this.hbox3[this.button_profile]));
-            w10.Position = 0;
-            w10.Expand = false;
-            w10.Fill = false;
+            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.hbox3[this.button_profile]));
+            w7.Position = 0;
+            w7.Expand = false;
+            w7.Fill = false;
             // Container child hbox3.Gtk.Box+BoxChild
             this.button_pay = new Gtk.Button();
             this.button_pay.WidthRequest = 80;
@@ -175,29 +131,26 @@ namespace omvviewerlight {
             this.button_pay.UseUnderline = true;
             this.button_pay.Label = Mono.Unix.Catalog.GetString("Pay");
             this.hbox3.Add(this.button_pay);
-            Gtk.Box.BoxChild w11 = ((Gtk.Box.BoxChild)(this.hbox3[this.button_pay]));
-            w11.Position = 1;
-            w11.Expand = false;
-            w11.Fill = false;
+            Gtk.Box.BoxChild w8 = ((Gtk.Box.BoxChild)(this.hbox3[this.button_pay]));
+            w8.Position = 1;
+            w8.Expand = false;
+            w8.Fill = false;
             this.vbox8.Add(this.hbox3);
-            Gtk.Box.BoxChild w12 = ((Gtk.Box.BoxChild)(this.vbox8[this.hbox3]));
-            w12.Position = 1;
-            w12.Expand = false;
-            w12.Fill = false;
+            Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.vbox8[this.hbox3]));
+            w9.Position = 1;
+            w9.Expand = false;
+            w9.Fill = false;
             this.vbox7.Add(this.vbox8);
-            Gtk.Box.BoxChild w13 = ((Gtk.Box.BoxChild)(this.vbox7[this.vbox8]));
-            w13.Position = 1;
-            w13.Expand = false;
-            w13.Fill = false;
+            Gtk.Box.BoxChild w10 = ((Gtk.Box.BoxChild)(this.vbox7[this.vbox8]));
+            w10.Position = 1;
+            w10.Expand = false;
+            w10.Fill = false;
             this.Add(this.vbox7);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
             }
             this.Show();
-            this.treeview_friends.CursorChanged += new System.EventHandler(this.OnTreeviewFriendsCursorChanged);
-            this.checkbutton_onlinestatus.Clicked += new System.EventHandler(this.OnCheckbuttonOnlinestatusClicked);
-            this.checkbutton_map.Clicked += new System.EventHandler(this.OnCheckbuttonMapClicked);
-            this.checkbutton_modobjects.Clicked += new System.EventHandler(this.OnCheckbuttonModobjectsClicked);
+            this.treeview_friends.ButtonPressEvent += new Gtk.ButtonPressEventHandler(this.OnTreeviewFriendsButtonPressEvent);
             this.button_IM.Clicked += new System.EventHandler(this.OnButtonIMClicked);
             this.button_teleport.Clicked += new System.EventHandler(this.OnButtonTeleportClicked);
             this.button_profile.Clicked += new System.EventHandler(this.OnButtonProfileClicked);
