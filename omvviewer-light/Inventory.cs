@@ -135,7 +135,7 @@ namespace omvviewerlight
 			this.Build();		
 			
             treeview_inv.AppendColumn("",new CellRendererPixbuf(),"pixbuf",0);
-            MyTreeViewColumn col = new MyTreeViewColumn("Name", new Gtk.CellRendererText(), "text", 1);
+            MyTreeViewColumn col = new MyTreeViewColumn("Name", new Gtk.CellRendererText(), "text", 1,true);
 			//treeview_inv.AppendColumn("Name",new  Gtk.CellRendererText(),"text",1);
             col.setmodel(inventory);
             treeview_inv.InsertColumn(col, 1);

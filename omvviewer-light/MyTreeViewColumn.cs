@@ -33,13 +33,17 @@ namespace omvviewerlight
         Gdk.Pixbuf down_arrow;
         Gdk.Pixbuf blank_arrow;
 
-        public MyTreeViewColumn(string title, Gtk.CellRenderer cell,string prop,int col) : base (title,cell,prop,col)
+        public MyTreeViewColumn(string title, Gtk.CellRenderer cell,string prop,int col,bool defaultsort) : base (title,cell,prop,col)
         {
             up_arrow = MainClass.GetResource("up_arrow.tga");
             down_arrow = MainClass.GetResource("down_arrow.tga");
             blank_arrow = MainClass.GetResource("blank_arrow.tga");
             model_col = col;
-            col_icon = new Gtk.Image(up_arrow);
+			if(defaultsort)
+				col_icon = new Gtk.Image(up_arrow);				
+			else
+				col_icon = new Gtk.Image(blank_arrow);
+					
             Gtk.HBox hb = new Gtk.HBox();
             Gtk.Label lb = new Label(title);
             hb.PackEnd(col_icon);

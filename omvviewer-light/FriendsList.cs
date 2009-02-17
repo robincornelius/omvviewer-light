@@ -48,43 +48,43 @@ namespace omvviewerlight
             
 			MyTreeViewColumn mycol;
 				
-			mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 0);
-            mycol.setmodel(store);
+			mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 0,false);
+        //    mycol.setmodel(store);
 			mycol.Expand=false;
 			mycol.FixedWidth=24;
 			treeview_friends.AppendColumn(mycol);
 			
-			mycol = new MyTreeViewColumn("Name", new CellRendererText(), "text", 1);
+			mycol = new MyTreeViewColumn("Name", new CellRendererText(), "text", 1,true);
 			mycol.Expand=true;
 			mycol.setmodel(store);
             treeview_friends.AppendColumn(mycol);			
 
-			mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 2);
-            mycol.setmodel(store);
+			mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 2,false);
+          //  mycol.setmodel(store);
 			mycol.Expand=false;
 			mycol.Spacing=0;
 			mycol.FixedWidth=24;
 			mycol.Sizing=Gtk.TreeViewColumnSizing.Fixed;
 			treeview_friends.AppendColumn(mycol);
 			
-			mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 3);
-            mycol.setmodel(store);
+			mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 3,false);
+         //   mycol.setmodel(store);
 			mycol.Expand=false;
 			mycol.Spacing=0;
 			mycol.Sizing=Gtk.TreeViewColumnSizing.Fixed;
 			mycol.FixedWidth=24;
 			treeview_friends.AppendColumn(mycol);
 			
-			mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 4);
-            mycol.setmodel(store);
+			mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 4,false);
+          //  mycol.setmodel(store);
 			mycol.Expand=false;
 			mycol.Spacing=0;
 			mycol.FixedWidth=24;
 			mycol.Sizing=Gtk.TreeViewColumnSizing.Fixed;
 			treeview_friends.AppendColumn(mycol);
 			
-			mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 5);
-            mycol.setmodel(store);
+			mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 5,false);
+          //  mycol.setmodel(store);
 			mycol.Expand=false;
 			mycol.Spacing=0;
 			mycol.FixedWidth=24;
@@ -130,6 +130,11 @@ namespace omvviewerlight
             string nameA = (string)store.GetValue(a, 1);
             string nameB = (string)store.GetValue(b, 1);
 
+			int sort_col;
+			SortType order;
+			
+			store.GetSortColumnId(out sort_col,out order);
+			
             bool Pa = (bool)store.GetValue(a, 7);
             bool Pb =(bool)store.GetValue(b, 7);
 

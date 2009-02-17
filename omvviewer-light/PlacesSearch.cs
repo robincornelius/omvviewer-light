@@ -44,20 +44,20 @@ namespace omvviewerlight
 			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(string),typeof(Vector3),typeof(UUID));
 			
             MyTreeViewColumn mycol;
-            mycol = new MyTreeViewColumn("Name", new Gtk.CellRendererText(), "text", 0);
+            mycol = new MyTreeViewColumn("Name", new Gtk.CellRendererText(), "text", 0,true);
             mycol.setmodel(store);
             treeview1.AppendColumn(mycol);
 
-            mycol = new MyTreeViewColumn("Sim", new Gtk.CellRendererText(), "text", 1);
+            mycol = new MyTreeViewColumn("Sim", new Gtk.CellRendererText(), "text", 1,false);
             mycol.setmodel(store);
             treeview1.AppendColumn(mycol);
 
-            mycol = new MyTreeViewColumn("Traffic", new Gtk.CellRendererText(), "text", 2);
+            mycol = new MyTreeViewColumn("Traffic", new Gtk.CellRendererText(), "text", 2,false);
             mycol.setmodel(store);
             treeview1.AppendColumn(mycol);
 			store.SetSortFunc(2,numericsort);
 			
-            mycol = new MyTreeViewColumn("Location", new Gtk.CellRendererText(), "text", 3);
+            mycol = new MyTreeViewColumn("Location", new Gtk.CellRendererText(), "text", 3,false);
             mycol.setmodel(store);
             treeview1.AppendColumn(mycol);
 
