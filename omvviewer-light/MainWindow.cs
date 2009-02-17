@@ -75,7 +75,7 @@ public partial class MainWindow: Gtk.Window
     public List<InstantMessage> im_queue = new List<InstantMessage>();
     public Dictionary<UUID, ChatConsole> im_windows = new Dictionary<UUID, ChatConsole>();
     public List<UUID> im_registering = new List<UUID>();
-
+	
     ~MainWindow()
     {
         if (trayIcon != null)
@@ -186,7 +186,6 @@ public partial class MainWindow: Gtk.Window
 		
 		MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
 		MainClass.client.Self.OnBalanceUpdated += new OpenMetaverse.AgentManager.BalanceCallback(onBalance);
-		MainClass.client.Parcels.OnParcelProperties += new OpenMetaverse.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
 		MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
 		MainClass.client.Network.OnDisconnected += new OpenMetaverse.NetworkManager.DisconnectedCallback(onDisconnect);
 		
@@ -607,17 +606,48 @@ public partial class MainWindow: Gtk.Window
 
         int parcelid = MainClass.client.Network.CurrentSim.ParcelMap[(int)(64.0 * (pos.Y/256.0)), (int)(64.0 * (pos.X/256))];
         
-        if (!callback && parcelid == lastparcelid)
+        if (!callback && (parcelid == lastparcelid))
             return;
 
         if (!MainClass.client.Network.CurrentSim.Parcels.TryGetValue(parcelid, out parcel))
             return;
+				
+		if(lastparcelid != parcelid)
+		{
+			this.parcel_owner_name = "Waiting....";
+			this.parcel_group = "Waiting....";
+			this.current_parcelid=parcel.LocalID;			
+			this.is_parcel_owner=(parcel.OwnerID==MainClass.client.Self.AgentID);
 
-        lastparcelid = parcelid;
+			if (parcel.IsGroupOwned == false)
+	        {
+	            AsyncNameUpdate an;
+	            an = new AsyncNameUpdate(parcel.OwnerID, false);
+	            an.onNameCallBack += delegate(string namex, object[] values) { this.parcel_owner_name = namex; updatestatusinfo(true); };
+	            an.go();
+	        }
+	        else
+	        {
+	            this.parcel_owner_name = "(group)";
+	        }
+	         
+	        AsyncNameUpdate an2 = new AsyncNameUpdate(parcel.GroupID, true);
+	        an2.onGroupNameCallBack += delegate(string namex, object[] values) { this.parcel_group = namex; updatestatusinfo(true); };
+	        an2.go();
 
+			MainClass.client.Parcels.DwellRequest(MainClass.client.Network.CurrentSim,parcel.LocalID);
+			
+			lastparcelid = parcelid;
+
+			Gtk.Application.Invoke(delegate {		
+				doicons(parcel);
+			});
+		
+		}
+		
         string size;
         size = parcel.Area.ToString();
-
+		
         int primscount = parcel.OwnerPrims + parcel.OtherPrims + parcel.GroupPrims;
         string prims;
         prims = primscount.ToString() + " of " + parcel.MaxPrims;
@@ -636,41 +666,6 @@ public partial class MainWindow: Gtk.Window
         tooltips1.SetTip(this.statusbar1, tooltext, null);
         tooltips1.Enable();
     }
-
-	void onParcelProperties(Simulator Sim,Parcel parcel, ParcelResult result, int selectedprims,int sequenceID, bool snapSelection)
-	{
-
-		//yuck very very hacky
-		if(sequenceID==int.MaxValue)
-			   return;
-			
-		this.current_parcelid=parcel.LocalID;			
-		this.is_parcel_owner=(parcel.OwnerID==MainClass.client.Self.AgentID);
-        this.parcel_owner_name = "Waiting....";
-        this.parcel_group = "Waiting....";
-
-
-        if (parcel.IsGroupOwned == false)
-        {
-            AsyncNameUpdate an;
-            an = new AsyncNameUpdate(parcel.OwnerID, false);
-            an.onNameCallBack += delegate(string namex, object[] values) { this.parcel_owner_name = namex; updatestatusinfo(true); };
-            an.go();
-        }
-        else
-        {
-            this.parcel_owner_name = "(group)";
-        }
-         
-        AsyncNameUpdate an2 = new AsyncNameUpdate(parcel.GroupID, true);
-        an2.onGroupNameCallBack += delegate(string namex, object[] values) { this.parcel_group = namex; updatestatusinfo(true); };
-        an2.go();
-				
-		Gtk.Application.Invoke(delegate {		
-            updatestatusinfo(false);
-			doicons(parcel);
-		});
-	}
 			                                                
 	void onBalance(int balance)
 	{
