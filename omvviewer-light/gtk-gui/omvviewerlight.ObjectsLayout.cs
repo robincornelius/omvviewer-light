@@ -244,14 +244,14 @@ namespace omvviewerlight {
             this.button_pay.UseUnderline = true;
             // Container child button_pay.Gtk.Container+ContainerChild
             Gtk.Alignment w19 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
-            // Container child GtkAlignment1.Gtk.Container+ContainerChild
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
             Gtk.HBox w20 = new Gtk.HBox();
             w20.Spacing = 2;
-            // Container child GtkHBox1.Gtk.Container+ContainerChild
+            // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w21 = new Gtk.Image();
             w21.Pixbuf = MainClass.GetResource("status_money.tga");
             w20.Add(w21);
-            // Container child GtkHBox1.Gtk.Container+ContainerChild
+            // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w23 = new Gtk.Label();
             w23.LabelProp = Mono.Unix.Catalog.GetString("Pay");
             w23.UseUnderline = true;
@@ -282,14 +282,14 @@ namespace omvviewerlight {
             this.button_buy.UseUnderline = true;
             // Container child button_buy.Gtk.Container+ContainerChild
             Gtk.Alignment w29 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
-            // Container child GtkAlignment2.Gtk.Container+ContainerChild
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
             Gtk.HBox w30 = new Gtk.HBox();
             w30.Spacing = 2;
-            // Container child GtkHBox2.Gtk.Container+ContainerChild
+            // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w31 = new Gtk.Image();
             w31.Pixbuf = MainClass.GetResource("status_money.tga");
             w30.Add(w31);
-            // Container child GtkHBox2.Gtk.Container+ContainerChild
+            // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w33 = new Gtk.Label();
             w33.LabelProp = Mono.Unix.Catalog.GetString("Buy");
             w33.UseUnderline = true;

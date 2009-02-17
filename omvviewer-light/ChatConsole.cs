@@ -279,12 +279,10 @@ namespace omvviewerlight
 			MainClass.client.Self.RequestJoinGroupChat(target);
 			im_session_id=target;
 		}
-		
-		
-		void dosetup()
-		{
-			this.Build();
 
+		void settagtable()
+		{
+		
 			bold=new Gtk.TextTag("bold");
 			avchat=new Gtk.TextTag("avchat");
             selfavchat = new Gtk.TextTag("selfavchat");
@@ -325,6 +323,14 @@ namespace omvviewerlight
             textview_chat.Buffer.TagTable.Add(onoffline);
 
 			//Console.Write("**** CHAT CONSOLE SETUP ****\n");
+			
+			
+		}
+		
+		void dosetup()
+		{
+		    settagtable();	
+			Build();
 		}
 
 
@@ -476,8 +482,14 @@ namespace omvviewerlight
             Console.Write("IM FROM " + im.FromAgentID + " : " + im.FromAgentName + " : " + im.IMSessionID + "\n");
 
             redtab();
-            windownotify();
+			
+			if(MainClass.appsettings.notify_IM && this.im_session_id==null)
+				windownotify();
 
+			if(MainClass.appsettings.notify_group_IM && this.im_session_id!=null)
+				windownotify();
+
+			
             // Is this from an object?
             //null session ID
 
@@ -501,8 +513,12 @@ namespace omvviewerlight
 
 
             redtab();
-            windownotify();
-
+			
+			if((MainClass.appsettings.notify_chat && sourcetype==ChatSourceType.Agent) || sourcetype==ChatSourceType.System)
+				windownotify();
+			if(MainClass.appsettings.notify_object_chat && sourcetype==ChatSourceType.Object)
+				windownotify();
+							
 			if(type==ChatType.Whisper)
 				fromName=fromName+" whispers";
 			if(type==ChatType.Shout)

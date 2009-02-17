@@ -248,6 +248,33 @@ namespace omvviewerlight
         {
             return (int)(((col.Red<<8)+col.Green)<<8)+col.Blue;
         }
+	    
+		[UserScopedSettingAttribute()]
+		public bool notify_chat
+		{
+			get { try{return (bool)this["notify_chat"];} catch{return true;}  }
+			set { this["notify_chat"] = value; }
+		}
+		[UserScopedSettingAttribute()]
+		public bool notify_object_chat
+		{
+			get { try{return (bool)this["notify_object_chat"];} catch{return true;}  }
+			set { this["notify_object_chat"] = value; }
+		}
+		[UserScopedSettingAttribute()]
+		public bool notify_IM
+		{
+			get { try{return (bool)this["notify_IM"];} catch{return true;}  }
+			set { this["notify_IM"] = value; }
+		}
+		[UserScopedSettingAttribute()]
+		public bool notify_group_IM
+		{
+			get { try{return (bool)this["notify_group_IM"];} catch{return true;}  }
+			set { this["notify_group_IM"] = value; }
+		}
+
+	
 	}
 	
 }

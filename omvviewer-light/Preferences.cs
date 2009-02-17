@@ -63,6 +63,12 @@ namespace omvviewerlight
             this.colorbutton_typing.Color =MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_typing);
 			this.colorbutton_online.Color=MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_online);
 
+			this.checkbutton_notifychat.Active=MainClass.appsettings.notify_chat;
+			this.checkbutton_notifyobjectchat.Active=MainClass.appsettings.notify_object_chat;
+			this.checkbutton_notifyGroupIM.Active=MainClass.appsettings.notify_group_IM;
+			this.checkbutton_notifyIM.Active=MainClass.appsettings.notify_IM;
+			
+			
 		}
 
         void applysettings()
@@ -97,7 +103,11 @@ namespace omvviewerlight
             MainClass.appsettings.color_chat_system = MainClass.appsettings.converttosetting(this.colorbutton_system.Color);
             MainClass.appsettings.color_chat_typing = MainClass.appsettings.converttosetting(this.colorbutton_typing.Color);
 
-
+			MainClass.appsettings.notify_chat=this.checkbutton_notifychat.Active;
+			MainClass.appsettings.notify_object_chat=this.checkbutton_notifyobjectchat.Active;
+			MainClass.appsettings.notify_group_IM=this.checkbutton_notifyGroupIM.Active;
+			MainClass.appsettings.notify_IM=this.checkbutton_notifyIM.Active;
+		
            MainClass.appsettings.Save();
         }
 
