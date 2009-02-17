@@ -392,7 +392,7 @@ namespace omvviewerlight
 					
 						this.label_parcelgroup.Text="Waiting...";
 						ud=new AsyncNameUpdate(parcel.GroupID,true);
-                        ud.onNameCallBack += delegate(string namex, object[] values) { this.label_parcelgroup.Text = namex; };
+                        ud.onGroupNameCallBack += delegate(string namex, object[] values) { this.label_parcelgroup.Text = namex; };
                         ud.go();
 						
 						if(entry.AgentID==UUID.Zero)
