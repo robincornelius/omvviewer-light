@@ -44,7 +44,7 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>index.html</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>0.45.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -317,6 +317,7 @@
     <EmbeddedResource Include="art\status_search_btn.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Include="art\water.png" />
     <Content Include="MonoPosixHelper.dll" />
     <Content Include="OpenMetaverse.dll.config" />
     <Content Include="openmetaverse_data\avatar_lad.xml" />

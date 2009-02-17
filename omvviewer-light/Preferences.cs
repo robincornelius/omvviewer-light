@@ -40,6 +40,9 @@ namespace omvviewerlight
                 this.radiobutton1.Active=true;
             else
                 this.radiobutton2.Active=true;
+
+            this.checkbutton_hideminimise.Active = MainClass.appsettings.minimise;
+            this.checkbutton_showtimestamps.Active = MainClass.appsettings.timestamps;
 						
 			this.hscale_asset.Value=     MainClass.client.Throttle.Asset;
 			this.hscale_cloud.Value=    MainClass.client.Throttle.Cloud;
@@ -49,22 +52,15 @@ namespace omvviewerlight
 			this.hscale_texture.Value=     MainClass.client.Throttle.Texture;
 			this.hscale_wind.Value=   MainClass.client.Throttle.Wind;
 			
-			
             this.colorbutton_normal.Color = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat);
-
-
             this.colorbutton_object.Color = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_object);
-
             this.colorbutton_ownerim.Color =MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_object_owner);
 
 		//	col=MainClass.appsettings.color_chat_online;
 		//	this.col.Color=new Gdk.Color((byte)(col>>16 & 0x0000FF),(byte)(col>>8 & 0x0000FF),(byte)(col>>0 & 0x0000FF));
 
             this.colorbutton_system.Color = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_system);
-
             this.colorbutton_typing.Color =MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_typing);
-     
-		
 			this.colorbutton_online.Color=MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_online);
 
 		}
