@@ -284,7 +284,7 @@ namespace omvviewerlight
 
 		void settagtable()
 		{
-		
+/*		
 			if(bold!=null)
 			{
 				this.textview_chat.Buffer.TagTable.Remove(bold);
@@ -305,7 +305,7 @@ namespace omvviewerlight
             objectIMchat = new Gtk.TextTag("objectIMchat");
             typing_tag = new Gtk.TextTag("typing");
             onoffline = new Gtk.TextTag("onoffline");
-				
+*/				
 			
             avchat.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat);
 			bold.Weight=Pango.Weight.Bold;
@@ -329,13 +329,6 @@ namespace omvviewerlight
             onoffline.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_online);   
 			
 			
-			textview_chat.Buffer.TagTable.Add(bold);
-			textview_chat.Buffer.TagTable.Add(avchat);
-			textview_chat.Buffer.TagTable.Add(systemchat);
-			textview_chat.Buffer.TagTable.Add(objectchat);
-			textview_chat.Buffer.TagTable.Add(ownerobjectchat);
-            textview_chat.Buffer.TagTable.Add(typing_tag);
-            textview_chat.Buffer.TagTable.Add(onoffline);
 			
 		}
 		
@@ -348,11 +341,31 @@ namespace omvviewerlight
 		{
 			Build();
 			
+		    bold=new Gtk.TextTag("bold");
+			avchat=new Gtk.TextTag("avchat");
+            selfavchat = new Gtk.TextTag("selfavchat");
+			objectchat=new Gtk.TextTag("objectchat");
+			systemchat=new Gtk.TextTag("systemchat");
+			ownerobjectchat=new Gtk.TextTag("ownerobjectchat");
+            objectIMchat = new Gtk.TextTag("objectIMchat");
+            typing_tag = new Gtk.TextTag("typing");
+            onoffline = new Gtk.TextTag("onoffline");
+			
 			MainClass.appsettings.onSettingsUpdate+=new MySettings.SettingsUpdate(onSettingsUpdate);
 		
 			//Console.Write("**** CHAT CONSOLE SETUP ****\n");
 			
+			textview_chat.Buffer.TagTable.Add(bold);
+			textview_chat.Buffer.TagTable.Add(avchat);
+			textview_chat.Buffer.TagTable.Add(systemchat);
+			textview_chat.Buffer.TagTable.Add(objectchat);
+			textview_chat.Buffer.TagTable.Add(ownerobjectchat);
+            textview_chat.Buffer.TagTable.Add(typing_tag);
+            textview_chat.Buffer.TagTable.Add(onoffline);
+			
 		    settagtable();	
+			
+			
 		}
 
 

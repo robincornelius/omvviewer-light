@@ -247,7 +247,7 @@ namespace omvviewerlight
 		[UserScopedSettingAttribute()]
 		public uint color_chat_typing
 		{
-			get { try{return (int)this["color_chat_typing"];} catch{return (((0<<8)+255)<<8)+0;}  }
+			get { try{return (uint)this["color_chat_typing"];} catch{return (((0<<8)+255)<<8)+0;}  }
 			set { this["color_chat_typing"] = value; }
 		}	
 		
@@ -271,8 +271,8 @@ namespace omvviewerlight
         public uint converttosetting(Gdk.Color col)
         {
 			Console.WriteLine("COlor is "+col.ToString());
-			Console.WriteLine("Col is "+((col.Red<<16)+(col.Green<<8)+col.Blue).ToString());
-			return (uint)(col.Red<<16)+(col.Green<<8)+col.Blue;
+			Console.WriteLine("Col is "+(((0x00FF & col.Red)<<16)+((0x00FF & col.Green)<<8)+(0x00FF & col.Blue)).ToString());
+			return (uint)(((0x00FF &col.Red)<<16)+((0x00FF &col.Green)<<8)+(0x00FF &col.Blue));
         }
 	    
 		[UserScopedSettingAttribute()]
