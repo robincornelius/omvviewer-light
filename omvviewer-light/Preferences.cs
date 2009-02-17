@@ -108,7 +108,8 @@ namespace omvviewerlight
 			MainClass.appsettings.notify_group_IM=this.checkbutton_notifyGroupIM.Active;
 			MainClass.appsettings.notify_IM=this.checkbutton_notifyIM.Active;
 		
-           MainClass.appsettings.Save();
+            MainClass.appsettings.Save();
+		    MainClass.appsettings.notify();
         }
 
 

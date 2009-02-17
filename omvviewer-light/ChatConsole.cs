@@ -25,7 +25,9 @@ omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(
 using System;
 using System.Collections.Generic;
 using OpenMetaverse;
+using Gdk;
 using Gtk;
+using GLib;
 
 namespace omvviewerlight
 {
@@ -283,7 +285,18 @@ namespace omvviewerlight
 		void settagtable()
 		{
 		
-			bold=new Gtk.TextTag("bold");
+			if(bold!=null)
+			{
+				this.textview_chat.Buffer.TagTable.Remove(bold);
+				this.textview_chat.Buffer.TagTable.Remove(avchat);
+				this.textview_chat.Buffer.TagTable.Remove(systemchat);
+				this.textview_chat.Buffer.TagTable.Remove(objectchat);
+				this.textview_chat.Buffer.TagTable.Remove(ownerobjectchat);
+				this.textview_chat.Buffer.TagTable.Remove(typing_tag);
+				this.textview_chat.Buffer.TagTable.Remove(onoffline);
+			}
+			
+		    bold=new Gtk.TextTag("bold");
 			avchat=new Gtk.TextTag("avchat");
             selfavchat = new Gtk.TextTag("selfavchat");
 			objectchat=new Gtk.TextTag("objectchat");
@@ -292,7 +305,8 @@ namespace omvviewerlight
             objectIMchat = new Gtk.TextTag("objectIMchat");
             typing_tag = new Gtk.TextTag("typing");
             onoffline = new Gtk.TextTag("onoffline");
-
+				
+			
             avchat.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat);
 			bold.Weight=Pango.Weight.Bold;
             bold.FontDesc = Pango.FontDescription.FromString("Arial Bold");
@@ -314,6 +328,7 @@ namespace omvviewerlight
 
             onoffline.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_online);   
 			
+			
 			textview_chat.Buffer.TagTable.Add(bold);
 			textview_chat.Buffer.TagTable.Add(avchat);
 			textview_chat.Buffer.TagTable.Add(systemchat);
@@ -321,16 +336,23 @@ namespace omvviewerlight
 			textview_chat.Buffer.TagTable.Add(ownerobjectchat);
             textview_chat.Buffer.TagTable.Add(typing_tag);
             textview_chat.Buffer.TagTable.Add(onoffline);
-
-			//Console.Write("**** CHAT CONSOLE SETUP ****\n");
-			
 			
 		}
-		
+		
+		void onSettingsUpdate()
+		{
+			
+		    settagtable();				
+		}
 		void dosetup()
 		{
-		    settagtable();	
 			Build();
+			
+			MainClass.appsettings.onSettingsUpdate+=new MySettings.SettingsUpdate(onSettingsUpdate);
+		
+			//Console.Write("**** CHAT CONSOLE SETUP ****\n");
+			
+		    settagtable();	
 		}
 
 
