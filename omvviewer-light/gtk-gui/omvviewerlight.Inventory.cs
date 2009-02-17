@@ -117,6 +117,7 @@ namespace omvviewerlight {
             w1.Fill = false;
             // Container child hbox7.Gtk.Box+BoxChild
             this.entry_search = new Gtk.Entry();
+            this.entry_search.Sensitive = false;
             this.entry_search.CanFocus = true;
             this.entry_search.Name = "entry_search";
             this.entry_search.IsEditable = true;
@@ -126,6 +127,7 @@ namespace omvviewerlight {
             w2.Position = 1;
             // Container child hbox7.Gtk.Box+BoxChild
             this.button_search = new Gtk.Button();
+            this.button_search.Sensitive = false;
             this.button_search.CanFocus = true;
             this.button_search.Name = "button_search";
             this.button_search.UseUnderline = true;

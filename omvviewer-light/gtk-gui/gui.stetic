@@ -5279,7 +5279,7 @@ Resident Michelle2 Zenovka
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="omvviewerlight.Inventory" design-size="740 706">
+  <widget class="Gtk.Bin" id="omvviewerlight.Inventory" design-size="741 706">
     <property name="MemberName" />
     <child>
       <widget class="Gtk.HBox" id="hbox1">
@@ -5308,6 +5308,7 @@ Resident Michelle2 Zenovka
                 <child>
                   <widget class="Gtk.Entry" id="entry_search">
                     <property name="MemberName" />
+                    <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
                     <property name="IsEditable">True</property>
                     <property name="InvisibleChar">●</property>
@@ -5320,6 +5321,7 @@ Resident Michelle2 Zenovka
                 <child>
                   <widget class="Gtk.Button" id="button_search">
                     <property name="MemberName" />
+                    <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
                     <property name="Icon">resource:status_search_btn.png</property>
