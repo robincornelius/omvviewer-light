@@ -217,62 +217,55 @@ namespace omvviewerlight
 		}
 
 		[UserScopedSettingAttribute()]
-		public uint color_chat
+		public long color_chat
 		{
-			get { try{return (uint)this["color_chat"];} catch{return (((0<<8)+0)<<8)+0;}  }
+			get { try{return (long)this["color_chat"];} catch{return (((0<<8)+0)<<8)+0;}  }
 			set { this["color_chat"] = value; }
 		}	
 
 		[UserScopedSettingAttribute()]
-		public uint color_chat_object
+		public long color_chat_object
 		{
-			get { try{return (uint)this["color_chat_object"];} catch{return (((0<<8)+255)<<8)+0;}  }
+			get { try{return (long)this["color_chat_object"];} catch{return (((0<<8)+255)<<8)+0;}  }
 			set { this["color_chat_object"] = value; }
 		}	
 		
 		[UserScopedSettingAttribute()]
-		public uint color_chat_object_owner
+		public long color_chat_object_owner
 		{
-			get { try{return (uint)this["color_chat_object_owner"];} catch{return (((0<<8)+0)<<8)+255;}  }
+			get { try{return (long)this["color_chat_object_owner"];} catch{return (((0<<8)+0)<<8)+255;}  }
 			set { this["color_chat_object_owner"] = value; }
 		}	
 		
 		[UserScopedSettingAttribute()]
-		public uint color_chat_system
+		public long color_chat_system
 		{
-			get { try{return (uint)this["color_chat_system"];} catch{return (((255<<8)+0)<<8)+0;}  }
+			get { try{return (long)this["color_chat_system"];} catch{return (((255<<8)+0)<<8)+0;}  }
 			set { this["color_chat_system"] = value; }
 		}	
 		
 		[UserScopedSettingAttribute()]
-		public uint color_chat_typing
+		public long color_chat_typing
 		{
-			get { try{return (uint)this["color_chat_typing"];} catch{return (((0<<8)+255)<<8)+0;}  }
+			get { try{return (long)this["color_chat_typing"];} catch{return (((0<<8)+255)<<8)+0;}  }
 			set { this["color_chat_typing"] = value; }
 		}	
 		
 		[UserScopedSettingAttribute()]
-		public uint color_chat_online
+		public long color_chat_online
 		{
-			get { try{return (uint)this["color_chat_online"];} catch{return (((0<<8)+255)<<8)+255;}  }
+			get { try{return (long)this["color_chat_online"];} catch{return (((0<<8)+255)<<8)+255;}  }
 			set { this["color_chat_online"] = value; }
 		}
 
-        public Gdk.Color convertfromsetting(uint col)
-        {
-			Console.WriteLine("Color is "+col.ToString());
-			Console.WriteLine("R "+((col & 0xFF0000) >> 16 ).ToString());
-			Console.WriteLine("G "+((col & 0x00FF00) >> 8 ).ToString());
-			Console.WriteLine("B "+((col & 0x0000FF) >> 0 ).ToString());
-			
-			return new Gdk.Color((byte)((col & 0xFF0000) >> 16 ), (byte)((col & 0x00FF00 )>> 8), (byte)(col & 0x0000FF));
+        public Gdk.Color convertfromsetting(long col)
+        {			
+			return new Gdk.Color((byte)((col & 0xFFFF00000000) >> 32 ), (byte)((col & 0x0000FFFF00000 )>> 16), (byte)(col & 0x00000000FFFF));
         }
 
-        public uint converttosetting(Gdk.Color col)
+        public long converttosetting(Gdk.Color col)
         {
-			Console.WriteLine("COlor is "+col.ToString());
-			Console.WriteLine("Col is "+(((0x00FF & col.Red)<<16)+((0x00FF & col.Green)<<8)+(0x00FF & col.Blue)).ToString());
-			return (uint)(((0x00FF &col.Red)<<16)+((0x00FF &col.Green)<<8)+(0x00FF &col.Blue));
+			return (long)((long)(col.Red<<32)+(long)(col.Green<<16)+(long)(col.Blue));
         }
 	    
 		[UserScopedSettingAttribute()]
