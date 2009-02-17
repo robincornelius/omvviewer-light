@@ -217,55 +217,56 @@ namespace omvviewerlight
 		}
 
 		[UserScopedSettingAttribute()]
-		public long color_chat
+		public ulong color_chat
 		{
-			get { try{return (long)this["color_chat"];} catch{return (((0<<8)+0)<<8)+0;}  }
+			get { try{return (ulong)this["color_chat"];} catch{return (((0<<32)+0)<<16)+0;}  }
 			set { this["color_chat"] = value; }
 		}	
 
 		[UserScopedSettingAttribute()]
-		public long color_chat_object
+		public ulong color_chat_object
 		{
-			get { try{return (long)this["color_chat_object"];} catch{return (((0<<8)+255)<<8)+0;}  }
+			get { try{return (ulong)this["color_chat_object"];} catch{return (((0<<32)+255)<<16)+0;}  }
 			set { this["color_chat_object"] = value; }
 		}	
 		
 		[UserScopedSettingAttribute()]
-		public long color_chat_object_owner
+		public ulong color_chat_object_owner
 		{
-			get { try{return (long)this["color_chat_object_owner"];} catch{return (((0<<8)+0)<<8)+255;}  }
+			get { try{return (ulong)this["color_chat_object_owner"];} catch{return (((0<<32)+0)<<16)+255;}  }
 			set { this["color_chat_object_owner"] = value; }
 		}	
 		
 		[UserScopedSettingAttribute()]
-		public long color_chat_system
+		public ulong color_chat_system
 		{
-			get { try{return (long)this["color_chat_system"];} catch{return (((255<<8)+0)<<8)+0;}  }
+			get { try{return (ulong)this["color_chat_system"];} catch{return (((255<<32)+0)<<16)+0;}  }
 			set { this["color_chat_system"] = value; }
 		}	
 		
 		[UserScopedSettingAttribute()]
-		public long color_chat_typing
+		public ulong color_chat_typing
 		{
-			get { try{return (long)this["color_chat_typing"];} catch{return (((0<<8)+255)<<8)+0;}  }
+			get { try{return (ulong)this["color_chat_typing"];} catch{return (((0<<32)+255)<<16)+0;}  }
 			set { this["color_chat_typing"] = value; }
 		}	
 		
 		[UserScopedSettingAttribute()]
-		public long color_chat_online
+		public ulong color_chat_online
 		{
-			get { try{return (long)this["color_chat_online"];} catch{return (((0<<8)+255)<<8)+255;}  }
+			get { try{return (ulong)this["color_chat_online"];} catch{return (((0<<32)+255)<<16)+255;}  }
 			set { this["color_chat_online"] = value; }
 		}
 
-        public Gdk.Color convertfromsetting(long col)
+        public Gdk.Color convertfromsetting(ulong col)
         {			
-			return new Gdk.Color((byte)((col & 0xFFFF00000000) >> 32 ), (byte)((col & 0x0000FFFF00000 )>> 16), (byte)(col & 0x00000000FFFF));
+			return new Gdk.Color((byte)((col & 0xFFFF00000000) >> 32 ), (byte)((col & 0x0000FFFF0000 )>> 16), (byte)(col & 0x00000000FFFF));
         }
 
-        public long converttosetting(Gdk.Color col)
+        public ulong converttosetting(Gdk.Color col)
         {
-			return (long)((long)(col.Red<<32)+(long)(col.Green<<16)+(long)(col.Blue));
+			ulong data=(((ulong)col.Red*65536*65536)+((ulong)col.Green*65536)+(ulong)col.Blue);
+			return data;
         }
 	    
 		[UserScopedSettingAttribute()]
