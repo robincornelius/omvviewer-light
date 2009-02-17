@@ -368,7 +368,7 @@ namespace omvviewerlight
 
                 if (this.radiobutton3.Active)
                 {
-                    login.Start = this.entry_location.Text;
+                    login.Start = "uri:"+this.entry_location.Text+"&128&128&0";
 					MainClass.appsettings.LoginLocationSetting="location";
 					MainClass.appsettings.LoginLocation=entry_location.Text;
                 }
