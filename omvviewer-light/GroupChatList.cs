@@ -36,7 +36,9 @@ namespace omvviewerlight
 		void onGroupChatMemberAdded(UUID thissession, UUID key)
 		{
 			if(session!=thissession)
-				return;
+			return;
+			
+            Gtk.Application.Invoke(delegate{
 			lock(store)
 			{
 			Gtk.TreeIter iter = store.AppendValues("Waiting...",key);
@@ -46,14 +48,15 @@ namespace omvviewerlight
 				
 			 ud.onNameCallBack += delegate(string namex,object[] values){Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; lock(store){store.SetValue(iterx,0,namex);}};
 			ud.go();
-             }	
+			}	 
+            });
          }
 
 		void onGroupChatMemberLeft(UUID thissession, UUID key)
 		{
 			if(session!=thissession)
 			return;
-
+            Gtk.Application.Invoke(delegate{
 			lock(store)
             {
 			store.Foreach(delegate(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
@@ -66,7 +69,8 @@ namespace omvviewerlight
                 }
 			return true;	//?????????????? CHECK ME
 			});	
-            }		
+			}	
+            });	
 			
 		}
 

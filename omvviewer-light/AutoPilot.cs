@@ -126,7 +126,7 @@ namespace omvviewerlight
 		{	
           lock (MainClass.client.Network.Simulators)
           {
-				Vector3 targetpos;
+				Vector3d targetpos;
 				targetpos.X=0;
 				targetpos.Y=0;
 				targetpos.Z=0;
@@ -136,9 +136,10 @@ namespace omvviewerlight
 				for (i = 0; i < MainClass.client.Network.Simulators.Count; i++)
 	            {
 
-                    Avatar targetAv = MainClass.client.Network.Simulators[i].ObjectsAvatars.Find(
+                        Avatar targetAv = MainClass.client.Network.Simulators[i].ObjectsAvatars.Find(
                         delegate(Avatar avatar)
                         {
+						
                             return avatar.ID == targetID;
                         }
                     );
@@ -162,23 +163,26 @@ namespace omvviewerlight
 							{
 								Vector3 pos;
 								Primitive parent = MainClass.client.Network.Simulators[i].ObjectsPrimitives.Dictionary[targetAv.ParentID];
-								targetpos=pos = Vector3.Transform(targetAv.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
-								distance = (float)Vector3d.Distance(new Vector3d(pos), MainClass.client.Self.GlobalPosition);
+								Vector3 localtargetpos;
+								localtargetpos=pos = Vector3.Transform(targetAv.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
+								targetpos=localtoglobalpos(localtargetpos,MainClass.client.Network.Simulators[i].Handle);;								
+								
 													
 							}				
 						}			
 						else
 						{
 							
-                                distance = (float)Vector3d.Distance(new Vector3d(targetAv.Position), MainClass.client.Self.GlobalPosition);
-								targetpos=targetAv.Position;
+							    targetpos=localtoglobalpos(targetAv.Position,MainClass.client.Network.Simulators[i].Handle);;
+                                distance = (float)Vector3d.Distance(targetpos, MainClass.client.Self.GlobalPosition);
+								
 						}
 					}
 
-                    return new Vector3d(targetpos);
+                    return targetpos;
 				}
 
-                return new Vector3d(targetpos);
+                return targetpos;
 					
 			}
 		}
@@ -243,10 +247,6 @@ namespace omvviewerlight
                 {
                     case TargetType.TARGET_AVATAR:
                         targetpos = get_av_pos(target_avatar, out distance);
-                        distance = (float)Vector3d.Distance(targetpos, new Vector3d(MainClass.client.Self.SimPosition));
-                        //Console.WriteLine("Avatar Target at "+targetpos.ToString());
-                        //Console.WriteLine("I'm at "+MainClass.client.Self.SimPosition.ToString());
-                        //Console.WriteLine("Distance is "+distance.ToString());
                         break;
                     case TargetType.TARGET_OBJECT:
                         Simulator obj_sim;
