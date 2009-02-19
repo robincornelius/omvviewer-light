@@ -28,12 +28,19 @@ using OpenMetaverse;
 
 namespace omvviewerlight
 {
-      public partial class Radar : Gtk.Bin
+    public class agent 
+    {
+        public OpenMetaverse.Avatar avatar;
+        public uint localid;
+        public Gtk.TreeIter iter;
+    }
+    
+    public partial class Radar : Gtk.Bin
 	{
 		
-		Gtk.ListStore store;
-        List<uint> localids = new List<uint>();
-        List<Gtk.TreeIter> removelist = new List<Gtk.TreeIter>();
+		Gtk.ListStore store;	
+		private Dictionary<UUID, bool> av_typing = new Dictionary<UUID, bool>();
+        private Dictionary<uint, agent> av_tree = new Dictionary<uint, agent>();
         UUID lastsim = new UUID();
 		const float DISTANCE_BUFFER = 3f;
 
@@ -45,27 +52,17 @@ namespace omvviewerlight
 		
 		
 		public Radar()
-		{
-            store = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(OpenMetaverse.Avatar));
+		{      
+			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(UUID));
 			this.Build();
 			Gtk.TreeViewColumn tvc;
-            treeview_radar.AppendColumn("",new Gtk.CellRendererText(),"text",0);
-
-			//tvc=treeview_radar.AppendColumn("Name",new Gtk.CellRendererText(),"text",1);
-			//tvc.Sizing=Gtk.TreeViewColumnSizing.Autosize;
-
-            MyTreeViewColumn mycol;
-            mycol = new MyTreeViewColumn("Name", new Gtk.CellRendererText(), "text", 1, false);
-            mycol.Sizing = Gtk.TreeViewColumnSizing.Autosize;
-            treeview_radar.AppendColumn(mycol);
-
-            mycol = new MyTreeViewColumn("Dist.", new Gtk.CellRendererText(), "text", 2, false);
-            mycol.Sizing = Gtk.TreeViewColumnSizing.Autosize;
-            treeview_radar.AppendColumn(mycol);
+			treeview_radar.AppendColumn("",new Gtk.CellRendererText(),"text",0);
+			tvc=treeview_radar.AppendColumn("Name",new Gtk.CellRendererText(),"text",1);
+			//tvc.Resizable=true;
+			tvc.Sizing=Gtk.TreeViewColumnSizing.Autosize;
 			
-			//treeview_radar.AppendColumn("Dist.",new Gtk.CellRendererText(),"text",2);
+			treeview_radar.AppendColumn("Dist.",new Gtk.CellRendererText(),"text",2);
 			treeview_radar.Model=store;
-            treeview_radar.HeadersClickable = true;
 	
 			MainClass.client.Objects.OnNewAvatar += new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
 			MainClass.client.Objects.OnObjectKilled += new OpenMetaverse.ObjectManager.KillObjectCallback(onKillObject);
@@ -82,24 +79,28 @@ namespace omvviewerlight
 			
 			this.store.SetSortFunc(2,sort_Vector3);	
             store.SetSortColumnId(2,Gtk.SortType.Ascending);
-            Gtk.Timeout.Add(2500, kickrefresh);
+            Gtk.Timeout.Add(10000, kickrefresh);
 		}
 
         void Network_OnSimDisconnected(Simulator simulator, NetworkManager.DisconnectType reason)
         {
-            lock (simulator.ObjectsAvatars.Dictionary)
+            lock (simulator.ObjectsAvatars.Dictionary)  
             {
-                lock (store)
+                foreach (KeyValuePair<uint, Avatar> kvp in simulator.ObjectsAvatars.Dictionary)
                 {
-                    store.Foreach(delegate(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
-                    {
-                        OpenMetaverse.Avatar avatar = (OpenMetaverse.Avatar)mod.GetValue(iter, 3);
-                        if (simulator.ObjectsAvatars.Dictionary.ContainsKey(avatar.LocalID))
-                            removelist.Add(iter);
+                    if (kvp.Value == null)
+                        continue;
 
-                        return false;
- 
-                    });
+                    if (kvp.Value.ID == UUID.Zero)
+                        continue;
+                    lock (av_tree)
+                    {
+                        if (av_tree.ContainsKey(kvp.Value.LocalID))
+                        {
+                            store.Remove(ref av_tree[kvp.Value.LocalID].iter);
+                            av_tree.Remove(kvp.Value.LocalID);
+                        }
+                    }
                 }
             }
         }
@@ -126,26 +127,45 @@ namespace omvviewerlight
 				return false;
 			
 			if (MainClass.client.Network.CurrentSim == null)
-                return true;      
-               
-           lock (store)
-           {
-               store.Foreach(delegate(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
-               {
-                   calcdistance(iter);
-                   return false;
-               });
+                return true;
 
-               foreach (Gtk.TreeIter iter in removelist)
-               {
-                   Gtk.TreeIter refiter = iter;
-                   store.Remove(ref refiter);
-               }
+            if (MainClass.client.Network.CurrentSim.ObjectsAvatars == null)
+                return true;
 
-               removelist.Clear();
-           }
+            foreach (Simulator sim in MainClass.client.Network.Simulators)
+            {
 
-                
+                lock (sim.ObjectsAvatars.Dictionary)
+                {
+
+                    foreach (KeyValuePair<uint, Avatar> kvp in sim.ObjectsAvatars.Dictionary)
+                    {
+                        //Seen this fire with some kind of null
+                        if (kvp.Value == null)
+                            continue;
+
+                        if (kvp.Value.ID == UUID.Zero)
+                            continue;
+
+                        if (!this.av_tree.ContainsKey(kvp.Value.LocalID))
+                        {
+                            agent theagent = new agent();
+                            theagent.avatar = kvp.Value;
+                            Gtk.TreeIter iter;
+                            iter = store.AppendValues("", kvp.Value.Name, "", kvp.Value.ID);
+                            theagent.iter = iter;
+                            av_tree.Add(kvp.Value.LocalID, theagent);
+                            calcdistance(kvp.Value.LocalID);
+                        }
+                        else
+                        {
+                            calcdistance(kvp.Value.LocalID);
+                        }
+                    }
+                }
+            }
+
+            
             return true;
 
         }
@@ -191,7 +211,11 @@ namespace omvviewerlight
                     store.Clear();
 				});
 				
-               
+                lock (av_tree)
+                {
+                   av_tree.Clear();
+                }
+
                 if (MainClass.client.Network.CurrentSim != null)
                  lastsim=MainClass.client.Network.CurrentSim.ID;
 			}
@@ -205,7 +229,8 @@ namespace omvviewerlight
 				{
 					   Console.WriteLine("Clearing all radar lists");
 	                   store.Clear();
-                       localids.Clear();
+					   av_tree.Clear();
+					   av_typing.Clear();
 				});
 			}		
 
@@ -215,101 +240,83 @@ namespace omvviewerlight
 		
 		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
 		{
-            return;
-            if(update.Avatar)
-            if (localids.Contains(update.LocalID))
+            lock (av_tree)
             {
-                Gtk.Application.Invoke(delegate
+                if (this.av_tree.ContainsKey(update.LocalID))
                 {
-                    lock (store)
-                    {
-                        store.Foreach(delegate(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
-                        {
-                            OpenMetaverse.Avatar avatar = (OpenMetaverse.Avatar)mod.GetValue(iter, 3);
-                            if (avatar.LocalID == update.LocalID && avatar.RegionHandle == simulator.Handle)
-                            {
-                                calcdistance(iter);
-                                return true;
-                            }
-                            return false;
-                        });
-
-                        foreach (Gtk.TreeIter iter in removelist)
-                        {
-                            Gtk.TreeIter refiter=iter;
-                            store.Remove(ref refiter);
-                        }
-                        removelist.Clear();
-                    }
-                });
+                    calcdistance(update.LocalID); 
+                }
             }
 		}
 		
 		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
 		{
-
-            if(!localids.Contains(avatar.LocalID))
-            {      
-                localids.Add(avatar.LocalID);
-                Logger.Log("*** New Avatar " + avatar.Name + " from sim " + simulator.Name + " region handle " + regionHandle.ToString() + " local id " + avatar.LocalID.ToString() + " avatar position " + avatar.Position.ToString(), Helpers.LogLevel.Warning);
-                lock (store)
-                {
-                    store.Foreach(delegate(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
-                    {
-                        OpenMetaverse.Avatar avatarstore = (OpenMetaverse.Avatar)mod.GetValue(iter, 3);
-                        if (avatar.Name == avatarstore.Name)
+			Gtk.Application.Invoke(delegate
+			{  
+                lock(av_tree)
+			    {
+				    lock(simulator.ObjectsAvatars.Dictionary)
+				    {
+                        if (!this.av_tree.ContainsKey(avatar.LocalID))
                         {
-                            removelist.Add(iter);
-                            localids.Remove(avatarstore.LocalID);
-                            return true;
-                        }
-                        return false;
-                    });
-                }
-               
-                 
-                
-			    Gtk.Application.Invoke(delegate
-			    {  
-                    Gtk.TreeIter iter=store.AppendValues("", avatar.Name + " ("+simulator.Name+")", "", avatar);
-	                calcdistance(iter);
-                });    
-            }
+                            // The agent *might* still be present under an old localID and we
+                            // missed the kill or have just handed off to a new sim
+							    List <uint> removelist=new List <uint>();
+                                foreach (KeyValuePair<uint, agent> av in av_tree)
+                                {
+                                    if (av.Value.avatar.ID == avatar.ID)
+                                    {
+                                        simulator.ObjectsAvatars.Dictionary.Remove(av.Key);
+                                        removelist.Add(av.Key);
+                                    }
+						}
+
+							foreach(uint id in removelist)
+                            {
+								store.Remove(ref av_tree[id].iter);	
+	                           	av_tree.Remove(id); 
+	                        }
+							
+                            agent theagent = new agent();
+                            theagent.avatar = avatar;
+                            Gtk.TreeIter iter;
+					        
+			                iter = store.AppendValues("", avatar.Name +" ("+simulator.Name+")", "", avatar.ID);
+	                        theagent.iter = iter;
+
+	                        av_tree.Add(avatar.LocalID, theagent);
+						    calcdistance(avatar.LocalID);
+					    }
+                    }
+		        }
+            });    
 	    }
 		
 		void onKillObject(Simulator simulator, uint objectID)
 		{
-            if(localids.Contains(objectID))
-            {
-                Gtk.Application.Invoke(delegate
-                {
-                    lock (store)
-                    {
-                        store.Foreach(delegate(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
-                        {
-
-                            OpenMetaverse.Avatar avatar = (OpenMetaverse.Avatar)mod.GetValue(iter, 3);
-                            if (avatar.LocalID == objectID)
+            if (this.av_tree.ContainsKey(objectID))
+            {    
+				Gtk.Application.Invoke(delegate
+				{
+					lock(av_tree)
+					{
+                            if (this.av_tree.ContainsKey(objectID)) //check again we are invoked so not constrained by the last test
                             {
-                                  Logger.Log("*** Kill Avatar " + avatar.Name + " from sim " + simulator.Name + " region handle " + avatar.RegionHandle.ToString(), Helpers.LogLevel.Warning);
-                                  store.Remove(ref iter);
-                                  localids.Remove(objectID);
-                                  return true;
+						        store.Remove(ref av_tree[objectID].iter);
+						        av_tree.Remove(objectID);
                             }
-                            return false;
-                        });
-                    }
-              });
-          }
+					}
+				});
+			}
 		}
 
-        void calcdistance(Gtk.TreeIter iter)
+        void calcdistance(uint id)
         {
-
+            if (this.av_tree.ContainsKey(id))
+            {
                 double dist;
+              
                 Vector3 self_pos;
-                Avatar avatar = (Avatar)store.GetValue(iter, 3);
-                uint id = avatar.LocalID;
 
                 lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
                 {
@@ -345,9 +352,7 @@ namespace omvviewerlight
 					
 				if(target_sim==null)
 				{
-                    Console.WriteLine("NO SIM FOR AV?");
-                    localids.Remove(id);
-                    removelist.Add(iter);	
+                    Console.WriteLine("NO SIM FOR AV?");						
 				    return;
                 }
 
@@ -375,48 +380,54 @@ namespace omvviewerlight
                 av_pos.Y = av_pos.Y + regionY;
                 dist = Vector3.Distance(self_pos, av_pos);
 
-	             store.SetValue(iter, 2, MainClass.cleandistance(dist.ToString(), 1));	
+				Gtk.Application.Invoke(delegate
+				{
+	                try
+	                {
+	                    if (av_tree.ContainsKey(id))
+	                        store.SetValue(av_tree[id].iter, 2, MainClass.cleandistance(dist.ToString(), 1));
+	                }
+	                catch
+	                {
+	                    Console.WriteLine("Exceptioned on store setvalue for radar");
+
+	                }
+				});
+			}
         }
 			
 		void onChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourcetype,string fromName, UUID id, UUID ownerid, Vector3 position)
-		{ 
+		{
 			Gtk.Application.Invoke(delegate
 			{
+
+                lock(av_tree)
+                {
                     if (type == ChatType.StartTyping)
                     {
-                        lock (store)
+                        foreach (KeyValuePair<uint, agent> kvp in av_tree)
                         {
-                            store.Foreach(delegate(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
+                            if (kvp.Value.avatar.ID == id)
                             {
-                                Avatar avatar = (Avatar)store.GetValue(iter, 3);
-                                if (avatar.ID == id)
-                                {
-                                    store.SetValue(iter, 0, "*");
-                                    return true;
-                                }
-                                return false;
-                            });
+                                store.SetValue(kvp.Value.iter, 0, "*");
+                                return;
+                            }
                         }
                     }
 
                     if (type == ChatType.StopTyping)
                     {
-                        lock (store)
+                        foreach (KeyValuePair<uint, agent> kvp in av_tree)
                         {
-                            store.Foreach(delegate(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
+                            if (kvp.Value.avatar.ID == id)
                             {
-                                Avatar avatar = (Avatar)store.GetValue(iter, 3);
-                                if (avatar.ID == id)
-                                {
-                                    store.SetValue(iter, 0, " ");
-                                    return true;
-                                }
-                                return false;
-                            });
-                        }
-
+                                store.SetValue(kvp.Value.iter, 0, " ");
+                                return;
+                            }
+                        } 
                     }
-			}); 
+                }
+			});
 		}
 
 		protected virtual void OnButtonImClicked (object sender, System.EventArgs e)
@@ -427,9 +438,12 @@ namespace omvviewerlight
 			
 			if(this.treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
-                OpenMetaverse.Avatar avatar = (OpenMetaverse.Avatar)(mod.GetValue(iter, 3));
-			    MainClass.win.startIM(avatar.ID);
-				
+                UUID id=(UUID)mod.GetValue(iter,3);
+                Avatar avatar = AutoPilot.findavatarinsims(id);
+				if(avatar!=null)
+				{
+					MainClass.win.startIM(avatar.ID);
+				}
 			}		
 		}
 
@@ -441,10 +455,13 @@ namespace omvviewerlight
 			
 			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
-                OpenMetaverse.Avatar avatar = (OpenMetaverse.Avatar)mod.GetValue(iter, 3);
-				PayWindow pay=new PayWindow(avatar.ID,0);
-				pay.Show();
-				
+                UUID id=(UUID)mod.GetValue(iter,3);
+                Avatar avatar = AutoPilot.findavatarinsims(id);
+				if(avatar!=null)
+				{
+					PayWindow pay=new PayWindow(avatar.ID,0);
+					pay.Show();
+				}	
 			}		
 		}
 
@@ -455,8 +472,8 @@ namespace omvviewerlight
 			
 			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
-                Avatar avatar = (Avatar)mod.GetValue(iter, 3);
-             
+                UUID id = (UUID)mod.GetValue(iter, 3);
+                Avatar avatar = AutoPilot.findavatarinsims(id);
                 if (avatar != null)
 				{
 					ProfileVIew p = new ProfileVIew(avatar.ID);
@@ -478,8 +495,8 @@ namespace omvviewerlight
 			
 			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
-                OpenMetaverse.Avatar avatar = (OpenMetaverse.Avatar)mod.GetValue(iter, 3);		
-				AutoPilot.set_target_avatar(avatar.ID,true);
+				UUID id=(UUID)mod.GetValue(iter,3);		
+				AutoPilot.set_target_avatar(id,true);
 				this.button1.Label="STOP";
 			}
 		}
@@ -491,8 +508,8 @@ namespace omvviewerlight
 			
 			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
-                OpenMetaverse.Avatar avatar = (OpenMetaverse.Avatar)mod.GetValue(iter, 3);
-     
+				UUID id=(UUID)mod.GetValue(iter,3);
+                Avatar avatar = AutoPilot.findavatarinsims(id);
 				if(avatar!=null)
 				{
 					Vector3 pos;
