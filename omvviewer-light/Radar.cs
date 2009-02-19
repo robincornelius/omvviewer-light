@@ -281,7 +281,7 @@ namespace omvviewerlight
                             theagent.avatar = avatar;
                             Gtk.TreeIter iter;
 					        
-			                iter = store.AppendValues("", avatar.Name +" ("+simulator.Name+")", "", avatar.ID);
+			                iter = store.AppendValues("", avatar.Name , "", avatar.ID);
 	                        theagent.iter = iter;
 
 	                        av_tree.Add(avatar.LocalID, theagent);

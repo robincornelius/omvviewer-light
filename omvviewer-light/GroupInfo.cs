@@ -434,8 +434,11 @@ namespace omvviewerlight
                 List<KeyValuePair<UUID, UUID>> roleslist = new List<KeyValuePair<UUID, UUID>>();
                 if (id == UUID.Zero)
                 {
-                    int count = MainClass.client.Groups.GroupMembersCaches.Dictionary[request_members].Count;
-                    store_roles_list.SetValue(iter, 2, count.ToString());
+					if(MainClass.client.Groups.GroupMembersCaches.Dictionary.ContainsKey(request_members))
+					{
+	                    int count = MainClass.client.Groups.GroupMembersCaches.Dictionary[request_members].Count;
+	                    store_roles_list.SetValue(iter, 2, count.ToString());
+					}
                     return true;
                 }
                 return false;

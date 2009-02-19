@@ -606,8 +606,7 @@ namespace omvviewerlight
 		
 		bool ClearLookAt()
 		{
-			
-			MainClass.client.Self.LookAtEffect(MainClass.client.Self.AgentID,UUID.Zero,Vector3d.Zero,LookAtType.Clear,lookat);
+			MainClass.client.Self.LookAtEffect(MainClass.client.Self.AgentID,UUID.Zero,Vector3d.Zero,LookAtType.Clear,UUID.Zero);
 			lookatrunning=false;
 			return false;
 			

@@ -82,7 +82,6 @@ namespace omvviewerlight
 
         void dowork()
         {
-            Console.WriteLine("TryGetImage:: DOWORK()");
             Gdk.Pixbuf buf = MainClass.GetResource("trying.tga");
 
             if (scale)
@@ -120,11 +119,7 @@ namespace omvviewerlight
 			int rowstride=bufdest.Rowstride;
 			int channels=bufdest.NChannels;
 			byte * p;		
-			int y,x;
-			
-			//Console.WriteLine("Progress is "+progress.ToString());
-			int widthx=(int)((float)width*progress);
-		    //Console.WriteLine("Width is  is "+widthx.ToString());
+			int y,x;						int widthx=(int)((float)width*progress);
 	
 			if(progress>1)
                  progress=1;			
@@ -208,7 +203,6 @@ namespace omvviewerlight
                             {
                                 try
                                 {
-                                    Console.WriteLine("TryGetImage:: Fireing callback");
                                     OnDecodeComplete();
                                     OnDecodeComplete = null;
                                 }
