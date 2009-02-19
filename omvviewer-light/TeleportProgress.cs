@@ -113,7 +113,7 @@ namespace omvviewerlight
 			
 		}
 		
-		void onTeleport(string Message, OpenMetaverse.AgentManager.TeleportStatus status,OpenMetaverse.AgentManager.TeleportFlags flags)
+		void onTeleport(string Message, OpenMetaverse.TeleportStatus status,OpenMetaverse.TeleportFlags flags)
 		{
 		Gtk.Application.Invoke(delegate {						
 						
@@ -121,30 +121,30 @@ namespace omvviewerlight
 			
 			this.label_info.Text=Message;
 				
-			if(OpenMetaverse.AgentManager.TeleportStatus.Start==status)
+			if(OpenMetaverse.TeleportStatus.Start==status)
 				progressbar1.Fraction=0.2;
 				
-			if(OpenMetaverse.AgentManager.TeleportStatus.Progress==status)
+			if(OpenMetaverse.TeleportStatus.Progress==status)
 			{
 			     Console.Write("Progress\n");
 				progressbar1.Fraction+=0.2;
 			}	
 			
-			if(OpenMetaverse.AgentManager.TeleportStatus.Finished==status)
+			if(OpenMetaverse.TeleportStatus.Finished==status)
 			{
 					progressbar1.Fraction=1.0;
 					GLib.Timeout.Add(1000,closewindow);
 					this.button_close.Sensitive=true;
 			}
 
-			if(OpenMetaverse.AgentManager.TeleportStatus.Cancelled==status)
+			if(OpenMetaverse.TeleportStatus.Cancelled==status)
 			{
 					progressbar1.Fraction=1.0;
 					this.button_close.Sensitive=true;
 					this.label_info.Text="Teleport Cancelled";
 			}
 
-			if(OpenMetaverse.AgentManager.TeleportStatus.Failed==status)
+			if(OpenMetaverse.TeleportStatus.Failed==status)
 			{
 					progressbar1.Fraction=1.0;
 					this.button_close.Sensitive=true;

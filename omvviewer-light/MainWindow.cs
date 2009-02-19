@@ -538,7 +538,7 @@ public partial class MainWindow: Gtk.Window
 		});
 	}
 			
-	void onTeleport(string Message, OpenMetaverse.AgentManager.TeleportStatus status,OpenMetaverse.AgentManager.TeleportFlags flags)
+	void onTeleport(string Message, OpenMetaverse.TeleportStatus status,OpenMetaverse.TeleportFlags flags)
     {		
 		Gtk.Application.Invoke(delegate {						
 			status_location.Text="Location: "+MainClass.client.Network.CurrentSim.Name+MainClass.prettyvector(MainClass.client.Self.SimPosition,2);	

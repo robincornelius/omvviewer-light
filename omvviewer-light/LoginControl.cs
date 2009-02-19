@@ -233,7 +233,9 @@ namespace omvviewerlight
 	
 			if(LoginStatus.Success==login)
 			{
-				Console.Write("Login status login\n");                          
+				Console.Write("Login status login\n");
+                Thread.Sleep(5000);
+    
 				MainClass.client.Groups.RequestCurrentGroups();
 				MainClass.client.Self.RetrieveInstantMessages();
 				
@@ -248,6 +250,7 @@ namespace omvviewerlight
 
                     Gtk.Application.Invoke(delegate
                    {
+                      
                        Thread appearenceRunner = new Thread(new ThreadStart(this.appearencethread));
                        appearenceRunner.Start();
                    });

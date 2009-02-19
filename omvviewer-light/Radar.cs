@@ -55,12 +55,17 @@ namespace omvviewerlight
 			//tvc.Sizing=Gtk.TreeViewColumnSizing.Autosize;
 
             MyTreeViewColumn mycol;
-            mycol = new MyTreeViewColumn("", new Gtk.CellRendererText(), "text", 1, false);
+            mycol = new MyTreeViewColumn("Name", new Gtk.CellRendererText(), "text", 1, false);
+            mycol.Sizing = Gtk.TreeViewColumnSizing.Autosize;
+            treeview_radar.AppendColumn(mycol);
+
+            mycol = new MyTreeViewColumn("Dist.", new Gtk.CellRendererText(), "text", 2, false);
             mycol.Sizing = Gtk.TreeViewColumnSizing.Autosize;
             treeview_radar.AppendColumn(mycol);
 			
-			treeview_radar.AppendColumn("Dist.",new Gtk.CellRendererText(),"text",2);
+			//treeview_radar.AppendColumn("Dist.",new Gtk.CellRendererText(),"text",2);
 			treeview_radar.Model=store;
+            treeview_radar.HeadersClickable = true;
 	
 			MainClass.client.Objects.OnNewAvatar += new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
 			MainClass.client.Objects.OnObjectKilled += new OpenMetaverse.ObjectManager.KillObjectCallback(onKillObject);
@@ -92,7 +97,7 @@ namespace omvviewerlight
                         if (simulator.ObjectsAvatars.Dictionary.ContainsKey(avatar.LocalID))
                             removelist.Add(iter);
 
-                        return true;
+                        return false;
  
                     });
                 }
@@ -128,7 +133,7 @@ namespace omvviewerlight
                store.Foreach(delegate(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
                {
                    calcdistance(iter);
-                   return true;
+                   return false;
                });
 
                foreach (Gtk.TreeIter iter in removelist)
@@ -173,9 +178,9 @@ namespace omvviewerlight
 			return 0;
 		}
 		
-		void onTeleport(string Message, OpenMetaverse.AgentManager.TeleportStatus status,OpenMetaverse.AgentManager.TeleportFlags flags)
+		void onTeleport(string Message, OpenMetaverse.TeleportStatus status,OpenMetaverse.TeleportFlags flags)
 	    {
-			if(status==OpenMetaverse.AgentManager.TeleportStatus.Finished)
+			if(status==OpenMetaverse.TeleportStatus.Finished)
 			{
 
                 if(MainClass.client.Network.CurrentSim.ID == lastsim)
@@ -256,9 +261,9 @@ namespace omvviewerlight
                         {
                             removelist.Add(iter);
                             localids.Remove(avatarstore.LocalID);
-                            return false;
+                            return true;
                         }
-                        return true;
+                        return false;
                     });
                 }
                
@@ -266,7 +271,7 @@ namespace omvviewerlight
                 
 			    Gtk.Application.Invoke(delegate
 			    {  
-                    Gtk.TreeIter iter=store.AppendValues("", avatar.Name + "("+simulator.Name+")", "", avatar);
+                    Gtk.TreeIter iter=store.AppendValues("", avatar.Name + " ("+simulator.Name+")", "", avatar);
 	                calcdistance(iter);
                 });    
             }

@@ -159,9 +159,9 @@ namespace omvviewerlight
 			}
 		}
 
-		void onTeleport(string Message, OpenMetaverse.AgentManager.TeleportStatus status,OpenMetaverse.AgentManager.TeleportFlags flags)
+		void onTeleport(string Message, OpenMetaverse.TeleportStatus status,OpenMetaverse.TeleportFlags flags)
 	    {
-			if(status==OpenMetaverse.AgentManager.TeleportStatus.Finished)
+			if(status==OpenMetaverse.TeleportStatus.Finished)
 			{
 
                 if (MainClass.client.Network.CurrentSim.ID == lastsim)
