@@ -329,6 +329,9 @@ namespace omvviewerlight
 		{
             try
             {
+                if (pos.X < 0 || pos.X > 255 || pos.Y < 0 || pos.Y > 255) //don't plot child AVs of sims
+                    return;
+                
                 int tx, ty;
                 tx = (int)pos.X;
                 ty = (int)(256.0 - pos.Y);
