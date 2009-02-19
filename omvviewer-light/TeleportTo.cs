@@ -84,7 +84,7 @@ namespace omvviewerlight
 					localupdate=false;
 					}
 
-					if(target=true)
+					if(target==true)
 					{
 						if(Math.Abs(MainClass.client.Self.SimPosition.X-spinbutton_x.Value)<1)
 							if(Math.Abs(MainClass.client.Self.SimPosition.Y-spinbutton_y.Value)<1)

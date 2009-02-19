@@ -518,10 +518,10 @@ namespace omvviewerlight
 
             redtab();
 			
-			if(MainClass.appsettings.notify_IM && this.im_session_id==null)
+			if(MainClass.appsettings.notify_IM && this.im_session_id==UUID.Zero)
 				windownotify();
 
-			if(MainClass.appsettings.notify_group_IM && this.im_session_id!=null)
+			if(MainClass.appsettings.notify_group_IM && this.im_session_id!=UUID.Zero)
 				windownotify();
 
 			
