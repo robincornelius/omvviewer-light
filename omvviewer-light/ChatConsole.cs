@@ -408,26 +408,22 @@ namespace omvviewerlight
 			
 			Console.WriteLine("New IM recieved "+im.ToString());
 
+        
+            
+
             if ((this.im_session_id == UUID.Zero) && (im_key == UUID.Zero))
             {
                 //we are the chat console not an IM window;
                 //We handle Some types of IM packet here
-                if (im.Dialog == OpenMetaverse.InstantMessageDialog.InventoryOffered)
+              
+               if (im.Dialog == OpenMetaverse.InstantMessageDialog.InventoryOffered)
                 {
-                    Gtk.Application.Invoke(delegate
-                    {
-                        displaychat(im.Message, im.FromAgentName, objectIMchat, objectIMchat);
-                    });
+                    displaychat(im.FromAgentName+" gave you "+im.Message, "(new inventory)", this.systemchat,this.systemchat);
                     return;
-
                 }
-
                 if (im.Dialog == OpenMetaverse.InstantMessageDialog.TaskInventoryOffered)
                 {
-                    Gtk.Application.Invoke(delegate
-                    {
-                        displaychat(im.Message, im.FromAgentName, objectIMchat, objectIMchat);
-                    });
+                    displaychat(im.FromAgentName + " gave you " + im.Message, "(new inventory)", this.systemchat, this.systemchat);
                     return;
                 }
 
