@@ -116,6 +116,9 @@ namespace omvviewerlight
 		protected virtual void OnButton1Clicked (object sender, System.EventArgs e)
 		{
 			this.label_search_progress.Text="searching....";
+            this.queryid = UUID.Zero;
+            lock(store)
+                this.store.Clear();
 			queryid=MainClass.client.Directory.StartGroupSearch(OpenMetaverse.DirectoryManager.DirFindFlags.Groups,this.entry_search.Text,0);
 		}
 

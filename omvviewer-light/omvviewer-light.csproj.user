@@ -7,7 +7,7 @@
     <ProjectView>ProjectFiles</ProjectView>
     <ProjectTrust>0</ProjectTrust>
     <PublishUrlHistory>publish\</PublishUrlHistory>
-    <InstallUrlHistory>http://www.byteme.org.uk/omvviewer-light/</InstallUrlHistory>
+    <InstallUrlHistory>http://omvviewer-light.byteme.org.uk/clickonce/|http://omvviewer.byteme.org.uk/omvviewer-light/|http://www.byteme.org.uk/omvviewer-light/</InstallUrlHistory>
     <SupportUrlHistory>http://jira.byteme.org.uk</SupportUrlHistory>
     <UpdateUrlHistory>
     </UpdateUrlHistory>
