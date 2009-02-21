@@ -185,9 +185,11 @@ namespace omvviewerlight
 				
 		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
 		{
+			 if(MainClass.client.Network.CurrentSim!=null) //OpenSim protection needed this
 	            Gtk.Application.Invoke(delegate
 					{
-					
+
+				       
 						lock(MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
 	                        if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.ContainsKey(update.LocalID))
 	                            drawavs();

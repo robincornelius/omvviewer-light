@@ -316,7 +316,9 @@ namespace omvviewerlight
             {
                 double dist;
               
-                Vector3 self_pos;
+				Vector3 self_pos;
+				if(MainClass.client.Network.CurrentSim==null)
+  				     return;  //opensim protection
 
                 lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
                 {
