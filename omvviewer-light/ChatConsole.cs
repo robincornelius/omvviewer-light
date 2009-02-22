@@ -485,18 +485,15 @@ namespace omvviewerlight
 				
 			//Reject some IMs that we handle else where
 			
-			if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryOffered)
-				return;
-			
-			if(im.Dialog==OpenMetaverse.InstantMessageDialog.TaskInventoryOffered)
-				return;
-			
-			if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryAccepted)
-				return;
-				
-			if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryAccepted)
-				return;
-				
+			   if(im.Dialog!=OpenMetaverse.InstantMessageDialog.MessageFromAgent &&
+			   im.Dialog!=OpenMetaverse.InstantMessageDialog.SessionSend &&
+			   im.Dialog!=OpenMetaverse.InstantMessageDialog.SessionGroupStart
+				)
+				{
+                    Console.Write("IM REJECTED IN IM WINDOW FROM " + im.FromAgentID + " : " + im.FromAgentName + " : " + im.IMSessionID + "\n");
+					return;	
+                }
+    						
             Console.Write("IM FROM " + im.FromAgentID + " : " + im.FromAgentName + " : " + im.IMSessionID + "\n");
 
             redtab();
