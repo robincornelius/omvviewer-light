@@ -228,12 +228,15 @@ namespace omvviewerlight
             {
                 Console.WriteLine("Try get image got a null asset");
                 return;
-            }
-            this_image = image;
-            this_asset = asset;
-            Thread decode = new Thread(new ThreadStart(this.decodethread));
-            Console.WriteLine("Begining a decode thread for asset "+asset.AssetID.ToString());
-            decode.Start();
+		    }
+			if(image.ID==this.target_asset)
+			{
+	            this_image = image;
+	            this_asset = asset;
+	            Thread decode = new Thread(new ThreadStart(this.decodethread));
+	            Console.WriteLine("Begining a decode thread for asset "+asset.AssetID.ToString());
+				decode.Start();
+	        }
 		}	
 	}
 }
