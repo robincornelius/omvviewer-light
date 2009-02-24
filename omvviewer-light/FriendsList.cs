@@ -95,8 +95,8 @@ namespace omvviewerlight
             store.SetSortColumnId(1, SortType.Ascending);
             store.SetSortFunc(1,sortfunc);
 			treeview_friends.HeadersClickable=true;
-			
-			
+            this.treeview_friends.Selection.Mode = SelectionMode.Multiple;    
+
 			online_img=MainClass.GetResource("icon_avatar_online.tga");
 			offline_img=MainClass.GetResource("icon_avatar_offline.tga");
 		    this.img_blank=MainClass.GetResource("blank_arrow.tga");
@@ -111,7 +111,44 @@ namespace omvviewerlight
             MainClass.client.Friends.OnFriendshipResponse += new FriendsManager.FriendshipResponseEvent(Friends_OnFriendshipResponse);
             MainClass.client.Friends.OnFriendshipTerminated += new FriendsManager.FriendshipTerminatedEvent(Friends_OnFriendshipTerminated);
             MainClass.client.Friends.OnFriendRights += new FriendsManager.FriendRightsEvent(Friends_OnFriendRights);
+
+            treeview_friends.CursorChanged += new EventHandler(treeview_friends_CursorChanged);
         }
+
+        void treeview_friends_CursorChanged(object sender, EventArgs e)
+        {
+            Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+			
+            TreePath[] paths = treeview_friends.Selection.GetSelectedRows(out mod);
+
+            this.button_IM.Sensitive = false;
+            this.button_profile.Sensitive = false;
+            this.button_teleport.Sensitive = false;
+            this.button_pay.Sensitive = false;
+
+      
+            if (paths.Length == 1)
+            {
+                this.button_pay.Sensitive = true;
+            }
+            else if (paths.Length > 1)
+            {
+                this.button_IM.Sensitive = true;
+                this.button_profile.Sensitive = true;
+                this.button_teleport.Sensitive = true;
+                foreach (TreePath path in paths)
+                {
+                    if (store.GetIter(out iter, path))
+                    {
+                        bool online = (bool)mod.GetValue(iter, 7);
+                        if(online==false)
+                            this.button_IM.Sensitive = false;
+                    }
+                }
+            }
+        }
+
 
         void Friends_OnFriendRights(FriendInfo friend)
         {
@@ -259,24 +296,31 @@ namespace omvviewerlight
 		{
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
-			
-			if(treeview_friends.Selection.GetSelected(out mod,out iter))			
-			{
-				string id=(string)mod.GetValue(iter,6);
-				UUID lid=(UUID)id;
-				FriendInfo finfo;
-				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
-				{					Gtk.CheckMenuItem se=(Gtk.CheckMenuItem)sender;                    					FriendRights rights=getrights(finfo);
-                    se.Active = !se.Active;
-					if(se.Active)
-						rights|=FriendRights.CanSeeOnline;
-					else
-						rights&=~FriendRights.CanSeeOnline;
-				
-					MainClass.client.Friends.GrantRights(lid,rights);
-				}
-			}
-          
+		
+			TreePath[] paths = treeview_friends.Selection.GetSelectedRows(out mod);
+
+            foreach (TreePath path in paths)
+            {
+                if (store.GetIter(out iter, path))
+                {
+                    string id = (string)mod.GetValue(iter, 6);
+                    UUID lid = (UUID)id;
+                    FriendInfo finfo;
+                    if (MainClass.client.Friends.FriendList.TryGetValue(lid, out finfo))
+                    {
+                        Gtk.CheckMenuItem se = (Gtk.CheckMenuItem)sender;
+                        FriendRights rights = getrights(finfo);
+                        se.Active = !se.Active;
+
+                        if (se.Active)
+                            rights |= FriendRights.CanSeeOnline;
+                        else
+                            rights &= ~FriendRights.CanSeeOnline;
+
+                        MainClass.client.Friends.GrantRights(lid, rights);
+                    }
+                }
+            }
 		}
 
 		protected virtual void OnCheckbuttonMapClicked (object sender, System.EventArgs e)
@@ -284,26 +328,31 @@ namespace omvviewerlight
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
 			
-			if(treeview_friends.Selection.GetSelected(out mod,out iter))			
-			{
-				string id=(string)mod.GetValue(iter,6);
-				UUID lid=(UUID)id;
-				FriendInfo finfo;
-				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
-				{
-					FriendRights rights=getrights(finfo);
-					Gtk.CheckMenuItem se=(Gtk.CheckMenuItem)sender;
-                    se.Active = !se.Active;
-					if(se.Active)
-						rights|=FriendRights.CanSeeOnMap;
-					else
-						rights&=~FriendRights.CanSeeOnMap;
+			TreePath[] paths = treeview_friends.Selection.GetSelectedRows(out mod);
 
-					MainClass.client.Friends.GrantRights(lid,rights);
-						
-				}
-			}
-          
+            foreach (TreePath path in paths)
+            {
+                if (store.GetIter(out iter, path))
+                {
+                    string id = (string)mod.GetValue(iter, 6);
+                    UUID lid = (UUID)id;
+                    FriendInfo finfo;
+                    if (MainClass.client.Friends.FriendList.TryGetValue(lid, out finfo))
+                    {
+                        FriendRights rights = getrights(finfo);
+                        Gtk.CheckMenuItem se = (Gtk.CheckMenuItem)sender;
+                        se.Active = !se.Active;
+
+                        if (se.Active)
+                            rights |= FriendRights.CanSeeOnMap;
+                        else
+                            rights &= ~FriendRights.CanSeeOnMap;
+
+                        MainClass.client.Friends.GrantRights(lid, rights);
+
+                    }
+                }
+            }          
 		}
 
 		protected virtual void OnCheckbuttonModobjectsClicked (object sender, System.EventArgs e)
@@ -311,27 +360,31 @@ namespace omvviewerlight
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
 			
-			if(treeview_friends.Selection.GetSelected(out mod,out iter))			
-			{
-				string id=(string)mod.GetValue(iter,6);
-				UUID lid=(UUID)id;
-				FriendInfo finfo;
-				if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
-				{
-					FriendRights rights=getrights(finfo);
-					Gtk.CheckMenuItem se=(Gtk.CheckMenuItem)sender;
-                    se.Active = !se.Active;
+			TreePath[] paths = treeview_friends.Selection.GetSelectedRows(out mod);
 
-                    if (se.Active)
-                        rights |= FriendRights.CanModifyObjects;
-                    else
-                        rights &= ~FriendRights.CanModifyObjects;
-	
-					MainClass.client.Friends.GrantRights(lid,rights);
-	
-				}
-			}
-         
+            foreach (TreePath path in paths)
+            {
+                if (store.GetIter(out iter, path))
+                {
+                    string id = (string)mod.GetValue(iter, 6);
+                    UUID lid = (UUID)id;
+                    FriendInfo finfo;
+                    if (MainClass.client.Friends.FriendList.TryGetValue(lid, out finfo))
+                    {
+                        FriendRights rights = getrights(finfo);
+                        Gtk.CheckMenuItem se = (Gtk.CheckMenuItem)sender;
+                        se.Active = !se.Active;
+
+                        if (se.Active)
+                            rights |= FriendRights.CanModifyObjects;
+                        else
+                            rights &= ~FriendRights.CanModifyObjects;
+
+                        MainClass.client.Friends.GrantRights(lid, rights);
+
+                    }
+                }
+            }
 		}
 
 		FriendRights getrights(FriendInfo finfo)
@@ -356,13 +409,31 @@ namespace omvviewerlight
 			//beter work out who we have selected
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
-				
-			if(treeview_friends.Selection.GetSelected(out mod,out iter))			
-			{
-				string id=(string)mod.GetValue(iter,6);
-				UUID lid=(UUID)id;
-				MainClass.win.startIM(lid);
-			}
+
+            TreePath[] paths = treeview_friends.Selection.GetSelectedRows(out mod);
+
+            if (paths.Length == 1)
+            {
+                if (store.GetIter(out iter, paths[0]))
+                {
+                    string id = (string)mod.GetValue(iter, 6);
+                    UUID lid = (UUID)id;
+                    MainClass.win.startIM(lid);
+                }
+            }
+
+            if (paths.Length > 1)
+            {
+                foreach (TreePath path in paths)
+                {
+                    if (store.GetIter(out iter, path))
+                    {
+                        string id = (string)mod.GetValue(iter, 6);
+                        UUID lid = (UUID)id;
+                       // MainClass.win.startIM(lid);
+                    }
+                }
+            }
 		}
 
 		protected virtual void OnButtonTeleportClicked (object sender, System.EventArgs e)
@@ -370,13 +441,17 @@ namespace omvviewerlight
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
 			
-			if(treeview_friends.Selection.GetSelected(out mod,out iter))			
-			{
-				string id=(string)mod.GetValue(iter,6);
-				UUID lid=(UUID)id;
-				MainClass.client.Self.SendTeleportLure(lid);
-			}
+            TreePath[] paths = treeview_friends.Selection.GetSelectedRows(out mod);
 
+            foreach (TreePath path in paths)
+            {
+                if (store.GetIter(out iter, path))
+                {
+                    string id = (string)mod.GetValue(iter, 6);
+                    UUID lid = (UUID)id;
+                    MainClass.client.Self.SendTeleportLure(lid);
+                }
+            }
 		}
 
 		protected virtual void OnButtonPayClicked (object sender, System.EventArgs e)
@@ -384,11 +459,16 @@ namespace omvviewerlight
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
 			
-			if(treeview_friends.Selection.GetSelected(out mod,out iter))			
-			{
-				string id=(string)mod.GetValue(iter,6);
-				PayWindow pay=new PayWindow((UUID)id,0);
-				pay.Show();
+			TreePath[] paths = treeview_friends.Selection.GetSelectedRows(out mod);
+
+            foreach (TreePath path in paths)
+            {
+                if (store.GetIter(out iter, path))
+                {
+                    string id = (string)mod.GetValue(iter, 6);
+                    PayWindow pay = new PayWindow((UUID)id, 0);
+                    pay.Show();
+                }
 			}
 		}
 
@@ -397,51 +477,64 @@ namespace omvviewerlight
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
 			
-			if(treeview_friends.Selection.GetSelected(out mod,out iter))			
-			{
-				string id=(string)mod.GetValue(iter,6);
-				UUID lid=(UUID)id;
-					
-				ProfileVIew profile=new ProfileVIew(lid);
-				profile.Show();
-			}
-		}
+            TreePath[] paths = treeview_friends.Selection.GetSelectedRows(out mod);
+
+            foreach (TreePath path in paths)
+            {
+                if (store.GetIter(out iter, path))
+                {
+                    {
+                        string id = (string)mod.GetValue(iter, 6);
+                        UUID lid = (UUID)id;
+
+                        ProfileVIew profile = new ProfileVIew(lid);
+                        profile.Show();
+                    }
+                }
+		    }
+        }
 
 		[GLib.ConnectBefore]
 		protected virtual void OnTreeviewFriendsButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
-			if (args.Event.Button == 3)//Fuck this should be a define
+            if (args.Event.Button == 3)//Fuck this should be a define
             {
                 Gtk.TreeModel mod;
-			    Gtk.TreeIter iter;
-	            if (this.treeview_friends.Selection.GetSelected(out mod, out iter))
-                {   
-					string id=(string)mod.GetValue(iter,6);
-					UUID lid=(UUID)id;
-					FriendInfo finfo;
-					if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
-					{
-						Gtk.CheckMenuItem see_me_online=new Gtk.CheckMenuItem("Can see my online status");
-					    see_me_online.Active=finfo.CanSeeMeOnline;
-						see_me_online.ButtonPressEvent+=new ButtonPressEventHandler(OnCheckbuttonOnlinestatusClicked);
-						                                                            
-						Gtk.CheckMenuItem see_me_on_map=new Gtk.CheckMenuItem("Can see on the map");
-					    see_me_on_map.Active=finfo.CanSeeMeOnMap;
-						see_me_on_map.ButtonPressEvent+=new ButtonPressEventHandler(OnCheckbuttonMapClicked);
-						
-						Gtk.CheckMenuItem modify_mine=new Gtk.CheckMenuItem("Can modify my objects");
-					    modify_mine.Active=finfo.CanModifyMyObjects;
-						modify_mine.ButtonPressEvent+=new ButtonPressEventHandler(OnCheckbuttonModobjectsClicked);
-							
-						Gtk.Menu menu = new Gtk.Menu();						
-	                    menu.Append(see_me_online);
-				        menu.Append(see_me_on_map);
-				        menu.Append(modify_mine);
-				    	menu.Popup();
-						menu.ShowAll();
-					}				
-					}
-			}
+                Gtk.TreeIter iter;
+
+                TreePath[] paths = treeview_friends.Selection.GetSelectedRows(out mod);
+
+                if (paths.Length == 1)
+                {
+                    if (store.GetIter(out iter, paths[0]))
+                    {
+                        string id = (string)mod.GetValue(iter, 6);
+                        UUID lid = (UUID)id;
+                        FriendInfo finfo;
+                        if (MainClass.client.Friends.FriendList.TryGetValue(lid, out finfo))
+                        {
+                            Gtk.CheckMenuItem see_me_online = new Gtk.CheckMenuItem("Can see my online status");
+                            see_me_online.Active = finfo.CanSeeMeOnline;
+                            see_me_online.ButtonPressEvent += new ButtonPressEventHandler(OnCheckbuttonOnlinestatusClicked);
+
+                            Gtk.CheckMenuItem see_me_on_map = new Gtk.CheckMenuItem("Can see on the map");
+                            see_me_on_map.Active = finfo.CanSeeMeOnMap;
+                            see_me_on_map.ButtonPressEvent += new ButtonPressEventHandler(OnCheckbuttonMapClicked);
+
+                            Gtk.CheckMenuItem modify_mine = new Gtk.CheckMenuItem("Can modify my objects");
+                            modify_mine.Active = finfo.CanModifyMyObjects;
+                            modify_mine.ButtonPressEvent += new ButtonPressEventHandler(OnCheckbuttonModobjectsClicked);
+
+                            Gtk.Menu menu = new Gtk.Menu();
+                            menu.Append(see_me_online);
+                            menu.Append(see_me_on_map);
+                            menu.Append(modify_mine);
+                            menu.Popup();
+                            menu.ShowAll();
+                        }
+                    }
+                }
+            }
 		}
 	}
 }

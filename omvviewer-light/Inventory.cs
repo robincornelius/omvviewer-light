@@ -34,12 +34,12 @@ namespace omvviewerlight
     public partial class invthreaddata
     {
 		public UUID key;
-        public RowExpandedArgs args;
+        public TreeIter iter;
 		public string path;
-		public invthreaddata(UUID keyx, RowExpandedArgs argsx,string pathx)
+		public invthreaddata(UUID keyx, RowExpandedArgs argsx,string pathx,TreeIter iterx)
         {
             key = keyx;
-            args = argsx;
+            iter = iterx;
 			path = pathx;
 		}
     }
@@ -99,6 +99,12 @@ namespace omvviewerlight
         bool specialfoldersfirst = true;
         bool inventoryloaded = false;
 
+        Gtk.TreeModelFilter filter;
+
+        bool filteractive = false;
+
+        List<Gtk.TreeIter> filtered = new List<TreeIter>();
+
         enum foldersorttype
         {
             SORT_NAME,
@@ -136,14 +142,19 @@ namespace omvviewerlight
 			
             treeview_inv.AppendColumn("",new CellRendererPixbuf(),"pixbuf",0);
             MyTreeViewColumn col = new MyTreeViewColumn("Name", new Gtk.CellRendererText(), "text", 1,true);
-			//treeview_inv.AppendColumn("Name",new  Gtk.CellRendererText(),"text",1);
             col.setmodel(inventory);
             treeview_inv.InsertColumn(col, 1);
-            treeview_inv.Model=inventory;
+            //treeview_inv.Model=inventory;
 
             this.treeview_inv.RowExpanded += new Gtk.RowExpandedHandler(onRowExpanded);
 			this.treeview_inv.RowCollapsed += new Gtk.RowCollapsedHandler(onRowCollapsed);
             this.treeview_inv.ButtonPressEvent += new ButtonPressEventHandler(treeview_inv_ButtonPressEvent);
+
+            filter = new Gtk.TreeModelFilter(inventory, null);
+            filter.VisibleFunc = new TreeModelFilterVisibleFunc(FilterTree); 
+            treeview_inv.Model = filter;
+
+            this.entry_search.KeyPressEvent += new KeyPressEventHandler(entry_search_KeyPressEvent);
 
             this.inventory.SetSortFunc(1, sortinventoryfunc);
             this.inventory.SetSortColumnId(1, SortType.Ascending);
@@ -168,13 +179,74 @@ namespace omvviewerlight
             }	
 		}
 
+        [GLib.ConnectBefore]
+        void entry_search_KeyPressEvent(object o, KeyPressEventArgs args)
+        {
+            filtered.Clear();
+   
+            if (this.entry_search.Text == "")
+            {
+                filteractive = false;
+                filter.Refilter();
+                return;
+            }
+            //This is fucking shocking
+            filteractive = true;
+            filter.Refilter();
+            filter.Refilter(); //*sigh*
+            treeview_inv.ExpandAll();
+          
+        }
+        
+        private bool FilterTree(Gtk.TreeModel model, Gtk.TreeIter iter)
+        {
+            try
+            {
+                    if (this.entry_search.Text == "")
+                        return true;
+
+                    if (filtered.Contains(iter))//*sigh*
+                        return true;
+
+                    string Name = model.GetValue(iter, 1).ToString();
+                    
+
+                    if (Name.Contains(this.entry_search.Text))
+                    {
+                        
+                        filtered.Add(iter);//*sigh*
+                       
+                        TreePath path = model.GetPath(iter);
+                        while(path.Depth>1)
+                        {
+                            path.Up();
+                            TreeIter iter2;
+                            model.GetIter(out iter2, path);
+                            filtered.Add(iter2);//*sigh*
+                           
+                        }
+
+                        return true;
+                    }
+
+                    return false;
+               
+            }
+            catch
+            {
+                return false;
+            }
+              
+        }
+        
+
         int sortinventoryfunc(Gtk.TreeModel model, Gtk.TreeIter a, Gtk.TreeIter b)
         {
             int colid;
             SortType order;
             int aa=1;
             int bb=-1;
-            this.inventory.GetSortColumnId(out colid, out order);
+            inventory.GetSortColumnId(out colid, out order);
             if (order == SortType.Ascending)
             {
                 aa = -1;
@@ -568,8 +640,8 @@ namespace omvviewerlight
                         inventory.Clear();
                         populate_top_level_inv();
                         this.no_items = 0;
-                        //Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
-                        //invRunner.Start(MainClass.client.Inventory.Store.RootFolder.UUID);
+                        Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
+                        invRunner.Start(MainClass.client.Inventory.Store.RootFolder.UUID);
                         //this.fetchinventory(MainClass.client.Inventory.Store.RootFolder.UUID);
                     });
                 }
@@ -586,39 +658,68 @@ namespace omvviewerlight
 				
 		void onRowCollapsed(object o,Gtk.RowCollapsedArgs args)
 		{
-			Gdk.Pixbuf image=folder_closed;
-			
-			UUID key=(UUID)this.inventory.GetValue(args.Iter,2);
-			InventoryBase item=(InventoryBase)this.inventory.GetValue(args.Iter,3);
-            if (item == null)
+            if (filteractive == true)
                 return;
-			if(item is InventoryFolder)
-			{
-				image=getprettyfoldericon((InventoryFolder)item);	
-			}
-			
-			inventory.SetValue(args.Iter,0,image);
+
+            try
+            {
+                Gdk.Pixbuf image = folder_closed;
+                TreeIter iter = filter.ConvertIterToChildIter(args.Iter);
+                
+                UUID key = (UUID)this.inventory.GetValue(iter, 2);
+                InventoryBase item = (InventoryBase)this.inventory.GetValue(iter, 3);
+                if (item == null)
+                    return;
+                if (item is InventoryFolder)
+                {
+                    image = getprettyfoldericon((InventoryFolder)item);
+                }
+
+                inventory.SetValue(iter, 0, image);
+            }
+            catch
+            {
+            }
 		}
 
 		void onRowExpanded(object o,Gtk.RowExpandedArgs args)
 		{
-			UUID key=(UUID)this.inventory.GetValue(args.Iter,2);
-			if(inventory.GetValue(args.Iter,0)==folder_closed)
-                inventory.SetValue(args.Iter,0,folder_open);
- 
-            Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
-            invthreaddata x = new invthreaddata(key,args,args.Path.ToString());
-			invRunner.Start(x);
+            if (filteractive == true)
+                return;
+            try
+            {
+
+                TreeIter iter = filter.ConvertIterToChildIter(args.Iter);
+                
+                UUID key = (UUID)this.inventory.GetValue(iter, 2);
+
+                if (inventory.GetValue(iter, 0) == folder_closed)
+                    inventory.SetValue(iter, 0, folder_open);
+
+           
+                Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
+                invthreaddata x = new invthreaddata(key, args, filter.ConvertPathToChildPath(args.Path).ToString(),iter);
+                invRunner.Start(x);
+            }
+            catch
+            {
+
+            }
 		}
 		
 		void fetchinventory(object x)
 		{
+           // Console.WriteLine("Starting a new fetcher");
 			UUID start=(UUID)x;
-            MainClass.client.Inventory.RequestFolderContents(start, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate);
-	        List<InventoryBase> myObjects = MainClass.client.Inventory.FolderContents(start, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);			
-			if (myObjects == null)
-                return;
+            //MainClass.client.Inventory.RequestFolderContents(start, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate);
+	        List<InventoryBase> myObjects = MainClass.client.Inventory.FolderContents(start, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
 
+            if (myObjects == null || myObjects.Count==0)
+            {
+               // Console.WriteLine("objects is null aborting this one");
+                return;
+            }
+          
 			this.no_items+=myObjects.Count;
 			Gtk.Application.Invoke(delegate{
 				this.label_fetched.Text="fetched "+this.no_items.ToString()+" items";
@@ -627,10 +728,12 @@ namespace omvviewerlight
 		
 			foreach (InventoryBase item in myObjects)
             {
+                //Console.WriteLine("Fetched " + item.Name);
                      if (item is InventoryFolder)
                      {
-					    fetchinventory((object)item.UUID);
-				     }
+                         System.Threading.Thread.Sleep(50);
+					     fetchinventory((object)((InventoryFolder)item).UUID);
+                     }
 			}				
 			
 			return;
@@ -639,11 +742,12 @@ namespace omvviewerlight
         void UpdateRow(object x)
         {
 	        UUID key;
-            Gtk.RowExpandedArgs args;
+            //Gtk.RowExpandedArgs args;
 			Gtk.TreePath path;
 			invthreaddata xx=(invthreaddata)x;
             key = ((invthreaddata)x).key;
-            args = ((invthreaddata)x).args;
+            TreeIter incommingIter = ((invthreaddata)x).iter;
+            //args = ((invthreaddata)x).args;
 			
             List<InventoryBase> myObjects = MainClass.client.Inventory.FolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
 			
@@ -669,19 +773,21 @@ namespace omvviewerlight
 
                  if (!assetmap.ContainsKey(item.UUID))
                  {
-                     foreach( KeyValuePair <WearableType,OpenMetaverse.AppearanceManager.WearableData> kvp in MainClass.client.Appearance.Wearables.Dictionary)
-                     {
-                         if (kvp.Value.Item.UUID == item.UUID)
-                             msg = " (WORN) ";
-                     }
+                     lock(MainClass.client.Appearance.Wearables.Dictionary)
+                         foreach( KeyValuePair <WearableType,OpenMetaverse.AppearanceManager.WearableData> kvp in MainClass.client.Appearance.Wearables.Dictionary)
+                         {
+                             if (kvp.Value.Item.UUID == item.UUID)
+                                 msg = " (WORN) ";
+                         }
 
-                     foreach (KeyValuePair<uint, Primitive> kvp in MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary)
-                     {
-                         if((kvp.Value.ID==item.UUID))
-                             msg = " (ATTACHED) ";
-                     }
+                     lock( MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary)
+                         foreach (KeyValuePair<uint, Primitive> kvp in MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary)
+                         {
+                             if((kvp.Value.ID==item.UUID))
+                                 msg = " (ATTACHED) ";
+                         }
 
-                    Gtk.TreeIter iter2 = inventory.AppendValues(args.Iter, buf, item.Name+msg, item.UUID, item);
+                     Gtk.TreeIter iter2 = inventory.AppendValues(incommingIter, buf, item.Name + msg, item.UUID, item);
 					if(!assetmap.ContainsKey(item.UUID))
 					   assetmap.Add(item.UUID, iter2);
 					else
@@ -704,8 +810,6 @@ namespace omvviewerlight
 			
 });
         }
-		
-		
 		
         Gdk.Pixbuf getprettyfoldericon(InventoryFolder item)
         {
