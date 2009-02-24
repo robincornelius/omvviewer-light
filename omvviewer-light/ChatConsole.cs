@@ -61,12 +61,14 @@ namespace omvviewerlight
 		
 		enum chat_type
 		{
+			CHAT_TYPE_NONE,
 			CHAT_TYPE_CHAT,
 			CHAT_TYPE_IM,
 			CHAT_TYPE_GROUP_IM,
 			CHAT_TYPE_CONFRENCE
 		};
 		
+		chat_type current_chat_type=chat_type.CHAT_TYPE_NONE;
 		
 		public ChatConsole()
 		{
@@ -148,6 +150,19 @@ namespace omvviewerlight
 		
 		public ChatConsole(InstantMessage im)
 		{
+			
+		    if (im.GroupIM && (im.FromAgentID==im.IMSessionID))
+				current_chat_type==chat_type.CHAT_TYPE_GROUP_IM;
+			
+		    if (im.GroupIM && (im.FromAgentID!=im.IMSessionID))
+				current_chat_type==chat_type.CHAT_TYPE_CONFRENCE;
+			
+			if(!im.GroupIM)
+			{
+			
+				current_chat_type=chat_type.CHAT_TYPE_IM;
+			}
+			
             lock (MainClass.win.im_queue)
             {
                 dosetup();
@@ -169,14 +184,7 @@ namespace omvviewerlight
 				{
 					im_key=im.IMSessionID;
 					
-					GroupChatList groupchatlist=new GroupChatList();
-					this.hbox2.PackEnd(groupchatlist);
-								groupchatlist.WidthRequest=150;
-
-					this.hbox2.ShowAll();
-								groupchatlist.WidthRequest=150;
-
-					groupchatlist.setsession(im.IMSessionID);
+					show_group_list();
 					
 					foreach (InstantMessage qim in MainClass.win.im_queue)
                     {
