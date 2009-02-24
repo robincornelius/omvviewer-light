@@ -55,6 +55,8 @@ namespace omvviewerlight
 		bool lookatrunning=false;
 		UUID lookat;
 		
+		bool joined_group_chat=false;
+		
 		
 		public ChatConsole()
 		{
@@ -124,7 +126,7 @@ namespace omvviewerlight
             lock (MainClass.win.im_queue)
             {
                 dosetup();
-                if (im.GroupIM)
+                if (im.GroupIM && (im.FromAgentID==im.IMSessionID))
                 {
 					GroupChatList groupchatlist=new GroupChatList();
 					this.hbox2.PackEnd(groupchatlist);
@@ -137,10 +139,40 @@ namespace omvviewerlight
 					this.im_session_id = im.IMSessionID;
                     im_key = UUID.Zero;
                     MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
-                    MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
+					this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter,"Trying to join group chat session, please wait........\n");
+					joined_group_chat=false;
+					Gtk.Timeout.Add(10000,kick_group_join);                    
+					MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
                     onIM(im, null);
                 }
-                else
+                else if(im.GroupIM && (im.FromAgentID !=im.IMSessionID))
+				{
+					im_key=im.IMSessionID;
+					
+					GroupChatList groupchatlist=new GroupChatList();
+					this.hbox2.PackEnd(groupchatlist);
+								groupchatlist.WidthRequest=150;
+
+					this.hbox2.ShowAll();
+								groupchatlist.WidthRequest=150;
+
+					groupchatlist.setsession(im.IMSessionID);
+					
+					foreach (InstantMessage qim in MainClass.win.im_queue)
+                    {
+                        if (qim.FromAgentID == im_key)
+                            onIM(qim, null);
+                    }
+
+                    MainClass.win.im_queue.RemoveAll(TestRemove);
+                    //fetch any IM's in the queue
+					
+					MainClass.win.im_windows.Add(im.FromAgentID, this);
+                    if (MainClass.win.im_registering.Contains(im.FromAgentID))
+                        MainClass.win.im_registering.Remove(im.FromAgentID);
+					
+				}
+				else
                 {
                     im_key = im.FromAgentID;
                     foreach (InstantMessage qim in MainClass.win.im_queue)
@@ -205,6 +237,8 @@ namespace omvviewerlight
 		{
 			if(groupChatSessionID!=this.im_session_id)
 				return;
+			
+			this.joined_group_chat=true;
 			
 			string buffer="Joined group chat\n";
 			TextIter iter;
@@ -275,37 +309,32 @@ namespace omvviewerlight
 			this.hbox2.ShowAll();
 			groupchatlist.WidthRequest=150;
 			groupchatlist.setsession(target);
-			
-			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
-			im_key=UUID.Zero;			
-			MainClass.client.Self.RequestJoinGroupChat(target);
 			im_session_id=target;
+	        MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
+			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
+			im_key=UUID.Zero;
+
+			this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter,"Trying to join group chat session, please wait........\n");
+			joined_group_chat=false;
+			Gtk.Timeout.Add(10000,kick_group_join);
+			MainClass.client.Self.RequestJoinGroupChat(target);
+			
+		}
+		
+		bool kick_group_join()
+		{
+			if(joined_group_chat==true)
+				return false;
+
+			this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter,"Retrying to join group chat session, please wait........\n");
+			MainClass.client.Self.RequestJoinGroupChat(im_session_id);
+			
+			return true;
+			
 		}
 
 		void settagtable()
 		{
-/*		
-			if(bold!=null)
-			{
-				this.textview_chat.Buffer.TagTable.Remove(bold);
-				this.textview_chat.Buffer.TagTable.Remove(avchat);
-				this.textview_chat.Buffer.TagTable.Remove(systemchat);
-				this.textview_chat.Buffer.TagTable.Remove(objectchat);
-				this.textview_chat.Buffer.TagTable.Remove(ownerobjectchat);
-				this.textview_chat.Buffer.TagTable.Remove(typing_tag);
-				this.textview_chat.Buffer.TagTable.Remove(onoffline);
-			}
-			
-		    bold=new Gtk.TextTag("bold");
-			avchat=new Gtk.TextTag("avchat");
-            selfavchat = new Gtk.TextTag("selfavchat");
-			objectchat=new Gtk.TextTag("objectchat");
-			systemchat=new Gtk.TextTag("systemchat");
-			ownerobjectchat=new Gtk.TextTag("ownerobjectchat");
-            objectIMchat = new Gtk.TextTag("objectIMchat");
-            typing_tag = new Gtk.TextTag("typing");
-            onoffline = new Gtk.TextTag("onoffline");
-*/				
 			
             avchat.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat);
 			bold.Weight=Pango.Weight.Bold;
@@ -326,10 +355,7 @@ namespace omvviewerlight
 
             onoffline.Weight = Pango.Weight.Bold;
 
-            onoffline.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_online);   
-			
-			
-			
+            onoffline.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_online);   	
 		}
 		
 		void onSettingsUpdate()
@@ -384,8 +410,15 @@ namespace omvviewerlight
 					MainClass.win.active_ims.Remove(im_key);	
 			
 			if(im_session_id!=OpenMetaverse.UUID.Zero)
+            {
 				if(MainClass.win.active_ims.Contains(im_session_id))
-					MainClass.client.Self.RequestLeaveGroupChat(im_session_id);		
+                {
+				   MainClass.win.active_ims.Remove(im_session_id);
+                   MainClass.client.Self.RequestLeaveGroupChat(im_session_id);		
+                }
+              		
+	
+            }
 			
 			nb.RemovePage(pageno);
 			
@@ -604,7 +637,7 @@ namespace omvviewerlight
 				this.displaychat(entry_chat.Text,MainClass.client.Self.Name,avchat,bold);
 				this.entry_chat.Text="";
 				istypingsent=false;
-				return;
+				returnO;
 			}
 			
 			if(this.im_session_id!=OpenMetaverse.UUID.Zero)

@@ -26,8 +26,9 @@ namespace omvviewerlight
 	
 			MainClass.client.Self.OnChatSessionMemberAdded += new OpenMetaverse.AgentManager.ChatSessionMemberAddedCallback(onGroupChatMemberAdded);
 			MainClass.client.Self.OnChatSessionMemberLeft += new OpenMetaverse.AgentManager.ChatSessionMemberLeftCallback(onGroupChatMemberLeft);
-		}
-		
+		   
+        }
+ 		
 		public void setsession(UUID id)
 		{
 			session=id;			

@@ -33,7 +33,7 @@ using omvviewerlight;
 public partial class MainWindow: Gtk.Window
 {	
 	public List<OpenMetaverse.UUID>active_ims = new List<OpenMetaverse.UUID>();
-	public List<OpenMetaverse.UUID>active_groups_ims = new List<OpenMetaverse.UUID>();
+	//public List<OpenMetaverse.UUID>active_groups_ims = new List<OpenMetaverse.UUID>();
 
     public delegate void Cleanuptime();
     public event Cleanuptime oncleanuptime;
@@ -383,8 +383,8 @@ public partial class MainWindow: Gtk.Window
 	void onLeaveGroupChat(UUID session_id)
 	{
 		Console.Write("Left group chat for session "+session_id.ToString()+"\n");
-		if(MainClass.win.active_groups_ims.Contains(session_id))
-		   MainClass.win.active_groups_ims.Remove(session_id);
+		if(MainClass.win.active_ims.Contains(session_id))
+		   MainClass.win.active_ims.Remove(session_id);
 		
 	}
 	
@@ -926,9 +926,19 @@ public partial class MainWindow: Gtk.Window
 					ChatConsole imc=new ChatConsole(im);
 					string lable;
 					
-					if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(im.IMSessionID,out lable))
-						lable="Waiting...";
-							
+					//Groups start with IMSessionID==ToAgentID
+					//Friends Confrences start with GroupIM==true but ToAgentID is yourself
+					
+					if(im.IMSessionID==im.ToAgentID)					
+					{
+                        if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(im.IMSessionID,out lable))
+					    lable="Waiting...";
+				    }
+					else
+					{
+					    lable="Confrence";
+				    } 
+
 					makeimwindow(lable,imc,true,im.IMSessionID);
 
 					active_ims.Add(im.IMSessionID);
