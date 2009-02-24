@@ -104,6 +104,8 @@ namespace omvviewerlight
         TreeIter TLI;
 
         bool filteractive = false;
+		
+		private Gtk.TreeIter global_thread_tree;
 
         List<Gtk.TreeIter> filtered = new List<TreeIter>();
 
@@ -741,14 +743,35 @@ namespace omvviewerlight
 			foreach (InventoryBase item in myObjects)
             {
                    Gdk.Pixbuf buf = getprettyicon(item);
-                   Gtk.TreeIter iter2 = inventory.AppendValues(iter, buf, item.Name, item.UUID, item);
-
+				   System.Threading.AutoResetEvent ar=new System.Threading.AutoResetEvent(false);
+				
+				   Gtk.Application.Invoke(delegate{
+					    global_thread_tree = inventory.AppendValues(iter, buf, item.Name, item.UUID, item);
+					    ar.Set();
+					
+					
+			        });
+				
+				    ar.WaitOne();
+				
+				Gtk.TreeIter iter2=global_thread_tree;
+					
                      if (item is InventoryFolder)
                      {
-                         inventory.AppendValues(iter2, item_object, "Waiting...", item.UUID, null);
-                         System.Threading.Thread.Sleep(50);
-                         invthreaddata itd2 = new invthreaddata(((InventoryFolder)item).UUID, "", iter2);
-					     fetchinventory((object)itd2);
+                     
+                         System.Threading.AutoResetEvent ar2=new System.Threading.AutoResetEvent(false);
+					
+					Gtk.Application.Invoke(delegate{
+						                       
+					inventory.AppendValues(iter2, item_object, "Waiting...", item.UUID, null);
+                    ar2.Set();
+					     });					     
+						
+					   ar2.WaitOne();
+						System.Threading.Thread.Sleep(50);
+				                
+					         invthreaddata itd2 = new invthreaddata(((InventoryFolder)item).UUID, "", iter2);
+						fetchinventory((object)itd2);
                      }
 			}				
 			

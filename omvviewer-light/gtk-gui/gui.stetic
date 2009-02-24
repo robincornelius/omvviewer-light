@@ -5308,7 +5308,6 @@ Resident Michelle2 Zenovka
                 <child>
                   <widget class="Gtk.Entry" id="entry_search">
                     <property name="MemberName" />
-                    <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
                     <property name="IsEditable">True</property>
                     <property name="InvisibleChar">●</property>
