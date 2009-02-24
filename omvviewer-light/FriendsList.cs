@@ -131,6 +131,9 @@ namespace omvviewerlight
             if (paths.Length == 1)
             {
                 this.button_pay.Sensitive = true;
+			    this.button_IM.Sensitive = true;
+                this.button_profile.Sensitive = true;
+                this.button_teleport.Sensitive = true;
             }
             else if (paths.Length > 1)
             {
