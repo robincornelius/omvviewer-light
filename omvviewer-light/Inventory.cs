@@ -36,7 +36,7 @@ namespace omvviewerlight
 		public UUID key;
         public TreeIter iter;
 		public string path;
-		public invthreaddata(UUID keyx, RowExpandedArgs argsx,string pathx,TreeIter iterx)
+		public invthreaddata(UUID keyx, string pathx,TreeIter iterx)
         {
             key = keyx;
             iter = iterx;
@@ -100,6 +100,8 @@ namespace omvviewerlight
         bool inventoryloaded = false;
 
         Gtk.TreeModelFilter filter;
+
+        TreeIter TLI;
 
         bool filteractive = false;
 
@@ -319,6 +321,8 @@ namespace omvviewerlight
 									Gtk.TreeIter iterx = inventory.AppendValues(folder_closed, kvp.Value.Data.Name, kvp.Value.Data.UUID,null);
 							        Console.Write("Creating top level folder "+kvp.Value.Data.Name+" : "+MainClass.client.Inventory.Store.Items[kvp.Value.Data.UUID].ToString());
 									inventory.AppendValues(iterx, folder_closed, "Waiting...", kvp.Value.Data.UUID, null);
+                                    if (kvp.Value.Data.Name == "My Inventory")
+                                        TLI = iterx;
 								}
 								Console.Write(kvp.Value.Data.ParentUUID.ToString() +" : ");
 							}
@@ -641,8 +645,8 @@ namespace omvviewerlight
                         populate_top_level_inv();
                         this.no_items = 0;
                         Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
-                        invRunner.Start(MainClass.client.Inventory.Store.RootFolder.UUID);
-                        //this.fetchinventory(MainClass.client.Inventory.Store.RootFolder.UUID);
+                        invthreaddata itd = new invthreaddata(MainClass.client.Inventory.Store.RootFolder.UUID, "0:0", TLI);
+                        invRunner.Start(itd);
                     });
                 }
 				 
@@ -696,10 +700,18 @@ namespace omvviewerlight
                 if (inventory.GetValue(iter, 0) == folder_closed)
                     inventory.SetValue(iter, 0, folder_open);
 
-           
-                Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
-                invthreaddata x = new invthreaddata(key, args, filter.ConvertPathToChildPath(args.Path).ToString(),iter);
-                invRunner.Start(x);
+                TreePath path = inventory.GetPath(iter);
+                path.Down();
+                TreeIter iter2;
+                inventory.GetIter(out iter2, path);
+
+                string Name = inventory.GetValue(iter2, 1).ToString();
+                if (Name == "Waiting...")
+                {
+                    Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
+                    invthreaddata x = new invthreaddata(key, filter.ConvertPathToChildPath(args.Path).ToString(), iter);
+                    invRunner.Start(x);
+                }
             }
             catch
             {
@@ -709,14 +721,14 @@ namespace omvviewerlight
 		
 		void fetchinventory(object x)
 		{
-           // Console.WriteLine("Starting a new fetcher");
-			UUID start=(UUID)x;
-            //MainClass.client.Inventory.RequestFolderContents(start, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate);
-	        List<InventoryBase> myObjects = MainClass.client.Inventory.FolderContents(start, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
+            invthreaddata itd = (invthreaddata)x;
+ 			UUID start=itd.key;
+            TreeIter iter = itd.iter;
+       
+ 	        List<InventoryBase> myObjects = MainClass.client.Inventory.FolderContents(start, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
 
             if (myObjects == null || myObjects.Count==0)
             {
-               // Console.WriteLine("objects is null aborting this one");
                 return;
             }
           
@@ -728,11 +740,15 @@ namespace omvviewerlight
 		
 			foreach (InventoryBase item in myObjects)
             {
-                //Console.WriteLine("Fetched " + item.Name);
+                   Gdk.Pixbuf buf = getprettyicon(item);
+                   Gtk.TreeIter iter2 = inventory.AppendValues(iter, buf, item.Name, item.UUID, item);
+
                      if (item is InventoryFolder)
                      {
+                         inventory.AppendValues(iter2, item_object, "Waiting...", item.UUID, null);
                          System.Threading.Thread.Sleep(50);
-					     fetchinventory((object)((InventoryFolder)item).UUID);
+                         invthreaddata itd2 = new invthreaddata(((InventoryFolder)item).UUID, "", iter2);
+					     fetchinventory((object)itd2);
                      }
 			}				
 			
