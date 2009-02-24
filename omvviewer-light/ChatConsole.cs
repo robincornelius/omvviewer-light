@@ -55,7 +55,17 @@ namespace omvviewerlight
 		bool lookatrunning=false;
 		UUID lookat;
 		
+		private UUID im_target=UUID.Zero;
+		
 		bool joined_group_chat=false;
+		
+		enum chat_type
+		{
+			CHAT_TYPE_CHAT,
+			CHAT_TYPE_IM,
+			CHAT_TYPE_GROUP_IM,
+			CHAT_TYPE_CONFRENCE
+		};
 		
 		
 		public ChatConsole()
@@ -121,6 +131,21 @@ namespace omvviewerlight
             }
         }
 
+		void show_group_list()
+		{
+			
+			GroupChatList groupchatlist=new GroupChatList();
+			hbox2.PackEnd(groupchatlist);
+			groupchatlist.WidthRequest=150;
+
+			hbox2.ShowAll();
+			groupchatlist.WidthRequest=150;
+
+			groupchatlist.setsession(im_target);
+
+			
+		}
+		
 		public ChatConsole(InstantMessage im)
 		{
             lock (MainClass.win.im_queue)
@@ -128,15 +153,10 @@ namespace omvviewerlight
                 dosetup();
                 if (im.GroupIM && (im.FromAgentID==im.IMSessionID))
                 {
-					GroupChatList groupchatlist=new GroupChatList();
-					this.hbox2.PackEnd(groupchatlist);
-								groupchatlist.WidthRequest=150;
-
-					this.hbox2.ShowAll();
-								groupchatlist.WidthRequest=150;
-
-					groupchatlist.setsession(im.IMSessionID);
+					
 					this.im_session_id = im.IMSessionID;
+					show_group_list();
+					
                     im_key = UUID.Zero;
                     MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
 					this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter,"Trying to join group chat session, please wait........\n");
