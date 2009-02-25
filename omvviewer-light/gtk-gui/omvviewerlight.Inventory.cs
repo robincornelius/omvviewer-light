@@ -512,6 +512,7 @@ namespace omvviewerlight {
             this.Show();
             this.entry_search.Changed += new System.EventHandler(this.OnEntrySearchChanged);
             this.treeview_inv.CursorChanged += new System.EventHandler(this.OnTreeviewInvCursorChanged);
+            this.button_fetch_all_inv.Clicked += new System.EventHandler(this.OnButtonFetchAllInvClicked);
         }
     }
 }

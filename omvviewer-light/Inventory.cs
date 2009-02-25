@@ -1172,6 +1172,10 @@ namespace omvviewerlight
             treeview_inv.ExpandAll();
 
 		}
+
+		protected virtual void OnButtonFetchAllInvClicked (object sender, System.EventArgs e)
+		{
+		}
 		
 	}
 }
