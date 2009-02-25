@@ -157,7 +157,8 @@ namespace omvviewerlight
             filter = new Gtk.TreeModelFilter(inventory, null);
             filter.VisibleFunc = new TreeModelFilterVisibleFunc(FilterTree); 
             treeview_inv.Model = filter;
-
+			treeview_inv.HeadersClickable=true;
+			
             this.entry_search.KeyPressEvent += new KeyPressEventHandler(entry_search_KeyPressEvent);
 
             this.inventory.SetSortFunc(1, sortinventoryfunc);

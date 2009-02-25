@@ -148,7 +148,7 @@ namespace omvviewerlight
             {
                 dosetup();
 
-                if (im.GroupIM && (im.FromAgentID == im.IMSessionID))
+                if (im.GroupIM && (im.FromAgentID != MainClass.client.Self.AgentID))
                 {
                     current_chat_type =chat_type.CHAT_TYPE_GROUP_IM;
                     this.im_target = im.IMSessionID;
@@ -160,7 +160,7 @@ namespace omvviewerlight
                     onIM(im, null);
                 }
 
-                if (im.GroupIM && (im.FromAgentID != im.IMSessionID))
+                if (im.GroupIM && (im.FromAgentID == MainClass.client.Self.AgentID))
                 {
                     current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
                     this.im_target = im.IMSessionID;

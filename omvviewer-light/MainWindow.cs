@@ -929,7 +929,7 @@ public partial class MainWindow: Gtk.Window
 					//Groups start with IMSessionID==ToAgentID
 					//Friends Confrences start with GroupIM==true but ToAgentID is yourself
 					
-					if(im.IMSessionID!=im.ToAgentID)					
+					if(im.ToAgentID!=MainClass.client.Self.AgentID)					
 					{
                         if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(im.IMSessionID,out lable))
 					    lable="Waiting...";
