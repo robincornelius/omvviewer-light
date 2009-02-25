@@ -359,44 +359,69 @@ namespace omvviewerlight
 		
 		void ondeleteasset(object o, ButtonPressEventArgs args)
 		{
-			Gtk.TreeModel mod;
-            Gtk.TreeIter iter;
-            this.treeview_inv.Selection.GetSelected(out mod, out iter);
-            InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
-			
-			if(item is InventoryItem)
-			{			
-				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.Modal,MessageType.Question,ButtonsType.YesNo,"Are you sure you wish to delete\n"+((InventoryItem)item).Name+"to ");
-				ResponseType result=(ResponseType)md.Run();	
-				if(result==ResponseType.Yes)
-				{
-					md.Destroy();
-					MainClass.client.Inventory.RemoveItem(item.UUID);
-					return;
-				}
-					md.Destroy();				
-			}
+			 Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+		
+			TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
+
+            foreach (TreePath path in paths)
+            {
+                if (mod.GetIter(out iter, path))
+                {
+                    InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+
+                    if (item is InventoryItem)
+                    {
+                        MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.Modal, MessageType.Question, ButtonsType.YesNo, "Are you sure you wish to delete\n" + ((InventoryItem)item).Name + "to ");
+                        ResponseType result = (ResponseType)md.Run();
+                        if (result == ResponseType.Yes)
+                        {
+                            md.Destroy();
+                            MainClass.client.Inventory.RemoveItem(item.UUID);
+                            return;
+                        }
+                        md.Destroy();
+                    }
+                }
+            }
 		}
 		
 		void ongiveasset(object o, ButtonPressEventArgs args)
 		{
-			Gtk.TreeModel mod;
-            Gtk.TreeIter iter;
-            this.treeview_inv.Selection.GetSelected(out mod, out iter);
-            InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
-			NamePicker np = new NamePicker();
-			
-			if(item is InventoryItem)
-				np.item_name=((InventoryItem)item).Name;
-					
-			np.asset=item.UUID;
+			 Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+            NamePicker np = new NamePicker();
+            TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
+            List<InventoryBase> items = new List<InventoryBase>();
+
+            foreach (TreePath path in paths)
+            {
+                if (mod.GetIter(out iter, path))
+                {
+                    InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+                    items.Add(item);
+                    if(np.Name=="")
+                    {
+                        if(item is InventoryItem)
+				            np.item_name=((InventoryItem)item).Name;
+                    }
+                }
+
+            }
+
+            if (paths.Length > 1)
+            {
+                np.Name += " and " + paths.Length.ToString() + " other items ";
+            }
+				
+	        np.items = items;
 			
 			np.UserSel += new NamePicker.UserSelected(ongiveasset2);
 			np.Show();
 			
 		}
-		
-		void ongiveasset2(UUID id,UUID asset,string item_name,string user_name)
+
+        void ongiveasset2(UUID id, UUID asset, string item_name, string user_name, List<InventoryBase> items)
 		{
 			MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.Modal,MessageType.Question,ButtonsType.YesNo,"Are you sure you wish to give\n"+item_name+"to "+user_name);
 			ResponseType result=(ResponseType)md.Run();	
@@ -404,7 +429,13 @@ namespace omvviewerlight
 			
 			if(result==ResponseType.Yes)
 			{
-				MainClass.client.Inventory.GiveItem(asset,item_name,AssetType.Landmark,id,false);
+                foreach (InventoryBase item in items)
+                {
+                    if(item is InventoryItem)
+                        MainClass.client.Inventory.GiveItem(item.UUID, item.Name,((InventoryItem)item).AssetType, id, false);
+                    if(item is InventoryFolder)
+                        MainClass.client.Inventory.GiveItem(item.UUID, item.Name, AssetType.Folder, id, false);
+                }
 			}
 		}
 		
@@ -526,8 +557,12 @@ namespace omvviewerlight
                     {
                         item = new InventoryWearable(UUID.Zero); //fake an item
                     }
-				}				
-				
+				}
+
+
+                if (item == null)
+                    return;
+
                         Gtk.Menu menu = new Gtk.Menu();
 
 						Console.WriteLine("Item is "+item.ToString()+" ID is "+item.UUID.ToString());
@@ -620,46 +655,83 @@ namespace omvviewerlight
 
 		void onOpenNotecard (object o, ButtonPressEventArgs args)
 		{
-          Gtk.TreeModel mod;
-            Gtk.TreeIter iter;
-            this.treeview_inv.Selection.GetSelected(out mod, out iter);
-            InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
-  	
-			NotecardReader nr=new NotecardReader(item.UUID,UUID.Zero,UUID.Zero);
+         
+            Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+
+            TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
+
+            foreach (TreePath path in paths)
+            {
+                if (mod.GetIter(out iter, path))
+                {
+
+                    this.treeview_inv.Selection.GetSelected(out mod, out iter);
+                    InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+
+                    NotecardReader nr = new NotecardReader(item.UUID, UUID.Zero, UUID.Zero);
+                }
+            }
 			
 		}
 		
 		void onViewTexture (object o, ButtonPressEventArgs args)
 		{
             Gtk.TreeModel mod;
-            Gtk.TreeIter iter;
-            this.treeview_inv.Selection.GetSelected(out mod, out iter);
-            InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
-			TexturePreview tp=new TexturePreview(item.UUID,item.Name,true);
-			tp.ShowAll();
+			Gtk.TreeIter iter;
+
+            TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
+
+            foreach (TreePath path in paths)
+            {
+                if (mod.GetIter(out iter, path))
+                {
+                    this.treeview_inv.Selection.GetSelected(out mod, out iter);
+                    InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+                    TexturePreview tp = new TexturePreview(item.UUID, item.Name, true);
+                    tp.ShowAll();
+                }
+            }
 			
 		}
 
 		
         void menu_wear_item_ButtonPressEvent(object o, ButtonPressEventArgs args)
         {
+            
             Gtk.TreeModel mod;
-            Gtk.TreeIter iter;
-            this.treeview_inv.Selection.GetSelected(out mod, out iter);
-            InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+			Gtk.TreeIter iter;
 
-            List<InventoryBase> ibs=new List<InventoryBase>();
-            ibs.Add(item);
-            MainClass.client.Appearance.AddToOutfit(ibs,true);
+            TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
+            List<InventoryBase> ibs = new List<InventoryBase>();
+
+            foreach (TreePath path in paths)
+            {
+                if (mod.GetIter(out iter, path))
+                {
+                    InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+                    ibs.Add(item);
+                }
+            }
+
+            MainClass.client.Appearance.AddToOutfit(ibs, true);
         }
 		
         void menu_attach_item_ButtonPressEvent(object o, ButtonPressEventArgs args)
         {
-            Gtk.TreeModel mod;
-            Gtk.TreeIter iter;
-            this.treeview_inv.Selection.GetSelected(out mod, out iter);
-            InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
-            MainClass.client.Appearance.Attach((InventoryItem)item, AttachmentPoint.Default);
+             Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+
+            TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
+
+            foreach (TreePath path in paths)
+            {
+                if (mod.GetIter(out iter, path))
+                {
+                    InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+                    MainClass.client.Appearance.Attach((InventoryItem)item, AttachmentPoint.Default);
+                }
+            }
         }
 
 		void onEventQueue(Simulator sim)
@@ -674,9 +746,9 @@ namespace omvviewerlight
                         inventory.Clear();
                         populate_top_level_inv();
                         this.no_items = 0;
-                        Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
-                        invthreaddata itd = new invthreaddata(MainClass.client.Inventory.Store.RootFolder.UUID, "0:0", TLI);
-                        invRunner.Start(itd);
+                       // Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
+                       // invthreaddata itd = new invthreaddata(MainClass.client.Inventory.Store.RootFolder.UUID, "0:0", TLI);
+                       // invRunner.Start(itd);
                     });
                 }
 				 
@@ -1022,11 +1094,13 @@ namespace omvviewerlight
 			
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
-			
-			if(this.treeview_inv.Selection.GetSelected(out mod,out iter))			
-			{
-				 if(mod.GetValue(iter,3)!=null)
-                 {
+
+            TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
+
+            if (paths.Length > 0)
+            {
+                if (mod.GetIter(out iter, paths[0])!=null)
+                {
 					InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
 					this.label_name.Text=item.Name;
                     Console.WriteLine("ITEM ID" + item.UUID.ToString() + " Parent " + item.ParentUUID.ToString());
@@ -1079,20 +1153,6 @@ namespace omvviewerlight
 				
 				
 			}
-		}
-
-		protected virtual void OnButtonSearchClicked (object sender, System.EventArgs e)
-		{
-			Gtk.TreeIter iter;
-			Gtk.TreeIter iterlast;
-			
-			this.inventory.GetIterFirst(out iter);
-			Gtk.TreePath path=this.inventory.GetPath(iter);
-			path.Next();
-			path.Down();
-			iterlast=iter;
-		
-			this.inventory.GetIter(out iter,path);		
 		}
 
 		protected virtual void OnEntrySearchChanged (object sender, System.EventArgs e)

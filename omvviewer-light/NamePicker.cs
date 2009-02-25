@@ -37,11 +37,12 @@ namespace omvviewerlight
 		
 		Gtk.ListStore store;
 		
-		public delegate void UserSelected(UUID id,UUID asset,string item_name,string user_name);
+		public delegate void UserSelected(UUID id,UUID asset,string item_name,string user_name,List<InventoryBase> items);
  
         // Define an Event based on the above Delegate
         public event UserSelected UserSel;
 		public UUID asset;
+        public List<InventoryBase> items;
 		public string item_name;
 		public string user_name;
 			
@@ -73,7 +74,7 @@ namespace omvviewerlight
 			{
 				UUID id=(UUID)mod.GetValue(iter,1);
 				if(UserSel!=null)
-					UserSel(id,asset,item_name,user_name);
+					UserSel(id,asset,item_name,user_name,items);
 			}
 			
 			this.Destroy();

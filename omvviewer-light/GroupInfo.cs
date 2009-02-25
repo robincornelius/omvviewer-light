@@ -928,7 +928,7 @@ namespace omvviewerlight
 			NamePicker np=new NamePicker(); 
 			List <UUID> roles=new List <UUID>();
             roles.Add(UUID.Zero);
-			np.UserSel += delegate (UUID id,UUID asset,string item_name,string user_name){MainClass.client.Groups.Invite(this.groupkey,roles,id);};
+			np.UserSel += delegate (UUID id,UUID asset,string item_name,string user_name,List <InventoryBase> items){MainClass.client.Groups.Invite(this.groupkey,roles,id);};
             np.Show();       			  	
 		}
 	
