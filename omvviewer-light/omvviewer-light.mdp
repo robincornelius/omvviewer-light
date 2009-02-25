@@ -211,7 +211,6 @@
   </References>
   <GtkDesignInfo isWidgetLibrary="True" gtkVersion="2.12.1">
     <ExportedWidgets>
-      <Widget>omvviewerlight.LoginControl</Widget>
       <Widget>omvviewerlight.FriendsList</Widget>
       <Widget>omvviewerlight.ChatConsole</Widget>
       <Widget>omvviewerlight.Radar</Widget>
@@ -233,6 +232,7 @@
       <Widget>omvviewerlight.art.GroupSearch</Widget>
       <Widget>omvviewerlight.LocalRegion</Widget>
       <Widget>omvviewerlight.GroupChatList</Widget>
+      <Widget>omvviewerlight.LoginControl</Widget>
     </ExportedWidgets>
   </GtkDesignInfo>
 </Project>

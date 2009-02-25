@@ -651,7 +651,7 @@ public partial class MainWindow: Gtk.Window
         int primscount = parcel.OwnerPrims + parcel.OtherPrims + parcel.GroupPrims;
         string prims;
         prims = primscount.ToString() + " of " + parcel.MaxPrims;
-
+/*
         status_parcel.Text = parcel.Name;
         string tooltext;
         tooltext =
@@ -665,6 +665,7 @@ public partial class MainWindow: Gtk.Window
 
         tooltips1.SetTip(this.statusbar1, tooltext, null);
         tooltips1.Enable();
+*/ 
     }
 			                                                
 	void onBalance(int balance)
