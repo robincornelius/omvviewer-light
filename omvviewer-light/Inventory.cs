@@ -469,15 +469,16 @@ namespace omvviewerlight
                 // maybe
                 Gtk.TreeModel mod;
 			    Gtk.TreeIter iter;
-				InventoryBase item=new InventoryBase();
+                InventoryBase item = null;
 
 				Console.WriteLine("ROOT IS "+MainClass.client.Inventory.Store.RootFolder.UUID.ToString());
 
-				TreePath[] paths = treeview_friends.Selection.GetSelectedRows(out mod);				
+				TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);				
 				if (paths.Length==1)
 				{
 					//all good and simple
-					store.GetIter(out iter, paths[0]);
+                    TreeIter itera;
+                    mod.GetIter(out itera, paths[0]);
 					UUID ida=(UUID)mod.GetValue(itera, 2);
 					item = (InventoryBase)MainClass.client.Inventory.Store.Items[ida].Data;
 				}
@@ -486,86 +487,48 @@ namespace omvviewerlight
 				{
 					bool allsame=true;
 					bool wearables=true;
+                    bool folders = true;
+                    TreeIter itera,iterb;
+
 					foreach (TreePath path in paths)
 					{
-							store.GetIter(out itera, path);
-							UUID ida=(UUID)mod.GetValue(itera, 2);
-							InventoryBase itema = (InventoryBase)MainClass.client.Inventory.Store.Items[ida].Data;
+                        mod.GetIter(out itera, path);
+                        UUID ida = (UUID)mod.GetValue(itera, 2);
+						InventoryBase itema = (InventoryBase)MainClass.client.Inventory.Store.Items[ida].Data;
+                        if (!(itema is InventoryWearable))
+                            wearables = false;
+                        if (!(itema is InventoryFolder))
+                            folders = false;
 
 						foreach (TreePath innerpath in paths)
 						{
-							store.GetIter(out iterb, innerpath);
-							UUID idb=(UUID)mod.GetValue(iterb, 2);
+                            mod.GetIter(out iterb, innerpath);
+                            UUID idb = (UUID)mod.GetValue(iterb, 2);
 							InventoryBase itemb = (InventoryBase)MainClass.client.Inventory.Store.Items[idb].Data;
-							
-							if(typeof(itema)==typeof(itemb))
+
+							if(itema.GetType()!=itemb.GetType())
 							{
-								
-							}
-							else
-							{
-								allsame=false;
-								if(itema is InventoryWearable && itemb is InventoryWearable)
-								{
-									
-								}
-								else
-								{
-									wearables=false;
-								}
+                                allsame = false;
 							}
 						}
 						
 					}
-					
+   
 					//ok if allsame==true we can allow specific extra menu options
 					//or if all wearables then we can allow wearable options
 					if(allsame)
 					{
-						store.GetIter(out iter, paths[0]);
-						UUID ida=(UUID)mod.GetValue(itera, 2);
+						mod.GetIter(out iter, paths[0]);
+						UUID ida=(UUID)mod.GetValue(iter, 2);
 						item = (InventoryBase)MainClass.client.Inventory.Store.Items[ida].Data;
                     }
-					
-					
-				}				
-
-				
-                //if (this.treeview_inv.Selection.GetSelected(out mod, out iter))
-                {   
-					
-//					if(mod.GetValue(iter,3)==null)
-					{
-						
-						//UUID id=(UUID)mod.GetValue(iter, 2);
-						//Console.WriteLine("This ID is "+id.ToString());
-						//InventoryBase item = (InventoryBase)MainClass.client.Inventory.Store.Items[id].Data;
-						
-/*							
-						if(item.ParentUUID==UUID.Zero)
-						{
-							if(item.UUID==MainClass.client.Inventory.Store.RootFolder.UUID)
-								return;
-							if(item.UUID==MainClass.client.Inventory.Store.LibraryFolder.UUID)
-								return;
-							Gtk.Menu menu = new Gtk.Menu();
-							Gtk.ImageMenuItem menu_tp_lm = new ImageMenuItem("Move borked folder");
-							menu_tp_lm.Image=new Gtk.Image(MainClass.GetResource("icon_place.tga"));
-							menu_tp_lm.ButtonPressEvent += new ButtonPressEventHandler(FixBorkedFolder);
-                            menu.Append(menu_tp_lm);
-							menu.Popup();
-							menu.ShowAll();
-							
-*/						}
-						
-						
-					}
-					
-					if(mod.GetValue(iter,3)!=null)
+                    else if (wearables)
                     {
+                        item = new InventoryWearable(UUID.Zero); //fake an item
+                    }
+				}				
+				
                         Gtk.Menu menu = new Gtk.Menu();
-    
-//                        InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
 
 						Console.WriteLine("Item is "+item.ToString()+" ID is "+item.UUID.ToString());
 					
@@ -652,8 +615,6 @@ namespace omvviewerlight
                         menu.Popup();
                         menu.ShowAll();
 						
-                    }
-                }
             }
         }
 
