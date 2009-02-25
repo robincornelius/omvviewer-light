@@ -204,6 +204,8 @@ namespace omvviewerlight
         [GLib.ConnectBefore]
         void entry_search_KeyPressEvent(object o, KeyPressEventArgs args)
         {
+
+            Console.WriteLine(args.Event.ToString());
             filtered.Clear();
    
             if (this.entry_search.Text == "")
