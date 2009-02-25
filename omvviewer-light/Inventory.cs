@@ -171,6 +171,8 @@ namespace omvviewerlight
 			this.treeview_inv.RowCollapsed += new Gtk.RowCollapsedHandler(onRowCollapsed);
             this.treeview_inv.ButtonPressEvent += new ButtonPressEventHandler(treeview_inv_ButtonPressEvent);
 
+			this.treeview_inv.Selection.Mode = SelectionMode.Multiple;    
+
             filter = new Gtk.TreeModelFilter(inventory, null);
             filter.VisibleFunc = new TreeModelFilterVisibleFunc(FilterTree); 
             treeview_inv.Model = filter;
@@ -205,20 +207,6 @@ namespace omvviewerlight
         void entry_search_KeyPressEvent(object o, KeyPressEventArgs args)
         {
 
-            Console.WriteLine(args.Event.ToString());
-            filtered.Clear();
-   
-            if (this.entry_search.Text == "")
-            {
-                filteractive = false;
-                filter.Refilter();
-                return;
-            }
-            //This is fucking shocking
-            filteractive = true;
-            filter.Refilter();
-            filter.Refilter(); //*sigh*
-            treeview_inv.ExpandAll();
           
         }
         
@@ -481,20 +469,79 @@ namespace omvviewerlight
                 // maybe
                 Gtk.TreeModel mod;
 			    Gtk.TreeIter iter;
+				InventoryBase item=new InventoryBase();
 
 				Console.WriteLine("ROOT IS "+MainClass.client.Inventory.Store.RootFolder.UUID.ToString());
+
+				TreePath[] paths = treeview_friends.Selection.GetSelectedRows(out mod);				
+				if (paths.Length==1)
+				{
+					//all good and simple
+					store.GetIter(out iter, paths[0]);
+					UUID ida=(UUID)mod.GetValue(itera, 2);
+					item = (InventoryBase)MainClass.client.Inventory.Store.Items[ida].Data;
+				}
+
+				if(paths.Length!=1)
+				{
+					bool allsame=true;
+					bool wearables=true;
+					foreach (TreePath path in paths)
+					{
+							store.GetIter(out itera, path);
+							UUID ida=(UUID)mod.GetValue(itera, 2);
+							InventoryBase itema = (InventoryBase)MainClass.client.Inventory.Store.Items[ida].Data;
+
+						foreach (TreePath innerpath in paths)
+						{
+							store.GetIter(out iterb, innerpath);
+							UUID idb=(UUID)mod.GetValue(iterb, 2);
+							InventoryBase itemb = (InventoryBase)MainClass.client.Inventory.Store.Items[idb].Data;
+							
+							if(typeof(itema)==typeof(itemb))
+							{
+								
+							}
+							else
+							{
+								allsame=false;
+								if(itema is InventoryWearable && itemb is InventoryWearable)
+								{
+									
+								}
+								else
+								{
+									wearables=false;
+								}
+							}
+						}
+						
+					}
+					
+					//ok if allsame==true we can allow specific extra menu options
+					//or if all wearables then we can allow wearable options
+					if(allsame)
+					{
+						store.GetIter(out iter, paths[0]);
+						UUID ida=(UUID)mod.GetValue(itera, 2);
+						item = (InventoryBase)MainClass.client.Inventory.Store.Items[ida].Data;
+                    }
+					
+					
+				}				
+
 				
-               
-                if (this.treeview_inv.Selection.GetSelected(out mod, out iter))
+                //if (this.treeview_inv.Selection.GetSelected(out mod, out iter))
                 {   
 					
-					if(mod.GetValue(iter,3)==null)
+//					if(mod.GetValue(iter,3)==null)
 					{
 						
-						UUID id=(UUID)mod.GetValue(iter, 2);
-						Console.WriteLine("This ID is "+id.ToString());
-						InventoryBase item = (InventoryBase)MainClass.client.Inventory.Store.Items[id].Data;
-							
+						//UUID id=(UUID)mod.GetValue(iter, 2);
+						//Console.WriteLine("This ID is "+id.ToString());
+						//InventoryBase item = (InventoryBase)MainClass.client.Inventory.Store.Items[id].Data;
+						
+/*							
 						if(item.ParentUUID==UUID.Zero)
 						{
 							if(item.UUID==MainClass.client.Inventory.Store.RootFolder.UUID)
@@ -509,7 +556,7 @@ namespace omvviewerlight
 							menu.Popup();
 							menu.ShowAll();
 							
-						}
+*/						}
 						
 						
 					}
@@ -518,7 +565,7 @@ namespace omvviewerlight
                     {
                         Gtk.Menu menu = new Gtk.Menu();
     
-                        InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+//                        InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
 
 						Console.WriteLine("Item is "+item.ToString()+" ID is "+item.UUID.ToString());
 					
@@ -1085,6 +1132,25 @@ namespace omvviewerlight
 			iterlast=iter;
 		
 			this.inventory.GetIter(out iter,path);		
-		}		
+		}
+
+		protected virtual void OnEntrySearchChanged (object sender, System.EventArgs e)
+		{
+            filtered.Clear(); //*sigh*
+   
+            if (this.entry_search.Text == "")
+            {
+                filteractive = false;
+                filter.Refilter();
+                return;
+            }
+            //This is fucking shocking
+            filteractive = true;
+            filter.Refilter();
+            filter.Refilter(); //*sigh*
+            treeview_inv.ExpandAll();
+
+		}
+		
 	}
 }

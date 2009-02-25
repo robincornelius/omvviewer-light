@@ -45,21 +45,14 @@ namespace omvviewerlight {
             this.vbox4.Name = "vbox4";
             this.vbox4.Spacing = 6;
             // Container child vbox4.Gtk.Box+BoxChild
-            this.map1 = new omvviewerlight.Map();
-            this.map1.WidthRequest = 350;
-            this.map1.HeightRequest = 350;
-            this.map1.Events = ((Gdk.EventMask)(256));
-            this.map1.Name = "map1";
+            this.map1 = null;
             this.vbox4.Add(this.map1);
             Gtk.Box.BoxChild w1 = ((Gtk.Box.BoxChild)(this.vbox4[this.map1]));
             w1.Position = 0;
             w1.Expand = false;
             w1.Fill = false;
             // Container child vbox4.Gtk.Box+BoxChild
-            this.teleportto1 = new omvviewerlight.TeleportTo();
-            this.teleportto1.HeightRequest = 160;
-            this.teleportto1.Events = ((Gdk.EventMask)(256));
-            this.teleportto1.Name = "teleportto1";
+            this.teleportto1 = null;
             this.vbox4.Add(this.teleportto1);
             Gtk.Box.BoxChild w2 = ((Gtk.Box.BoxChild)(this.vbox4[this.teleportto1]));
             w2.Position = 1;
@@ -76,9 +69,7 @@ namespace omvviewerlight {
             this.notebook1.Name = "notebook1";
             this.notebook1.CurrentPage = 0;
             // Container child notebook1.Gtk.Notebook+NotebookChild
-            this.localregion1 = new omvviewerlight.LocalRegion();
-            this.localregion1.Events = ((Gdk.EventMask)(256));
-            this.localregion1.Name = "localregion1";
+            this.localregion1 = null;
             this.notebook1.Add(this.localregion1);
             Gtk.Notebook.NotebookChild w4 = ((Gtk.Notebook.NotebookChild)(this.notebook1[this.localregion1]));
             w4.TabFill = false;
@@ -89,10 +80,7 @@ namespace omvviewerlight {
             this.notebook1.SetTabLabel(this.localregion1, this.label3);
             this.label3.ShowAll();
             // Container child notebook1.Gtk.Notebook+NotebookChild
-            this.radar1 = new omvviewerlight.Radar();
-            this.radar1.WidthRequest = 275;
-            this.radar1.Events = ((Gdk.EventMask)(256));
-            this.radar1.Name = "radar1";
+            this.radar1 = null;
             this.notebook1.Add(this.radar1);
             Gtk.Notebook.NotebookChild w5 = ((Gtk.Notebook.NotebookChild)(this.notebook1[this.radar1]));
             w5.Position = 1;
