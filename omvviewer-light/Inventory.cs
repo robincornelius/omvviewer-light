@@ -109,6 +109,8 @@ namespace omvviewerlight
 
         List<Gtk.TreeIter> filtered = new List<TreeIter>();
 
+        
+
         enum foldersorttype
         {
             SORT_NAME,
@@ -119,6 +121,20 @@ namespace omvviewerlight
 
 		~Inventory()
 		{
+
+       //     Stream stream = File.Open("EmployeeInfo.osl", FileMode.Create);
+       //     BinaryFormatter bformatter = new BinaryFormatter();
+
+       //     Console.WriteLine("Writing Employee Information");
+       //     bformatter.Serialize(stream, mp);
+       //     stream.Close();
+
+
+         //   System.Runtime.Serialization.SerializationInfo info=new System.Runtime.Serialization.SerializationInfo(typeof(OpenMetaverse.InventoryNode),
+         //   MainClass.client.Inventory.Store.Items.GetObjectData(
+
+
+
 			Console.WriteLine("Inventory Cleaned up");
 		}
 	    	
@@ -144,6 +160,7 @@ namespace omvviewerlight
 		{
 			this.Build();		
 			
+
             treeview_inv.AppendColumn("",new CellRendererPixbuf(),"pixbuf",0);
             MyTreeViewColumn col = new MyTreeViewColumn("Name", new Gtk.CellRendererText(), "text", 1,true);
             col.setmodel(inventory);
@@ -740,6 +757,15 @@ namespace omvviewerlight
 				this.label_fetched.Text="fetched "+this.no_items.ToString()+" items";
 			});
 			List<InventoryBase> folders = new List<InventoryBase>();
+
+            // Ok we need to find and remove the previous Waiting.... it should be the first child of the current iter
+
+            TreePath path = inventory.GetPath(iter);
+            path.Down();
+            TreeIter childiter;
+            inventory.GetIter(out childiter, path);
+            if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
+                inventory.Remove(ref childiter);
 		
 			foreach (InventoryBase item in myObjects)
             {
@@ -993,6 +1019,11 @@ namespace omvviewerlight
                  {
 					InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
 					this.label_name.Text=item.Name;
+                    Console.WriteLine("ITEM ID" + item.UUID.ToString() + " Parent " + item.ParentUUID.ToString());
+                    if(item is InventoryFolder)
+                        Console.WriteLine("Version is "+((InventoryFolder)item).Version.ToString());
+                    
+                    Console.WriteLine(item.ToString());
                     
                     if (item is InventoryItem)
                     {
