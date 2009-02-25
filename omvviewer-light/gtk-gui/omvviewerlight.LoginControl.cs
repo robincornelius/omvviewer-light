@@ -252,7 +252,6 @@ namespace omvviewerlight {
             this.radiobutton1 = new Gtk.RadioButton(Mono.Unix.Catalog.GetString("Home"));
             this.radiobutton1.CanFocus = true;
             this.radiobutton1.Name = "radiobutton1";
-            this.radiobutton1.Active = true;
             this.radiobutton1.DrawIndicator = true;
             this.radiobutton1.UseUnderline = true;
             this.radiobutton1.Group = new GLib.SList(System.IntPtr.Zero);

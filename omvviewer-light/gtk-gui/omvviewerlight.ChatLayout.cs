@@ -34,7 +34,10 @@ namespace omvviewerlight {
             this.hpaned1.Name = "hpaned1";
             this.hpaned1.Position = 500;
             // Container child hpaned1.Gtk.Paned+PanedChild
-            this.chatconsole1 = null;
+            this.chatconsole1 = new omvviewerlight.ChatConsole();
+            this.chatconsole1.WidthRequest = 600;
+            this.chatconsole1.Events = ((Gdk.EventMask)(256));
+            this.chatconsole1.Name = "chatconsole1";
             this.hpaned1.Add(this.chatconsole1);
             Gtk.Paned.PanedChild w1 = ((Gtk.Paned.PanedChild)(this.hpaned1[this.chatconsole1]));
             w1.Resize = false;
@@ -44,12 +47,16 @@ namespace omvviewerlight {
             this.vpaned1.Name = "vpaned1";
             this.vpaned1.Position = 275;
             // Container child vpaned1.Gtk.Paned+PanedChild
-            this.friendslist1 = null;
+            this.friendslist1 = new omvviewerlight.FriendsList();
+            this.friendslist1.Events = ((Gdk.EventMask)(256));
+            this.friendslist1.Name = "friendslist1";
             this.vpaned1.Add(this.friendslist1);
             Gtk.Paned.PanedChild w2 = ((Gtk.Paned.PanedChild)(this.vpaned1[this.friendslist1]));
             w2.Resize = false;
             // Container child vpaned1.Gtk.Paned+PanedChild
-            this.radar1 = null;
+            this.radar1 = new omvviewerlight.Radar();
+            this.radar1.Events = ((Gdk.EventMask)(256));
+            this.radar1.Name = "radar1";
             this.vpaned1.Add(this.radar1);
             this.hpaned1.Add(this.vpaned1);
             this.Add(this.hpaned1);
