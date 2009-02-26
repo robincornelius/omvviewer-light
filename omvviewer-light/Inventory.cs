@@ -28,6 +28,11 @@ using OpenMetaverse;
 using System.Collections.Generic;
 using Gdk;
 using Gtk;
+using System.IO;
+
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+
 
 namespace omvviewerlight
 {
@@ -36,11 +41,13 @@ namespace omvviewerlight
 		public UUID key;
         public TreeIter iter;
 		public string path;
-		public invthreaddata(UUID keyx, string pathx,TreeIter iterx)
+        public bool cacheonly;
+		public invthreaddata(UUID keyx, string pathx,TreeIter iterx,bool cache)
         {
             key = keyx;
             iter = iterx;
 			path = pathx;
+            cacheonly = cache;
 		}
     }
 	
@@ -49,6 +56,7 @@ namespace omvviewerlight
 		public int no_items;
         Dictionary<invthreaddata, List<InventoryBase>> incomming = new Dictionary<invthreaddata, List<InventoryBase>>();  
 		Dictionary<UUID, Gtk.TreeIter> assetmap = new Dictionary<UUID, Gtk.TreeIter>();
+        Dictionary<UUID, Gtk.TreeIter> invmap = new Dictionary<UUID, TreeIter>();
 		String[] SearchFolders = { "" };
 		//initialize our list to store the folder contents
 		Gtk.TreeStore inventory = new Gtk.TreeStore (typeof(Gdk.Pixbuf),typeof (string), typeof (UUID),typeof(InventoryBase));		
@@ -96,7 +104,7 @@ namespace omvviewerlight
         Gdk.Pixbuf folder_callingcard = MainClass.GetResource("inv_folder_callingcard.tga");
         Gdk.Pixbuf folder_clothing = MainClass.GetResource("inv_folder_clothing.tga");
 
-        bool specialfoldersfirst = true;
+      
         bool inventoryloaded = false;
 
         Gtk.TreeModelFilter filter;
@@ -104,6 +112,8 @@ namespace omvviewerlight
         TreeIter TLI;
 
         bool filteractive = false;
+        bool fetcherrunning = false;
+        int recursion = 0;
 		
 		private Gtk.TreeIter global_thread_tree;
 
@@ -122,12 +132,7 @@ namespace omvviewerlight
 		~Inventory()
 		{
 
-       //     Stream stream = File.Open("EmployeeInfo.osl", FileMode.Create);
-       //     BinaryFormatter bformatter = new BinaryFormatter();
-
-       //     Console.WriteLine("Writing Employee Information");
-       //     bformatter.Serialize(stream, mp);
-       //     stream.Close();
+           
 
 
          //   System.Runtime.Serialization.SerializationInfo info=new System.Runtime.Serialization.SerializationInfo(typeof(OpenMetaverse.InventoryNode),
@@ -147,7 +152,7 @@ namespace omvviewerlight
             MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             this.treeview_inv.ButtonPressEvent -= new ButtonPressEventHandler(treeview_inv_ButtonPressEvent);			
 			MainClass.client.Network.OnEventQueueRunning -= new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
-			
+        	
             Gtk.Notebook p;
             p = (Gtk.Notebook)this.Parent;
             p.RemovePage(p.PageNum(this));
@@ -178,13 +183,13 @@ namespace omvviewerlight
             treeview_inv.Model = filter;
 			treeview_inv.HeadersClickable=true;
 			
-            this.entry_search.KeyPressEvent += new KeyPressEventHandler(entry_search_KeyPressEvent);
-
             this.inventory.SetSortFunc(1, sortinventoryfunc);
             this.inventory.SetSortColumnId(1, SortType.Ascending);
 
             MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+            MainClass.client.Network.OnLogoutReply += new NetworkManager.LogoutCallback(Network_OnLogoutReply);
 			MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
+            MainClass.client.Inventory.OnFolderUpdated += new InventoryManager.FolderUpdatedCallback(Inventory_onFolderUpdated);
 
 			this.label_aquired.Text="";
 			this.label_createdby.Text="";
@@ -200,16 +205,24 @@ namespace omvviewerlight
                     inventory.Clear();			
 				    populate_top_level_inv();
 				}
-            }	
+            }
+
+           
+
 		}
 
-        [GLib.ConnectBefore]
-        void entry_search_KeyPressEvent(object o, KeyPressEventArgs args)
+        void Network_OnLogoutReply(List<UUID> inventoryItems)
         {
-
-          
+            try
+            {
+                MainClass.client.Inventory.Store.cache_inventory_to_disk(MainClass.client.Settings.TEXTURE_CACHE_DIR + "\\" + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Exception saving inventory :"+e.Message);
+            }
         }
-        
+     
         private bool FilterTree(Gtk.TreeModel model, Gtk.TreeIter iter)
         {
             try
@@ -254,65 +267,72 @@ namespace omvviewerlight
 
         int sortinventoryfunc(Gtk.TreeModel model, Gtk.TreeIter a, Gtk.TreeIter b)
         {
-            int colid;
-            SortType order;
-            int aa=1;
-            int bb=-1;
-            inventory.GetSortColumnId(out colid, out order);
-            if (order == SortType.Ascending)
+            try
             {
-                aa = -1;
-                bb = 1;
-            }
+                int colid;
+                SortType order;
+                int aa = 1;
+                int bb = -1;
 
-            // We probably want to sort my name or date, and may want to group special folders first
-            InventoryBase itema = (InventoryBase)this.inventory.GetValue(a, 3);
-            InventoryBase itemb = (InventoryBase)this.inventory.GetValue(b, 3);
-
-            if (itema == null || itemb == null)
-                return 0;
-
-            if (specialfoldersfirst)
-            {
-                if (itema is InventoryFolder && itemb is InventoryFolder)
+                inventory.GetSortColumnId(out colid, out order);
+                if (order == SortType.Ascending)
                 {
-                    if (((InventoryFolder)itema).PreferredType != ((InventoryFolder)itemb).PreferredType)
-                     {
-                        // we are comparing a standard folder to a special folder
-                        if(((InventoryFolder)itema).PreferredType==AssetType.Unknown)
-                            return aa;
-
-                        return bb;
-                    }
+                    aa = -1;
+                    bb = 1;
                 }
 
-                if (this.preferedsort == foldersorttype.SORT_NAME)
-                {
-                    int ret=string.Compare(itema.Name, itemb.Name);
-                    if(ret==1)
-                        return aa;
-                    if(ret==-1)
-                        return bb;
-                }
+                // We probably want to sort my name or date, and may want to group special folders first
+                InventoryBase itema = (InventoryBase)model.GetValue(a, 3);
+                InventoryBase itemb = (InventoryBase)model.GetValue(b, 3);
 
-                if (this.preferedsort == foldersorttype.SORT_DATE)
+                if (itema == null || itemb == null)
+                    return 0;
+
+                if (this.check_special_folders.Active)
                 {
-                    if (itema is InventoryItem && itemb is InventoryItem)
+                    if (itema is InventoryFolder && itemb is InventoryFolder)
                     {
-                        if (((InventoryItem)itema).CreationDate > ((InventoryItem)itemb).CreationDate)
-                            return aa;
-                        return bb;
+                        if (((InventoryFolder)itema).PreferredType != ((InventoryFolder)itemb).PreferredType)
+                        {
+                            // we are comparing a standard folder to a special folder
+                            if (((InventoryFolder)itema).PreferredType == AssetType.Unknown)
+                                return aa;
+
+                            return bb;
+                        }
                     }
-                    else
+
+                    if (this.preferedsort == foldersorttype.SORT_NAME)
                     {
                         int ret = string.Compare(itema.Name, itemb.Name);
-                        if(ret==1)
+                        if (ret == 1)
                             return aa;
-                        if(ret==-1)
+                        if (ret == -1)
                             return bb;
                     }
-                }
 
+                    if (this.preferedsort == foldersorttype.SORT_DATE)
+                    {
+                        if (itema is InventoryItem && itemb is InventoryItem)
+                        {
+                            if (((InventoryItem)itema).CreationDate > ((InventoryItem)itemb).CreationDate)
+                                return aa;
+                            return bb;
+                        }
+                        else
+                        {
+                            int ret = string.Compare(itema.Name, itemb.Name);
+                            if (ret == 1)
+                                return aa;
+                            if (ret == -1)
+                                return bb;
+                        }
+                    }
+
+                }
+            }
+            catch
+            {
             }
 
             return 0;
@@ -320,6 +340,7 @@ namespace omvviewerlight
 
 		void populate_top_level_inv()
 		{
+            
 				if( MainClass.client.Inventory.Store.Items!=null)
 					{
 						foreach(KeyValuePair <UUID, InventoryNode> kvp in MainClass.client.Inventory.Store.Items)
@@ -338,23 +359,20 @@ namespace omvviewerlight
 							}
 						}
 		         }
-
 		}
 		
         void menu_ware_ButtonPressEvent(object o, ButtonPressEventArgs args)
         {
             Gtk.TreeModel mod;
             Gtk.TreeIter iter;
-            this.treeview_inv.Selection.GetSelected(out mod, out iter);
+            TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
+            mod.GetIter(out iter, paths[0]);
             InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
 
             if (item is InventoryFolder)
             {
                 MainClass.client.Appearance.WearOutfit(item.UUID,true);
             }
-
-           // MainClass.client.Appearance.Attach(
-
         }
 		
 		void ondeleteasset(object o, ButtonPressEventArgs args)
@@ -450,13 +468,14 @@ namespace omvviewerlight
             Console.Write("\nOn Task Inventory Reply\n");
         }
 
-        void Inventory_OnFolderUpdated(UUID folderID)
+        void Inventory_onFolderUpdated(UUID folderID)
         {
             
         }
 
 		void FixBorkedFolder(object o, ButtonPressEventArgs args)
 		{
+            /*
 			  Gtk.TreeModel mod;
 			    Gtk.TreeIter iter;
 
@@ -474,13 +493,15 @@ namespace omvviewerlight
 				
 				
 			}
+             * */
 		}
 
         void Teleporttolandmark(object o, ButtonPressEventArgs args)
         {
             Gtk.TreeModel mod;
             Gtk.TreeIter iter;
-            this.treeview_inv.Selection.GetSelected(out mod, out iter);
+            TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
+            mod.GetIter(out iter, paths[0]);
             TeleportProgress tp = new TeleportProgress();
             tp.Show();
             InventoryLandmark item = (InventoryLandmark)mod.GetValue(iter, 3);
@@ -511,7 +532,8 @@ namespace omvviewerlight
                     TreeIter itera;
                     mod.GetIter(out itera, paths[0]);
 					UUID ida=(UUID)mod.GetValue(itera, 2);
-					item = (InventoryBase)MainClass.client.Inventory.Store.Items[ida].Data;
+                    item = (InventoryBase)MainClass.client.Inventory.Store.GetNodeFor(ida).Data;
+                   
 				}
 
 				if(paths.Length!=1)
@@ -525,7 +547,7 @@ namespace omvviewerlight
 					{
                         mod.GetIter(out itera, path);
                         UUID ida = (UUID)mod.GetValue(itera, 2);
-						InventoryBase itema = (InventoryBase)MainClass.client.Inventory.Store.Items[ida].Data;
+                        InventoryBase itema = (InventoryBase)MainClass.client.Inventory.Store.GetNodeFor(ida).Data;
                         if (!(itema is InventoryWearable))
                             wearables = false;
                         if (!(itema is InventoryFolder))
@@ -535,7 +557,7 @@ namespace omvviewerlight
 						{
                             mod.GetIter(out iterb, innerpath);
                             UUID idb = (UUID)mod.GetValue(iterb, 2);
-							InventoryBase itemb = (InventoryBase)MainClass.client.Inventory.Store.Items[idb].Data;
+                            InventoryBase itemb = (InventoryBase)MainClass.client.Inventory.Store.GetNodeFor(idb).Data;
 
 							if(itema.GetType()!=itemb.GetType())
 							{
@@ -551,7 +573,7 @@ namespace omvviewerlight
 					{
 						mod.GetIter(out iter, paths[0]);
 						UUID ida=(UUID)mod.GetValue(iter, 2);
-						item = (InventoryBase)MainClass.client.Inventory.Store.Items[ida].Data;
+                        item = (InventoryBase)MainClass.client.Inventory.Store.GetNodeFor(ida).Data;
                     }
                     else if (wearables)
                     {
@@ -665,8 +687,6 @@ namespace omvviewerlight
             {
                 if (mod.GetIter(out iter, path))
                 {
-
-                    this.treeview_inv.Selection.GetSelected(out mod, out iter);
                     InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
 
                     NotecardReader nr = new NotecardReader(item.UUID, UUID.Zero, UUID.Zero);
@@ -686,7 +706,7 @@ namespace omvviewerlight
             {
                 if (mod.GetIter(out iter, path))
                 {
-                    this.treeview_inv.Selection.GetSelected(out mod, out iter);
+                  
                     InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
                     TexturePreview tp = new TexturePreview(item.UUID, item.Name, true);
                     tp.ShowAll();
@@ -743,23 +763,68 @@ namespace omvviewerlight
                     inventoryloaded = true;
                     Gtk.Application.Invoke(delegate
                     {
+                        
                         inventory.Clear();
                         populate_top_level_inv();
+                      
+                        
                         this.no_items = 0;
-                       // Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
-                       // invthreaddata itd = new invthreaddata(MainClass.client.Inventory.Store.RootFolder.UUID, "0:0", TLI);
-                       // invRunner.Start(itd);
+                        MainClass.client.Inventory.Store.read_inventory_cache(MainClass.client.Settings.TEXTURE_CACHE_DIR+"\\"+MainClass.client.Inventory.Store.RootFolder.UUID.ToString()+".osl");
+                        
+                        fetcherrunning = true;
+                        Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
+                        invthreaddata itd = new invthreaddata(MainClass.client.Inventory.Store.RootFolder.UUID, "0:0", TLI, true);
+                        invRunner.Start(itd);
+
+                        /*
+                        InventoryNode root;
+                        MainClass.client.Inventory.Store.Items.TryGetValue(MainClass.client.Inventory.Store.RootFolder.UUID,out root);
+                        TreeIter iter;
+
+                        iter = inventory.AppendValues(folder_open, root.Data.Name, root.Data.UUID, root);
+                        IEnumerator<OpenMetaverse.InventoryNode> xx = root.Nodes.Values.GetEnumerator();
+                        for (int x = 0; x < root.Nodes.Count; x++)
+                        {
+                            xx.MoveNext();
+                            recursiveaddnode(xx.Current, iter);
+                        }
+                         * */
+                         
                     });
                 }
 				 
 			}
 		}
+
+        void recursiveaddnode(InventoryNode nodeparent,TreeIter iterparent)
+        {
+
+            InventoryBase ibase = nodeparent.Data;
+            Gdk.Pixbuf buf = this.getprettyicon(ibase);
+            TreeIter iter;
+            iter = inventory.AppendValues(iterparent, buf, ibase.Name, ibase.UUID, ibase);
+           
+            if(nodeparent.Nodes!=null)
+            {
+                int count = nodeparent.Nodes.Count;
+                int x;
+                IEnumerator<OpenMetaverse.InventoryNode> xx=nodeparent.Nodes.Values.GetEnumerator();
+                for (x = 0; x < count; x++)
+                {
+                    xx.MoveNext();
+                    recursiveaddnode(xx.Current, iter);
+                }
+                
+            }
+        }
 		
         void onLogin(LoginStatus status, string message)
 		{
 			if(LoginStatus.Success==status)
 			{
+
 			}
+
 		}
 				
 		void onRowCollapsed(object o,Gtk.RowCollapsedArgs args)
@@ -811,7 +876,7 @@ namespace omvviewerlight
                 if (Name == "Waiting...")
                 {
                     Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
-                    invthreaddata x = new invthreaddata(key, filter.ConvertPathToChildPath(args.Path).ToString(), iter);
+                    invthreaddata x = new invthreaddata(key, filter.ConvertPathToChildPath(args.Path).ToString(), iter,false);
                     invRunner.Start(x);
                 }
             }
@@ -823,18 +888,25 @@ namespace omvviewerlight
 		
 		void fetchinventory(object x)
 		{
+            recursion++;
             invthreaddata itd = (invthreaddata)x;
  			UUID start=itd.key;
             TreeIter iter = itd.iter;
+            bool cache = itd.cacheonly;
        
- 	        List<InventoryBase> myObjects = MainClass.client.Inventory.FolderContents(start, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
+             List<InventoryBase> myObjects;
 
+            if(cache)
+                myObjects = MainClass.client.Inventory.Store.GetContents(start);
+            else
+ 	            myObjects = MainClass.client.Inventory.FolderContents(start, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
+          
             if (myObjects == null || myObjects.Count==0)
             {
+                recursion--;
                 return;
             }
           
-			this.no_items+=myObjects.Count;
 			Gtk.Application.Invoke(delegate{
 				this.label_fetched.Text="fetched "+this.no_items.ToString()+" items";
 			});
@@ -851,14 +923,26 @@ namespace omvviewerlight
 		
 			foreach (InventoryBase item in myObjects)
             {
+                if (invmap.ContainsKey(item.UUID))
+                {
+                    TreeIter iterx = invmap[item.UUID];
+                    InventoryBase itemx = (InventoryBase)inventory.GetValue(iterx,3);
+                    if (itemx is InventoryFolder)
+                    {
+                        invthreaddata itd2 = new invthreaddata(item.UUID, "", iterx,cache);
+                        fetchinventory((object)itd2);
+                    }
+                    continue;
+                }
+
+                   this.no_items++;
                    Gdk.Pixbuf buf = getprettyicon(item);
 				   System.Threading.AutoResetEvent ar=new System.Threading.AutoResetEvent(false);
 				
 				   Gtk.Application.Invoke(delegate{
 					    global_thread_tree = inventory.AppendValues(iter, buf, item.Name, item.UUID, item);
-					    ar.Set();
-					
-					
+					    invmap.Add(item.UUID,global_thread_tree);
+                        ar.Set();
 			        });
 				
 				    ar.WaitOne();
@@ -877,13 +961,19 @@ namespace omvviewerlight
 					     });					     
 						
 					   ar2.WaitOne();
-						System.Threading.Thread.Sleep(50);
+						//System.Threading.Thread.Sleep(50);
 				                
-					         invthreaddata itd2 = new invthreaddata(((InventoryFolder)item).UUID, "", iter2);
+					    invthreaddata itd2 = new invthreaddata(((InventoryFolder)item).UUID, "", iter2,cache);
 						fetchinventory((object)itd2);
                      }
-			}				
-			
+			}
+
+            recursion--;
+            if (recursion == 0)
+            {
+                fetcherrunning = false;
+                Console.WriteLine("Fetch Complete");
+            }
 			return;
 		}
 		
@@ -928,6 +1018,7 @@ namespace omvviewerlight
                                  msg = " (WORN) ";
                          }
 
+
                      lock( MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary)
                          foreach (KeyValuePair<uint, Primitive> kvp in MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary)
                          {
@@ -935,8 +1026,10 @@ namespace omvviewerlight
                                  msg = " (ATTACHED) ";
                          }
 
+                     this.no_items++;
                      Gtk.TreeIter iter2 = inventory.AppendValues(incommingIter, buf, item.Name + msg, item.UUID, item);
-					if(!assetmap.ContainsKey(item.UUID))
+                     invmap.Add(item.UUID, iter2);
+                     if(!assetmap.ContainsKey(item.UUID))
 					   assetmap.Add(item.UUID, iter2);
 					else
 					{
@@ -1173,9 +1266,15 @@ namespace omvviewerlight
 
 		}
 
-		protected virtual void OnButtonFetchAllInvClicked (object sender, System.EventArgs e)
-		{
-		}
-		
+        protected virtual void OnButtonFetchAllInvClicked(object sender, System.EventArgs e)
+        {
+            if (fetcherrunning == false)
+            {
+                fetcherrunning = true;
+                Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
+                invthreaddata itd = new invthreaddata(MainClass.client.Inventory.Store.RootFolder.UUID, "0:0", TLI,false);
+                invRunner.Start(itd);
+            }
+		}                 
 	}
 }
