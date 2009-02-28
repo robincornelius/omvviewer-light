@@ -149,7 +149,7 @@ namespace omvviewerlight
             {
                 dosetup();
 
-                if (im.GroupIM && im.BinaryBucket.Length <1)
+                if (im.GroupIM)
                 {
                     current_chat_type =chat_type.CHAT_TYPE_GROUP_IM;
                     this.im_target = im.IMSessionID;
@@ -161,7 +161,7 @@ namespace omvviewerlight
                     onIM(im, null);
                 }
 
-                if (im.BinaryBucket.Length > 1)
+                if (!im.GroupIM && im.BinaryBucket.Length > 1)
                 {
                     current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
                     this.im_target = im.IMSessionID;
@@ -304,8 +304,12 @@ namespace omvviewerlight
 			Gtk.Timeout.Add(10000,kick_group_join);
 			MainClass.client.Self.RequestJoinGroupChat(target);			
 		}
-
-	
+		
+		public ChatConsole(List <UUID> targets)
+		{
+			
+		}
+		
 		bool kick_group_join()
 		{
 			if(joined_group_chat==true)
@@ -629,8 +633,9 @@ namespace omvviewerlight
                 {
 					this.displaychat(entry_chat.Text, MainClass.client.Self.Name, avchat, bold);
                     foreach(OpenMetaverse.ChatSessionMember member in MainClass.client.Self.GroupChatSessions.Dictionary[this.im_target])
-				    {
-					    MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,member.AvatarKey,entry_chat.Text,this.im_target,InstantMessageDialog.MessageFromAgent,InstantMessageOnline.Online,new Vector3(),UUID.Zero,this.bucket);
+					{
+						if(member.AvatarKey!=MainClass.client.Self.AgentID)
+					        MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,member.AvatarKey,entry_chat.Text,this.im_target,InstantMessageDialog.MessageFromAgent,InstantMessageOnline.Online,new Vector3(),UUID.Zero,this.bucket);
 					}	
 					this.entry_chat.Text="";
 					istypingsent=false;

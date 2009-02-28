@@ -808,6 +808,22 @@ public partial class MainWindow: Gtk.Window
 				active_ims.Add(target);
 			});
 		}					
+    }
+	
+    public void startConfrenceIM(List<UUID> targets)
+	{
+/*		if(!active_ims.Contains(target))
+		{
+			
+			Gtk.Application.Invoke(delegate {						
+				ChatConsole imc=new ChatConsole(target);
+				//makeimwindow(MainClass.av_names[target],imc,false,target);
+				makeimwindow("Waiting...",imc,targets);
+
+				active_ims.Add(target);
+			});
+		}		
+			*/			
 	}
 	
  public static string BytesToString(byte[] bytes)
