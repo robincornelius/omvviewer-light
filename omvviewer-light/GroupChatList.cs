@@ -6,6 +6,8 @@
 
 using System;
 using OpenMetaverse;
+using Gtk;
+using System.Collections.Generic;
 
 namespace omvviewerlight
 {
@@ -21,17 +23,37 @@ namespace omvviewerlight
 			Gtk.TreeViewColumn tvc;
 			tvc=treeview_members.AppendColumn("Name",new Gtk.CellRendererText(),"text",0);
 			//tvc.Resizable=true;
-			tvc.Sizing=Gtk.TreeViewColumnSizing.Autosize;			
+			tvc.Sizing=Gtk.TreeViewColumnSizing.Autosize;
+			
+			Dictionary <UUID,TreeIter> memberstree= new Dictionary<UUID,TreeIter>();			
 			treeview_members.Model=store;
-	
-			MainClass.client.Self.OnChatSessionMemberAdded += new OpenMetaverse.AgentManager.ChatSessionMemberAddedCallback(onGroupChatMemberAdded);
-			MainClass.client.Self.OnChatSessionMemberLeft += new OpenMetaverse.AgentManager.ChatSessionMemberLeftCallback(onGroupChatMemberLeft);
-		   
+		
         }
- 		
+		
 		public void setsession(UUID id)
 		{
-			session=id;			
+			session=id;		
+			
+                Gtk.Application.Invoke(delegate{			
+				this.store.Clear();
+				lock(MainClass.client.Self.GroupChatSessions.Dictionary)
+                if(MainClass.client.Self.GroupChatSessions.Dictionary.ContainsKey(session))
+				foreach(OpenMetaverse.ChatSessionMember member in MainClass.client.Self.GroupChatSessions.Dictionary[session])
+				{
+                    string extra= member.IsModerator==true?" (moderator)":"";
+					Gtk.TreeIter iter = store.AppendValues("Waiting...",member.AvatarKey);
+		            AsyncNameUpdate ud=new AsyncNameUpdate(member.AvatarKey,false);  
+			        ud.addparameters(iter);
+           			
+			        ud.onNameCallBack += delegate(string namex,object[] values){Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; lock(store){store.SetValue(iterx,0,namex+extra);}};
+		 	        ud.go();						
+  			    }	
+				
+	        MainClass.client.Self.OnChatSessionMemberAdded += new OpenMetaverse.AgentManager.ChatSessionMemberAddedCallback(onGroupChatMemberAdded);
+			MainClass.client.Self.OnChatSessionMemberLeft += new OpenMetaverse.AgentManager.ChatSessionMemberLeftCallback(onGroupChatMemberLeft);	
+
+            });			
+
 		}
 		
 		void onGroupChatMemberAdded(UUID thissession, UUID key)

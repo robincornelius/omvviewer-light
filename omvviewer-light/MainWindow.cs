@@ -30,6 +30,7 @@ using Gdk;
 using OpenMetaverse;
 using omvviewerlight;
 
+
 public partial class MainWindow: Gtk.Window
 {	
 	public List<OpenMetaverse.UUID>active_ims = new List<OpenMetaverse.UUID>();
@@ -808,6 +809,15 @@ public partial class MainWindow: Gtk.Window
 			});
 		}					
 	}
+	
+ public static string BytesToString(byte[] bytes)
+        {
+            if (bytes.Length > 0 && bytes[bytes.Length - 1] == 0x00)
+                return System.Text.UTF8Encoding.UTF8.GetString(bytes, 0, bytes.Length - 1);
+            else
+                return System.Text.UTF8Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+        }	
+	
 	   	
 	void onIM(InstantMessage im, Simulator sim)
 	{	
@@ -930,16 +940,16 @@ public partial class MainWindow: Gtk.Window
 					//Groups start with IMSessionID==ToAgentID
 					//Friends Confrences start with GroupIM==true but ToAgentID is yourself
 					
-					if(im.ToAgentID!=MainClass.client.Self.AgentID)					
+					if(im.BinaryBucket.Length>1)
+					{
+						lable=BytesToString(im.BinaryBucket);
+  				    }					
+					else					
 					{
                         if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(im.IMSessionID,out lable))
 					    lable="Waiting...";
 				    }
-					else
-					{
-					    lable="Confrence";
-				    } 
-
+	
 					makeimwindow(lable,imc,true,im.IMSessionID);
 
 					active_ims.Add(im.IMSessionID);
