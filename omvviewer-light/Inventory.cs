@@ -190,6 +190,7 @@ namespace omvviewerlight
             MainClass.client.Network.OnLogoutReply += new NetworkManager.LogoutCallback(Network_OnLogoutReply);
 			MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
             MainClass.client.Inventory.OnFolderUpdated += new InventoryManager.FolderUpdatedCallback(Inventory_onFolderUpdated);
+            MainClass.client.Inventory.OnCacheDelete += new InventoryManager.CacheStaleCallback(Inventory_OnCacheDelete);
 
 			this.label_aquired.Text="";
 			this.label_createdby.Text="";
@@ -211,11 +212,34 @@ namespace omvviewerlight
 
 		}
 
+        void Inventory_OnCacheDelete(List<UUID> delete_list)
+        {
+            Console.WriteLine("Cache delete");
+            Gtk.Application.Invoke(delegate
+            {
+                foreach (UUID item in delete_list)
+                {
+                    if (this.invmap.ContainsKey(item))
+                    {
+                        Console.WriteLine("Trying to remove item " + item.ToString());
+                        TreeIter iter = invmap[item];
+                        //this.inventory.Remove(ref iter);
+                        //invmap.Remove(item);
+                        //if(assetmap.ContainsKey(item))
+                        //    assetmap.Remove(item);
+                        string name=(string)inventory.GetValue(iter, 1);
+                        inventory.SetValue(iter, 1, name + " (delete)");
+                    }
+
+                }
+            });
+        }
+
         void Network_OnLogoutReply(List<UUID> inventoryItems)
         {
             try
             {
-                MainClass.client.Inventory.Store.cache_inventory_to_disk(MainClass.client.Settings.TEXTURE_CACHE_DIR + "\\" + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
+                //MainClass.client.Inventory.Store.cache_inventory_to_disk(MainClass.client.Settings.TEXTURE_CACHE_DIR + "\\" + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
             }
             catch(Exception e)
             {
@@ -468,7 +492,7 @@ namespace omvviewerlight
             Console.Write("\nOn Task Inventory Reply\n");
         }
 
-        void Inventory_onFolderUpdated(UUID folderID)
+        void Inventory_onFolderUpdated(UUID folderID,bool updated)
         {
             
         }
@@ -859,7 +883,6 @@ namespace omvviewerlight
                 return;
             try
             {
-
                 TreeIter iter = filter.ConvertIterToChildIter(args.Iter);
                 
                 UUID key = (UUID)this.inventory.GetValue(iter, 2);
@@ -873,7 +896,7 @@ namespace omvviewerlight
                 inventory.GetIter(out iter2, path);
 
                 string Name = inventory.GetValue(iter2, 1).ToString();
-                if (Name == "Waiting...")
+                //if (Name == "Waiting...")
                 {
                     Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
                     invthreaddata x = new invthreaddata(key, filter.ConvertPathToChildPath(args.Path).ToString(), iter,false);
@@ -896,7 +919,7 @@ namespace omvviewerlight
        
              List<InventoryBase> myObjects;
 
-            if(cache)
+            if(cache || MainClass.client.Inventory.Store.GetNodeStatus(start) == OpenMetaverse.InventoryNode.CacheState.STATE_NETWORK)
                 myObjects = MainClass.client.Inventory.Store.GetContents(start);
             else
  	            myObjects = MainClass.client.Inventory.FolderContents(start, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
@@ -919,8 +942,16 @@ namespace omvviewerlight
             TreeIter childiter;
             inventory.GetIter(out childiter, path);
             if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
+            {
                 inventory.Remove(ref childiter);
-		
+            }
+            else
+            {
+                // Don't do anything else from here if we already have the folder data
+                recursion--;
+                return;
+            }
+
 			foreach (InventoryBase item in myObjects)
             {
                 if (invmap.ContainsKey(item.UUID))
@@ -940,8 +971,12 @@ namespace omvviewerlight
 				   System.Threading.AutoResetEvent ar=new System.Threading.AutoResetEvent(false);
 				
 				   Gtk.Application.Invoke(delegate{
-					    global_thread_tree = inventory.AppendValues(iter, buf, item.Name, item.UUID, item);
-					    invmap.Add(item.UUID,global_thread_tree);
+					    global_thread_tree = inventory.AppendValues(iter, buf, item.Name+ " (c)", item.UUID, item);
+					    if(!invmap.ContainsKey(item.UUID))
+                            invmap.Add(item.UUID,global_thread_tree);
+                        
+                        if (!assetmap.ContainsKey(item.UUID))
+                            assetmap.Add(item.UUID, global_thread_tree);
                         ar.Set();
 			        });
 				
@@ -986,7 +1021,13 @@ namespace omvviewerlight
             key = ((invthreaddata)x).key;
             TreeIter incommingIter = ((invthreaddata)x).iter;
             //args = ((invthreaddata)x).args;
-			
+
+            if (MainClass.client.Inventory.Store.GetNodeStatus(key) == OpenMetaverse.InventoryNode.CacheState.STATE_NETWORK)
+            {
+                Console.WriteLine("Not fetching row for " + key.ToString() + " alreay in state network");
+                //return;
+            }
+
             List<InventoryBase> myObjects = MainClass.client.Inventory.FolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
 			
             Gtk.Application.Invoke(delegate{			
@@ -1028,7 +1069,8 @@ namespace omvviewerlight
 
                      this.no_items++;
                      Gtk.TreeIter iter2 = inventory.AppendValues(incommingIter, buf, item.Name + msg, item.UUID, item);
-                     invmap.Add(item.UUID, iter2);
+                     if(!invmap.ContainsKey(item.UUID))
+                         invmap.Add(item.UUID, iter2);
                      if(!assetmap.ContainsKey(item.UUID))
 					   assetmap.Add(item.UUID, iter2);
 					else
