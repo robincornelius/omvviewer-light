@@ -25,6 +25,7 @@ omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(
 using System;
 using System.Collections.Generic;
 using OpenMetaverse;
+using OpenMetaverse.Utilities;
 using Gdk;
 using Gtk;
 using GLib;
@@ -153,7 +154,6 @@ namespace omvviewerlight
                 {
                     current_chat_type =chat_type.CHAT_TYPE_GROUP_IM;
                     this.im_target = im.IMSessionID;
-                    show_group_list(im_target);
                     MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
                     this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter, "Trying to join group chat session, please wait........\n");
                     Gtk.Timeout.Add(10000, kick_group_join);
@@ -165,7 +165,6 @@ namespace omvviewerlight
                 {
                     current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
                     this.im_target = im.IMSessionID;
-					show_group_list(this.im_target);
 					MainClass.client.Self.ChatterBoxAcceptInvite(im.IMSessionID);
 					bucket=im.BinaryBucket;
                     onIM(im, null);
@@ -230,9 +229,25 @@ namespace omvviewerlight
 
         void onGroupChatJoin(UUID groupChatSessionID, string sessionName, UUID tmpSessionID, bool success)
 		{
-			if(groupChatSessionID!=im_target)
+			
+			Console.WriteLine("On groupchat join for "+groupChatSessionID.ToString());
+			
+			if(groupChatSessionID!=im_target && im_target!=tmpSessionID)
 				return;
+			
+			if(tmpSessionID==im_target)
+			{
+				im_target=groupChatSessionID;
+				this.bucket=
+				
+				
+			}
 
+			show_group_list(im_target);
+			
+			if(!MainClass.win.active_ims.Contains(groupChatSessionID))
+				   MainClass.win.active_ims.Add(groupChatSessionID);
+			
             MainClass.client.Self.OnGroupChatJoin -= new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
 
 			this.joined_group_chat=true;
@@ -296,7 +311,6 @@ namespace omvviewerlight
 			dosetup();
             current_chat_type = chat_type.CHAT_TYPE_GROUP_IM;
 			im_target=target;
-            this.show_group_list(im_target);
 	        MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
 			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
 			this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter,"Trying to join group chat session, please wait........\n");
@@ -307,7 +321,12 @@ namespace omvviewerlight
 		
 		public ChatConsole(List <UUID> targets)
 		{
-			
+			  dosetup();
+			  this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter,"Trying to join confrence chat session, please wait........\n");
+			  MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
+			  current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
+			  UUID session=MainClass.client.Self.StartIMConfrence(targets);
+			  this.im_target=session;
 		}
 		
 		bool kick_group_join()
@@ -408,12 +427,11 @@ namespace omvviewerlight
 		
 		void onIM(InstantMessage im, Simulator sim)
 		{
-			           
+				
+            
 			Console.WriteLine("New IM recieved "+im.ToString());
-
 			Console.WriteLine("Buckert is "+im.BinaryBucket.Length.ToString() + " DATA :"+MainWindow.BytesToString(im.BinaryBucket));
 			
-
             if (this.current_chat_type==chat_type.CHAT_TYPE_CHAT)
             {
                 //we are the chat console not an IM window;

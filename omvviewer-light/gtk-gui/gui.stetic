@@ -849,7 +849,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="omvviewerlight.ChatConsole" design-size="620 300">
+  <widget class="Gtk.Bin" id="omvviewerlight.ChatConsole" design-size="623 300">
     <property name="MemberName" />
     <child>
       <widget class="Gtk.VBox" id="vbox1">

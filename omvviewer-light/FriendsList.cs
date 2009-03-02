@@ -407,6 +407,13 @@ namespace omvviewerlight
 			return rights;
 		}
 		
+	    public static byte[] StringToBytes(string str)
+        {
+            if (String.IsNullOrEmpty(str)) { return new byte[0]; }
+            if (!str.EndsWith("\0")) { str += "\0"; }
+            return System.Text.UTF8Encoding.UTF8.GetBytes(str);
+        }
+		
 		protected virtual void OnButtonIMClicked (object sender, System.EventArgs e)
 		{
 			//beter work out who we have selected
@@ -427,15 +434,18 @@ namespace omvviewerlight
 
             if (paths.Length > 1)
             {
+				List <UUID> targets= new List<UUID>();
                 foreach (TreePath path in paths)
                 {
                     if (store.GetIter(out iter, path))
                     {
                         string id = (string)mod.GetValue(iter, 6);
                         UUID lid = (UUID)id;
+						targets.Add(lid);
                        // MainClass.win.startIM(lid);
                     }
-                }
+				}
+				MainClass.win.startConfrenceIM(targets);
             }
 		}
 
@@ -542,3 +552,4 @@ namespace omvviewerlight
 	}
 }
 
+ 
