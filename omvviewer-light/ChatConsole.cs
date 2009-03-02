@@ -25,7 +25,6 @@ omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(
 using System;
 using System.Collections.Generic;
 using OpenMetaverse;
-using OpenMetaverse.Utilities;
 using Gdk;
 using Gtk;
 using GLib;
@@ -229,7 +228,13 @@ namespace omvviewerlight
 
         void onGroupChatJoin(UUID groupChatSessionID, string sessionName, UUID tmpSessionID, bool success)
 		{
-			
+
+            if (success == false)
+            {
+                this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter, "Failed to join group chat ... retrying...\n");
+                return;
+            }
+
 			Console.WriteLine("On groupchat join for "+groupChatSessionID.ToString());
 			
 			if(groupChatSessionID!=im_target && im_target!=tmpSessionID)
@@ -238,9 +243,7 @@ namespace omvviewerlight
 			if(tmpSessionID==im_target)
 			{
 				im_target=groupChatSessionID;
-				this.bucket=
-				
-				
+                this.bucket = OpenMetaverse.Utils.StringToBytes(sessionName);
 			}
 
 			show_group_list(im_target);
@@ -325,8 +328,8 @@ namespace omvviewerlight
 			  this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter,"Trying to join confrence chat session, please wait........\n");
 			  MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
 			  current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
-			  UUID session=MainClass.client.Self.StartIMConfrence(targets);
-			  this.im_target=session;
+              this.im_target = UUID.Random();
+              MainClass.client.Self.StartIMConfrence(targets, this.im_target);
 		}
 		
 		bool kick_group_join()
@@ -430,7 +433,7 @@ namespace omvviewerlight
 				
             
 			Console.WriteLine("New IM recieved "+im.ToString());
-			Console.WriteLine("Buckert is "+im.BinaryBucket.Length.ToString() + " DATA :"+MainWindow.BytesToString(im.BinaryBucket));
+			Console.WriteLine("Bucket is "+im.BinaryBucket.Length.ToString() + " DATA :"+MainWindow.BytesToString(im.BinaryBucket));
 			
             if (this.current_chat_type==chat_type.CHAT_TYPE_CHAT)
             {
@@ -468,6 +471,7 @@ namespace omvviewerlight
 			
 			if( current_chat_type == chat_type.CHAT_TYPE_CONFRENCE)
 			{
+                //FIX ME this should filter on sessionid
 				string incomming=MainWindow.BytesToString(im.BinaryBucket);
                 string test=MainWindow.BytesToString(this.bucket);
 					if(incomming!=test)
