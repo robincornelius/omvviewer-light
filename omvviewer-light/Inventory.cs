@@ -239,7 +239,7 @@ namespace omvviewerlight
         {
             try
             {
-
+                //Save cache inventory;
              //   MainClass.client.Inventory.Store.cache_inventory_to_disk(MainClass.client.Settings.TEXTURE_CACHE_DIR + "\\" + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
             }
             catch(Exception e)
