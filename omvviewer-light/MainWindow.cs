@@ -765,14 +765,17 @@ public partial class MainWindow: Gtk.Window
 		notebook.ShowAll();
 		cs.tabLabel=lable;
 		AsyncNameUpdate ud;
-		
-		if(group)
-			ud=new AsyncNameUpdate(target,true);
-		else		
-			ud=new AsyncNameUpdate(target,false);
-		
-		ud.onNameCallBack += delegate(string namex,object [] values){cs.tabLabel.Text=namex;};
-        ud.go();
+
+		if(target!=UUID.Zero)
+		{
+			if(group)
+				ud=new AsyncNameUpdate(target,true);
+			else		
+				ud=new AsyncNameUpdate(target,false);
+			
+			ud.onNameCallBack += delegate(string namex,object [] values){cs.tabLabel.Text=namex;};
+	        ud.go();
+		}
 
 		button.Clicked += new EventHandler(cs.clickclosed);
 		this.notebook.SwitchPage += new SwitchPageHandler(cs.onSwitchPage);
@@ -802,7 +805,6 @@ public partial class MainWindow: Gtk.Window
 			
 			Gtk.Application.Invoke(delegate {						
 				ChatConsole imc=new ChatConsole(target);
-				//makeimwindow(MainClass.av_names[target],imc,false,target);
 				makeimwindow("Waiting...",imc,false,target);
 
 				active_ims.Add(target);
@@ -812,18 +814,10 @@ public partial class MainWindow: Gtk.Window
 	
     public void startConfrenceIM(List<UUID> targets)
 	{
-/*		if(!active_ims.Contains(target))
-		{
-			
 			Gtk.Application.Invoke(delegate {						
-				ChatConsole imc=new ChatConsole(target);
-				//makeimwindow(MainClass.av_names[target],imc,false,target);
-				makeimwindow("Waiting...",imc,targets);
-
-				active_ims.Add(target);
+				ChatConsole imc=new ChatConsole(targets);
+				makeimwindow("Confrence",imc,true,UUID.Zero);
 			});
-		}		
-			*/			
 	}
 	
  public static string BytesToString(byte[] bytes)

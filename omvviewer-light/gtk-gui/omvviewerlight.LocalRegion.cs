@@ -82,7 +82,7 @@ namespace omvviewerlight {
             this.image1.WidthRequest = 150;
             this.image1.HeightRequest = 150;
             this.image1.Name = "image1";
-            this.image1.Pixbuf = MainClass.GetResource("water.png");
+            this.image1.Pixbuf = Gdk.Pixbuf.LoadFromResource("water.png");
             this.eventbox1.Add(this.image1);
             this.hbox4.Add(this.eventbox1);
             Gtk.Box.BoxChild w2 = ((Gtk.Box.BoxChild)(this.hbox4[this.eventbox1]));
@@ -97,7 +97,7 @@ namespace omvviewerlight {
             this.image2.WidthRequest = 150;
             this.image2.HeightRequest = 150;
             this.image2.Name = "image2";
-            this.image2.Pixbuf = MainClass.GetResource("water.png");
+            this.image2.Pixbuf = Gdk.Pixbuf.LoadFromResource("water.png");
             this.eventbox2.Add(this.image2);
             this.hbox4.Add(this.eventbox2);
             Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox4[this.eventbox2]));
@@ -112,7 +112,7 @@ namespace omvviewerlight {
             this.image3.WidthRequest = 150;
             this.image3.HeightRequest = 150;
             this.image3.Name = "image3";
-            this.image3.Pixbuf = MainClass.GetResource("water.png");
+            this.image3.Pixbuf = Gdk.Pixbuf.LoadFromResource("water.png");
             this.eventbox3.Add(this.image3);
             this.hbox4.Add(this.eventbox3);
             Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox4[this.eventbox3]));
@@ -135,7 +135,7 @@ namespace omvviewerlight {
             this.image4.WidthRequest = 150;
             this.image4.HeightRequest = 150;
             this.image4.Name = "image4";
-            this.image4.Pixbuf = MainClass.GetResource("water.png");
+            this.image4.Pixbuf = Gdk.Pixbuf.LoadFromResource("water.png");
             this.eventbox4.Add(this.image4);
             this.hbox5.Add(this.eventbox4);
             Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.hbox5[this.eventbox4]));
@@ -150,7 +150,7 @@ namespace omvviewerlight {
             this.image5.WidthRequest = 150;
             this.image5.HeightRequest = 150;
             this.image5.Name = "image5";
-            this.image5.Pixbuf = MainClass.GetResource("water.png");
+            this.image5.Pixbuf = Gdk.Pixbuf.LoadFromResource("water.png");
             this.eventbox5.Add(this.image5);
             this.hbox5.Add(this.eventbox5);
             Gtk.Box.BoxChild w11 = ((Gtk.Box.BoxChild)(this.hbox5[this.eventbox5]));
@@ -165,7 +165,7 @@ namespace omvviewerlight {
             this.image6.WidthRequest = 150;
             this.image6.HeightRequest = 150;
             this.image6.Name = "image6";
-            this.image6.Pixbuf = MainClass.GetResource("water.png");
+            this.image6.Pixbuf = Gdk.Pixbuf.LoadFromResource("water.png");
             this.eventbox6.Add(this.image6);
             this.hbox5.Add(this.eventbox6);
             Gtk.Box.BoxChild w13 = ((Gtk.Box.BoxChild)(this.hbox5[this.eventbox6]));
@@ -188,7 +188,7 @@ namespace omvviewerlight {
             this.image7.WidthRequest = 150;
             this.image7.HeightRequest = 150;
             this.image7.Name = "image7";
-            this.image7.Pixbuf = MainClass.GetResource("water.png");
+            this.image7.Pixbuf = Gdk.Pixbuf.LoadFromResource("water.png");
             this.eventbox7.Add(this.image7);
             this.hbox6.Add(this.eventbox7);
             Gtk.Box.BoxChild w16 = ((Gtk.Box.BoxChild)(this.hbox6[this.eventbox7]));
@@ -203,7 +203,7 @@ namespace omvviewerlight {
             this.image8.WidthRequest = 150;
             this.image8.HeightRequest = 150;
             this.image8.Name = "image8";
-            this.image8.Pixbuf = MainClass.GetResource("water.png");
+            this.image8.Pixbuf = Gdk.Pixbuf.LoadFromResource("water.png");
             this.eventbox8.Add(this.image8);
             this.hbox6.Add(this.eventbox8);
             Gtk.Box.BoxChild w18 = ((Gtk.Box.BoxChild)(this.hbox6[this.eventbox8]));
@@ -218,7 +218,7 @@ namespace omvviewerlight {
             this.image9.WidthRequest = 150;
             this.image9.HeightRequest = 150;
             this.image9.Name = "image9";
-            this.image9.Pixbuf = MainClass.GetResource("water.png");
+            this.image9.Pixbuf = Gdk.Pixbuf.LoadFromResource("water.png");
             this.eventbox9.Add(this.image9);
             this.hbox6.Add(this.eventbox9);
             Gtk.Box.BoxChild w20 = ((Gtk.Box.BoxChild)(this.hbox6[this.eventbox9]));
