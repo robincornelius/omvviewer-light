@@ -156,7 +156,8 @@ namespace omvviewerlight
                     MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
                     this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter, "Trying to join group chat session, please wait........\n");
                     Gtk.Timeout.Add(10000, kick_group_join);
-                    MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
+                    MainClass.client.Self.ChatterBoxAcceptInvite(im.IMSessionID);
+                    //MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
                     onIM(im, null);
                 }
 
@@ -339,7 +340,8 @@ namespace omvviewerlight
 				return false;
 
 			this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter,"Retrying to join group chat session, please wait........\n");
-			MainClass.client.Self.RequestJoinGroupChat(im_target);
+			//MainClass.client.Self.RequestJoinGroupChat(im_target);
+            MainClass.client.Self.ChatterBoxAcceptInvite(im_target);
 			
 			return true;
 		}
