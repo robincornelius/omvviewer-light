@@ -936,7 +936,22 @@ public partial class MainWindow: Gtk.Window
 
         if (im.IMSessionID == UUID.Zero)
             return; //Its an object Im, chat weill grab this for us
-			
+
+        if (im.GroupIM == false && im.BinaryBucket.Length>1)
+		{
+            if (im_windows.ContainsKey(im.IMSessionID))
+                return; // Do nothing handler is registered
+
+              Gtk.Application.Invoke(delegate {	
+					ChatConsole imc=new ChatConsole(im);
+					string lable;
+	                lable=BytesToString(im.BinaryBucket);
+                    makeimwindow(lable, imc, true, im.IMSessionID);
+                    active_ims.Add(im.IMSessionID);
+            });
+            return;
+  		}		
+
 		if(im.GroupIM==true)
 		{		
 			if(!active_ims.Contains(im.IMSessionID))
@@ -947,17 +962,10 @@ public partial class MainWindow: Gtk.Window
 					
 					//Groups start with IMSessionID==ToAgentID
 					//Friends Confrences start with GroupIM==true but ToAgentID is yourself
-					
-					if(im.BinaryBucket.Length>1)
-					{
-						lable=BytesToString(im.BinaryBucket);
-  				    }					
-					else					
-					{
-                        if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(im.IMSessionID,out lable))
-					    lable="Waiting...";
-				    }
-	
+									
+	                if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(im.IMSessionID,out lable))
+					lable="Waiting...";
+
 					makeimwindow(lable,imc,true,im.IMSessionID);
 
 					active_ims.Add(im.IMSessionID);

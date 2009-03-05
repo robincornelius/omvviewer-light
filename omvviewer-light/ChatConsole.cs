@@ -151,6 +151,7 @@ namespace omvviewerlight
 
                 if (im.GroupIM)
                 {
+                    Logger.Log("Starting a new group chat for session id " + im.IMSessionID.ToString(), Helpers.LogLevel.Info);
                     current_chat_type =chat_type.CHAT_TYPE_GROUP_IM;
                     this.im_target = im.IMSessionID;
                     MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
@@ -159,21 +160,26 @@ namespace omvviewerlight
                     //MainClass.client.Self.ChatterBoxAcceptInvite(im.IMSessionID);
                     MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
                     onIM(im, null);
+                    return;
                 }
 
                 if (!im.GroupIM && im.BinaryBucket.Length > 1)
                 {
+                    Logger.Log("Starting a new confrence chat for session id " + im.IMSessionID.ToString(),Helpers.LogLevel.Info);
                     current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
                     this.im_target = im.IMSessionID;
                     //MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
                     show_group_list(im.IMSessionID);
+                    MainClass.win.im_windows.Add(im.IMSessionID, this);
 					MainClass.client.Self.ChatterBoxAcceptInvite(im.IMSessionID);
 					bucket=im.BinaryBucket;
                     onIM(im, null);
+                    return;
                 }
 
                 if (!im.GroupIM)
                 {
+                    Logger.Log("Starting a direct IM " + im.IMSessionID.ToString(), Helpers.LogLevel.Info);
                     current_chat_type = chat_type.CHAT_TYPE_IM;
                     im_target = im.FromAgentID;
                     foreach (InstantMessage qim in MainClass.win.im_queue)
@@ -470,7 +476,10 @@ namespace omvviewerlight
             //Not group IM ignore messages not destine for im_target
             if (current_chat_type == chat_type.CHAT_TYPE_GROUP_IM || current_chat_type == chat_type.CHAT_TYPE_CONFRENCE) 
 			{
-				if(im.IMSessionID!=im_target)
+                if (im.IMSessionID != im_target)
+                {
+                    Console.WriteLine("*** Ignoreing this im not for our target");
+                }
 					return;
 			}
 			
@@ -640,32 +649,15 @@ namespace omvviewerlight
                     return;
             }
 
-            if (current_chat_type == chat_type.CHAT_TYPE_GROUP_IM)
-			{				
+            if (current_chat_type == chat_type.CHAT_TYPE_GROUP_IM || current_chat_type == chat_type.CHAT_TYPE_CONFRENCE)
+			{
+                Logger.Log("replying via session id " + im_target.ToString(), Helpers.LogLevel.Info);
 				MainClass.client.Self.InstantMessageGroup(im_target,entry_chat.Text);
 				this.entry_chat.Text="";
 				istypingsent=false;
 				return;
   		    }
-			
-           if (current_chat_type == chat_type.CHAT_TYPE_CONFRENCE)
- 		   {		
-				if( MainClass.client.Self.GroupChatSessions.Dictionary.ContainsKey(this.im_target))
-                {
-					this.displaychat(entry_chat.Text, MainClass.client.Self.Name, avchat, bold);
-               //     foreach(OpenMetaverse.ChatSessionMember member in MainClass.client.Self.GroupChatSessions.Dictionary[this.im_target])
-				//	{
-				//		if(member.AvatarKey!=MainClass.client.Self.AgentID)
-				//	        MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,member.AvatarKey,entry_chat.Text,this.im_target,InstantMessageDialog.MessageFromAgent,InstantMessageOnline.Online,new Vector3(),UUID.Zero,this.bucket);
-				//	}
-                    MainClass.client.Self.InstantMessageGroup(im_target, entry_chat.Text);
-					this.entry_chat.Text="";
-					istypingsent=false;
-                }
-				return;
-  		    }
-		
-			
+				
 			ChatType type=OpenMetaverse.ChatType.Normal;
 			if(this.combobox_say_type.ActiveText=="Say")
 				type=OpenMetaverse.ChatType.Normal;
