@@ -159,6 +159,7 @@ namespace omvviewerlight
                     Gtk.Timeout.Add(10000, kick_group_join);
                     //MainClass.client.Self.ChatterBoxAcceptInvite(im.IMSessionID);
                     MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
+                    MainClass.win.im_windows.Add(im.IMSessionID, this);
                     onIM(im, null);
                 }
 
@@ -243,7 +244,13 @@ namespace omvviewerlight
             }
 
 			Console.WriteLine("On groupchat join for "+groupChatSessionID.ToString());
-			
+
+            if (!MainClass.win.active_ims.Contains(groupChatSessionID))
+                MainClass.win.active_ims.Add(groupChatSessionID);
+
+            if (!MainClass.win.im_windows.ContainsKey(groupChatSessionID))
+                MainClass.win.im_windows.Add(groupChatSessionID,this);
+
 			if(groupChatSessionID!=im_target && im_target!=tmpSessionID)
 				return;
 			
@@ -314,6 +321,8 @@ namespace omvviewerlight
             current_chat_type = chat_type.CHAT_TYPE_IM;
 			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
             im_target = target;
+            if(!MainClass.win.im_windows.ContainsKey(target))
+                MainClass.win.im_windows.Add(target, this);
 		}
 
 		public ChatConsole(UUID target,bool igroup)
@@ -327,7 +336,8 @@ namespace omvviewerlight
 			this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter,"Trying to join group chat session, please wait........\n");
 			joined_group_chat=false;
 			Gtk.Timeout.Add(10000,kick_group_join);
-			MainClass.client.Self.RequestJoinGroupChat(target);			
+			MainClass.client.Self.RequestJoinGroupChat(target);
+           
 		}
 		
 		public ChatConsole(List <UUID> targets)
@@ -335,6 +345,7 @@ namespace omvviewerlight
 			  dosetup();
 			  this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter,"Trying to join confrence chat session, please wait........\n");
 			  MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
+              MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
 			  current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
               this.im_target = UUID.Random();
               MainClass.client.Self.StartIMConfrence(targets, this.im_target);
@@ -475,10 +486,7 @@ namespace omvviewerlight
             if (current_chat_type == chat_type.CHAT_TYPE_GROUP_IM || current_chat_type == chat_type.CHAT_TYPE_CONFRENCE) 
 			{
                 if (im.IMSessionID != im_target)
-                {
-                    Console.WriteLine("*** Ignoreing this im not for our target");
-                }
-					return;
+                    return;
 			}
 			
             if(current_chat_type==chat_type.CHAT_TYPE_IM)

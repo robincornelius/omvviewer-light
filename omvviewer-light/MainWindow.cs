@@ -926,6 +926,7 @@ public partial class MainWindow: Gtk.Window
 			
 		}
 		
+        //Should this be here?
 		Gtk.Application.Invoke(delegate {		
 		        if(!this.Visible)
 		        {
@@ -937,11 +938,11 @@ public partial class MainWindow: Gtk.Window
         if (im.IMSessionID == UUID.Zero)
             return; //Its an object Im, chat weill grab this for us
 
-        if (im.GroupIM == false && im.BinaryBucket.Length>1)
-		{
-            if (im_windows.ContainsKey(im.IMSessionID))
-                return; // Do nothing handler is registered
+        if (im_windows.ContainsKey(im.IMSessionID))
+            return; // Do nothing handler is registered
 
+        if (im.BinaryBucket.Length>0)
+        {           
               Gtk.Application.Invoke(delegate {	
 					ChatConsole imc=new ChatConsole(im);
 					string lable;
@@ -951,7 +952,7 @@ public partial class MainWindow: Gtk.Window
             });
             return;
   		}		
-
+    /*
 		if(im.GroupIM==true)
 		{		
 			if(!active_ims.Contains(im.IMSessionID))
@@ -973,7 +974,7 @@ public partial class MainWindow: Gtk.Window
 			}
 			return;
 		}
-		
+*/	
 
 		if(!active_ims.Contains(im.FromAgentID) && !active_ims.Contains(im.IMSessionID))
 		{
