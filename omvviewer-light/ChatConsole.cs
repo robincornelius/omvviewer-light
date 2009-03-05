@@ -518,10 +518,13 @@ namespace omvviewerlight
 			}
 				
 			//Reject some IMs that we handle else where
-			
+			// Pretty much eveything not directly associated with this IM session
+            // All invites,requests,accepts etc are handled in MainWindow
+
 			   if(im.Dialog!=OpenMetaverse.InstantMessageDialog.MessageFromAgent &&
 			   im.Dialog!=OpenMetaverse.InstantMessageDialog.SessionSend &&
-			   im.Dialog!=OpenMetaverse.InstantMessageDialog.SessionGroupStart
+			   im.Dialog!=OpenMetaverse.InstantMessageDialog.SessionGroupStart &&
+               im.Dialog!=InstantMessageDialog.BusyAutoResponse
 				)
 				{
                     Console.Write("IM REJECTED IN IM WINDOW FROM " + im.FromAgentID + " : " + im.FromAgentName + " : " + im.IMSessionID + "\n");
