@@ -848,12 +848,10 @@ public partial class MainWindow: Gtk.Window
 		if(im.Dialog==OpenMetaverse.InstantMessageDialog.TaskInventoryOffered)
 			return;
 
-        im.Message.Replace("&", "&amp");
-
 		if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryAccepted)
 		{
-			Gtk.Application.Invoke(delegate {	
-				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Info,ButtonsType.Ok,im.FromAgentName+" accepted your inventory offer");
+			Gtk.Application.Invoke(delegate {
+                MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Ok, false,im.FromAgentName + " accepted your inventory offer");
                 md.Response += delegate { md.Destroy(); };
                 md.ShowAll();
 			});
@@ -862,8 +860,8 @@ public partial class MainWindow: Gtk.Window
 		
 		if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryAccepted)
 		{
-			Gtk.Application.Invoke(delegate {	
-				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Info,ButtonsType.Ok,im.FromAgentName+" accepted your inventory offer");
+			Gtk.Application.Invoke(delegate {
+                MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Ok, false,im.FromAgentName + " accepted your inventory offer");
                 md.Response += delegate { md.Destroy(); };
                 md.ShowAll();
 			});
@@ -874,7 +872,7 @@ public partial class MainWindow: Gtk.Window
 		{
 			//Hmm need to handle this differently than a standard IM
 			Gtk.Application.Invoke(delegate {	
-				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Info,ButtonsType.Ok,"GROUP NOTICE\nFrom:"+im.FromAgentName+"\n"+im.Message);
+				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Info,ButtonsType.Ok,false,"GROUP NOTICE\nFrom:"+im.FromAgentName+"\n"+im.Message);
                 md.Response += delegate { md.Destroy(); };
                 md.ShowAll();	
 			});
@@ -884,7 +882,7 @@ public partial class MainWindow: Gtk.Window
 		if(im.Dialog==OpenMetaverse.InstantMessageDialog.GroupInvitation)
 		{
 			Gtk.Application.Invoke(delegate {	
-				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,im.FromAgentName+" has invited you to join a group\n"+im.Message+"\nPress yes to accept or no to decline");
+				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,false,im.FromAgentName+" has invited you to join a group\n"+im.Message+"\nPress yes to accept or no to decline");
 				md.Response += delegate(object o,ResponseArgs args) 
 				{
 					if(args.ResponseId==ResponseType.Yes)
@@ -907,8 +905,8 @@ public partial class MainWindow: Gtk.Window
 		if(im.Dialog==OpenMetaverse.InstantMessageDialog.RequestTeleport)
 		{
 			//Hmm need to handle this differently than a standard IM
-			Gtk.Application.Invoke(delegate {	
-				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,im.FromAgentName+" would like you to join them\n"+im.Message+"\nPress yes to teleport or no to ignore");
+			Gtk.Application.Invoke(delegate {
+                MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.DestroyWithParent, MessageType.Question, ButtonsType.YesNo, false,im.FromAgentName + " would like you to join them\n" + im.Message + "\nPress yes to teleport or no to ignore");
 				md.Response += delegate(object o,ResponseArgs args) 
                 {
 					if(args.ResponseId==ResponseType.Yes)
