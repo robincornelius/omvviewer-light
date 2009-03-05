@@ -156,8 +156,8 @@ namespace omvviewerlight
                     MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
                     this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter, "Trying to join group chat session, please wait........\n");
                     Gtk.Timeout.Add(10000, kick_group_join);
-                    MainClass.client.Self.ChatterBoxAcceptInvite(im.IMSessionID);
-                    //MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
+                    //MainClass.client.Self.ChatterBoxAcceptInvite(im.IMSessionID);
+                    MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
                     onIM(im, null);
                 }
 
@@ -165,6 +165,8 @@ namespace omvviewerlight
                 {
                     current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
                     this.im_target = im.IMSessionID;
+                    //MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
+                    show_group_list(im.IMSessionID);
 					MainClass.client.Self.ChatterBoxAcceptInvite(im.IMSessionID);
 					bucket=im.BinaryBucket;
                     onIM(im, null);
@@ -232,7 +234,7 @@ namespace omvviewerlight
 
             if (success == false)
             {
-                this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter, "Failed to join group chat ... retrying...\n");
+                this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter, "Failed to join group chat "+sessionName+".. retrying...\n");
                 return;
             }
 
@@ -340,8 +342,8 @@ namespace omvviewerlight
 				return false;
 
 			this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter,"Retrying to join group chat session, please wait........\n");
-			//MainClass.client.Self.RequestJoinGroupChat(im_target);
-            MainClass.client.Self.ChatterBoxAcceptInvite(im_target);
+			MainClass.client.Self.RequestJoinGroupChat(im_target);
+            //MainClass.client.Self.ChatterBoxAcceptInvite(im_target);
 			
 			return true;
 		}
@@ -466,21 +468,12 @@ namespace omvviewerlight
             }
 
             //Not group IM ignore messages not destine for im_target
-            if (current_chat_type == chat_type.CHAT_TYPE_GROUP_IM) 
+            if (current_chat_type == chat_type.CHAT_TYPE_GROUP_IM || current_chat_type == chat_type.CHAT_TYPE_CONFRENCE) 
 			{
-				if(im.IMSessionID!=this.im_target)
+				if(im.IMSessionID!=im_target)
 					return;
 			}
 			
-			if( current_chat_type == chat_type.CHAT_TYPE_CONFRENCE)
-			{
-                //FIX ME this should filter on sessionid
-				string incomming=MainWindow.BytesToString(im.BinaryBucket);
-                string test=MainWindow.BytesToString(this.bucket);
-					if(incomming!=test)
-                       return;	
-            }			
-
             if(current_chat_type==chat_type.CHAT_TYPE_IM)
 			{
 				if(im.FromAgentID!=im_target && im.IMSessionID!=im_target)
