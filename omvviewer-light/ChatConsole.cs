@@ -160,10 +160,9 @@ namespace omvviewerlight
                     //MainClass.client.Self.ChatterBoxAcceptInvite(im.IMSessionID);
                     MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
                     onIM(im, null);
-                    return;
                 }
 
-                if (!im.GroupIM && im.BinaryBucket.Length > 1)
+                if (!im.GroupIM && im.BinaryBucket.Length >= 1)
                 {
                     Logger.Log("Starting a new confrence chat for session id " + im.IMSessionID.ToString(),Helpers.LogLevel.Info);
                     current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
@@ -174,10 +173,9 @@ namespace omvviewerlight
 					MainClass.client.Self.ChatterBoxAcceptInvite(im.IMSessionID);
 					bucket=im.BinaryBucket;
                     onIM(im, null);
-                    return;
                 }
 
-                if (!im.GroupIM)
+                if (!im.GroupIM && im.BinaryBucket.Length ==0)
                 {
                     Logger.Log("Starting a direct IM " + im.IMSessionID.ToString(), Helpers.LogLevel.Info);
                     current_chat_type = chat_type.CHAT_TYPE_IM;
