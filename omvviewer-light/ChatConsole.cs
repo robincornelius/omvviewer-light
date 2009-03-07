@@ -163,20 +163,20 @@ namespace omvviewerlight
                     onIM(im, null);
                 }
 
-                if (!im.GroupIM && im.BinaryBucket.Length >= 1)
+                if (!im.GroupIM && im.BinaryBucket.Length > 1)
                 {
                     Logger.Log("Starting a new confrence chat for session id " + im.IMSessionID.ToString(),Helpers.LogLevel.Info);
                     current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
                     this.im_target = im.IMSessionID;
                     //MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
                     show_group_list(im.IMSessionID);
-                    MainClass.win.im_windows.Add(im.IMSessionID, this);
+                    MainClass.win.im_windows.Add(im.IMSessionID, this);			
 					MainClass.client.Self.ChatterBoxAcceptInvite(im.IMSessionID);
 					bucket=im.BinaryBucket;
                     onIM(im, null);
                 }
 
-                if (!im.GroupIM && im.BinaryBucket.Length ==0)
+                if (!im.GroupIM && im.BinaryBucket.Length <=1)
                 {
                     Logger.Log("Starting a direct IM " + im.IMSessionID.ToString(), Helpers.LogLevel.Info);
                     current_chat_type = chat_type.CHAT_TYPE_IM;
@@ -245,9 +245,6 @@ namespace omvviewerlight
 
 			Console.WriteLine("On groupchat join for "+groupChatSessionID.ToString());
 
-            if (!MainClass.win.active_ims.Contains(groupChatSessionID))
-                MainClass.win.active_ims.Add(groupChatSessionID);
-
             if (!MainClass.win.im_windows.ContainsKey(groupChatSessionID))
                 MainClass.win.im_windows.Add(groupChatSessionID,this);
 
@@ -259,11 +256,6 @@ namespace omvviewerlight
 				im_target=groupChatSessionID;
                 this.bucket = OpenMetaverse.Utils.StringToBytes(sessionName);
 			}
-
-			
-			
-			if(!MainClass.win.active_ims.Contains(groupChatSessionID))
-				   MainClass.win.active_ims.Add(groupChatSessionID);
 			
             MainClass.client.Self.OnGroupChatJoin -= new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
 
@@ -425,8 +417,11 @@ namespace omvviewerlight
 			nb =(Gtk.Notebook)this.Parent;
 			pageno=nb.PageNum((Gtk.Widget)this);
 
-            if(MainClass.win.im_windows.ContainsKey(im_target))
-                MainClass.win.im_windows.Remove(im_target);
+			if(MainClass.win.im_windows.ContainsKey(im_target))
+ 			    MainClass.win.im_windows.Remove(im_target);
+			
+ 		    if(MainClass.win.active_ims.Contains(im_target))
+               MainClass.win.active_ims.Remove(im_target);
 
             if (current_chat_type == chat_type.CHAT_TYPE_GROUP_IM)
             {

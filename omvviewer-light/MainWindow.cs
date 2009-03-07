@@ -652,7 +652,7 @@ public partial class MainWindow: Gtk.Window
         int primscount = parcel.OwnerPrims + parcel.OtherPrims + parcel.GroupPrims;
         string prims;
         prims = primscount.ToString() + " of " + parcel.MaxPrims;
-/*
+
         status_parcel.Text = parcel.Name;
         string tooltext;
         tooltext =
@@ -666,7 +666,7 @@ public partial class MainWindow: Gtk.Window
 
         tooltips1.SetTip(this.statusbar1, tooltext, null);
         tooltips1.Enable();
-*/ 
+ 
     }
 			                                                
 	void onBalance(int balance)
@@ -846,7 +846,10 @@ public partial class MainWindow: Gtk.Window
             return;
     
 		if(im.Dialog==OpenMetaverse.InstantMessageDialog.TaskInventoryOffered)
-			return;
+		    return;
+		
+        if(im.Dialog==OpenMetaverse.InstantMessageDialog.FriendshipOffered)		
+            return;
 
 		if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryAccepted)
 		{
@@ -939,9 +942,12 @@ public partial class MainWindow: Gtk.Window
             return; //Its an object Im, chat weill grab this for us
 
         if (im_windows.ContainsKey(im.IMSessionID))
-            return; // Do nothing handler is registered
+		    return; // Do nothing handler is registered
+		
+		if(active_ims.Contains(im.IMSessionID))
+           return;
 
-        if (im.BinaryBucket.Length>0)
+        if (im.BinaryBucket.Length>1)
         {           
               Gtk.Application.Invoke(delegate {	
 					ChatConsole imc=new ChatConsole(im);
@@ -952,32 +958,7 @@ public partial class MainWindow: Gtk.Window
             });
             return;
   		}		
-    /*
-		if(im.GroupIM==true)
-		{		
-			if(!active_ims.Contains(im.IMSessionID))
-			{
-				Gtk.Application.Invoke(delegate {	
-					ChatConsole imc=new ChatConsole(im);
-					string lable;
-					
-					//Groups start with IMSessionID==ToAgentID
-					//Friends Confrences start with GroupIM==true but ToAgentID is yourself
-									
-	                if(!MainClass.client.Groups.GroupName2KeyCache.TryGetValue(im.IMSessionID,out lable))
-					lable="Waiting...";
-
-					makeimwindow(lable,imc,true,im.IMSessionID);
-
-					active_ims.Add(im.IMSessionID);
-				});
-			}
-			return;
-		}
-*/	
-
-		if(!active_ims.Contains(im.FromAgentID) && !active_ims.Contains(im.IMSessionID))
-		{
+  
             lock (MainClass.win.im_queue)
             {
                 if (im_windows.ContainsKey(im.FromAgentID))
@@ -999,7 +980,6 @@ public partial class MainWindow: Gtk.Window
                     });
                 }
             }
-		}		
 	}
 
 	protected virtual void OnAvaiableActionActivated (object sender, System.EventArgs e)
