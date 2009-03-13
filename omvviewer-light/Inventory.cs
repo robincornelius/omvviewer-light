@@ -189,8 +189,8 @@ namespace omvviewerlight
             MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             MainClass.client.Network.OnLogoutReply += new NetworkManager.LogoutCallback(Network_OnLogoutReply);
 			MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
-            MainClass.client.Inventory.OnFolderUpdated += new InventoryManager.FolderUpdatedCallback(Inventory_onFolderUpdated);
-            MainClass.client.Inventory.OnCacheDelete += new InventoryManager.CacheStaleCallback(Inventory_OnCacheDelete);
+           // MainClass.client.Inventory.OnFolderUpdated += new InventoryManager.FolderUpdatedCallback(Inventory_onFolderUpdated);
+            //MainClass.client.Inventory.OnCacheDelete += new InventoryManager.CacheStaleCallback(Inventory_OnCacheDelete);
 
 			this.label_aquired.Text="";
 			this.label_createdby.Text="";
@@ -561,7 +561,7 @@ namespace omvviewerlight
                    
 				}
 
-				if(paths.Length!=1)
+				if(paths.Length>1)
 				{
 					bool allsame=true;
 					bool wearables=true;
@@ -797,52 +797,16 @@ namespace omvviewerlight
                       //  MainClass.client.Inventory.Store.read_inventory_cache(MainClass.client.Settings.TEXTURE_CACHE_DIR+"\\"+MainClass.client.Inventory.Store.RootFolder.UUID.ToString()+".osl");
                         
                         fetcherrunning = true;
-                        Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
-                        invthreaddata itd = new invthreaddata(MainClass.client.Inventory.Store.RootFolder.UUID, "0:0", TLI, true);
-                        invRunner.Start(itd);
-
-                        /*
-                        InventoryNode root;
-                        MainClass.client.Inventory.Store.Items.TryGetValue(MainClass.client.Inventory.Store.RootFolder.UUID,out root);
-                        TreeIter iter;
-
-                        iter = inventory.AppendValues(folder_open, root.Data.Name, root.Data.UUID, root);
-                        IEnumerator<OpenMetaverse.InventoryNode> xx = root.Nodes.Values.GetEnumerator();
-                        for (int x = 0; x < root.Nodes.Count; x++)
-                        {
-                            xx.MoveNext();
-                            recursiveaddnode(xx.Current, iter);
-                        }
-                         * */
-                         
+                        //Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
+                        //invthreaddata itd = new invthreaddata(MainClass.client.Inventory.Store.RootFolder.UUID, "0:0", TLI, true);
+                        //invRunner.Start(itd);
+ 
                     });
                 }
 				 
 			}
 		}
 
-        void recursiveaddnode(InventoryNode nodeparent,TreeIter iterparent)
-        {
-
-            InventoryBase ibase = nodeparent.Data;
-            Gdk.Pixbuf buf = this.getprettyicon(ibase);
-            TreeIter iter;
-            iter = inventory.AppendValues(iterparent, buf, ibase.Name, ibase.UUID, ibase);
-           
-            if(nodeparent.Nodes!=null)
-            {
-                int count = nodeparent.Nodes.Count;
-                int x;
-                IEnumerator<OpenMetaverse.InventoryNode> xx=nodeparent.Nodes.Values.GetEnumerator();
-                for (x = 0; x < count; x++)
-                {
-                    xx.MoveNext();
-                    recursiveaddnode(xx.Current, iter);
-                }
-                
-            }
-        }
-		
         void onLogin(LoginStatus status, string message)
 		{
 			if(LoginStatus.Success==status)
@@ -920,9 +884,9 @@ namespace omvviewerlight
        
              List<InventoryBase> myObjects;
 
-            if(cache || MainClass.client.Inventory.Store.GetNodeStatus(start) == OpenMetaverse.InventoryNode.CacheState.STATE_NETWORK)
-                myObjects = MainClass.client.Inventory.Store.GetContents(start);
-            else
+          //  if(cache || MainClass.client.Inventory.Store.GetNodeStatus(start) == OpenMetaverse.InventoryNode.CacheState.STATE_NETWORK)
+          //      myObjects = MainClass.client.Inventory.Store.GetContents(start);
+          //  else
  	            myObjects = MainClass.client.Inventory.FolderContents(start, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
           
             if (myObjects == null || myObjects.Count==0)
@@ -1023,11 +987,11 @@ namespace omvviewerlight
             TreeIter incommingIter = ((invthreaddata)x).iter;
             //args = ((invthreaddata)x).args;
 
-            if (MainClass.client.Inventory.Store.GetNodeStatus(key) == OpenMetaverse.InventoryNode.CacheState.STATE_NETWORK)
-            {
-                Console.WriteLine("Not fetching row for " + key.ToString() + " alreay in state network");
-                //return;
-            }
+//            if (MainClass.client.Inventory.Store.GetNodeStatus(key) == OpenMetaverse.InventoryNode.CacheState.STATE_NETWORK)
+//            {
+//                Console.WriteLine("Not fetching row for " + key.ToString() + " alreay in state network");
+ //               //return;
+ //           }
 
             List<InventoryBase> myObjects = MainClass.client.Inventory.FolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
 			
@@ -1228,23 +1192,21 @@ namespace omvviewerlight
 		protected virtual void OnTreeviewInvCursorChanged (object sender, System.EventArgs e)
 		{
 			
-			Gtk.TreeModel mod;
+			
+            Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
 
             TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
 
-            if (paths.Length > 0)
+            foreach (TreePath path in paths)
             {
-                if (mod.GetIter(out iter, paths[0])!=null)
+                if (mod.GetIter(out iter, path))
                 {
 					InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
-					this.label_name.Text=item.Name;
-                    Console.WriteLine("ITEM ID" + item.UUID.ToString() + " Parent " + item.ParentUUID.ToString());
-                    if(item is InventoryFolder)
-                        Console.WriteLine("Version is "+((InventoryFolder)item).Version.ToString());
-                    
-                    Console.WriteLine(item.ToString());
-                    
+					if(item==null)
+                       continue;
+					//Console.WriteLine("ITEM ID" + item.UUID.ToString() + " Parent " + item.ParentUUID.ToString());
+
                     if (item is InventoryItem)
                     {
                         this.label_createdby.Text = ((InventoryItem)item).CreatorID.ToString();
@@ -1278,17 +1240,10 @@ namespace omvviewerlight
                         this.checkbutton_modnext.Active=false;
                         this.checkbutton_transnext.Active = false;
                         this.label_group.Text = "";
-                        this.label_createdby.Text = "";
-                        
-
-
-
+					    this.label_createdby.Text = "";
                     }
-		
-				 }
-				
-				
-			}
+                }
+            }
 		}
 
 		protected virtual void OnEntrySearchChanged (object sender, System.EventArgs e)

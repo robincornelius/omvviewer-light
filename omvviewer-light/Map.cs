@@ -415,7 +415,6 @@ namespace omvviewerlight
 			
 		    if(this.image==null || this.image.Pixbuf==null)
                 return;
-			Console.WriteLine("EVENT BOX CLICK"+args.Event.X.ToString()+","+args.Event.Y.ToString());
 			Vector3 pos;
 			pos.X=(float)(256.0*(args.Event.X/this.image.Pixbuf.Width));
 			pos.Y=(float)(256.0*(args.Event.Y/this.image.Pixbuf.Height));

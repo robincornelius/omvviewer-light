@@ -43,7 +43,6 @@ namespace omvviewerlight
 		void onGridRegion(GridRegion region)
 		{
 			
-			Console.WriteLine("GRID REGION cx is "+region.X.ToString()+" cy is "+region.Y.ToString());
 			Gtk.Application.Invoke(delegate {
 
             if (region.RegionHandle == MainClass.client.Network.CurrentSim.Handle && requested==true)
@@ -57,8 +56,6 @@ namespace omvviewerlight
 
             int col = (int)2 - (((int)cx + (int)1) - (int)region.X); //FFS
             int row = (((int)cy + (int)1) - (int)region.Y);
-
-            Console.WriteLine("Row is " + row.ToString() + " Col is " + col.ToString());
 
             if (row < 0 || row > 2)
                 return;

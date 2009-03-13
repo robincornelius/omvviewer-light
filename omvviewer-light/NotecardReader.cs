@@ -129,6 +129,9 @@ namespace omvviewerlight
 				int seperator=line.LastIndexOf("\t");
 				if(seperator==-1)
 					seperator=line.LastIndexOf(" ");
+				
+				if(seperator==-1)
+					continue; //opensim extra workaround
 								
 				char [] trim={' ','\t'};
 				key=line.Substring(0,seperator);
@@ -347,6 +350,9 @@ namespace omvviewerlight
 			int stm=nd.parsedata(note);				
 			int index=0;
 		
+			//NOTE opensim brokenness here
+			if(nd.blocks.ContainsKey("Linden text version"))
+			{
 			foreach(EmbeddedData data in nd.blocks["Linden text version"].blocks["LLEmbeddedItems version"].unamed_blocks)
 			{
 					UUID id=new UUID(data.blocks["inv_item"].keys["item_id"]);
@@ -366,6 +372,11 @@ namespace omvviewerlight
 			}
 
 			return(note.Substring(stm,(note.Length-stm)-2)); //loose 2 bytes to remove the closing }
+			}
+			else
+			{
+				return note;
+			}
 		}			
 	}
 }
