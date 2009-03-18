@@ -1,4 +1,4 @@
-<Project name="omvviewer-light" fileversion="2.0" DefaultNamespace="omvviewerlight" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
+<Project name="omvviewer-light" fileversion="2.0" language="C#" DefaultNamespace="omvviewerlight" clr-version="Net_2_0" targetFramework="2.0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <CustomCommands>
@@ -7,16 +7,17 @@
       <Output directory="bin/" assemblyKeyFile="." assembly="omvviewer-light" />
       <Build debugmode="True" target="Exe" />
       <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
-      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="True" generateoverflowchecks="True" mainclass="" definesymbols="DEBUG" generatexmldocumentation="False" win32Icon="." ctype="CSharpCompilerParameters" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="True" generateoverflowchecks="True" definesymbols="DEBUG" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
     </Configuration>
     <Configuration name="Release" ctype="DotNetProjectConfiguration">
       <CustomCommands>
-        <Command type="AfterBuild" command="gtk-gui/fuckingmonodevelop.sh" workingdir="${ProjectDir}/gtk-gui/" />
+        <Command type="AfterBuild" name="Clear source" command="gtk-gui/fuckingmonodevelop.sh" workingdir="${ProjectDir}/gtk-gui/" />
       </CustomCommands>
       <Output directory="bin/" assemblyKeyFile="." assembly="omvviewer-light" />
       <Build debugmode="False" target="Exe" />
       <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
-      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="True" generateoverflowchecks="True" mainclass="" generatexmldocumentation="False" win32Icon="." ctype="CSharpCompilerParameters" />
+      <EnvironmentVariables />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="True" generateoverflowchecks="True" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
     </Configuration>
   </Configurations>
   <Contents>
@@ -28,7 +29,6 @@
     <File name="AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
     <File name="LoginControl.cs" subtype="Code" buildaction="Compile" />
     <File name="gtk-gui/omvviewerlight.LoginControl.cs" subtype="Code" buildaction="Compile" />
-    <File name="gtk-gui/objects.xml" subtype="Code" buildaction="EmbedAsResource" />
     <File name="FriendsList.cs" subtype="Code" buildaction="Compile" />
     <File name="gtk-gui/omvviewerlight.FriendsList.cs" subtype="Code" buildaction="Compile" />
     <File name="ChatConsole.cs" subtype="Code" buildaction="Compile" />
@@ -207,33 +207,9 @@
     <ProjectReference type="Gac" localcopy="True" refto="gtk-dotnet, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <ProjectReference type="Assembly" localcopy="True" refto="bin/Tao.FreeGlut.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="bin/Tao.OpenGl.dll" />
-    <ProjectReference type="Assembly" localcopy="True" refto="bin/OpenMetaverse.Utilities.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="bin/OpenMetaverse.dll" />
+    <ProjectReference type="Gac" localcopy="True" refto="MonoDevelop.Core, Version=1.9.3.0, Culture=neutral" />
+    <ProjectReference type="Gac" localcopy="True" refto="MonoDevelop.Core.Gui, Version=1.9.3.0, Culture=neutral" />
   </References>
-  <GtkDesignInfo isWidgetLibrary="True" gtkVersion="2.12.1">
-    <ExportedWidgets>
-      <Widget>omvviewerlight.FriendsList</Widget>
-      <Widget>omvviewerlight.ChatConsole</Widget>
-      <Widget>omvviewerlight.Radar</Widget>
-      <Widget>omvviewerlight.TeleportTo</Widget>
-      <Widget>omvviewerlight.Map</Widget>
-      <Widget>omvviewerlight.Search</Widget>
-      <Widget>omvviewerlight.Searches</Widget>
-      <Widget>omvviewerlight.PlacesSearch</Widget>
-      <Widget>omvviewerlight.Location</Widget>
-      <Widget>omvviewerlight.ChatLayout</Widget>
-      <Widget>omvviewerlight.ObjectsLayout</Widget>
-      <Widget>omvviewerlight.aPick</Widget>
-      <Widget>omvviewerlight.Groups</Widget>
-      <Widget>omvviewerlight.Inventory</Widget>
-      <Widget>omvviewerlight.Movment</Widget>
-      <Widget>omvviewerlight.EventsSearch</Widget>
-      <Widget>omvviewerlight.Parcel</Widget>
-      <Widget>omvviewerlight.ParcelMgr</Widget>
-      <Widget>omvviewerlight.art.GroupSearch</Widget>
-      <Widget>omvviewerlight.LocalRegion</Widget>
-      <Widget>omvviewerlight.GroupChatList</Widget>
-      <Widget>omvviewerlight.LoginControl</Widget>
-    </ExportedWidgets>
-  </GtkDesignInfo>
+  <LanguageParameters ApplicationIcon="." ctype="CSharpProjectParameters" />
 </Project>

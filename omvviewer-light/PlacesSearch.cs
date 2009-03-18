@@ -29,6 +29,7 @@ using OpenMetaverse;
 namespace omvviewerlight
 {
 	
+	[System.ComponentModel.ToolboxItem(true)]	
 	public partial class PlacesSearch : Gtk.Bin
 	{
 	

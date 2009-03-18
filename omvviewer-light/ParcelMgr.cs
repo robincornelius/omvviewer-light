@@ -30,6 +30,7 @@ using Gtk;
 
 namespace omvviewerlight
 {
+	[System.ComponentModel.ToolboxItem(true)]	
 	public partial class ParcelMgr : Gtk.Bin
 	{	
 		Gtk.TreeStore parcels_store;

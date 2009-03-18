@@ -27,7 +27,7 @@ using System;
 namespace omvviewerlight
 {
 	
-	
+	[System.ComponentModel.ToolboxItem(true)]	
 	public partial class Location : Gtk.Bin
 	{
 		

@@ -29,6 +29,7 @@ using Gtk;
 
 namespace omvviewerlight
 {			
+	[System.ComponentModel.ToolboxItem(true)]
 	public partial class FriendsList : Gtk.Bin
 	{
 		Gtk.ListStore store;

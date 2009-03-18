@@ -34,6 +34,7 @@ using Gtk;
 
 namespace omvviewerlight
 {
+	[System.ComponentModel.ToolboxItem(true)]	
 	public partial class Map : Gtk.Bin
 	{
 		bool running=true;

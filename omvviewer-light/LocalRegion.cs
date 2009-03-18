@@ -10,6 +10,7 @@ using omvviewerlight;
 
 namespace omvviewerlight
 {
+	[System.ComponentModel.ToolboxItem(true)]
 	public partial class LocalRegion : Gtk.Bin
 	{
 		uint cy;

@@ -36,6 +36,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace omvviewerlight
 {
+	[System.ComponentModel.ToolboxItem(true)]
     public partial class invthreaddata
     {
 		public UUID key;

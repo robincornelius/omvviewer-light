@@ -31,6 +31,7 @@ using Gdk;
 namespace omvviewerlight
 {
 	
+	[System.ComponentModel.ToolboxItem(true)]	
 	public partial class ObjectsLayout : Gtk.Bin
 	{
 

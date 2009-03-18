@@ -28,6 +28,7 @@ using Gtk;
 namespace omvviewerlight
 {
 	
+	[System.ComponentModel.ToolboxItem(true)]	
 	public partial class Search : Gtk.Bin
 	{
 		
