@@ -10,6 +10,7 @@ using omvviewerlight;
 
 namespace omvviewerlight
 {
+	[System.ComponentModel.ToolboxItem(true)]
 	public partial class LocalRegion : Gtk.Bin
 	{
 		uint cy;
@@ -64,7 +65,7 @@ namespace omvviewerlight
 
             int index = (row * 3) + col;
 
-            images[index].Pixbuf = MainClass.GetResource("trying.tga");
+            images[index].Pixbuf = MainClass.GetResource("trying.png");
             Gtk.Tooltips name = new Gtk.Tooltips();
             name.SetTip(images[index], region.Name,"");
             name.Enable();

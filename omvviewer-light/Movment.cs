@@ -30,6 +30,7 @@ using Gtk;
 namespace omvviewerlight
 {
 	
+	[System.ComponentModel.ToolboxItem(true)]	
 	public partial class Movment : Gtk.Bin
 	{
 

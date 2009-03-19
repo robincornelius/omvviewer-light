@@ -28,6 +28,7 @@ using Gtk;
 namespace omvviewerlight
 {
 	
+	[System.ComponentModel.ToolboxItem(true)]	
 	public partial class Search : Gtk.Bin
 	{
 		
@@ -41,16 +42,16 @@ namespace omvviewerlight
 			this.Build();
 			// Fuck stupid notebook tabs and monodeveop have to do it myself
 			s=new Searches();
-            this.addtabwithicon("icn_voice-pvtfocus.tga","People",s);
+            this.addtabwithicon("icn_voice-pvtfocus.png","People",s);
 			
 			ps=new PlacesSearch();
-			this.addtabwithicon("icon_place.tga","Places",ps);
+			this.addtabwithicon("icon_place.png","Places",ps);
 			
 			es=new EventsSearch();
-			this.addtabwithicon("icon_event.tga","Events",es);
+			this.addtabwithicon("icon_event.png","Events",es);
 
 			gs=new GroupSearch();
-            this.addtabwithicon("icn_voice-groupfocus.tga", "Groups", gs);
+            this.addtabwithicon("icn_voice-groupfocus.png", "Groups", gs);
 			
 			
 		}

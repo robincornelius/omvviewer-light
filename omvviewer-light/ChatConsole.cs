@@ -31,6 +31,7 @@ using GLib;
 
 namespace omvviewerlight
 {
+	[System.ComponentModel.ToolboxItem(true)]
 	public partial class ChatConsole : Gtk.Bin
 	{
 		Gtk.TextTag bold;

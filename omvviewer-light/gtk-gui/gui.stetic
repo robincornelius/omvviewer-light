@@ -2,9 +2,10 @@
 <stetic-interface>
   <configuration>
     <images-root-path>..</images-root-path>
-    <target-gtk-version>2.12.1</target-gtk-version>
+    <target-gtk-version>2.12</target-gtk-version>
   </configuration>
   <import>
+    <widget-library name="MonoDevelop.Core.Gui, Version=1.9.3.0, Culture=neutral" />
     <widget-library name="../bin/omvviewer-light.exe" internal="true" />
   </import>
   <widget class="Gtk.Window" id="MainWindow" design-size="812 629">
@@ -246,6 +247,8 @@
           <packing>
             <property name="Position">1</property>
             <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
           </packing>
         </child>
         <child>
@@ -361,6 +364,7 @@
                 <child>
                   <widget class="Gtk.Entry" id="entry_pass">
                     <property name="MemberName" />
+                    <property name="Tooltip" translatable="yes">Enter your login password here</property>
                     <property name="CanFocus">True</property>
                     <property name="IsEditable">True</property>
                     <property name="InvisibleChar">●</property>
@@ -567,7 +571,6 @@
                     <property name="WidthRequest">140</property>
                     <property name="IsTextCombo">True</property>
                     <property name="Items" translatable="yes" />
-                    <property name="Active">0</property>
                     <signal name="Changed" handler="OnComboboxGridChanged" />
                   </widget>
                   <packing>
@@ -718,7 +721,6 @@
                 <property name="CanFocus">True</property>
                 <property name="ShowScrollbars">True</property>
                 <property name="Reorderable">True</property>
-                <property name="HeadersClickable">True</property>
                 <signal name="ButtonPressEvent" handler="OnTreeviewFriendsButtonPressEvent" />
               </widget>
             </child>
@@ -947,7 +949,6 @@ Shout</property>
                 <property name="WidthRequest">200</property>
                 <property name="CanFocus">True</property>
                 <property name="ShowScrollbars">True</property>
-                <property name="HeadersClickable">True</property>
               </widget>
             </child>
           </widget>
@@ -969,7 +970,7 @@ Shout</property>
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:icn_voice-pvtfocus.tga</property>
+                    <property name="Icon">resource:icn_voice-pvtfocus.png</property>
                     <property name="Label" translatable="yes">IM</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonImClicked" />
@@ -986,7 +987,7 @@ Shout</property>
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:status_money.tga</property>
+                    <property name="Icon">resource:status_money.png</property>
                     <property name="Label" translatable="yes">Pay</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonPayClicked" />
@@ -1292,7 +1293,7 @@ Shout</property>
                             <property name="MemberName" />
                             <property name="CanFocus">True</property>
                             <property name="Type">TextAndIcon</property>
-                            <property name="Icon">resource:icon_place.tga</property>
+                            <property name="Icon">resource:icon_place.png</property>
                             <property name="Label" translatable="yes">Teleport</property>
                             <property name="UseUnderline">True</property>
                             <signal name="Activated" handler="OnButtonTeleportActivated" />
@@ -1310,7 +1311,7 @@ Shout</property>
                             <property name="MemberName" />
                             <property name="CanFocus">True</property>
                             <property name="Type">TextAndIcon</property>
-                            <property name="Icon">resource:map_home.tga</property>
+                            <property name="Icon">resource:map_home.png</property>
                             <property name="Label" translatable="yes">Go Home</property>
                             <property name="UseUnderline">True</property>
                             <signal name="Clicked" handler="OnButtonTphomeClicked" />
@@ -1505,7 +1506,6 @@ Shout</property>
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="ShowScrollbars">True</property>
-                <property name="HeadersClickable">True</property>
               </widget>
             </child>
           </widget>
@@ -1555,7 +1555,7 @@ Shout</property>
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="Type">TextAndIcon</property>
-                <property name="Icon">resource:status_money.tga</property>
+                <property name="Icon">resource:status_money.png</property>
                 <property name="Label" translatable="yes">Pay</property>
                 <property name="UseUnderline">True</property>
                 <signal name="Clicked" handler="OnButtonPayClicked" />
@@ -1667,7 +1667,6 @@ Shout</property>
                     <property name="WidthRequest">650</property>
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>
-                    <property name="HeadersClickable">True</property>
                     <signal name="CursorChanged" handler="OnTreeview1CursorChanged" />
                   </widget>
                 </child>
@@ -1743,7 +1742,7 @@ Shout</property>
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="Type">TextAndIcon</property>
-                <property name="Icon">resource:icon_place.tga</property>
+                <property name="Icon">resource:icon_place.png</property>
                 <property name="Label" translatable="yes">Teleport</property>
                 <property name="UseUnderline">True</property>
                 <signal name="Clicked" handler="OnButtonTPClicked" />
@@ -1931,7 +1930,6 @@ Shout</property>
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>
                     <property name="SearchColumn">2</property>
-                    <property name="HeadersClickable">True</property>
                     <signal name="CursorChanged" handler="OnTreeview1CursorChanged" />
                     <signal name="UnselectAll" handler="OnTreeview1UnselectAll" />
                   </widget>
@@ -2076,7 +2074,7 @@ Shout</property>
                     <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:status_money.tga</property>
+                    <property name="Icon">resource:status_money.png</property>
                     <property name="Label" translatable="yes">Pay</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonPayClicked" />
@@ -2108,7 +2106,7 @@ Shout</property>
                     <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:status_money.tga</property>
+                    <property name="Icon">resource:status_money.png</property>
                     <property name="Label" translatable="yes">Buy</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonBuyClicked" />
@@ -2527,7 +2525,7 @@ Shout</property>
   <widget class="Gtk.Window" id="omvviewerlight.PayWindow" design-size="400 155">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Pay</property>
-    <property name="Icon">file:./status_money.tga</property>
+    <property name="Icon">file:./status_money.png</property>
     <property name="WindowPosition">CenterOnParent</property>
     <property name="Modal">True</property>
     <child>
@@ -2622,7 +2620,7 @@ Resident Michelle2 Zenovka
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="Type">TextAndIcon</property>
-                <property name="Icon">resource:status_money.tga</property>
+                <property name="Icon">resource:status_money.png</property>
                 <property name="Label" translatable="yes">Pay</property>
                 <property name="UseUnderline">True</property>
                 <signal name="Clicked" handler="OnButtonPayClicked" />
@@ -2946,7 +2944,7 @@ Resident Michelle2 Zenovka
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:icn_voice-groupfocus.tga</property>
+                    <property name="Icon">resource:icn_voice-groupfocus.png</property>
                     <property name="Label" translatable="yes">IM</property>
                     <property name="UseUnderline">True</property>
                   </widget>
@@ -2962,7 +2960,7 @@ Resident Michelle2 Zenovka
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:status_money.tga</property>
+                    <property name="Icon">resource:status_money.png</property>
                     <property name="Label" translatable="yes">Pay</property>
                     <property name="UseUnderline">True</property>
                   </widget>
@@ -2978,7 +2976,7 @@ Resident Michelle2 Zenovka
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:icon_place.tga</property>
+                    <property name="Icon">resource:icon_place.png</property>
                     <property name="Label" translatable="yes">Teleport</property>
                     <property name="UseUnderline">True</property>
                   </widget>
@@ -3255,7 +3253,6 @@ Resident Michelle2 Zenovka
                     <property name="WidthRequest">350</property>
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>
-                    <property name="HeadersClickable">True</property>
                   </widget>
                 </child>
               </widget>
@@ -3434,7 +3431,7 @@ Resident Michelle2 Zenovka
             <child>
               <widget class="Gtk.Image" id="image356">
                 <property name="MemberName" />
-                <property name="Pixbuf">resource:icon_place.tga</property>
+                <property name="Pixbuf">resource:icon_place.png</property>
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -5296,7 +5293,6 @@ Resident Michelle2 Zenovka
                 <child>
                   <widget class="Gtk.Label" id="label1">
                     <property name="MemberName" />
-                    <property name="LabelProp" translatable="yes" />
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -5361,7 +5357,6 @@ Resident Michelle2 Zenovka
                     <property name="WidthRequest">450</property>
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>
-                    <property name="HeadersClickable">True</property>
                     <signal name="CursorChanged" handler="OnTreeviewInvCursorChanged" />
                   </widget>
                 </child>
@@ -5599,7 +5594,6 @@ Resident Michelle2 Zenovka
                                 <property name="MemberName" />
                                 <property name="Xalign">0</property>
                                 <property name="Yalign">0</property>
-                                <property name="LabelProp" translatable="yes" />
                               </widget>
                               <packing>
                                 <property name="Position">4</property>
@@ -6187,7 +6181,6 @@ permissions</property>
                     <property name="WidthRequest">350</property>
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>
-                    <property name="HeadersClickable">True</property>
                     <signal name="CursorChanged" handler="OnTreeview1CursorChanged" />
                   </widget>
                 </child>
@@ -6444,7 +6437,7 @@ permissions</property>
                 <property name="Sensitive">False</property>
                 <property name="CanFocus">True</property>
                 <property name="Type">TextAndIcon</property>
-                <property name="Icon">resource:icon_place.tga</property>
+                <property name="Icon">resource:icon_place.png</property>
                 <property name="Label" translatable="yes">Teleport</property>
                 <property name="UseUnderline">True</property>
                 <signal name="Clicked" handler="OnButtonTeleportClicked" />
@@ -6507,7 +6500,6 @@ permissions</property>
                     <property name="HeightRequest">164</property>
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>
-                    <property name="HeadersClickable">True</property>
                     <signal name="CursorChanged" handler="OnTreeviewParcelsCursorChanged" />
                   </widget>
                 </child>
@@ -6634,7 +6626,6 @@ permissions</property>
                       <widget class="Gtk.Label" id="label_parcelgroup">
                         <property name="MemberName" />
                         <property name="Xalign">0</property>
-                        <property name="LabelProp" translatable="yes" />
                       </widget>
                       <packing>
                         <property name="Position">1</property>
@@ -6809,7 +6800,6 @@ permissions</property>
                         <property name="MemberName" />
                         <property name="CanFocus">True</property>
                         <property name="ShowScrollbars">True</property>
-                        <property name="HeadersClickable">True</property>
                       </widget>
                     </child>
                   </widget>
@@ -6827,7 +6817,6 @@ permissions</property>
                         <property name="MemberName" />
                         <property name="CanFocus">True</property>
                         <property name="ShowScrollbars">True</property>
-                        <property name="HeadersClickable">True</property>
                       </widget>
                     </child>
                   </widget>
@@ -7068,7 +7057,6 @@ permissions</property>
                             <property name="WidthRequest">540</property>
                             <property name="CanFocus">True</property>
                             <property name="ShowScrollbars">True</property>
-                            <property name="HeadersClickable">True</property>
                           </widget>
                         </child>
                       </widget>
@@ -7633,7 +7621,6 @@ time</property>
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="ShowScrollbars">True</property>
-                <property name="HeadersClickable">True</property>
               </widget>
             </child>
           </widget>
@@ -8989,7 +8976,6 @@ time</property>
                 <property name="WidthRequest">150</property>
                 <property name="CanFocus">True</property>
                 <property name="ShowScrollbars">True</property>
-                <property name="HeadersClickable">True</property>
               </widget>
             </child>
           </widget>

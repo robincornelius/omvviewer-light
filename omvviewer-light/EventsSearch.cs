@@ -30,7 +30,7 @@ using System.Collections.Generic;
 namespace omvviewerlight
 {
 	
-	
+	[System.ComponentModel.ToolboxItem(true)]
 	public partial class EventsSearch : Gtk.Bin
 	{
 		

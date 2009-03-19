@@ -30,6 +30,7 @@ using Gtk;
 
 namespace omvviewerlight
 {
+	[System.ComponentModel.ToolboxItem(true)]	
 	public partial class ParcelMgr : Gtk.Bin
 	{	
 		Gtk.TreeStore parcels_store;
@@ -127,7 +128,7 @@ namespace omvviewerlight
 
                     nextcol = 0;
                    
-                    this.parcel_map = MainClass.GetResource("trying.tga");
+                    this.parcel_map = MainClass.GetResource("trying.png");
                     this.image9.Pixbuf = this.parcel_map;
 
                     populate_tree();
@@ -203,7 +204,7 @@ namespace omvviewerlight
                          byte[] data = new byte[4 * 32 * 16];
                          uint col = colmap[thiscol];
 
-                         Gdk.Pixbuf pb = MainClass.GetResource("parcelindex.tga");
+                         Gdk.Pixbuf pb = MainClass.GetResource("parcelindex.png");
                          sbyte* ps;
                          ps = (sbyte*)pb.Pixels;
 
@@ -312,7 +313,7 @@ namespace omvviewerlight
 			nextcol=0;
 			Gtk.Application.Invoke(delegate
             {
-				this.parcel_map = MainClass.GetResource("trying.tga");
+				this.parcel_map = MainClass.GetResource("trying.png");
 				this.image9.Pixbuf=this.parcel_map;
 			});
 

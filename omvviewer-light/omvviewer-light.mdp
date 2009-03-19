@@ -1,4 +1,4 @@
-<Project name="omvviewer-light" fileversion="2.0" DefaultNamespace="omvviewerlight" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
+<Project name="omvviewer-light" fileversion="2.0" language="C#" DefaultNamespace="omvviewerlight" clr-version="Net_2_0" targetFramework="2.0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <CustomCommands>
@@ -7,16 +7,17 @@
       <Output directory="bin/" assemblyKeyFile="." assembly="omvviewer-light" />
       <Build debugmode="True" target="Exe" />
       <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
-      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="True" generateoverflowchecks="True" mainclass="" definesymbols="DEBUG" generatexmldocumentation="False" win32Icon="." ctype="CSharpCompilerParameters" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="True" generateoverflowchecks="True" definesymbols="DEBUG" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
     </Configuration>
     <Configuration name="Release" ctype="DotNetProjectConfiguration">
       <CustomCommands>
-        <Command type="AfterBuild" command="gtk-gui/fuckingmonodevelop.sh" workingdir="${ProjectDir}/gtk-gui/" />
+        <Command type="AfterBuild" name="Clear source" command="gtk-gui/fuckingmonodevelop.sh" workingdir="${ProjectDir}/gtk-gui/" />
       </CustomCommands>
       <Output directory="bin/" assemblyKeyFile="." assembly="omvviewer-light" />
       <Build debugmode="False" target="Exe" />
       <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
-      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="True" generateoverflowchecks="True" mainclass="" generatexmldocumentation="False" win32Icon="." ctype="CSharpCompilerParameters" />
+      <EnvironmentVariables />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="True" generateoverflowchecks="True" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
     </Configuration>
   </Configurations>
   <Contents>
@@ -28,7 +29,6 @@
     <File name="AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
     <File name="LoginControl.cs" subtype="Code" buildaction="Compile" />
     <File name="gtk-gui/omvviewerlight.LoginControl.cs" subtype="Code" buildaction="Compile" />
-    <File name="gtk-gui/objects.xml" subtype="Code" buildaction="EmbedAsResource" />
     <File name="FriendsList.cs" subtype="Code" buildaction="Compile" />
     <File name="gtk-gui/omvviewerlight.FriendsList.cs" subtype="Code" buildaction="Compile" />
     <File name="ChatConsole.cs" subtype="Code" buildaction="Compile" />
@@ -85,85 +85,85 @@
     <File name="gtk-gui/omvviewerlight.CloseMinimiseDlg.cs" subtype="Code" buildaction="Compile" />
     <File name="LogoutDlg.cs" subtype="Code" buildaction="Compile" />
     <File name="gtk-gui/omvviewerlight.LogoutDlg.cs" subtype="Code" buildaction="Compile" />
-    <File name="art/arrow.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/blank_arrow.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/closebox.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/cross.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/down_arrow.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/ff_edit_theirs.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/icn_voice-pvtfocus.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/icon_avatar_offline.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/icon_avatar_online.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/icon_event.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/icon_group.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/icon_place.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_folder_animation.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_folder_bodypart.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_folder_callingcard.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_folder_clothing.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_folder_gesture.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_folder_landmark.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_folder_lostandfound.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_folder_notecard.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_folder_object.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_folder_plain_closed.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_folder_plain_open.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_folder_script.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_folder_snapshot.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_folder_sound.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_folder_texture.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_folder_trash.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_animation.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_attach.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_callingcard_offline.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_callingcard_online.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_clothing.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_eyes.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_gesture.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_gloves.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_hair.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_jacket.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_landmark.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_landmark_visited.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_notecard.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_object.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_object_multi.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_pants.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_script.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_script_dangerous.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_shape.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_shirt.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_shoes.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_skin.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_skirt.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_snapshot.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_socks.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_sound.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_texture.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_underpants.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/inv_item_undershirt.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/item_object.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/map_avatar_8.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/map_avatar_above_8.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/map_avatar_below_8.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/map_avatar_me_8.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/map_home.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/parcel.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/parcelindex.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/status_health.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/status_money.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/status_no_build.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/status_no_fly.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/status_no_push.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/status_no_scripts.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/status_no_voice.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/status_script_debug.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/status_voice.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/tick.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/trying.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/up_arrow.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/icn_voice-groupfocus.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/icn_voice-groupfocus2.tga" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/arrow.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/blank_arrow.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/closebox.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/cross.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/down_arrow.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/ff_edit_theirs.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/icn_voice-pvtfocus.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/icon_avatar_offline.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/icon_avatar_online.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/icon_event.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/icon_group.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/icon_place.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_folder_animation.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_folder_bodypart.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_folder_callingcard.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_folder_clothing.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_folder_gesture.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_folder_landmark.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_folder_lostandfound.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_folder_notecard.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_folder_object.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_folder_plain_closed.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_folder_plain_open.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_folder_script.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_folder_snapshot.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_folder_sound.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_folder_texture.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_folder_trash.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_animation.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_attach.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_callingcard_offline.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_callingcard_online.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_clothing.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_eyes.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_gesture.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_gloves.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_hair.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_jacket.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_landmark.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_landmark_visited.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_notecard.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_object.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_object_multi.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_pants.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_script.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_script_dangerous.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_shape.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_shirt.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_shoes.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_skin.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_skirt.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_snapshot.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_socks.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_sound.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_texture.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_underpants.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/inv_item_undershirt.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/item_object.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/map_avatar_8.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/map_avatar_above_8.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/map_avatar_below_8.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/map_avatar_me_8.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/map_home.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/parcel.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/parcelindex.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/status_health.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/status_money.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/status_no_build.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/status_no_fly.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/status_no_push.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/status_no_scripts.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/status_no_voice.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/status_script_debug.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/status_voice.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/tick.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/trying.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/up_arrow.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/icn_voice-groupfocus.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/icn_voice-groupfocus2.png" subtype="Code" buildaction="EmbedAsResource" />
     <File name="art/status_search_btn.png" subtype="Code" buildaction="EmbedAsResource" />
     <File name="GroupSearch.cs" subtype="Code" buildaction="Compile" />
     <File name="gtk-gui/omvviewerlight.GroupSearch.cs" subtype="Code" buildaction="Compile" />
@@ -174,10 +174,10 @@
     <File name="Settings.cs" subtype="Code" buildaction="Compile" />
     <File name="TexturePreview.cs" subtype="Code" buildaction="Compile" />
     <File name="gtk-gui/omvviewerlight.TexturePreview.cs" subtype="Code" buildaction="Compile" />
-    <File name="art/map_avatar_friend_8.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/map_avatar_target_8.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/map_avatar_friend_above_8.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/map_avatar_friend_below_8.tga" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/map_avatar_friend_8.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/map_avatar_target_8.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/map_avatar_friend_above_8.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/map_avatar_friend_below_8.png" subtype="Code" buildaction="EmbedAsResource" />
     <File name="AutoPilot.cs" subtype="Code" buildaction="Compile" />
     <File name="OpenGL.cs" subtype="Code" buildaction="Compile" />
     <File name="TexturePipeline.cs" subtype="Code" buildaction="Compile" />
@@ -186,9 +186,9 @@
     <File name="gtk-gui/omvviewerlight.LocalRegion.cs" subtype="Code" buildaction="Compile" />
     <File name="GroupChatList.cs" subtype="Code" buildaction="Compile" />
     <File name="gtk-gui/omvviewerlight.GroupChatList.cs" subtype="Code" buildaction="Compile" />
-    <File name="art/ff_edit_mine.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/ff_visible_map.tga" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="art/ff_visible_online.tga" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/ff_edit_mine.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/ff_visible_map.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/ff_visible_online.png" subtype="Code" buildaction="EmbedAsResource" />
     <File name="art/water.png" subtype="Code" buildaction="EmbedAsResource" />
   </Contents>
   <References>
@@ -207,33 +207,9 @@
     <ProjectReference type="Gac" localcopy="True" refto="gtk-dotnet, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <ProjectReference type="Assembly" localcopy="True" refto="bin/Tao.FreeGlut.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="bin/Tao.OpenGl.dll" />
-    <ProjectReference type="Assembly" localcopy="True" refto="bin/OpenMetaverse.Utilities.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="bin/OpenMetaverse.dll" />
+    <ProjectReference type="Gac" localcopy="True" refto="MonoDevelop.Core, Version=1.9.3.0, Culture=neutral" />
+    <ProjectReference type="Gac" localcopy="True" refto="MonoDevelop.Core.Gui, Version=1.9.3.0, Culture=neutral" />
   </References>
-  <GtkDesignInfo isWidgetLibrary="True" gtkVersion="2.12.1">
-    <ExportedWidgets>
-      <Widget>omvviewerlight.FriendsList</Widget>
-      <Widget>omvviewerlight.ChatConsole</Widget>
-      <Widget>omvviewerlight.Radar</Widget>
-      <Widget>omvviewerlight.TeleportTo</Widget>
-      <Widget>omvviewerlight.Map</Widget>
-      <Widget>omvviewerlight.Search</Widget>
-      <Widget>omvviewerlight.Searches</Widget>
-      <Widget>omvviewerlight.PlacesSearch</Widget>
-      <Widget>omvviewerlight.Location</Widget>
-      <Widget>omvviewerlight.ChatLayout</Widget>
-      <Widget>omvviewerlight.ObjectsLayout</Widget>
-      <Widget>omvviewerlight.aPick</Widget>
-      <Widget>omvviewerlight.Groups</Widget>
-      <Widget>omvviewerlight.Inventory</Widget>
-      <Widget>omvviewerlight.Movment</Widget>
-      <Widget>omvviewerlight.EventsSearch</Widget>
-      <Widget>omvviewerlight.Parcel</Widget>
-      <Widget>omvviewerlight.ParcelMgr</Widget>
-      <Widget>omvviewerlight.art.GroupSearch</Widget>
-      <Widget>omvviewerlight.LocalRegion</Widget>
-      <Widget>omvviewerlight.GroupChatList</Widget>
-      <Widget>omvviewerlight.LoginControl</Widget>
-    </ExportedWidgets>
-  </GtkDesignInfo>
+  <LanguageParameters ApplicationIcon="." ctype="CSharpProjectParameters" />
 </Project>

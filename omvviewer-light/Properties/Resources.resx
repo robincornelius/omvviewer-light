@@ -119,486 +119,486 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\arrow.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\arrow.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="arrow1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\arrow.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\arrow.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="blank_arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\blank_arrow.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\blank_arrow.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="blank_arrow1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\blank_arrow.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\blank_arrow.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="closebox" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\closebox.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\closebox.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="closebox1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\closebox.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\closebox.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="cross" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\cross.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\cross.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="cross1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\cross.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\cross.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="down_arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\down_arrow.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\down_arrow.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="down_arrow1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\down_arrow.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\down_arrow.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ff_edit_theirs" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\ff_edit_theirs.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\ff_edit_theirs.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ff_edit_theirs1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\ff_edit_theirs.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\ff_edit_theirs.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="icn_voice_groupfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\icn_voice-groupfocus.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\icn_voice-groupfocus.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="icn_voice_groupfocus2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\icn_voice-groupfocus2.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\icn_voice-groupfocus2.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="icn_voice_pvtfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\icn_voice-pvtfocus.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\icn_voice-pvtfocus.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="icon_avatar_offline" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\icon_avatar_offline.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\icon_avatar_offline.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="icon_avatar_offline1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\icon_avatar_offline.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\icon_avatar_offline.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="icon_avatar_online" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\icon_avatar_online.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\icon_avatar_online.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="icon_avatar_online1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\icon_avatar_online.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\icon_avatar_online.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="icon_event" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\icon_event.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\icon_event.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="icon_event1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\icon_event.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\icon_event.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="icon_group" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\icon_group.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\icon_group.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="icon_group1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\icon_group.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\icon_group.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="icon_place" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\icon_place.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\icon_place.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="icon_place1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\icon_place.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\icon_place.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_animation" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_animation.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_animation.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_animation1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_animation.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_animation.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_bodypart" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_bodypart.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_bodypart.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_bodypart1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_bodypart.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_bodypart.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_callingcard" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_callingcard.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_callingcard.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_callingcard1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_callingcard.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_callingcard.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_clothing" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_clothing.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_clothing.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_clothing1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_clothing.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_clothing.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_gesture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_gesture.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_gesture.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_gesture1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_gesture.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_gesture.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_landmark" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_landmark.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_landmark.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_landmark1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_landmark.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_landmark.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_lostandfound" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_lostandfound.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_lostandfound.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_lostandfound1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_lostandfound.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_lostandfound.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_notecard" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_notecard.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_notecard.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_notecard1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_notecard.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_notecard.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_object" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_object.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_object.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_object1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_object.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_object.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_plain_closed" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_plain_closed.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_plain_closed.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_plain_closed1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_plain_closed.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_plain_closed.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_plain_open" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_plain_open.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_plain_open.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_plain_open1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_plain_open.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_plain_open.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_script" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_script.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_script.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_script1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_script.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_script.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_snapshot" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_snapshot.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_snapshot.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_snapshot1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_snapshot.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_snapshot.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_sound" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_sound.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_sound.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_sound1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_sound.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_sound.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_texture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_texture.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_texture.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_texture1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_texture.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_texture.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_trash" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_trash.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_trash.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_folder_trash1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_folder_trash.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_folder_trash.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_animation" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_animation.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_animation.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_animation1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_animation.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_animation.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_attach" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_attach.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_attach.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_attach1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_attach.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_attach.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_callingcard_offline" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_callingcard_offline.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_callingcard_offline.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_callingcard_offline1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_callingcard_offline.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_callingcard_offline.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_callingcard_online" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_callingcard_online.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_callingcard_online.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_callingcard_online1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_callingcard_online.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_callingcard_online.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_clothing" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_clothing.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_clothing.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_clothing1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_clothing.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_clothing.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_eyes" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_eyes.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_eyes.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_eyes1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_eyes.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_eyes.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_gesture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_gesture.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_gesture.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_gesture1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_gesture.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_gesture.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_gloves" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_gloves.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_gloves.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_gloves1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_gloves.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_gloves.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_hair" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_hair.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_hair.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_hair1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_hair.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_hair.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_jacket" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_jacket.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_jacket.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_jacket1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_jacket.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_jacket.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_landmark" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_landmark.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_landmark.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_landmark1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_landmark.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_landmark.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_landmark_visited" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_landmark_visited.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_landmark_visited.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_landmark_visited1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_landmark_visited.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_landmark_visited.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_notecard" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_notecard.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_notecard.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_notecard1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_notecard.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_notecard.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_object" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_object.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_object.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_object1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_object.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_object.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_object_multi" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_object_multi.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_object_multi.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_object_multi1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_object_multi.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_object_multi.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_pants" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_pants.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_pants.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_pants1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_pants.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_pants.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_script" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_script.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_script.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_script1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_script.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_script.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_script_dangerous" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_script_dangerous.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_script_dangerous.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_script_dangerous1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_script_dangerous.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_script_dangerous.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_shape" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_shape.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_shape.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_shape1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_shape.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_shape.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_shirt" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_shirt.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_shirt.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_shirt1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_shirt.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_shirt.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_shoes" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_shoes.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_shoes.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_shoes1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_shoes.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_shoes.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_skin" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_skin.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_skin.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_skin1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_skin.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_skin.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_skirt" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_skirt.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_skirt.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_skirt1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_skirt.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_skirt.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_snapshot" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_snapshot.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_snapshot.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_snapshot1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_snapshot.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_snapshot.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_socks" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_socks.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_socks.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_socks1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_socks.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_socks.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_sound" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_sound.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_sound.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_sound1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_sound.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_sound.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_texture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_texture.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_texture.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_texture1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_texture.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_texture.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_underpants" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_underpants.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_underpants.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_underpants1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_underpants.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_underpants.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_undershirt" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_undershirt.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_undershirt.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="inv_item_undershirt1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\inv_item_undershirt.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\inv_item_undershirt.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="item_object" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\item_object.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\item_object.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="item_object1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\item_object.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\item_object.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="map_avatar_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\map_avatar_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\map_avatar_8.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="map_avatar_81" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\map_avatar_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\map_avatar_8.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="map_avatar_above_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\map_avatar_above_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\map_avatar_above_8.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="map_avatar_above_81" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\map_avatar_above_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\map_avatar_above_8.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="map_avatar_below_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\map_avatar_below_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\map_avatar_below_8.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="map_avatar_below_81" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\map_avatar_below_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\map_avatar_below_8.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="map_avatar_friend_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\map_avatar_friend_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\map_avatar_friend_8.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="map_avatar_friend_above_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\map_avatar_friend_above_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\map_avatar_friend_above_8.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="map_avatar_friend_below_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\map_avatar_friend_below_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\map_avatar_friend_below_8.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="map_avatar_me_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\map_avatar_me_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\map_avatar_me_8.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="map_avatar_me_81" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\map_avatar_me_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\map_avatar_me_8.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="map_avatar_target_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\map_avatar_target_8.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\map_avatar_target_8.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="map_home" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\map_home.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\map_home.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="map_home1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\map_home.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\map_home.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="omvviewer_light" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\art\omvviewer-light.xpm;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="parcel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\parcel.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\parcel.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="parcel1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\parcel.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\parcel.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="parcelindex" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\parcelindex.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\parcelindex.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="parcelindex1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\parcelindex.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\parcelindex.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="status_health" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\status_health.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\status_health.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="status_health1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\status_health.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\status_health.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="status_money" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\status_money.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\status_money.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="status_money1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\status_money.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\status_money.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="status_no_build" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\status_no_build.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\status_no_build.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="status_no_build1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\status_no_build.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\status_no_build.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="status_no_fly" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\status_no_fly.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\status_no_fly.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="status_no_fly1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\status_no_fly.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\status_no_fly.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="status_no_push" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\status_no_push.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\status_no_push.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="status_no_push1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\status_no_push.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\status_no_push.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="status_no_scripts" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\status_no_scripts.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\status_no_scripts.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="status_no_scripts1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\status_no_scripts.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\status_no_scripts.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="status_no_voice" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\status_no_voice.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\status_no_voice.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="status_no_voice1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\status_no_voice.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\status_no_voice.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="status_script_debug" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\status_script_debug.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\status_script_debug.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="status_script_debug1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\status_script_debug.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\status_script_debug.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="status_search_btn" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\art\status_search_btn.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="status_voice" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\status_voice.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\status_voice.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="status_voice1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\status_voice.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\status_voice.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="tick" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\tick.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\tick.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="tick1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\tick.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\tick.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="trying" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\trying.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\trying.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="trying1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\trying.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\trying.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="up_arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\up_arrow.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\up_arrow.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="up_arrow1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\art\up_arrow.tga;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\art\up_arrow.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

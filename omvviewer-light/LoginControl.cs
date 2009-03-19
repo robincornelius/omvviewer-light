@@ -29,8 +29,10 @@ using System.IO;
 using System.Collections.Generic;
 using System.Collections;
 
+
 namespace omvviewerlight
 {	
+	[System.ComponentModel.ToolboxItem(true)]
 	public partial class LoginControl : Gtk.Bin
 	{
 		Dictionary<string,string> gridlist = new Dictionary<string,string>();

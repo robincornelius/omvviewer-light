@@ -35,6 +35,7 @@ namespace omvviewerlight
         public Gtk.TreeIter iter;
     }
     
+	[System.ComponentModel.ToolboxItem(true)]	
     public partial class Radar : Gtk.Bin
 	{
 		

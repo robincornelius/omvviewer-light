@@ -149,7 +149,7 @@ public partial class MainWindow: Gtk.Window
 		status_balance=new Gtk.HBox();
 		status_balance_lable=new Gtk.Label("?");
 		Gtk.Image balicon=new Gtk.Image();
-		balicon.Pixbuf = MainClass.GetResource("status_money.tga");
+		balicon.Pixbuf = MainClass.GetResource("status_money.png");
 		status_balance.PackStart(balicon);
 		status_balance.PackStart(status_balance_lable);
 		status_balance.SetChildPacking(balicon,false,false,0,PackType.Start);
@@ -164,7 +164,7 @@ public partial class MainWindow: Gtk.Window
 		this.Title="omvviewer light v0.46";
 		
 	       chat=new ChatLayout();
-           chat_tab_lable=this.addtabwithicon("icn_voice-pvtfocus.tga","Chat",chat);        
+           chat_tab_lable=this.addtabwithicon("icn_voice-pvtfocus.png","Chat",chat);        
 	       chat.passontablable(chat_tab_lable);
            this.notebook.SwitchPage += new SwitchPageHandler(chat.onSwitchPage);
 
@@ -558,14 +558,14 @@ public partial class MainWindow: Gtk.Window
 		
 		if((parcel.Flags & OpenMetaverse.Parcel.ParcelFlags.AllowFly) != OpenMetaverse.Parcel.ParcelFlags.AllowFly )
 		{
-			Gtk.Image myimage=new Gtk.Image(MainClass.GetResource("status_no_fly.tga"));
+			Gtk.Image myimage=new Gtk.Image(MainClass.GetResource("status_no_fly.png"));
 			status_icons.PackStart(myimage);
 			status_icons.SetChildPacking(myimage,false,false,0,PackType.Start);
 		}
 	
 		if((parcel.Flags & OpenMetaverse.Parcel.ParcelFlags.RestrictPushObject)==OpenMetaverse.Parcel.ParcelFlags.RestrictPushObject)
 		{
-			Gtk.Image myimage=new Gtk.Image(MainClass.GetResource("status_no_push.tga"));
+			Gtk.Image myimage=new Gtk.Image(MainClass.GetResource("status_no_push.png"));
 			status_icons.PackStart(myimage);				
 			status_icons.SetChildPacking(myimage,false,false,0,PackType.Start);
 
@@ -573,7 +573,7 @@ public partial class MainWindow: Gtk.Window
 
 		if((parcel.Flags & OpenMetaverse.Parcel.ParcelFlags.AllowOtherScripts)!=OpenMetaverse.Parcel.ParcelFlags.AllowOtherScripts)
 		{
-			Gtk.Image myimage=new Gtk.Image(MainClass.GetResource("status_no_scripts.tga"));
+			Gtk.Image myimage=new Gtk.Image(MainClass.GetResource("status_no_scripts.png"));
 			status_icons.PackStart(myimage);				
 			status_icons.SetChildPacking(myimage,false,false,0,PackType.Start);
 		
@@ -581,7 +581,7 @@ public partial class MainWindow: Gtk.Window
 
 		if((parcel.Flags & OpenMetaverse.Parcel.ParcelFlags.CreateObjects)!=OpenMetaverse.Parcel.ParcelFlags.CreateObjects)
 		{
-			Gtk.Image myimage=new Gtk.Image(MainClass.GetResource("status_no_build.tga"));
+			Gtk.Image myimage=new Gtk.Image(MainClass.GetResource("status_no_build.png"));
 			status_icons.PackStart(myimage);				
 			status_icons.SetChildPacking(myimage,false,false,0,PackType.Start);
 
@@ -739,16 +739,16 @@ public partial class MainWindow: Gtk.Window
 	
 	void makeimwindow(string name,ChatConsole cs,bool group,UUID target)
 	{
-		Gtk.Image image=new Gtk.Image(MainClass.GetResource("closebox.tga"));
+		Gtk.Image image=new Gtk.Image(MainClass.GetResource("closebox.png"));
 		image.HeightRequest=16;
 		image.WidthRequest=16;
 		
 		Gtk.Image icon;
 		
 		if(group)
-			icon=new Gtk.Image(MainClass.GetResource("icon_group.tga"));
+			icon=new Gtk.Image(MainClass.GetResource("icon_group.png"));
 		else
-			icon=new Gtk.Image(MainClass.GetResource("icn_voice-groupfocus.tga"));
+			icon=new Gtk.Image(MainClass.GetResource("icn_voice-groupfocus.png"));
 		
 		image.SetSizeRequest(16,16);
 		Gtk.Label lable=new Gtk.Label(name);
@@ -1055,7 +1055,7 @@ public partial class MainWindow: Gtk.Window
             }
 			
             tab_parcels = new ParcelMgr();
-            this.addtabwithicon("parcel.tga", "Parcel", tab_parcels);
+            this.addtabwithicon("parcel.png", "Parcel", tab_parcels);
             this.ParcelAction.Active = true;
             MainClass.appsettings.tab_parcel=true;
 
@@ -1083,7 +1083,7 @@ public partial class MainWindow: Gtk.Window
             }
 			
             tab_objects = new ObjectsLayout();
-			this.addtabwithicon("item_object.tga", "Objects", tab_objects);
+			this.addtabwithicon("item_object.png", "Objects", tab_objects);
 			this.ObjectsAction.Active=true;
             MainClass.appsettings.tab_objects=true;
 
@@ -1110,7 +1110,7 @@ public partial class MainWindow: Gtk.Window
                 tab_inventory=null;
             }
             tab_inventory = new omvviewerlight.Inventory();
-            this.addtabwithicon("inv_folder_plain_open.tga", "Inventory", tab_inventory);
+            this.addtabwithicon("inv_folder_plain_open.png", "Inventory", tab_inventory);
             this.InventoryAction.Active = true;
             MainClass.appsettings.tab_inv=true;
 
@@ -1135,7 +1135,7 @@ public partial class MainWindow: Gtk.Window
             }
 
  		    tab_location=new Location();
-		    this.addtabwithicon("icon_place.tga","Location",tab_location);
+		    this.addtabwithicon("icon_place.png","Location",tab_location);
 		    this.LocationAction.Active=true;
               MainClass.appsettings.tab_location=true;
 
@@ -1163,7 +1163,7 @@ public partial class MainWindow: Gtk.Window
             }
 
             tab_groups = new Groups();
-            this.addtabwithicon("icn_voice-groupfocus.tga", "Groups", tab_groups);
+            this.addtabwithicon("icn_voice-groupfocus.png", "Groups", tab_groups);
             this.GroupsAction.Active = true;
              MainClass.appsettings.tab_groups=true;
         }

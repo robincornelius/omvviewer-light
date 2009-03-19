@@ -34,6 +34,7 @@ using Gtk;
 
 namespace omvviewerlight
 {
+	[System.ComponentModel.ToolboxItem(true)]	
 	public partial class Map : Gtk.Bin
 	{
 		bool running=true;
@@ -41,14 +42,14 @@ namespace omvviewerlight
 		GridRegion current_region;
 		GridRegion agent_region;
 
-		static Gtk.Image avatar=new Gtk.Image(MainClass.GetResource("map_avatar_8.tga"));
-        static Gtk.Image avatar_me = new Gtk.Image(MainClass.GetResource("map_avatar_me_8.tga"));
-        static Gtk.Image avatar_above = new Gtk.Image(MainClass.GetResource("map_avatar_above_8.tga"));
-        static Gtk.Image avatar_below = new Gtk.Image(MainClass.GetResource("map_avatar_below_8.tga"));
-        static Gtk.Image avatar_friend = new Gtk.Image(MainClass.GetResource("map_avatar_friend_8.tga"));
-        static Gtk.Image avatar_friend_below = new Gtk.Image(MainClass.GetResource("map_avatar_friend_above_8.tga"));
-        static Gtk.Image avatar_friend_above = new Gtk.Image(MainClass.GetResource("map_avatar_friend_below_8.tga"));
-        static Gtk.Image avatar_target = new Gtk.Image(MainClass.GetResource("map_avatar_target_8.tga"));
+		static Gtk.Image avatar=new Gtk.Image(MainClass.GetResource("map_avatar_8.png"));
+        static Gtk.Image avatar_me = new Gtk.Image(MainClass.GetResource("map_avatar_me_8.png"));
+        static Gtk.Image avatar_above = new Gtk.Image(MainClass.GetResource("map_avatar_above_8.png"));
+        static Gtk.Image avatar_below = new Gtk.Image(MainClass.GetResource("map_avatar_below_8.png"));
+        static Gtk.Image avatar_friend = new Gtk.Image(MainClass.GetResource("map_avatar_friend_8.png"));
+        static Gtk.Image avatar_friend_below = new Gtk.Image(MainClass.GetResource("map_avatar_friend_above_8.png"));
+        static Gtk.Image avatar_friend_above = new Gtk.Image(MainClass.GetResource("map_avatar_friend_below_8.png"));
+        static Gtk.Image avatar_target = new Gtk.Image(MainClass.GetResource("map_avatar_target_8.png"));
 
 		UUID lastsim = new UUID();
 		Vector3 targetpos;
@@ -125,7 +126,7 @@ namespace omvviewerlight
 		{
 			current_region=region;
 			this.objects_map_ID=region.MapImageID;
-			Gdk.Pixbuf pb= MainClass.GetResource("trying.tga");
+			Gdk.Pixbuf pb= MainClass.GetResource("trying.png");
 			objects_map = new Gtk.Image(pb);
 			this.image.Pixbuf=pb;	
 
@@ -151,7 +152,7 @@ namespace omvviewerlight
 				
 				Console.WriteLine("Assuming this is an objects overlay");
 				this.objects_map_ID=region.MapImageID;
-				Gdk.Pixbuf pb= MainClass.GetResource("trying.tga");
+				Gdk.Pixbuf pb= MainClass.GetResource("trying.png");
 				objects_map = new Gtk.Image(pb);
 
 				this.image.Pixbuf=pb;
