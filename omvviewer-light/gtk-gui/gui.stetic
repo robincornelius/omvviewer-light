@@ -8662,7 +8662,7 @@ time</property>
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="omvviewerlight.LocalRegion" design-size="768 612">
+  <widget class="Gtk.Bin" id="omvviewerlight.LocalRegion" design-size="768 768">
     <property name="MemberName" />
     <child>
       <widget class="Gtk.VBox" id="vbox3">
@@ -8681,8 +8681,6 @@ time</property>
                     <child>
                       <widget class="Gtk.Image" id="image1">
                         <property name="MemberName" />
-                        <property name="WidthRequest">150</property>
-                        <property name="HeightRequest">150</property>
                         <property name="Pixbuf">resource:water.png</property>
                       </widget>
                     </child>
@@ -8701,8 +8699,6 @@ time</property>
                     <child>
                       <widget class="Gtk.Image" id="image2">
                         <property name="MemberName" />
-                        <property name="WidthRequest">150</property>
-                        <property name="HeightRequest">150</property>
                         <property name="Pixbuf">resource:water.png</property>
                       </widget>
                     </child>
@@ -8721,8 +8717,6 @@ time</property>
                     <child>
                       <widget class="Gtk.Image" id="image3">
                         <property name="MemberName" />
-                        <property name="WidthRequest">150</property>
-                        <property name="HeightRequest">150</property>
                         <property name="Pixbuf">resource:water.png</property>
                       </widget>
                     </child>
@@ -8752,8 +8746,6 @@ time</property>
                     <child>
                       <widget class="Gtk.Image" id="image4">
                         <property name="MemberName" />
-                        <property name="WidthRequest">150</property>
-                        <property name="HeightRequest">150</property>
                         <property name="Pixbuf">resource:water.png</property>
                       </widget>
                     </child>
@@ -8772,8 +8764,6 @@ time</property>
                     <child>
                       <widget class="Gtk.Image" id="image5">
                         <property name="MemberName" />
-                        <property name="WidthRequest">150</property>
-                        <property name="HeightRequest">150</property>
                         <property name="Pixbuf">resource:water.png</property>
                       </widget>
                     </child>
@@ -8792,8 +8782,6 @@ time</property>
                     <child>
                       <widget class="Gtk.Image" id="image6">
                         <property name="MemberName" />
-                        <property name="WidthRequest">150</property>
-                        <property name="HeightRequest">150</property>
                         <property name="Pixbuf">resource:water.png</property>
                       </widget>
                     </child>
@@ -8823,8 +8811,6 @@ time</property>
                     <child>
                       <widget class="Gtk.Image" id="image7">
                         <property name="MemberName" />
-                        <property name="WidthRequest">150</property>
-                        <property name="HeightRequest">150</property>
                         <property name="Pixbuf">resource:water.png</property>
                       </widget>
                     </child>
@@ -8843,8 +8829,6 @@ time</property>
                     <child>
                       <widget class="Gtk.Image" id="image8">
                         <property name="MemberName" />
-                        <property name="WidthRequest">150</property>
-                        <property name="HeightRequest">150</property>
                         <property name="Pixbuf">resource:water.png</property>
                       </widget>
                     </child>
@@ -8863,8 +8847,6 @@ time</property>
                     <child>
                       <widget class="Gtk.Image" id="image9">
                         <property name="MemberName" />
-                        <property name="WidthRequest">150</property>
-                        <property name="HeightRequest">150</property>
                         <property name="Pixbuf">resource:water.png</property>
                       </widget>
                     </child>

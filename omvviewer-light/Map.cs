@@ -39,6 +39,7 @@ namespace omvviewerlight
 	{
 		bool running=true;
 	    Gtk.Image basemap;
+		Gtk.Image scalemap;
 		GridRegion current_region;
 		GridRegion agent_region;
 
@@ -139,11 +140,13 @@ namespace omvviewerlight
 			objects_map = new Gtk.Image(pb);
 			this.image.Pixbuf=pb;	
 
-			TryGetImage tgi=new TryGetImage(this.objects_map,region.MapImageID,width,height,true);
+			TryGetImage tgi=new TryGetImage(this.objects_map,region.MapImageID,350,350,true);
             tgi.OnDecodeComplete += new TryGetImage.Decodecomplete(delegate()
 			{
 				  Gtk.Application.Invoke(delegate
             {
+				lastheight=-1;
+				lastwidth=-1;
                 drawavs();
             });
 				
@@ -218,26 +221,19 @@ namespace omvviewerlight
 			
 		void drawavs()
 		{
-			
-		  basemap=this.objects_map;
-			
-		
-									
-          if (basemap == null)
-              return;
-
-          if (basemap.Pixbuf == null)
-			return;
-			
-					  if(lastheight!=height || lastwidth!=width)
-		  {
-			objects_map.Pixbuf=this.objects_map.Pixbuf.ScaleSimple(height,width,InterpType.Bilinear);
-				lastheight=height;
-			lastwidth=width;
-		  basemap=this.objects_map;
 				
-			
+		  if(objects_map!=null && objects_map.Pixbuf !=null && (lastheight!=height || lastwidth!=width))
+		  {
+		        this.scalemap=new Gtk.Image(); 
+			    this.scalemap.Pixbuf=this.objects_map.Pixbuf.ScaleSimple(height,width,InterpType.Bilinear);
+				lastheight=height;
+			    lastwidth=width;
 		  }	
+			
+				if(this.scalemap==null || this.scalemap.Pixbuf==null)
+			return;
+		  			
+		    basemap=this.scalemap;
 
                               
 			Gdk.Pixbuf buf;

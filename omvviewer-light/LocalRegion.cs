@@ -7,6 +7,8 @@
 using System;
 using OpenMetaverse;
 using omvviewerlight;
+using Gdk;
+using Gtk;
 
 namespace omvviewerlight
 {
@@ -18,6 +20,10 @@ namespace omvviewerlight
 		bool requested=false;
 		GridRegion[] regions=new GridRegion[9];
         Gtk.Image[] images = new Gtk.Image[9];
+        Gtk.Image[] baseimages = new Gtk.Image[9];
+		int size=150;
+		int oldsize=0;
+		
 		public LocalRegion()
 		{
 			this.Build();
@@ -33,12 +39,34 @@ namespace omvviewerlight
 			
 			for (int x = 0; x < 9; x++)
             {
-				images[x].HeightRequest=150;
-				images[x].WidthRequest=150;
+				baseimages[x] = new Gtk.Image(MainClass.GetResource("water.png"));
 			}
 			MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
 		    MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
+			this.SizeAllocated+=new Gtk.SizeAllocatedHandler(onResize);
+			                                                
 			requested=true;
+			
+		}
+		
+		void onResize(object o,SizeAllocatedArgs args)
+		{
+			
+		 	size=args.Allocation.Width<args.Allocation.Height?args.Allocation.Width:args.Allocation.Height;
+			size=size/3;
+			if(oldsize==size)
+				return;
+			
+			oldsize=size;
+			Console.WriteLine("Width is "+size);
+			int x=0;
+			
+			foreach(Gtk.Image image in images)
+			{
+				if(image.Pixbuf!=null && baseimages[x]!=null && baseimages[x].Pixbuf!=null)
+					image.Pixbuf=baseimages[x].Pixbuf.ScaleSimple(size,size,InterpType.Bilinear);
+				 x++;
+			}
 		}
 		
 		void onGridRegion(GridRegion region)
@@ -69,7 +97,13 @@ namespace omvviewerlight
             Gtk.Tooltips name = new Gtk.Tooltips();
             name.SetTip(images[index], region.Name,"");
             name.Enable();
-            new TryGetImage(images[index], region.MapImageID, 150, 150, false);	
+			TryGetImage tgi = new TryGetImage(baseimages[index], region.MapImageID, 256, 256, true);
+			tgi.OnDecodeComplete += delegate() {
+				Console.WriteLine("Decoded image for index "+index.ToString());
+				images[index].Pixbuf=baseimages[index].Pixbuf.ScaleSimple(size,size,InterpType.Bilinear);
+			};
+			tgi.go();
+				
 			regions[index]=region;
 	
 			});
