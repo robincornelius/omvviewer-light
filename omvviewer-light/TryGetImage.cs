@@ -82,7 +82,7 @@ namespace omvviewerlight
 
         void dowork()
         {
-            Gdk.Pixbuf buf = MainClass.GetResource("trying.tga");
+            Gdk.Pixbuf buf = MainClass.GetResource("trying.png");
 
             if (scale)
                 target_image.Pixbuf = buf;

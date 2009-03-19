@@ -1,9 +1,9 @@
-﻿The Artwork files with the exception of viewericon.xpm and trying.tga are Copyright (c) Linden Research Inc and are licenced
+﻿The Artwork files with the exception of viewericon.xpm and trying.png are Copyright (c) Linden Research Inc and are licenced
 under the Creative Commons Share and Share Alike 3.0 (http://creativecommons.org/licenses/by-sa/3.0/) 
 
 The file viewericon.xpm was created by Nicholaz Beresford and was declared Public Domain by the author.
 
-The file trying.tga is Copyright (C) 2008 Robin Cornelius and also licenced via the Creative Commons Share and Share Alike 3.0
+The file trying.png is Copyright (C) 2008 Robin Cornelius and also licenced via the Creative Commons Share and Share Alike 3.0
 
 The full text of the Creative Commons Share and Share Alike 3.0 is provided below :-
 

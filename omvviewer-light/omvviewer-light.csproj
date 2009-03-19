@@ -331,310 +331,310 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <EmbeddedResource Include="art\arrow.tga">
+    <EmbeddedResource Include="art\arrow.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\blank_arrow.tga">
+    <EmbeddedResource Include="art\blank_arrow.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\closebox.tga">
+    <EmbeddedResource Include="art\closebox.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\cross.tga">
+    <EmbeddedResource Include="art\cross.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\down_arrow.tga">
+    <EmbeddedResource Include="art\down_arrow.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\ff_edit_theirs.tga">
+    <EmbeddedResource Include="art\ff_edit_theirs.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\icn_voice-groupfocus.tga">
+    <EmbeddedResource Include="art\icn_voice-groupfocus.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\icn_voice-groupfocus2.tga">
+    <EmbeddedResource Include="art\icn_voice-groupfocus2.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\icn_voice-pvtfocus.tga">
+    <EmbeddedResource Include="art\icn_voice-pvtfocus.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\icon_avatar_offline.tga">
+    <EmbeddedResource Include="art\icon_avatar_offline.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\icon_avatar_online.tga">
+    <EmbeddedResource Include="art\icon_avatar_online.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\icon_event.tga">
+    <EmbeddedResource Include="art\icon_event.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\icon_group.tga">
+    <EmbeddedResource Include="art\icon_group.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\icon_place.tga">
+    <EmbeddedResource Include="art\icon_place.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_folder_animation.tga">
+    <EmbeddedResource Include="art\inv_folder_animation.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_folder_bodypart.tga">
+    <EmbeddedResource Include="art\inv_folder_bodypart.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_folder_callingcard.tga">
+    <EmbeddedResource Include="art\inv_folder_callingcard.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_folder_clothing.tga">
+    <EmbeddedResource Include="art\inv_folder_clothing.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_folder_gesture.tga">
+    <EmbeddedResource Include="art\inv_folder_gesture.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_folder_landmark.tga">
+    <EmbeddedResource Include="art\inv_folder_landmark.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_folder_lostandfound.tga">
+    <EmbeddedResource Include="art\inv_folder_lostandfound.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_folder_notecard.tga">
+    <EmbeddedResource Include="art\inv_folder_notecard.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_folder_object.tga">
+    <EmbeddedResource Include="art\inv_folder_object.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_folder_plain_closed.tga">
+    <EmbeddedResource Include="art\inv_folder_plain_closed.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_folder_plain_open.tga">
+    <EmbeddedResource Include="art\inv_folder_plain_open.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_folder_script.tga">
+    <EmbeddedResource Include="art\inv_folder_script.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_folder_snapshot.tga">
+    <EmbeddedResource Include="art\inv_folder_snapshot.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_folder_sound.tga">
+    <EmbeddedResource Include="art\inv_folder_sound.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_folder_texture.tga">
+    <EmbeddedResource Include="art\inv_folder_texture.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_folder_trash.tga">
+    <EmbeddedResource Include="art\inv_folder_trash.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_animation.tga">
+    <EmbeddedResource Include="art\inv_item_animation.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_attach.tga">
+    <EmbeddedResource Include="art\inv_item_attach.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_callingcard_offline.tga">
+    <EmbeddedResource Include="art\inv_item_callingcard_offline.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_callingcard_online.tga">
+    <EmbeddedResource Include="art\inv_item_callingcard_online.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_clothing.tga">
+    <EmbeddedResource Include="art\inv_item_clothing.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_eyes.tga">
+    <EmbeddedResource Include="art\inv_item_eyes.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_gesture.tga">
+    <EmbeddedResource Include="art\inv_item_gesture.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_gloves.tga">
+    <EmbeddedResource Include="art\inv_item_gloves.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_hair.tga">
+    <EmbeddedResource Include="art\inv_item_hair.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_jacket.tga">
+    <EmbeddedResource Include="art\inv_item_jacket.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_landmark.tga">
+    <EmbeddedResource Include="art\inv_item_landmark.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_landmark_visited.tga">
+    <EmbeddedResource Include="art\inv_item_landmark_visited.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_notecard.tga">
+    <EmbeddedResource Include="art\inv_item_notecard.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_object.tga">
+    <EmbeddedResource Include="art\inv_item_object.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_object_multi.tga">
+    <EmbeddedResource Include="art\inv_item_object_multi.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_pants.tga">
+    <EmbeddedResource Include="art\inv_item_pants.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_script.tga">
+    <EmbeddedResource Include="art\inv_item_script.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_script_dangerous.tga">
+    <EmbeddedResource Include="art\inv_item_script_dangerous.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_shape.tga">
+    <EmbeddedResource Include="art\inv_item_shape.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_shirt.tga">
+    <EmbeddedResource Include="art\inv_item_shirt.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_shoes.tga">
+    <EmbeddedResource Include="art\inv_item_shoes.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_skin.tga">
+    <EmbeddedResource Include="art\inv_item_skin.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_skirt.tga">
+    <EmbeddedResource Include="art\inv_item_skirt.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_snapshot.tga">
+    <EmbeddedResource Include="art\inv_item_snapshot.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_socks.tga">
+    <EmbeddedResource Include="art\inv_item_socks.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_sound.tga">
+    <EmbeddedResource Include="art\inv_item_sound.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_texture.tga">
+    <EmbeddedResource Include="art\inv_item_texture.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_underpants.tga">
+    <EmbeddedResource Include="art\inv_item_underpants.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\inv_item_undershirt.tga">
+    <EmbeddedResource Include="art\inv_item_undershirt.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\item_object.tga">
+    <EmbeddedResource Include="art\item_object.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\map_avatar_8.tga">
+    <EmbeddedResource Include="art\map_avatar_8.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\map_avatar_above_8.tga">
+    <EmbeddedResource Include="art\map_avatar_above_8.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\map_avatar_below_8.tga">
+    <EmbeddedResource Include="art\map_avatar_below_8.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\map_avatar_me_8.tga">
+    <EmbeddedResource Include="art\map_avatar_me_8.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\map_home.tga">
+    <EmbeddedResource Include="art\map_home.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\parcel.tga">
+    <EmbeddedResource Include="art\parcel.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\parcelindex.tga">
+    <EmbeddedResource Include="art\parcelindex.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\status_health.tga">
+    <EmbeddedResource Include="art\status_health.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\status_money.tga">
+    <EmbeddedResource Include="art\status_money.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\status_no_build.tga">
+    <EmbeddedResource Include="art\status_no_build.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\status_no_fly.tga">
+    <EmbeddedResource Include="art\status_no_fly.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\status_no_push.tga">
+    <EmbeddedResource Include="art\status_no_push.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\status_no_scripts.tga">
+    <EmbeddedResource Include="art\status_no_scripts.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\status_no_voice.tga">
+    <EmbeddedResource Include="art\status_no_voice.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\status_script_debug.tga">
+    <EmbeddedResource Include="art\status_script_debug.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\status_voice.tga">
+    <EmbeddedResource Include="art\status_voice.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\tick.tga">
+    <EmbeddedResource Include="art\tick.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\trying.tga">
+    <EmbeddedResource Include="art\trying.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\up_arrow.tga">
+    <EmbeddedResource Include="art\up_arrow.png">
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="art\map_avatar_friend_8.tga" />
-    <EmbeddedResource Include="art\map_avatar_friend_above_8.tga" />
-    <EmbeddedResource Include="art\map_avatar_friend_below_8.tga" />
-    <EmbeddedResource Include="art\map_avatar_target_8.tga" />
+    <EmbeddedResource Include="art\map_avatar_friend_8.png" />
+    <EmbeddedResource Include="art\map_avatar_friend_above_8.png" />
+    <EmbeddedResource Include="art\map_avatar_friend_below_8.png" />
+    <EmbeddedResource Include="art\map_avatar_target_8.png" />
     <EmbeddedResource Include="art\omvviewer-light.xpm" />
-    <EmbeddedResource Include="art\ff_edit_mine.tga" />
-    <EmbeddedResource Include="art\ff_visible_map.tga" />
-    <EmbeddedResource Include="art\ff_visible_online.tga" />
-    <None Include="openmetaverse_data\blush_alpha.tga" />
-    <None Include="openmetaverse_data\bodyfreckles_alpha.tga" />
-    <None Include="openmetaverse_data\body_skingrain.tga" />
-    <None Include="openmetaverse_data\bump_face_wrinkles.tga" />
-    <None Include="openmetaverse_data\bump_head_base.tga" />
-    <None Include="openmetaverse_data\bump_lowerbody_base.tga" />
-    <None Include="openmetaverse_data\bump_pants_wrinkles.tga" />
-    <None Include="openmetaverse_data\bump_shirt_wrinkles.tga" />
-    <None Include="openmetaverse_data\bump_upperbody_base.tga" />
-    <None Include="openmetaverse_data\eyebrows_alpha.tga" />
-    <None Include="openmetaverse_data\eyeliner_alpha.tga" />
-    <None Include="openmetaverse_data\eyeshadow_inner_alpha.tga" />
-    <None Include="openmetaverse_data\eyeshadow_outer_alpha.tga" />
-    <None Include="openmetaverse_data\eyewhite.tga" />
-    <None Include="openmetaverse_data\facehair_chincurtains_alpha.tga" />
-    <None Include="openmetaverse_data\facehair_moustache_alpha.tga" />
-    <None Include="openmetaverse_data\facehair_sideburns_alpha.tga" />
-    <None Include="openmetaverse_data\facehair_soulpatch_alpha.tga" />
-    <None Include="openmetaverse_data\freckles_alpha.tga" />
-    <None Include="openmetaverse_data\gloves_fingers_alpha.tga" />
-    <None Include="openmetaverse_data\glove_length_alpha.tga" />
-    <None Include="openmetaverse_data\head_alpha.tga" />
-    <None Include="openmetaverse_data\head_color.tga" />
-    <None Include="openmetaverse_data\head_hair.tga" />
-    <None Include="openmetaverse_data\head_highlights_alpha.tga" />
-    <None Include="openmetaverse_data\head_shading_alpha.tga" />
-    <None Include="openmetaverse_data\head_skingrain.tga" />
-    <None Include="openmetaverse_data\jacket_length_lower_alpha.tga" />
-    <None Include="openmetaverse_data\jacket_length_upper_alpha.tga" />
-    <None Include="openmetaverse_data\jacket_open_lower_alpha.tga" />
-    <None Include="openmetaverse_data\jacket_open_upper_alpha.tga" />
-    <None Include="openmetaverse_data\lipgloss_alpha.tga" />
-    <None Include="openmetaverse_data\lipstick_alpha.tga" />
-    <None Include="openmetaverse_data\lips_mask.tga" />
-    <None Include="openmetaverse_data\lowerbody_color.tga" />
-    <None Include="openmetaverse_data\lowerbody_highlights_alpha.tga" />
-    <None Include="openmetaverse_data\lowerbody_shading_alpha.tga" />
-    <None Include="openmetaverse_data\nailpolish_alpha.tga" />
-    <None Include="openmetaverse_data\pants_length_alpha.tga" />
-    <None Include="openmetaverse_data\pants_waist_alpha.tga" />
-    <None Include="openmetaverse_data\rosyface_alpha.tga" />
-    <None Include="openmetaverse_data\rouge_alpha.tga" />
-    <None Include="openmetaverse_data\shirt_bottom_alpha.tga" />
-    <None Include="openmetaverse_data\shirt_collar_alpha.tga" />
-    <None Include="openmetaverse_data\shirt_collar_back_alpha.tga" />
-    <None Include="openmetaverse_data\shirt_sleeve_alpha.tga" />
-    <None Include="openmetaverse_data\shoe_height_alpha.tga" />
-    <None Include="openmetaverse_data\skirt_length_alpha.tga" />
-    <None Include="openmetaverse_data\skirt_slit_back_alpha.tga" />
-    <None Include="openmetaverse_data\skirt_slit_front_alpha.tga" />
-    <None Include="openmetaverse_data\skirt_slit_left_alpha.tga" />
-    <None Include="openmetaverse_data\skirt_slit_right_alpha.tga" />
-    <None Include="openmetaverse_data\underpants_trial_female.tga" />
-    <None Include="openmetaverse_data\underpants_trial_male.tga" />
-    <None Include="openmetaverse_data\undershirt_trial_female.tga" />
-    <None Include="openmetaverse_data\upperbodyfreckles_alpha.tga" />
-    <None Include="openmetaverse_data\upperbody_color.tga" />
-    <None Include="openmetaverse_data\upperbody_highlights_alpha.tga" />
-    <None Include="openmetaverse_data\upperbody_shading_alpha.tga" />
+    <EmbeddedResource Include="art\ff_edit_mine.png" />
+    <EmbeddedResource Include="art\ff_visible_map.png" />
+    <EmbeddedResource Include="art\ff_visible_online.png" />
+    <None Include="openmetaverse_data\blush_alpha.png" />
+    <None Include="openmetaverse_data\bodyfreckles_alpha.png" />
+    <None Include="openmetaverse_data\body_skingrain.png" />
+    <None Include="openmetaverse_data\bump_face_wrinkles.png" />
+    <None Include="openmetaverse_data\bump_head_base.png" />
+    <None Include="openmetaverse_data\bump_lowerbody_base.png" />
+    <None Include="openmetaverse_data\bump_pants_wrinkles.png" />
+    <None Include="openmetaverse_data\bump_shirt_wrinkles.png" />
+    <None Include="openmetaverse_data\bump_upperbody_base.png" />
+    <None Include="openmetaverse_data\eyebrows_alpha.png" />
+    <None Include="openmetaverse_data\eyeliner_alpha.png" />
+    <None Include="openmetaverse_data\eyeshadow_inner_alpha.png" />
+    <None Include="openmetaverse_data\eyeshadow_outer_alpha.png" />
+    <None Include="openmetaverse_data\eyewhite.png" />
+    <None Include="openmetaverse_data\facehair_chincurtains_alpha.png" />
+    <None Include="openmetaverse_data\facehair_moustache_alpha.png" />
+    <None Include="openmetaverse_data\facehair_sideburns_alpha.png" />
+    <None Include="openmetaverse_data\facehair_soulpatch_alpha.png" />
+    <None Include="openmetaverse_data\freckles_alpha.png" />
+    <None Include="openmetaverse_data\gloves_fingers_alpha.png" />
+    <None Include="openmetaverse_data\glove_length_alpha.png" />
+    <None Include="openmetaverse_data\head_alpha.png" />
+    <None Include="openmetaverse_data\head_color.png" />
+    <None Include="openmetaverse_data\head_hair.png" />
+    <None Include="openmetaverse_data\head_highlights_alpha.png" />
+    <None Include="openmetaverse_data\head_shading_alpha.png" />
+    <None Include="openmetaverse_data\head_skingrain.png" />
+    <None Include="openmetaverse_data\jacket_length_lower_alpha.png" />
+    <None Include="openmetaverse_data\jacket_length_upper_alpha.png" />
+    <None Include="openmetaverse_data\jacket_open_lower_alpha.png" />
+    <None Include="openmetaverse_data\jacket_open_upper_alpha.png" />
+    <None Include="openmetaverse_data\lipgloss_alpha.png" />
+    <None Include="openmetaverse_data\lipstick_alpha.png" />
+    <None Include="openmetaverse_data\lips_mask.png" />
+    <None Include="openmetaverse_data\lowerbody_color.png" />
+    <None Include="openmetaverse_data\lowerbody_highlights_alpha.png" />
+    <None Include="openmetaverse_data\lowerbody_shading_alpha.png" />
+    <None Include="openmetaverse_data\nailpolish_alpha.png" />
+    <None Include="openmetaverse_data\pants_length_alpha.png" />
+    <None Include="openmetaverse_data\pants_waist_alpha.png" />
+    <None Include="openmetaverse_data\rosyface_alpha.png" />
+    <None Include="openmetaverse_data\rouge_alpha.png" />
+    <None Include="openmetaverse_data\shirt_bottom_alpha.png" />
+    <None Include="openmetaverse_data\shirt_collar_alpha.png" />
+    <None Include="openmetaverse_data\shirt_collar_back_alpha.png" />
+    <None Include="openmetaverse_data\shirt_sleeve_alpha.png" />
+    <None Include="openmetaverse_data\shoe_height_alpha.png" />
+    <None Include="openmetaverse_data\skirt_length_alpha.png" />
+    <None Include="openmetaverse_data\skirt_slit_back_alpha.png" />
+    <None Include="openmetaverse_data\skirt_slit_front_alpha.png" />
+    <None Include="openmetaverse_data\skirt_slit_left_alpha.png" />
+    <None Include="openmetaverse_data\skirt_slit_right_alpha.png" />
+    <None Include="openmetaverse_data\underpants_trial_female.png" />
+    <None Include="openmetaverse_data\underpants_trial_male.png" />
+    <None Include="openmetaverse_data\undershirt_trial_female.png" />
+    <None Include="openmetaverse_data\upperbodyfreckles_alpha.png" />
+    <None Include="openmetaverse_data\upperbody_color.png" />
+    <None Include="openmetaverse_data\upperbody_highlights_alpha.png" />
+    <None Include="openmetaverse_data\upperbody_shading_alpha.png" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

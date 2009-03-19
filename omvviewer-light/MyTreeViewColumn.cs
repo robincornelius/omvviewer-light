@@ -35,9 +35,9 @@ namespace omvviewerlight
 
         public MyTreeViewColumn(string title, Gtk.CellRenderer cell,string prop,int col,bool defaultsort) : base (title,cell,prop,col)
         {
-            up_arrow = MainClass.GetResource("up_arrow.tga");
-            down_arrow = MainClass.GetResource("down_arrow.tga");
-            blank_arrow = MainClass.GetResource("blank_arrow.tga");
+            up_arrow = MainClass.GetResource("up_arrow.png");
+            down_arrow = MainClass.GetResource("down_arrow.png");
+            blank_arrow = MainClass.GetResource("blank_arrow.png");
             model_col = col;
 			if(defaultsort)
 				col_icon = new Gtk.Image(up_arrow);				

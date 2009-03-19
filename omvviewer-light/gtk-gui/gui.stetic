@@ -970,7 +970,7 @@ Shout</property>
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:icn_voice-pvtfocus.tga</property>
+                    <property name="Icon">resource:icn_voice-pvtfocus.png</property>
                     <property name="Label" translatable="yes">IM</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonImClicked" />
@@ -987,7 +987,7 @@ Shout</property>
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:status_money.tga</property>
+                    <property name="Icon">resource:status_money.png</property>
                     <property name="Label" translatable="yes">Pay</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonPayClicked" />
@@ -1293,7 +1293,7 @@ Shout</property>
                             <property name="MemberName" />
                             <property name="CanFocus">True</property>
                             <property name="Type">TextAndIcon</property>
-                            <property name="Icon">resource:icon_place.tga</property>
+                            <property name="Icon">resource:icon_place.png</property>
                             <property name="Label" translatable="yes">Teleport</property>
                             <property name="UseUnderline">True</property>
                             <signal name="Activated" handler="OnButtonTeleportActivated" />
@@ -1311,7 +1311,7 @@ Shout</property>
                             <property name="MemberName" />
                             <property name="CanFocus">True</property>
                             <property name="Type">TextAndIcon</property>
-                            <property name="Icon">resource:map_home.tga</property>
+                            <property name="Icon">resource:map_home.png</property>
                             <property name="Label" translatable="yes">Go Home</property>
                             <property name="UseUnderline">True</property>
                             <signal name="Clicked" handler="OnButtonTphomeClicked" />
@@ -1555,7 +1555,7 @@ Shout</property>
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="Type">TextAndIcon</property>
-                <property name="Icon">resource:status_money.tga</property>
+                <property name="Icon">resource:status_money.png</property>
                 <property name="Label" translatable="yes">Pay</property>
                 <property name="UseUnderline">True</property>
                 <signal name="Clicked" handler="OnButtonPayClicked" />
@@ -1742,7 +1742,7 @@ Shout</property>
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="Type">TextAndIcon</property>
-                <property name="Icon">resource:icon_place.tga</property>
+                <property name="Icon">resource:icon_place.png</property>
                 <property name="Label" translatable="yes">Teleport</property>
                 <property name="UseUnderline">True</property>
                 <signal name="Clicked" handler="OnButtonTPClicked" />
@@ -2074,7 +2074,7 @@ Shout</property>
                     <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:status_money.tga</property>
+                    <property name="Icon">resource:status_money.png</property>
                     <property name="Label" translatable="yes">Pay</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonPayClicked" />
@@ -2106,7 +2106,7 @@ Shout</property>
                     <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:status_money.tga</property>
+                    <property name="Icon">resource:status_money.png</property>
                     <property name="Label" translatable="yes">Buy</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonBuyClicked" />
@@ -2525,7 +2525,7 @@ Shout</property>
   <widget class="Gtk.Window" id="omvviewerlight.PayWindow" design-size="400 155">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Pay</property>
-    <property name="Icon">file:./status_money.tga</property>
+    <property name="Icon">file:./status_money.png</property>
     <property name="WindowPosition">CenterOnParent</property>
     <property name="Modal">True</property>
     <child>
@@ -2620,7 +2620,7 @@ Resident Michelle2 Zenovka
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="Type">TextAndIcon</property>
-                <property name="Icon">resource:status_money.tga</property>
+                <property name="Icon">resource:status_money.png</property>
                 <property name="Label" translatable="yes">Pay</property>
                 <property name="UseUnderline">True</property>
                 <signal name="Clicked" handler="OnButtonPayClicked" />
@@ -2944,7 +2944,7 @@ Resident Michelle2 Zenovka
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:icn_voice-groupfocus.tga</property>
+                    <property name="Icon">resource:icn_voice-groupfocus.png</property>
                     <property name="Label" translatable="yes">IM</property>
                     <property name="UseUnderline">True</property>
                   </widget>
@@ -2960,7 +2960,7 @@ Resident Michelle2 Zenovka
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:status_money.tga</property>
+                    <property name="Icon">resource:status_money.png</property>
                     <property name="Label" translatable="yes">Pay</property>
                     <property name="UseUnderline">True</property>
                   </widget>
@@ -2976,7 +2976,7 @@ Resident Michelle2 Zenovka
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:icon_place.tga</property>
+                    <property name="Icon">resource:icon_place.png</property>
                     <property name="Label" translatable="yes">Teleport</property>
                     <property name="UseUnderline">True</property>
                   </widget>
@@ -3431,7 +3431,7 @@ Resident Michelle2 Zenovka
             <child>
               <widget class="Gtk.Image" id="image356">
                 <property name="MemberName" />
-                <property name="Pixbuf">resource:icon_place.tga</property>
+                <property name="Pixbuf">resource:icon_place.png</property>
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -6437,7 +6437,7 @@ permissions</property>
                 <property name="Sensitive">False</property>
                 <property name="CanFocus">True</property>
                 <property name="Type">TextAndIcon</property>
-                <property name="Icon">resource:icon_place.tga</property>
+                <property name="Icon">resource:icon_place.png</property>
                 <property name="Label" translatable="yes">Teleport</property>
                 <property name="UseUnderline">True</property>
                 <signal name="Clicked" handler="OnButtonTeleportClicked" />

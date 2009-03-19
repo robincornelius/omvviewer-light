@@ -38,7 +38,7 @@ namespace omvviewerlight {
             // Widget omvviewerlight.PayWindow
             this.Name = "omvviewerlight.PayWindow";
             this.Title = Mono.Unix.Catalog.GetString("Pay");
-            this.Icon = new Gdk.Pixbuf(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "./status_money.tga"));
+            this.Icon = new Gdk.Pixbuf(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "./status_money.png"));
             this.WindowPosition = ((Gtk.WindowPosition)(4));
             this.Modal = true;
             // Container child omvviewerlight.PayWindow.Gtk.Container+ContainerChild
@@ -120,7 +120,7 @@ namespace omvviewerlight {
             w8.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w9 = new Gtk.Image();
-            w9.Pixbuf = MainClass.GetResource("status_money.tga");
+            w9.Pixbuf = MainClass.GetResource("status_money.png");
             w8.Add(w9);
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w11 = new Gtk.Label();

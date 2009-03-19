@@ -98,13 +98,13 @@ namespace omvviewerlight
 			treeview_friends.HeadersClickable=true;
             this.treeview_friends.Selection.Mode = SelectionMode.Multiple;    
 
-			online_img=MainClass.GetResource("icon_avatar_online.tga");
-			offline_img=MainClass.GetResource("icon_avatar_offline.tga");
-		    this.img_blank=MainClass.GetResource("blank_arrow.tga");
-			this.img_edit_mine=MainClass.GetResource("ff_edit_mine.tga");
-			this.img_edit_theirs=MainClass.GetResource("ff_edit_theirs.tga");
-			this.img_map_me=MainClass.GetResource("ff_visible_map.tga");
-			this.img_see_my_status=MainClass.GetResource("ff_visible_online.tga");
+			online_img=MainClass.GetResource("icon_avatar_online.png");
+			offline_img=MainClass.GetResource("icon_avatar_offline.png");
+		    this.img_blank=MainClass.GetResource("blank_arrow.png");
+			this.img_edit_mine=MainClass.GetResource("ff_edit_mine.png");
+			this.img_edit_theirs=MainClass.GetResource("ff_edit_theirs.png");
+			this.img_map_me=MainClass.GetResource("ff_visible_map.png");
+			this.img_see_my_status=MainClass.GetResource("ff_visible_online.png");
 			
 			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);		
 			MainClass.client.Friends.OnFriendOnline += new OpenMetaverse.FriendsManager.FriendOnlineEvent(onFriendOnline);
@@ -286,7 +286,7 @@ namespace omvviewerlight
 			FriendInfo finfo;
 			if(MainClass.client.Friends.FriendList.TryGetValue(lid,out finfo))
 			{
-                store.SetValue(iter, 0, finfo.IsOnline ? MainClass.GetResource("icon_avatar_online.tga") : MainClass.GetResource("icon_avatar_offline.tga"));
+                store.SetValue(iter, 0, finfo.IsOnline ? MainClass.GetResource("icon_avatar_online.png") : MainClass.GetResource("icon_avatar_offline.png"));
 				store.SetValue(iter, 2, finfo.CanSeeMeOnline ? this.img_see_my_status : img_blank);
 		        store.SetValue(iter, 3, finfo.CanSeeMeOnMap ? this.img_map_me : img_blank);
 		        store.SetValue(iter, 4, finfo.CanModifyMyObjects ? this.img_edit_mine : img_blank);

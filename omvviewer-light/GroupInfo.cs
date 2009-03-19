@@ -67,9 +67,9 @@ namespace omvviewerlight
 		
         List<UUID> rcvd_names = new List<UUID>();
 
-		Gdk.Pixbuf folder_open = MainClass.GetResource("inv_folder_plain_open.tga");
-		Gdk.Pixbuf tick = MainClass.GetResource("tick.tga");
-		Gdk.Pixbuf cross = MainClass.GetResource("cross.tga");
+		Gdk.Pixbuf folder_open = MainClass.GetResource("inv_folder_plain_open.png");
+		Gdk.Pixbuf tick = MainClass.GetResource("tick.png");
+		Gdk.Pixbuf cross = MainClass.GetResource("cross.png");
 
         Dictionary<UUID, OpenMetaverse.GroupTitle> group_titles=new Dictionary<UUID, OpenMetaverse.GroupTitle>();
 		
