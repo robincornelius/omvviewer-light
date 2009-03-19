@@ -59,10 +59,18 @@ namespace omvviewerlight
 	    Gtk.Image terrian_map;
 	    Gtk.Image objects_map;
 	    Gtk.Image forsale_map;
+		int width,height;
+		int lastwidth,lastheight;
 		
 		public Map()
 		{           
 			this.Build();
+			lastwidth=-1;
+			lastheight=-1;
+			this.image.SizeAllocated += delegate(object o, SizeAllocatedArgs args) {
+				height=args.Allocation.Height;	
+				width=args.Allocation.Width;
+			};
 			
 			this.terrain_map_ID=UUID.Zero;
 			this.objects_map_ID=UUID.Zero;
@@ -117,7 +125,8 @@ namespace omvviewerlight
 			
 	            if (MainClass.client.Network.CurrentSim != null)
 	                drawavs();
-              
+         	
+			
             return true;
 
         }
@@ -130,7 +139,7 @@ namespace omvviewerlight
 			objects_map = new Gtk.Image(pb);
 			this.image.Pixbuf=pb;	
 
-			TryGetImage tgi=new TryGetImage(this.objects_map,region.MapImageID,350,350,true);
+			TryGetImage tgi=new TryGetImage(this.objects_map,region.MapImageID,width,height,true);
             tgi.OnDecodeComplete += new TryGetImage.Decodecomplete(delegate()
 			{
 				  Gtk.Application.Invoke(delegate
@@ -156,7 +165,7 @@ namespace omvviewerlight
 				objects_map = new Gtk.Image(pb);
 
 				this.image.Pixbuf=pb;
-                new TryGetImage(this.objects_map, region.MapImageID, 350, 350, false);
+                new TryGetImage(this.objects_map, region.MapImageID, width, height, false);
 			}
 		}
 
@@ -209,8 +218,19 @@ namespace omvviewerlight
 			
 		void drawavs()
 		{
+		  if(lastheight!=height || lastwidth!=width)
+		  {
+			this.objects_map.Pixbuf.ScaleSimple(height,width,InterpType.Bilinear);
+				lastheight=height;
+			lastwidth=width;
+				
+			
+		  }	
+			
 		  basemap=this.objects_map;
 			
+		
+									
           if (basemap == null)
               return;
 

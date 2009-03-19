@@ -735,7 +735,6 @@
                     <child>
                       <widget class="Gtk.Button" id="button_IM">
                         <property name="MemberName" />
-                        <property name="WidthRequest">70</property>
                         <property name="CanFocus">True</property>
                         <property name="Type">TextAndIcon</property>
                         <property name="Icon">resource:icn_voice-groupfocus.png</property>
@@ -753,7 +752,6 @@
                     <child>
                       <widget class="Gtk.Button" id="button_teleport">
                         <property name="MemberName" />
-                        <property name="WidthRequest">80</property>
                         <property name="CanFocus">True</property>
                         <property name="Type">TextAndIcon</property>
                         <property name="Icon">resource:icon_place.png</property>
@@ -771,7 +769,6 @@
                     <child>
                       <widget class="Gtk.Button" id="button_pay">
                         <property name="MemberName" />
-                        <property name="WidthRequest">80</property>
                         <property name="CanFocus">True</property>
                         <property name="Type">TextAndIcon</property>
                         <property name="Icon">resource:status_money.png</property>
@@ -790,7 +787,6 @@
                     <child>
                       <widget class="Gtk.Button" id="button_profile">
                         <property name="MemberName" />
-                        <property name="WidthRequest">70</property>
                         <property name="CanFocus">True</property>
                         <property name="Type">TextOnly</property>
                         <property name="Label" translatable="yes">Profile</property>
@@ -1339,12 +1335,9 @@ Shout</property>
   </widget>
   <widget class="Gtk.Bin" id="omvviewerlight.Map" design-size="602 375">
     <property name="MemberName" />
-    <property name="WidthRequest">375</property>
-    <property name="HeightRequest">375</property>
     <child>
       <widget class="Gtk.VBox" id="vbox1">
         <property name="MemberName" />
-        <property name="WidthRequest">350</property>
         <property name="Spacing">6</property>
         <child>
           <widget class="Gtk.Label" id="label1">
@@ -1361,15 +1354,11 @@ Shout</property>
         <child>
           <widget class="Gtk.EventBox" id="eventbox1">
             <property name="MemberName" />
-            <property name="WidthRequest">350</property>
-            <property name="HeightRequest">350</property>
             <property name="BorderWidth">1</property>
             <signal name="ButtonPressEvent" handler="OnEventbox1ButtonPressEvent" />
             <child>
               <widget class="Gtk.Image" id="image">
                 <property name="MemberName" />
-                <property name="WidthRequest">350</property>
-                <property name="HeightRequest">350</property>
                 <property name="Events">ButtonPressMask</property>
                 <property name="ExtensionEvents">All</property>
               </widget>
@@ -1378,8 +1367,6 @@ Shout</property>
           <packing>
             <property name="Position">1</property>
             <property name="AutoSize">False</property>
-            <property name="Expand">False</property>
-            <property name="Fill">False</property>
           </packing>
         </child>
       </widget>
@@ -1772,8 +1759,6 @@ Shout</property>
               <packing>
                 <property name="Position">0</property>
                 <property name="AutoSize">False</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
               </packing>
             </child>
             <child>
@@ -1792,9 +1777,7 @@ Shout</property>
           </widget>
           <packing>
             <property name="Position">0</property>
-            <property name="AutoSize">True</property>
-            <property name="Expand">False</property>
-            <property name="Fill">False</property>
+            <property name="AutoSize">False</property>
           </packing>
         </child>
         <child>

@@ -71,7 +71,6 @@ namespace omvviewerlight {
             this.hbox1.Spacing = 6;
             // Container child hbox1.Gtk.Box+BoxChild
             this.button_IM = new Gtk.Button();
-            this.button_IM.WidthRequest = 70;
             this.button_IM.CanFocus = true;
             this.button_IM.Name = "button_IM";
             this.button_IM.UseUnderline = true;
@@ -98,7 +97,6 @@ namespace omvviewerlight {
             w11.Fill = false;
             // Container child hbox1.Gtk.Box+BoxChild
             this.button_teleport = new Gtk.Button();
-            this.button_teleport.WidthRequest = 80;
             this.button_teleport.CanFocus = true;
             this.button_teleport.Name = "button_teleport";
             this.button_teleport.UseUnderline = true;
@@ -125,7 +123,6 @@ namespace omvviewerlight {
             w20.Fill = false;
             // Container child hbox1.Gtk.Box+BoxChild
             this.button_pay = new Gtk.Button();
-            this.button_pay.WidthRequest = 80;
             this.button_pay.CanFocus = true;
             this.button_pay.Name = "button_pay";
             this.button_pay.UseUnderline = true;
@@ -153,7 +150,6 @@ namespace omvviewerlight {
             w29.Fill = false;
             // Container child hbox1.Gtk.Box+BoxChild
             this.button_profile = new Gtk.Button();
-            this.button_profile.WidthRequest = 70;
             this.button_profile.CanFocus = true;
             this.button_profile.Name = "button_profile";
             this.button_profile.UseUnderline = true;

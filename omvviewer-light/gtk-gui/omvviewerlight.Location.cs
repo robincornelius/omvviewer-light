@@ -53,8 +53,6 @@ namespace omvviewerlight {
             this.vbox4.Add(this.map1);
             Gtk.Box.BoxChild w1 = ((Gtk.Box.BoxChild)(this.vbox4[this.map1]));
             w1.Position = 0;
-            w1.Expand = false;
-            w1.Fill = false;
             // Container child vbox4.Gtk.Box+BoxChild
             this.teleportto1 = new omvviewerlight.TeleportTo();
             this.teleportto1.HeightRequest = 160;
@@ -68,8 +66,6 @@ namespace omvviewerlight {
             this.hbox1.Add(this.vbox4);
             Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox4]));
             w3.Position = 0;
-            w3.Expand = false;
-            w3.Fill = false;
             // Container child hbox1.Gtk.Box+BoxChild
             this.notebook1 = new Gtk.Notebook();
             this.notebook1.CanFocus = true;
