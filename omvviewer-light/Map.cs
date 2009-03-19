@@ -218,14 +218,6 @@ namespace omvviewerlight
 			
 		void drawavs()
 		{
-		  if(lastheight!=height || lastwidth!=width)
-		  {
-			this.objects_map.Pixbuf.ScaleSimple(height,width,InterpType.Bilinear);
-				lastheight=height;
-			lastwidth=width;
-				
-			
-		  }	
 			
 		  basemap=this.objects_map;
 			
@@ -236,7 +228,18 @@ namespace omvviewerlight
 
           if (basemap.Pixbuf == null)
 			return;
-          
+			
+					  if(lastheight!=height || lastwidth!=width)
+		  {
+			objects_map.Pixbuf=this.objects_map.Pixbuf.ScaleSimple(height,width,InterpType.Bilinear);
+				lastheight=height;
+			lastwidth=width;
+		  basemap=this.objects_map;
+				
+			
+		  }	
+
+                              
 			Gdk.Pixbuf buf;
 			Simulator draw_sim=null;
 			
