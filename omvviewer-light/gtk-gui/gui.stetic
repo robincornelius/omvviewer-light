@@ -364,7 +364,7 @@
                 <child>
                   <widget class="Gtk.Entry" id="entry_pass">
                     <property name="MemberName" />
-                    <property name="Tooltip" translatable="yes">Enter your login password here</property>
+                    <property name="Tooltip" translatable="yes" />
                     <property name="CanFocus">True</property>
                     <property name="IsEditable">True</property>
                     <property name="InvisibleChar">●</property>
@@ -468,6 +468,7 @@
                         <property name="MemberName" />
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">Home</property>
+                        <property name="Active">True</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>

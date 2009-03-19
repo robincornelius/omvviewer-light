@@ -163,7 +163,6 @@ namespace omvviewerlight {
             w6.Fill = false;
             // Container child vbox3.Gtk.Box+BoxChild
             this.entry_pass = new Gtk.Entry();
-            this.entry_pass.TooltipMarkup = "Enter your login password here";
             this.entry_pass.CanFocus = true;
             this.entry_pass.Name = "entry_pass";
             this.entry_pass.IsEditable = true;
