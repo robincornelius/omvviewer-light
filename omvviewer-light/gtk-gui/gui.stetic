@@ -179,6 +179,7 @@
     <property name="HeightRequest">600</property>
     <property name="Title" translatable="yes">MainWindow</property>
     <property name="WindowPosition">CenterOnParent</property>
+    <property name="AllowShrink">True</property>
     <signal name="DeleteEvent" handler="OnDeleteEvent" />
     <child>
       <widget class="Gtk.VBox" id="vbox6">
@@ -246,13 +247,8 @@
           </widget>
           <packing>
             <property name="Position">1</property>
-            <property name="AutoSize">True</property>
-            <property name="Expand">False</property>
-            <property name="Fill">False</property>
+            <property name="AutoSize">False</property>
           </packing>
-        </child>
-        <child>
-          <placeholder />
         </child>
         <child>
           <widget class="Gtk.Statusbar" id="statusbar1">
@@ -261,7 +257,7 @@
             <property name="Spacing">6</property>
           </widget>
           <packing>
-            <property name="Position">3</property>
+            <property name="Position">2</property>
             <property name="AutoSize">True</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
@@ -432,9 +428,6 @@
                     <property name="AutoSize">True</property>
                   </packing>
                 </child>
-                <child>
-                  <placeholder />
-                </child>
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -468,7 +461,6 @@
                         <property name="MemberName" />
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">Home</property>
-                        <property name="Active">True</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>
@@ -548,9 +540,6 @@
               </packing>
             </child>
             <child>
-              <placeholder />
-            </child>
-            <child>
               <widget class="Gtk.HBox" id="hbox6">
                 <property name="MemberName" />
                 <property name="Spacing">6</property>
@@ -607,7 +596,7 @@
                 </child>
               </widget>
               <packing>
-                <property name="Position">3</property>
+                <property name="Position">2</property>
                 <property name="AutoSize">True</property>
                 <property name="Expand">False</property>
                 <property name="Fill">False</property>
@@ -647,7 +636,7 @@
                 </child>
               </widget>
               <packing>
-                <property name="Position">4</property>
+                <property name="Position">3</property>
                 <property name="AutoSize">True</property>
               </packing>
             </child>
@@ -668,7 +657,6 @@
                         <child>
                           <widget class="Gtk.TextView" id="textview_log">
                             <property name="MemberName" />
-                            <property name="HeightRequest">270</property>
                             <property name="CanFocus">True</property>
                             <property name="ShowScrollbars">True</property>
                             <property name="Editable">False</property>
@@ -692,7 +680,7 @@
                 </child>
               </widget>
               <packing>
-                <property name="Position">5</property>
+                <property name="Position">4</property>
                 <property name="AutoSize">True</property>
               </packing>
             </child>
@@ -749,7 +737,8 @@
                         <property name="MemberName" />
                         <property name="WidthRequest">70</property>
                         <property name="CanFocus">True</property>
-                        <property name="Type">TextOnly</property>
+                        <property name="Type">TextAndIcon</property>
+                        <property name="Icon">resource:icn_voice-groupfocus.png</property>
                         <property name="Label" translatable="yes">IM</property>
                         <property name="UseUnderline">True</property>
                         <signal name="Clicked" handler="OnButtonIMClicked" />
@@ -766,13 +755,51 @@
                         <property name="MemberName" />
                         <property name="WidthRequest">80</property>
                         <property name="CanFocus">True</property>
-                        <property name="Type">TextOnly</property>
+                        <property name="Type">TextAndIcon</property>
+                        <property name="Icon">resource:icon_place.png</property>
                         <property name="Label" translatable="yes">Teleport</property>
                         <property name="UseUnderline">True</property>
                         <signal name="Clicked" handler="OnButtonTeleportClicked" />
                       </widget>
                       <packing>
                         <property name="Position">1</property>
+                        <property name="AutoSize">True</property>
+                        <property name="Expand">False</property>
+                        <property name="Fill">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="Gtk.Button" id="button_pay">
+                        <property name="MemberName" />
+                        <property name="WidthRequest">80</property>
+                        <property name="CanFocus">True</property>
+                        <property name="Type">TextAndIcon</property>
+                        <property name="Icon">resource:status_money.png</property>
+                        <property name="Label" translatable="yes">Pay</property>
+                        <property name="UseUnderline">True</property>
+                        <signal name="Clicked" handler="OnButtonPayClicked" />
+                      </widget>
+                      <packing>
+                        <property name="PackType">End</property>
+                        <property name="Position">2</property>
+                        <property name="AutoSize">True</property>
+                        <property name="Expand">False</property>
+                        <property name="Fill">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="Gtk.Button" id="button_profile">
+                        <property name="MemberName" />
+                        <property name="WidthRequest">70</property>
+                        <property name="CanFocus">True</property>
+                        <property name="Type">TextOnly</property>
+                        <property name="Label" translatable="yes">Profile</property>
+                        <property name="UseUnderline">True</property>
+                        <signal name="Clicked" handler="OnButtonProfileClicked" />
+                      </widget>
+                      <packing>
+                        <property name="PackType">End</property>
+                        <property name="Position">3</property>
                         <property name="AutoSize">True</property>
                         <property name="Expand">False</property>
                         <property name="Fill">False</property>
@@ -789,53 +816,6 @@
               </widget>
               <packing>
                 <property name="Position">0</property>
-                <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.HBox" id="hbox3">
-                <property name="MemberName" />
-                <property name="Homogeneous">True</property>
-                <property name="Spacing">6</property>
-                <child>
-                  <widget class="Gtk.Button" id="button_profile">
-                    <property name="MemberName" />
-                    <property name="WidthRequest">70</property>
-                    <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
-                    <property name="Label" translatable="yes">Profile</property>
-                    <property name="UseUnderline">True</property>
-                    <signal name="Clicked" handler="OnButtonProfileClicked" />
-                  </widget>
-                  <packing>
-                    <property name="Position">0</property>
-                    <property name="AutoSize">True</property>
-                    <property name="Expand">False</property>
-                    <property name="Fill">False</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="Gtk.Button" id="button_pay">
-                    <property name="MemberName" />
-                    <property name="WidthRequest">80</property>
-                    <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
-                    <property name="Label" translatable="yes">Pay</property>
-                    <property name="UseUnderline">True</property>
-                    <signal name="Clicked" handler="OnButtonPayClicked" />
-                  </widget>
-                  <packing>
-                    <property name="Position">1</property>
-                    <property name="AutoSize">True</property>
-                    <property name="Expand">False</property>
-                    <property name="Fill">False</property>
-                  </packing>
-                </child>
-              </widget>
-              <packing>
-                <property name="Position">1</property>
                 <property name="AutoSize">True</property>
                 <property name="Expand">False</property>
                 <property name="Fill">False</property>
@@ -3416,7 +3396,6 @@ Resident Michelle2 Zenovka
             <property name="MemberName" />
             <property name="Xpad">24</property>
             <property name="Xalign">0</property>
-            <property name="LabelProp" translatable="yes" />
           </widget>
           <packing>
             <property name="Position">1</property>
@@ -3912,7 +3891,6 @@ Resident Michelle2 Zenovka
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>
-                    <property name="HeadersClickable">True</property>
                   </widget>
                 </child>
               </widget>
@@ -4205,7 +4183,6 @@ Resident Michelle2 Zenovka
                             <property name="MemberName" />
                             <property name="CanFocus">True</property>
                             <property name="ShowScrollbars">True</property>
-                            <property name="HeadersClickable">True</property>
                             <signal name="CursorChanged" handler="OnTreeviewMembers1CursorChanged" />
                           </widget>
                         </child>
@@ -4246,7 +4223,6 @@ Resident Michelle2 Zenovka
                                     <property name="HeightRequest">150</property>
                                     <property name="CanFocus">True</property>
                                     <property name="ShowScrollbars">True</property>
-                                    <property name="HeadersClickable">True</property>
                                   </widget>
                                 </child>
                               </widget>
@@ -4293,7 +4269,6 @@ Resident Michelle2 Zenovka
                                     <property name="HeightRequest">150</property>
                                     <property name="CanFocus">True</property>
                                     <property name="ShowScrollbars">True</property>
-                                    <property name="HeadersClickable">True</property>
                                   </widget>
                                 </child>
                               </widget>
@@ -4347,7 +4322,6 @@ Resident Michelle2 Zenovka
                             <property name="HeightRequest">100</property>
                             <property name="CanFocus">True</property>
                             <property name="ShowScrollbars">True</property>
-                            <property name="HeadersClickable">True</property>
                             <signal name="CursorChanged" handler="OnTreeviewRolesListCursorChanged" />
                           </widget>
                         </child>
@@ -4527,7 +4501,6 @@ Resident Michelle2 Zenovka
                                     <property name="WidthRequest">152</property>
                                     <property name="CanFocus">True</property>
                                     <property name="ShowScrollbars">True</property>
-                                    <property name="HeadersClickable">True</property>
                                   </widget>
                                 </child>
                               </widget>
@@ -4556,7 +4529,6 @@ Resident Michelle2 Zenovka
                                     <property name="HeightRequest">100</property>
                                     <property name="CanFocus">True</property>
                                     <property name="ShowScrollbars">True</property>
-                                    <property name="HeadersClickable">True</property>
                                   </widget>
                                 </child>
                               </widget>
@@ -4607,7 +4579,6 @@ Resident Michelle2 Zenovka
                             <property name="MemberName" />
                             <property name="CanFocus">True</property>
                             <property name="ShowScrollbars">True</property>
-                            <property name="HeadersClickable">True</property>
                             <signal name="CursorChanged" handler="OnTreeviewAbilitiesCursorChanged" />
                           </widget>
                         </child>
@@ -4660,7 +4631,6 @@ Resident Michelle2 Zenovka
                                 <property name="MemberName" />
                                 <property name="CanFocus">True</property>
                                 <property name="ShowScrollbars">True</property>
-                                <property name="HeadersClickable">True</property>
                               </widget>
                             </child>
                           </widget>
@@ -4678,7 +4648,6 @@ Resident Michelle2 Zenovka
                                 <property name="MemberName" />
                                 <property name="CanFocus">True</property>
                                 <property name="ShowScrollbars">True</property>
-                                <property name="HeadersClickable">True</property>
                               </widget>
                             </child>
                           </widget>
@@ -4740,7 +4709,6 @@ Resident Michelle2 Zenovka
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>
-                    <property name="HeadersClickable">True</property>
                     <signal name="CursorChanged" handler="OnTreeviewNoticeListCursorChanged" />
                   </widget>
                 </child>
@@ -5081,7 +5049,6 @@ Resident Michelle2 Zenovka
                 <child>
                   <widget class="Gtk.Label" id="label16">
                     <property name="MemberName" />
-                    <property name="LabelProp" translatable="yes" />
                   </widget>
                   <packing>
                     <property name="Position">1</property>
@@ -5247,7 +5214,6 @@ Resident Michelle2 Zenovka
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>
-                    <property name="HeadersClickable">True</property>
                   </widget>
                 </child>
               </widget>
@@ -5849,7 +5815,6 @@ permissions</property>
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="ShowScrollbars">True</property>
-                <property name="HeadersClickable">True</property>
               </widget>
             </child>
           </widget>
@@ -8692,7 +8657,6 @@ time</property>
         <child>
           <widget class="Gtk.Label" id="label_title">
             <property name="MemberName" />
-            <property name="LabelProp" translatable="yes" />
           </widget>
           <packing>
             <property name="Position">0</property>

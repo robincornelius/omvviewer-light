@@ -346,7 +346,7 @@ namespace omvviewerlight {
             w32.Position = 3;
             this.vbox5.Add(this.hbox6);
             Gtk.Box.BoxChild w33 = ((Gtk.Box.BoxChild)(this.vbox5[this.hbox6]));
-            w33.Position = 3;
+            w33.Position = 2;
             w33.Expand = false;
             w33.Fill = false;
             // Container child vbox5.Gtk.Box+BoxChild
@@ -373,7 +373,7 @@ namespace omvviewerlight {
             this.frame1.LabelWidget = this.GtkLabel5;
             this.vbox5.Add(this.frame1);
             Gtk.Box.BoxChild w36 = ((Gtk.Box.BoxChild)(this.vbox5[this.frame1]));
-            w36.Position = 4;
+            w36.Position = 3;
             // Container child vbox5.Gtk.Box+BoxChild
             this.frame2 = new Gtk.Frame();
             this.frame2.Name = "frame2";
@@ -388,7 +388,6 @@ namespace omvviewerlight {
             this.GtkScrolledWindow1.ShadowType = ((Gtk.ShadowType)(1));
             // Container child GtkScrolledWindow1.Gtk.Container+ContainerChild
             this.textview_log = new Gtk.TextView();
-            this.textview_log.HeightRequest = 270;
             this.textview_log.CanFocus = true;
             this.textview_log.Name = "textview_log";
             this.textview_log.Editable = false;
@@ -403,7 +402,7 @@ namespace omvviewerlight {
             this.frame2.LabelWidget = this.GtkLabel6;
             this.vbox5.Add(this.frame2);
             Gtk.Box.BoxChild w40 = ((Gtk.Box.BoxChild)(this.vbox5[this.frame2]));
-            w40.Position = 5;
+            w40.Position = 4;
             this.vbox1.Add(this.vbox5);
             Gtk.Box.BoxChild w41 = ((Gtk.Box.BoxChild)(this.vbox1[this.vbox5]));
             w41.Position = 1;

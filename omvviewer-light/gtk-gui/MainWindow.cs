@@ -96,15 +96,15 @@ public partial class MainWindow {
         this.FlyAction.ShortLabel = Mono.Unix.Catalog.GetString("Fly");
         w1.Add(this.FlyAction, null);
         this.AvaiableAction = new Gtk.RadioAction("AvaiableAction", Mono.Unix.Catalog.GetString("Avaiable"), null, "gtk-yes", 0);
-        this.AvaiableAction.Group = this.AwayAction.Group;
+        this.AvaiableAction.Group = this.BusyAction.Group;
         this.AvaiableAction.ShortLabel = Mono.Unix.Catalog.GetString("Avaiable");
         w1.Add(this.AvaiableAction, null);
         this.StandingAction = new Gtk.RadioAction("StandingAction", Mono.Unix.Catalog.GetString("Standing"), null, null, 0);
-        this.StandingAction.Group = this.FlyAction.Group;
+        this.StandingAction.Group = this.GroundSitAction.Group;
         this.StandingAction.ShortLabel = Mono.Unix.Catalog.GetString("Standing");
         w1.Add(this.StandingAction, null);
         this.SittingAction = new Gtk.RadioAction("SittingAction", Mono.Unix.Catalog.GetString("Sitting"), null, null, 0);
-        this.SittingAction.Group = this.FlyAction.Group;
+        this.SittingAction.Group = this.StandingAction.Group;
         this.SittingAction.Sensitive = false;
         this.SittingAction.ShortLabel = Mono.Unix.Catalog.GetString("Sitting");
         w1.Add(this.SittingAction, null);
@@ -148,6 +148,7 @@ public partial class MainWindow {
         this.Name = "MainWindow";
         this.Title = Mono.Unix.Catalog.GetString("MainWindow");
         this.WindowPosition = ((Gtk.WindowPosition)(4));
+        this.AllowShrink = true;
         // Container child MainWindow.Gtk.Container+ContainerChild
         this.vbox6 = new Gtk.VBox();
         this.vbox6.Name = "vbox6";
@@ -181,8 +182,6 @@ public partial class MainWindow {
         this.vbox6.Add(this.notebook);
         Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.vbox6[this.notebook]));
         w4.Position = 1;
-        w4.Expand = false;
-        w4.Fill = false;
         // Container child vbox6.Gtk.Box+BoxChild
         this.statusbar1 = new Gtk.Statusbar();
         this.statusbar1.HeightRequest = 20;
@@ -190,7 +189,7 @@ public partial class MainWindow {
         this.statusbar1.Spacing = 6;
         this.vbox6.Add(this.statusbar1);
         Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox6[this.statusbar1]));
-        w5.Position = 3;
+        w5.Position = 2;
         w5.Expand = false;
         w5.Fill = false;
         this.Add(this.vbox6);
