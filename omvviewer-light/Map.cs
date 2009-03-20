@@ -434,10 +434,28 @@ namespace omvviewerlight
 		{
 			
 		    if(this.image==null || this.image.Pixbuf==null)
-                return;
+				return;
+			
+			// The event box and map are likely to be different sizes.
+			
+			int marginX=width-image.Pixbuf.Width;
+			int marginY=height-image.Pixbuf.Height;
+			
+			marginX /=2;
+			marginY /=2;
+			
 			Vector3 pos;
-			pos.X=(float)(256.0*(args.Event.X/this.image.Pixbuf.Width));
-			pos.Y=(float)(256.0*(args.Event.Y/this.image.Pixbuf.Height));
+			if(args.Event.X>marginX && args.Event.X<(width-marginX) && args.Event.Y>marginY && args.Event.Y<(width-marginY)) 
+			{
+				Console.WriteLine("In the box");	
+				pos.X=(float)(256.0*((args.Event.X-marginX)/this.image.Pixbuf.Width));
+				pos.Y=(float)(256.0*((args.Event.Y-marginY)/this.image.Pixbuf.Height));
+		}
+				else{
+			Console.Write("Not in box");	
+			return;
+            }
+			
 			pos.Z=0;
 
 			pos.Y=255-pos.Y;
