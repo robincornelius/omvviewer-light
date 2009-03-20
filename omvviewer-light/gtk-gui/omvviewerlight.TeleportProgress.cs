@@ -101,7 +101,7 @@ namespace omvviewerlight {
             // Container child hbox1.Gtk.Box+BoxChild
             this.image356 = new Gtk.Image();
             this.image356.Name = "image356";
-            this.image356.Pixbuf = Gdk.Pixbuf.LoadFromResource("icon_place.png");
+            this.image356.Pixbuf = MainClass.GetResource("icon_place.png");
             this.hbox1.Add(this.image356);
             Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox1[this.image356]));
             w6.Position = 0;
