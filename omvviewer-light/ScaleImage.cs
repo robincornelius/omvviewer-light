@@ -31,12 +31,15 @@ namespace omvviewerlight
 		public Gtk.Image baseimage=new Gtk.Image();
 		int width;
 		int height;
+        int oldwidth = -1;
+        int oldheight = -1;
 
 		
 		public ScaleImage()
 		{		
 			this.Build();
 			this.SizeAllocated += HandleSizeAllocated;
+           
 		}		
 		
 		public void clear()
@@ -58,9 +61,16 @@ namespace omvviewerlight
 
 		void HandleSizeAllocated(object o, SizeAllocatedArgs args)
 		{
+
 			width=args.Allocation.Width;
 			height=args.Allocation.Height;
-			
+
+            if (oldwidth == width && oldheight == height)
+                return;
+
+            oldwidth = width;
+            oldheight = height;
+
 			if(baseimage.Pixbuf==null)
 				return;
 			dispimage.Pixbuf=baseimage.Pixbuf.ScaleSimple(args.Allocation.Width,args.Allocation.Height,InterpType.Bilinear);			

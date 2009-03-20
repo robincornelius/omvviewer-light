@@ -113,6 +113,8 @@ namespace omvviewerlight
 			this.label_forsale.Text="";
 			this.label_price1.Text="";
 			this.lable_forsaleto.Text="";
+
+            this.parcelsnapshot.baseimage.Pixbuf = MainClass.GetResource("trying.png");
 			
 
             if (MainClass.client != null)

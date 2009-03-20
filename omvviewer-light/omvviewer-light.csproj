@@ -190,6 +190,7 @@
     <Compile Include="gtk-gui\omvviewerlight.Preferences.cs" />
     <Compile Include="gtk-gui\omvviewerlight.ProfileVIew.cs" />
     <Compile Include="gtk-gui\omvviewerlight.Radar.cs" />
+    <Compile Include="gtk-gui\omvviewerlight.ScaleImage.cs" />
     <Compile Include="gtk-gui\omvviewerlight.ScriptDialogue.cs" />
     <Compile Include="gtk-gui\omvviewerlight.Search.cs" />
     <Compile Include="gtk-gui\omvviewerlight.Searches.cs" />
@@ -252,6 +253,7 @@
     <Compile Include="Radar.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ScaleImage.cs" />
     <Compile Include="ScriptDialogue.cs">
       <SubType>Code</SubType>
     </Compile>
