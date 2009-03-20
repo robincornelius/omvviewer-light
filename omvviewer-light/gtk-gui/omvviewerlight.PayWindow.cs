@@ -120,7 +120,7 @@ namespace omvviewerlight {
             w8.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w9 = new Gtk.Image();
-            w9.Pixbuf = MainClass.GetResource("status_money.png");
+            w9.Pixbuf = Gdk.Pixbuf.LoadFromResource("status_money.png");
             w8.Add(w9);
             // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w11 = new Gtk.Label();

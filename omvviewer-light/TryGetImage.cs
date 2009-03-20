@@ -150,6 +150,7 @@ namespace omvviewerlight
                 Console.Write("Failed to download image\n");
                 return;
             }
+			
 
             if (this_asset.AssetID != target_asset)
                 return;

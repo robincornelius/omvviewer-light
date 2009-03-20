@@ -63,7 +63,7 @@ namespace omvviewerlight {
         
         private Gtk.EventBox eventbox2;
         
-        private Gtk.Image image_parcelsnap;
+        private omvviewerlight.ScaleImage parcelsnapshot;
         
         private Gtk.Label label1;
         
@@ -356,11 +356,10 @@ namespace omvviewerlight {
             this.eventbox2 = new Gtk.EventBox();
             this.eventbox2.Name = "eventbox2";
             // Container child eventbox2.Gtk.Container+ContainerChild
-            this.image_parcelsnap = new Gtk.Image();
-            this.image_parcelsnap.WidthRequest = 256;
-            this.image_parcelsnap.HeightRequest = 256;
-            this.image_parcelsnap.Name = "image_parcelsnap";
-            this.eventbox2.Add(this.image_parcelsnap);
+            this.parcelsnapshot = new omvviewerlight.ScaleImage();
+            this.parcelsnapshot.Events = ((Gdk.EventMask)(256));
+            this.parcelsnapshot.Name = "parcelsnapshot";
+            this.eventbox2.Add(this.parcelsnapshot);
             this.vbox11.Add(this.eventbox2);
             Gtk.Box.BoxChild w22 = ((Gtk.Box.BoxChild)(this.vbox11[this.eventbox2]));
             w22.Position = 1;

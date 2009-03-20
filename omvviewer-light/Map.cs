@@ -433,6 +433,7 @@ namespace omvviewerlight
 		protected virtual void OnEventbox1ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
 			
+			
 		    if(this.image==null || this.image.Pixbuf==null)
 				return;
 			
@@ -445,7 +446,7 @@ namespace omvviewerlight
 			marginY /=2;
 			
 			Vector3 pos;
-			if(args.Event.X>marginX && args.Event.X<(width-marginX) && args.Event.Y>marginY && args.Event.Y<(width-marginY)) 
+			if(args.Event.X>marginX && args.Event.X<(width-marginX) && args.Event.Y>marginY && args.Event.Y<(height-marginY)) 
 			{
 				Console.WriteLine("In the box");	
 				pos.X=(float)(256.0*((args.Event.X-marginX)/this.image.Pixbuf.Width));
