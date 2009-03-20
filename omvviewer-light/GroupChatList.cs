@@ -21,10 +21,15 @@ namespace omvviewerlight
 		{
 			this.Build();
 			store= new Gtk.ListStore (typeof(string),typeof(UUID));
-			Gtk.TreeViewColumn tvc;
-			tvc=treeview_members.AppendColumn("Name",new Gtk.CellRendererText(),"text",0);
-			//tvc.Resizable=true;
+			MyTreeViewColumn tvc;
+			tvc=new MyTreeViewColumn("Name",new Gtk.CellRendererText(),"text",0,true);			
 			tvc.Sizing=Gtk.TreeViewColumnSizing.Autosize;
+			tvc.setmodel(store);
+			this.treeview_members.AppendColumn(tvc);
+			this.treeview_members.HeadersClickable=true;
+			store.SetSortColumnId(0,SortType.Ascending);
+			
+			
 			
 			Dictionary <UUID,TreeIter> memberstree= new Dictionary<UUID,TreeIter>();			
 			treeview_members.Model=store;

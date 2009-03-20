@@ -366,17 +366,24 @@ namespace omvviewerlight
 						{
 							if(getter!=null)
 								getter.abort();
+							
 
-							TryGetImage i = new TryGetImage(this.image_parcelsnap,parcel.SnapshotID,256,256,false);
+							TryGetImage i = new TryGetImage(parcelsnapshot.baseimage,parcel.SnapshotID,256,256,true);
+							i.OnDecodeComplete += delegate
+							{                               
+								parcelsnapshot.setimage();                               
+							};
+							i.go();
 							getter=i;
 						}
 						else
 						{
-							this.image_parcelsnap.Clear();
+							//this.image_parcelsnap.Clear();
+							this.parcelsnapshot.clear();
 						}
 					
 						AsyncNameUpdate ud;
-						
+				
 						this.label_parcelowner.Text="Waiting...";
 
                         if (parcel.IsGroupOwned == false)

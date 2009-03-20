@@ -25,12 +25,9 @@ namespace omvviewerlight {
             Stetic.Gui.Initialize(this);
             // Widget omvviewerlight.Map
             Stetic.BinContainer.Attach(this);
-            this.WidthRequest = 375;
-            this.HeightRequest = 375;
             this.Name = "omvviewerlight.Map";
             // Container child omvviewerlight.Map.Gtk.Container+ContainerChild
             this.vbox1 = new Gtk.VBox();
-            this.vbox1.WidthRequest = 350;
             this.vbox1.Name = "vbox1";
             this.vbox1.Spacing = 6;
             // Container child vbox1.Gtk.Box+BoxChild
@@ -44,14 +41,10 @@ namespace omvviewerlight {
             w1.Fill = false;
             // Container child vbox1.Gtk.Box+BoxChild
             this.eventbox1 = new Gtk.EventBox();
-            this.eventbox1.WidthRequest = 350;
-            this.eventbox1.HeightRequest = 350;
             this.eventbox1.Name = "eventbox1";
             this.eventbox1.BorderWidth = ((uint)(1));
             // Container child eventbox1.Gtk.Container+ContainerChild
             this.image = new Gtk.Image();
-            this.image.WidthRequest = 350;
-            this.image.HeightRequest = 350;
             this.image.Events = ((Gdk.EventMask)(256));
             this.image.ExtensionEvents = ((Gdk.ExtensionMode)(1));
             this.image.Name = "image";
@@ -59,8 +52,6 @@ namespace omvviewerlight {
             this.vbox1.Add(this.eventbox1);
             Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.vbox1[this.eventbox1]));
             w3.Position = 1;
-            w3.Expand = false;
-            w3.Fill = false;
             this.Add(this.vbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();

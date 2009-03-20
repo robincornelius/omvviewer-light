@@ -39,6 +39,7 @@ namespace omvviewerlight
 	{
 		bool running=true;
 	    Gtk.Image basemap;
+		Gtk.Image scalemap;
 		GridRegion current_region;
 		GridRegion agent_region;
 
@@ -59,10 +60,18 @@ namespace omvviewerlight
 	    Gtk.Image terrian_map;
 	    Gtk.Image objects_map;
 	    Gtk.Image forsale_map;
+		int width,height;
+		int lastwidth,lastheight;
 		
 		public Map()
 		{           
 			this.Build();
+			lastwidth=-1;
+			lastheight=-1;
+			this.image.SizeAllocated += delegate(object o, SizeAllocatedArgs args) {
+				height=args.Allocation.Height;	
+				width=args.Allocation.Width;
+			};
 			
 			this.terrain_map_ID=UUID.Zero;
 			this.objects_map_ID=UUID.Zero;
@@ -117,7 +126,8 @@ namespace omvviewerlight
 			
 	            if (MainClass.client.Network.CurrentSim != null)
 	                drawavs();
-              
+         	
+			
             return true;
 
         }
@@ -135,6 +145,8 @@ namespace omvviewerlight
 			{
 				  Gtk.Application.Invoke(delegate
             {
+				lastheight=-1;
+				lastwidth=-1;
                 drawavs();
             });
 				
@@ -156,7 +168,7 @@ namespace omvviewerlight
 				objects_map = new Gtk.Image(pb);
 
 				this.image.Pixbuf=pb;
-                new TryGetImage(this.objects_map, region.MapImageID, 350, 350, false);
+                new TryGetImage(this.objects_map, region.MapImageID, width, height, false);
 			}
 		}
 
@@ -209,14 +221,21 @@ namespace omvviewerlight
 			
 		void drawavs()
 		{
-		  basemap=this.objects_map;
+				
+		  if(objects_map!=null && objects_map.Pixbuf !=null && (lastheight!=height || lastwidth!=width))
+		  {
+		        this.scalemap=new Gtk.Image(); 
+			    this.scalemap.Pixbuf=this.objects_map.Pixbuf.ScaleSimple(height,width,InterpType.Bilinear);
+				lastheight=height;
+			    lastwidth=width;
+		  }	
 			
-          if (basemap == null)
-              return;
-
-          if (basemap.Pixbuf == null)
+				if(this.scalemap==null || this.scalemap.Pixbuf==null)
 			return;
-          
+		  			
+		    basemap=this.scalemap;
+
+                              
 			Gdk.Pixbuf buf;
 			Simulator draw_sim=null;
 			
@@ -414,11 +433,30 @@ namespace omvviewerlight
 		protected virtual void OnEventbox1ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
 			
+			
 		    if(this.image==null || this.image.Pixbuf==null)
-                return;
+				return;
+			
+			// The event box and map are likely to be different sizes.
+			
+			int marginX=width-image.Pixbuf.Width;
+			int marginY=height-image.Pixbuf.Height;
+			
+			marginX /=2;
+			marginY /=2;
+			
 			Vector3 pos;
-			pos.X=(float)(256.0*(args.Event.X/this.image.Pixbuf.Width));
-			pos.Y=(float)(256.0*(args.Event.Y/this.image.Pixbuf.Height));
+			if(args.Event.X>marginX && args.Event.X<(width-marginX) && args.Event.Y>marginY && args.Event.Y<(height-marginY)) 
+			{
+				Console.WriteLine("In the box");	
+				pos.X=(float)(256.0*((args.Event.X-marginX)/this.image.Pixbuf.Width));
+				pos.Y=(float)(256.0*((args.Event.Y-marginY)/this.image.Pixbuf.Height));
+		}
+				else{
+			Console.Write("Not in box");	
+			return;
+            }
+			
 			pos.Z=0;
 
 			pos.Y=255-pos.Y;

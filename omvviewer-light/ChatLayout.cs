@@ -27,6 +27,8 @@ using Gtk;
 
 namespace omvviewerlight
 {
+	[System.ComponentModel.Category("omvviewer-light")]
+	[System.ComponentModel.ToolboxItem(true)]
 	public partial class ChatLayout : Gtk.Bin
 	{		
 		public ChatLayout()

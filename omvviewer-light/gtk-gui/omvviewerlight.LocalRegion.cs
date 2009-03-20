@@ -79,10 +79,8 @@ namespace omvviewerlight {
             this.eventbox1.Name = "eventbox1";
             // Container child eventbox1.Gtk.Container+ContainerChild
             this.image1 = new Gtk.Image();
-            this.image1.WidthRequest = 150;
-            this.image1.HeightRequest = 150;
             this.image1.Name = "image1";
-            this.image1.Pixbuf = MainClass.GetResource("water.png");
+            this.image1.Pixbuf = Gdk.Pixbuf.LoadFromResource("water.png");
             this.eventbox1.Add(this.image1);
             this.hbox4.Add(this.eventbox1);
             Gtk.Box.BoxChild w2 = ((Gtk.Box.BoxChild)(this.hbox4[this.eventbox1]));
@@ -94,10 +92,8 @@ namespace omvviewerlight {
             this.eventbox2.Name = "eventbox2";
             // Container child eventbox2.Gtk.Container+ContainerChild
             this.image2 = new Gtk.Image();
-            this.image2.WidthRequest = 150;
-            this.image2.HeightRequest = 150;
             this.image2.Name = "image2";
-            this.image2.Pixbuf = MainClass.GetResource("water.png");
+            this.image2.Pixbuf = Gdk.Pixbuf.LoadFromResource("water.png");
             this.eventbox2.Add(this.image2);
             this.hbox4.Add(this.eventbox2);
             Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox4[this.eventbox2]));
@@ -109,10 +105,8 @@ namespace omvviewerlight {
             this.eventbox3.Name = "eventbox3";
             // Container child eventbox3.Gtk.Container+ContainerChild
             this.image3 = new Gtk.Image();
-            this.image3.WidthRequest = 150;
-            this.image3.HeightRequest = 150;
             this.image3.Name = "image3";
-            this.image3.Pixbuf = MainClass.GetResource("water.png");
+            this.image3.Pixbuf = Gdk.Pixbuf.LoadFromResource("water.png");
             this.eventbox3.Add(this.image3);
             this.hbox4.Add(this.eventbox3);
             Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox4[this.eventbox3]));
@@ -132,10 +126,8 @@ namespace omvviewerlight {
             this.eventbox4.Name = "eventbox4";
             // Container child eventbox4.Gtk.Container+ContainerChild
             this.image4 = new Gtk.Image();
-            this.image4.WidthRequest = 150;
-            this.image4.HeightRequest = 150;
             this.image4.Name = "image4";
-            this.image4.Pixbuf = MainClass.GetResource("water.png");
+            this.image4.Pixbuf = Gdk.Pixbuf.LoadFromResource("water.png");
             this.eventbox4.Add(this.image4);
             this.hbox5.Add(this.eventbox4);
             Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.hbox5[this.eventbox4]));
@@ -147,10 +139,8 @@ namespace omvviewerlight {
             this.eventbox5.Name = "eventbox5";
             // Container child eventbox5.Gtk.Container+ContainerChild
             this.image5 = new Gtk.Image();
-            this.image5.WidthRequest = 150;
-            this.image5.HeightRequest = 150;
             this.image5.Name = "image5";
-            this.image5.Pixbuf = MainClass.GetResource("water.png");
+            this.image5.Pixbuf = Gdk.Pixbuf.LoadFromResource("water.png");
             this.eventbox5.Add(this.image5);
             this.hbox5.Add(this.eventbox5);
             Gtk.Box.BoxChild w11 = ((Gtk.Box.BoxChild)(this.hbox5[this.eventbox5]));
@@ -162,10 +152,8 @@ namespace omvviewerlight {
             this.eventbox6.Name = "eventbox6";
             // Container child eventbox6.Gtk.Container+ContainerChild
             this.image6 = new Gtk.Image();
-            this.image6.WidthRequest = 150;
-            this.image6.HeightRequest = 150;
             this.image6.Name = "image6";
-            this.image6.Pixbuf = MainClass.GetResource("water.png");
+            this.image6.Pixbuf = Gdk.Pixbuf.LoadFromResource("water.png");
             this.eventbox6.Add(this.image6);
             this.hbox5.Add(this.eventbox6);
             Gtk.Box.BoxChild w13 = ((Gtk.Box.BoxChild)(this.hbox5[this.eventbox6]));
@@ -185,10 +173,8 @@ namespace omvviewerlight {
             this.eventbox7.Name = "eventbox7";
             // Container child eventbox7.Gtk.Container+ContainerChild
             this.image7 = new Gtk.Image();
-            this.image7.WidthRequest = 150;
-            this.image7.HeightRequest = 150;
             this.image7.Name = "image7";
-            this.image7.Pixbuf = MainClass.GetResource("water.png");
+            this.image7.Pixbuf = Gdk.Pixbuf.LoadFromResource("water.png");
             this.eventbox7.Add(this.image7);
             this.hbox6.Add(this.eventbox7);
             Gtk.Box.BoxChild w16 = ((Gtk.Box.BoxChild)(this.hbox6[this.eventbox7]));
@@ -200,10 +186,8 @@ namespace omvviewerlight {
             this.eventbox8.Name = "eventbox8";
             // Container child eventbox8.Gtk.Container+ContainerChild
             this.image8 = new Gtk.Image();
-            this.image8.WidthRequest = 150;
-            this.image8.HeightRequest = 150;
             this.image8.Name = "image8";
-            this.image8.Pixbuf = MainClass.GetResource("water.png");
+            this.image8.Pixbuf = Gdk.Pixbuf.LoadFromResource("water.png");
             this.eventbox8.Add(this.image8);
             this.hbox6.Add(this.eventbox8);
             Gtk.Box.BoxChild w18 = ((Gtk.Box.BoxChild)(this.hbox6[this.eventbox8]));
@@ -215,10 +199,8 @@ namespace omvviewerlight {
             this.eventbox9.Name = "eventbox9";
             // Container child eventbox9.Gtk.Container+ContainerChild
             this.image9 = new Gtk.Image();
-            this.image9.WidthRequest = 150;
-            this.image9.HeightRequest = 150;
             this.image9.Name = "image9";
-            this.image9.Pixbuf = MainClass.GetResource("water.png");
+            this.image9.Pixbuf = Gdk.Pixbuf.LoadFromResource("water.png");
             this.eventbox9.Add(this.image9);
             this.hbox6.Add(this.eventbox9);
             Gtk.Box.BoxChild w20 = ((Gtk.Box.BoxChild)(this.hbox6[this.eventbox9]));
