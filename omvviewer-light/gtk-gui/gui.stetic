@@ -6654,29 +6654,21 @@ permissions</property>
                         <property name="MemberName" />
                         <signal name="ButtonPressEvent" handler="OnEventbox1ButtonPressEvent" />
                         <child>
-                          <widget class="Gtk.Image" id="image9">
+                          <widget class="omvviewerlight.ScaleImage" id="parcelmap">
                             <property name="MemberName" />
-                            <property name="WidthRequest">256</property>
-                            <property name="HeightRequest">256</property>
+                            <property name="Events">ButtonPressMask</property>
                           </widget>
                         </child>
                       </widget>
                       <packing>
                         <property name="Position">1</property>
-                        <property name="AutoSize">True</property>
-                        <property name="Expand">False</property>
-                        <property name="Fill">False</property>
+                        <property name="AutoSize">False</property>
                       </packing>
-                    </child>
-                    <child>
-                      <placeholder />
                     </child>
                   </widget>
                   <packing>
                     <property name="Position">2</property>
-                    <property name="AutoSize">True</property>
-                    <property name="Expand">False</property>
-                    <property name="Fill">False</property>
+                    <property name="AutoSize">False</property>
                   </packing>
                 </child>
                 <child>
@@ -6696,7 +6688,7 @@ permissions</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="Gtk.EventBox" id="eventbox2">
+                      <widget class="Gtk.EventBox" id="eventbox3">
                         <property name="MemberName" />
                         <signal name="ButtonPressEvent" handler="OnEventbox2ButtonPressEvent" />
                         <child>
@@ -6708,20 +6700,13 @@ permissions</property>
                       </widget>
                       <packing>
                         <property name="Position">1</property>
-                        <property name="AutoSize">True</property>
-                        <property name="Expand">False</property>
-                        <property name="Fill">False</property>
+                        <property name="AutoSize">False</property>
                       </packing>
-                    </child>
-                    <child>
-                      <placeholder />
                     </child>
                   </widget>
                   <packing>
                     <property name="Position">3</property>
-                    <property name="AutoSize">True</property>
-                    <property name="Expand">False</property>
-                    <property name="Fill">False</property>
+                    <property name="AutoSize">False</property>
                   </packing>
                 </child>
               </widget>
@@ -7282,6 +7267,8 @@ permissions</property>
           <packing>
             <property name="Position">1</property>
             <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
           </packing>
         </child>
       </widget>

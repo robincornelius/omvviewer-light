@@ -138,6 +138,7 @@
                 <include name="Preferences.cs" />
                 <include name="ProfileVIew.cs" />
                 <include name="Radar.cs" />
+                <include name="ScaleImage.cs" />
                 <include name="ScriptDialogue.cs" />
                 <include name="Search.cs" />
                 <include name="Searchs.cs" />
@@ -179,6 +180,7 @@
                 <include name="gtk-gui/omvviewerlight.Preferences.cs" />
                 <include name="gtk-gui/omvviewerlight.ProfileVIew.cs" />
                 <include name="gtk-gui/omvviewerlight.Radar.cs" />
+                <include name="gtk-gui/omvviewerlight.ScaleImage.cs" />
                 <include name="gtk-gui/omvviewerlight.ScriptDialogue.cs" />
                 <include name="gtk-gui/omvviewerlight.Search.cs" />
                 <include name="gtk-gui/omvviewerlight.Searches.cs" />

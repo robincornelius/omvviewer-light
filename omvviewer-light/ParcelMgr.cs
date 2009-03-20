@@ -131,8 +131,9 @@ namespace omvviewerlight
                     nextcol = 0;
                    
                     this.parcel_map = MainClass.GetResource("trying.png");
-                    this.image9.Pixbuf = this.parcel_map;
-
+                    //this.image9.Pixbuf = this.parcel_map;
+					this.parcelmap.baseimage.Pixbuf=this.parcel_map;
+					
                     populate_tree();
                     updateparcelmap(MainClass.client.Network.CurrentSim.ParcelMap);
 
@@ -289,7 +290,8 @@ namespace omvviewerlight
 
          Gtk.Application.Invoke(delegate
          {
-             this.image9.QueueDraw();
+             //this.image9.QueueDraw();
+			 this.parcelmap.QueueDraw();
          });
      }
 
@@ -316,7 +318,10 @@ namespace omvviewerlight
 			Gtk.Application.Invoke(delegate
             {
 				this.parcel_map = MainClass.GetResource("trying.png");
-				this.image9.Pixbuf=this.parcel_map;
+				//this.image9.Pixbuf=this.parcel_map;
+				this.parcelmap.baseimage.Pixbuf=this.parcel_map;
+				this.parcelmap.setimage();
+				
 			});
 
 			Console.WriteLine("Requesting parcel info for sim:"+MainClass.client.Network.CurrentSim.Name);

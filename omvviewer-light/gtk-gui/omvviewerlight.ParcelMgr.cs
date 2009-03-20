@@ -55,13 +55,13 @@ namespace omvviewerlight {
         
         private Gtk.EventBox eventbox1;
         
-        private Gtk.Image image9;
+        private omvviewerlight.ScaleImage parcelmap;
         
         private Gtk.VBox vbox11;
         
         private Gtk.Label label13;
         
-        private Gtk.EventBox eventbox2;
+        private Gtk.EventBox eventbox3;
         
         private omvviewerlight.ScaleImage parcelsnapshot;
         
@@ -324,21 +324,16 @@ namespace omvviewerlight {
             this.eventbox1 = new Gtk.EventBox();
             this.eventbox1.Name = "eventbox1";
             // Container child eventbox1.Gtk.Container+ContainerChild
-            this.image9 = new Gtk.Image();
-            this.image9.WidthRequest = 256;
-            this.image9.HeightRequest = 256;
-            this.image9.Name = "image9";
-            this.eventbox1.Add(this.image9);
+            this.parcelmap = new omvviewerlight.ScaleImage();
+            this.parcelmap.Events = ((Gdk.EventMask)(256));
+            this.parcelmap.Name = "parcelmap";
+            this.eventbox1.Add(this.parcelmap);
             this.vbox10.Add(this.eventbox1);
             Gtk.Box.BoxChild w18 = ((Gtk.Box.BoxChild)(this.vbox10[this.eventbox1]));
             w18.Position = 1;
-            w18.Expand = false;
-            w18.Fill = false;
             this.hbox2.Add(this.vbox10);
             Gtk.Box.BoxChild w19 = ((Gtk.Box.BoxChild)(this.hbox2[this.vbox10]));
             w19.Position = 2;
-            w19.Expand = false;
-            w19.Fill = false;
             // Container child hbox2.Gtk.Box+BoxChild
             this.vbox11 = new Gtk.VBox();
             this.vbox11.Name = "vbox11";
@@ -353,23 +348,19 @@ namespace omvviewerlight {
             w20.Expand = false;
             w20.Fill = false;
             // Container child vbox11.Gtk.Box+BoxChild
-            this.eventbox2 = new Gtk.EventBox();
-            this.eventbox2.Name = "eventbox2";
-            // Container child eventbox2.Gtk.Container+ContainerChild
+            this.eventbox3 = new Gtk.EventBox();
+            this.eventbox3.Name = "eventbox3";
+            // Container child eventbox3.Gtk.Container+ContainerChild
             this.parcelsnapshot = new omvviewerlight.ScaleImage();
             this.parcelsnapshot.Events = ((Gdk.EventMask)(256));
             this.parcelsnapshot.Name = "parcelsnapshot";
-            this.eventbox2.Add(this.parcelsnapshot);
-            this.vbox11.Add(this.eventbox2);
-            Gtk.Box.BoxChild w22 = ((Gtk.Box.BoxChild)(this.vbox11[this.eventbox2]));
+            this.eventbox3.Add(this.parcelsnapshot);
+            this.vbox11.Add(this.eventbox3);
+            Gtk.Box.BoxChild w22 = ((Gtk.Box.BoxChild)(this.vbox11[this.eventbox3]));
             w22.Position = 1;
-            w22.Expand = false;
-            w22.Fill = false;
             this.hbox2.Add(this.vbox11);
             Gtk.Box.BoxChild w23 = ((Gtk.Box.BoxChild)(this.hbox2[this.vbox11]));
             w23.Position = 3;
-            w23.Expand = false;
-            w23.Fill = false;
             this.notebook1.Add(this.hbox2);
             // Notebook tab
             this.label1 = new Gtk.Label();
@@ -788,6 +779,8 @@ namespace omvviewerlight {
             this.vbox1.Add(this.notebook1);
             Gtk.Box.BoxChild w65 = ((Gtk.Box.BoxChild)(this.vbox1[this.notebook1]));
             w65.Position = 1;
+            w65.Expand = false;
+            w65.Fill = false;
             this.Add(this.vbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
@@ -795,7 +788,7 @@ namespace omvviewerlight {
             this.Show();
             this.treeview_parcels.CursorChanged += new System.EventHandler(this.OnTreeviewParcelsCursorChanged);
             this.eventbox1.ButtonPressEvent += new Gtk.ButtonPressEventHandler(this.OnEventbox1ButtonPressEvent);
-            this.eventbox2.ButtonPressEvent += new Gtk.ButtonPressEventHandler(this.OnEventbox2ButtonPressEvent);
+            this.eventbox3.ButtonPressEvent += new Gtk.ButtonPressEventHandler(this.OnEventbox2ButtonPressEvent);
             this.button1.Activated += new System.EventHandler(this.OnButton1Activated);
             this.button1.Clicked += new System.EventHandler(this.OnButton1Clicked);
             this.button_return_selected.Clicked += new System.EventHandler(this.OnButtonReturnSelectedClicked);
