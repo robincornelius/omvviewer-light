@@ -181,7 +181,8 @@ namespace omvviewerlight
 		UUID target_id;
 		UUID notecard_item_id;
 		public UUID transfer_id;
-		EmbeddedData nd;	
+		EmbeddedData nd;
+		AssetType asset_type;
 		
 		Dictionary <int,EmbeddedInventory> embedded_inv= new Dictionary <int,EmbeddedInventory>();
 		Dictionary <Gtk.TextTag,EmbeddedInventory> iter_uuid_dict= new Dictionary <Gtk.TextTag,EmbeddedInventory>();
@@ -208,6 +209,12 @@ namespace omvviewerlight
                 // retrieve asset from store
                 Console.WriteLine("asset in store, requesting");            
 				InventoryItem ii = (InventoryItem)MainClass.client.Inventory.Store[item];
+				
+				if(ii is InventoryLSL)
+					asset_type=AssetType.LSLText;
+				if(ii is InventoryNotecard)
+					asset_type=AssetType.Notecard;
+				
 				target_asset=ii.AssetUUID;
 				target_id=ii.UUID;
 				Console.WriteLine("Asset id is "+ii.AssetUUID.ToString());
@@ -391,12 +398,20 @@ namespace omvviewerlight
 		protected virtual void OnButtonSaveClicked (object sender, System.EventArgs e)
 		{
 			button_save.Sensitive=false;
-			//MainClass.client.Inventory.RequestUploadNotecardAsset(Utils.StringToBytes(this.textview_notecard.Buffer.Text),this.target_id,OnNotecardUploaded);
-			OpenMetaverse.AssetNotecard nd = new OpenMetaverse.AssetNotecard(this.textview_notecard.Buffer.Text);
-			nd.Encode();	
-		//	MainClass.client.Inventory.RequestCreateItemFromAsset(nd.AssetData,"test","test",AssetType.Notecard,InventoryType.Notecard,UUID.Zero,null,OnNotecardUploaded);
-		
-			MainClass.client.Inventory.RequestUploadNotecardAsset(nd.AssetData,this.target_id,new InventoryManager.NotecardUploadedAssetCallback(OnNoteUpdated));
+
+			if(asset_type==AssetType.Notecard)
+			{
+				OpenMetaverse.AssetNotecard nd = new OpenMetaverse.AssetNotecard(this.textview_notecard.Buffer.Text);
+				nd.Encode();	
+				MainClass.client.Inventory.RequestUploadNotecardAsset(nd.AssetData,this.target_id,new InventoryManager.NotecardUploadedAssetCallback(OnNoteUpdated));
+			}
+			
+			if(asset_type==AssetType.LSLText)
+			{
+				OpenMetaverse.AssetScriptText nd = new OpenMetaverse.AssetScriptText(this.textview_notecard.Buffer.Text);
+				nd.Encode();	
+				MainClass.client.Inventory.RequestUploadNotecardAsset(nd.AssetData,this.target_id,new InventoryManager.NotecardUploadedAssetCallback(OnNoteUpdated));				
+			}
 			
 		}
 			
