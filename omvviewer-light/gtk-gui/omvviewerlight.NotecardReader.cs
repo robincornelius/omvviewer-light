@@ -21,11 +21,18 @@ namespace omvviewerlight {
         
         private Gtk.TextView textview_notecard;
         
+        private Gtk.HBox hbox1;
+        
+        private Gtk.Button button_save;
+        
+        private Gtk.Button button_compile;
+        
         protected virtual void Build() {
             Stetic.Gui.Initialize(this);
             // Widget omvviewerlight.NotecardReader
             this.Name = "omvviewerlight.NotecardReader";
-            this.Title = Mono.Unix.Catalog.GetString("NotecardReader");
+            this.Title = Mono.Unix.Catalog.GetString("Reader");
+            this.Icon = Stetic.IconLoader.LoadIcon(this, "gtk-edit", Gtk.IconSize.Menu, 16);
             this.WindowPosition = ((Gtk.WindowPosition)(4));
             // Container child omvviewerlight.NotecardReader.Gtk.Container+ContainerChild
             this.vbox1 = new Gtk.VBox();
@@ -55,13 +62,64 @@ namespace omvviewerlight {
             this.vbox1.Add(this.GtkScrolledWindow);
             Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.vbox1[this.GtkScrolledWindow]));
             w3.Position = 1;
+            // Container child vbox1.Gtk.Box+BoxChild
+            this.hbox1 = new Gtk.HBox();
+            this.hbox1.Name = "hbox1";
+            this.hbox1.Spacing = 6;
+            // Container child hbox1.Gtk.Box+BoxChild
+            this.button_save = new Gtk.Button();
+            this.button_save.Sensitive = false;
+            this.button_save.CanFocus = true;
+            this.button_save.Name = "button_save";
+            this.button_save.UseStock = true;
+            this.button_save.UseUnderline = true;
+            this.button_save.Label = "gtk-save";
+            this.hbox1.Add(this.button_save);
+            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox1[this.button_save]));
+            w4.Position = 0;
+            w4.Expand = false;
+            w4.Fill = false;
+            // Container child hbox1.Gtk.Box+BoxChild
+            this.button_compile = new Gtk.Button();
+            this.button_compile.Sensitive = false;
+            this.button_compile.CanFocus = true;
+            this.button_compile.Name = "button_compile";
+            this.button_compile.UseUnderline = true;
+            // Container child button_compile.Gtk.Container+ContainerChild
+            Gtk.Alignment w5 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            Gtk.HBox w6 = new Gtk.HBox();
+            w6.Spacing = 2;
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Image w7 = new Gtk.Image();
+            w7.Pixbuf = Stetic.IconLoader.LoadIcon(this, "gtk-execute", Gtk.IconSize.Menu, 16);
+            w6.Add(w7);
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Label w9 = new Gtk.Label();
+            w9.LabelProp = Mono.Unix.Catalog.GetString("Compile");
+            w9.UseUnderline = true;
+            w6.Add(w9);
+            w5.Add(w6);
+            this.button_compile.Add(w5);
+            this.hbox1.Add(this.button_compile);
+            Gtk.Box.BoxChild w13 = ((Gtk.Box.BoxChild)(this.hbox1[this.button_compile]));
+            w13.Position = 1;
+            w13.Expand = false;
+            w13.Fill = false;
+            this.vbox1.Add(this.hbox1);
+            Gtk.Box.BoxChild w14 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
+            w14.Position = 2;
+            w14.Expand = false;
+            w14.Fill = false;
             this.Add(this.vbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
             }
             this.DefaultWidth = 400;
             this.DefaultHeight = 300;
+            this.button_compile.Hide();
             this.Show();
+            this.button_save.Clicked += new System.EventHandler(this.OnButtonSaveClicked);
         }
     }
 }

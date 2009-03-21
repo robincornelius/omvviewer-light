@@ -8569,7 +8569,8 @@ time</property>
   </widget>
   <widget class="Gtk.Window" id="omvviewerlight.NotecardReader" design-size="400 300">
     <property name="MemberName" />
-    <property name="Title" translatable="yes">NotecardReader</property>
+    <property name="Title" translatable="yes">Reader</property>
+    <property name="Icon">stock:gtk-edit Menu</property>
     <property name="WindowPosition">CenterOnParent</property>
     <child>
       <widget class="Gtk.VBox" id="vbox1">
@@ -8609,7 +8610,55 @@ time</property>
           </packing>
         </child>
         <child>
-          <placeholder />
+          <widget class="Gtk.HBox" id="hbox1">
+            <property name="MemberName" />
+            <property name="Spacing">6</property>
+            <child>
+              <widget class="Gtk.Button" id="button_save">
+                <property name="MemberName" />
+                <property name="Sensitive">False</property>
+                <property name="CanFocus">True</property>
+                <property name="UseStock">True</property>
+                <property name="Type">StockItem</property>
+                <property name="StockId">gtk-save</property>
+                <signal name="Clicked" handler="OnButtonSaveClicked" />
+                <property name="label">gtk-save</property>
+              </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Button" id="button_compile">
+                <property name="MemberName" />
+                <property name="Visible">False</property>
+                <property name="Sensitive">False</property>
+                <property name="CanFocus">True</property>
+                <property name="Type">TextAndIcon</property>
+                <property name="Icon">stock:gtk-execute Menu</property>
+                <property name="Label" translatable="yes">Compile</property>
+                <property name="UseUnderline">True</property>
+              </widget>
+              <packing>
+                <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder />
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">2</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
         </child>
       </widget>
     </child>

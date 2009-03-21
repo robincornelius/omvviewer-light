@@ -206,7 +206,7 @@ namespace omvviewerlight
             {
                 // retrieve asset from store
                 Console.WriteLine("asset in store, requesting");            
-				InventoryItem ii = (InventoryItem)MainClass.client.Inventory.Store[item];			
+				InventoryItem ii = (InventoryItem)MainClass.client.Inventory.Store[item];
 				target_asset=ii.AssetUUID;
 				target_id=ii.UUID;
 				Console.WriteLine("Asset id is "+ii.AssetUUID.ToString());
@@ -216,7 +216,7 @@ namespace omvviewerlight
 					this.entry_title.Text=ii.Name;
 				});
 				
-				MainClass.client.Assets.RequestInventoryAsset(ii,true);				
+				MainClass.client.Assets.RequestInventoryAsset(ii,true);
 			}
 			else
 			{
@@ -254,7 +254,7 @@ namespace omvviewerlight
         {
 			Console.WriteLine("Asset retrieved id "+asset.AssetID.ToString());
 			Console.WriteLine("target_asset"+this.target_asset.ToString());
-			if(asset.AssetID!=target_asset)
+			if(asset.AssetID!=target_asset && target_asset!=UUID.Zero)
 				return;
 			MainClass.client.Assets.OnAssetReceived -= new OpenMetaverse.AssetManager.AssetReceivedCallback(onAsset);
 			shownote(asset);
@@ -271,8 +271,16 @@ namespace omvviewerlight
 						return;
 					}
 					
+				if(target_asset==UUID.Zero)
+				{
+					this.textview_notecard.Buffer.Text=Utils.BytesToString(asset.AssetData);
+					return;
+				}
+				
+				
 				string decode=decodenote(Utils.BytesToString(asset.AssetData));
 					
+				
 				this.textview_notecard.Buffer.Text=decode;
 
 				int link_pos=0;
@@ -377,6 +385,19 @@ namespace omvviewerlight
 			{
 				return note;
 			}
-		}			
+		}		
+		protected virtual void OnButtonSaveClicked (object sender, System.EventArgs e)
+		{
+			button_save.Sensitive=false;
+			MainClass.client.Inventory.RequestUploadNotecardAsset(Utils.StringToBytes(this.textview_notecard.Buffer.Text),this.target_id,OnNotecardUploaded);
+		}
+		
+		void OnNotecardUploaded(bool success,string msg,UUID id1, UUID id2)
+		{
+			Console.WriteLine("Notecard uploaded");
+			Console.WriteLine("BOOL = "+success.ToString()+" msg = "+msg+" id1 is "+id1.ToString()+" id2 is "+id2.ToString());
+			button_save.Sensitive=true;
+
+		}
 	}
 }

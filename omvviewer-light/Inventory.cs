@@ -649,6 +649,14 @@ namespace omvviewerlight
 							 menu.Append(menu_read_note);
 							
 						}
+				
+						if(item is InventoryLSL)
+						{
+				            Gtk.MenuItem menu_read_note = new MenuItem("Open script");
+							menu_read_note.ButtonPressEvent+= new ButtonPressEventHandler(onOpenScript);
+							menu.Append(menu_read_note);
+							
+						}
 
 						if(item is InventoryTexture || item is InventorySnapshot)
 						{
@@ -715,6 +723,28 @@ namespace omvviewerlight
 			
 		}
 		
+		void onOpenScript (object o, ButtonPressEventArgs args)
+		{
+         
+            Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+
+            TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
+
+            foreach (TreePath path in paths)
+            {
+                if (mod.GetIter(out iter, path))
+                {
+                    InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+
+					NotecardReader nr = new NotecardReader(item.UUID, UUID.Zero, UUID.Zero);
+                    
+                }
+            }
+			
+		}
+
+						
 		void onViewTexture (object o, ButtonPressEventArgs args)
 		{
             Gtk.TreeModel mod;
