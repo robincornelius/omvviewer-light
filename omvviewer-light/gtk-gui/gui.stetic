@@ -8601,6 +8601,8 @@ time</property>
                 <property name="ShowScrollbars">True</property>
                 <property name="Text" translatable="yes" />
                 <property name="WrapMode">Word</property>
+                <property name="LeftMargin">5</property>
+                <property name="RightMargin">5</property>
               </widget>
             </child>
           </widget>
@@ -8616,7 +8618,6 @@ time</property>
             <child>
               <widget class="Gtk.Button" id="button_save">
                 <property name="MemberName" />
-                <property name="Sensitive">False</property>
                 <property name="CanFocus">True</property>
                 <property name="UseStock">True</property>
                 <property name="Type">StockItem</property>

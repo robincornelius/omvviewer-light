@@ -58,6 +58,8 @@ namespace omvviewerlight {
             this.textview_notecard.CanFocus = true;
             this.textview_notecard.Name = "textview_notecard";
             this.textview_notecard.WrapMode = ((Gtk.WrapMode)(2));
+            this.textview_notecard.LeftMargin = 5;
+            this.textview_notecard.RightMargin = 5;
             this.GtkScrolledWindow.Add(this.textview_notecard);
             this.vbox1.Add(this.GtkScrolledWindow);
             Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.vbox1[this.GtkScrolledWindow]));
@@ -68,7 +70,6 @@ namespace omvviewerlight {
             this.hbox1.Spacing = 6;
             // Container child hbox1.Gtk.Box+BoxChild
             this.button_save = new Gtk.Button();
-            this.button_save.Sensitive = false;
             this.button_save.CanFocus = true;
             this.button_save.Name = "button_save";
             this.button_save.UseStock = true;
@@ -87,14 +88,14 @@ namespace omvviewerlight {
             this.button_compile.UseUnderline = true;
             // Container child button_compile.Gtk.Container+ContainerChild
             Gtk.Alignment w5 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
-            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            // Container child GtkAlignment1.Gtk.Container+ContainerChild
             Gtk.HBox w6 = new Gtk.HBox();
             w6.Spacing = 2;
-            // Container child GtkHBox.Gtk.Container+ContainerChild
+            // Container child GtkHBox1.Gtk.Container+ContainerChild
             Gtk.Image w7 = new Gtk.Image();
             w7.Pixbuf = Stetic.IconLoader.LoadIcon(this, "gtk-execute", Gtk.IconSize.Menu, 16);
             w6.Add(w7);
-            // Container child GtkHBox.Gtk.Container+ContainerChild
+            // Container child GtkHBox1.Gtk.Container+ContainerChild
             Gtk.Label w9 = new Gtk.Label();
             w9.LabelProp = Mono.Unix.Catalog.GetString("Compile");
             w9.UseUnderline = true;

@@ -160,6 +160,7 @@ namespace omvviewerlight
 		public UUID asset_id;
 		public UUID parent_id;
 		public UUID item_id;
+		
 		public int index;
 		public string name;
 		public AssetType assettype;
@@ -179,7 +180,7 @@ namespace omvviewerlight
 		UUID target_asset;
 		UUID target_id;
 		UUID notecard_item_id;
-
+		public UUID transfer_id;
 		EmbeddedData nd;	
 		
 		Dictionary <int,EmbeddedInventory> embedded_inv= new Dictionary <int,EmbeddedInventory>();
@@ -216,7 +217,8 @@ namespace omvviewerlight
 					this.entry_title.Text=ii.Name;
 				});
 				
-				MainClass.client.Assets.RequestInventoryAsset(ii,true);
+				transfer_id=MainClass.client.Assets.RequestInventoryAsset(ii,true);
+				Console.WriteLine("transfer Id is "+transfer_id);
 			}
 			else
 			{
@@ -254,7 +256,7 @@ namespace omvviewerlight
         {
 			Console.WriteLine("Asset retrieved id "+asset.AssetID.ToString());
 			Console.WriteLine("target_asset"+this.target_asset.ToString());
-			if(asset.AssetID!=target_asset && target_asset!=UUID.Zero)
+			if(transfer_id!=transfer.ID)
 				return;
 			MainClass.client.Assets.OnAssetReceived -= new OpenMetaverse.AssetManager.AssetReceivedCallback(onAsset);
 			shownote(asset);
@@ -389,13 +391,19 @@ namespace omvviewerlight
 		protected virtual void OnButtonSaveClicked (object sender, System.EventArgs e)
 		{
 			button_save.Sensitive=false;
-			MainClass.client.Inventory.RequestUploadNotecardAsset(Utils.StringToBytes(this.textview_notecard.Buffer.Text),this.target_id,OnNotecardUploaded);
-		}
+			//MainClass.client.Inventory.RequestUploadNotecardAsset(Utils.StringToBytes(this.textview_notecard.Buffer.Text),this.target_id,OnNotecardUploaded);
+			OpenMetaverse.AssetNotecard nd = new OpenMetaverse.AssetNotecard(this.textview_notecard.Buffer.Text);
+			nd.Encode();	
+		//	MainClass.client.Inventory.RequestCreateItemFromAsset(nd.AssetData,"test","test",AssetType.Notecard,InventoryType.Notecard,UUID.Zero,null,OnNotecardUploaded);
 		
-		void OnNotecardUploaded(bool success,string msg,UUID id1, UUID id2)
+			MainClass.client.Inventory.RequestUploadNotecardAsset(nd.AssetData,this.target_id,new InventoryManager.NotecardUploadedAssetCallback(OnNoteUpdated));
+			
+		}
+			
+		void OnNoteUpdated(bool success,string status,UUID item_uuid, UUID asset_uuid)
 		{
 			Console.WriteLine("Notecard uploaded");
-			Console.WriteLine("BOOL = "+success.ToString()+" msg = "+msg+" id1 is "+id1.ToString()+" id2 is "+id2.ToString());
+			Console.WriteLine("BOOL = "+success.ToString()+" status = "+status+" item ID is "+item_uuid.ToString()+" Asset UUID is "+asset_uuid.ToString());
 			button_save.Sensitive=true;
 
 		}
