@@ -29,6 +29,7 @@ using OpenMetaverse;
 namespace omvviewerlight
 {
 	
+
 	public partial class PayWindow : Gtk.Window
 	{
 		string resident;
