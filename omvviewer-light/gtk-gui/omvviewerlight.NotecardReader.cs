@@ -88,14 +88,14 @@ namespace omvviewerlight {
             this.button_compile.UseUnderline = true;
             // Container child button_compile.Gtk.Container+ContainerChild
             Gtk.Alignment w5 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
-            // Container child GtkAlignment1.Gtk.Container+ContainerChild
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
             Gtk.HBox w6 = new Gtk.HBox();
             w6.Spacing = 2;
-            // Container child GtkHBox1.Gtk.Container+ContainerChild
+            // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w7 = new Gtk.Image();
             w7.Pixbuf = Stetic.IconLoader.LoadIcon(this, "gtk-execute", Gtk.IconSize.Menu, 16);
             w6.Add(w7);
-            // Container child GtkHBox1.Gtk.Container+ContainerChild
+            // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w9 = new Gtk.Label();
             w9.LabelProp = Mono.Unix.Catalog.GetString("Compile");
             w9.UseUnderline = true;
