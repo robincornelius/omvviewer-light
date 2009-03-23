@@ -200,6 +200,7 @@ public partial class MainWindow: Gtk.Window
 		MainClass.client.Avatars.OnAvatarGroups += new OpenMetaverse.AvatarManager.AvatarGroupsCallback(onAvatarGroups);
 
         MainClass.client.Parcels.OnParcelDwell += new ParcelManager.ParcelDwellCallback(Parcels_OnParcelDwell);
+        MainClass.client.Inventory.OnObjectOffered +=new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
 		
 		//this.menubar1.get
 		
