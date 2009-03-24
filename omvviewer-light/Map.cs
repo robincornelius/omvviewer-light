@@ -57,9 +57,7 @@ namespace omvviewerlight
 		UUID terrain_map_ID;
 		UUID objects_map_ID;
 		UUID forsale_map_ID;
-	    Gtk.Image terrian_map;
 	    Gtk.Image objects_map;
-	    Gtk.Image forsale_map;
 		int width,height;
 		int lastwidth,lastheight;
 		
@@ -68,9 +66,24 @@ namespace omvviewerlight
 			this.Build();
 			lastwidth=-1;
 			lastheight=-1;
-			this.image.SizeAllocated += delegate(object o, SizeAllocatedArgs args) {
+			this.eventbox1.SizeAllocated += delegate(object o, SizeAllocatedArgs args) {
 				height=args.Allocation.Height;	
 				width=args.Allocation.Width;
+                Gtk.Application.Invoke(delegate
+                {
+                    if (MainClass.client.Network.CurrentSim != null)
+                    {
+                        if (objects_map != null && objects_map.Pixbuf != null && (lastheight != height || lastwidth != width))
+                        {
+                            this.scalemap = new Gtk.Image();
+                            int size=height<width?height:width;
+                            this.scalemap.Pixbuf = this.objects_map.Pixbuf.ScaleSimple(size, size, InterpType.Bilinear);
+                            lastheight = height;
+                            lastwidth = width;
+                            drawavs();
+                        }	
+                    }
+                });
 			};
 			
 			this.terrain_map_ID=UUID.Zero;
@@ -168,7 +181,21 @@ namespace omvviewerlight
 				objects_map = new Gtk.Image(pb);
 
 				this.image.Pixbuf=pb;
-                new TryGetImage(this.objects_map, region.MapImageID, width, height, false);
+                TryGetImage tgi=new TryGetImage(this.objects_map, region.MapImageID, width, height, true);
+                tgi.OnDecodeComplete += delegate
+                {
+                    Gtk.Application.Invoke(delegate
+                    {
+                        this.scalemap = new Gtk.Image();
+                        int size = height < width ? height : width;
+                        this.scalemap.Pixbuf = this.objects_map.Pixbuf.ScaleSimple(size, size, InterpType.Bilinear);
+                        drawavs();
+                    });
+                };
+
+
+             
+                tgi.go();
 			}
 		}
 
@@ -201,8 +228,6 @@ namespace omvviewerlight
 			 if(MainClass.client.Network.CurrentSim!=null) //OpenSim protection needed this
 	            Gtk.Application.Invoke(delegate
 					{
-
-				       
 						lock(MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
 	                        if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.ContainsKey(update.LocalID))
 	                            drawavs();
@@ -222,20 +247,11 @@ namespace omvviewerlight
 		void drawavs()
 		{
 				
-		  if(objects_map!=null && objects_map.Pixbuf !=null && (lastheight!=height || lastwidth!=width))
-		  {
-		        this.scalemap=new Gtk.Image(); 
-			    this.scalemap.Pixbuf=this.objects_map.Pixbuf.ScaleSimple(height,width,InterpType.Bilinear);
-				lastheight=height;
-			    lastwidth=width;
-		  }	
-			
-				if(this.scalemap==null || this.scalemap.Pixbuf==null)
-			return;
+		    if(this.scalemap==null || this.scalemap.Pixbuf==null)
+			    return;
 		  			
 		    basemap=this.scalemap;
-
-                              
+                  
 			Gdk.Pixbuf buf;
 			Simulator draw_sim=null;
 			
