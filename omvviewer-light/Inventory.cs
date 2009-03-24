@@ -160,7 +160,6 @@ namespace omvviewerlight
 		{
 			this.Build();		
 			
-
             treeview_inv.AppendColumn("",new CellRendererPixbuf(),"pixbuf",0);
             MyTreeViewColumn col = new MyTreeViewColumn("Name", new Gtk.CellRendererText(), "text", 1,true);
             col.setmodel(inventory);
@@ -187,8 +186,7 @@ namespace omvviewerlight
             MainClass.client.Inventory.OnFolderUpdated += new InventoryManager.FolderUpdatedCallback(Inventory_onFolderUpdated);
             //MainClass.client.Inventory.OnCacheDelete += new InventoryManager.CacheStaleCallback(Inventory_OnCacheDelete);
             MainClass.client.Inventory.OnItemReceived += new InventoryManager.ItemReceivedCallback(Inventory_OnItemReceived);
-
-			
+            MainWindow.OnInventoryAccepted += new MainWindow.InventoryAccepted(win_OnInventoryAccepted);
 			
 			this.label_aquired.Text="";
 			this.label_createdby.Text="";
@@ -209,6 +207,22 @@ namespace omvviewerlight
            
 
 		}
+
+        void win_OnInventoryAccepted(AssetType type, UUID objectID)
+        {
+            //We have new inventory given to us and we have accepted it update the view
+            UUID folder = MainClass.client.Inventory.FindFolderForType(type);
+            Gtk.TreeIter iter;
+
+            if(assetmap.TryGetValue(folder,out iter))
+            {
+                //request an update of that folder
+                TreePath path = inventory.GetPath(iter);
+                Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
+                invthreaddata x = new invthreaddata(folder, path.ToString(), iter, false);
+                invRunner.Start(x);
+            }
+        }
 
         void Inventory_OnItemReceived(InventoryItem item)
         {

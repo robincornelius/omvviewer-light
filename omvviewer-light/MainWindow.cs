@@ -39,6 +39,9 @@ public partial class MainWindow: Gtk.Window
     public delegate void Cleanuptime();
     public event Cleanuptime oncleanuptime;
 
+    public delegate void InventoryAccepted(AssetType type, UUID objectID);
+    public static event InventoryAccepted OnInventoryAccepted;
+
 	Search tab_search;
 	Location tab_location;
     Groups tab_groups;
@@ -200,12 +203,8 @@ public partial class MainWindow: Gtk.Window
 		MainClass.client.Avatars.OnAvatarGroups += new OpenMetaverse.AvatarManager.AvatarGroupsCallback(onAvatarGroups);
 
         MainClass.client.Parcels.OnParcelDwell += new ParcelManager.ParcelDwellCallback(Parcels_OnParcelDwell);
-<<<<<<< HEAD:omvviewer-light/MainWindow.cs
         MainClass.client.Inventory.OnObjectOffered +=new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
-		
-=======
-			
->>>>>>> 8939fc3351d79cae364e7dc7eb5451c36fa61d53:omvviewer-light/MainWindow.cs
+
 		//this.menubar1.get
 		
 		this.AvaiableAction.Activate();
@@ -1245,6 +1244,10 @@ public partial class MainWindow: Gtk.Window
 	
            if (object_offer_result == ResponseType.Yes)
 		   {
+               if(OnInventoryAccepted!=null)
+               {
+                  OnInventoryAccepted(type,objectID);
+               }
 				return true;
 		   }
 		   else
