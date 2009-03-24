@@ -38,7 +38,7 @@ namespace omvviewerlight {
             // Widget omvviewerlight.PayWindow
             this.Name = "omvviewerlight.PayWindow";
             this.Title = Mono.Unix.Catalog.GetString("Pay");
-            this.Icon = new Gdk.Pixbuf(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "./status_money.png"));
+            this.Icon = MainClass.GetResource("status_money.png");
             this.WindowPosition = ((Gtk.WindowPosition)(4));
             this.Modal = true;
             // Container child omvviewerlight.PayWindow.Gtk.Container+ContainerChild

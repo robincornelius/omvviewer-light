@@ -2489,7 +2489,7 @@ Shout</property>
   <widget class="Gtk.Window" id="omvviewerlight.PayWindow" design-size="400 155">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Pay</property>
-    <property name="Icon">file:./status_money.png</property>
+    <property name="Icon">resource:status_money.png</property>
     <property name="WindowPosition">CenterOnParent</property>
     <property name="Modal">True</property>
     <child>
