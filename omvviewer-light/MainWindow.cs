@@ -200,8 +200,12 @@ public partial class MainWindow: Gtk.Window
 		MainClass.client.Avatars.OnAvatarGroups += new OpenMetaverse.AvatarManager.AvatarGroupsCallback(onAvatarGroups);
 
         MainClass.client.Parcels.OnParcelDwell += new ParcelManager.ParcelDwellCallback(Parcels_OnParcelDwell);
+<<<<<<< HEAD:omvviewer-light/MainWindow.cs
         MainClass.client.Inventory.OnObjectOffered +=new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
 		
+=======
+			
+>>>>>>> 8939fc3351d79cae364e7dc7eb5451c36fa61d53:omvviewer-light/MainWindow.cs
 		//this.menubar1.get
 		
 		this.AvaiableAction.Activate();
@@ -229,6 +233,17 @@ public partial class MainWindow: Gtk.Window
 
 	}
 
+	void OnInventoryOffered(InstantMessage details,AssetType type,UUID id,bool fromtask)
+	{
+			Gtk.Application.Invoke(delegate {
+                MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.YesNo, false,details.FromAgentName + " has offered you\n"+details.Message+"\n Would you like to accept");
+                md.Response += delegate { md.Destroy(); };
+                md.ShowAll();
+			});
+
+			
+	}
+	
     void Parcels_OnParcelDwell(UUID parcelID, int localID, float dwell)
     {
         if (this.current_parcelid == localID)
@@ -862,16 +877,6 @@ public partial class MainWindow: Gtk.Window
 			return;
 		}
 		
-		if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryAccepted)
-		{
-			Gtk.Application.Invoke(delegate {
-                MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Ok, false,im.FromAgentName + " accepted your inventory offer");
-                md.Response += delegate { md.Destroy(); };
-                md.ShowAll();
-			});
-			return;
-		}
-
 		if(im.Dialog==OpenMetaverse.InstantMessageDialog.GroupNotice)
 		{
 			//Hmm need to handle this differently than a standard IM

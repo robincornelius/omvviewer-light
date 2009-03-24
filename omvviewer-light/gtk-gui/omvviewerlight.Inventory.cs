@@ -171,14 +171,14 @@ namespace omvviewerlight {
             this.button_collapse_all.UseUnderline = true;
             // Container child button_collapse_all.Gtk.Container+ContainerChild
             Gtk.Alignment w13 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
-            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            // Container child GtkAlignment1.Gtk.Container+ContainerChild
             Gtk.HBox w14 = new Gtk.HBox();
             w14.Spacing = 2;
-            // Container child GtkHBox.Gtk.Container+ContainerChild
+            // Container child GtkHBox1.Gtk.Container+ContainerChild
             Gtk.Image w15 = new Gtk.Image();
             w15.Pixbuf = Stetic.IconLoader.LoadIcon(this, "gtk-zoom-out", Gtk.IconSize.Menu, 16);
             w14.Add(w15);
-            // Container child GtkHBox.Gtk.Container+ContainerChild
+            // Container child GtkHBox1.Gtk.Container+ContainerChild
             Gtk.Label w17 = new Gtk.Label();
             w14.Add(w17);
             w13.Add(w14);

@@ -188,6 +188,8 @@ namespace omvviewerlight
             //MainClass.client.Inventory.OnCacheDelete += new InventoryManager.CacheStaleCallback(Inventory_OnCacheDelete);
             MainClass.client.Inventory.OnItemReceived += new InventoryManager.ItemReceivedCallback(Inventory_OnItemReceived);
 
+			
+			
 			this.label_aquired.Text="";
 			this.label_createdby.Text="";
 			this.label_name.Text="";
@@ -422,6 +424,11 @@ namespace omvviewerlight
                         {
                             md.Destroy();
                             MainClass.client.Inventory.RemoveItem(item.UUID);
+							Gtk.TreeIter item_iter;
+							if(assetmap.TryGetValue(item.UUID,out item_iter))
+							{
+								inventory.Remove(ref item_iter);
+							}
                             return;
                         }
                         md.Destroy();
@@ -639,6 +646,9 @@ namespace omvviewerlight
                             Gtk.MenuItem menu_wear_folder = new MenuItem("Wear folder contents");
                             Gtk.ImageMenuItem menu_give_folder = new ImageMenuItem("Give folder to user");
 							menu_give_folder.Image=new Gtk.Image(MainClass.GetResource("ff_edit_theirs.png"));
+							Gtk.MenuItem new_note = new Gtk.MenuItem("Create new notecard");
+							Gtk.MenuItem new_script = new Gtk.MenuItem("Create new script");
+							
                             Gtk.ImageMenuItem menu_delete_folder = new ImageMenuItem("Delete Folder");
 							menu_delete_folder.Image=new Gtk.Image(MainClass.GetResource("inv_folder_trash.png"));
 
@@ -646,11 +656,19 @@ namespace omvviewerlight
                             menu_give_folder.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
                             menu_wear_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_ware_ButtonPressEvent);
                             //menu_debork.ButtonPressEvent += new ButtonPressEventHandler(FixBorkedFolder);
+							new_note.ButtonPressEvent += new ButtonPressEventHandler(menu_on_new_note);
+							new_script.ButtonPressEvent += new ButtonPressEventHandler(menu_on_new_script);
 							
 							Gtk.Label x=new Gtk.Label("Folder Item");
 							
 							//menu.Append(menu_debork);
-							menu.Append(menu_wear_folder);
+						    menu.Append(menu_wear_folder);
+					
+							if(paths.Length==1)
+							{
+							    menu.Append(new_note);
+								menu.Append(new_script);
+							}
                             menu.Append(menu_give_folder);
                             menu.Append(menu_delete_folder);
                         }
@@ -734,7 +752,93 @@ namespace omvviewerlight
                 }
             }
 			
+	}
+		
+		void menu_on_new_note (object o, ButtonPressEventArgs args)
+		{
+         
+            Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+
+            TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
+			if(paths.Length!=1)
+				return;			
+
+            foreach (TreePath path in paths)
+            {
+                if (mod.GetIter(out iter, path))
+				{
+                	InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+					if(item is InventoryFolder)
+					{
+                    	MainClass.client.Inventory.RequestCreateItem(item.UUID,
+                    	"New Note", "New Note", AssetType.Notecard, UUID.Random(), InventoryType.Notecard, PermissionMask.All,
+                    	delegate(bool success, InventoryItem itemx)
+                    	{
+							if (success) // upload the asset
+							{
+								AssetNotecard note=new AssetNotecard();
+								note.Text="Add your notes here....";
+								note.Encode();
+								
+						        MainClass.client.Inventory.RequestUploadNotecardAsset(note.AssetData, itemx.UUID,delegate (bool success2,string status,UUID item_uuid, UUID asset_uuid)
+								{                                                  
+								    Gtk.TreeIter iterx;
+	  
+									if(success2 && assetmap.TryGetValue(item.UUID,out iterx))
+									{
+										Gdk.Pixbuf buf = getprettyicon(itemx);	
+									 	assetmap.Add(item_uuid,inventory.AppendValues(iterx, buf, "New Note", itemx.UUID, itemx)); 
+									}		
+							    });
+							}
+						});
+							
+ 		            }
+                }
+			}	
 		}
+		void menu_on_new_script (object o, ButtonPressEventArgs args)
+		{
+         
+            Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+
+            TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
+			if(paths.Length!=1)
+				return;			
+
+            foreach (TreePath path in paths)
+            {
+                if (mod.GetIter(out iter, path))
+				{
+                	InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+					if(item is InventoryFolder)
+					{
+                    	MainClass.client.Inventory.RequestCreateItem(item.UUID,
+                    	"New Script", "New Script", AssetType.LSLText, UUID.Random(), InventoryType.LSL, PermissionMask.All,
+                    	delegate(bool success, InventoryItem itemx)
+                    	{
+							if (success) // upload the asset
+							{
+						        MainClass.client.Inventory.RequestUploadNotecardAsset(Utils.StringToBytes("Add your code here..."), itemx.UUID,delegate (bool success2,string status,UUID item_uuid, UUID asset_uuid)
+								{                                                  
+								    Gtk.TreeIter iterx;
+	  
+									if(success2 && assetmap.TryGetValue(item.UUID,out iterx))
+									{
+										Gdk.Pixbuf buf = getprettyicon(itemx);	
+									 	assetmap.Add(item_uuid,inventory.AppendValues(iterx, buf, "New Script", itemx.UUID, itemx)); 
+									}		
+							    });
+							}
+						});
+							
+ 		            }
+                }
+            }	
+		}
+		
 		
 		void onOpenScript (object o, ButtonPressEventArgs args)
 		{
