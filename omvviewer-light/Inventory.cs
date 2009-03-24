@@ -418,6 +418,11 @@ namespace omvviewerlight
                         {
                             md.Destroy();
                             MainClass.client.Inventory.RemoveItem(item.UUID);
+							Gtk.TreeIter item_iter;
+							if(assetmap.TryGetValue(item.UUID,out item_iter))
+							{
+								inventory.Remove(ref item_iter);
+							}
                             return;
                         }
                         md.Destroy();
