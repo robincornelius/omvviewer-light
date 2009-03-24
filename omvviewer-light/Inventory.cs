@@ -184,8 +184,9 @@ namespace omvviewerlight
             MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             MainClass.client.Network.OnLogoutReply += new NetworkManager.LogoutCallback(Network_OnLogoutReply);
 			MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
-           // MainClass.client.Inventory.OnFolderUpdated += new InventoryManager.FolderUpdatedCallback(Inventory_onFolderUpdated);
+            MainClass.client.Inventory.OnFolderUpdated += new InventoryManager.FolderUpdatedCallback(Inventory_onFolderUpdated);
             //MainClass.client.Inventory.OnCacheDelete += new InventoryManager.CacheStaleCallback(Inventory_OnCacheDelete);
+            MainClass.client.Inventory.OnItemReceived += new InventoryManager.ItemReceivedCallback(Inventory_OnItemReceived);
 
 			this.label_aquired.Text="";
 			this.label_createdby.Text="";
@@ -206,6 +207,11 @@ namespace omvviewerlight
            
 
 		}
+
+        void Inventory_OnItemReceived(InventoryItem item)
+        {
+            Console.WriteLine("On item received: " + item.ToString());
+        }
 
         void Inventory_OnCacheDelete(List<UUID> delete_list)
         {
@@ -488,9 +494,16 @@ namespace omvviewerlight
             Console.Write("\nOn Task Inventory Reply\n");
         }
 
-        void Inventory_onFolderUpdated(UUID folderID,bool updated)
+        void Inventory_onFolderUpdated(UUID folderID)
         {
-            
+            Console.WriteLine("Folder updated " + folderID.ToString());
+            TreeIter iter;
+            if(assetmap.TryGetValue(folderID,out iter))
+            {
+                Console.WriteLine("We have this one in our treeview, need update");
+
+            }
+
         }
 
 		void FixBorkedFolder(object o, ButtonPressEventArgs args)
