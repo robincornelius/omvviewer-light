@@ -112,59 +112,45 @@ namespace omvviewerlight {
             this.button_pay = new Gtk.Button();
             this.button_pay.CanFocus = true;
             this.button_pay.Name = "button_pay";
+            this.button_pay.UseStock = true;
             this.button_pay.UseUnderline = true;
-            // Container child button_pay.Gtk.Container+ContainerChild
-            Gtk.Alignment w7 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
-            // Container child GtkAlignment.Gtk.Container+ContainerChild
-            Gtk.HBox w8 = new Gtk.HBox();
-            w8.Spacing = 2;
-            // Container child GtkHBox.Gtk.Container+ContainerChild
-            Gtk.Image w9 = new Gtk.Image();
-            w9.Pixbuf = MainClass.GetResource("status_money.png");
-            w8.Add(w9);
-            // Container child GtkHBox.Gtk.Container+ContainerChild
-            Gtk.Label w11 = new Gtk.Label();
-            w11.LabelProp = Mono.Unix.Catalog.GetString("Pay");
-            w11.UseUnderline = true;
-            w8.Add(w11);
-            w7.Add(w8);
-            this.button_pay.Add(w7);
+            this.button_pay.Label = "gtk-ok";
             this.hbox4.Add(this.button_pay);
-            Gtk.Box.BoxChild w15 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_pay]));
-            w15.Position = 0;
-            w15.Expand = false;
-            w15.Fill = false;
+            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_pay]));
+            w7.Position = 0;
+            w7.Expand = false;
+            w7.Fill = false;
             // Container child hbox4.Gtk.Box+BoxChild
             this.button_cancel = new Gtk.Button();
             this.button_cancel.CanFocus = true;
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.UseUnderline = true;
             // Container child button_cancel.Gtk.Container+ContainerChild
-            Gtk.Alignment w16 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            Gtk.Alignment w8 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
             // Container child GtkAlignment.Gtk.Container+ContainerChild
-            Gtk.HBox w17 = new Gtk.HBox();
-            w17.Spacing = 2;
+            Gtk.HBox w9 = new Gtk.HBox();
+            w9.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
-            Gtk.Image w18 = new Gtk.Image();
-            w18.Pixbuf = Stetic.IconLoader.LoadIcon(this, "gtk-cancel", Gtk.IconSize.Menu, 16);
-            w17.Add(w18);
+            Gtk.Image w10 = new Gtk.Image();
+            w10.Pixbuf = Stetic.IconLoader.LoadIcon(this, "gtk-cancel", Gtk.IconSize.Menu, 16);
+            w9.Add(w10);
             // Container child GtkHBox.Gtk.Container+ContainerChild
-            Gtk.Label w20 = new Gtk.Label();
-            w20.LabelProp = Mono.Unix.Catalog.GetString("Cancel");
-            w20.UseUnderline = true;
-            w17.Add(w20);
-            w16.Add(w17);
-            this.button_cancel.Add(w16);
+            Gtk.Label w12 = new Gtk.Label();
+            w12.LabelProp = Mono.Unix.Catalog.GetString("Cancel");
+            w12.UseUnderline = true;
+            w9.Add(w12);
+            w8.Add(w9);
+            this.button_cancel.Add(w8);
             this.hbox4.Add(this.button_cancel);
-            Gtk.Box.BoxChild w24 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_cancel]));
-            w24.Position = 1;
-            w24.Expand = false;
-            w24.Fill = false;
+            Gtk.Box.BoxChild w16 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_cancel]));
+            w16.Position = 1;
+            w16.Expand = false;
+            w16.Fill = false;
             this.vbox3.Add(this.hbox4);
-            Gtk.Box.BoxChild w25 = ((Gtk.Box.BoxChild)(this.vbox3[this.hbox4]));
-            w25.Position = 2;
-            w25.Expand = false;
-            w25.Fill = false;
+            Gtk.Box.BoxChild w17 = ((Gtk.Box.BoxChild)(this.vbox3[this.hbox4]));
+            w17.Position = 2;
+            w17.Expand = false;
+            w17.Fill = false;
             this.Add(this.vbox3);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
