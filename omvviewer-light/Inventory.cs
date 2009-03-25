@@ -1455,7 +1455,7 @@ namespace omvviewerlight
 				   System.Threading.AutoResetEvent ar=new System.Threading.AutoResetEvent(false);
 				
 				   Gtk.Application.Invoke(delegate{
-					    global_thread_tree = inventory.AppendValues(iter, buf, item.Name+ " (c)", item.UUID, item);
+					    global_thread_tree = inventory.AppendValues(iter, buf, item.Name, item.UUID, item);
                                                
                         if (!assetmap.ContainsKey(item.UUID))
                             assetmap.Add(item.UUID, global_thread_tree);
