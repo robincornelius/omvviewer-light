@@ -57,7 +57,9 @@ namespace omvviewerlight
 		public int no_items;
         Dictionary<invthreaddata, List<InventoryBase>> incomming = new Dictionary<invthreaddata, List<InventoryBase>>();  
 		Dictionary<UUID, Gtk.TreeIter> assetmap = new Dictionary<UUID, Gtk.TreeIter>();
-		String[] SearchFolders = { "" };
+        List<InventoryBase> cutcopylist = new List<InventoryBase>();
+        bool iscut = false;
+        String[] SearchFolders = { "" };
         UUID trash_folder=UUID.Zero;
 		//initialize our list to store the folder contents
 		Gtk.TreeStore inventory = new Gtk.TreeStore (typeof(Gdk.Pixbuf),typeof (string), typeof (UUID),typeof(InventoryBase));		
@@ -782,6 +784,16 @@ namespace omvviewerlight
                                 Gtk.ImageMenuItem new_folder = new ImageMenuItem("Create new folder");
                                 new_folder.Image = new Gtk.Image(MainClass.GetResource("inv_folder_plain_open.png"));
 
+                                Gtk.ImageMenuItem menu_cut_folder = new ImageMenuItem("Cut Folder");
+                                menu_cut_folder.Image = new Gtk.Image(Gtk.Stock.Cut, IconSize.Menu);
+                               
+                                Gtk.ImageMenuItem menu_copy_folder = new ImageMenuItem("Copy Folder");
+                                menu_copy_folder.Image = new Gtk.Image(Gtk.Stock.Copy, IconSize.Menu);
+
+                                Gtk.ImageMenuItem menu_paste_folder = new ImageMenuItem("Paste here..");
+                                menu_paste_folder.Image = new Gtk.Image(Gtk.Stock.Paste, IconSize.Menu);
+                              
+
                                 Gtk.ImageMenuItem menu_delete_folder = new ImageMenuItem("Delete Folder");
 							    menu_delete_folder.Image=new Gtk.Image(MainClass.GetResource("inv_folder_trash.png"));
 
@@ -792,7 +804,10 @@ namespace omvviewerlight
 							    new_note.ButtonPressEvent += new ButtonPressEventHandler(menu_on_new_note);
 							    new_script.ButtonPressEvent += new ButtonPressEventHandler(menu_on_new_script);
 							    new_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_on_new_folder);
-    							
+                                menu_cut_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_on_cut_folder);
+                                menu_copy_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_on_copy_folder);
+                                menu_paste_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_on_paste_folder);
+
 							    Gtk.Label x=new Gtk.Label("Folder Item");
     							
 							    //menu.Append(menu_debork);
@@ -807,6 +822,13 @@ namespace omvviewerlight
 							    }
                                 menu.Append(new Gtk.SeparatorMenuItem());
                                 menu.Append(menu_give_folder);
+
+                                menu.Append(new Gtk.SeparatorMenuItem());
+                                menu.Append(menu_cut_folder);
+                                //menu.Append(menu_copy_folder);
+                                if (cutcopylist.Count > 0)
+                                    menu.Append(menu_paste_folder);
+ 
                                 menu.Append(new Gtk.SeparatorMenuItem());
                                 menu.Append(menu_delete_folder);
                             }
@@ -865,12 +887,137 @@ namespace omvviewerlight
                             menu.Append(new Gtk.SeparatorMenuItem());
                             menu.Append(menu_give_item);
                             menu.Append(new Gtk.SeparatorMenuItem());
+                            
+                            Gtk.ImageMenuItem menu_cut_folder = new ImageMenuItem("Cut Item(s)");
+                            menu_cut_folder.Image = new Gtk.Image(Gtk.Stock.Cut, IconSize.Menu);
+                            Gtk.ImageMenuItem menu_copy_folder = new ImageMenuItem("Copy Item(s)");
+                            menu_copy_folder.Image = new Gtk.Image(Gtk.Stock.Copy, IconSize.Menu);
+                            menu_cut_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_on_cut_folder);
+                            menu_copy_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_on_copy_folder);
+                            menu.Append(menu_cut_folder);
+                           // menu.Append(menu_copy_folder);
+
+                            menu.Append(new Gtk.SeparatorMenuItem());
                             menu.Append(menu_delete_item);
                         }
 						
                         menu.Popup();
                         menu.ShowAll();
 						
+            }
+        }
+
+        void menu_on_cut_folder(object o, ButtonPressEventArgs args)
+        {
+
+            Gtk.TreeModel mod;
+            Gtk.TreeIter iter;
+
+            TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
+            iscut = true;
+            cutcopylist.Clear();
+
+            foreach (TreePath path in paths)
+            {
+                if (mod.GetIter(out iter, path))
+                {
+                    InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+                    cutcopylist.Add(item);
+                   
+                }
+            }
+
+        }
+
+        void menu_on_copy_folder(object o, ButtonPressEventArgs args)
+        {
+
+            Gtk.TreeModel mod;
+            Gtk.TreeIter iter;
+
+            TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
+            iscut = false;
+            cutcopylist.Clear();
+
+            foreach (TreePath path in paths)
+            {
+                if (mod.GetIter(out iter, path))
+                {
+                    InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+                    cutcopylist.Add(item);
+                }
+            }
+
+        }
+
+        void menu_on_paste_folder(object o, ButtonPressEventArgs args)
+        {
+
+            Gtk.TreeModel mod;
+            Gtk.TreeIter iter;
+
+            TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
+            Dictionary<UUID, UUID> folders = new Dictionary<UUID, UUID>();
+            Dictionary<UUID, UUID> items = new Dictionary<UUID, UUID>();
+
+            Dictionary<UUID, InventoryBase> inv_items = new Dictionary<UUID, InventoryBase>();
+
+
+            if (paths.Length == 1)
+            {
+                mod.GetIter(out iter, paths[0]);
+                InventoryBase dest_item = (InventoryBase)mod.GetValue(iter, 3);
+                Gtk.TreeIter dest_iter;
+                if(!assetmap.TryGetValue(dest_item.UUID,out dest_iter))
+                {
+                    Logger.Log("Error destination folder is not in view",Helpers.LogLevel.Error);
+                    return;
+                }
+
+                foreach (InventoryBase item in cutcopylist)
+                {
+                    if (item is InventoryItem)
+                    {
+                        items.Add(item.UUID, dest_item.UUID);
+                    }
+                    if (item is InventoryFolder)
+                    {
+                        folders.Add(item.UUID, dest_item.UUID);
+                    }
+                    inv_items.Add(item.UUID, item);
+                }
+
+                if(items.Count > 0)
+                    MainClass.client.Inventory.MoveItems(items);
+
+                if (folders.Count > 0)
+                    MainClass.client.Inventory.MoveFolders(folders);
+
+                foreach (KeyValuePair<UUID, UUID> kvp in items)
+                {
+                    Gtk.TreeIter iterx;
+                    iterx = assetmap[kvp.Key];
+                    inventory.Remove(ref iterx);
+                    if (assetmap.ContainsKey(kvp.Key))
+                        assetmap.Remove(kvp.Key);
+
+                    assetmap.Add(kvp.Key, inventory.AppendValues(dest_iter, getprettyicon(inv_items[kvp.Key]), inv_items[kvp.Key].Name, inv_items[kvp.Key].UUID, inv_items[kvp.Key]));
+                }
+
+                foreach (KeyValuePair<UUID, UUID> kvp in folders)
+                {
+                    Gtk.TreeIter iterx;
+                    iterx = assetmap[kvp.Key];
+                    inventory.Remove(ref iterx);
+                    if (assetmap.ContainsKey(kvp.Key))
+                        assetmap.Remove(kvp.Key);
+
+                    assetmap.Add(kvp.Key, inventory.AppendValues(dest_iter, getprettyicon(inv_items[kvp.Key]), inv_items[kvp.Key].Name, inv_items[kvp.Key].UUID, inv_items[kvp.Key]));
+                    // We need to make sure the view still knows about children of this folder as well or it will show it in trash with none
+                    inventory.AppendValues(assetmap[kvp.Key], item_object, "Waiting...", UUID.Zero, null);
+
+                }
+
             }
         }
 
