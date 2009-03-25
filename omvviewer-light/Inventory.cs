@@ -1202,24 +1202,29 @@ namespace omvviewerlight
 			TreePath path = inventory.GetPath(iter);
 			path.Down();
 	            
-			if(cache==false)
-			{
-				
-	            TreeIter childiter;
-	            inventory.GetIter(out childiter, path);
-	            if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
-	            {
-					inventory.Remove(ref childiter);
-	                alreadyseen=false;
-				}			
-			}
+			
             if(cache==true || alreadyseen==true)
                 myObjects = MainClass.client.Inventory.Store.GetContents(start);
             else 
  	            myObjects = MainClass.client.Inventory.FolderContents(start, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
 			
-			Console.WriteLine("Got objects # "+myObjects.Count.ToString());	
-          
+			Console.WriteLine("Got objects # "+myObjects.Count.ToString());
+
+
+            //We should preserve Waiting... messages for folders we don't yet have the children for
+            //or else the user can't open them as there is no + to click on. But we need to get rid
+            // of them for folders we have just got the data for!
+            if (cache == false || (cache==true && myObjects.Count>0 ))
+            {
+                TreeIter childiter;
+                inventory.GetIter(out childiter, path);
+                if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
+                {
+                    inventory.Remove(ref childiter);
+                    alreadyseen = false;
+                }
+            }
+
             if (myObjects == null || myObjects.Count==0)
             {
 				recursion--;
