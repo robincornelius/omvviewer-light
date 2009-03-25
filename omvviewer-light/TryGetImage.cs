@@ -160,15 +160,20 @@ namespace omvviewerlight
 
             Console.Write("Downloaded asset " + this_asset.AssetID.ToString() + "\n");
             byte[] tgaFile = null;
+            ManagedImage imgData=null;
+
             try
             {
-                ManagedImage imgData;
+               
                 OpenJPEG.DecodeToImage(this_image.AssetData, out imgData);
+                //imgData.ExportRaw();
+                //tgaFile = imgData.ExportTGA();
                 tgaFile = imgData.ExportTGA();
             }
             catch (Exception e)
             {
                 Console.Write("\n*****************\n" + e.Message + "\n");
+                return;
             }
            
 			Gdk.Pixbuf buf;
@@ -176,14 +181,14 @@ namespace omvviewerlight
 			try
 			{
 			if(this.scale)
-				buf = new Gdk.Pixbuf(tgaFile);
+				buf = new Gdk.Pixbuf(tgaFile,Colorspace.Rgb,false,8,imgData.Width,imgData.Height,imgData.Width*3,null);
 			else
-				buf = new Gdk.Pixbuf(tgaFile).ScaleSimple(img_width, img_height, Gdk.InterpType.Bilinear);;
+                buf = new Gdk.Pixbuf(tgaFile, Colorspace.Rgb, false, 8, imgData.Width, imgData.Height, imgData.Width * 3, null).ScaleSimple(img_width, img_height, Gdk.InterpType.Bilinear); ;
 			}
-			catch
+			catch(Exception e)
 			{
 				//Something terribly wrong with decoded data
-				Logger.Log("ERROR: Openjpeg returned an invalid decode",Helpers.LogLevel.Error);
+				Logger.Log("ERROR: Exception duing Openjpeg decode :"+e.Message,Helpers.LogLevel.Error);
 				return;
 			}
 			
