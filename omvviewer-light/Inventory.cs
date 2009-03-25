@@ -660,8 +660,10 @@ namespace omvviewerlight
                             Gtk.MenuItem menu_wear_folder = new MenuItem("Wear folder contents");
                             Gtk.ImageMenuItem menu_give_folder = new ImageMenuItem("Give folder to user");
 							menu_give_folder.Image=new Gtk.Image(MainClass.GetResource("ff_edit_theirs.png"));
+					
 							Gtk.MenuItem new_note = new Gtk.MenuItem("Create new notecard");
 							Gtk.MenuItem new_script = new Gtk.MenuItem("Create new script");
+							Gtk.MenuItem new_folder = new Gtk.MenuItem("Create new folder");
 							
                             Gtk.ImageMenuItem menu_delete_folder = new ImageMenuItem("Delete Folder");
 							menu_delete_folder.Image=new Gtk.Image(MainClass.GetResource("inv_folder_trash.png"));
@@ -672,6 +674,7 @@ namespace omvviewerlight
                             //menu_debork.ButtonPressEvent += new ButtonPressEventHandler(FixBorkedFolder);
 							new_note.ButtonPressEvent += new ButtonPressEventHandler(menu_on_new_note);
 							new_script.ButtonPressEvent += new ButtonPressEventHandler(menu_on_new_script);
+							new_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_on_new_folder);
 							
 							Gtk.Label x=new Gtk.Label("Folder Item");
 							
@@ -682,7 +685,8 @@ namespace omvviewerlight
 							{
 							    menu.Append(new_note);
 								menu.Append(new_script);
-							}
+								menu.Append(new_folder);
+														}
                             menu.Append(menu_give_folder);
                             menu.Append(menu_delete_folder);
                         }
@@ -768,6 +772,36 @@ namespace omvviewerlight
 			
 	}
 		
+		void menu_on_new_folder (object o, ButtonPressEventArgs args)
+		{
+         
+            Gtk.TreeModel mod;
+			Gtk.TreeIter iter;
+
+            TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
+			if(paths.Length!=1)
+				return;			
+
+            foreach (TreePath path in paths)
+            {
+                if (mod.GetIter(out iter, path))
+				{
+                	InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+					if(item is InventoryFolder)
+					{
+						Gtk.TreeIter iterx;
+						if(assetmap.TryGetValue(item.UUID,out iterx))
+						{
+							UUID newfolder=MainClass.client.Inventory.CreateFolder(item.UUID,"New Folder");		
+							Gdk.Pixbuf buf = getprettyicon(item);	//a folder so fine.
+							assetmap.Add(newfolder,inventory.AppendValues(iterx, buf, "New Folder", newfolder, item)); 
+                 		}
+ 		            }
+                }
+			}	
+	}
+		
+
 		void menu_on_new_note (object o, ButtonPressEventArgs args)
 		{
          
@@ -811,7 +845,8 @@ namespace omvviewerlight
  		            }
                 }
 			}	
-		}
+	}
+		
 		void menu_on_new_script (object o, ButtonPressEventArgs args)
 		{
          
