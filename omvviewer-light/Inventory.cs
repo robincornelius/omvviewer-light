@@ -57,7 +57,6 @@ namespace omvviewerlight
 		public int no_items;
         Dictionary<invthreaddata, List<InventoryBase>> incomming = new Dictionary<invthreaddata, List<InventoryBase>>();  
 		Dictionary<UUID, Gtk.TreeIter> assetmap = new Dictionary<UUID, Gtk.TreeIter>();
-        Dictionary<UUID, Gtk.TreeIter> invmap = new Dictionary<UUID, TreeIter>();
 		String[] SearchFolders = { "" };
 		//initialize our list to store the folder contents
 		Gtk.TreeStore inventory = new Gtk.TreeStore (typeof(Gdk.Pixbuf),typeof (string), typeof (UUID),typeof(InventoryBase));		
@@ -236,10 +235,10 @@ namespace omvviewerlight
             {
                 foreach (UUID item in delete_list)
                 {
-                    if (this.invmap.ContainsKey(item))
+                    if (this.assetmap.ContainsKey(item))
                     {
                         Console.WriteLine("Trying to remove item " + item.ToString());
-                        TreeIter iter = invmap[item];
+                        TreeIter iter = assetmap[item];
                         //this.inventory.Remove(ref iter);
                         //invmap.Remove(item);
                         //if(assetmap.ContainsKey(item))
@@ -1127,9 +1126,9 @@ namespace omvviewerlight
          
 			foreach (InventoryBase item in myObjects)
             {
-                if (invmap.ContainsKey(item.UUID))
+                if (assetmap.ContainsKey(item.UUID))
                 {
-                    TreeIter iterx = invmap[item.UUID];
+                    TreeIter iterx = assetmap[item.UUID];
                     InventoryBase itemx = (InventoryBase)inventory.GetValue(iterx,3);
                     if (itemx is InventoryFolder)
 					{
@@ -1146,9 +1145,7 @@ namespace omvviewerlight
 				
 				   Gtk.Application.Invoke(delegate{
 					    global_thread_tree = inventory.AppendValues(iter, buf, item.Name+ " (c)", item.UUID, item);
-					    if(!invmap.ContainsKey(item.UUID))
-                            invmap.Add(item.UUID,global_thread_tree);
-                        
+                                               
                         if (!assetmap.ContainsKey(item.UUID))
                             assetmap.Add(item.UUID, global_thread_tree);
                         ar.Set();
@@ -1253,8 +1250,7 @@ namespace omvviewerlight
 					this.no_items++;
                      label_fetched.Text="Fetched "+no_items.ToString()+" items";
                      Gtk.TreeIter iter2 = inventory.AppendValues(incommingIter, buf, item.Name + msg, item.UUID, item);
-                     if(!invmap.ContainsKey(item.UUID))
-                         invmap.Add(item.UUID, iter2);
+                    
                      if(!assetmap.ContainsKey(item.UUID))
 					   assetmap.Add(item.UUID, iter2);
 					else
