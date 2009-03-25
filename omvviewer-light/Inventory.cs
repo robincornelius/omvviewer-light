@@ -406,7 +406,7 @@ namespace omvviewerlight
                         
                         fetcherrunning = true;
                         Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
-                        invthreaddata itd = new invthreaddata(MainClass.client.Inventory.Store.RootFolder.UUID, "0:0", TLI,true);
+                        invthreaddata itd = new invthreaddata(MainClass.client.Inventory.Store.RootFolder.UUID, "0", TLI,true);
                         invRunner.Start(itd);
 		         }
 		}
@@ -538,11 +538,14 @@ namespace omvviewerlight
                 {
                     Gtk.TreeIter iterx;
                     iterx = assetmap[kvp.Key];
-                    inventory.MoveAfter(iterx, trash_iter);
+                    inventory.Remove(ref iterx);
                     if (assetmap.ContainsKey(kvp.Key))
                         assetmap.Remove(kvp.Key);
 
                     assetmap.Add(kvp.Key, inventory.AppendValues(trash_iter, getprettyicon(inv_items[kvp.Key]), inv_items[kvp.Key].Name, inv_items[kvp.Key].UUID, inv_items[kvp.Key])); 
+                    // We need to make sure the view still knows about children of this folder as well or it will show it in trash with none
+                    inventory.AppendValues(assetmap[kvp.Key],item_object,"Waiting...", UUID.Zero, null);
+   
                 }
             }  
 		}
@@ -769,11 +772,16 @@ namespace omvviewerlight
                                 Gtk.MenuItem menu_wear_folder = new MenuItem("Wear folder contents");
                                 Gtk.ImageMenuItem menu_give_folder = new ImageMenuItem("Give folder to user");
 							    menu_give_folder.Image=new Gtk.Image(MainClass.GetResource("ff_edit_theirs.png"));
-    					
-							    Gtk.MenuItem new_note = new Gtk.MenuItem("Create new notecard");
-							    Gtk.MenuItem new_script = new Gtk.MenuItem("Create new script");
-							    Gtk.MenuItem new_folder = new Gtk.MenuItem("Create new folder");
-                                
+
+                                Gtk.ImageMenuItem new_note = new ImageMenuItem("Create new notecard");
+                                new_note.Image = new Gtk.Image(MainClass.GetResource("inv_item_notecard.png"));
+
+                                Gtk.ImageMenuItem new_script = new ImageMenuItem("Create new script");
+                                new_script.Image = new Gtk.Image(MainClass.GetResource("inv_item_script.png"));
+
+                                Gtk.ImageMenuItem new_folder = new ImageMenuItem("Create new folder");
+                                new_folder.Image = new Gtk.Image(MainClass.GetResource("inv_folder_plain_open.png"));
+
                                 Gtk.ImageMenuItem menu_delete_folder = new ImageMenuItem("Delete Folder");
 							    menu_delete_folder.Image=new Gtk.Image(MainClass.GetResource("inv_folder_trash.png"));
 
@@ -908,7 +916,11 @@ namespace omvviewerlight
 						{
 							UUID newfolder=MainClass.client.Inventory.CreateFolder(item.UUID,"New Folder");		
 							Gdk.Pixbuf buf = getprettyicon(item);	//a folder so fine.
-							assetmap.Add(newfolder,inventory.AppendValues(iterx, buf, "New Folder", newfolder, item)); 
+                            InventoryFolder nf = new InventoryFolder(newfolder);
+                            nf.Name = "New Folder";
+                            nf.ParentUUID = item.UUID;
+                            nf.Version = 1;
+							assetmap.Add(newfolder,inventory.AppendValues(iterx, buf, "New Folder", newfolder, (InventoryBase)nf)); 
                  		}
  		            }
                 }
@@ -1335,7 +1347,14 @@ namespace omvviewerlight
 			Gtk.TreeIter childiter;
              
 		    path.Down();
-				
+
+            //And tidy that waiting
+            if (inventory.GetIter(out childiter, path))
+            {
+                if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
+                    inventory.Remove(ref childiter);
+            }
+
             if (myObjects == null)
                 return;
 
@@ -1376,12 +1395,16 @@ namespace omvviewerlight
 						inventory.AppendValues(iter2, item_object, "Waiting...", item.UUID, null);
                      }
                  }
+
+                 path.Up();
+
+                 this.treeview_inv.ExpandRow(path, false);
                 //And tidy that waiting
-               if (inventory.GetIter(out childiter, path))
-               {
-                  if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
-                  inventory.Remove(ref childiter);
-               }
+             //  if (inventory.GetIter(out childiter, path))
+             //  {
+             //     if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
+             //     inventory.Remove(ref childiter);
+             //  }
 
 			}
 			
