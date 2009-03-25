@@ -167,16 +167,18 @@ namespace omvviewerlight
             Gtk.CellRendererText item_name = new Gtk.CellRendererText();
             item_name.Editable = true;
             item_name.Edited += new EditedHandler(item_name_Edited);
-            MyTreeViewColumn col = new MyTreeViewColumn("Name", item_name, "text", 1,true);
+          
+            //treeview_inv.Model=inventory;
+
+			MyTreeViewColumn col = new MyTreeViewColumn("Name", item_name, "text", 1,true);
             col.setmodel(inventory);
 
             treeview_inv.InsertColumn(col, 1);
-            //treeview_inv.Model=inventory;
-
+			
             this.treeview_inv.RowExpanded += new Gtk.RowExpandedHandler(onRowExpanded);
 			this.treeview_inv.RowCollapsed += new Gtk.RowCollapsedHandler(onRowCollapsed);
             this.treeview_inv.ButtonPressEvent += new ButtonPressEventHandler(treeview_inv_ButtonPressEvent);
-
+			
 			this.treeview_inv.Selection.Mode = SelectionMode.Multiple;    
 
             filter = new Gtk.TreeModelFilter(inventory, null);
@@ -184,9 +186,13 @@ namespace omvviewerlight
             treeview_inv.Model = filter;
 			treeview_inv.HeadersClickable=true;
 			
-            this.inventory.SetSortFunc(1, sortinventoryfunc);
+			 
+			
+			
+            this.inventory.SetSortFunc(0, sortinventoryfunc);
+            this.inventory.SetSortColumnId(0, SortType.Ascending);
+			 this.inventory.SetSortFunc(1, sortinventoryfunc);
             this.inventory.SetSortColumnId(1, SortType.Ascending);
-
         
             MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             MainClass.client.Network.OnLogoutReply += new NetworkManager.LogoutCallback(Network_OnLogoutReply);
@@ -351,36 +357,77 @@ namespace omvviewerlight
                 SortType order;
                 int aa = 1;
                 int bb = -1;
-
-                inventory.GetSortColumnId(out colid, out order);
-                if (order == SortType.Ascending)
-                {
-                    aa = -1;
-                    bb = 1;
-                }
-
+				
+				int aaa=1;
+				int bbb=-1;
+				
+				
+               	inventory.GetSortColumnId(out colid, out order);
+         		if(order==SortType.Ascending)
+				{
+					aaa=-1;
+					bbb=1;
+				}
+					
                 // We probably want to sort my name or date, and may want to group special folders first
                 InventoryBase itema = (InventoryBase)model.GetValue(a, 3);
                 InventoryBase itemb = (InventoryBase)model.GetValue(b, 3);
 
                 if (itema == null || itemb == null)
                     return 0;
-
-                if (this.check_special_folders.Active)
-                {
+				
                     if (itema is InventoryFolder && itemb is InventoryFolder)
                     {
-                        if (((InventoryFolder)itema).PreferredType != ((InventoryFolder)itemb).PreferredType)
-                        {
-                            // we are comparing a standard folder to a special folder
-                            if (((InventoryFolder)itema).PreferredType == AssetType.Unknown)
-                                return aa;
-
-                            return bb;
-                        }
-                    }
-
-                    if (this.preferedsort == foldersorttype.SORT_NAME)
+						//Two system folders
+						if (((InventoryFolder)itema).PreferredType != AssetType.Unknown && ((InventoryFolder)itemb).PreferredType != AssetType.Unknown)
+						{
+							//do name sort
+							int ret = string.Compare(itema.Name, itemb.Name);
+	                        if (ret == 1)
+	                            return aa;
+	                        if (ret == -1)
+	                            return bb;
+						}
+											//Two non-system folders
+						if (((InventoryFolder)itema).PreferredType == AssetType.Unknown && ((InventoryFolder)itemb).PreferredType == AssetType.Unknown)
+						{
+							//do name sort
+							int ret = string.Compare(itema.Name, itemb.Name);
+	                        if (ret == 1)
+	                            return aa;
+	                        if (ret == -1)
+	                            return bb;
+						}
+					
+					    if (this.check_special_folders.Active)
+						{
+							//Set sepcial folders to top always
+	                        if (((InventoryFolder)itema).PreferredType != ((InventoryFolder)itemb).PreferredType)
+	                        {
+	                            // we are comparing a standard folder to a special folder
+	                            if (((InventoryFolder)itema).PreferredType == AssetType.Unknown && ((InventoryFolder)itemb).PreferredType != AssetType.Unknown)
+								{
+									return bbb;
+								}
+					    			
+	                             return aaa;
+							}
+						}
+						else
+						{
+							//do name sort
+							int ret = string.Compare(itema.Name, itemb.Name);
+	                        if (ret == 1)
+	                            return aa;
+	                        if (ret == -1)
+	                            return bb;
+						}	
+						return 0;		
+                     }
+				
+				
+				
+                    if (this.radiobutton2.Active) //NAME
                     {
                         int ret = string.Compare(itema.Name, itemb.Name);
                         if (ret == 1)
@@ -389,7 +436,7 @@ namespace omvviewerlight
                             return bb;
                     }
 
-                    if (this.preferedsort == foldersorttype.SORT_DATE)
+                    if (this.radiobutton1.Active)
                     {
                         if (itema is InventoryItem && itemb is InventoryItem)
                         {
@@ -407,7 +454,7 @@ namespace omvviewerlight
                         }
                     }
 
-                }
+                
             }
             catch
             {
@@ -1828,5 +1875,68 @@ namespace omvviewerlight
 		{
 			treeview_inv.ExpandAll();
 		}
+		
+		protected virtual void OnRadiobutton1Clicked (object sender, System.EventArgs e)
+		{
+			inventory.ChangeSortColumn();
+			
+			int Col;
+			SortType order;
+			inventory.GetSortColumnId(out Col,out order);
+			if(order==SortType.Ascending)
+			{
+				inventory.SetSortColumnId(Col,SortType.Descending);			
+				inventory.SetSortColumnId(Col,SortType.Ascending);				
+			}
+			else
+			{
+				inventory.SetSortColumnId(Col,SortType.Ascending);			
+				inventory.SetSortColumnId(Col,SortType.Descending);			
+			}
+
+		}
+		protected virtual void OnRadiobuton2Clicked (object sender, System.EventArgs e)
+		{
+			inventory.ChangeSortColumn();
+			
+			int Col;
+			SortType order;
+			inventory.GetSortColumnId(out Col,out order);
+			if(order==SortType.Ascending)
+			{
+				inventory.SetSortColumnId(Col,SortType.Descending);			
+				inventory.SetSortColumnId(Col,SortType.Ascending);				
+			}
+			else
+			{
+				inventory.SetSortColumnId(Col,SortType.Ascending);			
+				inventory.SetSortColumnId(Col,SortType.Descending);			
+			}
+	
+		}
+		
+		
+		protected virtual void OnCheckSpecialFoldersClicked (object sender, System.EventArgs e)
+		{
+			
+			inventory.ChangeSortColumn();
+			
+			int Col;
+			SortType order;
+			inventory.GetSortColumnId(out Col,out order);
+			if(order==SortType.Ascending)
+			{
+				inventory.SetSortColumnId(Col,SortType.Descending);			
+				inventory.SetSortColumnId(Col,SortType.Ascending);				
+			}
+			else
+			{
+				inventory.SetSortColumnId(Col,SortType.Ascending);			
+				inventory.SetSortColumnId(Col,SortType.Descending);			
+			}
+
 	}
+	
+			
+	}	
 }
