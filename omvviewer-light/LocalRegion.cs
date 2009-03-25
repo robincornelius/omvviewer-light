@@ -122,6 +122,7 @@ namespace omvviewerlight
                     regions[x].Name = "";
                     images[x].Clear();
 					images[x].Pixbuf=MainClass.GetResource("water.png");
+					baseimages[x] = new Gtk.Image(MainClass.GetResource("water.png"));
                     Gtk.Tooltips name = new Gtk.Tooltips();
                     name.SetTip(images[x], "Empty", "");
                     name.Enable();
