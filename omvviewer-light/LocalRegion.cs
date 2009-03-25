@@ -58,7 +58,6 @@ namespace omvviewerlight
 				return;
 			
 			oldsize=size;
-			Console.WriteLine("Width is "+size);
 			int x=0;
 			
 			foreach(Gtk.Image image in images)

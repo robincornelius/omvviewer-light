@@ -163,8 +163,13 @@ namespace omvviewerlight
 			this.Build();		
 			
             treeview_inv.AppendColumn("",new CellRendererPixbuf(),"pixbuf",0);
-            MyTreeViewColumn col = new MyTreeViewColumn("Name", new Gtk.CellRendererText(), "text", 1,true);
+
+            Gtk.CellRendererText item_name = new Gtk.CellRendererText();
+            item_name.Editable = true;
+            item_name.Edited += new EditedHandler(item_name_Edited);
+            MyTreeViewColumn col = new MyTreeViewColumn("Name", item_name, "text", 1,true);
             col.setmodel(inventory);
+
             treeview_inv.InsertColumn(col, 1);
             //treeview_inv.Model=inventory;
 
@@ -182,6 +187,7 @@ namespace omvviewerlight
             this.inventory.SetSortFunc(1, sortinventoryfunc);
             this.inventory.SetSortColumnId(1, SortType.Ascending);
 
+        
             MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             MainClass.client.Network.OnLogoutReply += new NetworkManager.LogoutCallback(Network_OnLogoutReply);
 			MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
@@ -209,6 +215,34 @@ namespace omvviewerlight
            
 
 		}
+
+        void item_name_Edited(object o, EditedArgs args)
+        {
+            Gtk.TreeModel mod;
+            Gtk.TreeIter iter;
+            
+
+            TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
+            if (mod.GetIter(out iter, paths[0]))
+            {
+                InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+               
+                if(item.UUID==MainClass.client.Inventory.Store.RootFolder.UUID || item.UUID==MainClass.client.Inventory.Store.LibraryFolder.UUID)
+                {
+                    args.RetVal=true;
+                    return;
+                }
+                if(item is InventoryItem)
+                    MainClass.client.Inventory.MoveItem(item.UUID,item.ParentUUID,args.NewText);
+
+                if(item is InventoryFolder)
+                    MainClass.client.Inventory.MoveFolder(item.UUID, item.ParentUUID, args.NewText);
+
+                inventory.SetValue(filter.ConvertIterToChildIter(iter), 1, args.NewText);
+           
+                args.RetVal = false;
+            }
+        }
 
         void win_OnInventoryAccepted(AssetType type, UUID objectID)
         {
@@ -1411,7 +1445,6 @@ namespace omvviewerlight
                     if (itemx is InventoryFolder)
 					{
 						invthreaddata itd2 = new invthreaddata(item.UUID, path.ToString(), iterx,cache);
-                        Console.WriteLine("Requesting children of an item we already have");
                         fetchinventory((object)itd2);
                     }
                     continue;
@@ -1445,9 +1478,6 @@ namespace omvviewerlight
 					     });					     
 						
 					   ar2.WaitOne();
-						//System.Threading.Thread.Sleep(50);
-					
-                        Console.WriteLine("Requesting children of an item have");
 					    invthreaddata itd2 = new invthreaddata(((InventoryFolder)item).UUID, "", iter2,cache);
 						fetchinventory((object)itd2);
                      }
