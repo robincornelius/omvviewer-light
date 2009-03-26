@@ -43,12 +43,14 @@ namespace omvviewerlight
         public TreeIter iter;
 		public string path;
         public bool cacheonly;
-		public invthreaddata(UUID keyx, string pathx,TreeIter iterx,bool cache)
+        public bool recurse;
+		public invthreaddata(UUID keyx, string pathx,TreeIter iterx,bool cache_only,bool recurse_on)
         {
             key = keyx;
             iter = iterx;
 			path = pathx;
-            cacheonly = cache;
+            cacheonly = cache_only ;
+            recurse = recurse_on;
 		}
     }
 	
@@ -261,7 +263,7 @@ namespace omvviewerlight
                 //request an update of that folder
                 TreePath path = inventory.GetPath(iter);
                 Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
-                invthreaddata x = new invthreaddata(folder, path.ToString(), iter, false);
+                invthreaddata x = new invthreaddata(folder, path.ToString(), iter, false,true);
                 invRunner.Start(x);
             }
         }
@@ -489,7 +491,7 @@ namespace omvviewerlight
                         
                         fetcherrunning = true;
                         Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
-                        invthreaddata itd = new invthreaddata(MainClass.client.Inventory.Store.RootFolder.UUID, "0", TLI,true);
+                        invthreaddata itd = new invthreaddata(MainClass.client.Inventory.Store.RootFolder.UUID, "0", TLI,true,true);
                         invRunner.Start(itd);
 		         }
 		}
@@ -1402,7 +1404,7 @@ namespace omvviewerlight
                 //if (Name == "Waiting...")
                 {
                     Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
-                    invthreaddata x = new invthreaddata(key, filter.ConvertPathToChildPath(args.Path).ToString(), iter,false);
+                    invthreaddata x = new invthreaddata(key, filter.ConvertPathToChildPath(args.Path).ToString(), iter,false,true);
                     invRunner.Start(x);
                 }
             }
@@ -1420,6 +1422,7 @@ namespace omvviewerlight
             TreeIter iter = itd.iter;
             bool cache = itd.cacheonly;
 			bool alreadyseen=true;
+            bool recurse = itd.recurse;
        		
              List<InventoryBase> myObjects;
 			
@@ -1491,7 +1494,7 @@ namespace omvviewerlight
                     InventoryBase itemx = (InventoryBase)inventory.GetValue(iterx,3);
                     if (itemx is InventoryFolder)
 					{
-						invthreaddata itd2 = new invthreaddata(item.UUID, path.ToString(), iterx,cache);
+						invthreaddata itd2 = new invthreaddata(item.UUID, path.ToString(), iterx,cache,true);
                         fetchinventory((object)itd2);
                     }
                     continue;
@@ -1525,7 +1528,7 @@ namespace omvviewerlight
 					     });					     
 						
 					   ar2.WaitOne();
-					    invthreaddata itd2 = new invthreaddata(((InventoryFolder)item).UUID, "", iter2,cache);
+					    invthreaddata itd2 = new invthreaddata(((InventoryFolder)item).UUID, "", iter2,cache,true);
 						fetchinventory((object)itd2);
                      }
 			}
@@ -1835,7 +1838,7 @@ namespace omvviewerlight
 				Logger.Log("Starting Inventory Fetch all",Helpers.LogLevel.Info);
 			    fetcherrunning = true;
                 Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
-                invthreaddata itd = new invthreaddata(MainClass.client.Inventory.Store.RootFolder.UUID, "0:0", TLI,false);
+                invthreaddata itd = new invthreaddata(MainClass.client.Inventory.Store.RootFolder.UUID, "0:0", TLI,false,true);
                 invRunner.Start(itd);
 			}
 			
@@ -1861,7 +1864,7 @@ namespace omvviewerlight
             {
                 fetcherrunning = true;
                 Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
-                invthreaddata itd = new invthreaddata(MainClass.client.Inventory.Store.RootFolder.UUID, "0:0", TLI,false);
+                invthreaddata itd = new invthreaddata(MainClass.client.Inventory.Store.RootFolder.UUID, "0:0", TLI,false,true);
                 invRunner.Start(itd);
             }
 		}                 
@@ -1878,62 +1881,72 @@ namespace omvviewerlight
 		
 		protected virtual void OnRadiobutton1Clicked (object sender, System.EventArgs e)
 		{
-			inventory.ChangeSortColumn();
-			
-			int Col;
-			SortType order;
-			inventory.GetSortColumnId(out Col,out order);
-			if(order==SortType.Ascending)
-			{
-				inventory.SetSortColumnId(Col,SortType.Descending);			
-				inventory.SetSortColumnId(Col,SortType.Ascending);				
-			}
-			else
-			{
-				inventory.SetSortColumnId(Col,SortType.Ascending);			
-				inventory.SetSortColumnId(Col,SortType.Descending);			
-			}
-
+            try
+            {
+                int Col;
+                SortType order;
+                inventory.GetSortColumnId(out Col, out order);
+                if (Col==1)
+                {
+                    inventory.SetSortColumnId(0, order);
+                }
+                else
+                {
+                    inventory.SetSortColumnId(1, order);
+                }
+                inventory.ChangeSortColumn();
+            }
+            catch (Exception ee)
+            {
+                Logger.Log("Error on swithing sort for inventory " + ee.Message, Helpers.LogLevel.Error);
+            }
 		}
 		protected virtual void OnRadiobuton2Clicked (object sender, System.EventArgs e)
 		{
-			inventory.ChangeSortColumn();
-			
-			int Col;
-			SortType order;
-			inventory.GetSortColumnId(out Col,out order);
-			if(order==SortType.Ascending)
-			{
-				inventory.SetSortColumnId(Col,SortType.Descending);			
-				inventory.SetSortColumnId(Col,SortType.Ascending);				
-			}
-			else
-			{
-				inventory.SetSortColumnId(Col,SortType.Ascending);			
-				inventory.SetSortColumnId(Col,SortType.Descending);			
-			}
-	
+             try
+            {
+                int Col;
+                SortType order;
+                inventory.GetSortColumnId(out Col, out order);
+                if (Col==1)
+                {
+                    inventory.SetSortColumnId(0, order);
+                }
+                else
+                {
+                    inventory.SetSortColumnId(1, order);
+                }
+                inventory.ChangeSortColumn();
+            }
+            catch (Exception ee)
+            {
+                Logger.Log("Error on swithing sort for inventory " + ee.Message, Helpers.LogLevel.Error);
+            }
+            
 		}
 		
 		
 		protected virtual void OnCheckSpecialFoldersClicked (object sender, System.EventArgs e)
 		{
-			
-			inventory.ChangeSortColumn();
-			
-			int Col;
-			SortType order;
-			inventory.GetSortColumnId(out Col,out order);
-			if(order==SortType.Ascending)
-			{
-				inventory.SetSortColumnId(Col,SortType.Descending);			
-				inventory.SetSortColumnId(Col,SortType.Ascending);				
-			}
-			else
-			{
-				inventory.SetSortColumnId(Col,SortType.Ascending);			
-				inventory.SetSortColumnId(Col,SortType.Descending);			
-			}
+             try
+            {
+                int Col;
+                SortType order;
+                inventory.GetSortColumnId(out Col, out order);
+                if (Col==1)
+                {
+                    inventory.SetSortColumnId(0, order);
+                }
+                else
+                {
+                    inventory.SetSortColumnId(1, order);
+                }
+                inventory.ChangeSortColumn();
+            }
+            catch (Exception ee)
+            {
+                Logger.Log("Error on swithing sort for inventory " + ee.Message, Helpers.LogLevel.Error);
+            }
 
 	}
 	
