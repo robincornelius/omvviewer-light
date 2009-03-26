@@ -1432,8 +1432,19 @@ namespace omvviewerlight
 			
 			TreePath path = inventory.GetPath(iter);
 			path.Down();
-	            
+
+           //Check for a waiting here, we need to use this to decide which fetcher to use in a moment
+            if (cache == false)
+            {
+                TreeIter childiter;
+                inventory.GetIter(out childiter, path);
+                if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
+                {              
+                    alreadyseen = false;
+                }
+            }
 			
+            // Use an approprate fetcher based on various flags
             if(cache==true || alreadyseen==true)
                 myObjects = MainClass.client.Inventory.Store.GetContents(start);
             else 
