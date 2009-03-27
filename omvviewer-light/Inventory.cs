@@ -120,12 +120,11 @@ namespace omvviewerlight
         bool fetcherrunning = false;
 		bool fetchrun=false;
         int recursion = 0;
-		
+        bool abortfetch = false;
+
 		private Gtk.TreeIter global_thread_tree;
 
         List<Gtk.TreeIter> filtered = new List<TreeIter>();
-
-        
 
         enum foldersorttype
         {
@@ -188,12 +187,9 @@ namespace omvviewerlight
             treeview_inv.Model = filter;
 			treeview_inv.HeadersClickable=true;
 			
-			 
-			
-			
             this.inventory.SetSortFunc(0, sortinventoryfunc);
             this.inventory.SetSortColumnId(0, SortType.Ascending);
-			 this.inventory.SetSortFunc(1, sortinventoryfunc);
+			this.inventory.SetSortFunc(1, sortinventoryfunc);
             this.inventory.SetSortColumnId(1, SortType.Ascending);
         
             MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
@@ -298,6 +294,7 @@ namespace omvviewerlight
 
         void Network_OnLogoutReply(List<UUID> inventoryItems)
         {
+            abortfetch = true;
             try
             {
                 //Save cache inventory;
@@ -319,12 +316,14 @@ namespace omvviewerlight
                     if (filtered.Contains(iter))//*sigh*
                         return true;
 
-                    string Name = model.GetValue(iter, 1).ToString();
-                    
+                    object obj = model.GetValue(iter, 1);
+                    if (obj == null)
+                        return false;
 
+                    string Name = (string)obj;
+                    
                     if (Name.Contains(this.entry_search.Text))
-                    {
-                        
+                    {   
                         filtered.Add(iter);//*sigh*
                        
                         TreePath path = model.GetPath(iter);
@@ -333,15 +332,13 @@ namespace omvviewerlight
                             path.Up();
                             TreeIter iter2;
                             model.GetIter(out iter2, path);
-                            filtered.Add(iter2);//*sigh*
-                           
+                            filtered.Add(iter2);//*sigh*                    
                         }
 
                         return true;
                     }
 
-                    return false;
-               
+                    return false; 
             }
             catch
             {
@@ -701,13 +698,6 @@ namespace omvviewerlight
 
         void Inventory_onFolderUpdated(UUID folderID)
         {
-            Console.WriteLine("Folder updated " + folderID.ToString());
-            TreeIter iter;
-            if(assetmap.TryGetValue(folderID,out iter))
-            {
-                Console.WriteLine("We have this one in our treeview, need update");
-
-            }
 
         }
 
@@ -1059,6 +1049,9 @@ namespace omvviewerlight
 
                 foreach (InventoryBase item in cutcopylist)
                 {
+                    if (item == null)
+                        continue;
+
                     if (item is InventoryItem)
                     {
                         items.Add(item.UUID, dest_item.UUID);
@@ -1067,6 +1060,7 @@ namespace omvviewerlight
                     {
                         folders.Add(item.UUID, dest_item.UUID);
                     }
+
                     inv_items.Add(item.UUID, item);
                 }
 
@@ -1384,8 +1378,14 @@ namespace omvviewerlight
 
 		void onRowExpanded(object o,Gtk.RowExpandedArgs args)
 		{
+            // Avoid updaing rows in the middle of a filter operation
             if (filteractive == true)
                 return;
+
+            //We can't do this or it confuses the hell out of stuff
+            if (fetcherrunning == true)
+                return;
+
             try
             {
                 TreeIter iter = filter.ConvertIterToChildIter(args.Iter);
@@ -1426,7 +1426,7 @@ namespace omvviewerlight
        		
              List<InventoryBase> myObjects;
 			
-			Console.WriteLine("Starting fetch all cache is "+cache.ToString());			
+			//Console.WriteLine("Starting fetch all cache is "+cache.ToString());			
 			
             // Ok we need to find and remove the previous Waiting.... it should be the first child of the current iter
 			
@@ -1450,7 +1450,7 @@ namespace omvviewerlight
             else 
  	            myObjects = MainClass.client.Inventory.FolderContents(start, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
 			
-			Console.WriteLine("Got objects # "+myObjects.Count.ToString());
+			//Console.WriteLine("Got objects # "+myObjects.Count.ToString());
 
 
             //We should preserve Waiting... messages for folders we don't yet have the children for
@@ -1540,6 +1540,8 @@ namespace omvviewerlight
 						
 					   ar2.WaitOne();
 					    invthreaddata itd2 = new invthreaddata(((InventoryFolder)item).UUID, "", iter2,cache,true);
+                        if (abortfetch == true)
+                            return;
 						fetchinventory((object)itd2);
                      }
 			}
@@ -1854,17 +1856,19 @@ namespace omvviewerlight
 			}
 			
             filtered.Clear(); //*sigh*
-   
+           
             if (this.entry_search.Text == "")
             {
                 filteractive = false;
                 filter.Refilter();
                 return;
             }
-            //This is fucking shocking
+           
+            //Becuase we use our own filter we have to do two passes at the data to first find matches, then to find parents of matches
             filteractive = true;
             filter.Refilter();
             filter.Refilter(); //*sigh*
+          
             treeview_inv.ExpandAll();
 
 		}
