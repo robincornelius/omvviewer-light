@@ -223,7 +223,7 @@ namespace omvviewerlight
                          string saleinfo;
 					     saleinfo = "";
 						
-                         if ((parcel.Flags & Parcel.ParcelFlags.ForSale) == Parcel.ParcelFlags.ForSale)
+                         if ((parcel.Flags & ParcelFlags.ForSale) == ParcelFlags.ForSale)
                          {
                              if (parcel.AuthBuyerID != UUID.Zero)
                              {
@@ -352,13 +352,13 @@ namespace omvviewerlight
 						
 						Console.WriteLine(parcel.Flags.ToString());
 						
-						this.checkbox_nopayment.Active=(OpenMetaverse.Parcel.ParcelFlags.DenyAnonymous==(parcel.Flags& OpenMetaverse.Parcel.ParcelFlags.DenyAnonymous));
-						this.checkbutton_noageverify.Active=(OpenMetaverse.Parcel.ParcelFlags.DenyAgeUnverified==(parcel.Flags& OpenMetaverse.Parcel.ParcelFlags.DenyAgeUnverified));
+						this.checkbox_nopayment.Active=(OpenMetaverse.ParcelFlags.DenyAnonymous==(parcel.Flags& OpenMetaverse.ParcelFlags.DenyAnonymous));
+						this.checkbutton_noageverify.Active=(OpenMetaverse.ParcelFlags.DenyAgeUnverified==(parcel.Flags& OpenMetaverse.ParcelFlags.DenyAgeUnverified));
 						this.entry_time.Text=parcel.PassHours.ToString();
 						this.entry_price.Text=parcel.PassPrice.ToString();
-						this.checkbutton_publicaccess.Active=!(OpenMetaverse.Parcel.ParcelFlags.UseAccessList==(parcel.Flags& OpenMetaverse.Parcel.ParcelFlags.UseAccessList));
+						this.checkbutton_publicaccess.Active=!(OpenMetaverse.ParcelFlags.UseAccessList==(parcel.Flags& OpenMetaverse.ParcelFlags.UseAccessList));
 						//this.checkbutton_sellpasses;
-						this.checkbutton_groupaccess.Active=(OpenMetaverse.Parcel.ParcelFlags.UseAccessGroup==(parcel.Flags& OpenMetaverse.Parcel.ParcelFlags.UseAccessGroup));
+						this.checkbutton_groupaccess.Active=(OpenMetaverse.ParcelFlags.UseAccessGroup==(parcel.Flags& OpenMetaverse.ParcelFlags.UseAccessGroup));
 						
 						this.entry_maxprims.Text=parcel.MaxPrims.ToString();
 						this.entry_primsgroup.Text=parcel.GroupPrims.ToString();
@@ -451,7 +451,7 @@ namespace omvviewerlight
 
 					    this.button1.Sensitive=allowed;
 					
-					     if ((parcel.Flags & Parcel.ParcelFlags.ForSale) == Parcel.ParcelFlags.ForSale)
+					     if ((parcel.Flags & ParcelFlags.ForSale) == ParcelFlags.ForSale)
                          {
                              if (parcel.AuthBuyerID != UUID.Zero)
                              {

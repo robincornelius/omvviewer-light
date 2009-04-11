@@ -571,14 +571,14 @@ public partial class MainWindow: Gtk.Window
 		this.statusbar1.PackStart(status_icons);
         
 		
-		if((parcel.Flags & OpenMetaverse.Parcel.ParcelFlags.AllowFly) != OpenMetaverse.Parcel.ParcelFlags.AllowFly )
+		if((parcel.Flags & OpenMetaverse.ParcelFlags.AllowFly) != OpenMetaverse.ParcelFlags.AllowFly )
 		{
 			Gtk.Image myimage=new Gtk.Image(MainClass.GetResource("status_no_fly.png"));
 			status_icons.PackStart(myimage);
 			status_icons.SetChildPacking(myimage,false,false,0,PackType.Start);
 		}
 	
-		if((parcel.Flags & OpenMetaverse.Parcel.ParcelFlags.RestrictPushObject)==OpenMetaverse.Parcel.ParcelFlags.RestrictPushObject)
+		if((parcel.Flags & OpenMetaverse.ParcelFlags.RestrictPushObject)==OpenMetaverse.ParcelFlags.RestrictPushObject)
 		{
 			Gtk.Image myimage=new Gtk.Image(MainClass.GetResource("status_no_push.png"));
 			status_icons.PackStart(myimage);				
@@ -586,7 +586,7 @@ public partial class MainWindow: Gtk.Window
 
 		}
 
-		if((parcel.Flags & OpenMetaverse.Parcel.ParcelFlags.AllowOtherScripts)!=OpenMetaverse.Parcel.ParcelFlags.AllowOtherScripts)
+		if((parcel.Flags & OpenMetaverse.ParcelFlags.AllowOtherScripts)!=OpenMetaverse.ParcelFlags.AllowOtherScripts)
 		{
 			Gtk.Image myimage=new Gtk.Image(MainClass.GetResource("status_no_scripts.png"));
 			status_icons.PackStart(myimage);				
@@ -594,7 +594,7 @@ public partial class MainWindow: Gtk.Window
 		
 		}
 
-		if((parcel.Flags & OpenMetaverse.Parcel.ParcelFlags.CreateObjects)!=OpenMetaverse.Parcel.ParcelFlags.CreateObjects)
+		if((parcel.Flags & OpenMetaverse.ParcelFlags.CreateObjects)!=OpenMetaverse.ParcelFlags.CreateObjects)
 		{
 			Gtk.Image myimage=new Gtk.Image(MainClass.GetResource("status_no_build.png"));
 			status_icons.PackStart(myimage);				
