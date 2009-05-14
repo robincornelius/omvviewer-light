@@ -228,7 +228,6 @@
     <Compile Include="ObjectsLayout.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="OpenGL.cs" />
     <Compile Include="ParcelMgr.cs" />
     <Compile Include="PayWindow.cs">
       <SubType>Code</SubType>
@@ -272,7 +271,6 @@
     <Compile Include="TeleportTo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TexturePipeline.cs" />
     <Compile Include="TexturePreview.cs" />
     <Compile Include="TryGetImage.cs">
       <SubType>Code</SubType>
@@ -289,6 +287,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
       <Visible>False</Visible>
       <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
@@ -302,6 +305,11 @@
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>

@@ -134,8 +134,8 @@ namespace omvviewerlight
 			this.button_notify.Sensitive=false;
 			this.button_teleport.Sensitive=false;
 						
-			//OpenMetaverse.Parcel.ParcelCategory pcat;
-			//pcat=OpenMetaverse.Parcel.ParcelCategory.Any;
+			//OpenMetaverse.ParcelCategory pcat;
+			//pcat=OpenMetaverse.ParcelCategory.Any;
 			queryid=UUID.Random();
 			OpenMetaverse.DirectoryManager.EventCategories selectcat;
             selectcat=(OpenMetaverse.DirectoryManager.EventCategories)Enum.Parse(typeof(OpenMetaverse.DirectoryManager.EventCategories),this.combobox_category.ActiveText);		

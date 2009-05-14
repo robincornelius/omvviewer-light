@@ -42,9 +42,9 @@ namespace omvviewerlight
 			
                 Gtk.Application.Invoke(delegate{			
 				this.store.Clear();
-				lock(MainClass.client.Self.GroupChatSessions.Dictionary)
-                if(MainClass.client.Self.GroupChatSessions.Dictionary.ContainsKey(session))
-				foreach(OpenMetaverse.ChatSessionMember member in MainClass.client.Self.GroupChatSessions.Dictionary[session])
+				lock(MainClass.client.Self.GroupChatSessions)
+                if(MainClass.client.Self.GroupChatSessions.ContainsKey(session))
+				foreach(OpenMetaverse.ChatSessionMember member in MainClass.client.Self.GroupChatSessions[session])
 				{
                     string extra= member.IsModerator==true?" (moderator)":"";
 					Gtk.TreeIter iter = store.AppendValues("Waiting...",member.AvatarKey);

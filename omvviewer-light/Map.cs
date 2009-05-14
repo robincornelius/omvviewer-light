@@ -228,8 +228,8 @@ namespace omvviewerlight
 			 if(MainClass.client.Network.CurrentSim!=null) //OpenSim protection needed this
 	            Gtk.Application.Invoke(delegate
 					{
-						lock(MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
-	                        if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary.ContainsKey(update.LocalID))
+						lock(MainClass.client.Network.CurrentSim.ObjectsAvatars)
+	                        if (MainClass.client.Network.CurrentSim.ObjectsAvatars.ContainsKey(update.LocalID))
 	                            drawavs();
 	                });			
        }
@@ -281,25 +281,26 @@ namespace omvviewerlight
 					
                 if(draw_sim!=null)
  
-                lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
+                lock (MainClass.client.Network.CurrentSim.ObjectsAvatars)
                 {
 					List <uint> removelist=new List<uint>();
-					
-					foreach (KeyValuePair<uint, Avatar> kvp in draw_sim.ObjectsAvatars.Dictionary)
+
+                    draw_sim.ObjectsAvatars.ForEach(delegate(KeyValuePair<uint, Avatar> kvp)
                     {
                         if (kvp.Value.LocalID != MainClass.client.Self.LocalID)
                         {
                             Vector3 pos;
-                           
+
                             if (kvp.Value.ParentID != 0)
                             {
-                                if (!draw_sim.ObjectsPrimitives.Dictionary.ContainsKey(kvp.Value.ParentID))
+                                if (!draw_sim.ObjectsPrimitives.ContainsKey(kvp.Value.ParentID))
                                 {
-									Console.WriteLine("Could not find parent prim for AV, killing\n");
-									removelist.Add(kvp.Value.LocalID);
-									continue;
+                                    Console.WriteLine("Could not find parent prim for AV, killing\n");
+                                    removelist.Add(kvp.Value.LocalID);
+                                    //FIXME
+                                    //continue;
                                 }
-                                Primitive parent = draw_sim.ObjectsPrimitives.Dictionary[kvp.Value.ParentID];
+                                Primitive parent = draw_sim.ObjectsPrimitives[kvp.Value.ParentID];
                                 pos = Vector3.Transform(kvp.Value.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
                             }
                             else
@@ -307,32 +308,33 @@ namespace omvviewerlight
                                 pos = kvp.Value.Position;
                             }
 
-							if(MainClass.client.Friends.FriendList.Dictionary.ContainsKey(kvp.Value.ID))
-							{
-                            if (pos.Z - myz > 5)
-                                showme(buf, avatar_friend_below.Pixbuf, pos);
-                            else if (pos.Z - myz < -5)
-                                showme(buf, avatar_friend_above.Pixbuf, pos);
+                            if (MainClass.client.Friends.FriendList.ContainsKey(kvp.Value.ID))
+                            {
+                                if (pos.Z - myz > 5)
+                                    showme(buf, avatar_friend_below.Pixbuf, pos);
+                                else if (pos.Z - myz < -5)
+                                    showme(buf, avatar_friend_above.Pixbuf, pos);
+                                else
+                                    showme(buf, avatar_friend.Pixbuf, pos);
+
+                            }
                             else
-                                showme(buf, avatar_friend.Pixbuf, pos);
-								
-							}
-							else
-							{
-                            if (pos.Z - myz > 5)
-                                showme(buf, avatar_below.Pixbuf, pos);
-                            else if (pos.Z - myz < -5)
-                                showme(buf, avatar_above.Pixbuf, pos);
-                            else
-                                showme(buf, avatar.Pixbuf, pos);
-							}
-							
+                            {
+                                if (pos.Z - myz > 5)
+                                    showme(buf, avatar_below.Pixbuf, pos);
+                                else if (pos.Z - myz < -5)
+                                    showme(buf, avatar_above.Pixbuf, pos);
+                                else
+                                    showme(buf, avatar.Pixbuf, pos);
+                            }
+
                         }
-                    }
+                    });
 					
 					foreach(uint id in removelist)
 					{
-                          draw_sim.ObjectsAvatars.Dictionary.Remove(id);
+                          //FIXME
+                          //draw_sim.ObjectsAvatars.Remove(id);
 					}
                 }
 

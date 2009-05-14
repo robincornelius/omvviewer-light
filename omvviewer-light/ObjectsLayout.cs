@@ -105,9 +105,9 @@ namespace omvviewerlight
         {
             if (update.LocalID == MainClass.client.Self.LocalID)
             {
-                if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID == 0)
+                if (MainClass.client.Network.CurrentSim.ObjectsAvatars[MainClass.client.Self.LocalID].ParentID == 0)
                 {
-                    //Console.WriteLine("** Update is " + update.ToString() + " \nbyes are " + update.State.ToString() + "\n parent is " + MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID);
+                    //Console.WriteLine("** Update is " + update.ToString() + " \nbyes are " + update.State.ToString() + "\n parent is " + MainClass.client.Network.CurrentSim.ObjectsAvatars[MainClass.client.Self.LocalID].ParentID);
                     if (sat == true)
                     {
                         sat = false;
@@ -294,12 +294,12 @@ namespace omvviewerlight
                         Gtk.Application.Invoke(delegate
                         {
                             Vector3 self_pos;
-                            lock (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary)
+                            lock (MainClass.client.Network.CurrentSim.ObjectsAvatars)
                             {
                                 // Cope if *we* are sitting on someting
-                                if (MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID != 0)
+                                if (MainClass.client.Network.CurrentSim.ObjectsAvatars[MainClass.client.Self.LocalID].ParentID != 0)
                                 {
-                                    Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary[MainClass.client.Network.CurrentSim.ObjectsAvatars.Dictionary[MainClass.client.Self.LocalID].ParentID];
+                                    Primitive parent = MainClass.client.Network.CurrentSim.ObjectsPrimitives[MainClass.client.Network.CurrentSim.ObjectsAvatars[MainClass.client.Self.LocalID].ParentID];
                                     self_pos = Vector3.Transform(MainClass.client.Self.RelativePosition, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
                                 }
                                 else
@@ -459,10 +459,10 @@ namespace omvviewerlight
 
 					//If avatar owns the parcel they are allowed.
 					//If they are in the group that owns the parcel AND have the correct group permissions AND have the group tag they are allowed
-					if(MainClass.client.Network.CurrentSim.Parcels.Dictionary.ContainsKey(parcelid))
+					if(MainClass.client.Network.CurrentSim.Parcels.ContainsKey(parcelid))
 					{
 						Parcel parcel;
-						parcel=MainClass.client.Network.CurrentSim.Parcels.Dictionary[parcelid];
+						parcel=MainClass.client.Network.CurrentSim.Parcels[parcelid];
 					
 						if(parcel.OwnerID==MainClass.client.Self.AgentID)
 							allowed=true;

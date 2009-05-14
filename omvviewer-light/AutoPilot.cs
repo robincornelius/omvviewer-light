@@ -148,7 +148,7 @@ namespace omvviewerlight
 					{
 						if(targetAv.ParentID!=0)
 						{
-							if(!MainClass.client.Network.Simulators[i].ObjectsPrimitives.Dictionary.ContainsKey(targetAv.ParentID))
+							if(!MainClass.client.Network.Simulators[i].ObjectsPrimitives.ContainsKey(targetAv.ParentID))
 							{
 								Console.WriteLine("AV is seated and i can't find the parent prim in dictionay");
 								Active=false;
@@ -162,7 +162,7 @@ namespace omvviewerlight
 							else
 							{
 								Vector3 pos;
-								Primitive parent = MainClass.client.Network.Simulators[i].ObjectsPrimitives.Dictionary[targetAv.ParentID];
+								Primitive parent = MainClass.client.Network.Simulators[i].ObjectsPrimitives[targetAv.ParentID];
 								Vector3 localtargetpos;
 								localtargetpos=pos = Vector3.Transform(targetAv.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
 								targetpos=localtoglobalpos(localtargetpos,MainClass.client.Network.Simulators[i].Handle);;								

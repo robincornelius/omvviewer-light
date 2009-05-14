@@ -24,6 +24,7 @@ omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(
 
 using System;
 using OpenMetaverse;
+using OpenMetaverse.Assets;
 using System.Collections.Generic;
 using System.IO;
 using Gtk;
@@ -401,14 +402,14 @@ namespace omvviewerlight
 
 			if(asset_type==AssetType.Notecard)
 			{
-				OpenMetaverse.AssetNotecard nd = new OpenMetaverse.AssetNotecard(this.textview_notecard.Buffer.Text);
+                OpenMetaverse.Assets.AssetNotecard nd = new OpenMetaverse.Assets.AssetNotecard(this.textview_notecard.Buffer.Text);
 				nd.Encode();	
 				MainClass.client.Inventory.RequestUploadNotecardAsset(nd.AssetData,this.target_id,new InventoryManager.NotecardUploadedAssetCallback(OnNoteUpdated));
 			}
 			
 			if(asset_type==AssetType.LSLText)
 			{
-				OpenMetaverse.AssetScriptText nd = new OpenMetaverse.AssetScriptText(this.textview_notecard.Buffer.Text);
+                OpenMetaverse.Assets.AssetScriptText nd = new OpenMetaverse.Assets.AssetScriptText(this.textview_notecard.Buffer.Text);
 				nd.Encode();	
 				MainClass.client.Inventory.RequestUploadNotecardAsset(nd.AssetData,this.target_id,new InventoryManager.NotecardUploadedAssetCallback(OnNoteUpdated));				
 			}

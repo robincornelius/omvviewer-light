@@ -26,6 +26,7 @@ using System;
 using System.Threading;
 using OpenMetaverse;
 using OpenMetaverse.Imaging;
+using OpenMetaverse.Assets;
 using Gdk;
 
 namespace omvviewerlight
@@ -59,8 +60,9 @@ namespace omvviewerlight
 			if(target==null)
 				return;
 			
-			MainClass.client.Assets.OnImageReceived += new OpenMetaverse.AssetManager.ImageReceivedCallback(onGotImage);
-			MainClass.client.Assets.OnImageReceiveProgress += new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
+            //REALY FIXME
+			//MainClass.client.Assets.OnImageReceived += new OpenMetaverse.AssetManager.ImageReceivedCallback(onGotImage);
+			//MainClass.client.Assets.OnImageReceiveProgress += new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
 			scale=auto;
 			
 			target_asset=asset;
@@ -89,15 +91,17 @@ namespace omvviewerlight
             else
                 target_image.Pixbuf = buf.ScaleSimple(img_width, img_height, Gdk.InterpType.Bilinear);
 
-            if (target_asset != UUID.Zero)
-                MainClass.client.Assets.RequestImage(target_asset, OpenMetaverse.ImageType.Normal, 99999000.0f, 0, 0);	
+            //REALLY FIXME
+            //if (target_asset != UUID.Zero)
+              //  MainClass.client.Assets.RequestImage(target_asset, OpenMetaverse.ImageType.Normal, 99999000.0f, 0, 0);	
 
         }
 		
 		public void abort()
 	   {
-			MainClass.client.Assets.OnImageReceived -= new OpenMetaverse.AssetManager.ImageReceivedCallback(onGotImage);
-			MainClass.client.Assets.OnImageReceiveProgress -= new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
+           //REALLY FIXME
+			//MainClass.client.Assets.OnImageReceived -= new OpenMetaverse.AssetManager.ImageReceivedCallback(onGotImage);
+			//MainClass.client.Assets.OnImageReceiveProgress -= new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
        }
 			                                               
         void onProgress(UUID image, int recieved, int total,int lastpacket)
@@ -155,8 +159,9 @@ namespace omvviewerlight
             if (this_asset.AssetID != target_asset)
                 return;
 
-            MainClass.client.Assets.OnImageReceived -= new OpenMetaverse.AssetManager.ImageReceivedCallback(onGotImage);
-            MainClass.client.Assets.OnImageReceiveProgress -= new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
+            //REALLY FIXME
+           // MainClass.client.Assets.OnImageReceived -= new OpenMetaverse.AssetManager.ImageReceivedCallback(onGotImage);
+           // MainClass.client.Assets.OnImageReceiveProgress -= new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
 
             Console.Write("Downloaded asset " + this_asset.AssetID.ToString() + "\n");
             byte[] tgaFile = null;

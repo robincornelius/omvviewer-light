@@ -25,6 +25,7 @@ omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(
 using System;
 using System.Threading;
 using OpenMetaverse;
+using OpenMetaverse.Assets;
 using System.Collections.Generic;
 using Gdk;
 using Gtk;
@@ -195,7 +196,7 @@ namespace omvviewerlight
             MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             MainClass.client.Network.OnLogoutReply += new NetworkManager.LogoutCallback(Network_OnLogoutReply);
 			MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
-            MainClass.client.Inventory.OnFolderUpdated += new InventoryManager.FolderUpdatedCallback(Inventory_onFolderUpdated);
+            //MainClass.client.Inventory.OnFolderUpdated += new InventoryManager.FolderUpdatedCallback(Inventory_onFolderUpdated);
             //MainClass.client.Inventory.OnCacheDelete += new InventoryManager.CacheStaleCallback(Inventory_OnCacheDelete);
             MainClass.client.Inventory.OnItemReceived += new InventoryManager.ItemReceivedCallback(Inventory_OnItemReceived);
             MainWindow.OnInventoryAccepted += new MainWindow.InventoryAccepted(win_OnInventoryAccepted);
@@ -1175,7 +1176,8 @@ namespace omvviewerlight
                     	{
 							if (success) // upload the asset
 							{
-								AssetNotecard note=new AssetNotecard();
+
+                                AssetNotecard note = new AssetNotecard();
 								note.Text="Add your notes here....";
 								note.Encode();
 								
@@ -1610,20 +1612,21 @@ namespace omvviewerlight
 
                  if (!assetmap.ContainsKey(item.UUID))
                  {
-                     lock(MainClass.client.Appearance.Wearables.Dictionary)
-                         foreach( KeyValuePair <WearableType,OpenMetaverse.AppearanceManager.WearableData> kvp in MainClass.client.Appearance.Wearables.Dictionary)
+                     lock(MainClass.client.Appearance.Wearables)
+                         MainClass.client.Appearance.Wearables.ForEach(delegate(KeyValuePair <WearableType,OpenMetaverse.AppearanceManager.WearableData> kvp)
+                         
                          {
                              if (kvp.Value.Item.UUID == item.UUID)
                                  msg = " (WORN) ";
-                         }
+                         });
 
 
-                     lock( MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary)
-                         foreach (KeyValuePair<uint, Primitive> kvp in MainClass.client.Network.CurrentSim.ObjectsPrimitives.Dictionary)
+                     lock( MainClass.client.Network.CurrentSim.ObjectsPrimitives)
+                         MainClass.client.Network.CurrentSim.ObjectsPrimitives.ForEach(delegate(KeyValuePair<uint, Primitive> kvp)
                          {
                              if((kvp.Value.ID==item.UUID))
                                  msg = " (ATTACHED) ";
-                         }
+                         });
 
 					this.no_items++;
                      label_fetched.Text="Fetched "+no_items.ToString()+" items";

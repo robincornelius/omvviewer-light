@@ -341,7 +341,8 @@ namespace omvviewerlight
               MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
 			  current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
               this.im_target = UUID.Random();
-              MainClass.client.Self.StartIMConfrence(targets, this.im_target);
+              //FIXME
+              //MainClass.client.Self.StartIMConfrence(targets, this.im_target);
 		}
 		
 		bool kick_group_join()

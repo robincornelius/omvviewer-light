@@ -76,12 +76,12 @@ namespace omvviewerlight
 		{
 
 			this.Build();
-			MainClass.client.Parcels.OnParcelInfo += new OpenMetaverse.ParcelManager.ParcelInfoCallback(onParcelInfo);
+            MainClass.client.Parcels.OnParcelInfo += new OpenMetaverse.ParcelManager.ParcelInfoCallback(onParcelInfo);
 			MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-			MainClass.client.Parcels.OnSimParcelsDownloaded += new OpenMetaverse.ParcelManager.SimParcelsDownloaded(onParcelsDownloaded);
-			MainClass.client.Parcels.OnParcelProperties += new OpenMetaverse.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
-			MainClass.client.Parcels.OnPrimOwnersListReply += new OpenMetaverse.ParcelManager.ParcelObjectOwnersListReplyCallback(onParcelObjectOwners);
-			MainClass.client.Parcels.OnParcelDwell += new OpenMetaverse.ParcelManager.ParcelDwellCallback(onDwell);
+            MainClass.client.Parcels.OnSimParcelsDownloaded += new OpenMetaverse.ParcelManager.SimParcelsDownloaded(onParcelsDownloaded);
+            MainClass.client.Parcels.OnParcelProperties += new OpenMetaverse.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
+            MainClass.client.Parcels.OnPrimOwnersListReply += new OpenMetaverse.ParcelManager.ParcelObjectOwnersListReplyCallback(onParcelObjectOwners);
+            MainClass.client.Parcels.OnParcelDwell += new OpenMetaverse.ParcelManager.ParcelDwellCallback(onDwell);
 			
 			parcels_store=new Gtk.TreeStore (typeof(Gdk.Pixbuf),typeof(string),typeof(string),typeof(string),typeof(string),typeof(Parcel),typeof(int));
 			parcels_access=new Gtk.TreeStore(typeof(string),typeof(UUID));
@@ -186,64 +186,64 @@ namespace omvviewerlight
 
      unsafe void populate_tree()
      {
-         lock(MainClass.client.Network.CurrentSim.Parcels.Dictionary)
+         lock(MainClass.client.Network.CurrentSim.Parcels)
          {
-             foreach (KeyValuePair<int, Parcel> kvp in MainClass.client.Network.CurrentSim.Parcels.Dictionary)
+             MainClass.client.Network.CurrentSim.Parcels.ForEach(delegate(KeyValuePair<int, Parcel> kvp)
              {
                  Parcel parcel = kvp.Value;
-                
-                     int thiscol = 0;
 
-                     if (!colmaptoid.ContainsKey((uint)parcel.LocalID))
+                 int thiscol = 0;
+
+                 if (!colmaptoid.ContainsKey((uint)parcel.LocalID))
+                 {
+                     colmaptoid.Add((uint)parcel.LocalID, colmap[nextcol]);
+                     thiscol = nextcol;
+                     Console.WriteLine("ID " + parcel.LocalID.ToString() + "Setting col to " + nextcol.ToString());
+
+                     nextcol++;
+                     if (nextcol >= colmap.Length)
+                         nextcol = colmap.Length - 1;
+
+                     byte[] data = new byte[4 * 32 * 16];
+                     uint col = colmap[thiscol];
+
+                     Gdk.Pixbuf pb = MainClass.GetResource("parcelindex.png");
+                     sbyte* ps;
+                     ps = (sbyte*)pb.Pixels;
+
+                     for (int x = 0; x < 4 * 32 * 16; x = x + 4)
                      {
-                         colmaptoid.Add((uint)parcel.LocalID, colmap[nextcol]);
-                         thiscol = nextcol;
-                         Console.WriteLine("ID " + parcel.LocalID.ToString() + "Setting col to " + nextcol.ToString());
 
-                         nextcol++;
-                         if (nextcol >= colmap.Length)
-                             nextcol = colmap.Length - 1;
-
-                         byte[] data = new byte[4 * 32 * 16];
-                         uint col = colmap[thiscol];
-
-                         Gdk.Pixbuf pb = MainClass.GetResource("parcelindex.png");
-                         sbyte* ps;
-                         ps = (sbyte*)pb.Pixels;
-
-                         for (int x = 0; x < 4 * 32 * 16; x = x + 4)
-                         {
-
-                             ps[x + 0] = (sbyte)((0xFF000000 & col) >> 24);
-                             ps[x + 1] = (sbyte)((0x00FF0000 & col) >> 16);
-                             ps[x + 2] = (sbyte)((0x0000FF00 & col) >> 8);
-                             ps[x + 3] = (sbyte)((0x000000FF & col) >> 0);
-                         }
-
-                         string saleinfo;
-					     saleinfo = "";
-						
-                         if ((parcel.Flags & Parcel.ParcelFlags.ForSale) == Parcel.ParcelFlags.ForSale)
-                         {
-                             if (parcel.AuthBuyerID != UUID.Zero)
-                             {
-                                 saleinfo = "Single AV";
-                             }
-                             else
-                             {
-                                 saleinfo = parcel.SalePrice.ToString();
-
-                             }
-                         }
-
-						Gtk.Application.Invoke(delegate
-						{
-                         Gtk.TreeIter iter=parcels_store.AppendValues(pb, parcel.Name, parcel.Area.ToString(), parcel.Dwell.ToString(), saleinfo, parcel, parcel.LocalID);
-                         this.parcel_to_tree.Add(parcel.LocalID,iter);						
-						});
+                         ps[x + 0] = (sbyte)((0xFF000000 & col) >> 24);
+                         ps[x + 1] = (sbyte)((0x00FF0000 & col) >> 16);
+                         ps[x + 2] = (sbyte)((0x0000FF00 & col) >> 8);
+                         ps[x + 3] = (sbyte)((0x000000FF & col) >> 0);
                      }
-                 
-             }
+
+                     string saleinfo;
+                     saleinfo = "";
+
+                     if ((parcel.Flags & ParcelFlags.ForSale) == ParcelFlags.ForSale)
+                     {
+                         if (parcel.AuthBuyerID != UUID.Zero)
+                         {
+                             saleinfo = "Single AV";
+                         }
+                         else
+                         {
+                             saleinfo = parcel.SalePrice.ToString();
+
+                         }
+                     }
+
+                     Gtk.Application.Invoke(delegate
+                     {
+                         Gtk.TreeIter iter = parcels_store.AppendValues(pb, parcel.Name, parcel.Area.ToString(), parcel.Dwell.ToString(), saleinfo, parcel, parcel.LocalID);
+                         this.parcel_to_tree.Add(parcel.LocalID, iter);
+                     });
+                 }
+
+             });
 
          }
      }
@@ -346,19 +346,19 @@ namespace omvviewerlight
 				
 				
 				if(MainClass.client.Network.CurrentSim.Parcels.TryGetValue(id, out parcel))
-				{						
-					foreach(OpenMetaverse.ParcelManager.ParcelAccessEntry entry in parcel.AccessWhiteList)
+				{
+                    foreach (OpenMetaverse.ParcelManager.ParcelAccessEntry entry in parcel.AccessWhiteList)
 					{
 						
 						Console.WriteLine(parcel.Flags.ToString());
-						
-						this.checkbox_nopayment.Active=(OpenMetaverse.Parcel.ParcelFlags.DenyAnonymous==(parcel.Flags& OpenMetaverse.Parcel.ParcelFlags.DenyAnonymous));
-						this.checkbutton_noageverify.Active=(OpenMetaverse.Parcel.ParcelFlags.DenyAgeUnverified==(parcel.Flags& OpenMetaverse.Parcel.ParcelFlags.DenyAgeUnverified));
+
+                        this.checkbox_nopayment.Active = (OpenMetaverse.ParcelFlags.DenyAnonymous == (parcel.Flags & OpenMetaverse.ParcelFlags.DenyAnonymous));
+                        this.checkbutton_noageverify.Active = (OpenMetaverse.ParcelFlags.DenyAgeUnverified == (parcel.Flags & OpenMetaverse.ParcelFlags.DenyAgeUnverified));
 						this.entry_time.Text=parcel.PassHours.ToString();
 						this.entry_price.Text=parcel.PassPrice.ToString();
-						this.checkbutton_publicaccess.Active=!(OpenMetaverse.Parcel.ParcelFlags.UseAccessList==(parcel.Flags& OpenMetaverse.Parcel.ParcelFlags.UseAccessList));
+                        this.checkbutton_publicaccess.Active = !(OpenMetaverse.ParcelFlags.UseAccessList == (parcel.Flags & OpenMetaverse.ParcelFlags.UseAccessList));
 						//this.checkbutton_sellpasses;
-						this.checkbutton_groupaccess.Active=(OpenMetaverse.Parcel.ParcelFlags.UseAccessGroup==(parcel.Flags& OpenMetaverse.Parcel.ParcelFlags.UseAccessGroup));
+                        this.checkbutton_groupaccess.Active = (OpenMetaverse.ParcelFlags.UseAccessGroup == (parcel.Flags & OpenMetaverse.ParcelFlags.UseAccessGroup));
 						
 						this.entry_maxprims.Text=parcel.MaxPrims.ToString();
 						this.entry_primsgroup.Text=parcel.GroupPrims.ToString();
@@ -451,7 +451,7 @@ namespace omvviewerlight
 
 					    this.button1.Sensitive=allowed;
 					
-					     if ((parcel.Flags & Parcel.ParcelFlags.ForSale) == Parcel.ParcelFlags.ForSale)
+					     if ((parcel.Flags & ParcelFlags.ForSale) == ParcelFlags.ForSale)
                          {
                              if (parcel.AuthBuyerID != UUID.Zero)
                              {

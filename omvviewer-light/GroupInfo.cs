@@ -276,9 +276,9 @@ namespace omvviewerlight
                 List<KeyValuePair<UUID,UUID>> roleslist=new List<KeyValuePair<UUID,UUID>>();
                 if (id == UUID.Zero)
                 {
-                    if (MainClass.client.Groups.GroupMembersCaches.Dictionary.ContainsKey(request_members))
+                    if (MainClass.client.Groups.GroupMembersCaches.ContainsKey(request_members))
                     {
-                        int count = MainClass.client.Groups.GroupMembersCaches.Dictionary[request_members].Count;
+                        int count = MainClass.client.Groups.GroupMembersCaches[request_members].Count;
                         store_roles_list.SetValue(iter, 2, count.ToString());
                     }
                         return false;
@@ -314,7 +314,7 @@ namespace omvviewerlight
                 List<KeyValuePair<UUID,UUID>> roleslist=new List<KeyValuePair<UUID,UUID>>();
                 if (kvp.Key == UUID.Zero)
                 {
-                    count = MainClass.client.Groups.GroupMembersCaches.Dictionary.Count.ToString();
+                    count = MainClass.client.Groups.GroupMembersCaches.Count.ToString();
                 }
                 else
                 {
@@ -382,12 +382,12 @@ namespace omvviewerlight
 
             List<UUID> names = new List<UUID>();
 
-            if (!MainClass.client.Groups.GroupMembersCaches.Dictionary.ContainsKey(request_members))
+            if (!MainClass.client.Groups.GroupMembersCaches.ContainsKey(request_members))
                 return name_poll;
 
             lock(MainClass.client.Groups.GroupMembersCaches)
             {
-                foreach (KeyValuePair<UUID, GroupMember> member in MainClass.client.Groups.GroupMembersCaches.Dictionary[request_members])
+                foreach (KeyValuePair<UUID, GroupMember> member in MainClass.client.Groups.GroupMembersCaches[request_members])
                 {
                     if (!rcvd_names.Contains(member.Key))
                     {
@@ -434,9 +434,9 @@ namespace omvviewerlight
                 List<KeyValuePair<UUID, UUID>> roleslist = new List<KeyValuePair<UUID, UUID>>();
                 if (id == UUID.Zero)
                 {
-					if(MainClass.client.Groups.GroupMembersCaches.Dictionary.ContainsKey(request_members))
+					if(MainClass.client.Groups.GroupMembersCaches.ContainsKey(request_members))
 					{
-	                    int count = MainClass.client.Groups.GroupMembersCaches.Dictionary[request_members].Count;
+	                    int count = MainClass.client.Groups.GroupMembersCaches[request_members].Count;
 	                    store_roles_list.SetValue(iter, 2, count.ToString());
 					}
                     return true;
@@ -663,7 +663,7 @@ namespace omvviewerlight
                         List<UUID> seen = new List<UUID>();
                         if (role.ID == UUID.Zero)
                         {
-                            foreach (KeyValuePair<UUID, GroupMember> member in MainClass.client.Groups.GroupMembersCaches.Dictionary[request_members])
+                            foreach (KeyValuePair<UUID, GroupMember> member in MainClass.client.Groups.GroupMembersCaches[request_members])
                             {
                                 if(seen.Contains(member.Key))
                                     continue;
@@ -870,7 +870,7 @@ namespace omvviewerlight
                     {
                         if ((role.Powers & powers) == powers)
                         {
-                            foreach (KeyValuePair<UUID, GroupMember> member in MainClass.client.Groups.GroupMembersCaches.Dictionary[request_members])
+                            foreach (KeyValuePair<UUID, GroupMember> member in MainClass.client.Groups.GroupMembersCaches[request_members])
                             {
                                 if (seen.Contains(member.Key))
                                     continue;

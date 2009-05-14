@@ -143,9 +143,9 @@ namespace omvviewerlight
 			
 			if(this.checkbutton_mature.Active==false)
 			flags|=OpenMetaverse.DirectoryManager.DirFindFlags.PgSimsOnly;
-				
-			OpenMetaverse.Parcel.ParcelCategory pcat;
-			pcat=OpenMetaverse.Parcel.ParcelCategory.Any;
+			
+			OpenMetaverse.ParcelCategory pcat;
+            pcat = OpenMetaverse.ParcelCategory.Any;
 			queryid=UUID.Random();
 			MainClass.client.Directory.StartPlacesSearch(flags,pcat,entry1.Text,"",MainClass.client.Self.ActiveGroup,queryid);
 		}

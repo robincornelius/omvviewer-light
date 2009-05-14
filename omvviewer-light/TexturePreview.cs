@@ -24,6 +24,7 @@ omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(
 
 using System;
 using OpenMetaverse;
+using OpenMetaverse.Assets;
 using Gdk;
 using Gtk;
 

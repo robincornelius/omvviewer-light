@@ -32,6 +32,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using OpenMetaverse;
+using OpenMetaverse.Assets;
 
 /*
  * [14:09]	<jhurliman>	the onnewprim function will add missing texture uuids to the download queue, 
@@ -117,8 +118,8 @@ namespace omvviewerlight
 
         private Thread downloadMaster;
         private bool Running;
-
-        private AssetManager.ImageReceivedCallback DownloadCallback;
+        
+        private AssetManager.AssetReceivedCallback DownloadCallback;
         private AssetManager.ImageReceiveProgressCallback DownloadProgCallback;
 
         /// <summary>
