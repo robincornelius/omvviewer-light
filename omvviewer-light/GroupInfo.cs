@@ -536,12 +536,12 @@ namespace omvviewerlight
 
 		protected virtual void OnCheckbuttonGroupNoticesClicked (object sender, System.EventArgs e)
 		{
-		     MainClass.client.Groups.setUserGroupFlags(this.groupkey,this.checkbutton_group_notices.Active,this.checkbutton_showinpofile.Active);	
+		     //MainClass.client.Groups.setUserGroupFlags(this.groupkey,this.checkbutton_group_notices.Active,this.checkbutton_showinpofile.Active);	
 		}
 
 		protected virtual void OnCheckbuttonShowinpofileClicked (object sender, System.EventArgs e)
 		{
-		     MainClass.client.Groups.setUserGroupFlags(this.groupkey,this.checkbutton_group_notices.Active,this.checkbutton_showinpofile.Active);				
+		     //MainClass.client.Groups.setUserGroupFlags(this.groupkey,this.checkbutton_group_notices.Active,this.checkbutton_showinpofile.Active);				
 		}
 
 		protected virtual void OnTreeviewMembers1CursorChanged (object sender, System.EventArgs e)
