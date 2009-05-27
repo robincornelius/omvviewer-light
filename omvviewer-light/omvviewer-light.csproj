@@ -328,6 +328,15 @@
       <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="art\water.png" />
+    <EmbeddedResource Include="art\phantom.png">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\touch.png">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="art\move.png">
+      <CustomToolNamespace>omvviewerlight</CustomToolNamespace>
+    </EmbeddedResource>
     <Content Include="MonoPosixHelper.dll" />
     <Content Include="OpenMetaverse.dll.config" />
     <Content Include="openmetaverse_data\avatar_lad.xml" />

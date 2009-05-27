@@ -30,10 +30,24 @@ using Gdk;
 
 namespace omvviewerlight
 {
-	
+
 	[System.ComponentModel.ToolboxItem(true)]	
 	public partial class ObjectsLayout : Gtk.Bin
 	{
+
+        Gdk.Pixbuf img_blank;
+        Gdk.Pixbuf img_script;
+        Gdk.Pixbuf img_touch;
+        Gdk.Pixbuf img_phantom;
+        Gdk.Pixbuf img_physical;
+        Gdk.Pixbuf img_pay;
+        Gdk.Pixbuf img_owner;
+        Gdk.Pixbuf img_officer;
+        Gdk.Pixbuf img_group;
+        Gdk.Pixbuf img_move;
+        Gdk.Pixbuf img_mod;
+        Gdk.Pixbuf img_trans;
+
 
         bool sat = false;
 		Gtk.ListStore store;	
@@ -63,7 +77,7 @@ namespace omvviewerlight
 		public ObjectsLayout()
 		{
 			this.Build();
-			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(UUID),typeof(ulong));
+            store = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(UUID), typeof(ulong), typeof(Gdk.Pixbuf), typeof(Gdk.Pixbuf), typeof(Gdk.Pixbuf), typeof(Gdk.Pixbuf), typeof(Gdk.Pixbuf), typeof(Gdk.Pixbuf), typeof(Gdk.Pixbuf), typeof(Gdk.Pixbuf), typeof(Gdk.Pixbuf));
         
             MyTreeViewColumn mycol;
             mycol = new MyTreeViewColumn("Name",new Gtk.CellRendererText(), "text", 0,true);
@@ -77,6 +91,36 @@ namespace omvviewerlight
             mycol = new MyTreeViewColumn("Distance", new Gtk.CellRendererText(), "text", 2,false);
             mycol.setmodel(store);
             treeview1.AppendColumn(mycol);
+
+            mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 5, false);
+            mycol.setmodel(store);
+            treeview1.AppendColumn(mycol);
+            mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 6, false);
+            mycol.setmodel(store);
+            treeview1.AppendColumn(mycol);
+            mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 7, false);
+            mycol.setmodel(store);
+            treeview1.AppendColumn(mycol);
+            mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 8, false);
+            mycol.setmodel(store);
+            treeview1.AppendColumn(mycol);
+            mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 9, false);
+            mycol.setmodel(store);
+            treeview1.AppendColumn(mycol);
+            mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 10, false);
+            mycol.setmodel(store);
+            treeview1.AppendColumn(mycol);
+            mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 11, false);
+            mycol.setmodel(store);
+            treeview1.AppendColumn(mycol);
+            mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 12, false);
+            mycol.setmodel(store);
+            treeview1.AppendColumn(mycol);
+
+            mycol = new MyTreeViewColumn("", new CellRendererPixbuf(), "pixbuf", 13, false);
+            mycol.setmodel(store);
+            treeview1.AppendColumn(mycol);
+
             
             treeview1.Model=store;
             this.store.SetSortFunc(2, sort_Vector3);
@@ -92,13 +136,27 @@ namespace omvviewerlight
 			this.label_pos.Text="";
 		    this.label_float_text.Text="";
             treeview1.HeadersClickable = true;
+
+            img_blank = MainClass.GetResource("blank_arrow.png");
+            img_script = MainClass.GetResource("inv_item_script.png");
+            img_touch = MainClass.GetResource("touch.png");
+            img_pay= MainClass.GetResource("status_money.png");
+            img_phantom = MainClass.GetResource("phantom.png");
+            img_physical = MainClass.GetResource("inv_item_object.png");
+            img_owner = MainClass.GetResource("icn_voice-pvtfocus.png");
+            img_officer = MainClass.GetResource("icn_voice-groupfocus2.png");
+            img_group = MainClass.GetResource("icn_voice-groupfocus.png");
+
+            img_move = MainClass.GetResource("move.png");
+            img_mod = MainClass.GetResource("ff_edit_mine.png");
+            img_trans = MainClass.GetResource("ff_edit_theirs.png");
+
           			
 			MainClass.client.Objects.OnObjectProperties += new OpenMetaverse.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
 			MainClass.client.Groups.OnGroupNames += new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
             MainClass.client.Self.OnAvatarSitResponse += new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
 			AutoPilot.onAutoPilotFinished+=new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
             MainClass.client.Objects.OnObjectUpdated += new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);
-
 		}
 
         void Objects_OnObjectUpdated(Simulator simulator, ObjectUpdate update, ulong regionHandle, ushort timeDilation)
@@ -320,9 +378,29 @@ namespace omvviewerlight
                             }
                             Gtk.Application.Invoke(delegate
                             {
-                                store.AppendValues(prim.Properties.Name, prim.Properties.Description, Vector3d.Distance(AutoPilot.localtoglobalpos(prim.Position, simulator.Handle), AutoPilot.localtoglobalpos(self_pos, MainClass.client.Network.CurrentSim.Handle)).ToString(), prim.Properties.ObjectID, simulator.Handle);
+                                Gdk.Pixbuf owner = this.img_blank;
+
+                                if ((prim.Flags & PrimFlags.ObjectYouOwner) == PrimFlags.ObjectYouOwner)
+                                    owner = this.img_owner;
+                                if ((prim.Flags & PrimFlags.ObjectYouOfficer) == PrimFlags.ObjectYouOfficer)
+                                    owner = this.img_officer;
+                                if ((prim.Flags & PrimFlags.ObjectGroupOwned) == PrimFlags.ObjectGroupOwned)
+                                    owner = this.img_group;
+                               
+
+                                store.AppendValues(prim.Properties.Name, prim.Properties.Description, MainClass.cleandistance(Vector3d.Distance(AutoPilot.localtoglobalpos(prim.Position, simulator.Handle), AutoPilot.localtoglobalpos(self_pos, MainClass.client.Network.CurrentSim.Handle)).ToString(),2), prim.Properties.ObjectID, simulator.Handle,
+                                    owner,
+                                    (prim.Flags & PrimFlags.Money) == PrimFlags.Money ? this.img_pay : this.img_blank,
+                                    (prim.Flags & PrimFlags.Touch) == PrimFlags.Touch ? this.img_touch : this.img_blank,
+                                    (prim.Flags & PrimFlags.Scripted) == PrimFlags.Scripted ? this.img_script : this.img_blank,
+                                    (prim.Flags & PrimFlags.Phantom) == PrimFlags.Phantom ? this.img_phantom : this.img_blank,
+                                    (prim.Flags & PrimFlags.Physics) == PrimFlags.Physics ? this.img_physical : this.img_blank,
+                                    (prim.Flags & PrimFlags.ObjectMove) == PrimFlags.ObjectMove ? this.img_move : this.img_blank,
+                                    (prim.Flags & PrimFlags.ObjectModify) == PrimFlags.ObjectModify ? this.img_mod : this.img_blank,
+                                    (prim.Flags & PrimFlags.ObjectTransfer) == PrimFlags.ObjectTransfer ? this.img_trans : this.img_blank
+                           
+                                    );
                             });
-                                //store.Foreach(myfunc);	
                         });
 
                     }
