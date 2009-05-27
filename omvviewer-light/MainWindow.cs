@@ -205,6 +205,8 @@ public partial class MainWindow: Gtk.Window
         MainClass.client.Parcels.OnParcelDwell += new ParcelManager.ParcelDwellCallback(Parcels_OnParcelDwell);
         MainClass.client.Inventory.OnObjectOffered +=new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
 
+        MainClass.client.Network.OnCurrentSimChanged += new NetworkManager.CurrentSimChangedCallback(Network_OnCurrentSimChanged);
+
 		//this.menubar1.get
 		
 		this.AvaiableAction.Activate();
@@ -231,6 +233,15 @@ public partial class MainWindow: Gtk.Window
         this.statusbar1.Push(1, "Logged out");
 
 	}
+
+    void Network_OnCurrentSimChanged(Simulator PreviousSimulator)
+    {
+        if (MainClass.client.Network.LoginStatusCode == LoginStatus.Success)
+        {
+            Console.WriteLine("Changed Sim, forcing a rebake");
+            MainClass.client.Appearance.SetPreviousAppearance(true);
+        }
+    }
 
 	void OnInventoryOffered(InstantMessage details,AssetType type,UUID id,bool fromtask)
 	{

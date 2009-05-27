@@ -250,12 +250,12 @@ namespace omvviewerlight
 				MainClass.client.Throttle.Texture= MainClass.appsettings.ThrottleTexture;	
 		  
 
-                    Gtk.Application.Invoke(delegate
-                   {
-                      
-                       Thread appearenceRunner = new Thread(new ThreadStart(this.appearencethread));
-                       appearenceRunner.Start();
-                   });
+                 //   Gtk.Application.Invoke(delegate
+                 //  {
+                 //     
+                 //      Thread appearenceRunner = new Thread(new ThreadStart(this.appearencethread));
+                 //      appearenceRunner.Start();
+                 //  });
 
 				
                 MainClass.userlogout = false;          
