@@ -940,7 +940,7 @@ public partial class MainWindow: Gtk.Window
 		        }
 	        });
 
-        if (im.IMSessionID == UUID.Zero)
+        if (im.Dialog==InstantMessageDialog.MessageFromObject)
             return; //Its an object Im, chat weill grab this for us
 
         if (im_windows.ContainsKey(im.IMSessionID))

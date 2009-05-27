@@ -38,7 +38,7 @@ namespace omvviewerlight
 		Gtk.Image target_image;
         int img_width;
         int img_height;
-        ImageDownload this_image;
+        //ImageDownload this_image;
         AssetTexture this_asset;
 		bool scale=false;
       
@@ -61,8 +61,11 @@ namespace omvviewerlight
 				return;
 			
             //REALY FIXME
+            
 			//MainClass.client.Assets.OnImageReceived += new OpenMetaverse.AssetManager.ImageReceivedCallback(onGotImage);
-			//MainClass.client.Assets.OnImageReceiveProgress += new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
+            MainClass.client.Assets.OnAssetReceived += new AssetManager.AssetReceivedCallback(Assets_OnAssetReceived);
+            MainClass.client.Assets.OnImageRecieveProgress += new AssetManager.ImageReceiveProgressCallback(onProgress);
+                
 			scale=auto;
 			
 			target_asset=asset;
@@ -75,6 +78,8 @@ namespace omvviewerlight
 
             dowork();	
 	    }
+
+      
 
         public void go()
         {
@@ -94,22 +99,24 @@ namespace omvviewerlight
             //REALLY FIXME
             //if (target_asset != UUID.Zero)
               //  MainClass.client.Assets.RequestImage(target_asset, OpenMetaverse.ImageType.Normal, 99999000.0f, 0, 0);	
-
+            MainClass.client.Assets.RequestAsset(target_asset, AssetType.Texture,true);
         }
 		
 		public void abort()
 	   {
            //REALLY FIXME
 			//MainClass.client.Assets.OnImageReceived -= new OpenMetaverse.AssetManager.ImageReceivedCallback(onGotImage);
-			//MainClass.client.Assets.OnImageReceiveProgress -= new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
-       }
+            MainClass.client.Assets.OnImageRecieveProgress -= new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
+            MainClass.client.Assets.OnAssetReceived -= new AssetManager.AssetReceivedCallback(Assets_OnAssetReceived);
+       
+        }
 			                                               
-        void onProgress(UUID image, int recieved, int total,int lastpacket)
+        void onProgress(UUID image, int recieved, int total)
 		{
 			if(target_asset!=image)
 			    return;
 
-            progress(target_image.Pixbuf,(float)total/(float)lastpacket);
+            progress(target_image.Pixbuf, (float)total / (float)recieved);
 	}
 		
 		unsafe void progress(Gdk.Pixbuf bufdest,float progress)
@@ -149,11 +156,11 @@ namespace omvviewerlight
         void decodethread()
         {
 
-            if (!this_image.Success)
-            {
-                Console.Write("Failed to download image\n");
-                return;
-            }
+          //  if (!this_image.Success)
+          //  {
+          //      Console.Write("Failed to download image\n");
+          //      return;
+          //  }
 			
 
             if (this_asset.AssetID != target_asset)
@@ -161,7 +168,9 @@ namespace omvviewerlight
 
             //REALLY FIXME
            // MainClass.client.Assets.OnImageReceived -= new OpenMetaverse.AssetManager.ImageReceivedCallback(onGotImage);
-           // MainClass.client.Assets.OnImageReceiveProgress -= new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
+            MainClass.client.Assets.OnImageRecieveProgress -= new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
+            MainClass.client.Assets.OnAssetReceived -= new AssetManager.AssetReceivedCallback(Assets_OnAssetReceived);
+       
 
             Console.Write("Downloaded asset " + this_asset.AssetID.ToString() + "\n");
             byte[] tgaFile = null;
@@ -170,7 +179,7 @@ namespace omvviewerlight
             try
             {
                
-                OpenJPEG.DecodeToImage(this_image.AssetData, out imgData);
+                OpenJPEG.DecodeToImage(this_asset.AssetData, out imgData);
                 //imgData.ExportRaw();
                 //tgaFile = imgData.ExportTGA();
                 tgaFile = imgData.ExportTGA();
@@ -232,7 +241,28 @@ namespace omvviewerlight
                 }
             });
         }
-		                                  
+
+
+        void Assets_OnAssetReceived(AssetDownload transfer, Asset asset)
+        {
+
+            if (asset == null)
+            {
+                Console.WriteLine("Try get image got a null asset");
+                return;
+            }
+
+            if (asset is AssetTexture)
+            {
+                asset.Decode();
+                this_asset = (AssetTexture)asset;
+                //this_image = ((AssetTexture)asset).Image;
+                Thread decode = new Thread(new ThreadStart(this.decodethread));
+                Console.WriteLine("Begining a decode thread for asset " + asset.AssetID.ToString());
+                decode.Start();
+            }
+        }
+      
 		void onGotImage(ImageDownload image,AssetTexture asset)
 		{
             if (asset == null || image == null)
@@ -242,7 +272,7 @@ namespace omvviewerlight
 		    }
 			if(image.ID==this.target_asset)
 			{
-	            this_image = image;
+	            //this_image = image;
 	            this_asset = asset;
 	            Thread decode = new Thread(new ThreadStart(this.decodethread));
 	            Console.WriteLine("Begining a decode thread for asset "+asset.AssetID.ToString());

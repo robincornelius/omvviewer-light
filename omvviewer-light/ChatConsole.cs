@@ -150,49 +150,68 @@ namespace omvviewerlight
             {
                 dosetup();
 
-                if (im.GroupIM)
+                if (im.Dialog==InstantMessageDialog.MessageFromAgent)
                 {
-                    Logger.Log("Starting a new group chat for session id " + im.IMSessionID.ToString(), Helpers.LogLevel.Info);
-                    current_chat_type =chat_type.CHAT_TYPE_GROUP_IM;
-                    this.im_target = im.IMSessionID;
-                    MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
-                    this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter, "Trying to join group chat session, please wait........\n");
-                    Gtk.Timeout.Add(10000, kick_group_join);
-                    //MainClass.client.Self.ChatterBoxAcceptInvite(im.IMSessionID);
-                    MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
-                    MainClass.win.im_windows.Add(im.IMSessionID, this);
-                    onIM(im, null);
-                }
-
-                if (!im.GroupIM && im.BinaryBucket.Length > 1)
-                {
-                    Logger.Log("Starting a new confrence chat for session id " + im.IMSessionID.ToString(),Helpers.LogLevel.Info);
-                    current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
-                    this.im_target = im.IMSessionID;
-                    //MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
-                    show_group_list(im.IMSessionID);
-                    MainClass.win.im_windows.Add(im.IMSessionID, this);			
-					MainClass.client.Self.ChatterBoxAcceptInvite(im.IMSessionID);
-					bucket=im.BinaryBucket;
-                    onIM(im, null);
-                }
-
-                if (!im.GroupIM && im.BinaryBucket.Length <=1)
-                {
-                    Logger.Log("Starting a direct IM " + im.IMSessionID.ToString(), Helpers.LogLevel.Info);
-                    current_chat_type = chat_type.CHAT_TYPE_IM;
-                    im_target = im.FromAgentID;
-                    foreach (InstantMessage qim in MainClass.win.im_queue)
+                    if (im.BinaryBucket.Length <= 1)
                     {
-                        if (qim.FromAgentID == im_target)
-                            onIM(qim, null);
+                        //Plain IM
+                        Logger.Log("Starting a direct IM " + im.IMSessionID.ToString(), Helpers.LogLevel.Info);
+                        current_chat_type = chat_type.CHAT_TYPE_IM;
+                        im_target = im.FromAgentID;
+                        foreach (InstantMessage qim in MainClass.win.im_queue)
+                        {
+                            if (qim.FromAgentID == im_target)
+                                onIM(qim, null);
+                        }
+
+                        MainClass.win.im_queue.RemoveAll(TestRemove);
+
+                        MainClass.win.im_windows.Add(im.FromAgentID, this);
+                        if (MainClass.win.im_registering.Contains(im.FromAgentID))
+                            MainClass.win.im_registering.Remove(im.FromAgentID);
+
+                    }
+                    else if(MainClass.client.Groups.GroupName2KeyCache.ContainsKey(im.IMSessionID))
+                    {
+                        //Group IM
+                        Logger.Log("Starting a new group chat for session id " + im.IMSessionID.ToString(), Helpers.LogLevel.Info);
+                        current_chat_type = chat_type.CHAT_TYPE_GROUP_IM;
+                        this.im_target = im.IMSessionID;
+                        MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
+                        this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter, "Trying to join group chat session, please wait........\n");
+                        Gtk.Timeout.Add(10000, kick_group_join);
+                        //MainClass.client.Self.ChatterBoxAcceptInvite(im.IMSessionID);
+                        MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
+                        MainClass.win.im_windows.Add(im.IMSessionID, this);
+                        onIM(im, null);
+
+                    }
+                    else
+                    {
+                        //Confrence IM
+                        Logger.Log("Starting a new confrence chat for session id " + im.IMSessionID.ToString(), Helpers.LogLevel.Info);
+                        current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
+                        this.im_target = im.IMSessionID;
+                        //MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
+                        show_group_list(im.IMSessionID);
+                        MainClass.win.im_windows.Add(im.IMSessionID, this);
+                        MainClass.client.Self.ChatterBoxAcceptInvite(im.IMSessionID);
+                        bucket = im.BinaryBucket;
+                        onIM(im, null);
+
                     }
 
-                    MainClass.win.im_queue.RemoveAll(TestRemove);
+                }
+                else if( im.Dialog==InstantMessageDialog.MessageFromObject)
+                {
+                    //Object IM
+                    if (current_chat_type == chat_type.CHAT_TYPE_CHAT)
+                    {
+                        this.displaychat(im.Message, im.FromAgentName, objectchat, objectchat);
+                    }
 
-                    MainClass.win.im_windows.Add(im.FromAgentID, this);
-                    if (MainClass.win.im_registering.Contains(im.FromAgentID))
-                        MainClass.win.im_registering.Remove(im.FromAgentID);
+
+                    return;
                 }
 
                 MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
@@ -468,7 +487,7 @@ namespace omvviewerlight
                     return;
                 }
 
-                if (im.IMSessionID == UUID.Zero)
+                if (im.Dialog == InstantMessageDialog.MessageFromObject)
                 {
                     Gtk.Application.Invoke(delegate
                     {
