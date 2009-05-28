@@ -82,7 +82,7 @@ namespace omvviewerlight
                
         client = new GridClient();
 		client.Settings.USE_TEXTURE_CACHE = true;
-		client.Settings.USE_LLSD_LOGIN=true;
+        // client.Settings.USE_LLSD_LOGIN = true;
 
 		string res_dir=System.AppDomain.CurrentDomain.BaseDirectory+System.IO.Path.DirectorySeparatorChar +"openmetaverse_data";
 
