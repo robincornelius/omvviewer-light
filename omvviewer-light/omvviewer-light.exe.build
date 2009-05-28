@@ -85,8 +85,10 @@
          	 <include name="art/map_avatar_target_8.png" />
 		 <include name="art/map_avatar_me_8.png" /> 
 		 <include name="art/map_home.png" /> 
+		 <include name="art/move.png" />
 		 <include name="art/parcelindex.png" /> 
 		 <include name="art/parcel.png" /> 
+		 <include name="art/phantom.png" />
 		 <include name="art/status_health.png" /> 
 		 <include name="art/status_money.png" /> 
 		 <include name="art/status_no_build.png" /> 
@@ -99,6 +101,7 @@
 		 <include name="art/status_voice.png" /> 
 		 <include name="art/tick.png" /> 
 		 <include name="art/trying.png" /> 
+		 <include name="art/touch.png" />
 		 <include name="art/up_arrow.png" /> 
 		 <include name="art/omvviewer-light.xpm" />
 		 <include name="art/water.png"/>
@@ -145,8 +148,8 @@
                 <include name="Settings.cs" />
                 <include name="TeleportProgress.cs" />
                 <include name="TeleportTo.cs" />
-                <include name="TexturePipeline.cs" />
-                <include name="OpenGL.cs" />
+<!--               <include name="TexturePipeline.cs" />
+                <include name="OpenGL.cs" />-->
 		        <include name="TexturePreview.cs" />
                 <include name="TryGetImage.cs" />
                 <include name="aPick.cs" />
