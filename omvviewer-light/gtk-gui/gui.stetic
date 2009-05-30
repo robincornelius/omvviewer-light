@@ -5,7 +5,7 @@
     <target-gtk-version>2.12</target-gtk-version>
   </configuration>
   <import>
-    <widget-library name="MonoDevelop.Core.Gui, Version=1.9.3.0, Culture=neutral" />
+    <widget-library name="MonoDevelop.Core.Gui, Version=2.0.0.0, Culture=neutral" />
     <widget-library name="../bin/omvviewer-light.exe" internal="true" />
   </import>
   <widget class="Gtk.Window" id="MainWindow" design-size="812 629">
