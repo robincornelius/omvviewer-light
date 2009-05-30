@@ -179,8 +179,6 @@
     <File name="art/map_avatar_friend_above_8.png" subtype="Code" buildaction="EmbedAsResource" />
     <File name="art/map_avatar_friend_below_8.png" subtype="Code" buildaction="EmbedAsResource" />
     <File name="AutoPilot.cs" subtype="Code" buildaction="Compile" />
-    <File name="OpenGL.cs" subtype="Code" buildaction="Compile" />
-    <File name="TexturePipeline.cs" subtype="Code" buildaction="Compile" />
     <File name="art/omvviewer-light.xpm" subtype="Code" buildaction="EmbedAsResource" />
     <File name="LocalRegion.cs" subtype="Code" buildaction="Compile" />
     <File name="gtk-gui/omvviewerlight.LocalRegion.cs" subtype="Code" buildaction="Compile" />
@@ -192,6 +190,9 @@
     <File name="art/water.png" subtype="Code" buildaction="EmbedAsResource" />
     <File name="gtk-gui/omvviewerlight.ScaleImage.cs" subtype="Code" buildaction="Compile" />
     <File name="ScaleImage.cs" subtype="Code" buildaction="Compile" />
+    <File name="art/touch.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/phantom.png" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="art/move.png" subtype="Code" buildaction="EmbedAsResource" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

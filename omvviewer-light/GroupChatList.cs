@@ -42,7 +42,8 @@ namespace omvviewerlight
 			
                 Gtk.Application.Invoke(delegate{			
 				this.store.Clear();
-				lock(GroupChatSessions.Dictionary)
+				//lock(MainClass.client.Self.GroupChatSessions.Dictionary) //FIX ME i need to lock this but its private
+				// libomv update required to use a better dictionary internally
 					if(MainClass.client.Self.GroupChatSessions.ContainsKey(session))
 						foreach(OpenMetaverse.ChatSessionMember member in MainClass.client.Self.GroupChatSessions[session])
 						{

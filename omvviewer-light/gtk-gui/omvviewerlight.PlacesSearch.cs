@@ -182,14 +182,14 @@ namespace omvviewerlight {
             this.button_TP.UseUnderline = true;
             // Container child button_TP.Gtk.Container+ContainerChild
             Gtk.Alignment w21 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
-            // Container child GtkAlignment1.Gtk.Container+ContainerChild
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
             Gtk.HBox w22 = new Gtk.HBox();
             w22.Spacing = 2;
-            // Container child GtkHBox1.Gtk.Container+ContainerChild
+            // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Image w23 = new Gtk.Image();
             w23.Pixbuf = MainClass.GetResource("icon_place.png");
             w22.Add(w23);
-            // Container child GtkHBox1.Gtk.Container+ContainerChild
+            // Container child GtkHBox.Gtk.Container+ContainerChild
             Gtk.Label w25 = new Gtk.Label();
             w25.LabelProp = Mono.Unix.Catalog.GetString("Teleport");
             w25.UseUnderline = true;
