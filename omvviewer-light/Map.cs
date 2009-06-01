@@ -297,11 +297,12 @@ namespace omvviewerlight
                                 {
                                     Console.WriteLine("Could not find parent prim for AV, killing\n");
                                     removelist.Add(kvp.Value.LocalID);
-                                    //FIXME
-                                    //continue;
                                 }
-                                Primitive parent = draw_sim.ObjectsPrimitives[kvp.Value.ParentID];
-                                pos = Vector3.Transform(kvp.Value.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
+                                else
+                                {
+                                    Primitive parent = draw_sim.ObjectsPrimitives[kvp.Value.ParentID];
+                                    pos = Vector3.Transform(kvp.Value.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
+                                }
                             }
                             else
                             {
