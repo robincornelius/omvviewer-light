@@ -44,6 +44,10 @@ namespace omvviewerlight
 {
 	class MainClass
 	{
+        [DllImport("Kernel32")]
+        public extern static bool SetDllDirectory(string path);
+
+
 		public static bool userlogout = false;
 
     	public static GridClient client;
@@ -64,11 +68,53 @@ namespace omvviewerlight
                 return Pixbuf.LoadFromResource(name);
             else
                 return Pixbuf.LoadFromResource("omvviewerlight.art." + name);          
-        }		
-		public static void Main (string[] args)
-		{
+        }
+
+        private static bool GtkProbe()
+        {
             try
             {
+                Console.WriteLine("Probing for GTK");
+                Gtk.Application.Init();
+                Console.WriteLine("GTK found");
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("GTK not found");
+                return false;
+            }
+
+
+        }
+
+
+		public static void Main (string[] args)
+		{
+
+            bool IsRunningOnMono = (Type.GetType("Mono.Runtime") != null);
+
+            if (!IsRunningOnMono)
+            {
+                bool gtkfound = false;
+                //Gtk probe just try to sort out path issues with the native dlls here.
+                //if we still have problems then we need to try to sort our paths for the dot net dlls as well
+                // but these SHOULD be in the GAC unless install really fucked up. But path is a sensitive issue
+                // and some one may want to kill the path because of Gtk+ issues with other apps.
+
+                gtkfound=GtkProbe();
+
+                if (gtkfound == false)
+                {
+                    SetDllDirectory("C:\\Program Files\\GtkSharp\\2.12\\bin");
+                    gtkfound = GtkProbe();
+                }
+            }
+
+            try
+            {
+
+
 				Assembly a = Assembly.GetExecutingAssembly();
                 appsettings= new MySettings();
 
