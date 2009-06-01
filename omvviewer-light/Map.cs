@@ -289,7 +289,7 @@ namespace omvviewerlight
                     {
                         if (kvp.Value.LocalID != MainClass.client.Self.LocalID)
                         {
-                            Vector3 pos;
+                            Vector3 pos= new Vector3(0,0,0);
 
                             if (kvp.Value.ParentID != 0)
                             {
@@ -299,7 +299,8 @@ namespace omvviewerlight
                                     removelist.Add(kvp.Value.LocalID);
                                 }
                                 else
-                                {
+                                {   //Bleh we use to continue above but we can't with the internal itterator
+                                    //SO this might produce some bogus positions.
                                     Primitive parent = draw_sim.ObjectsPrimitives[kvp.Value.ParentID];
                                     pos = Vector3.Transform(kvp.Value.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
                                 }
