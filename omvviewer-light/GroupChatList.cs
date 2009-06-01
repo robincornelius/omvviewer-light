@@ -42,18 +42,17 @@ namespace omvviewerlight
 			
                 Gtk.Application.Invoke(delegate{			
 				this.store.Clear();
-				lock(MainClass.client.Self.GroupChatSessions)
-                if(MainClass.client.Self.GroupChatSessions.ContainsKey(session))
-				foreach(OpenMetaverse.ChatSessionMember member in MainClass.client.Self.GroupChatSessions[session])
-				{
-                    string extra= member.IsModerator==true?" (moderator)":"";
-					Gtk.TreeIter iter = store.AppendValues("Waiting...",member.AvatarKey);
-		            AsyncNameUpdate ud=new AsyncNameUpdate(member.AvatarKey,false);  
-			        ud.addparameters(iter);
-           			
-			        ud.onNameCallBack += delegate(string namex,object[] values){Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; lock(store){store.SetValue(iterx,0,namex+extra);}};
-		 	        ud.go();						
-  			    }	
+				if(MainClass.client.Self.GroupChatSessions.ContainsKey(session))			
+				    MainClass.client.Self.GroupChatSessions[session].ForEach(delegate (ChatSessionMember member)
+					{
+	                    string extra= member.IsModerator==true?" (moderator)":"";
+						Gtk.TreeIter iter = store.AppendValues("Waiting...",member.AvatarKey);
+			            AsyncNameUpdate ud=new AsyncNameUpdate(member.AvatarKey,false);  
+				        ud.addparameters(iter);
+			           			
+				        ud.onNameCallBack += delegate(string namex,object[] values){Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; lock(store){store.SetValue(iterx,0,namex+extra);}};
+			 	        ud.go();						
+	  			    });	
 				
 	        MainClass.client.Self.OnChatSessionMemberAdded += new OpenMetaverse.AgentManager.ChatSessionMemberAddedCallback(onGroupChatMemberAdded);
 			MainClass.client.Self.OnChatSessionMemberLeft += new OpenMetaverse.AgentManager.ChatSessionMemberLeftCallback(onGroupChatMemberLeft);	
