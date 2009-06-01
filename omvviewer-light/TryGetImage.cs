@@ -177,7 +177,21 @@ namespace omvviewerlight
             }
            
 			Gdk.Pixbuf buf;
-	
+	            
+            //Sort out color space
+
+            for (int pos = 0; pos < tgaFile.Length-3; pos = pos + 3)
+            {
+                byte B = tgaFile[pos];
+                byte G = tgaFile[pos+1];
+                byte R = tgaFile[pos + 2];
+
+                tgaFile[pos] = R;
+                tgaFile[pos+1] = G;
+                tgaFile[pos+2] = B;
+            }
+
+
 			try
 			{
 			if(this.scale)
