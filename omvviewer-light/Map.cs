@@ -60,10 +60,19 @@ namespace omvviewerlight
 	    Gtk.Image objects_map;
 		int width,height;
 		int lastwidth,lastheight;
+
+        Simulator this_maps_sim = null;
 		
+        public void SetMapSim(Simulator sim)
+        {
+            this_maps_sim=sim;
+        }
+
 		public Map()
 		{           
 			this.Build();
+            basemap = new Gtk.Image(MainClass.GetResource("water.png"));
+
 			lastwidth=-1;
 			lastheight=-1;
 			this.eventbox1.SizeAllocated += delegate(object o, SizeAllocatedArgs args) {
@@ -71,7 +80,7 @@ namespace omvviewerlight
 				width=args.Allocation.Width;
                 Gtk.Application.Invoke(delegate
                 {
-                    if (MainClass.client.Network.CurrentSim != null)
+                    if (this_maps_sim != null)
                     {
                         if (objects_map != null && objects_map.Pixbuf != null && (lastheight != height || lastwidth != width))
                         {
@@ -92,7 +101,6 @@ namespace omvviewerlight
 			
 			MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
 			MainClass.client.Objects.OnNewAvatar += new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
-			MainClass.client.Objects.OnObjectUpdated += new OpenMetaverse.ObjectManager.ObjectUpdatedCallback(onUpdate);
             MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
 			MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
 			AutoPilot.onAutoPilotFinished += new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
@@ -104,9 +112,9 @@ namespace omvviewerlight
 			if(MainClass.client!=null)
 			{
 				if(MainClass.client.Network.LoginStatusCode==OpenMetaverse.LoginStatus.Success)
-                {	
-					    MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Objects);
-					    this.label1.Text = MainClass.client.Network.CurrentSim.Name;
+                {
+                        MainClass.client.Grid.RequestMapRegion(this_maps_sim.Name, GridLayerType.Objects);
+                        this.label1.Text = this_maps_sim.Name;
 						MainClass.win.map_widget=this;
        	         }
              }	
@@ -114,8 +122,13 @@ namespace omvviewerlight
 
         void Grid_OnCoarseLocationUpdate(Simulator sim, List<UUID> newEntries, List<UUID> removedEntries)
         {
+            Gtk.Application.Invoke(delegate
+            {
+                drawavs();
+            });
         }
 
+    
 		~Map()
 		{
 			Console.WriteLine("Map Cleaned up");
@@ -126,7 +139,6 @@ namespace omvviewerlight
 			running=false;
 			MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
 			MainClass.client.Objects.OnNewAvatar -= new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
-			MainClass.client.Objects.OnObjectUpdated -= new OpenMetaverse.ObjectManager.ObjectUpdatedCallback(onUpdate);
             MainClass.client.Self.OnTeleport -= new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
 			MainClass.client.Grid.OnGridRegion -= new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
 			AutoPilot.onAutoPilotFinished -= new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
@@ -141,11 +153,10 @@ namespace omvviewerlight
 
 			if(running==false)
 				return false;
-			
-	            if (MainClass.client.Network.CurrentSim != null)
-	                drawavs();
+
+            if (this_maps_sim != null)
+	            drawavs();
          	
-			
             return true;
 
         }
@@ -174,7 +185,7 @@ namespace omvviewerlight
 		
 		void onGridRegion(GridRegion region)
 		{
-			if(region.RegionHandle==MainClass.client.Network.CurrentSim.Handle)
+            if (region.RegionHandle == this_maps_sim.Handle)
 			{
 				current_region=region;
 				agent_region=region;
@@ -209,35 +220,25 @@ namespace omvviewerlight
 			if(status==OpenMetaverse.TeleportStatus.Finished)
 			{
 
-                if (MainClass.client.Network.CurrentSim.ID == lastsim)
+                if (this_maps_sim.ID == lastsim)
                     return;
 				
 			this.terrain_map_ID=UUID.Zero;
 			this.objects_map_ID=UUID.Zero;
 			this.forsale_map_ID=UUID.Zero;
 
-			MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Objects);
+            MainClass.client.Grid.RequestMapRegion(this_maps_sim.Name, GridLayerType.Objects);
 
 			Gtk.Application.Invoke(delegate
             {
                  drawavs();
             });
 
-                if(MainClass.client.Network.CurrentSim !=null)
-                    lastsim = MainClass.client.Network.CurrentSim.ID;
+                if (this_maps_sim != null)
+                    lastsim = this_maps_sim.ID;
 			}
 	    }
-				
-		void onUpdate(Simulator simulator, ObjectUpdate update,ulong regionHandle, ushort timeDilation)
-		{
-			 if(MainClass.client.Network.CurrentSim!=null) //OpenSim protection needed this
-	            Gtk.Application.Invoke(delegate
-					{
-	                        if (MainClass.client.Network.CurrentSim.ObjectsAvatars.ContainsKey(update.LocalID))
-	                            drawavs();
-	                });			
-       }
-		
+					
 		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
 		{
 			
@@ -310,7 +311,7 @@ namespace omvviewerlight
 
                     });
 
-                    if (MainClass.client.Network.CurrentSim.Handle == current_region.RegionHandle)
+                    if (this_maps_sim.Handle == current_region.RegionHandle)
                         showme(buf, avatar_me.Pixbuf, MainClass.client.Self.SimPosition);		
 
                     if (this.targetpos.X!=-1)
@@ -328,10 +329,12 @@ namespace omvviewerlight
 		void onNewSim(Simulator lastsim)
 	    {
 			MainClass.win.map_widget=this;
-			Gtk.Application.Invoke(delegate
-            {           
-                  this.label1.Text = MainClass.client.Network.CurrentSim.Name;
-			});
+            basemap = new Gtk.Image(MainClass.GetResource("water.png"));
+		
+            //Gtk.Application.Invoke(delegate
+            //{
+            //    this.label1.Text = this_maps_sim.Name;
+			//});
         }
 	
 		void showme(Gdk.Pixbuf buf,Gdk.Pixbuf src,Vector3 pos)

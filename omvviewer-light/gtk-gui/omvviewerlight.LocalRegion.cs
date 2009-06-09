@@ -21,43 +21,43 @@ namespace omvviewerlight {
         
         private Gtk.EventBox eventbox1;
         
-        private Gtk.Image image1;
+        private omvviewerlight.Map map1;
         
         private Gtk.EventBox eventbox2;
         
-        private Gtk.Image image2;
+        private omvviewerlight.Map map2;
         
         private Gtk.EventBox eventbox3;
         
-        private Gtk.Image image3;
+        private omvviewerlight.Map map3;
         
         private Gtk.HBox hbox5;
         
         private Gtk.EventBox eventbox4;
         
-        private Gtk.Image image4;
+        private omvviewerlight.Map map4;
         
         private Gtk.EventBox eventbox5;
         
-        private Gtk.Image image5;
+        private omvviewerlight.Map map5;
         
         private Gtk.EventBox eventbox6;
         
-        private Gtk.Image image6;
+        private omvviewerlight.Map map6;
         
         private Gtk.HBox hbox6;
         
         private Gtk.EventBox eventbox7;
         
-        private Gtk.Image image7;
+        private omvviewerlight.Map map7;
         
         private Gtk.EventBox eventbox8;
         
-        private Gtk.Image image8;
+        private omvviewerlight.Map map8;
         
         private Gtk.EventBox eventbox9;
         
-        private Gtk.Image image9;
+        private omvviewerlight.Map map9;
         
         protected virtual void Build() {
             Stetic.Gui.Initialize(this);

@@ -34,14 +34,22 @@ namespace omvviewerlight
 		public Location()
 		{
 			this.Build();
+            MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(Network_OnCurrentSimChanged);
 		}
+
+        void Network_OnCurrentSimChanged(OpenMetaverse.Simulator PreviousSimulator)
+        {
+            this.map1.SetMapSim(MainClass.client.Network.CurrentSim);
+        }
 		
 		new public void Dispose()
 		{
 			Gtk.Notebook p;
 			p=(Gtk.Notebook)this.Parent;
 			p.RemovePage(p.PageNum(this));
-			
+
+            MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(Network_OnCurrentSimChanged);
+   
 			this.map1.Dispose();
 			this.radar1.Dispose();
 			this.teleportto1.Dispose();

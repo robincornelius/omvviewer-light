@@ -19,32 +19,17 @@ namespace omvviewerlight
 		uint cx;
 		bool requested=false;
 		GridRegion[] regions=new GridRegion[9];
-        Gtk.Image[] images = new Gtk.Image[9];
-        Gtk.Image[] baseimages = new Gtk.Image[9];
-		int size=150;
+        omvviewerlight.Map[] maps = new omvviewerlight.Map[9];
+        
+        int size=150;
 		int oldsize=0;
 		
 		public LocalRegion()
 		{
 			this.Build();
-            images[0] = this.image1;
-            images[1] = this.image2;
-            images[2] = this.image3;
-            images[3] = this.image4;
-            images[4] = this.image5;
-            images[5] = this.image6;
-            images[6] = this.image7;
-            images[7] = this.image8;
-            images[8] = this.image9;
-			
-			for (int x = 0; x < 9; x++)
-            {
-				baseimages[x] = new Gtk.Image(MainClass.GetResource("water.png"));
-			}
 			MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
 		    MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
-			this.SizeAllocated+=new Gtk.SizeAllocatedHandler(onResize);
-			                                                
+			this.SizeAllocated+=new Gtk.SizeAllocatedHandler(onResize);                                             
 			requested=true;
 			
 		}
@@ -60,12 +45,12 @@ namespace omvviewerlight
 			oldsize=size;
 			int x=0;
 			
-			foreach(Gtk.Image image in images)
-			{
-				if(image.Pixbuf!=null && baseimages[x]!=null && baseimages[x].Pixbuf!=null)
-					image.Pixbuf=baseimages[x].Pixbuf.ScaleSimple(size,size,InterpType.Bilinear);
-				 x++;
-			}
+			//foreach(Gtk.Image image in images)
+			//{
+			//	if(image.Pixbuf!=null && baseimages[x]!=null && baseimages[x].Pixbuf!=null)
+			//		image.Pixbuf=baseimages[x].Pixbuf.ScaleSimple(size,size,InterpType.Bilinear);
+			//	 x++;
+			//}
 		}
 		
 		void onGridRegion(GridRegion region)
@@ -92,18 +77,18 @@ namespace omvviewerlight
 
             int index = (row * 3) + col;
 
-            images[index].Pixbuf = MainClass.GetResource("trying.png");
-            Gtk.Tooltips name = new Gtk.Tooltips();
-            name.SetTip(images[index], region.Name,"");
-            name.Enable();
-			TryGetImage tgi = new TryGetImage(baseimages[index], region.MapImageID, 256, 256, true);
-			tgi.OnDecodeComplete += delegate() {
-				Console.WriteLine("Decoded image for index "+index.ToString());
-				images[index].Pixbuf=baseimages[index].Pixbuf.ScaleSimple(size,size,InterpType.Bilinear);
-			};
-			tgi.go();
-				
-			regions[index]=region;
+  //          images[index].Pixbuf = MainClass.GetResource("trying.png");
+ //           Gtk.Tooltips name = new Gtk.Tooltips();
+ //           name.SetTip(images[index], region.Name,"");
+ //           name.Enable();
+//			TryGetImage tgi = new TryGetImage(baseimages[index], region.MapImageID, 256, 256, true);
+//			tgi.OnDecodeComplete += delegate() {
+//				Console.WriteLine("Decoded image for index "+index.ToString());
+//				images[index].Pixbuf=baseimages[index].Pixbuf.ScaleSimple(size,size,InterpType.Bilinear);
+//			};
+//			tgi.go();
+//				
+//			regions[index]=region;
 	
 			});
 		}
@@ -128,7 +113,6 @@ namespace omvviewerlight
                     name.Enable();
                 }
 
-     
                 Console.WriteLine("Requesting map region for current region");
                 MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name, GridLayerType.Objects);
             });           
