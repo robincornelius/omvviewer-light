@@ -19,43 +19,25 @@ namespace omvviewerlight {
         
         private Gtk.HBox hbox4;
         
-        private Gtk.EventBox eventbox1;
-        
         private omvviewerlight.Map map1;
-        
-        private Gtk.EventBox eventbox2;
-        
+         
         private omvviewerlight.Map map2;
-        
-        private Gtk.EventBox eventbox3;
         
         private omvviewerlight.Map map3;
         
         private Gtk.HBox hbox5;
         
-        private Gtk.EventBox eventbox4;
-        
         private omvviewerlight.Map map4;
         
-        private Gtk.EventBox eventbox5;
-        
         private omvviewerlight.Map map5;
-        
-        private Gtk.EventBox eventbox6;
         
         private omvviewerlight.Map map6;
         
         private Gtk.HBox hbox6;
         
-        private Gtk.EventBox eventbox7;
-        
         private omvviewerlight.Map map7;
         
-        private Gtk.EventBox eventbox8;
-        
         private omvviewerlight.Map map8;
-        
-        private Gtk.EventBox eventbox9;
         
         private omvviewerlight.Map map9;
         
@@ -74,163 +56,109 @@ namespace omvviewerlight {
             // Container child vbox4.Gtk.Box+BoxChild
             this.hbox4 = new Gtk.HBox();
             this.hbox4.Name = "hbox4";
-            // Container child hbox4.Gtk.Box+BoxChild
-            this.eventbox1 = new Gtk.EventBox();
-            this.eventbox1.Name = "eventbox1";
             // Container child eventbox1.Gtk.Container+ContainerChild
-            this.image1 = new Gtk.Image();
-            this.image1.Name = "image1";
-            this.image1.Pixbuf = MainClass.GetResource("water.png");
-            this.eventbox1.Add(this.image1);
-            this.hbox4.Add(this.eventbox1);
-            Gtk.Box.BoxChild w2 = ((Gtk.Box.BoxChild)(this.hbox4[this.eventbox1]));
+            this.map1 = new Map();
+            this.map1.Name = "image1";
+            this.hbox4.Add(this.map1);
+            Gtk.Box.BoxChild w2 = ((Gtk.Box.BoxChild)(this.hbox4[this.map1]));
             w2.Position = 0;
-            w2.Expand = false;
-            w2.Fill = false;
-            // Container child hbox4.Gtk.Box+BoxChild
-            this.eventbox2 = new Gtk.EventBox();
-            this.eventbox2.Name = "eventbox2";
+            w2.Expand = true;
+            w2.Fill = true;
             // Container child eventbox2.Gtk.Container+ContainerChild
-            this.image2 = new Gtk.Image();
-            this.image2.Name = "image2";
-            this.image2.Pixbuf = MainClass.GetResource("water.png");
-            this.eventbox2.Add(this.image2);
-            this.hbox4.Add(this.eventbox2);
-            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox4[this.eventbox2]));
+            this.map2 = new Map();
+            this.map2.Name = "image2";
+            this.hbox4.Add(this.map2);
+            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox4[this.map2]));
             w4.Position = 1;
-            w4.Expand = false;
-            w4.Fill = false;
-            // Container child hbox4.Gtk.Box+BoxChild
-            this.eventbox3 = new Gtk.EventBox();
-            this.eventbox3.Name = "eventbox3";
+            w4.Expand = true;
+            w4.Fill = true;
             // Container child eventbox3.Gtk.Container+ContainerChild
-            this.image3 = new Gtk.Image();
-            this.image3.Name = "image3";
-            this.image3.Pixbuf = MainClass.GetResource("water.png");
-            this.eventbox3.Add(this.image3);
-            this.hbox4.Add(this.eventbox3);
-            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox4[this.eventbox3]));
+            this.map3 = new Map();
+            this.map3.Name = "image3";
+            this.hbox4.Add(this.map3);
+            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox4[this.map3]));
             w6.Position = 2;
-            w6.Expand = false;
-            w6.Fill = false;
+            w6.Expand = true;
+            w6.Fill = true;
             this.vbox4.Add(this.hbox4);
             Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.vbox4[this.hbox4]));
             w7.Position = 0;
-            w7.Expand = false;
-            w7.Fill = false;
+            w7.Expand = true;
+            w7.Fill = true;
             // Container child vbox4.Gtk.Box+BoxChild
             this.hbox5 = new Gtk.HBox();
             this.hbox5.Name = "hbox5";
-            // Container child hbox5.Gtk.Box+BoxChild
-            this.eventbox4 = new Gtk.EventBox();
-            this.eventbox4.Name = "eventbox4";
             // Container child eventbox4.Gtk.Container+ContainerChild
-            this.image4 = new Gtk.Image();
-            this.image4.Name = "image4";
-            this.image4.Pixbuf = MainClass.GetResource("water.png");
-            this.eventbox4.Add(this.image4);
-            this.hbox5.Add(this.eventbox4);
-            Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.hbox5[this.eventbox4]));
+            this.map4 = new Map();
+            this.map4.Name = "image4";
+            this.hbox5.Add(this.map4);
+            Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.hbox5[this.map4]));
             w9.Position = 0;
-            w9.Expand = false;
-            w9.Fill = false;
-            // Container child hbox5.Gtk.Box+BoxChild
-            this.eventbox5 = new Gtk.EventBox();
-            this.eventbox5.Name = "eventbox5";
+            w9.Expand = true;
+            w9.Fill = true;
             // Container child eventbox5.Gtk.Container+ContainerChild
-            this.image5 = new Gtk.Image();
-            this.image5.Name = "image5";
-            this.image5.Pixbuf = MainClass.GetResource("water.png");
-            this.eventbox5.Add(this.image5);
-            this.hbox5.Add(this.eventbox5);
-            Gtk.Box.BoxChild w11 = ((Gtk.Box.BoxChild)(this.hbox5[this.eventbox5]));
+            this.map5 = new Map();
+            this.map5.Name = "image5";
+            this.hbox5.Add(this.map5);
+            Gtk.Box.BoxChild w11 = ((Gtk.Box.BoxChild)(this.hbox5[this.map5]));
             w11.Position = 1;
-            w11.Expand = false;
-            w11.Fill = false;
-            // Container child hbox5.Gtk.Box+BoxChild
-            this.eventbox6 = new Gtk.EventBox();
-            this.eventbox6.Name = "eventbox6";
+            w11.Expand = true;
+            w11.Fill = true;
             // Container child eventbox6.Gtk.Container+ContainerChild
-            this.image6 = new Gtk.Image();
-            this.image6.Name = "image6";
-            this.image6.Pixbuf = MainClass.GetResource("water.png");
-            this.eventbox6.Add(this.image6);
-            this.hbox5.Add(this.eventbox6);
-            Gtk.Box.BoxChild w13 = ((Gtk.Box.BoxChild)(this.hbox5[this.eventbox6]));
+            this.map6 = new Map();
+            this.map6.Name = "image6";
+            this.hbox5.Add(this.map6);
+            Gtk.Box.BoxChild w13 = ((Gtk.Box.BoxChild)(this.hbox5[this.map6]));
             w13.Position = 2;
-            w13.Expand = false;
-            w13.Fill = false;
+            w13.Expand = true;
+            w13.Fill = true;
             this.vbox4.Add(this.hbox5);
             Gtk.Box.BoxChild w14 = ((Gtk.Box.BoxChild)(this.vbox4[this.hbox5]));
             w14.Position = 1;
-            w14.Expand = false;
-            w14.Fill = false;
+            w14.Expand = true;
+            w14.Fill = true;
             // Container child vbox4.Gtk.Box+BoxChild
             this.hbox6 = new Gtk.HBox();
             this.hbox6.Name = "hbox6";
-            // Container child hbox6.Gtk.Box+BoxChild
-            this.eventbox7 = new Gtk.EventBox();
-            this.eventbox7.Name = "eventbox7";
             // Container child eventbox7.Gtk.Container+ContainerChild
-            this.image7 = new Gtk.Image();
-            this.image7.Name = "image7";
-            this.image7.Pixbuf = MainClass.GetResource("water.png");
-            this.eventbox7.Add(this.image7);
-            this.hbox6.Add(this.eventbox7);
-            Gtk.Box.BoxChild w16 = ((Gtk.Box.BoxChild)(this.hbox6[this.eventbox7]));
+            this.map7 = new Map();
+            this.map7.Name = "image7";;
+            this.hbox6.Add(this.map7);
+            Gtk.Box.BoxChild w16 = ((Gtk.Box.BoxChild)(this.hbox6[this.map7]));
             w16.Position = 0;
-            w16.Expand = false;
-            w16.Fill = false;
-            // Container child hbox6.Gtk.Box+BoxChild
-            this.eventbox8 = new Gtk.EventBox();
-            this.eventbox8.Name = "eventbox8";
+            w16.Expand = true;
+            w16.Fill = true;
             // Container child eventbox8.Gtk.Container+ContainerChild
-            this.image8 = new Gtk.Image();
-            this.image8.Name = "image8";
-            this.image8.Pixbuf = MainClass.GetResource("water.png");
-            this.eventbox8.Add(this.image8);
-            this.hbox6.Add(this.eventbox8);
-            Gtk.Box.BoxChild w18 = ((Gtk.Box.BoxChild)(this.hbox6[this.eventbox8]));
+            this.map8 = new Map();
+            this.map8.Name = "image8";
+            this.hbox6.Add(this.map8);
+            Gtk.Box.BoxChild w18 = ((Gtk.Box.BoxChild)(this.hbox6[this.map8]));
             w18.Position = 1;
-            w18.Expand = false;
-            w18.Fill = false;
-            // Container child hbox6.Gtk.Box+BoxChild
-            this.eventbox9 = new Gtk.EventBox();
-            this.eventbox9.Name = "eventbox9";
+            w18.Expand = true;
+            w18.Fill = true;
             // Container child eventbox9.Gtk.Container+ContainerChild
-            this.image9 = new Gtk.Image();
-            this.image9.Name = "image9";
-            this.image9.Pixbuf = MainClass.GetResource("water.png");
-            this.eventbox9.Add(this.image9);
-            this.hbox6.Add(this.eventbox9);
-            Gtk.Box.BoxChild w20 = ((Gtk.Box.BoxChild)(this.hbox6[this.eventbox9]));
+            this.map9 = new Map();
+            this.map9.Name = "image9";
+            this.hbox6.Add(this.map9);
+            Gtk.Box.BoxChild w20 = ((Gtk.Box.BoxChild)(this.hbox6[this.map9]));
             w20.Position = 2;
-            w20.Expand = false;
-            w20.Fill = false;
+            w20.Expand = true;
+            w20.Fill = true;
             this.vbox4.Add(this.hbox6);
             Gtk.Box.BoxChild w21 = ((Gtk.Box.BoxChild)(this.vbox4[this.hbox6]));
             w21.Position = 2;
-            w21.Expand = false;
-            w21.Fill = false;
+            w21.Expand = true;
+            w21.Fill = true;
             this.vbox3.Add(this.vbox4);
             Gtk.Box.BoxChild w22 = ((Gtk.Box.BoxChild)(this.vbox3[this.vbox4]));
             w22.Position = 0;
-            w22.Expand = false;
-            w22.Fill = false;
+            w22.Expand = true;
+            w22.Fill = true;
             this.Add(this.vbox3);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
             }
             this.Show();
-            this.eventbox1.ButtonPressEvent += new Gtk.ButtonPressEventHandler(this.OnEventbox1ButtonPressEvent);
-            this.eventbox2.ButtonPressEvent += new Gtk.ButtonPressEventHandler(this.OnEventbox2ButtonPressEvent);
-            this.eventbox3.ButtonPressEvent += new Gtk.ButtonPressEventHandler(this.OnEventbox3ButtonPressEvent);
-            this.eventbox4.ButtonPressEvent += new Gtk.ButtonPressEventHandler(this.OnEventbox4ButtonPressEvent);
-            this.eventbox5.ButtonPressEvent += new Gtk.ButtonPressEventHandler(this.OnEventbox5ButtonPressEvent);
-            this.eventbox6.ButtonPressEvent += new Gtk.ButtonPressEventHandler(this.OnEventbox6ButtonPressEvent);
-            this.eventbox7.ButtonPressEvent += new Gtk.ButtonPressEventHandler(this.OnEventbox7ButtonPressEvent);
-            this.eventbox8.ButtonPressEvent += new Gtk.ButtonPressEventHandler(this.OnEventbox8ButtonPressEvent);
-            this.eventbox9.ButtonPressEvent += new Gtk.ButtonPressEventHandler(this.OnEventbox9ButtonPressEvent);
         }
     }
 }

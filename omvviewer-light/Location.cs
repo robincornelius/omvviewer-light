@@ -35,11 +35,17 @@ namespace omvviewerlight
 		{
 			this.Build();
             MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(Network_OnCurrentSimChanged);
-		}
+            MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(Network_OnEventQueueRunning);
+        }
+
+        void Network_OnEventQueueRunning(OpenMetaverse.Simulator simulator)
+        {
+            this.map1.SetGridRegion(MainClass.client.Network.CurrentSim.RegionID, MainClass.client.Network.CurrentSim.Handle);
+    
+        }
 
         void Network_OnCurrentSimChanged(OpenMetaverse.Simulator PreviousSimulator)
         {
-            this.map1.SetMapSim(MainClass.client.Network.CurrentSim);
         }
 		
 		new public void Dispose()

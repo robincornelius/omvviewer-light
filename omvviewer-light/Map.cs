@@ -41,7 +41,8 @@ namespace omvviewerlight
 	    Gtk.Image basemap;
 		Gtk.Image scalemap;
 		GridRegion current_region;
-		GridRegion agent_region;
+
+        public int optimal_width = 0;
 
 		static Gtk.Image avatar=new Gtk.Image(MainClass.GetResource("map_avatar_8.png"));
         static Gtk.Image avatar_me = new Gtk.Image(MainClass.GetResource("map_avatar_me_8.png"));
@@ -62,17 +63,35 @@ namespace omvviewerlight
 		int lastwidth,lastheight;
 
         Simulator this_maps_sim = null;
-		
-        public void SetMapSim(Simulator sim)
+        UUID this_maps_regionID;
+        ulong this_maps_region_handle;
+
+        public void SetGridRegion(UUID regionID,ulong region_handle)
+        {
+            this_maps_regionID = regionID;
+            Simulator sim;
+            sim=MainClass.client.Network.Simulators.Find(delegate (Simulator dsim){ return (dsim.Handle == region_handle); });
+
+            if (sim != null)
+            {
+                SetMapSim(sim);     
+            }
+
+            this_maps_region_handle = region_handle;
+            update_map_for_region(region_handle);
+        }
+
+        void SetMapSim(Simulator sim)
         {
             this_maps_sim=sim;
+       
         }
 
 		public Map()
 		{           
 			this.Build();
-            basemap = new Gtk.Image(MainClass.GetResource("water.png"));
-
+            objects_map = new Gtk.Image(MainClass.GetResource("water.png"));
+         
 			lastwidth=-1;
 			lastheight=-1;
 			this.eventbox1.SizeAllocated += delegate(object o, SizeAllocatedArgs args) {
@@ -80,18 +99,20 @@ namespace omvviewerlight
 				width=args.Allocation.Width;
                 Gtk.Application.Invoke(delegate
                 {
-                    if (this_maps_sim != null)
-                    {
                         if (objects_map != null && objects_map.Pixbuf != null && (lastheight != height || lastwidth != width))
                         {
                             this.scalemap = new Gtk.Image();
-                            int size=height<width?height:width;
-                            this.scalemap.Pixbuf = this.objects_map.Pixbuf.ScaleSimple(size, size, InterpType.Bilinear);
+
+                            int size;
+                        
+                            size = height < width ? height : width;
+                        
+
+                            this.scalemap.Pixbuf = this.objects_map.Pixbuf.ScaleSimple(size,size, InterpType.Bilinear);
                             lastheight = height;
                             lastwidth = width;
                             drawavs();
-                        }	
-                    }
+                       }	
                 });
 			};
 			
@@ -105,20 +126,27 @@ namespace omvviewerlight
 			MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
 			AutoPilot.onAutoPilotFinished += new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
             MainClass.client.Grid.OnCoarseLocationUpdate += new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
-			GLib.Timeout.Add(10000, kickrefresh);			
+            MainClass.client.Network.OnSimConnected += new NetworkManager.SimConnectedCallback(Network_OnSimConnected);
+            
+            GLib.Timeout.Add(10000, kickrefresh);			
 			this.targetpos.X=-1;
-			
 			
 			if(MainClass.client!=null)
 			{
 				if(MainClass.client.Network.LoginStatusCode==OpenMetaverse.LoginStatus.Success)
                 {
                         MainClass.client.Grid.RequestMapRegion(this_maps_sim.Name, GridLayerType.Objects);
-                        this.label1.Text = this_maps_sim.Name;
+                       // this.label1.Text = this_maps_sim.Name;
 						MainClass.win.map_widget=this;
        	         }
              }	
 		}
+
+        void Network_OnSimConnected(Simulator simulator)
+        {
+            Logger.Log("OnSimConnected for " + simulator.Name, Helpers.LogLevel.Info);
+            
+        }
 
         void Grid_OnCoarseLocationUpdate(Simulator sim, List<UUID> newEntries, List<UUID> removedEntries)
         {
@@ -185,10 +213,28 @@ namespace omvviewerlight
 		
 		void onGridRegion(GridRegion region)
 		{
-            if (region.RegionHandle == this_maps_sim.Handle)
-			{
-				current_region=region;
-				agent_region=region;
+            lock (MainClass.win.grid_regions)
+            {
+                if (!MainClass.win.grid_regions.ContainsKey(region.RegionHandle))
+                {
+                    MainClass.win.grid_regions.Add(region.RegionHandle, region);
+                }
+
+                update_map_for_region(region.RegionHandle);
+            }
+            
+		}
+
+        void update_map_for_region(ulong regionID)
+        {
+            if (regionID != this_maps_region_handle)
+                return;
+
+            GridRegion region;
+            if(MainClass.win.grid_regions.TryGetValue(regionID,out region))
+            {
+                current_region=region;
+				
 				Console.Write("Got grid region reply, requesting texture :"+region.MapImageID.ToString()+"\n");
 				
 				Console.WriteLine("Assuming this is an objects overlay");
@@ -208,12 +254,10 @@ namespace omvviewerlight
                         drawavs();
                     });
                 };
-
-
-             
+  
                 tgi.go();
-			}
-		}
+            }
+        }
 
 		void onTeleport(string Message, OpenMetaverse.TeleportStatus status,OpenMetaverse.TeleportFlags flags)
 	    {
@@ -254,7 +298,17 @@ namespace omvviewerlight
 				
 		    if(this.scalemap==null || this.scalemap.Pixbuf==null)
 			    return;
-		  			
+
+            if (this_maps_sim == null)
+            {
+                lock (image)
+                {
+                    image.Pixbuf = scalemap.Pixbuf;
+                    image.QueueDraw();
+                }
+                return;
+            }
+		
 		    basemap=this.scalemap;
                   
 			Gdk.Pixbuf buf;
@@ -314,8 +368,9 @@ namespace omvviewerlight
                     if (this_maps_sim.Handle == current_region.RegionHandle)
                         showme(buf, avatar_me.Pixbuf, MainClass.client.Self.SimPosition);		
 
-                    if (this.targetpos.X!=-1)
-					showme(buf,avatar_target.Pixbuf,this.targetpos);				
+                    if(MainClass.client.Network.CurrentSim.Handle==this_maps_sim.Handle)
+                        if (this.targetpos.X!=-1)
+					        showme(buf,avatar_target.Pixbuf,this.targetpos);				
 						
              }
 
@@ -329,7 +384,10 @@ namespace omvviewerlight
 		void onNewSim(Simulator lastsim)
 	    {
 			MainClass.win.map_widget=this;
-            basemap = new Gtk.Image(MainClass.GetResource("water.png"));
+            Gtk.Application.Invoke(delegate
+            {
+                basemap = new Gtk.Image(MainClass.GetResource("water.png"));
+            });
 		
             //Gtk.Application.Invoke(delegate
             //{

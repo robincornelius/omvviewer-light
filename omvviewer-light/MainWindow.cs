@@ -79,6 +79,8 @@ public partial class MainWindow: Gtk.Window
     public List<InstantMessage> im_queue = new List<InstantMessage>();
     public Dictionary<UUID, ChatConsole> im_windows = new Dictionary<UUID, ChatConsole>();
     public List<UUID> im_registering = new List<UUID>();
+
+    public Dictionary<ulong, GridRegion> grid_regions = new Dictionary<ulong, GridRegion>();
 	
     ~MainWindow()
     {
@@ -206,6 +208,7 @@ public partial class MainWindow: Gtk.Window
         MainClass.client.Inventory.OnObjectOffered +=new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
 
         MainClass.client.Network.OnCurrentSimChanged += new NetworkManager.CurrentSimChangedCallback(Network_OnCurrentSimChanged);
+        MainClass.client.Grid.OnGridRegion += new GridManager.GridRegionCallback(Grid_OnGridRegion);
 
 		//this.menubar1.get
 		
@@ -233,6 +236,16 @@ public partial class MainWindow: Gtk.Window
         this.statusbar1.Push(1, "Logged out");
 
 	}
+
+void  Grid_OnGridRegion(GridRegion region)
+{
+    lock (MainClass.win.grid_regions)
+    {
+        if(!grid_regions.ContainsKey(region.RegionHandle))
+            grid_regions.Add(region.RegionHandle, region);
+    }
+
+}
 
     void Network_OnCurrentSimChanged(Simulator PreviousSimulator)
     {
