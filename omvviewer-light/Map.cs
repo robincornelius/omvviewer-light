@@ -96,6 +96,7 @@ namespace omvviewerlight
             MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
 			MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
 			AutoPilot.onAutoPilotFinished += new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
+            MainClass.client.Grid.OnCoarseLocationUpdate += new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
 			GLib.Timeout.Add(10000, kickrefresh);			
 			this.targetpos.X=-1;
 			
@@ -110,6 +111,10 @@ namespace omvviewerlight
        	         }
              }	
 		}
+
+        void Grid_OnCoarseLocationUpdate(Simulator sim, List<UUID> newEntries, List<UUID> removedEntries)
+        {
+        }
 
 		~Map()
 		{
@@ -228,7 +233,6 @@ namespace omvviewerlight
 			 if(MainClass.client.Network.CurrentSim!=null) //OpenSim protection needed this
 	            Gtk.Application.Invoke(delegate
 					{
-						lock(MainClass.client.Network.CurrentSim.ObjectsAvatars)
 	                        if (MainClass.client.Network.CurrentSim.ObjectsAvatars.ContainsKey(update.LocalID))
 	                            drawavs();
 	                });			
@@ -277,74 +281,39 @@ namespace omvviewerlight
                     return;
                 }
                  
-				int myz=(int)MainClass.client.Self.SimPosition.Z;
-					
-                if(draw_sim!=null)
- 
-                lock (MainClass.client.Network.CurrentSim.ObjectsAvatars)
-                {
-					List <uint> removelist=new List<uint>();
+                    if (draw_sim != null)
 
-                    draw_sim.ObjectsAvatars.ForEach(delegate(KeyValuePair<uint, Avatar> kvp)
+                    draw_sim.AvatarPositions.ForEach(delegate(KeyValuePair<UUID, Vector3> kvp)
                     {
-                        if (kvp.Value.LocalID != MainClass.client.Self.LocalID)
-                        {
-                            Vector3 pos= new Vector3(0,0,0);
 
-                            if (kvp.Value.ParentID != 0)
+                        //Don't draw us now, we want to be on top
+                        if (kvp.Key != MainClass.client.Self.AgentID)
+                            if (MainClass.client.Friends.FriendList.ContainsKey(kvp.Key))
                             {
-                                if (!draw_sim.ObjectsPrimitives.ContainsKey(kvp.Value.ParentID))
-                                {
-                                    Console.WriteLine("Could not find parent prim for AV, killing\n");
-                                    removelist.Add(kvp.Value.LocalID);
-                                }
+                                if (kvp.Value.Z - MainClass.client.Self.SimPosition.Z > 5)
+                                    showme(buf, avatar_friend_below.Pixbuf, kvp.Value);
+                                else if (kvp.Value.Z - MainClass.client.Self.SimPosition.Z < -5)
+                                    showme(buf, avatar_friend_above.Pixbuf, kvp.Value);
                                 else
-                                {   //Bleh we use to continue above but we can't with the internal itterator
-                                    //SO this might produce some bogus positions.
-                                    Primitive parent = draw_sim.ObjectsPrimitives[kvp.Value.ParentID];
-                                    pos = Vector3.Transform(kvp.Value.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
-                                }
-                            }
-                            else
-                            {
-                                pos = kvp.Value.Position;
-                            }
-
-                            if (MainClass.client.Friends.FriendList.ContainsKey(kvp.Value.ID))
-                            {
-                                if (pos.Z - myz > 5)
-                                    showme(buf, avatar_friend_below.Pixbuf, pos);
-                                else if (pos.Z - myz < -5)
-                                    showme(buf, avatar_friend_above.Pixbuf, pos);
-                                else
-                                    showme(buf, avatar_friend.Pixbuf, pos);
+                                    showme(buf, avatar_friend.Pixbuf, kvp.Value);
 
                             }
                             else
                             {
-                                if (pos.Z - myz > 5)
-                                    showme(buf, avatar_below.Pixbuf, pos);
-                                else if (pos.Z - myz < -5)
-                                    showme(buf, avatar_above.Pixbuf, pos);
+                                if (kvp.Value.Z - MainClass.client.Self.SimPosition.Z > 5)
+                                    showme(buf, avatar_below.Pixbuf, kvp.Value);
+                                else if (kvp.Value.Z - MainClass.client.Self.SimPosition.Z < -5)
+                                    showme(buf, avatar_above.Pixbuf, kvp.Value);
                                 else
-                                    showme(buf, avatar.Pixbuf, pos);
+                                    showme(buf, avatar.Pixbuf, kvp.Value);
                             }
 
-                        }
                     });
-					
-					foreach(uint id in removelist)
-					{
-                          //FIXME
-                          //draw_sim.ObjectsAvatars.Remove(id);
-					}
-                }
 
-				//Draw me last so i am on top of the mele
-					if(MainClass.client.Network.CurrentSim.Handle==current_region.RegionHandle)
-				            showme(buf,avatar_me.Pixbuf,MainClass.client.Self.SimPosition);				
-				
-				if(this.targetpos.X!=-1)
+                    if (MainClass.client.Network.CurrentSim.Handle == current_region.RegionHandle)
+                        showme(buf, avatar_me.Pixbuf, MainClass.client.Self.SimPosition);		
+
+                    if (this.targetpos.X!=-1)
 					showme(buf,avatar_target.Pixbuf,this.targetpos);				
 						
              }
@@ -359,8 +328,6 @@ namespace omvviewerlight
 		void onNewSim(Simulator lastsim)
 	    {
 			MainClass.win.map_widget=this;
-			Console.Write("New simulator :"+MainClass.client.Network.CurrentSim.Name +" requesting grid layer for terrain \n");
-		    //MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name,GridLayerType.Objects);
 			Gtk.Application.Invoke(delegate
             {           
                   this.label1.Text = MainClass.client.Network.CurrentSim.Name;

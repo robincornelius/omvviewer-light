@@ -363,6 +363,7 @@ namespace omvviewerlight
                         return;
                     }
 
+                   // I can dead lock
                     Primitive parent = target_sim.ObjectsPrimitives[av.ParentID];
                     av_pos = Vector3.Transform(av.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
                 }
