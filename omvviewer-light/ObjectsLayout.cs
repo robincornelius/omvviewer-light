@@ -603,6 +603,7 @@ namespace omvviewerlight
 				
 				if(FetchedPrims.TryGetValue(id,out prim))
 				{
+					Console.WriteLine("Touching prim "+prim.LocalID.ToString());
 					MainClass.client.Self.Touch(prim.LocalID);
 				}
 			}

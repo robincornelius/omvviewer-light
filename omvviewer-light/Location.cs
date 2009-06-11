@@ -34,6 +34,7 @@ namespace omvviewerlight
 		public Location()
 		{
 			this.Build();
+			//this.map1.setsize(250);
             MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(Network_OnCurrentSimChanged);
             MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(Network_OnEventQueueRunning);
         }

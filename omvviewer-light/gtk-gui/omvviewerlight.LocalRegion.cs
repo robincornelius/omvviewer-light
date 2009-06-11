@@ -13,31 +13,31 @@ namespace omvviewerlight {
     
     public partial class LocalRegion {
         
-        private Gtk.VBox vbox3;
+        private Gtk.EventBox eventbox_master;
         
-        private Gtk.VBox vbox4;
+        private Gtk.HBox hbox2;
         
-        private Gtk.HBox hbox4;
+        private Gtk.VBox vbox2;
         
         private omvviewerlight.Map map1;
-         
-        private omvviewerlight.Map map2;
-        
-        private omvviewerlight.Map map3;
-        
-        private Gtk.HBox hbox5;
         
         private omvviewerlight.Map map4;
         
-        private omvviewerlight.Map map5;
-        
-        private omvviewerlight.Map map6;
-        
-        private Gtk.HBox hbox6;
-        
         private omvviewerlight.Map map7;
         
+        private Gtk.VBox vbox3;
+        
+        private omvviewerlight.Map map2;
+        
+        private omvviewerlight.Map map5;
+        
         private omvviewerlight.Map map8;
+        
+        private Gtk.VBox vbox4;
+        
+        private omvviewerlight.Map map3;
+        
+        private omvviewerlight.Map map6;
         
         private omvviewerlight.Map map9;
         
@@ -47,114 +47,118 @@ namespace omvviewerlight {
             Stetic.BinContainer.Attach(this);
             this.Name = "omvviewerlight.LocalRegion";
             // Container child omvviewerlight.LocalRegion.Gtk.Container+ContainerChild
+            this.eventbox_master = new Gtk.EventBox();
+            this.eventbox_master.Name = "eventbox_master";
+            // Container child eventbox_master.Gtk.Container+ContainerChild
+            this.hbox2 = new Gtk.HBox();
+            this.hbox2.Name = "hbox2";
+            // Container child hbox2.Gtk.Box+BoxChild
+            this.vbox2 = new Gtk.VBox();
+            this.vbox2.Name = "vbox2";
+            // Container child vbox2.Gtk.Box+BoxChild
+            this.map1 = new omvviewerlight.Map();
+            this.map1.Events = ((Gdk.EventMask)(256));
+            this.map1.Name = "map1";
+            this.vbox2.Add(this.map1);
+            Gtk.Box.BoxChild w1 = ((Gtk.Box.BoxChild)(this.vbox2[this.map1]));
+            w1.Position = 0;
+            w1.Expand = false;
+            w1.Fill = false;
+            // Container child vbox2.Gtk.Box+BoxChild
+            this.map4 = new omvviewerlight.Map();
+            this.map4.Events = ((Gdk.EventMask)(256));
+            this.map4.Name = "map4";
+            this.vbox2.Add(this.map4);
+            Gtk.Box.BoxChild w2 = ((Gtk.Box.BoxChild)(this.vbox2[this.map4]));
+            w2.Position = 1;
+            w2.Expand = false;
+            w2.Fill = false;
+            // Container child vbox2.Gtk.Box+BoxChild
+            this.map7 = new omvviewerlight.Map();
+            this.map7.Events = ((Gdk.EventMask)(256));
+            this.map7.Name = "map7";
+            this.vbox2.Add(this.map7);
+            Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.vbox2[this.map7]));
+            w3.Position = 2;
+            w3.Expand = false;
+            w3.Fill = false;
+            this.hbox2.Add(this.vbox2);
+            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox2[this.vbox2]));
+            w4.Position = 0;
+            w4.Expand = false;
+            w4.Fill = false;
+            // Container child hbox2.Gtk.Box+BoxChild
             this.vbox3 = new Gtk.VBox();
             this.vbox3.Name = "vbox3";
-            this.vbox3.Spacing = 6;
             // Container child vbox3.Gtk.Box+BoxChild
+            this.map2 = new omvviewerlight.Map();
+            this.map2.Events = ((Gdk.EventMask)(256));
+            this.map2.Name = "map2";
+            this.vbox3.Add(this.map2);
+            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox3[this.map2]));
+            w5.Position = 0;
+            w5.Expand = false;
+            w5.Fill = false;
+            // Container child vbox3.Gtk.Box+BoxChild
+            this.map5 = new omvviewerlight.Map();
+            this.map5.Events = ((Gdk.EventMask)(256));
+            this.map5.Name = "map5";
+            this.vbox3.Add(this.map5);
+            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.vbox3[this.map5]));
+            w6.Position = 1;
+            w6.Expand = false;
+            w6.Fill = false;
+            // Container child vbox3.Gtk.Box+BoxChild
+            this.map8 = new omvviewerlight.Map();
+            this.map8.Events = ((Gdk.EventMask)(256));
+            this.map8.Name = "map8";
+            this.vbox3.Add(this.map8);
+            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.vbox3[this.map8]));
+            w7.Position = 2;
+            w7.Expand = false;
+            w7.Fill = false;
+            this.hbox2.Add(this.vbox3);
+            Gtk.Box.BoxChild w8 = ((Gtk.Box.BoxChild)(this.hbox2[this.vbox3]));
+            w8.Position = 1;
+            w8.Expand = false;
+            w8.Fill = false;
+            // Container child hbox2.Gtk.Box+BoxChild
             this.vbox4 = new Gtk.VBox();
             this.vbox4.Name = "vbox4";
             // Container child vbox4.Gtk.Box+BoxChild
-            this.hbox4 = new Gtk.HBox();
-            this.hbox4.Name = "hbox4";
-            // Container child eventbox1.Gtk.Container+ContainerChild
-            this.map1 = new Map();
-            this.map1.Name = "image1";
-            this.hbox4.Add(this.map1);
-            Gtk.Box.BoxChild w2 = ((Gtk.Box.BoxChild)(this.hbox4[this.map1]));
-            w2.Position = 0;
-            w2.Expand = true;
-            w2.Fill = true;
-            // Container child eventbox2.Gtk.Container+ContainerChild
-            this.map2 = new Map();
-            this.map2.Name = "image2";
-            this.hbox4.Add(this.map2);
-            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox4[this.map2]));
-            w4.Position = 1;
-            w4.Expand = true;
-            w4.Fill = true;
-            // Container child eventbox3.Gtk.Container+ContainerChild
-            this.map3 = new Map();
-            this.map3.Name = "image3";
-            this.hbox4.Add(this.map3);
-            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox4[this.map3]));
-            w6.Position = 2;
-            w6.Expand = true;
-            w6.Fill = true;
-            this.vbox4.Add(this.hbox4);
-            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.vbox4[this.hbox4]));
-            w7.Position = 0;
-            w7.Expand = true;
-            w7.Fill = true;
-            // Container child vbox4.Gtk.Box+BoxChild
-            this.hbox5 = new Gtk.HBox();
-            this.hbox5.Name = "hbox5";
-            // Container child eventbox4.Gtk.Container+ContainerChild
-            this.map4 = new Map();
-            this.map4.Name = "image4";
-            this.hbox5.Add(this.map4);
-            Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.hbox5[this.map4]));
+            this.map3 = new omvviewerlight.Map();
+            this.map3.Events = ((Gdk.EventMask)(256));
+            this.map3.Name = "map3";
+            this.vbox4.Add(this.map3);
+            Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.vbox4[this.map3]));
             w9.Position = 0;
-            w9.Expand = true;
-            w9.Fill = true;
-            // Container child eventbox5.Gtk.Container+ContainerChild
-            this.map5 = new Map();
-            this.map5.Name = "image5";
-            this.hbox5.Add(this.map5);
-            Gtk.Box.BoxChild w11 = ((Gtk.Box.BoxChild)(this.hbox5[this.map5]));
-            w11.Position = 1;
-            w11.Expand = true;
-            w11.Fill = true;
-            // Container child eventbox6.Gtk.Container+ContainerChild
-            this.map6 = new Map();
-            this.map6.Name = "image6";
-            this.hbox5.Add(this.map6);
-            Gtk.Box.BoxChild w13 = ((Gtk.Box.BoxChild)(this.hbox5[this.map6]));
-            w13.Position = 2;
-            w13.Expand = true;
-            w13.Fill = true;
-            this.vbox4.Add(this.hbox5);
-            Gtk.Box.BoxChild w14 = ((Gtk.Box.BoxChild)(this.vbox4[this.hbox5]));
-            w14.Position = 1;
-            w14.Expand = true;
-            w14.Fill = true;
+            w9.Expand = false;
+            w9.Fill = false;
             // Container child vbox4.Gtk.Box+BoxChild
-            this.hbox6 = new Gtk.HBox();
-            this.hbox6.Name = "hbox6";
-            // Container child eventbox7.Gtk.Container+ContainerChild
-            this.map7 = new Map();
-            this.map7.Name = "image7";;
-            this.hbox6.Add(this.map7);
-            Gtk.Box.BoxChild w16 = ((Gtk.Box.BoxChild)(this.hbox6[this.map7]));
-            w16.Position = 0;
-            w16.Expand = true;
-            w16.Fill = true;
-            // Container child eventbox8.Gtk.Container+ContainerChild
-            this.map8 = new Map();
-            this.map8.Name = "image8";
-            this.hbox6.Add(this.map8);
-            Gtk.Box.BoxChild w18 = ((Gtk.Box.BoxChild)(this.hbox6[this.map8]));
-            w18.Position = 1;
-            w18.Expand = true;
-            w18.Fill = true;
-            // Container child eventbox9.Gtk.Container+ContainerChild
-            this.map9 = new Map();
-            this.map9.Name = "image9";
-            this.hbox6.Add(this.map9);
-            Gtk.Box.BoxChild w20 = ((Gtk.Box.BoxChild)(this.hbox6[this.map9]));
-            w20.Position = 2;
-            w20.Expand = true;
-            w20.Fill = true;
-            this.vbox4.Add(this.hbox6);
-            Gtk.Box.BoxChild w21 = ((Gtk.Box.BoxChild)(this.vbox4[this.hbox6]));
-            w21.Position = 2;
-            w21.Expand = true;
-            w21.Fill = true;
-            this.vbox3.Add(this.vbox4);
-            Gtk.Box.BoxChild w22 = ((Gtk.Box.BoxChild)(this.vbox3[this.vbox4]));
-            w22.Position = 0;
-            w22.Expand = true;
-            w22.Fill = true;
-            this.Add(this.vbox3);
+            this.map6 = new omvviewerlight.Map();
+            this.map6.Events = ((Gdk.EventMask)(256));
+            this.map6.Name = "map6";
+            this.vbox4.Add(this.map6);
+            Gtk.Box.BoxChild w10 = ((Gtk.Box.BoxChild)(this.vbox4[this.map6]));
+            w10.Position = 1;
+            w10.Expand = false;
+            w10.Fill = false;
+            // Container child vbox4.Gtk.Box+BoxChild
+            this.map9 = new omvviewerlight.Map();
+            this.map9.Events = ((Gdk.EventMask)(256));
+            this.map9.Name = "map9";
+            this.vbox4.Add(this.map9);
+            Gtk.Box.BoxChild w11 = ((Gtk.Box.BoxChild)(this.vbox4[this.map9]));
+            w11.Position = 2;
+            w11.Expand = false;
+            w11.Fill = false;
+            this.hbox2.Add(this.vbox4);
+            Gtk.Box.BoxChild w12 = ((Gtk.Box.BoxChild)(this.hbox2[this.vbox4]));
+            w12.Position = 2;
+            w12.Expand = false;
+            w12.Fill = false;
+            this.eventbox_master.Add(this.hbox2);
+            this.Add(this.eventbox_master);
             if ((this.Child != null)) {
                 this.Child.ShowAll();
             }

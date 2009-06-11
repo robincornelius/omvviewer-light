@@ -42,7 +42,7 @@ namespace omvviewerlight
 		Gtk.Image scalemap;
 		GridRegion current_region;
 
-        public int optimal_width = 0;
+        int optimal_width = 0;
 
 		static Gtk.Image avatar=new Gtk.Image(MainClass.GetResource("map_avatar_8.png"));
         static Gtk.Image avatar_me = new Gtk.Image(MainClass.GetResource("map_avatar_me_8.png"));
@@ -65,6 +65,16 @@ namespace omvviewerlight
         Simulator this_maps_sim = null;
         UUID this_maps_regionID;
         ulong this_maps_region_handle;
+		
+		public void set_optimal_size(int size)
+		{
+			optimal_width=size;
+			if(this.scalemap!=null && this.scalemap.Pixbuf!=null)
+			{
+				this.scalemap.Pixbuf = this.objects_map.Pixbuf.ScaleSimple(size,size, InterpType.Bilinear);
+          		drawavs();
+			}
+		}
 
         public void SetGridRegion(UUID regionID,ulong region_handle)
         {
@@ -86,6 +96,14 @@ namespace omvviewerlight
             this_maps_sim=sim;
        
         }
+		
+		public void setsize(int size)
+		{
+			optimal_width=size;
+			height=size;
+			width=size;
+			this.scalemap.Pixbuf = this.objects_map.Pixbuf.ScaleSimple(size,size, InterpType.Bilinear);
+		}
 
 		public Map()
 		{           
@@ -94,9 +112,14 @@ namespace omvviewerlight
          
 			lastwidth=-1;
 			lastheight=-1;
+			
+				
 			this.eventbox1.SizeAllocated += delegate(object o, SizeAllocatedArgs args) {
-				height=args.Allocation.Height;	
-				width=args.Allocation.Width;
+			height=args.Allocation.Height;	
+			width=args.Allocation.Width;
+			
+			
+				
                 Gtk.Application.Invoke(delegate
                 {
                         if (objects_map != null && objects_map.Pixbuf != null && (lastheight != height || lastwidth != width))
@@ -105,9 +128,11 @@ namespace omvviewerlight
 
                             int size;
                         
-                            size = height < width ? height : width;
-                        
-
+							if(optimal_width==0)
+                            	size = height < width ? height : width;
+							else
+                        		size=optimal_width;
+							
                             this.scalemap.Pixbuf = this.objects_map.Pixbuf.ScaleSimple(size,size, InterpType.Bilinear);
                             lastheight = height;
                             lastwidth = width;
@@ -115,6 +140,8 @@ namespace omvviewerlight
                        }	
                 });
 			};
+			
+			
 			
 			this.terrain_map_ID=UUID.Zero;
 			this.objects_map_ID=UUID.Zero;

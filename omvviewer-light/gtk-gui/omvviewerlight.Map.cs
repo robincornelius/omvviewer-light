@@ -12,7 +12,7 @@ namespace omvviewerlight {
     
     
     public partial class Map {
-   
+        
         private Gtk.EventBox eventbox1;
         
         private Gtk.Image image;
@@ -25,7 +25,6 @@ namespace omvviewerlight {
             // Container child omvviewerlight.Map.Gtk.Container+ContainerChild
             this.eventbox1 = new Gtk.EventBox();
             this.eventbox1.Name = "eventbox1";
-            this.eventbox1.BorderWidth = ((uint)(0));
             // Container child eventbox1.Gtk.Container+ContainerChild
             this.image = new Gtk.Image();
             this.image.Events = ((Gdk.EventMask)(256));

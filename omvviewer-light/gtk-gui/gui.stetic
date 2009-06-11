@@ -1336,38 +1336,15 @@ Shout</property>
   <widget class="Gtk.Bin" id="omvviewerlight.Map" design-size="602 375">
     <property name="MemberName" />
     <child>
-      <widget class="Gtk.VBox" id="vbox1">
+      <widget class="Gtk.EventBox" id="eventbox1">
         <property name="MemberName" />
-        <property name="Spacing">6</property>
+        <signal name="ButtonPressEvent" handler="OnEventbox1ButtonPressEvent" />
         <child>
-          <widget class="Gtk.Label" id="label1">
+          <widget class="Gtk.Image" id="image">
             <property name="MemberName" />
-            <property name="LabelProp" translatable="yes">Local simulator map</property>
+            <property name="Events">ButtonPressMask</property>
+            <property name="ExtensionEvents">All</property>
           </widget>
-          <packing>
-            <property name="Position">0</property>
-            <property name="AutoSize">True</property>
-            <property name="Expand">False</property>
-            <property name="Fill">False</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="Gtk.EventBox" id="eventbox1">
-            <property name="MemberName" />
-            <property name="BorderWidth">1</property>
-            <signal name="ButtonPressEvent" handler="OnEventbox1ButtonPressEvent" />
-            <child>
-              <widget class="Gtk.Image" id="image">
-                <property name="MemberName" />
-                <property name="Events">ButtonPressMask</property>
-                <property name="ExtensionEvents">All</property>
-              </widget>
-            </child>
-          </widget>
-          <packing>
-            <property name="Position">1</property>
-            <property name="AutoSize">False</property>
-          </packing>
         </child>
       </widget>
     </child>
@@ -8743,25 +8720,18 @@ time</property>
   <widget class="Gtk.Bin" id="omvviewerlight.LocalRegion" design-size="768 768">
     <property name="MemberName" />
     <child>
-      <widget class="Gtk.VBox" id="vbox3">
+      <widget class="Gtk.EventBox" id="eventbox_master">
         <property name="MemberName" />
-        <property name="Spacing">6</property>
         <child>
-          <widget class="Gtk.VBox" id="vbox4">
+          <widget class="Gtk.HBox" id="hbox2">
             <property name="MemberName" />
             <child>
-              <widget class="Gtk.HBox" id="hbox4">
+              <widget class="Gtk.VBox" id="vbox2">
                 <property name="MemberName" />
                 <child>
-                  <widget class="Gtk.EventBox" id="eventbox1">
+                  <widget class="omvviewerlight.Map" id="map1">
                     <property name="MemberName" />
-                    <signal name="ButtonPressEvent" handler="OnEventbox1ButtonPressEvent" />
-                    <child>
-                      <widget class="Gtk.Image" id="image1">
-                        <property name="MemberName" />
-                        <property name="Pixbuf">resource:water.png</property>
-                      </widget>
-                    </child>
+                    <property name="Events">ButtonPressMask</property>
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -8771,15 +8741,9 @@ time</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.EventBox" id="eventbox2">
+                  <widget class="omvviewerlight.Map" id="map4">
                     <property name="MemberName" />
-                    <signal name="ButtonPressEvent" handler="OnEventbox2ButtonPressEvent" />
-                    <child>
-                      <widget class="Gtk.Image" id="image2">
-                        <property name="MemberName" />
-                        <property name="Pixbuf">resource:water.png</property>
-                      </widget>
-                    </child>
+                    <property name="Events">ButtonPressMask</property>
                   </widget>
                   <packing>
                     <property name="Position">1</property>
@@ -8789,15 +8753,9 @@ time</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.EventBox" id="eventbox3">
+                  <widget class="omvviewerlight.Map" id="map7">
                     <property name="MemberName" />
-                    <signal name="ButtonPressEvent" handler="OnEventbox3ButtonPressEvent" />
-                    <child>
-                      <widget class="Gtk.Image" id="image3">
-                        <property name="MemberName" />
-                        <property name="Pixbuf">resource:water.png</property>
-                      </widget>
-                    </child>
+                    <property name="Events">ButtonPressMask</property>
                   </widget>
                   <packing>
                     <property name="Position">2</property>
@@ -8809,24 +8767,18 @@ time</property>
               </widget>
               <packing>
                 <property name="Position">0</property>
-                <property name="AutoSize">True</property>
+                <property name="AutoSize">False</property>
                 <property name="Expand">False</property>
                 <property name="Fill">False</property>
               </packing>
             </child>
             <child>
-              <widget class="Gtk.HBox" id="hbox5">
+              <widget class="Gtk.VBox" id="vbox3">
                 <property name="MemberName" />
                 <child>
-                  <widget class="Gtk.EventBox" id="eventbox4">
+                  <widget class="omvviewerlight.Map" id="map2">
                     <property name="MemberName" />
-                    <signal name="ButtonPressEvent" handler="OnEventbox4ButtonPressEvent" />
-                    <child>
-                      <widget class="Gtk.Image" id="image4">
-                        <property name="MemberName" />
-                        <property name="Pixbuf">resource:water.png</property>
-                      </widget>
-                    </child>
+                    <property name="Events">ButtonPressMask</property>
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -8836,15 +8788,9 @@ time</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.EventBox" id="eventbox5">
+                  <widget class="omvviewerlight.Map" id="map5">
                     <property name="MemberName" />
-                    <signal name="ButtonPressEvent" handler="OnEventbox5ButtonPressEvent" />
-                    <child>
-                      <widget class="Gtk.Image" id="image5">
-                        <property name="MemberName" />
-                        <property name="Pixbuf">resource:water.png</property>
-                      </widget>
-                    </child>
+                    <property name="Events">ButtonPressMask</property>
                   </widget>
                   <packing>
                     <property name="Position">1</property>
@@ -8854,15 +8800,9 @@ time</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.EventBox" id="eventbox6">
+                  <widget class="omvviewerlight.Map" id="map8">
                     <property name="MemberName" />
-                    <signal name="ButtonPressEvent" handler="OnEventbox6ButtonPressEvent" />
-                    <child>
-                      <widget class="Gtk.Image" id="image6">
-                        <property name="MemberName" />
-                        <property name="Pixbuf">resource:water.png</property>
-                      </widget>
-                    </child>
+                    <property name="Events">ButtonPressMask</property>
                   </widget>
                   <packing>
                     <property name="Position">2</property>
@@ -8880,18 +8820,12 @@ time</property>
               </packing>
             </child>
             <child>
-              <widget class="Gtk.HBox" id="hbox6">
+              <widget class="Gtk.VBox" id="vbox4">
                 <property name="MemberName" />
                 <child>
-                  <widget class="Gtk.EventBox" id="eventbox7">
+                  <widget class="omvviewerlight.Map" id="map3">
                     <property name="MemberName" />
-                    <signal name="ButtonPressEvent" handler="OnEventbox7ButtonPressEvent" />
-                    <child>
-                      <widget class="Gtk.Image" id="image7">
-                        <property name="MemberName" />
-                        <property name="Pixbuf">resource:water.png</property>
-                      </widget>
-                    </child>
+                    <property name="Events">ButtonPressMask</property>
                   </widget>
                   <packing>
                     <property name="Position">0</property>
@@ -8901,15 +8835,9 @@ time</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.EventBox" id="eventbox8">
+                  <widget class="omvviewerlight.Map" id="map6">
                     <property name="MemberName" />
-                    <signal name="ButtonPressEvent" handler="OnEventbox8ButtonPressEvent" />
-                    <child>
-                      <widget class="Gtk.Image" id="image8">
-                        <property name="MemberName" />
-                        <property name="Pixbuf">resource:water.png</property>
-                      </widget>
-                    </child>
+                    <property name="Events">ButtonPressMask</property>
                   </widget>
                   <packing>
                     <property name="Position">1</property>
@@ -8919,15 +8847,9 @@ time</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.EventBox" id="eventbox9">
+                  <widget class="omvviewerlight.Map" id="map9">
                     <property name="MemberName" />
-                    <signal name="ButtonPressEvent" handler="OnEventbox9ButtonPressEvent" />
-                    <child>
-                      <widget class="Gtk.Image" id="image9">
-                        <property name="MemberName" />
-                        <property name="Pixbuf">resource:water.png</property>
-                      </widget>
-                    </child>
+                    <property name="Events">ButtonPressMask</property>
                   </widget>
                   <packing>
                     <property name="Position">2</property>
@@ -8945,12 +8867,6 @@ time</property>
               </packing>
             </child>
           </widget>
-          <packing>
-            <property name="Position">0</property>
-            <property name="AutoSize">True</property>
-            <property name="Expand">False</property>
-            <property name="Fill">False</property>
-          </packing>
         </child>
       </widget>
     </child>

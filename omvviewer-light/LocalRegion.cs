@@ -25,7 +25,9 @@ namespace omvviewerlight
         //Gtk.Image[] baseimages = new Gtk.Image[9];
 		int size=150;
 		int oldsize=0;
-		
+	
+			
+	
 		public LocalRegion()
 		{
 
@@ -33,6 +35,12 @@ namespace omvviewerlight
             MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
             
 			this.Build();
+			
+			for(int x=0;x<9;x++)
+			{
+				//maps[0]=new Map();	
+			}
+			
             maps[0] = this.map1;
             maps[1] = this.map2;
             maps[2] = this.map3;
@@ -59,9 +67,14 @@ namespace omvviewerlight
 			
 			oldsize=size;
 
+			//this.image10.Pixbuf.Width=size*3;
+			//this.image10.Pixbuf.Height=size*3;
+			
+			//image10.Pixbuf = new Gdk.Pixbuf(Colorspace.Rgb,false,8,size*3,size*3);
+			
 		    for(int x = 0; x < 9; x++)
             {
-				maps[x].optimal_width=size;
+				maps[x].set_optimal_size(size);
 		    }
 		}
 		
