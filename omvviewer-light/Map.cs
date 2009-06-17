@@ -291,8 +291,9 @@ namespace omvviewerlight
 			if(status==OpenMetaverse.TeleportStatus.Finished)
 			{
 
-                if (this_maps_sim.ID == lastsim)
-                    return;
+                if (lastsim != null && this_maps_sim!=null)
+                    if (this_maps_sim.ID == lastsim)
+                        return;
 				
 			this.terrain_map_ID=UUID.Zero;
 			this.objects_map_ID=UUID.Zero;
