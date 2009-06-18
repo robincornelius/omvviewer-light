@@ -299,7 +299,9 @@ namespace omvviewerlight
 			this.objects_map_ID=UUID.Zero;
 			this.forsale_map_ID=UUID.Zero;
 
-            MainClass.client.Grid.RequestMapRegion(this_maps_sim.Name, GridLayerType.Objects);
+            // I can nill reference exception, and why is this even done here, this should only be
+            // done on a new simulator not just on any old teleport.
+            //MainClass.client.Grid.RequestMapRegion(this_maps_sim.Name, GridLayerType.Objects);
 
 			Gtk.Application.Invoke(delegate
             {
