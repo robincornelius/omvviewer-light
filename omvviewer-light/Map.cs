@@ -395,12 +395,12 @@ namespace omvviewerlight
 
                     });
 
-                    if (this_maps_sim.Handle == current_region.RegionHandle)
-                        showme(buf, avatar_me.Pixbuf, MainClass.client.Self.SimPosition);		
-
-                    if(MainClass.client.Network.CurrentSim.Handle==this_maps_sim.Handle)
-                        if (this.targetpos.X!=-1)
-					        showme(buf,avatar_target.Pixbuf,this.targetpos);				
+                    if (MainClass.client.Network.CurrentSim.Handle == this_maps_sim.Handle)
+                        if (this_maps_sim.Handle == current_region.RegionHandle)
+                            showme(buf, avatar_me.Pixbuf, MainClass.client.Self.SimPosition);		
+                   
+                    if (this.targetpos.X!=-1)
+					    showme(buf,avatar_target.Pixbuf,this.targetpos);				
 						
              }
 
