@@ -67,11 +67,6 @@ namespace omvviewerlight
 			
 			oldsize=size;
 
-			//this.image10.Pixbuf.Width=size*3;
-			//this.image10.Pixbuf.Height=size*3;
-			
-			//image10.Pixbuf = new Gdk.Pixbuf(Colorspace.Rgb,false,8,size*3,size*3);
-			
 		    for(int x = 0; x < 9; x++)
             {
 				maps[x].set_optimal_size(size);
@@ -125,27 +120,27 @@ namespace omvviewerlight
 			requested=true;
             cx = 0;
             cy = 0;
-
-
-            MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name, GridLayerType.Objects);
-
+            for (int x = 0; x < 9; x++)
+            {
+                maps[x].SetAsWater();
+            }
+  
             Gtk.Application.Invoke(delegate{
 
-                /*
+                
                 for (int x = 0; x < 9; x++)
                 {
                     regions[x] = new OpenMetaverse.GridRegion();
                     regions[x].Name = "";
-                    images[x].Clear();
-					images[x].Pixbuf=MainClass.GetResource("water.png");
-					baseimages[x] = new Gtk.Image(MainClass.GetResource("water.png"));
+                   
                     Gtk.Tooltips name = new Gtk.Tooltips();
-                    name.SetTip(images[x], "Empty", "");
+                    name.SetTip(maps[x], "Empty", "");
                     name.Enable();
                 }
-                 */
+                 
 
-     
+                MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name, GridLayerType.Objects);
+
                 Console.WriteLine("Requesting map region for current region");            });           
         }
 

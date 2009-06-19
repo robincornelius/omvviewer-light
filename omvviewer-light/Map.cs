@@ -64,7 +64,7 @@ namespace omvviewerlight
 
         Simulator this_maps_sim = null;
         UUID this_maps_regionID;
-        ulong this_maps_region_handle;
+        ulong this_maps_region_handle=0;
 		
 		public void set_optimal_size(int size)
 		{
@@ -89,6 +89,18 @@ namespace omvviewerlight
 
             this_maps_region_handle = region_handle;
             update_map_for_region(region_handle);
+        }
+
+        public void SetAsWater()
+        {
+            this_maps_sim = null;
+            this_maps_regionID = UUID.Zero;
+            objects_map_ID = UUID.Zero;
+            terrain_map_ID = UUID.Zero;
+            this_maps_region_handle = 0;
+
+            objects_map = new Gtk.Image(MainClass.GetResource("water.png"));
+            this.scalemap.Pixbuf = this.objects_map.Pixbuf.ScaleSimple(height, width, InterpType.Bilinear);
         }
 
         void SetMapSim(Simulator sim)
@@ -543,6 +555,7 @@ namespace omvviewerlight
 			
 			if(MainClass.win.tp_target_widget!=null)
 				MainClass.win.tp_target_widget.settarget(pos,current_region);
+
 			this.drawavs();
 			
 		}

@@ -113,7 +113,9 @@ namespace omvviewerlight
 			if(target_asset!=image)
 			    return;
 
-            progress(target_image.Pixbuf, (float)total / (float)recieved);
+            //Console.WriteLine("** Progress " + recieved.ToString() + " - " + total.ToString());
+
+            progress(target_image.Pixbuf,  (float)recieved/(float)total);
 	}
 		
 		unsafe void progress(Gdk.Pixbuf bufdest,float progress)
