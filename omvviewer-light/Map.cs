@@ -374,33 +374,18 @@ namespace omvviewerlight
 				
 		    if(this.scalemap==null || this.scalemap.Pixbuf==null)
 			    return;
-
-    //        if (this_maps_sim == null)
-    //        {
-    //            lock (image)
-    //            {
-     //               image.Pixbuf = scalemap.Pixbuf;
-    //                image.QueueDraw();
-   //             }
-
- //               return;
-   //         }
-		
+	
 		    basemap=this.scalemap;
                   
 			Gdk.Pixbuf buf;
 			Simulator draw_sim=null;
-			
-			foreach(Simulator sim in MainClass.client.Network.Simulators)
-			{
-				if(sim.Name==current_region.Name)
-                   {
-					draw_sim=sim;
-                       break;
-                   }
-				
-			}
-  		   
+
+
+            draw_sim=MainClass.client.Network.Simulators.Find(delegate(Simulator sim)
+            {
+                return sim.Name == current_region.Name;
+            });
+
 			lock(basemap)
             {
                 try
