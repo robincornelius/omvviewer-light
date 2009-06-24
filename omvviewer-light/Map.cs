@@ -174,9 +174,9 @@ namespace omvviewerlight
 			{
 				if(MainClass.client.Network.LoginStatusCode==OpenMetaverse.LoginStatus.Success)
                 {
-                        MainClass.client.Grid.RequestMapRegion(this_maps_sim.Name, GridLayerType.Objects);
-                       // this.label1.Text = this_maps_sim.Name;
-						MainClass.win.map_widget=this;
+                       //  MainClass.client.Grid.RequestMapRegion(this_maps_sim.Name, GridLayerType.Objects);
+                       //  this.label1.Text = this_maps_sim.Name;
+					   //	MainClass.win.map_widget=this;
        	         }
              }	
 		}
