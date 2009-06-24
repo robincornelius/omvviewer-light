@@ -290,7 +290,7 @@ namespace omvviewerlight
 
                            if (kvp.Key != MainClass.client.Self.AgentID)
                            {
-                               Utils.LongToUInts(MainClass.client.Network.CurrentSim.Handle, out regionX, out regionY);
+                               Utils.LongToUInts(sim.Handle, out regionX, out regionY);
 
                                try
                                {
@@ -301,7 +301,9 @@ namespace omvviewerlight
                                    dist = Vector3.Distance(target_pos, self_pos);
 
                                    if (av_tree.ContainsKey(kvp.Key))
+                                   {
                                        store.SetValue(av_tree[kvp.Key], 2, MainClass.cleandistance(dist.ToString(), 1));
+                                   }
                                }
                                catch
                                {
