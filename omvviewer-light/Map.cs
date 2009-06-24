@@ -54,8 +54,11 @@ namespace omvviewerlight
         static Gtk.Image avatar_target = new Gtk.Image(MainClass.GetResource("map_avatar_target_8.png"));
 
 		UUID lastsim = new UUID();
-		Vector3 targetpos;
-		UUID terrain_map_ID;
+		
+        static Vector3 targetpos;
+        static ulong targetID;
+
+        UUID terrain_map_ID;
 		UUID objects_map_ID;
 		UUID forsale_map_ID;
 	    Gtk.Image objects_map;
@@ -182,7 +185,7 @@ namespace omvviewerlight
             MainClass.client.Network.OnSimConnected += new NetworkManager.SimConnectedCallback(Network_OnSimConnected);
             
             GLib.Timeout.Add(10000, kickrefresh);			
-			this.targetpos.X=-1;
+			targetpos.X=-1;
 			
 			if(MainClass.client!=null)
 			{
@@ -372,15 +375,16 @@ namespace omvviewerlight
 		    if(this.scalemap==null || this.scalemap.Pixbuf==null)
 			    return;
 
-            if (this_maps_sim == null)
-            {
-                lock (image)
-                {
-                    image.Pixbuf = scalemap.Pixbuf;
-                    image.QueueDraw();
-                }
-                return;
-            }
+    //        if (this_maps_sim == null)
+    //        {
+    //            lock (image)
+    //            {
+     //               image.Pixbuf = scalemap.Pixbuf;
+    //                image.QueueDraw();
+   //             }
+
+ //               return;
+   //         }
 		
 		    basemap=this.scalemap;
                   
@@ -438,12 +442,12 @@ namespace omvviewerlight
 
                     });
 
-                    if (MainClass.client.Network.CurrentSim.Handle == this_maps_sim.Handle)
-                        if (this_maps_sim.Handle == current_region.RegionHandle)
-                            showme(buf, avatar_me.Pixbuf, MainClass.client.Self.SimPosition);		
-                   
-                    if (this.targetpos.X!=-1)
-					    showme(buf,avatar_target.Pixbuf,this.targetpos);				
+                    if (this_maps_sim != null && MainClass.client.Network.CurrentSim.Handle == this_maps_sim.Handle)
+                        if ( this_maps_sim.Handle == current_region.RegionHandle)
+                            showme(buf, avatar_me.Pixbuf, MainClass.client.Self.SimPosition);
+                        
+                if (targetpos.X!=-1 && targetID==current_region.RegionHandle)
+					  showme(buf,avatar_target.Pixbuf,targetpos);				
 						
              }
 
@@ -583,7 +587,8 @@ namespace omvviewerlight
 			pos.Y=255-pos.Y;
 
 			targetpos=pos;
-			
+            targetID = current_region.RegionHandle;
+
 			if(MainClass.win.tp_target_widget!=null)
 				MainClass.win.tp_target_widget.settarget(pos,current_region);
 
