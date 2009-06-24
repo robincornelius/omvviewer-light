@@ -108,6 +108,7 @@ namespace omvviewerlight
             objects_map_ID = UUID.Zero;
             terrain_map_ID = UUID.Zero;
             this_maps_region_handle = 0;
+            current_region.Name = "Empty";
 
             objects_map = new Gtk.Image(MainClass.GetResource("water.png"));
 
@@ -374,7 +375,8 @@ namespace omvviewerlight
 				
 		    if(this.scalemap==null || this.scalemap.Pixbuf==null)
 			    return;
-	
+
+          
 		    basemap=this.scalemap;
                   
 			Gdk.Pixbuf buf;
@@ -385,6 +387,8 @@ namespace omvviewerlight
             {
                 return sim.Name == current_region.Name;
             });
+
+
 
 			lock(basemap)
             {
@@ -408,9 +412,9 @@ namespace omvviewerlight
                             if (MainClass.client.Friends.FriendList.ContainsKey(kvp.Key))
                             {
                                 if (kvp.Value.Z - MainClass.client.Self.SimPosition.Z > 5)
-                                    showme(buf, avatar_friend_below.Pixbuf, kvp.Value);
-                                else if (kvp.Value.Z - MainClass.client.Self.SimPosition.Z < -5)
                                     showme(buf, avatar_friend_above.Pixbuf, kvp.Value);
+                                else if (kvp.Value.Z - MainClass.client.Self.SimPosition.Z < -5)
+                                    showme(buf, avatar_friend_below.Pixbuf, kvp.Value);
                                 else
                                     showme(buf, avatar_friend.Pixbuf, kvp.Value);
 
@@ -418,9 +422,9 @@ namespace omvviewerlight
                             else
                             {
                                 if (kvp.Value.Z - MainClass.client.Self.SimPosition.Z > 5)
-                                    showme(buf, avatar_below.Pixbuf, kvp.Value);
-                                else if (kvp.Value.Z - MainClass.client.Self.SimPosition.Z < -5)
                                     showme(buf, avatar_above.Pixbuf, kvp.Value);
+                                else if (kvp.Value.Z - MainClass.client.Self.SimPosition.Z < -5)
+                                    showme(buf, avatar_below.Pixbuf, kvp.Value);
                                 else
                                     showme(buf, avatar.Pixbuf, kvp.Value);
                             }
