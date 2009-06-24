@@ -262,7 +262,6 @@ namespace omvviewerlight
         {
            Gtk.Application.Invoke(delegate
 		   {
-
               // if (this.av_tree.ContainsKey(id))
                {
 
@@ -280,24 +279,26 @@ namespace omvviewerlight
                    self_pos.Y = self_pos.Y + regionY;
 
                    Simulator target_sim = null;
-                   foreach (Simulator sim in MainClass.client.Network.Simulators)
+
+                   MainClass.client.Network.Simulators.ForEach(delegate(Simulator sim)
                    {
-                       
+                       //foreach (Simulator sim in MainClass.client.Network.Simulators)
+
+
                        sim.AvatarPositions.ForEach(delegate(KeyValuePair<UUID, Vector3> kvp)
                        {
 
                            if (kvp.Key != MainClass.client.Self.AgentID)
                            {
                                Utils.LongToUInts(MainClass.client.Network.CurrentSim.Handle, out regionX, out regionY);
-                    
+
                                try
                                {
-                                   Vector3 target_pos=kvp.Value;
+                                   Vector3 target_pos = kvp.Value;
 
-         
                                    target_pos.X = target_pos.X + regionX;
                                    target_pos.Y = target_pos.Y + regionY;
-                                   dist = Vector3.Distance(self_pos, target_pos);
+                                   dist = Vector3.Distance(target_pos, self_pos);
 
                                    if (av_tree.ContainsKey(kvp.Key))
                                        store.SetValue(av_tree[kvp.Key], 2, MainClass.cleandistance(dist.ToString(), 1));
@@ -310,7 +311,7 @@ namespace omvviewerlight
 
                        });
 
-                   }
+                   });
 
                }
            });

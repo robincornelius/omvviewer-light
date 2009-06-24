@@ -145,7 +145,10 @@ namespace omvviewerlight
 		}
 		
 		void onNewSim(Simulator lastsim)
-	    {	
+	    {
+            if (lastsim == MainClass.client.Network.CurrentSim)
+                return;
+
 			requested=true;
             cx = 0;
             cy = 0;
