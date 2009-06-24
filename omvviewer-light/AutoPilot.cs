@@ -58,9 +58,12 @@ namespace omvviewerlight
 			MainClass.client.Self.AutoPilotCancel();
 			if(onAutoPilotFinished!=null)
 				onAutoPilotFinished();
-			
+
+            MainClass.client.Grid.OnCoarseLocationUpdate -= new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
+
 			Active=false;
 			follow=false;
+
 		}
 		
 		public static void set_target_object (UUID tobject)
@@ -69,7 +72,9 @@ namespace omvviewerlight
 			type=TargetType.TARGET_OBJECT;
 			target_object=tobject;
 			Active=true;
-			GLib.Timeout.Add(100,Think);
+			//GLib.Timeout.Add(1000,Think);
+            MainClass.client.Grid.OnCoarseLocationUpdate += new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
+
 		}
 		
 		public static void set_target_avatar (UUID target,bool followon)
@@ -77,8 +82,10 @@ namespace omvviewerlight
 			type=TargetType.TARGET_AVATAR;
 			target_avatar=target;
 			Active=true;
-			GLib.Timeout.Add(100,Think);
+			//GLib.Timeout.Add(1000,Think);
 			follow=followon;
+            MainClass.client.Grid.OnCoarseLocationUpdate += new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
+
 		}
 		
 		public static void set_target_pos (Vector3d globalpos)
@@ -86,8 +93,14 @@ namespace omvviewerlight
 			type=TargetType.TARGET_POS;
             target_pos_global = globalpos;
 			Active=true;
-			GLib.Timeout.Add(100,Think);
+			//GLib.Timeout.Add(1000,Think);
+            MainClass.client.Grid.OnCoarseLocationUpdate += new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
 		}
+
+        static void Grid_OnCoarseLocationUpdate(Simulator sim, System.Collections.Generic.List<UUID> newEntries, System.Collections.Generic.List<UUID> removedEntries)
+        {
+            Think();
+        }
 
         public static Avatar findavatarinsims(UUID findtarget)
         {
@@ -124,67 +137,28 @@ namespace omvviewerlight
 
 		static Vector3d get_av_pos(UUID targetID,out float distance)
 		{	
-          lock (MainClass.client.Network.Simulators)
-          {
+         
 				Vector3d targetpos;
+
 				targetpos.X=0;
 				targetpos.Y=0;
 				targetpos.Z=0;
 				distance=0;
-				
-				int i;
-				for (i = 0; i < MainClass.client.Network.Simulators.Count; i++)
-	            {
 
-                        Avatar targetAv = MainClass.client.Network.Simulators[i].ObjectsAvatars.Find(
-                        delegate(Avatar avatar)
-                        {
-						
-                            return avatar.ID == targetID;
-                        }
-                    );
-				
-                    if(targetAv!=null)
-					{
-						if(targetAv.ParentID!=0)
-						{
-							if(!MainClass.client.Network.Simulators[i].ObjectsPrimitives.ContainsKey(targetAv.ParentID))
-							{
-								Console.WriteLine("AV is seated and i can't find the parent prim in dictionay");
-								Active=false;
-								Vector3 x;
-								x.X=0;
-								x.Y=0;
-								x.Z=0;
-					
-								return new Vector3d(targetpos);
-							}
-							else
-							{
-								Vector3 pos;
-								Primitive parent = MainClass.client.Network.Simulators[i].ObjectsPrimitives[targetAv.ParentID];
-								Vector3 localtargetpos;
-								localtargetpos=pos = Vector3.Transform(targetAv.Position, Matrix4.CreateFromQuaternion(parent.Rotation)) + parent.Position;
-								targetpos=localtoglobalpos(localtargetpos,MainClass.client.Network.Simulators[i].Handle);;								
-								
-													
-							}				
-						}			
-						else
-						{
-							
-							    targetpos=localtoglobalpos(targetAv.Position,MainClass.client.Network.Simulators[i].Handle);;
-                                distance = (float)Vector3d.Distance(targetpos, MainClass.client.Self.GlobalPosition);
-								
-						}
-					}
+                float mydist = 0;
 
-                    return targetpos;
-				}
+                MainClass.client.Network.Simulators.ForEach(delegate(Simulator sim)
+                {
+                    Vector3 targetpos2;
+                    if (sim.AvatarPositions.TryGetValue(targetID, out targetpos2))
+                    {
+                        targetpos = localtoglobalpos(targetpos2, sim.Handle); ;
+                        mydist = (float)Vector3d.Distance(targetpos, MainClass.client.Self.GlobalPosition);
+                    }
+                });
 
+                distance=mydist;
                 return targetpos;
-					
-			}
 		}
 
         public static Primitive findobject(UUID findtarget,out Simulator sim)
@@ -274,24 +248,26 @@ namespace omvviewerlight
                 if (distance > 2.5)
 				{
                     
-					//Console.WriteLine("Autopilot think");
-                    //Console.WriteLine("Target at " + targetpos.ToString());
-                    //Console.WriteLine("I'm at Global" + MainClass.client.Self.GlobalPosition.ToString());
-                    //Console.WriteLine("I'm at Local" + MainClass.client.Self.SimPosition.ToString());
-                    //Console.WriteLine("Distance is " + distance.ToString());
-                    //Console.WriteLine("Local vector is "+(new Vector3(targetpos)-new Vector3(MainClass.client.Self.GlobalPosition)).ToString());
+					Console.WriteLine("Autopilot think");
+                    Console.WriteLine("Target at " + targetpos.ToString());
+                    Console.WriteLine("I'm at Global" + MainClass.client.Self.GlobalPosition.ToString());
+                    Console.WriteLine("I'm at Local" + MainClass.client.Self.SimPosition.ToString());
+                    Console.WriteLine("Distance is " + distance.ToString());
+                    Console.WriteLine("Local vector is "+(new Vector3(targetpos)-new Vector3(MainClass.client.Self.GlobalPosition)).ToString());
                     Vector3 heading=new Vector3(targetpos)-new Vector3(MainClass.client.Self.GlobalPosition);
                     heading.Normalize();
                     heading = MainClass.client.Self.SimPosition + heading;
 	                MainClass.client.Self.Movement.TurnToward(heading);
-					MainClass.client.Self.Movement.AtPos=true;
-					MainClass.client.Self.Movement.SendUpdate();
+                    MainClass.client.Self.AutoPilot(targetpos.X, targetpos.Y, targetpos.Z);
+                    //MainClass.client.Self.Movement.AtPos=true;
+					//MainClass.client.Self.Movement.SendUpdate();
 				}
                  else if (follow==false)
 				 {
 					 Active=false;
-					 MainClass.client.Self.Movement.AtPos=false;
-					 MainClass.client.Self.Movement.SendUpdate();
+					 //MainClass.client.Self.Movement.AtPos=false;
+					 //MainClass.client.Self.Movement.SendUpdate();
+                     MainClass.client.Self.AutoPilotCancel();
 					 if(onAutoPilotFinished!=null)
 						onAutoPilotFinished();
 				     Console.WriteLine("Stopping autopilot");
@@ -303,8 +279,9 @@ namespace omvviewerlight
 			else
 			{
 				Console.WriteLine("NOT ACTIVE Stopping autopilot");
-				MainClass.client.Self.Movement.AtPos=false;				
-				MainClass.client.Self.Movement.SendUpdate();			
+				//MainClass.client.Self.Movement.AtPos=false;				
+				//MainClass.client.Self.Movement.SendUpdate();	
+                MainClass.client.Self.AutoPilotCancel();
 				Active=false;
 				if(onAutoPilotFinished!=null)
 					onAutoPilotFinished();
