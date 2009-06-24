@@ -65,9 +65,16 @@ namespace omvviewerlight
         Simulator this_maps_sim = null;
         UUID this_maps_regionID;
         ulong this_maps_region_handle=0;
+
+        bool requested = false;
+
+        public event ClickMap onclickMap;
+        public delegate void ClickMap();
 		
 		public void set_optimal_size(int size)
 		{
+            if (size < 25)
+                size = 25;
 			optimal_width=size;
 			if(this.scalemap!=null && this.scalemap.Pixbuf!=null)
 			{
@@ -100,7 +107,11 @@ namespace omvviewerlight
             this_maps_region_handle = 0;
 
             objects_map = new Gtk.Image(MainClass.GetResource("water.png"));
-            this.scalemap.Pixbuf = this.objects_map.Pixbuf.ScaleSimple(height, width, InterpType.Bilinear);
+
+            if (this.scalemap != null)
+            {
+                this.scalemap.Pixbuf = this.objects_map.Pixbuf.ScaleSimple(height, width, InterpType.Bilinear);
+            }
         }
 
         void SetMapSim(Simulator sim)
@@ -144,7 +155,10 @@ namespace omvviewerlight
                             	size = height < width ? height : width;
 							else
                         		size=optimal_width;
-							
+
+                            if (size < 25)
+                                size = 25;
+
                             this.scalemap.Pixbuf = this.objects_map.Pixbuf.ScaleSimple(size,size, InterpType.Bilinear);
                             lastheight = height;
                             lastwidth = width;
@@ -230,6 +244,13 @@ namespace omvviewerlight
 		
         public void changeregion(GridRegion region)
 		{
+            
+            if (current_region.RegionHandle!=null && current_region.RegionHandle == region.RegionHandle)
+            {
+                //Nothing to do;
+                return;
+            }
+
 			current_region=region;
 			this.objects_map_ID=region.MapImageID;
 			Gdk.Pixbuf pb= MainClass.GetResource("trying.png");
@@ -266,13 +287,19 @@ namespace omvviewerlight
 
         void update_map_for_region(ulong regionID)
         {
+
+
             if (regionID != this_maps_region_handle)
                 return;
+
+            if (requested == true)
+                return; 
 
             GridRegion region;
             if(MainClass.win.grid_regions.TryGetValue(regionID,out region))
             {
                 current_region=region;
+                requested = true;
 				
 				Console.Write("Got grid region reply, requesting texture :"+region.MapImageID.ToString()+"\n");
 				
@@ -282,13 +309,16 @@ namespace omvviewerlight
 				objects_map = new Gtk.Image(pb);
 
 				this.image.Pixbuf=pb;
-                TryGetImage tgi=new TryGetImage(this.objects_map, region.MapImageID, width, height, true);
+                TryGetImage tgi=new TryGetImage(this.objects_map, region.MapImageID, 350, 350, true);
                 tgi.OnDecodeComplete += delegate
                 {
                     Gtk.Application.Invoke(delegate
                     {
                         this.scalemap = new Gtk.Image();
                         int size = height < width ? height : width;
+                        if (size < 25)
+                            size = 25; //meh!
+
                         this.scalemap.Pixbuf = this.objects_map.Pixbuf.ScaleSimple(size, size, InterpType.Bilinear);
                         drawavs();
                     });
@@ -310,6 +340,7 @@ namespace omvviewerlight
 			this.terrain_map_ID=UUID.Zero;
 			this.objects_map_ID=UUID.Zero;
 			this.forsale_map_ID=UUID.Zero;
+            requested = false;
 
             // I can nill reference exception, and why is this even done here, this should only be
             // done on a new simulator not just on any old teleport.
@@ -557,7 +588,19 @@ namespace omvviewerlight
 				MainClass.win.tp_target_widget.settarget(pos,current_region);
 
 			this.drawavs();
-			
+
+            if (onclickMap!=null)
+            {
+                try
+                {
+                    onclickMap();
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+
 		}
 		
 		public void showtarget(Vector3 pos)

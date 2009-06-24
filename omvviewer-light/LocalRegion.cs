@@ -25,6 +25,7 @@ namespace omvviewerlight
         //Gtk.Image[] baseimages = new Gtk.Image[9];
 		int size=150;
 		int oldsize=0;
+        bool needdata = false;
 	
 			
 	
@@ -36,10 +37,7 @@ namespace omvviewerlight
             
 			this.Build();
 			
-			for(int x=0;x<9;x++)
-			{
-				//maps[0]=new Map();	
-			}
+		
 			
             maps[0] = this.map1;
             maps[1] = this.map2;
@@ -50,12 +48,36 @@ namespace omvviewerlight
             maps[6] = this.map7;
             maps[7] = this.map8;
             maps[8] = this.map9;
-				
+
+
+            maps[0].onclickMap += delegate { mapclick(0);};
+            maps[1].onclickMap += delegate { mapclick(1); };
+            maps[2].onclickMap += delegate { mapclick(2); };
+            maps[3].onclickMap += delegate { mapclick(3); };
+            maps[4].onclickMap += delegate { mapclick(4); };
+            maps[5].onclickMap += delegate { mapclick(5); };
+            maps[6].onclickMap += delegate { mapclick(6); };
+            maps[7].onclickMap += delegate { mapclick(7); };
+            maps[8].onclickMap += delegate { mapclick(8); };
+
+
             this.SizeAllocated+=new Gtk.SizeAllocatedHandler(onResize);
 			                                                
 			requested=true;
-			
+
+            if (MainClass.client != null)
+            {
+                if (MainClass.client.Network.LoginStatusCode == OpenMetaverse.LoginStatus.Success)
+                {
+                    needdata = true;
+
+                    //if(MainClass.client.Network.CurrentSim!=null && MainClass.client.Network.CurrentSim.Name!=null)
+                        //MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name, GridLayerType.Objects);
+                }
+            }	
 		}
+
+      
 		
 		void onResize(object o,SizeAllocatedArgs args)
 		{
@@ -71,6 +93,13 @@ namespace omvviewerlight
             {
 				maps[x].set_optimal_size(size);
 		    }
+
+            if (needdata == true)
+            {
+                needdata = false;
+                if(MainClass.client.Network.CurrentSim!=null && MainClass.client.Network.CurrentSim.Name!=null)
+                    MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name, GridLayerType.Objects);
+            }
 		}
 		
 		void onGridRegion(GridRegion region)
@@ -144,87 +173,15 @@ namespace omvviewerlight
                 Console.WriteLine("Requesting map region for current region");            });           
         }
 
-	
 
-		protected virtual void OnEventbox1ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
-		{
-			if(MainClass.win.map_widget==null)
-				return;
-			if(regions[0].Name!="")
-			MainClass.win.map_widget.changeregion(regions[0]);
-		}
+        void mapclick(int x)
+        {
+            if (MainClass.win.map_widget == null)
+                return;
+            if (regions[x].Name != "")
+                MainClass.win.map_widget.changeregion(regions[x]);
+        }
 
-		protected virtual void OnEventbox2ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
-		{
-			if(MainClass.win.map_widget==null)
-				return;
-
-			if(regions[1].Name!="")
-			MainClass.win.map_widget.changeregion(regions[1]);
-		}
-
-		protected virtual void OnEventbox3ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
-		{
-			if(MainClass.win.map_widget==null)
-				return;
-			
-			if(regions[2].Name!="")
-			MainClass.win.map_widget.changeregion(regions[2]);
-		}
-
-		protected virtual void OnEventbox4ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
-		{
-			if(MainClass.win.map_widget==null)
-				return;
-
-			if(regions[3].Name!="")
-			MainClass.win.map_widget.changeregion(regions[3]);
-		}
-
-		protected virtual void OnEventbox5ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
-		{
-			if(MainClass.win.map_widget==null)
-				return;
-			
-			if(regions[4].Name!="")
-			MainClass.win.map_widget.changeregion(regions[4]);
-		}
-
-		protected virtual void OnEventbox6ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
-		{
-			if(MainClass.win.map_widget==null)
-				return;
-
-			if(regions[5].Name!="")
-			MainClass.win.map_widget.changeregion(regions[5]);
-		}
-
-		protected virtual void OnEventbox7ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
-		{
-			if(MainClass.win.map_widget==null)
-				return;
-			
-			if(regions[6].Name!="")
-			MainClass.win.map_widget.changeregion(regions[6]);
-		}
-
-		protected virtual void OnEventbox8ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
-		{
-			if(MainClass.win.map_widget==null)
-				return;
-
-			if(regions[7].Name!="")
-			MainClass.win.map_widget.changeregion(regions[7]);
-		}
-
-		protected virtual void OnEventbox9ButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
-		{
-			if(MainClass.win.map_widget==null)
-				return;
-			
-			if(regions[8].Name!="")
-			MainClass.win.map_widget.changeregion(regions[8]);
-		}
 		
 	}
 }

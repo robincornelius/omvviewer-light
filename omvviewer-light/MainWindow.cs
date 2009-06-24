@@ -1286,8 +1286,7 @@ void  Grid_OnGridRegion(GridRegion region)
 
         public void setmapwidget(omvviewerlight.Map Mapwidget)
         {
-
-
+            this.map_widget = Mapwidget;
         }
 
 }

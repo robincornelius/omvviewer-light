@@ -58,6 +58,8 @@ namespace omvviewerlight
 		{
 			if(target==null)
 				return;
+
+            Console.WriteLine("New try get image for " + asset.ToString());
 			            
             MainClass.client.Assets.OnImageRecieveProgress += new AssetManager.ImageReceiveProgressCallback(onProgress);
                 
@@ -78,7 +80,7 @@ namespace omvviewerlight
 
         public void go()
         {
-            Console.WriteLine("TryGetImage:: GO()");
+            Console.WriteLine("TryGetImage:: GO() asset :"+target_asset.ToString());
             dowork();
         }
 
@@ -150,7 +152,14 @@ namespace omvviewerlight
 		    }
             Gtk.Application.Invoke(delegate
             {
-                target_image.QueueDraw();
+                try
+                {
+                    target_image.QueueDraw();
+                }
+                catch (Exception e)
+                {
+                       Console.WriteLine("Exception when updating progress");
+                }
             });		
         }
 
@@ -207,8 +216,8 @@ namespace omvviewerlight
 				return;
 			}
 			
-            Console.Write("Decoded\n");
-
+            Console.WriteLine("Decoded :"+this.target_asset.ToString());
+            
             Gtk.Application.Invoke(delegate
             {
                 try
@@ -218,8 +227,10 @@ namespace omvviewerlight
                         if (target_image.Pixbuf != null)
                         {
                             target_image.Pixbuf = buf;
-                            Console.WriteLine("TryGetImage:: Image Done queuing for a redraw");
-                            target_image.QueueDraw();
+                            Console.WriteLine("TryGetImage:: Image Done queuing for a redraw "+this.target_asset.ToString());
+                            if(target_image!=null)
+                                target_image.QueueDraw();
+
                             if (OnDecodeComplete!=null)
                             {
                                 try
@@ -240,6 +251,8 @@ namespace omvviewerlight
                     Console.Write("*** Image decode blew whist trying to write image into pixbuf ***\n");
                     Console.WriteLine(e.Message);
                 }
+
+               
             });
         }
       

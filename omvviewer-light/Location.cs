@@ -23,6 +23,8 @@ omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(
 //
 
 using System;
+using Gtk;
+using Gdk;
 
 namespace omvviewerlight
 {
@@ -30,33 +32,52 @@ namespace omvviewerlight
 	[System.ComponentModel.ToolboxItem(true)]	
 	public partial class Location : Gtk.Bin
 	{
+        bool requested = false;
 		
 		public Location()
 		{
 			this.Build();
 			//this.map1.setsize(250);
-            MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(Network_OnCurrentSimChanged);
             MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(Network_OnEventQueueRunning);
+            this.SizeAllocated += new Gtk.SizeAllocatedHandler(onResize);
+
+            if (MainClass.client != null)
+            {
+                if (MainClass.client.Network.LoginStatusCode == OpenMetaverse.LoginStatus.Success)
+                {
+                    requested = true;
+                }
+            }
+        }
+
+        void onResize(object o, SizeAllocatedArgs args)
+        {
+
+            MainClass.win.setmapwidget(map1);
+
+            if (requested == true)
+            {
+                if (args.Allocation.Width > 100)
+                {
+                    requested = false;
+                    map1.SetAsWater();
+                  //   map1.set_optimal_size(args.Allocation.Width);
+                     map1.SetGridRegion(MainClass.client.Network.CurrentSim.RegionID, MainClass.client.Network.CurrentSim.Handle);
+                }
+            }
         }
 
         void Network_OnEventQueueRunning(OpenMetaverse.Simulator simulator)
         {
             this.map1.SetGridRegion(MainClass.client.Network.CurrentSim.RegionID, MainClass.client.Network.CurrentSim.Handle);
-    
         }
 
-        void Network_OnCurrentSimChanged(OpenMetaverse.Simulator PreviousSimulator)
-        {
-        }
-		
-		new public void Dispose()
+      	new public void Dispose()
 		{
 			Gtk.Notebook p;
 			p=(Gtk.Notebook)this.Parent;
 			p.RemovePage(p.PageNum(this));
 
-            MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(Network_OnCurrentSimChanged);
-   
 			this.map1.Dispose();
 			this.radar1.Dispose();
 			this.teleportto1.Dispose();
