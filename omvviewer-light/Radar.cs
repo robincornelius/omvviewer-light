@@ -28,20 +28,14 @@ using OpenMetaverse;
 
 namespace omvviewerlight
 {
-    public class agent 
-    {
-        public OpenMetaverse.Avatar avatar;
-        public uint localid;
-        public Gtk.TreeIter iter;
-    }
-    
+
 	[System.ComponentModel.ToolboxItem(true)]	
     public partial class Radar : Gtk.Bin
 	{
 		
 		Gtk.ListStore store;	
 		private Dictionary<UUID, bool> av_typing = new Dictionary<UUID, bool>();
-        private Dictionary<UUID, agent> av_tree = new Dictionary<UUID, agent>();
+        private Dictionary<UUID, Gtk.TreeIter> av_tree = new Dictionary<UUID, Gtk.TreeIter>();
         UUID lastsim = new UUID();
 		const float DISTANCE_BUFFER = 3f;
 
@@ -50,7 +44,6 @@ namespace omvviewerlight
 		{
 			Console.WriteLine("Radar Cleaned up");
 		}		
-		
 		
 		public Radar()
 		{      
@@ -84,16 +77,17 @@ namespace omvviewerlight
         {
             lock (simulator.ObjectsAvatars)  
             {
-                simulator.ObjectsAvatars.ForEach(delegate(KeyValuePair<uint, Avatar> kvp)
+                simulator.AvatarPositions.ForEach(delegate (KeyValuePair <UUID,Vector3> kvp)
                 {
-                    if (kvp.Value != null && kvp.Value.ID == UUID.Zero)
+                    if (kvp.Value != null && kvp.Key != UUID.Zero)
                     {
                         lock (av_tree)
                         {
-                            if (av_tree.ContainsKey(kvp.Value.ID))
+                            if (av_tree.ContainsKey(kvp.Key))
                             {
-                                store.Remove(ref av_tree[kvp.Value.ID].iter);
-                                av_tree.Remove(kvp.Value.ID);
+                                Gtk.TreeIter iter = av_tree[kvp.Key];
+                                store.Remove(ref iter);
+                                av_tree.Remove(kvp.Key);
                             }
                         }
                     }
@@ -105,7 +99,41 @@ namespace omvviewerlight
         {
             Gtk.Application.Invoke(delegate
             {
-                calcdistance(UUID.Zero);
+                lock(av_tree)
+                {
+                    foreach (UUID id in removedEntries)
+                    {
+                        if(av_tree.ContainsKey(id))
+                        {
+                            av_tree.Remove(id);
+                            Gtk.TreeIter iter = av_tree[id];
+                            store.Remove(ref iter);
+                        }
+                    }
+                }
+
+                /*
+                foreach (UUID id in newEntries)
+                {
+                    agent theagent = new agent();
+                    Gtk.TreeIter iter;
+                   
+                    iter = store.AppendValues("", "Waiting...", "", id);
+
+                    AsyncNameUpdate ud = new AsyncNameUpdate(id, false);
+
+                    ud.onNameCallBack += delegate(string name, object[] values) { store.SetValue(iter, 1, name); };
+                    ud.go();
+
+
+                 
+                    theagent.iter = iter;
+                    av_tree.Add(id, theagent);
+                }
+                 
+                 */
+
+                calcdistance();
             });
         }
 
@@ -133,34 +161,31 @@ namespace omvviewerlight
             if (MainClass.client.Network.CurrentSim.ObjectsAvatars == null)
                 return true;
 
+
+
             foreach (Simulator sim in MainClass.client.Network.Simulators)
             {
-
-                lock (sim.ObjectsAvatars)
+                sim.AvatarPositions.ForEach(delegate(KeyValuePair<UUID, Vector3> kvp)
                 {
-                    sim.ObjectsAvatars.ForEach(delegate(KeyValuePair<uint, Avatar> kvp)
+                    if (kvp.Key != MainClass.client.Self.AgentID)
                     {
-                        //Seen this fire with some kind of null
-                        if (kvp.Value != null && kvp.Value.ID != UUID.Zero)
-                            if (!this.av_tree.ContainsKey(kvp.Value.ID))
-                            {
-                                agent theagent = new agent();
-                                theagent.avatar = kvp.Value;
-                                Gtk.TreeIter iter;
-                                iter = store.AppendValues("", kvp.Value.Name, "", kvp.Value.ID);
-                                theagent.iter = iter;
-                                av_tree.Add(kvp.Value.ID, theagent);
-                                calcdistance(kvp.Value.ID);
-                            }
-                            else
-                            {
-                                calcdistance(kvp.Value.ID);
-                            }
-                    });
-                }
+                        if (!this.av_tree.ContainsKey(kvp.Key))
+                        {
+                            Gtk.TreeIter iter;
+                            iter = store.AppendValues("", "Waiting...", "", kvp.Key);
+                            av_tree.Add(kvp.Key, iter);
+
+                            AsyncNameUpdate ud = new AsyncNameUpdate(kvp.Key, false);
+
+                            ud.onNameCallBack += delegate(string name, object[] values) { store.SetValue(iter, 1, name); };
+                            ud.go();
+
+                        }
+                    }
+                });
             }
 
-            
+            calcdistance();
             return true;
 
         }
@@ -233,12 +258,12 @@ namespace omvviewerlight
             lastsim = MainClass.client.Network.CurrentSim.ID;
 		}
 
-        void calcdistance(UUID id)
+        void calcdistance()
         {
            Gtk.Application.Invoke(delegate
 		   {
 
-               if (this.av_tree.ContainsKey(id))
+              // if (this.av_tree.ContainsKey(id))
                {
 
                    double dist;
@@ -275,7 +300,7 @@ namespace omvviewerlight
                                    dist = Vector3.Distance(self_pos, target_pos);
 
                                    if (av_tree.ContainsKey(kvp.Key))
-                                       store.SetValue(av_tree[kvp.Key].iter, 2, MainClass.cleandistance(dist.ToString(), 1));
+                                       store.SetValue(av_tree[kvp.Key], 2, MainClass.cleandistance(dist.ToString(), 1));
                                }
                                catch
                                {
@@ -293,6 +318,7 @@ namespace omvviewerlight
 			
 		void onChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourcetype,string fromName, UUID id, UUID ownerid, Vector3 position)
 		{
+            
 			Gtk.Application.Invoke(delegate
 			{
 
@@ -300,11 +326,11 @@ namespace omvviewerlight
                 {
                     if (type == ChatType.StartTyping)
                     {
-                        foreach (KeyValuePair<UUID, agent> kvp in av_tree)
+                        foreach (KeyValuePair<UUID, Gtk.TreeIter> kvp in av_tree)
                         {
-                            if (kvp.Value.avatar.ID == id)
+                            if (kvp.Key == id)
                             {
-                                store.SetValue(kvp.Value.iter, 0, "*");
+                                store.SetValue(kvp.Value, 0, "*");
                                 return;
                             }
                         }
@@ -312,17 +338,18 @@ namespace omvviewerlight
 
                     if (type == ChatType.StopTyping)
                     {
-                        foreach (KeyValuePair<UUID, agent> kvp in av_tree)
+                        foreach (KeyValuePair<UUID, Gtk.TreeIter> kvp in av_tree)
                         {
-                            if (kvp.Value.avatar.ID == id)
+                            if (kvp.Key == id)
                             {
-                                store.SetValue(kvp.Value.iter, 0, " ");
+                                store.SetValue(kvp.Value, 0, " ");
                                 return;
                             }
                         } 
                     }
                 }
 			});
+             
 		}
 
 		protected virtual void OnButtonImClicked (object sender, System.EventArgs e)

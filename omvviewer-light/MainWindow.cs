@@ -1283,4 +1283,11 @@ void  Grid_OnGridRegion(GridRegion region)
         //OpenGL mgl=new OpenGL();
               
         }	
+
+        public void setmapwidget(omvviewerlight.Map Mapwidget)
+        {
+
+
+        }
+
 }
