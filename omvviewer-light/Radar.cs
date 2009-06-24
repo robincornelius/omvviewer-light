@@ -105,9 +105,9 @@ namespace omvviewerlight
                     {
                         if(av_tree.ContainsKey(id))
                         {
-                            av_tree.Remove(id);
                             Gtk.TreeIter iter = av_tree[id];
                             store.Remove(ref iter);
+                            av_tree.Remove(id);
                         }
                     }
                 }
