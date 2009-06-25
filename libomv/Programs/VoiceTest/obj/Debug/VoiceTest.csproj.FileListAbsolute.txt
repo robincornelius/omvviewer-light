@@ -1,0 +1,5 @@
+C:\omvviewer\trunk\bin\VoiceTest.exe
+C:\omvviewer\trunk\bin\VoiceTest.pdb
+C:\omvviewer\trunk\Programs\VoiceTest\obj\Debug\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\Programs\VoiceTest\obj\Debug\VoiceTest.exe
+C:\omvviewer\trunk\Programs\VoiceTest\obj\Debug\VoiceTest.pdb

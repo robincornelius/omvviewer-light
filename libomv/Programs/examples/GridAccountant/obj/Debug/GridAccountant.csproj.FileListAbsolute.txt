@@ -1,0 +1,7 @@
+C:\omvviewer\trunk\bin\GridAccountant.exe
+C:\omvviewer\trunk\bin\GridAccountant.pdb
+C:\omvviewer\trunk\Programs\examples\GridAccountant\obj\Debug\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\Programs\examples\GridAccountant\obj\Debug\GridAccountant.frmGridAccountant.resources
+C:\omvviewer\trunk\Programs\examples\GridAccountant\obj\Debug\GridAccountant.csproj.GenerateResource.Cache
+C:\omvviewer\trunk\Programs\examples\GridAccountant\obj\Debug\GridAccountant.exe
+C:\omvviewer\trunk\Programs\examples\GridAccountant\obj\Debug\GridAccountant.pdb

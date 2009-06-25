@@ -1,0 +1,3 @@
+C:\omvviewer\trunk\bin\VoiceTest.exe
+C:\omvviewer\trunk\Programs\VoiceTest\obj\Release\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\Programs\VoiceTest\obj\Release\VoiceTest.exe

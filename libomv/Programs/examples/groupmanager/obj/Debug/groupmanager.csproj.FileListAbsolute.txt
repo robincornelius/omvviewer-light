@@ -1,0 +1,8 @@
+C:\omvviewer\trunk\bin\groupmanager.exe
+C:\omvviewer\trunk\bin\groupmanager.pdb
+C:\omvviewer\trunk\Programs\examples\groupmanager\obj\Debug\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\Programs\examples\groupmanager\obj\Debug\groupmanager.frmGroupInfo.resources
+C:\omvviewer\trunk\Programs\examples\groupmanager\obj\Debug\groupmanager.frmGroupManager.resources
+C:\omvviewer\trunk\Programs\examples\groupmanager\obj\Debug\groupmanager.csproj.GenerateResource.Cache
+C:\omvviewer\trunk\Programs\examples\groupmanager\obj\Debug\groupmanager.exe
+C:\omvviewer\trunk\Programs\examples\groupmanager\obj\Debug\groupmanager.pdb

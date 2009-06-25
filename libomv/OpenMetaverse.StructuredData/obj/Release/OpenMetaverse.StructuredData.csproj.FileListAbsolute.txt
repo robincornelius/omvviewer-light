@@ -1,0 +1,4 @@
+C:\omvviewer\trunk\bin\OpenMetaverse.StructuredData.dll
+C:\omvviewer\trunk\bin\OpenMetaverse.StructuredData.XML
+C:\omvviewer\trunk\OpenMetaverse.StructuredData\obj\Release\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\OpenMetaverse.StructuredData\obj\Release\OpenMetaverse.StructuredData.dll

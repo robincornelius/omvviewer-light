@@ -1,0 +1,4 @@
+C:\omvviewer\trunk\bin\OpenMetaverse.Http.dll
+C:\omvviewer\trunk\bin\OpenMetaverse.Http.XML
+C:\omvviewer\trunk\OpenMetaverse.Http\obj\Release\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\OpenMetaverse.Http\obj\Release\OpenMetaverse.Http.dll

@@ -1,0 +1,64 @@
+10
+
+dir
+2910
+http://openmv.org/svn/omf/libopenmetaverse/trunk/Programs
+http://openmv.org/svn/omf
+
+
+
+2009-06-24T01:04:29.122756Z
+2910
+jhurliman
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+c754d5e9-d413-0410-bcdf-9574c9dba6b7
+
+AvatarPreview
+dir
+
+Baker
+dir
+
+mapgenerator
+dir
+
+PrimWorkshop
+dir
+
+VoiceTest
+dir
+
+WinGridProxy
+dir
+
+Prebuild
+dir
+
+GridProxy
+dir
+
+importprimscript
+dir
+
+VisualParamGenerator
+dir
+
+GridImageUpload
+dir
+
+examples
+dir
+

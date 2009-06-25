@@ -1,0 +1,5 @@
+C:\omvviewer\trunk\bin\ExtensionLoader.dll
+C:\omvviewer\trunk\bin\ExtensionLoader.pdb
+C:\omvviewer\trunk\ExtensionLoader\obj\Debug\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\ExtensionLoader\obj\Debug\ExtensionLoader.dll
+C:\omvviewer\trunk\ExtensionLoader\obj\Debug\ExtensionLoader.pdb

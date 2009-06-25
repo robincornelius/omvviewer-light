@@ -1,0 +1,119 @@
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS
+END
+XmlRpcBoxcarRequest.cs
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS/XmlRpcBoxcarRequest.cs
+END
+XmlRpcRequest.cs
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS/XmlRpcRequest.cs
+END
+XmlRpcResponseSerializer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS/XmlRpcResponseSerializer.cs
+END
+Logger.cs
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS/Logger.cs
+END
+XmlRpcExposedAttribute.cs
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS/XmlRpcExposedAttribute.cs
+END
+XmlRpcRequestDeserializer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS/XmlRpcRequestDeserializer.cs
+END
+XmlRpcException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS/XmlRpcException.cs
+END
+XmlRpcResponse.cs
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS/XmlRpcResponse.cs
+END
+XmlRpcResponder.cs
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS/XmlRpcResponder.cs
+END
+XmlRpcResponseDeserializer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS/XmlRpcResponseDeserializer.cs
+END
+XmlRpcServer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS/XmlRpcServer.cs
+END
+XmlRpcErrorCodes.cs
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS/XmlRpcErrorCodes.cs
+END
+XmlRpcSerializer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS/XmlRpcSerializer.cs
+END
+XmlRpcSystemObject.cs
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS/XmlRpcSystemObject.cs
+END
+SimpleHttpRequest.cs
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS/SimpleHttpRequest.cs
+END
+XmlRpcClientProxy.cs
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS/XmlRpcClientProxy.cs
+END
+XmlRpcRequestSerializer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS/XmlRpcRequestSerializer.cs
+END
+XmlRpcDeserializer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS/XmlRpcDeserializer.cs
+END
+XmlRpcXmlTokens.cs
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/GridProxy/XmlRpcCS/XmlRpcXmlTokens.cs
+END

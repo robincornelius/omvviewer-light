@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/omf/!svn/ver/2825/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/System
+END
+LoadCommand.cs
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/System/LoadCommand.cs
+END
+SetMasterKeyCommand.cs
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/System/SetMasterKeyCommand.cs
+END
+ShowEffectsCommand.cs
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/System/ShowEffectsCommand.cs
+END
+QuitCommand.cs
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/System/QuitCommand.cs
+END
+WaitForLoginCommand.cs
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/omf/!svn/ver/2716/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/System/WaitForLoginCommand.cs
+END
+MD5Command.cs
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/System/MD5Command.cs
+END
+DebugCommand.cs
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/System/DebugCommand.cs
+END
+SetMasterCommand.cs
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/System/SetMasterCommand.cs
+END
+HelpCommand.cs
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/System/HelpCommand.cs
+END
+LoginCommand.cs
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/System/LoginCommand.cs
+END
+SleepCommand.cs
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/omf/!svn/ver/2825/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/System/SleepCommand.cs
+END
+LogoutCommand.cs
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/System/LogoutCommand.cs
+END
+PacketLogCommand.cs
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/System/PacketLogCommand.cs
+END

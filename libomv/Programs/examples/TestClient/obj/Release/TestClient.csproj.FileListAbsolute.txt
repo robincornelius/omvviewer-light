@@ -1,0 +1,3 @@
+C:\omvviewer\trunk\bin\TestClient.exe
+C:\omvviewer\trunk\Programs\examples\TestClient\obj\Release\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\Programs\examples\TestClient\obj\Release\TestClient.exe

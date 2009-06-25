@@ -1,0 +1,3 @@
+C:\omvviewer\trunk\bin\ExtensionLoader.dll
+C:\omvviewer\trunk\ExtensionLoader\obj\Release\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\ExtensionLoader\obj\Release\ExtensionLoader.dll

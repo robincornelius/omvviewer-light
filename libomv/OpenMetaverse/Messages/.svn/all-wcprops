@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/omf/!svn/ver/2900/libopenmetaverse/trunk/OpenMetaverse/Messages
+END
+CableBeachHelpers.cs
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/omf/!svn/ver/2881/libopenmetaverse/trunk/OpenMetaverse/Messages/CableBeachHelpers.cs
+END
+MessageEventDecoder.cs
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/omf/!svn/ver/2759/libopenmetaverse/trunk/OpenMetaverse/Messages/MessageEventDecoder.cs
+END
+CableBeachAttributes.cs
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/omf/!svn/ver/2878/libopenmetaverse/trunk/OpenMetaverse/Messages/CableBeachAttributes.cs
+END
+CableBeachMessages.cs
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/omf/!svn/ver/2900/libopenmetaverse/trunk/OpenMetaverse/Messages/CableBeachMessages.cs
+END
+LindenMessages.cs
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/omf/!svn/ver/2827/libopenmetaverse/trunk/OpenMetaverse/Messages/LindenMessages.cs
+END
+Messages.cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/omf/!svn/ver/2900/libopenmetaverse/trunk/OpenMetaverse/Messages/Messages.cs
+END

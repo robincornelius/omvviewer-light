@@ -1,0 +1,3 @@
+C:\omvviewer\trunk\bin\importprimscript.exe
+C:\omvviewer\trunk\Programs\importprimscript\obj\Release\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\Programs\importprimscript\obj\Release\importprimscript.exe

@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/omf/!svn/ver/2825/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/Agent
+END
+WhoCommand.cs
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/omf/!svn/ver/2825/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/Agent/WhoCommand.cs
+END
+CloneProfileCommand.cs
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/omf/!svn/ver/2825/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/Agent/CloneProfileCommand.cs
+END
+TouchCommand.cs
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/omf/!svn/ver/2825/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/Agent/TouchCommand.cs
+END

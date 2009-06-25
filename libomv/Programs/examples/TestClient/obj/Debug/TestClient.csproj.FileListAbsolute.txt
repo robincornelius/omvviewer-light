@@ -1,0 +1,5 @@
+C:\omvviewer\trunk\bin\TestClient.exe
+C:\omvviewer\trunk\bin\TestClient.pdb
+C:\omvviewer\trunk\Programs\examples\TestClient\obj\Debug\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\Programs\examples\TestClient\obj\Debug\TestClient.exe
+C:\omvviewer\trunk\Programs\examples\TestClient\obj\Debug\TestClient.pdb

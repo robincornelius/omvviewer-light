@@ -1,0 +1,5 @@
+C:\omvviewer\trunk\bin\OpenMetaverse.Rendering.Meshmerizer.dll
+C:\omvviewer\trunk\bin\OpenMetaverse.Rendering.Meshmerizer.pdb
+C:\omvviewer\trunk\OpenMetaverse.Rendering.Meshmerizer\obj\Debug\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\OpenMetaverse.Rendering.Meshmerizer\obj\Debug\OpenMetaverse.Rendering.Meshmerizer.dll
+C:\omvviewer\trunk\OpenMetaverse.Rendering.Meshmerizer\obj\Debug\OpenMetaverse.Rendering.Meshmerizer.pdb

@@ -1,0 +1,5 @@
+C:\omvviewer\trunk\bin\GridAccountant.exe
+C:\omvviewer\trunk\Programs\examples\GridAccountant\obj\Release\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\Programs\examples\GridAccountant\obj\Release\GridAccountant.frmGridAccountant.resources
+C:\omvviewer\trunk\Programs\examples\GridAccountant\obj\Release\GridAccountant.csproj.GenerateResource.Cache
+C:\omvviewer\trunk\Programs\examples\GridAccountant\obj\Release\GridAccountant.exe

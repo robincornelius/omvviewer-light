@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/omf/!svn/ver/2910/libopenmetaverse/trunk
+END
+LICENSE.txt
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/omf/!svn/ver/2510/libopenmetaverse/trunk/LICENSE.txt
+END
+runprebuild.sh
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/omf/!svn/ver/2663/libopenmetaverse/trunk/runprebuild.sh
+END
+prebuild.xml
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/omf/!svn/ver/2905/libopenmetaverse/trunk/prebuild.xml
+END
+nantprebuild
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/omf/!svn/ver/2790/libopenmetaverse/trunk/nantprebuild
+END
+runprebuild2008.bat
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/omf/!svn/ver/2656/libopenmetaverse/trunk/runprebuild2008.bat
+END
+README.txt
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/omf/!svn/ver/2570/libopenmetaverse/trunk/README.txt
+END
+mapgen.bat
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/mapgen.bat
+END

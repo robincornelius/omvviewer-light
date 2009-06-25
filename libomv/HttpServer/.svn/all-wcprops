@@ -1,0 +1,215 @@
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/19869/branches/lite/HttpServer
+END
+HttpContextFactory.cs
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/19869/branches/lite/HttpServer/HttpContextFactory.cs
+END
+ExceptionEventArgs.cs
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/18285/branches/lite/HttpServer/ExceptionEventArgs.cs
+END
+HttpFile.cs
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/18285/branches/lite/HttpServer/HttpFile.cs
+END
+HttpHelper.cs
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/19393/branches/lite/HttpServer/HttpHelper.cs
+END
+RequestCookie.cs
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/18285/branches/lite/HttpServer/RequestCookie.cs
+END
+HttpClientContext.cs
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/18285/branches/lite/HttpServer/HttpClientContext.cs
+END
+HttpRequestHandler.cs
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/19633/branches/lite/HttpServer/HttpRequestHandler.cs
+END
+HttpClientContextImp.cs
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/19869/branches/lite/HttpServer/HttpClientContextImp.cs
+END
+IHttpClientContext.cs
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/19869/branches/lite/HttpServer/IHttpClientContext.cs
+END
+ExceptionHandler.cs
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/18285/branches/lite/HttpServer/ExceptionHandler.cs
+END
+RequestQueue.cs
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/18611/branches/lite/HttpServer/RequestQueue.cs
+END
+ReaderWriterLockSlim.cs
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/19641/branches/lite/HttpServer/ReaderWriterLockSlim.cs
+END
+HttpResponse.cs
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/18625/branches/lite/HttpServer/HttpResponse.cs
+END
+ContentTypes.cs
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/18285/branches/lite/HttpServer/ContentTypes.cs
+END
+HttpParam.cs
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/18387/branches/lite/HttpServer/HttpParam.cs
+END
+HttpForm.cs
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/18285/branches/lite/HttpServer/HttpForm.cs
+END
+HttpRequestSignature.cs
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/19633/branches/lite/HttpServer/HttpRequestSignature.cs
+END
+ResponseCookies.cs
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/18285/branches/lite/HttpServer/ResponseCookies.cs
+END
+Check.cs
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/18331/branches/lite/HttpServer/Check.cs
+END
+HttpInputItem.cs
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/18387/branches/lite/HttpServer/HttpInputItem.cs
+END
+IHttpRequestParser.cs
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/18611/branches/lite/HttpServer/IHttpRequestParser.cs
+END
+RequestReceivedEventArgs.cs
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/18285/branches/lite/HttpServer/RequestReceivedEventArgs.cs
+END
+HttpListenerBase.cs
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/19869/branches/lite/HttpServer/HttpListenerBase.cs
+END
+Method.cs
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/18285/branches/lite/HttpServer/Method.cs
+END
+HttpListener.cs
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/19869/branches/lite/HttpServer/HttpListener.cs
+END
+ClientAcceptedEventArgs.cs
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/18285/branches/lite/HttpServer/ClientAcceptedEventArgs.cs
+END
+ILogWriter.cs
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/18285/branches/lite/HttpServer/ILogWriter.cs
+END
+ResponseCookie.cs
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/18285/branches/lite/HttpServer/ResponseCookie.cs
+END
+HttpRequest.cs
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/19869/branches/lite/HttpServer/HttpRequest.cs
+END
+IHttpContextHandler.cs
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/18285/branches/lite/HttpServer/IHttpContextHandler.cs
+END
+RequestParserFactory.cs
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/18285/branches/lite/HttpServer/RequestParserFactory.cs
+END
+HttpInput.cs
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/18387/branches/lite/HttpServer/HttpInput.cs
+END
+IHttpRequest.cs
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/19588/branches/lite/HttpServer/IHttpRequest.cs
+END
+RequestCookies.cs
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/18285/branches/lite/HttpServer/RequestCookies.cs
+END
+IHttpResponse.cs
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/18625/branches/lite/HttpServer/IHttpResponse.cs
+END

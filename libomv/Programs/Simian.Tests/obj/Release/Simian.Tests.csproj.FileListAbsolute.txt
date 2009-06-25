@@ -1,0 +1,3 @@
+C:\omvviewer\trunk\bin\Simian.Tests.dll
+C:\omvviewer\trunk\Programs\Simian.Tests\obj\Release\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\Programs\Simian.Tests\obj\Release\Simian.Tests.dll

@@ -1,0 +1,95 @@
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/omf/!svn/ver/2910/libopenmetaverse/trunk/Programs/Prebuild/src/Core/Targets
+END
+MakefileTarget.cs
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/omf/!svn/ver/2399/libopenmetaverse/trunk/Programs/Prebuild/src/Core/Targets/MakefileTarget.cs
+END
+SharpDevelop2Target.cs
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/Prebuild/src/Core/Targets/SharpDevelop2Target.cs
+END
+ToolInfo.cs
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/Prebuild/src/Core/Targets/ToolInfo.cs
+END
+VSGenericTarget.cs
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/omf/!svn/ver/2908/libopenmetaverse/trunk/Programs/Prebuild/src/Core/Targets/VSGenericTarget.cs
+END
+DebugTarget.cs
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/omf/!svn/ver/2399/libopenmetaverse/trunk/Programs/Prebuild/src/Core/Targets/DebugTarget.cs
+END
+MonoDevelopTarget.cs
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/omf/!svn/ver/2399/libopenmetaverse/trunk/Programs/Prebuild/src/Core/Targets/MonoDevelopTarget.cs
+END
+VSVersion.cs
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/Prebuild/src/Core/Targets/VSVersion.cs
+END
+AutotoolsTarget.cs
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/Prebuild/src/Core/Targets/AutotoolsTarget.cs
+END
+SharpDevelopTarget.cs
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/omf/!svn/ver/2399/libopenmetaverse/trunk/Programs/Prebuild/src/Core/Targets/SharpDevelopTarget.cs
+END
+VS2002Target.cs
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/omf/!svn/ver/2399/libopenmetaverse/trunk/Programs/Prebuild/src/Core/Targets/VS2002Target.cs
+END
+VS2003Target.cs
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/omf/!svn/ver/2399/libopenmetaverse/trunk/Programs/Prebuild/src/Core/Targets/VS2003Target.cs
+END
+VS2005Target.cs
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/omf/!svn/ver/2399/libopenmetaverse/trunk/Programs/Prebuild/src/Core/Targets/VS2005Target.cs
+END
+NAntTarget.cs
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/omf/!svn/ver/2910/libopenmetaverse/trunk/Programs/Prebuild/src/Core/Targets/NAntTarget.cs
+END
+VS2008Target.cs
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/Prebuild/src/Core/Targets/VS2008Target.cs
+END
+XcodeTarget.cs
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/omf/!svn/ver/2399/libopenmetaverse/trunk/Programs/Prebuild/src/Core/Targets/XcodeTarget.cs
+END

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/omf/!svn/ver/2541/libopenmetaverse/trunk/OpenMetaverse.Rendering.Meshmerizer
+END
+PrimMesher.cs
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/OpenMetaverse.Rendering.Meshmerizer/PrimMesher.cs
+END
+MeshmerizerTypes.cs
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/omf/!svn/ver/2541/libopenmetaverse/trunk/OpenMetaverse.Rendering.Meshmerizer/MeshmerizerTypes.cs
+END
+Extruder.cs
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/OpenMetaverse.Rendering.Meshmerizer/Extruder.cs
+END
+Meshmerizer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/OpenMetaverse.Rendering.Meshmerizer/Meshmerizer.cs
+END

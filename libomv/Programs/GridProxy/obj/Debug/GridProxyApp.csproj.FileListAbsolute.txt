@@ -1,0 +1,5 @@
+C:\omvviewer\trunk\bin\GridProxyApp.exe
+C:\omvviewer\trunk\bin\GridProxyApp.pdb
+C:\omvviewer\trunk\Programs\GridProxy\obj\Debug\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\Programs\GridProxy\obj\Debug\GridProxyApp.exe
+C:\omvviewer\trunk\Programs\GridProxy\obj\Debug\GridProxyApp.pdb

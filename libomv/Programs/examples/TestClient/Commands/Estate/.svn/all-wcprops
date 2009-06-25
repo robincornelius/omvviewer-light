@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/omf/!svn/ver/2545/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/Estate
+END
+DownloadTerrainCommand.cs
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/omf/!svn/ver/2545/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/Estate/DownloadTerrainCommand.cs
+END
+UploadRawTerrainCommand.cs
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/omf/!svn/ver/2545/libopenmetaverse/trunk/Programs/examples/TestClient/Commands/Estate/UploadRawTerrainCommand.cs
+END

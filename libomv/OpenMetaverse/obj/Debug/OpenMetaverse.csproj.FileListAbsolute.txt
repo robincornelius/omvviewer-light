@@ -1,0 +1,5 @@
+C:\omvviewer\trunk\bin\OpenMetaverse.dll
+C:\omvviewer\trunk\bin\OpenMetaverse.pdb
+C:\omvviewer\trunk\OpenMetaverse\obj\Debug\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\OpenMetaverse\obj\Debug\OpenMetaverse.dll
+C:\omvviewer\trunk\OpenMetaverse\obj\Debug\OpenMetaverse.pdb

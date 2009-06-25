@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/18285/branches/lite/HttpServer/Parser
+END
+BodyEventArgs.cs
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/18331/branches/lite/HttpServer/Parser/BodyEventArgs.cs
+END
+RequestLineEventArgs.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/18285/branches/lite/HttpServer/Parser/RequestLineEventArgs.cs
+END
+HttpRequestParser.cs
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/19514/branches/lite/HttpServer/Parser/HttpRequestParser.cs
+END
+HeaderEventArgs.cs
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/18331/branches/lite/HttpServer/Parser/HeaderEventArgs.cs
+END

@@ -1,0 +1,107 @@
+Index: OpenMetaverse/AppearanceManager.cs
+===================================================================
+--- OpenMetaverse/AppearanceManager.cs	(revision 2413)
++++ OpenMetaverse/AppearanceManager.cs	(working copy)
+@@ -664,9 +664,10 @@
+                                     }
+                                 }
+                                 else if (face.TextureID != AgentTextures[i])
+-                                {
++                                {
++                                    Logger.DebugLog("*** FACE is "+face.TextureID.ToString()+" Agent Texture is "+AgentTextures[i].ToString());
+                                     match = false;
+-                                    break;
++                                    //break;
+                                 }
+                             }
+ 
+@@ -1031,12 +1032,6 @@
+ 
+         private void UploadBake(Baker bake)
+         {
+-            if(bake.BakedTexture.AssetID==UUID.Zero)
+-            {
+-                Logger.Log("UploadBake(): Warning possible Linden Default textures in use, skipping this baked upload",Helpers.LogLevel.Warning, Client);
+-                return;
+-            }
+-
+             lock (PendingUploads)
+             {
+                 if(PendingUploads.ContainsKey(bake.BakedTexture.AssetID))
+@@ -1045,13 +1040,11 @@
+                     return;
+                 }
+ 
+-             // Add it to a pending uploads list
+-             PendingUploads.Add(bake.BakedTexture.AssetID, BakeTypeToAgentTextureIndex(bake.BakeType));
+-             }
++                    // Upload the completed layer data and Add it to a pending uploads list
++                    UUID id=Assets.RequestUpload(bake.BakedTexture, true);
++                    PendingUploads.Add(UUID.Combine(id, Client.Self.SecureSessionID), BakeTypeToAgentTextureIndex(bake.BakeType));
++            }
+ 
+-            // Upload the completed layer data
+-            Assets.RequestUpload(bake.BakedTexture, true);
+-
+             Logger.DebugLog(String.Format("Bake {0} completed. Uploading asset {1}", bake.BakeType,
+                 bake.BakedTexture.AssetID.ToString()), Client);
+ 
+@@ -1110,9 +1103,14 @@
+             }
+ 
+             lock (AgentTextures)
+-            {
++            {
++                //If we are here then the user has tried to wear stuff or we are at login
++                // In either case the existing uploads of this class are very shortly going to be no good
++                PendingUploads.Clear();
++
+                 foreach (AgentCachedTextureResponsePacket.WearableDataBlock block in response.WearableData)
+-                {
++                {
++                    UUID hash=new UUID();
+                     // For each missing element we need to bake our own texture
+                     Logger.DebugLog("Cache response, index: " + block.TextureIndex + ", ID: " +
+                         block.TextureID.ToString(), Client);
+@@ -1122,9 +1120,12 @@
+                     if (host.Length > 0) Logger.DebugLog("Cached bake exists on foreign host " + host, Client);
+ 
+                     BakeType bakeType = (BakeType)block.TextureIndex;
+-                    
++                    
++                    // Note, still should handle block.TextureID != UUID.Zero && host.Length == 0
++                    // Not sure what we should do as yet with that.
++
+                     // Convert the baked index to an AgentTexture index
+-                    if (block.TextureID != UUID.Zero && host.Length == 0)
++                    if (block.TextureID != UUID.Zero && host.Length != 0)
+                     {
+                         TextureIndex index = BakeTypeToAgentTextureIndex(bakeType);
+                         AgentTextures[(int)index] = block.TextureID;
+@@ -1196,8 +1197,11 @@
+                             }
+                             else
+                             {
+-                                lock (PendingBakes)
+-                                    PendingBakes.Add(bakeType, new Baker(Client, bakeType, imageCount, paramValues));
++                                lock (PendingBakes)
++                                {
++                                    Baker bake=new Baker(Client, bakeType, imageCount,paramValues);
++                                    PendingBakes.Add(bakeType,bake);
++                                }
+                             }
+                         }
+                         else if (!PendingBakes.ContainsKey(bakeType))
+Index: OpenMetaverse/AssetManager.cs
+===================================================================
+--- OpenMetaverse/AssetManager.cs	(revision 2413)
++++ OpenMetaverse/AssetManager.cs	(working copy)
+@@ -848,6 +848,8 @@
+                     String.Format("Beginning asset upload [Single Packet], ID: {0}, AssetID: {1}, Size: {2}",
+                     upload.ID.ToString(), upload.AssetID.ToString(), upload.Size), Helpers.LogLevel.Info, Client);
+ 
++                    Transfers[upload.ID]=upload;         
++                
+                 // The whole asset will fit in this packet, makes things easy
+                 request.AssetBlock.AssetData = data;
+                 upload.Transferred = data.Length;

@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/18285/branches/lite/HttpServer/Exceptions
+END
+ForbiddenException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/18285/branches/lite/HttpServer/Exceptions/ForbiddenException.cs
+END
+NotFoundException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/18285/branches/lite/HttpServer/Exceptions/NotFoundException.cs
+END
+BadRequestException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/18285/branches/lite/HttpServer/Exceptions/BadRequestException.cs
+END
+HttpException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/18285/branches/lite/HttpServer/Exceptions/HttpException.cs
+END
+UnauthorizedException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/18285/branches/lite/HttpServer/Exceptions/UnauthorizedException.cs
+END
+InternalServerException.cs
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/18285/branches/lite/HttpServer/Exceptions/InternalServerException.cs
+END

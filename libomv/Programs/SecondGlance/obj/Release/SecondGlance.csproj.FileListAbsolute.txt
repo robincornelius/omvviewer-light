@@ -1,0 +1,6 @@
+C:\omvviewer\trunk\bin\SecondGlance.exe
+C:\omvviewer\trunk\Programs\SecondGlance\obj\Release\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\Programs\SecondGlance\obj\Release\SecondGlance.frmSecondGlance.resources
+C:\omvviewer\trunk\Programs\SecondGlance\obj\Release\SecondGlance.Properties.Resources.resources
+C:\omvviewer\trunk\Programs\SecondGlance\obj\Release\SecondGlance.csproj.GenerateResource.Cache
+C:\omvviewer\trunk\Programs\SecondGlance\obj\Release\SecondGlance.exe

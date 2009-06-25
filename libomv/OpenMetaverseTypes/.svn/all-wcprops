@@ -1,0 +1,131 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/omf/!svn/ver/2900/libopenmetaverse/trunk/OpenMetaverseTypes
+END
+CRC32.cs
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/omf/!svn/ver/2744/libopenmetaverse/trunk/OpenMetaverseTypes/CRC32.cs
+END
+TokenBucket.cs
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/omf/!svn/ver/2744/libopenmetaverse/trunk/OpenMetaverseTypes/TokenBucket.cs
+END
+LocklessQueue.cs
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/omf/!svn/ver/2772/libopenmetaverse/trunk/OpenMetaverseTypes/LocklessQueue.cs
+END
+Vector2.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/omf/!svn/ver/2744/libopenmetaverse/trunk/OpenMetaverseTypes/Vector2.cs
+END
+Quaternion.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/omf/!svn/ver/2744/libopenmetaverse/trunk/OpenMetaverseTypes/Quaternion.cs
+END
+Vector3.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/omf/!svn/ver/2744/libopenmetaverse/trunk/OpenMetaverseTypes/Vector3.cs
+END
+Vector4.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/omf/!svn/ver/2744/libopenmetaverse/trunk/OpenMetaverseTypes/Vector4.cs
+END
+Enums.cs
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/omf/!svn/ver/2744/libopenmetaverse/trunk/OpenMetaverseTypes/Enums.cs
+END
+Matrix4.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/omf/!svn/ver/2744/libopenmetaverse/trunk/OpenMetaverseTypes/Matrix4.cs
+END
+UtilsConversions.cs
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/omf/!svn/ver/2900/libopenmetaverse/trunk/OpenMetaverseTypes/UtilsConversions.cs
+END
+Vector3d.cs
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/omf/!svn/ver/2744/libopenmetaverse/trunk/OpenMetaverseTypes/Vector3d.cs
+END
+Ray.cs
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/omf/!svn/ver/2744/libopenmetaverse/trunk/OpenMetaverseTypes/Ray.cs
+END
+ThreadSafeDictionary.cs
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/omf/!svn/ver/2744/libopenmetaverse/trunk/OpenMetaverseTypes/ThreadSafeDictionary.cs
+END
+ReaderWriterLockSlim.cs
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/omf/!svn/ver/2769/libopenmetaverse/trunk/OpenMetaverseTypes/ReaderWriterLockSlim.cs
+END
+BlockingQueue.cs
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/omf/!svn/ver/2744/libopenmetaverse/trunk/OpenMetaverseTypes/BlockingQueue.cs
+END
+Utils.cs
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/omf/!svn/ver/2880/libopenmetaverse/trunk/OpenMetaverseTypes/Utils.cs
+END
+DoubleDictionary.cs
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/omf/!svn/ver/2773/libopenmetaverse/trunk/OpenMetaverseTypes/DoubleDictionary.cs
+END
+Color4.cs
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/omf/!svn/ver/2744/libopenmetaverse/trunk/OpenMetaverseTypes/Color4.cs
+END
+UUID.cs
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/omf/!svn/ver/2744/libopenmetaverse/trunk/OpenMetaverseTypes/UUID.cs
+END
+ExpiringCache.cs
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/omf/!svn/ver/2874/libopenmetaverse/trunk/OpenMetaverseTypes/ExpiringCache.cs
+END
+CircularQueue.cs
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/omf/!svn/ver/2744/libopenmetaverse/trunk/OpenMetaverseTypes/CircularQueue.cs
+END

@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/omf/!svn/ver/2825/libopenmetaverse/trunk/Programs/examples/TestClient
+END
+Command.cs
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/examples/TestClient/Command.cs
+END
+TestClient.cs
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/omf/!svn/ver/2715/libopenmetaverse/trunk/Programs/examples/TestClient/TestClient.cs
+END
+Parsing.cs
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/examples/TestClient/Parsing.cs
+END
+Arguments.cs
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/Programs/examples/TestClient/Arguments.cs
+END
+Program.cs
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/omf/!svn/ver/2806/libopenmetaverse/trunk/Programs/examples/TestClient/Program.cs
+END
+ClientManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/omf/!svn/ver/2716/libopenmetaverse/trunk/Programs/examples/TestClient/ClientManager.cs
+END

@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/omf/!svn/ver/2507/libopenmetaverse/trunk/OpenMetaverse.StructuredData/LLSD
+END
+XmlLLSD.cs
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/omf/!svn/ver/2470/libopenmetaverse/trunk/OpenMetaverse.StructuredData/LLSD/XmlLLSD.cs
+END
+BinaryLLSD.cs
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/omf/!svn/ver/2507/libopenmetaverse/trunk/OpenMetaverse.StructuredData/LLSD/BinaryLLSD.cs
+END
+NotationLLSD.cs
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/omf/!svn/ver/2470/libopenmetaverse/trunk/OpenMetaverse.StructuredData/LLSD/NotationLLSD.cs
+END

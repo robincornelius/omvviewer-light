@@ -1,0 +1,311 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/omf/!svn/ver/2909/libopenmetaverse/trunk/OpenMetaverse
+END
+Permissions.cs
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/omf/!svn/ver/2503/libopenmetaverse/trunk/OpenMetaverse/Permissions.cs
+END
+BitPack.cs
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/OpenMetaverse/BitPack.cs
+END
+Avatar.cs
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/omf/!svn/ver/2467/libopenmetaverse/trunk/OpenMetaverse/Avatar.cs
+END
+Logger.cs
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/OpenMetaverse/Logger.cs
+END
+_VisualParam_.cs
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/OpenMetaverse/_VisualParam_.cs
+END
+SoundManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/omf/!svn/ver/2805/libopenmetaverse/trunk/OpenMetaverse/SoundManager.cs
+END
+NetworkManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/omf/!svn/ver/2816/libopenmetaverse/trunk/OpenMetaverse/NetworkManager.cs
+END
+FriendsManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/omf/!svn/ver/2724/libopenmetaverse/trunk/OpenMetaverse/FriendsManager.cs
+END
+TexturePipeline.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/omf/!svn/ver/2901/libopenmetaverse/trunk/OpenMetaverse/TexturePipeline.cs
+END
+GroupManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/omf/!svn/ver/2750/libopenmetaverse/trunk/OpenMetaverse/GroupManager.cs
+END
+InventoryManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/omf/!svn/ver/2887/libopenmetaverse/trunk/OpenMetaverse/InventoryManager.cs
+END
+AppearanceManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/omf/!svn/ver/2909/libopenmetaverse/trunk/OpenMetaverse/AppearanceManager.cs
+END
+ObjectPoolBase.cs
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/OpenMetaverse/ObjectPoolBase.cs
+END
+ProtocolManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/omf/!svn/ver/2709/libopenmetaverse/trunk/OpenMetaverse/ProtocolManager.cs
+END
+PacketDecoder.cs
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/omf/!svn/ver/2843/libopenmetaverse/trunk/OpenMetaverse/PacketDecoder.cs
+END
+Inventory.cs
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/omf/!svn/ver/2887/libopenmetaverse/trunk/OpenMetaverse/Inventory.cs
+END
+DirectoryManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/omf/!svn/ver/2731/libopenmetaverse/trunk/OpenMetaverse/DirectoryManager.cs
+END
+ObjectPool.cs
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/omf/!svn/ver/2800/libopenmetaverse/trunk/OpenMetaverse/ObjectPool.cs
+END
+ParcelManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/omf/!svn/ver/2800/libopenmetaverse/trunk/OpenMetaverse/ParcelManager.cs
+END
+Animations.cs
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/OpenMetaverse/Animations.cs
+END
+AgentManagerCamera.cs
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/OpenMetaverse/AgentManagerCamera.cs
+END
+CoordinateFrame.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/OpenMetaverse/CoordinateFrame.cs
+END
+InternalDictionary.cs
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/omf/!svn/ver/2697/libopenmetaverse/trunk/OpenMetaverse/InternalDictionary.cs
+END
+InventoryNode.cs
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/omf/!svn/ver/2458/libopenmetaverse/trunk/OpenMetaverse/InventoryNode.cs
+END
+AgentManagerMovement.cs
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/OpenMetaverse/AgentManagerMovement.cs
+END
+BVHDecoder.cs
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/omf/!svn/ver/2500/libopenmetaverse/trunk/OpenMetaverse/BVHDecoder.cs
+END
+AvatarManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/omf/!svn/ver/2851/libopenmetaverse/trunk/OpenMetaverse/AvatarManager.cs
+END
+AssetManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/omf/!svn/ver/2746/libopenmetaverse/trunk/OpenMetaverse/AssetManager.cs
+END
+NameValue.cs
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/OpenMetaverse/NameValue.cs
+END
+Simulator.cs
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/omf/!svn/ver/2890/libopenmetaverse/trunk/OpenMetaverse/Simulator.cs
+END
+GridManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/omf/!svn/ver/2811/libopenmetaverse/trunk/OpenMetaverse/GridManager.cs
+END
+TerrainCompressor.cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/omf/!svn/ver/2422/libopenmetaverse/trunk/OpenMetaverse/TerrainCompressor.cs
+END
+CapsToPacket.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/omf/!svn/ver/2322/libopenmetaverse/trunk/OpenMetaverse/CapsToPacket.cs
+END
+UDPBase.cs
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/omf/!svn/ver/2843/libopenmetaverse/trunk/OpenMetaverse/UDPBase.cs
+END
+GridClient.cs
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/omf/!svn/ver/2698/libopenmetaverse/trunk/OpenMetaverse/GridClient.cs
+END
+AgentThrottle.cs
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/OpenMetaverse/AgentThrottle.cs
+END
+TextureCache.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/omf/!svn/ver/2592/libopenmetaverse/trunk/OpenMetaverse/TextureCache.cs
+END
+Caps.cs
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/omf/!svn/ver/2743/libopenmetaverse/trunk/OpenMetaverse/Caps.cs
+END
+_Packets_.cs
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/omf/!svn/ver/2886/libopenmetaverse/trunk/OpenMetaverse/_Packets_.cs
+END
+InventoryNodeDictionary.cs
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/OpenMetaverse/InventoryNodeDictionary.cs
+END
+AgentManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/omf/!svn/ver/2895/libopenmetaverse/trunk/OpenMetaverse/AgentManager.cs
+END
+AssemblyInfo.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/OpenMetaverse/AssemblyInfo.cs
+END
+TerrainManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/OpenMetaverse/TerrainManager.cs
+END
+Settings.cs
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/omf/!svn/ver/2889/libopenmetaverse/trunk/OpenMetaverse/Settings.cs
+END
+ObjectManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/omf/!svn/ver/2894/libopenmetaverse/trunk/OpenMetaverse/ObjectManager.cs
+END
+Helpers.cs
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/omf/!svn/ver/2805/libopenmetaverse/trunk/OpenMetaverse/Helpers.cs
+END
+ThreadUtil.cs
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/omf/!svn/ver/2320/libopenmetaverse/trunk/OpenMetaverse/ThreadUtil.cs
+END
+EstateTools.cs
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/omf/!svn/ver/2843/libopenmetaverse/trunk/OpenMetaverse/EstateTools.cs
+END
+EventDictionary.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/omf/!svn/ver/2668/libopenmetaverse/trunk/OpenMetaverse/EventDictionary.cs
+END
+Login.cs
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/omf/!svn/ver/2847/libopenmetaverse/trunk/OpenMetaverse/Login.cs
+END
+ObservableDictionary.cs
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/omf/!svn/ver/2631/libopenmetaverse/trunk/OpenMetaverse/ObservableDictionary.cs
+END

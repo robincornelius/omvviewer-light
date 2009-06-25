@@ -1,0 +1,5 @@
+C:\omvviewer\trunk\bin\mapgenerator.exe
+C:\omvviewer\trunk\bin\mapgenerator.pdb
+C:\omvviewer\trunk\Programs\mapgenerator\obj\Debug\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\Programs\mapgenerator\obj\Debug\mapgenerator.exe
+C:\omvviewer\trunk\Programs\mapgenerator\obj\Debug\mapgenerator.pdb

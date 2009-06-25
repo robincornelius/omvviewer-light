@@ -1,0 +1,3 @@
+C:\omvviewer\trunk\bin\Simian.exe
+C:\omvviewer\trunk\Programs\Simian\obj\Release\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\Programs\Simian\obj\Release\Simian.exe

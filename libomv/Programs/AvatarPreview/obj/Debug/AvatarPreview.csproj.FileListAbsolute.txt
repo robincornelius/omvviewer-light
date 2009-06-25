@@ -1,0 +1,8 @@
+C:\omvviewer\trunk\bin\AvatarPreview.exe
+C:\omvviewer\trunk\bin\AvatarPreview.pdb
+C:\omvviewer\trunk\Programs\AvatarPreview\obj\Debug\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\Programs\AvatarPreview\obj\Debug\AvatarPreview.frmAvatar.resources
+C:\omvviewer\trunk\Programs\AvatarPreview\obj\Debug\AvatarPreview.Properties.Resources.resources
+C:\omvviewer\trunk\Programs\AvatarPreview\obj\Debug\AvatarPreview.csproj.GenerateResource.Cache
+C:\omvviewer\trunk\Programs\AvatarPreview\obj\Debug\AvatarPreview.exe
+C:\omvviewer\trunk\Programs\AvatarPreview\obj\Debug\AvatarPreview.pdb

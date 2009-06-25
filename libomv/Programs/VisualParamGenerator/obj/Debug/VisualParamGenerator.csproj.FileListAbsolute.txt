@@ -1,0 +1,5 @@
+C:\omvviewer\trunk\bin\VisualParamGenerator.exe
+C:\omvviewer\trunk\bin\VisualParamGenerator.pdb
+C:\omvviewer\trunk\Programs\VisualParamGenerator\obj\Debug\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\Programs\VisualParamGenerator\obj\Debug\VisualParamGenerator.exe
+C:\omvviewer\trunk\Programs\VisualParamGenerator\obj\Debug\VisualParamGenerator.pdb

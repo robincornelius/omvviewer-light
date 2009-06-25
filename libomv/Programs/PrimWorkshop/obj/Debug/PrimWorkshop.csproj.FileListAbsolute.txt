@@ -1,0 +1,9 @@
+C:\omvviewer\trunk\bin\PrimWorkshop.exe
+C:\omvviewer\trunk\bin\PrimWorkshop.pdb
+C:\omvviewer\trunk\Programs\PrimWorkshop\obj\Debug\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\Programs\PrimWorkshop\obj\Debug\PrimWorkshop.frmBrowser.resources
+C:\omvviewer\trunk\Programs\PrimWorkshop\obj\Debug\PrimWorkshop.Render.resources
+C:\omvviewer\trunk\Programs\PrimWorkshop\obj\Debug\PrimWorkshop.Properties.Resources.resources
+C:\omvviewer\trunk\Programs\PrimWorkshop\obj\Debug\PrimWorkshop.csproj.GenerateResource.Cache
+C:\omvviewer\trunk\Programs\PrimWorkshop\obj\Debug\PrimWorkshop.exe
+C:\omvviewer\trunk\Programs\PrimWorkshop\obj\Debug\PrimWorkshop.pdb

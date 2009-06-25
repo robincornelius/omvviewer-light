@@ -1,0 +1,4 @@
+C:\omvviewer\trunk\bin\OpenMetaverseTypes.dll
+C:\omvviewer\trunk\bin\OpenMetaverseTypes.XML
+C:\omvviewer\trunk\OpenMetaverse\Types\obj\Release\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\OpenMetaverse\Types\obj\Release\OpenMetaverseTypes.dll

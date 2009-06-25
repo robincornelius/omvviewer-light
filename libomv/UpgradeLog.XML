@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="OpenMetaverse">
+</Property><Property Name="Solution File" Value="C:\omvviewer\trunk\OpenMetaverse.sln">
+</Property><Property Name="Date" Value="13 January 2009">
+</Property><Property Name="Time" Value="09:41">
+</Property></Properties><Event ErrorLevel="0" Project="OpenMetaverse.Http" Source="OpenMetaverse.Http\OpenMetaverse.Http.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="OpenMetaverse.Http" Source="OpenMetaverse.Http\OpenMetaverse.Http.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="GridImageUpload" Source="Programs\GridImageUpload\GridImageUpload.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="GridImageUpload" Source="Programs\GridImageUpload\GridImageUpload.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="GridAccountant" Source="Programs\examples\GridAccountant\GridAccountant.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="GridAccountant" Source="Programs\examples\GridAccountant\GridAccountant.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="OpenMetaverseTypes" Source="OpenMetaverse\Types\OpenMetaverseTypes.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="OpenMetaverseTypes" Source="OpenMetaverse\Types\OpenMetaverseTypes.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="groupmanager" Source="Programs\examples\groupmanager\groupmanager.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="groupmanager" Source="Programs\examples\groupmanager\groupmanager.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="GridProxyApp" Source="Programs\GridProxy\GridProxyApp.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="GridProxyApp" Source="Programs\GridProxy\GridProxyApp.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="OpenMetaverse.Utilities" Source="OpenMetaverse.Utilities\OpenMetaverse.Utilities.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="OpenMetaverse.Utilities" Source="OpenMetaverse.Utilities\OpenMetaverse.Utilities.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="Simian.Tests" Source="Programs\Simian.Tests\Simian.Tests.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="Simian.Tests" Source="Programs\Simian.Tests\Simian.Tests.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="ExtensionLoader" Source="ExtensionLoader\ExtensionLoader.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="ExtensionLoader" Source="ExtensionLoader\ExtensionLoader.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="VoiceTest" Source="Programs\VoiceTest\VoiceTest.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="VoiceTest" Source="Programs\VoiceTest\VoiceTest.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="OpenMetaverse.Rendering.Meshmerizer" Source="OpenMetaverse.Rendering.Meshmerizer\OpenMetaverse.Rendering.Meshmerizer.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="OpenMetaverse.Rendering.Meshmerizer" Source="OpenMetaverse.Rendering.Meshmerizer\OpenMetaverse.Rendering.Meshmerizer.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="GridProxy" Source="Programs\GridProxy\GridProxy.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="GridProxy" Source="Programs\GridProxy\GridProxy.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="importprimscript" Source="Programs\importprimscript\importprimscript.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="importprimscript" Source="Programs\importprimscript\importprimscript.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="OpenMetaverse.Rendering.Simple" Source="OpenMetaverse.Rendering.Simple\OpenMetaverse.Rendering.Simple.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="OpenMetaverse.Rendering.Simple" Source="OpenMetaverse.Rendering.Simple\OpenMetaverse.Rendering.Simple.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="SimExport" Source="Programs\SimExport\SimExport.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="SimExport" Source="Programs\SimExport\SimExport.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="Heightmap" Source="Programs\examples\Heightmap\Heightmap.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="Heightmap" Source="Programs\examples\Heightmap\Heightmap.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="mapgenerator" Source="Programs\mapgenerator\mapgenerator.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="mapgenerator" Source="Programs\mapgenerator\mapgenerator.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="OpenMetaverse" Source="OpenMetaverse\OpenMetaverse.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="OpenMetaverse" Source="OpenMetaverse\OpenMetaverse.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="PacketDump" Source="Programs\examples\PacketDump\PacketDump.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="PacketDump" Source="Programs\examples\PacketDump\PacketDump.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="VisualParamGenerator" Source="Programs\VisualParamGenerator\VisualParamGenerator.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="VisualParamGenerator" Source="Programs\VisualParamGenerator\VisualParamGenerator.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="Simian" Source="Programs\Simian\Simian.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="Simian" Source="Programs\Simian\Simian.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="OpenMetaverse.GUI" Source="OpenMetaverse.GUI\OpenMetaverse.GUI.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="OpenMetaverse.GUI" Source="OpenMetaverse.GUI\OpenMetaverse.GUI.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="Dashboard" Source="Programs\examples\Dashboard\Dashboard.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="Dashboard" Source="Programs\examples\Dashboard\Dashboard.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="AvatarPreview" Source="Programs\AvatarPreview\AvatarPreview.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="AvatarPreview" Source="Programs\AvatarPreview\AvatarPreview.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="Baker" Source="Programs\Baker\Baker.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="Baker" Source="Programs\Baker\Baker.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="OpenMetaverse.Tests" Source="OpenMetaverse.Tests\OpenMetaverse.Tests.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="OpenMetaverse.Tests" Source="OpenMetaverse.Tests\OpenMetaverse.Tests.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="TestClient" Source="Programs\examples\TestClient\TestClient.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="TestClient" Source="Programs\examples\TestClient\TestClient.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="PrimWorkshop" Source="Programs\PrimWorkshop\PrimWorkshop.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="PrimWorkshop" Source="Programs\PrimWorkshop\PrimWorkshop.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="OpenMetaverse.StructuredData" Source="OpenMetaverse.StructuredData\OpenMetaverse.StructuredData.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="OpenMetaverse.StructuredData" Source="OpenMetaverse.StructuredData\OpenMetaverse.StructuredData.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="SecondGlance" Source="Programs\SecondGlance\SecondGlance.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="SecondGlance" Source="Programs\SecondGlance\SecondGlance.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="HttpServer" Source="HttpServer\HttpServer.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="HttpServer" Source="HttpServer\HttpServer.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="" Source="OpenMetaverse.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="OpenMetaverse.sln" Description="Converted">
+</Event></UpgradeLog>

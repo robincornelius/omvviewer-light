@@ -1,0 +1,7 @@
+C:\omvviewer\trunk\bin\Baker.exe
+C:\omvviewer\trunk\bin\Baker.pdb
+C:\omvviewer\trunk\Programs\Baker\obj\Debug\ResolveAssemblyReference.cache
+C:\omvviewer\trunk\Programs\Baker\obj\Debug\Baker.frmBaker.resources
+C:\omvviewer\trunk\Programs\Baker\obj\Debug\Baker.csproj.GenerateResource.Cache
+C:\omvviewer\trunk\Programs\Baker\obj\Debug\Baker.exe
+C:\omvviewer\trunk\Programs\Baker\obj\Debug\Baker.pdb
