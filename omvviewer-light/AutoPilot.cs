@@ -248,25 +248,21 @@ namespace omvviewerlight
                 if (distance > 2.5)
 				{
                     
-					Console.WriteLine("Autopilot think");
-                    Console.WriteLine("Target at " + targetpos.ToString());
-                    Console.WriteLine("I'm at Global" + MainClass.client.Self.GlobalPosition.ToString());
-                    Console.WriteLine("I'm at Local" + MainClass.client.Self.SimPosition.ToString());
-                    Console.WriteLine("Distance is " + distance.ToString());
-                    Console.WriteLine("Local vector is "+(new Vector3(targetpos)-new Vector3(MainClass.client.Self.GlobalPosition)).ToString());
+					//Console.WriteLine("Autopilot think");
+                    //Console.WriteLine("Target at " + targetpos.ToString());
+                    //Console.WriteLine("I'm at Global" + MainClass.client.Self.GlobalPosition.ToString());
+                    //Console.WriteLine("I'm at Local" + MainClass.client.Self.SimPosition.ToString());
+                    //Console.WriteLine("Distance is " + distance.ToString());
+                    //Console.WriteLine("Local vector is "+(new Vector3(targetpos)-new Vector3(MainClass.client.Self.GlobalPosition)).ToString());
                     Vector3 heading=new Vector3(targetpos)-new Vector3(MainClass.client.Self.GlobalPosition);
                     heading.Normalize();
                     heading = MainClass.client.Self.SimPosition + heading;
 	                MainClass.client.Self.Movement.TurnToward(heading);
                     MainClass.client.Self.AutoPilot(targetpos.X, targetpos.Y, targetpos.Z);
-                    //MainClass.client.Self.Movement.AtPos=true;
-					//MainClass.client.Self.Movement.SendUpdate();
 				}
                  else if (follow==false)
 				 {
 					 Active=false;
-					 //MainClass.client.Self.Movement.AtPos=false;
-					 //MainClass.client.Self.Movement.SendUpdate();
                      MainClass.client.Self.AutoPilotCancel();
 					 if(onAutoPilotFinished!=null)
 						onAutoPilotFinished();
@@ -278,13 +274,6 @@ namespace omvviewerlight
             }
 			else
 			{
-				Console.WriteLine("NOT ACTIVE Stopping autopilot");
-				//MainClass.client.Self.Movement.AtPos=false;				
-				//MainClass.client.Self.Movement.SendUpdate();	
-                MainClass.client.Self.AutoPilotCancel();
-				Active=false;
-				if(onAutoPilotFinished!=null)
-					onAutoPilotFinished();
 				return false;
 			}
 			

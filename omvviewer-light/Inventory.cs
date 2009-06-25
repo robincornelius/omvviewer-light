@@ -299,7 +299,7 @@ namespace omvviewerlight
             try
             {
                 //Save cache inventory;
-             //   MainClass.client.Inventory.Store.cache_inventory_to_disk(MainClass.client.Settings.TEXTURE_CACHE_DIR + "\\" + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
+                MainClass.client.Inventory.Store.cache_inventory_to_disk(MainClass.client.Settings.TEXTURE_CACHE_DIR + "\\" + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
             }
             catch(Exception e)
             {
@@ -485,7 +485,7 @@ namespace omvviewerlight
 						}
 
                         this.no_items = 0;
-                      //  MainClass.client.Inventory.Store.read_inventory_cache(MainClass.client.Settings.TEXTURE_CACHE_DIR+"\\"+MainClass.client.Inventory.Store.RootFolder.UUID.ToString()+".osl");
+                        MainClass.client.Inventory.Store.read_inventory_cache(MainClass.client.Settings.TEXTURE_CACHE_DIR+"\\"+MainClass.client.Inventory.Store.RootFolder.UUID.ToString()+".osl");
                         
                         fetcherrunning = true;
                         Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));

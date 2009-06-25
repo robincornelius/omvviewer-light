@@ -112,27 +112,6 @@ namespace omvviewerlight
                     }
                 }
 
-                /*
-                foreach (UUID id in newEntries)
-                {
-                    agent theagent = new agent();
-                    Gtk.TreeIter iter;
-                   
-                    iter = store.AppendValues("", "Waiting...", "", id);
-
-                    AsyncNameUpdate ud = new AsyncNameUpdate(id, false);
-
-                    ud.onNameCallBack += delegate(string name, object[] values) { store.SetValue(iter, 1, name); };
-                    ud.go();
-
-
-                 
-                    theagent.iter = iter;
-                    av_tree.Add(id, theagent);
-                }
-                 
-                 */
-
                 calcdistance();
             });
         }
@@ -177,7 +156,12 @@ namespace omvviewerlight
 
                             AsyncNameUpdate ud = new AsyncNameUpdate(kvp.Key, false);
 
-                            ud.onNameCallBack += delegate(string name, object[] values) { store.SetValue(iter, 1, name); };
+                            ud.onNameCallBack += delegate(string name, object[] values) 
+                            { 
+                                // We need to check that this iter still exists
+                                if(av_tree.ContainsKey(kvp.Key))
+                                    store.SetValue(iter, 1, name); 
+                            };
                             ud.go();
 
                         }

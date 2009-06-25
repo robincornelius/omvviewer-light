@@ -1,0 +1,13 @@
+C:\omvviewer\omvviewer-light\omvviewer-light\obj\Release\ResolveAssemblyReference.cache
+C:\omvviewer\omvviewer-light\omvviewer-light\obj\Release\omvviewerlight.Properties.Resources.resources
+C:\omvviewer\omvviewer-light\omvviewer-light\obj\Release\omvviewer-light.csproj.GenerateResource.Cache
+C:\omvviewer\omvviewer-light\omvviewer-light\bin\omvviewerlight.exe.config
+C:\omvviewer\omvviewer-light\omvviewer-light\bin\omvviewerlight.exe.manifest
+C:\omvviewer\omvviewer-light\omvviewer-light\bin\omvviewerlight.application
+C:\omvviewer\omvviewer-light\omvviewer-light\bin\omvviewerlight.exe
+C:\omvviewer\omvviewer-light\omvviewer-light\obj\Release\omvviewerlight.exe.manifest
+C:\omvviewer\omvviewer-light\omvviewer-light\obj\Release\omvviewerlight.application
+C:\omvviewer\omvviewer-light\omvviewer-light\obj\Release\omvviewerlight.exe
+C:\omvviewer\omvviewer-light\omvviewer-light\bin\omvviewerlight.xml
+C:\omvviewer\omvviewer-light\omvviewer-light\bin\OpenMetaverse.Http.dll
+C:\omvviewer\omvviewer-light\omvviewer-light\bin\XMLRPC.dll
