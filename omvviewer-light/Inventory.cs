@@ -170,8 +170,6 @@ namespace omvviewerlight
             item_name.Editable = true;
             item_name.Edited += new EditedHandler(item_name_Edited);
           
-            //treeview_inv.Model=inventory;
-
 			MyTreeViewColumn col = new MyTreeViewColumn("Name", item_name, "text", 1,true);
             col.setmodel(inventory);
 
@@ -196,8 +194,6 @@ namespace omvviewerlight
             MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             MainClass.client.Network.OnLogoutReply += new NetworkManager.LogoutCallback(Network_OnLogoutReply);
 			MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
-            //MainClass.client.Inventory.OnFolderUpdated += new InventoryManager.FolderUpdatedCallback(Inventory_onFolderUpdated);
-            //MainClass.client.Inventory.OnCacheDelete += new InventoryManager.CacheStaleCallback(Inventory_OnCacheDelete);
             MainClass.client.Inventory.OnItemReceived += new InventoryManager.ItemReceivedCallback(Inventory_OnItemReceived);
             MainWindow.OnInventoryAccepted += new MainWindow.InventoryAccepted(win_OnInventoryAccepted);
 			
@@ -216,9 +212,6 @@ namespace omvviewerlight
 				    populate_top_level_inv();
 				}
             }
-
-           
-
 		}
 
         void item_name_Edited(object o, EditedArgs args)
@@ -299,7 +292,7 @@ namespace omvviewerlight
             try
             {
                 //Save cache inventory;
-                MainClass.client.Inventory.Store.cache_inventory_to_disk(MainClass.client.Settings.TEXTURE_CACHE_DIR + "\\" + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
+                //MainClass.client.Inventory.Store.cache_inventory_to_disk(MainClass.client.Settings.TEXTURE_CACHE_DIR + "\\" + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
             }
             catch(Exception e)
             {
@@ -309,8 +302,12 @@ namespace omvviewerlight
      
         private bool FilterTree(Gtk.TreeModel model, Gtk.TreeIter iter)
         {
-            try
+
+            lock (inventory)
             {
+
+                try
+                {
                     if (this.entry_search.Text == "")
                         return true;
 
@@ -322,13 +319,13 @@ namespace omvviewerlight
                         return false;
 
                     string Name = (string)obj;
-                    
+
                     if (Name.Contains(this.entry_search.Text))
-                    {   
+                    {
                         filtered.Add(iter);//*sigh*
-                       
+
                         TreePath path = model.GetPath(iter);
-                        while(path.Depth>1)
+                        while (path.Depth > 1)
                         {
                             path.Up();
                             TreeIter iter2;
@@ -339,11 +336,12 @@ namespace omvviewerlight
                         return true;
                     }
 
-                    return false; 
-            }
-            catch
-            {
-                return false;
+                    return false;
+                }
+                catch
+                {
+                    return false;
+                }
             }
               
         }
@@ -351,6 +349,8 @@ namespace omvviewerlight
 
         int sortinventoryfunc(Gtk.TreeModel model, Gtk.TreeIter a, Gtk.TreeIter b)
         {
+            lock(inventory)
+            {
             try
             {
                 int colid;
@@ -461,37 +461,41 @@ namespace omvviewerlight
             }
 
             return 0;
+
+            }
         }
 
 		void populate_top_level_inv()
 		{
-            
-				if( MainClass.client.Inventory.Store.Items!=null)
-					{
-						foreach(KeyValuePair <UUID, InventoryNode> kvp in MainClass.client.Inventory.Store.Items)
-						{
-							if(kvp.Value.Data!=null)
-							{
-								if(kvp.Value.Data.ParentUUID==UUID.Zero)
-								{
-									Gtk.TreeIter iterx = inventory.AppendValues(folder_closed, kvp.Value.Data.Name, kvp.Value.Data.UUID,null);
-							        Console.Write("Creating top level folder "+kvp.Value.Data.Name+" : "+MainClass.client.Inventory.Store.Items[kvp.Value.Data.UUID].ToString());
-									inventory.AppendValues(iterx, folder_closed, "Waiting...", kvp.Value.Data.UUID, null);
-                                    if (kvp.Value.Data.Name == "My Inventory")
-                                        TLI = iterx;
-								}
-								Console.Write(kvp.Value.Data.ParentUUID.ToString() +" : ");
-							}
-						}
+            lock (inventory)
+            {
+                if (MainClass.client.Inventory.Store.Items != null)
+                {
+                    foreach (KeyValuePair<UUID, InventoryNode> kvp in MainClass.client.Inventory.Store.Items)
+                    {
+                        if (kvp.Value.Data != null)
+                        {
+                            if (kvp.Value.Data.ParentUUID == UUID.Zero)
+                            {
+                                Gtk.TreeIter iterx = inventory.AppendValues(folder_closed, kvp.Value.Data.Name, kvp.Value.Data.UUID, null);
+                                Console.Write("Creating top level folder " + kvp.Value.Data.Name + " : " + MainClass.client.Inventory.Store.Items[kvp.Value.Data.UUID].ToString());
+                                inventory.AppendValues(iterx, folder_closed, "Waiting...", kvp.Value.Data.UUID, null);
+                                if (kvp.Value.Data.Name == "My Inventory")
+                                    TLI = iterx;
+                            }
+                            Console.Write(kvp.Value.Data.ParentUUID.ToString() + " : ");
+                        }
+                    }
 
-                        this.no_items = 0;
-                        MainClass.client.Inventory.Store.read_inventory_cache(MainClass.client.Settings.TEXTURE_CACHE_DIR+"\\"+MainClass.client.Inventory.Store.RootFolder.UUID.ToString()+".osl");
-                        
-                        fetcherrunning = true;
-                        Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
-                        invthreaddata itd = new invthreaddata(MainClass.client.Inventory.Store.RootFolder.UUID, "0", TLI,true,true);
-                        invRunner.Start(itd);
-		         }
+                    this.no_items = 0;
+                    MainClass.client.Inventory.Store.read_inventory_cache(MainClass.client.Settings.TEXTURE_CACHE_DIR + "\\" + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
+
+                    fetcherrunning = true;
+                    Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
+                    invthreaddata itd = new invthreaddata(MainClass.client.Inventory.Store.RootFolder.UUID, "0", TLI, true, true);
+                    invRunner.Start(itd);
+                }
+            }
 		}
 		
         void menu_ware_ButtonPressEvent(object o, ButtonPressEventArgs args)
@@ -561,76 +565,79 @@ namespace omvviewerlight
 		
 		void ondeleteasset(object o, ButtonPressEventArgs args)
 		{
-			Gtk.TreeModel mod;
-			Gtk.TreeIter iter;
-		
-			TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
-
-            Dictionary <UUID,UUID> folders= new Dictionary <UUID,UUID>();
-            Dictionary <UUID,UUID> items= new Dictionary <UUID,UUID>();
-
-            Dictionary<UUID, InventoryBase> inv_items = new Dictionary<UUID, InventoryBase>();
-
-            if(trash_folder==UUID.Zero)
+            lock (inventory)
             {
-                Logger.Log("ERROR: Don't know where the trash folder is",Helpers.LogLevel.Error);
-                return;
+                Gtk.TreeModel mod;
+                Gtk.TreeIter iter;
+
+                TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
+
+                Dictionary<UUID, UUID> folders = new Dictionary<UUID, UUID>();
+                Dictionary<UUID, UUID> items = new Dictionary<UUID, UUID>();
+
+                Dictionary<UUID, InventoryBase> inv_items = new Dictionary<UUID, InventoryBase>();
+
+                if (trash_folder == UUID.Zero)
+                {
+                    Logger.Log("ERROR: Don't know where the trash folder is", Helpers.LogLevel.Error);
+                    return;
+                }
+                Gtk.TreeIter trash_iter = assetmap[trash_folder];
+
+                foreach (TreePath path in paths)
+                {
+                    if (mod.GetIter(out iter, path))
+                    {
+                        InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+                        if (item is InventoryItem)
+                            items.Add(item.UUID, trash_folder);
+                        if (item is InventoryFolder)
+                            folders.Add(item.UUID, trash_folder);
+
+                        inv_items.Add(item.UUID, item);
+                    }
+                }
+
+                MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.Modal, MessageType.Question, ButtonsType.YesNo, "Are you sure you wish to delete selected items and folders\n All children in folders will also be deleted");
+                ResponseType result = (ResponseType)md.Run();
+                md.Destroy();
+                if (result == ResponseType.Yes)
+                {
+                    if (items.Count > 0)
+                    {
+                        MainClass.client.Inventory.MoveItems(items);
+                    }
+                    if (folders.Count > 0)
+                    {
+                        MainClass.client.Inventory.MoveFolders(folders);
+                    }
+
+                    foreach (KeyValuePair<UUID, UUID> kvp in items)
+                    {
+                        Gtk.TreeIter iterx;
+                        iterx = assetmap[kvp.Key];
+                        inventory.Remove(ref iterx);
+                        if (assetmap.ContainsKey(kvp.Key))
+                            assetmap.Remove(kvp.Key);
+
+                        assetmap.Add(kvp.Key, inventory.AppendValues(trash_iter, getprettyicon(inv_items[kvp.Key]), inv_items[kvp.Key].Name, inv_items[kvp.Key].UUID, inv_items[kvp.Key]));
+                    }
+
+                    foreach (KeyValuePair<UUID, UUID> kvp in folders)
+                    {
+                        Gtk.TreeIter iterx;
+                        iterx = assetmap[kvp.Key];
+                        inventory.Remove(ref iterx);
+                        if (assetmap.ContainsKey(kvp.Key))
+                            assetmap.Remove(kvp.Key);
+
+                        assetmap.Add(kvp.Key, inventory.AppendValues(trash_iter, getprettyicon(inv_items[kvp.Key]), inv_items[kvp.Key].Name, inv_items[kvp.Key].UUID, inv_items[kvp.Key]));
+                        // We need to make sure the view still knows about children of this folder as well or it will show it in trash with none
+                        inventory.AppendValues(assetmap[kvp.Key], item_object, "Waiting...", UUID.Zero, null);
+
+                    }
+                }
             }
-            Gtk.TreeIter trash_iter = assetmap[trash_folder];
-
-            foreach (TreePath path in paths)
-            {
-                if (mod.GetIter(out iter, path))
-                {
-                    InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
-                    if (item is InventoryItem)
-                        items.Add(item.UUID,trash_folder);
-                    if (item is InventoryFolder)
-                        folders.Add(item.UUID,trash_folder);
-
-                    inv_items.Add(item.UUID, item);
-                }
-            }
-
-            MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.Modal, MessageType.Question, ButtonsType.YesNo, "Are you sure you wish to delete selected items and folders\n All children in folders will also be deleted");
-            ResponseType result = (ResponseType)md.Run();
-            md.Destroy();
-            if (result == ResponseType.Yes)
-            {
-                if(items.Count>0)
-                {
-                    MainClass.client.Inventory.MoveItems(items);
-                }
-                if(folders.Count>0)
-                {
-                    MainClass.client.Inventory.MoveFolders(folders);
-                }
-
-                foreach (KeyValuePair <UUID,UUID>kvp in items)
-                {
-                    Gtk.TreeIter iterx;
-                    iterx = assetmap[kvp.Key];
-                    inventory.Remove(ref iterx);
-                    if (assetmap.ContainsKey(kvp.Key))
-                        assetmap.Remove(kvp.Key);
-                        
-                    assetmap.Add(kvp.Key, inventory.AppendValues(trash_iter, getprettyicon(inv_items[kvp.Key]), inv_items[kvp.Key].Name, inv_items[kvp.Key].UUID, inv_items[kvp.Key])); 
-                }
-
-                foreach (KeyValuePair <UUID,UUID> kvp in folders)
-                {
-                    Gtk.TreeIter iterx;
-                    iterx = assetmap[kvp.Key];
-                    inventory.Remove(ref iterx);
-                    if (assetmap.ContainsKey(kvp.Key))
-                        assetmap.Remove(kvp.Key);
-
-                    assetmap.Add(kvp.Key, inventory.AppendValues(trash_iter, getprettyicon(inv_items[kvp.Key]), inv_items[kvp.Key].Name, inv_items[kvp.Key].UUID, inv_items[kvp.Key])); 
-                    // We need to make sure the view still knows about children of this folder as well or it will show it in trash with none
-                    inventory.AppendValues(assetmap[kvp.Key],item_object,"Waiting...", UUID.Zero, null);
-   
-                }
-            }  
 		}
 		
 		void ongiveasset(object o, ButtonPressEventArgs args)
@@ -743,241 +750,246 @@ namespace omvviewerlight
         [GLib.ConnectBefore]
         void treeview_inv_ButtonPressEvent(object o, ButtonPressEventArgs args)
         {
-            if (args.Event.Button == 3)//Fuck this should be a define
+            lock (inventory)
             {
-                // Do the context sensitive stuff here
-                // Detect type of asset selected and show an approprate menu
-                // maybe
-                Gtk.TreeModel mod;
-			    Gtk.TreeIter iter;
-                InventoryBase item = null;
+                if (args.Event.Button == 3)//Fuck this should be a define
+                {
+                    // Do the context sensitive stuff here
+                    // Detect type of asset selected and show an approprate menu
+                    // maybe
+                    Gtk.TreeModel mod;
+                    Gtk.TreeIter iter;
+                    InventoryBase item = null;
 
-				Console.WriteLine("ROOT IS "+MainClass.client.Inventory.Store.RootFolder.UUID.ToString());
+                    Console.WriteLine("ROOT IS " + MainClass.client.Inventory.Store.RootFolder.UUID.ToString());
 
-				TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);				
-				if (paths.Length==1)
-				{
-					//all good and simple
-                    TreeIter itera;
-                    mod.GetIter(out itera, paths[0]);
-					UUID ida=(UUID)mod.GetValue(itera, 2);
-                    item = (InventoryBase)MainClass.client.Inventory.Store.GetNodeFor(ida).Data;
-                   
-				}
+                    TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
 
-				if(paths.Length>1)
-				{
-					bool allsame=true;
-					bool wearables=true;
-                    bool folders = true;
-                    TreeIter itera,iterb;
-
-					foreach (TreePath path in paths)
-					{
-                        mod.GetIter(out itera, path);
-                        UUID ida = (UUID)mod.GetValue(itera, 2);
-                        InventoryBase itema = (InventoryBase)MainClass.client.Inventory.Store.GetNodeFor(ida).Data;
-                        if (!(itema is InventoryWearable))
-                            wearables = false;
-                        if (!(itema is InventoryFolder))
-                            folders = false;
-
-						foreach (TreePath innerpath in paths)
-						{
-                            mod.GetIter(out iterb, innerpath);
-                            UUID idb = (UUID)mod.GetValue(iterb, 2);
-                            InventoryBase itemb = (InventoryBase)MainClass.client.Inventory.Store.GetNodeFor(idb).Data;
-
-							if(itema.GetType()!=itemb.GetType())
-							{
-                                allsame = false;
-							}
-						}
-						
-					}
-   
-					//ok if allsame==true we can allow specific extra menu options
-					//or if all wearables then we can allow wearable options
-					if(allsame)
-					{
-						mod.GetIter(out iter, paths[0]);
-						UUID ida=(UUID)mod.GetValue(iter, 2);
-                        item = (InventoryBase)MainClass.client.Inventory.Store.GetNodeFor(ida).Data;
-                    }
-                    else if (wearables)
+                    if (paths.Length == 1)
                     {
-                        item = new InventoryWearable(UUID.Zero); //fake an item
+                        //all good and simple
+                        TreeIter itera;
+                        mod.GetIter(out itera, paths[0]);
+                        UUID ida = (UUID)mod.GetValue(itera, 2);
+                        item = (InventoryBase)MainClass.client.Inventory.Store.GetNodeFor(ida).Data;
+
                     }
-				}
 
+                    if (paths.Length > 1)
+                    {
+                        bool allsame = true;
+                        bool wearables = true;
+                        bool folders = true;
+                        TreeIter itera, iterb;
 
-                if (item == null)
-                    return;
-
-                        Gtk.Menu menu = new Gtk.Menu();
-                       
-						Console.WriteLine("Item is "+item.ToString()+" ID is "+item.UUID.ToString());
-					
-						Console.WriteLine("Item parent is "+item.ToString()+" ID is "+item.ParentUUID.ToString());
-						
-                        if(item is InventoryLandmark)
+                        foreach (TreePath path in paths)
                         {
-							Gtk.ImageMenuItem menu_tp_lm = new ImageMenuItem("Teleport to Landmark");
-							menu_tp_lm.Image=new Gtk.Image(MainClass.GetResource("icon_place.png"));
-							menu_tp_lm.ButtonPressEvent += new ButtonPressEventHandler(Teleporttolandmark);
-                            menu.Append(menu_tp_lm);
+                            mod.GetIter(out itera, path);
+                            UUID ida = (UUID)mod.GetValue(itera, 2);
+                            InventoryBase itema = (InventoryBase)MainClass.client.Inventory.Store.GetNodeFor(ida).Data;
+                            if (!(itema is InventoryWearable))
+                                wearables = false;
+                            if (!(itema is InventoryFolder))
+                                folders = false;
+
+                            foreach (TreePath innerpath in paths)
+                            {
+                                mod.GetIter(out iterb, innerpath);
+                                UUID idb = (UUID)mod.GetValue(iterb, 2);
+                                InventoryBase itemb = (InventoryBase)MainClass.client.Inventory.Store.GetNodeFor(idb).Data;
+
+                                if (itema.GetType() != itemb.GetType())
+                                {
+                                    allsame = false;
+                                }
+                            }
+
                         }
 
-                        if (item is InventoryFolder)
+                        //ok if allsame==true we can allow specific extra menu options
+                        //or if all wearables then we can allow wearable options
+                        if (allsame)
                         {
-                            if(item.UUID == trash_folder)
-                            {
+                            mod.GetIter(out iter, paths[0]);
+                            UUID ida = (UUID)mod.GetValue(iter, 2);
+                            item = (InventoryBase)MainClass.client.Inventory.Store.GetNodeFor(ida).Data;
+                        }
+                        else if (wearables)
+                        {
+                            item = new InventoryWearable(UUID.Zero); //fake an item
+                        }
+
+                    }
+
+
+                    if (item == null)
+                        return;
+
+                    Gtk.Menu menu = new Gtk.Menu();
+
+                    Console.WriteLine("Item is " + item.ToString() + " ID is " + item.UUID.ToString());
+
+                    Console.WriteLine("Item parent is " + item.ToString() + " ID is " + item.ParentUUID.ToString());
+
+                    if (item is InventoryLandmark)
+                    {
+                        Gtk.ImageMenuItem menu_tp_lm = new ImageMenuItem("Teleport to Landmark");
+                        menu_tp_lm.Image = new Gtk.Image(MainClass.GetResource("icon_place.png"));
+                        menu_tp_lm.ButtonPressEvent += new ButtonPressEventHandler(Teleporttolandmark);
+                        menu.Append(menu_tp_lm);
+                    }
+
+                    if (item is InventoryFolder)
+                    {
+                        if (item.UUID == trash_folder)
+                        {
                             Gtk.ImageMenuItem menu_delete_folder = new ImageMenuItem("Empty Trash");
                             menu_delete_folder.Image = new Gtk.Image(MainClass.GetResource("inv_folder_trash.png"));
                             menu_delete_folder.ButtonPressEvent += new ButtonPressEventHandler(onemptytrash);
                             menu.Append(menu_delete_folder);
-                            }
-                            else
-                            {
-                                // Do not display menu for our system level folders
-                                if (item.UUID == MainClass.client.Inventory.Store.RootFolder.UUID)
-                                    return;
-                                if (item.UUID == MainClass.client.Inventory.Store.LibraryFolder.UUID)
-                                    return;
-
-                                Gtk.MenuItem menu_wear_folder = new MenuItem("Wear folder contents");
-                                Gtk.ImageMenuItem menu_give_folder = new ImageMenuItem("Give folder to user");
-							    menu_give_folder.Image=new Gtk.Image(MainClass.GetResource("ff_edit_theirs.png"));
-
-                                Gtk.ImageMenuItem new_note = new ImageMenuItem("Create new notecard");
-                                new_note.Image = new Gtk.Image(MainClass.GetResource("inv_item_notecard.png"));
-
-                                Gtk.ImageMenuItem new_script = new ImageMenuItem("Create new script");
-                                new_script.Image = new Gtk.Image(MainClass.GetResource("inv_item_script.png"));
-
-                                Gtk.ImageMenuItem new_folder = new ImageMenuItem("Create new folder");
-                                new_folder.Image = new Gtk.Image(MainClass.GetResource("inv_folder_plain_open.png"));
-
-                                Gtk.ImageMenuItem menu_cut_folder = new ImageMenuItem("Cut Folder");
-                                menu_cut_folder.Image = new Gtk.Image(Gtk.Stock.Cut, IconSize.Menu);
-                               
-                                Gtk.ImageMenuItem menu_copy_folder = new ImageMenuItem("Copy Folder");
-                                menu_copy_folder.Image = new Gtk.Image(Gtk.Stock.Copy, IconSize.Menu);
-
-                                Gtk.ImageMenuItem menu_paste_folder = new ImageMenuItem("Paste here..");
-                                menu_paste_folder.Image = new Gtk.Image(Gtk.Stock.Paste, IconSize.Menu);
-                              
-
-                                Gtk.ImageMenuItem menu_delete_folder = new ImageMenuItem("Delete Folder");
-							    menu_delete_folder.Image=new Gtk.Image(MainClass.GetResource("inv_folder_trash.png"));
-
-                                menu_delete_folder.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
-                                menu_give_folder.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
-                                menu_wear_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_ware_ButtonPressEvent);
-                                //menu_debork.ButtonPressEvent += new ButtonPressEventHandler(FixBorkedFolder);
-							    new_note.ButtonPressEvent += new ButtonPressEventHandler(menu_on_new_note);
-							    new_script.ButtonPressEvent += new ButtonPressEventHandler(menu_on_new_script);
-							    new_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_on_new_folder);
-                                menu_cut_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_on_cut_folder);
-                                menu_copy_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_on_copy_folder);
-                                menu_paste_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_on_paste_folder);
-
-							    Gtk.Label x=new Gtk.Label("Folder Item");
-    							
-							    //menu.Append(menu_debork);
-						        menu.Append(menu_wear_folder);
-    					
-							    if(paths.Length==1)
-							    {
-                                    menu.Append(new Gtk.SeparatorMenuItem());
-							        menu.Append(new_note);
-								    menu.Append(new_script);
-								    menu.Append(new_folder);
-							    }
-                                menu.Append(new Gtk.SeparatorMenuItem());
-                                menu.Append(menu_give_folder);
-
-                                menu.Append(new Gtk.SeparatorMenuItem());
-                                menu.Append(menu_cut_folder);
-                                //menu.Append(menu_copy_folder);
-                                if (cutcopylist.Count > 0)
-                                    menu.Append(menu_paste_folder);
- 
-                                menu.Append(new Gtk.SeparatorMenuItem());
-                                menu.Append(menu_delete_folder);
-                            }
                         }
-						if(item is InventoryNotecard)
-						{
-				             Gtk.MenuItem menu_read_note = new MenuItem("Open notecard");
-							menu_read_note.ButtonPressEvent+= new ButtonPressEventHandler(onOpenNotecard);
-							 menu.Append(menu_read_note);
-							
-						}
-				
-						if(item is InventoryLSL)
-						{
-				            Gtk.MenuItem menu_read_note = new MenuItem("Open script");
-							menu_read_note.ButtonPressEvent+= new ButtonPressEventHandler(onOpenScript);
-							menu.Append(menu_read_note);
-							
-						}
-
-						if(item is InventoryTexture || item is InventorySnapshot)
-						{
-				             Gtk.MenuItem menu_view_texture = new MenuItem("View texture");
-							 menu_view_texture.ButtonPressEvent+= new ButtonPressEventHandler(onViewTexture);
-							 menu.Append(menu_view_texture);							
-						}
-						
-						
-                        
-						
-						if(item is InventoryAttachment || item is InventoryObject)
-						{
-							Gtk.MenuItem menu_attach_item = new MenuItem("Attach (default pos)");
-							menu_attach_item.ButtonPressEvent += new ButtonPressEventHandler(menu_attach_item_ButtonPressEvent);
-							menu.Append(menu_attach_item);
-						}
-
-						if(item is InventoryWearable)
-						{
-							Gtk.MenuItem menu_attach_item = new MenuItem("Wear");
-							menu_attach_item.ButtonPressEvent += new ButtonPressEventHandler(menu_wear_item_ButtonPressEvent);
-							menu.Append(menu_attach_item);				
-						}
-
-                        if (item is InventoryItem)
+                        else
                         {
+                            // Do not display menu for our system level folders
+                            if (item.UUID == MainClass.client.Inventory.Store.RootFolder.UUID)
+                                return;
+                            if (item.UUID == MainClass.client.Inventory.Store.LibraryFolder.UUID)
+                                return;
 
-                            Gtk.ImageMenuItem menu_give_item = new ImageMenuItem("Give item to user");
-                            menu_give_item.Image = new Gtk.Image(MainClass.GetResource("ff_edit_theirs.png"));
+                            Gtk.MenuItem menu_wear_folder = new MenuItem("Wear folder contents");
+                            Gtk.ImageMenuItem menu_give_folder = new ImageMenuItem("Give folder to user");
+                            menu_give_folder.Image = new Gtk.Image(MainClass.GetResource("ff_edit_theirs.png"));
 
-                            Gtk.ImageMenuItem menu_delete_item = new ImageMenuItem("Delete item");
-                            menu_delete_item.Image = new Gtk.Image(MainClass.GetResource("inv_folder_trash.png"));
+                            Gtk.ImageMenuItem new_note = new ImageMenuItem("Create new notecard");
+                            new_note.Image = new Gtk.Image(MainClass.GetResource("inv_item_notecard.png"));
 
-                            menu_give_item.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
-                            menu_delete_item.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
-                            menu.Append(new Gtk.SeparatorMenuItem());
-                            menu.Append(menu_give_item);
-                            menu.Append(new Gtk.SeparatorMenuItem());
-                            
-                            Gtk.ImageMenuItem menu_cut_folder = new ImageMenuItem("Cut Item(s)");
+                            Gtk.ImageMenuItem new_script = new ImageMenuItem("Create new script");
+                            new_script.Image = new Gtk.Image(MainClass.GetResource("inv_item_script.png"));
+
+                            Gtk.ImageMenuItem new_folder = new ImageMenuItem("Create new folder");
+                            new_folder.Image = new Gtk.Image(MainClass.GetResource("inv_folder_plain_open.png"));
+
+                            Gtk.ImageMenuItem menu_cut_folder = new ImageMenuItem("Cut Folder");
                             menu_cut_folder.Image = new Gtk.Image(Gtk.Stock.Cut, IconSize.Menu);
-                            Gtk.ImageMenuItem menu_copy_folder = new ImageMenuItem("Copy Item(s)");
+
+                            Gtk.ImageMenuItem menu_copy_folder = new ImageMenuItem("Copy Folder");
                             menu_copy_folder.Image = new Gtk.Image(Gtk.Stock.Copy, IconSize.Menu);
+
+                            Gtk.ImageMenuItem menu_paste_folder = new ImageMenuItem("Paste here..");
+                            menu_paste_folder.Image = new Gtk.Image(Gtk.Stock.Paste, IconSize.Menu);
+
+
+                            Gtk.ImageMenuItem menu_delete_folder = new ImageMenuItem("Delete Folder");
+                            menu_delete_folder.Image = new Gtk.Image(MainClass.GetResource("inv_folder_trash.png"));
+
+                            menu_delete_folder.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
+                            menu_give_folder.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
+                            menu_wear_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_ware_ButtonPressEvent);
+                            //menu_debork.ButtonPressEvent += new ButtonPressEventHandler(FixBorkedFolder);
+                            new_note.ButtonPressEvent += new ButtonPressEventHandler(menu_on_new_note);
+                            new_script.ButtonPressEvent += new ButtonPressEventHandler(menu_on_new_script);
+                            new_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_on_new_folder);
                             menu_cut_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_on_cut_folder);
                             menu_copy_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_on_copy_folder);
-                            menu.Append(menu_cut_folder);
-                           // menu.Append(menu_copy_folder);
+                            menu_paste_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_on_paste_folder);
+
+                            Gtk.Label x = new Gtk.Label("Folder Item");
+
+                            //menu.Append(menu_debork);
+                            menu.Append(menu_wear_folder);
+
+                            if (paths.Length == 1)
+                            {
+                                menu.Append(new Gtk.SeparatorMenuItem());
+                                menu.Append(new_note);
+                                menu.Append(new_script);
+                                menu.Append(new_folder);
+                            }
+                            menu.Append(new Gtk.SeparatorMenuItem());
+                            menu.Append(menu_give_folder);
 
                             menu.Append(new Gtk.SeparatorMenuItem());
-                            menu.Append(menu_delete_item);
+                            menu.Append(menu_cut_folder);
+                            //menu.Append(menu_copy_folder);
+                            if (cutcopylist.Count > 0)
+                                menu.Append(menu_paste_folder);
+
+                            menu.Append(new Gtk.SeparatorMenuItem());
+                            menu.Append(menu_delete_folder);
                         }
-						
-                        menu.Popup();
-                        menu.ShowAll();
-						
+                    }
+                    if (item is InventoryNotecard)
+                    {
+                        Gtk.MenuItem menu_read_note = new MenuItem("Open notecard");
+                        menu_read_note.ButtonPressEvent += new ButtonPressEventHandler(onOpenNotecard);
+                        menu.Append(menu_read_note);
+
+                    }
+
+                    if (item is InventoryLSL)
+                    {
+                        Gtk.MenuItem menu_read_note = new MenuItem("Open script");
+                        menu_read_note.ButtonPressEvent += new ButtonPressEventHandler(onOpenScript);
+                        menu.Append(menu_read_note);
+
+                    }
+
+                    if (item is InventoryTexture || item is InventorySnapshot)
+                    {
+                        Gtk.MenuItem menu_view_texture = new MenuItem("View texture");
+                        menu_view_texture.ButtonPressEvent += new ButtonPressEventHandler(onViewTexture);
+                        menu.Append(menu_view_texture);
+                    }
+
+
+
+
+                    if (item is InventoryAttachment || item is InventoryObject)
+                    {
+                        Gtk.MenuItem menu_attach_item = new MenuItem("Attach (default pos)");
+                        menu_attach_item.ButtonPressEvent += new ButtonPressEventHandler(menu_attach_item_ButtonPressEvent);
+                        menu.Append(menu_attach_item);
+                    }
+
+                    if (item is InventoryWearable)
+                    {
+                        Gtk.MenuItem menu_attach_item = new MenuItem("Wear");
+                        menu_attach_item.ButtonPressEvent += new ButtonPressEventHandler(menu_wear_item_ButtonPressEvent);
+                        menu.Append(menu_attach_item);
+                    }
+
+                    if (item is InventoryItem)
+                    {
+
+                        Gtk.ImageMenuItem menu_give_item = new ImageMenuItem("Give item to user");
+                        menu_give_item.Image = new Gtk.Image(MainClass.GetResource("ff_edit_theirs.png"));
+
+                        Gtk.ImageMenuItem menu_delete_item = new ImageMenuItem("Delete item");
+                        menu_delete_item.Image = new Gtk.Image(MainClass.GetResource("inv_folder_trash.png"));
+
+                        menu_give_item.ButtonPressEvent += new ButtonPressEventHandler(ongiveasset);
+                        menu_delete_item.ButtonPressEvent += new ButtonPressEventHandler(ondeleteasset);
+                        menu.Append(new Gtk.SeparatorMenuItem());
+                        menu.Append(menu_give_item);
+                        menu.Append(new Gtk.SeparatorMenuItem());
+
+                        Gtk.ImageMenuItem menu_cut_folder = new ImageMenuItem("Cut Item(s)");
+                        menu_cut_folder.Image = new Gtk.Image(Gtk.Stock.Cut, IconSize.Menu);
+                        Gtk.ImageMenuItem menu_copy_folder = new ImageMenuItem("Copy Item(s)");
+                        menu_copy_folder.Image = new Gtk.Image(Gtk.Stock.Copy, IconSize.Menu);
+                        menu_cut_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_on_cut_folder);
+                        menu_copy_folder.ButtonPressEvent += new ButtonPressEventHandler(menu_on_copy_folder);
+                        menu.Append(menu_cut_folder);
+                        // menu.Append(menu_copy_folder);
+
+                        menu.Append(new Gtk.SeparatorMenuItem());
+                        menu.Append(menu_delete_item);
+                    }
+
+                    menu.Popup();
+                    menu.ShowAll();
+
+                }
             }
         }
 
@@ -1354,6 +1366,8 @@ namespace omvviewerlight
 				
 		void onRowCollapsed(object o,Gtk.RowCollapsedArgs args)
 		{
+            lock(inventory)
+            {
             if (filteractive == true)
                 return;
 
@@ -1376,7 +1390,8 @@ namespace omvviewerlight
             catch
             {
             }
-		}
+		   }
+        }
 
 		void onRowExpanded(object o,Gtk.RowExpandedArgs args)
 		{
@@ -1414,6 +1429,7 @@ namespace omvviewerlight
             {
 
             }
+        
 		}
 		
 		void fetchinventory(object x)
@@ -1455,6 +1471,8 @@ namespace omvviewerlight
 			//Console.WriteLine("Got objects # "+myObjects.Count.ToString());
 
 
+            lock(inventory)
+            {
             //We should preserve Waiting... messages for folders we don't yet have the children for
             //or else the user can't open them as there is no + to click on. But we need to get rid
             // of them for folders we have just got the data for!
@@ -1467,6 +1485,7 @@ namespace omvviewerlight
                     inventory.Remove(ref childiter);
                     alreadyseen = false;
                 }
+            }
             }
 
             if (myObjects == null || myObjects.Count==0)
@@ -1513,9 +1532,12 @@ namespace omvviewerlight
                     continue;
                 }
 
+                System.Threading.AutoResetEvent ar = new System.Threading.AutoResetEvent(false);
+                   lock(inventory)
+                   {
                    this.no_items++;
                    Gdk.Pixbuf buf = getprettyicon(item);
-				   System.Threading.AutoResetEvent ar=new System.Threading.AutoResetEvent(false);
+				  
 				
 				   Gtk.Application.Invoke(delegate{
 					    global_thread_tree = inventory.AppendValues(iter, buf, item.Name, item.UUID, item);
@@ -1524,6 +1546,8 @@ namespace omvviewerlight
                             assetmap.Add(item.UUID, global_thread_tree);
                         ar.Set();
 			        });
+ 
+                    }
 				
 				    ar.WaitOne();
 				
@@ -1535,9 +1559,11 @@ namespace omvviewerlight
                          System.Threading.AutoResetEvent ar2=new System.Threading.AutoResetEvent(false);
 					
 					Gtk.Application.Invoke(delegate{
-						                       
+		            lock(inventory)
+                    {             
 					inventory.AppendValues(iter2, item_object, "Waiting...", item.UUID, null);
                     ar2.Set();
+                        }
 					     });					     
 						
 					   ar2.WaitOne();
@@ -1557,6 +1583,8 @@ namespace omvviewerlight
 				{
 	                fetchrun=true;
 					Console.WriteLine("Fetch Complete");
+                    MainClass.client.Inventory.Store.cache_inventory_to_disk(MainClass.client.Settings.TEXTURE_CACHE_DIR + "\\"+ MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
+  
 					Gtk.Application.Invoke(delegate{
 						this.label_fetched.Text="fetched "+this.no_items.ToString()+" items (Finished)";
 					});
@@ -1567,6 +1595,7 @@ namespace omvviewerlight
 		
         void UpdateRow(object x)
         {
+            
 	        UUID key;
             //Gtk.RowExpandedArgs args;
 			Gtk.TreePath path;
@@ -1631,7 +1660,9 @@ namespace omvviewerlight
 					this.no_items++;
                      label_fetched.Text="Fetched "+no_items.ToString()+" items";
                      Gtk.TreeIter iter2 = inventory.AppendValues(incommingIter, buf, item.Name + msg, item.UUID, item);
-                    
+                    lock(inventory)
+                    {                    
+
                      if(!assetmap.ContainsKey(item.UUID))
 					   assetmap.Add(item.UUID, iter2);
 					else
@@ -1644,9 +1675,15 @@ namespace omvviewerlight
                      }
                  }
 
+                
+
                  path.Up();
 
+               
+
                  this.treeview_inv.ExpandRow(path, false);
+
+                }
                 //And tidy that waiting
              //  if (inventory.GetIter(out childiter, path))
              //  {
@@ -1849,6 +1886,8 @@ namespace omvviewerlight
 		protected virtual void OnEntrySearchChanged (object sender, System.EventArgs e)
 		{
 			
+        lock(inventory)
+        {
 			if(fetchrun==false && fetcherrunning==false)
 			{
 				Logger.Log("Starting Inventory Fetch all",Helpers.LogLevel.Info);
@@ -1873,6 +1912,7 @@ namespace omvviewerlight
             filter.Refilter(); //*sigh*
           
             treeview_inv.ExpandAll();
+            }
 
 		}
 

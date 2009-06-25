@@ -149,7 +149,7 @@ namespace OpenMetaverse
         /// 
         /// </summary>
         /// <returns></returns>
-        public void GetObjectData(SerializationInfo info, StreamingContext ctxt)
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext ctxt)
         {
             info.AddValue("UUID", UUID);
             info.AddValue("ParentUUID",ParentUUID );
@@ -254,7 +254,7 @@ namespace OpenMetaverse
         /// 
         /// </summary>
         /// <returns></returns>
-        new public void GetObjectData(SerializationInfo info, StreamingContext ctxt) 
+        override public void GetObjectData(SerializationInfo info, StreamingContext ctxt) 
         {
             base.GetObjectData(info,ctxt);
             info.AddValue("AssetUUID",AssetUUID,typeof(UUID));
@@ -739,7 +739,7 @@ namespace OpenMetaverse
         /// <summary>
         /// Get Serilization data for this InventoryFolder object
         /// </summary>
-        new public void GetObjectData(SerializationInfo info, StreamingContext ctxt)
+        override public void GetObjectData(SerializationInfo info, StreamingContext ctxt)
         {
             base.GetObjectData(info,ctxt);
             info.AddValue("PreferredType", PreferredType, typeof(AssetType));

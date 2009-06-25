@@ -3,3 +3,8 @@ C:\omvviewer\trunk\bin\OpenMetaverse.Http.pdb
 C:\omvviewer\trunk\OpenMetaverse.Http\obj\Debug\ResolveAssemblyReference.cache
 C:\omvviewer\trunk\OpenMetaverse.Http\obj\Debug\OpenMetaverse.Http.dll
 C:\omvviewer\trunk\OpenMetaverse.Http\obj\Debug\OpenMetaverse.Http.pdb
+C:\omvviewer\omvviewer-light\libomv\bin\OpenMetaverse.Http.dll
+C:\omvviewer\omvviewer-light\libomv\bin\OpenMetaverse.Http.pdb
+C:\omvviewer\omvviewer-light\libomv\OpenMetaverse.Http\obj\Debug\ResolveAssemblyReference.cache
+C:\omvviewer\omvviewer-light\libomv\OpenMetaverse.Http\obj\Debug\OpenMetaverse.Http.dll
+C:\omvviewer\omvviewer-light\libomv\OpenMetaverse.Http\obj\Debug\OpenMetaverse.Http.pdb

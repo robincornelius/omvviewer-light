@@ -4,14 +4,14 @@
   <description asmv2:publisher="omvviewer-light" asmv2:product="omvviewer-light" asmv2:supportUrl="http://jira.byteme.org.uk/" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <deployment install="true" />
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="omvviewerlight.exe.manifest" size="13951">
+    <dependentAssembly dependencyType="install" codebase="omvviewerlight.exe.manifest" size="15259">
       <assemblyIdentity name="omvviewerlight.exe" version="0.48.0.2" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>P4ucVyIphDHepCUexGd3dyj35vQ=</dsig:DigestValue>
+        <dsig:DigestValue>dTfa9qDPmbf5c92y+pWRXaw8JFw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

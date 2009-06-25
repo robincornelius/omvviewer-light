@@ -39,6 +39,10 @@ public partial class MainWindow: Gtk.Window
     public delegate void Cleanuptime();
     public event Cleanuptime oncleanuptime;
 
+    public delegate void LogoutWork();
+    public event LogoutWork onLogoutWork;
+
+
     public delegate void InventoryAccepted(AssetType type, UUID objectID);
     public static event InventoryAccepted OnInventoryAccepted;
 
@@ -101,10 +105,17 @@ public partial class MainWindow: Gtk.Window
  void menu_quit_fn(object o, ButtonPressEventArgs args)
 	{
 		MainClass.userlogout = true;
-		LogoutDlg ld = new LogoutDlg();
+        //if (onLogoutWork != null)
+        {
+            Console.WriteLine("Running logout tasks first");
+            MainClass.client.Inventory.Store.cache_inventory_to_disk(MainClass.client.Settings.TEXTURE_CACHE_DIR + "\\" + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
+            Console.WriteLine("Done");
+        }
+     
+        LogoutDlg ld = new LogoutDlg();
         ld.Modal = false;
 	    ld.Run();
-		Gtk.Application.Quit();
+		//Gtk.Application.Quit();
 	}
  void menu_hide_fn(object o, ButtonPressEventArgs args)
 	{

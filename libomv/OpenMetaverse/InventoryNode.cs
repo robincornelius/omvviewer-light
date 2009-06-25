@@ -114,35 +114,8 @@ namespace OpenMetaverse
                 info.AddValue("Parent", UUID.Zero, typeof(UUID));
 
             info.AddValue("Type", data.GetType(), typeof(Type));
-            
-            if(data is InventoryAnimation)
-                ((InventoryAnimation)data).GetObjectData(info, ctxt);
-            if(data is InventoryAttachment)
-                ((InventoryAttachment)data).GetObjectData(info, ctxt);
-            if(data is InventoryCallingCard)
-                ((InventoryCallingCard)data).GetObjectData(info, ctxt);
-            if(data is InventoryFolder)
-                ((InventoryFolder)data).GetObjectData(info, ctxt);
-            if(data is InventoryGesture)
-                ((InventoryGesture)data).GetObjectData(info, ctxt);
-            if(data is InventoryLandmark)
-                ((InventoryLandmark)data).GetObjectData(info, ctxt);
-            if(data is InventoryLSL)
-                ((InventoryLSL)data).GetObjectData(info, ctxt);
-            if (data is InventoryNotecard)
-                ((InventoryNotecard)data).GetObjectData(info, ctxt);
-            if(data is InventoryObject)
-                ((InventoryObject)data).GetObjectData(info, ctxt);
-            if(data is InventorySnapshot)
-                ((InventorySnapshot)data).GetObjectData(info, ctxt);
-            if(data is InventorySound)
-                ((InventorySound)data).GetObjectData(info, ctxt);
-            if (data is InventoryTexture)
-                ((InventoryTexture)data).GetObjectData(info, ctxt);
-            if(data is InventoryWearable)
-                ((InventoryWearable)data).GetObjectData(info, ctxt);
 
-            
+            data.GetObjectData(info, ctxt);  
         }
 
         /// <summary>

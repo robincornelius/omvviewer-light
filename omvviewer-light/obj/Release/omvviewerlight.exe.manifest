@@ -44,27 +44,27 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
-      <assemblyIdentity name="atk-sharp" version="2.10.0.0" publicKeyToken="35E10195DAB3C99F" language="neutral" />
+      <assemblyIdentity name="atk-sharp" version="2.12.0.0" publicKeyToken="35E10195DAB3C99F" language="neutral" />
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
-      <assemblyIdentity name="gdk-sharp" version="2.10.0.0" publicKeyToken="35E10195DAB3C99F" language="neutral" />
+      <assemblyIdentity name="gdk-sharp" version="2.12.0.0" publicKeyToken="35E10195DAB3C99F" language="neutral" />
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
-      <assemblyIdentity name="glib-sharp" version="2.10.0.0" publicKeyToken="35E10195DAB3C99F" language="neutral" />
+      <assemblyIdentity name="glib-sharp" version="2.12.0.0" publicKeyToken="35E10195DAB3C99F" language="neutral" />
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
-      <assemblyIdentity name="gtk-sharp" version="2.10.0.0" publicKeyToken="35E10195DAB3C99F" language="neutral" />
+      <assemblyIdentity name="gtk-sharp" version="2.12.0.0" publicKeyToken="35E10195DAB3C99F" language="neutral" />
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
-      <assemblyIdentity name="Mono.Cairo" version="1.0.5000.0" publicKeyToken="0738EB9F132ED756" language="neutral" />
+      <assemblyIdentity name="Mono.Cairo" version="2.0.0.0" publicKeyToken="0738EB9F132ED756" language="neutral" processorArchitecture="msil" />
     </dependentAssembly>
   </dependency>
   <dependency>
@@ -74,7 +74,19 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
-      <assemblyIdentity name="pango-sharp" version="2.10.0.0" publicKeyToken="35E10195DAB3C99F" language="neutral" />
+      <assemblyIdentity name="pango-sharp" version="2.12.0.0" publicKeyToken="35E10195DAB3C99F" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="HttpServer.dll" size="102400">
+      <assemblyIdentity name="HttpServer" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>N6lPFPntB9j/rjTcHvotPO7Em+k=</dsig:DigestValue>
+      </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
@@ -90,62 +102,74 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="omvviewerlight.exe" size="585728">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Mono.Security.dll" size="289792">
+      <assemblyIdentity name="Mono.Security" version="2.0.0.0" publicKeyToken="0738EB9F132ED756" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>frpP8mjLumAjk8x+qhuF7pje3d0=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="omvviewerlight.exe" size="589824">
       <assemblyIdentity name="omvviewerlight" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>yD0hOiMMezRnEnVtha9upmnDUk0=</dsig:DigestValue>
+        <dsig:DigestValue>nzi/QI+H51S/AhXonjtXkHvJ2NI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="OpenMetaverse.dll" size="1646592">
-      <assemblyIdentity name="OpenMetaverse" version="1.0.0.16021" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="OpenMetaverse.dll" size="1773568">
+      <assemblyIdentity name="OpenMetaverse" version="1.0.0.28784" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>1IiAbTaLGCc/W68wfm5H3Lq7w+E=</dsig:DigestValue>
+        <dsig:DigestValue>AtkEfo6VrjbRqL2AbGo0LiStRf4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="OpenMetaverse.Http.dll" size="36864">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="OpenMetaverse.Http.dll" size="40960">
       <assemblyIdentity name="OpenMetaverse.Http" version="0.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>BPG4tiFlfe3/Dadp733R5eme7ug=</dsig:DigestValue>
+        <dsig:DigestValue>NlK94ShZbMLrzVjIWm5PWrtBY5M=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="OpenMetaverse.StructuredData.dll" size="102400">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="OpenMetaverse.StructuredData.dll" size="114688">
       <assemblyIdentity name="OpenMetaverse.StructuredData" version="0.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>MqLAG2v3Esty4dM6j7kIp9pgjdY=</dsig:DigestValue>
+        <dsig:DigestValue>Hhzz9ZywfUHuweVr97Ffmo5B3kk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="OpenMetaverseTypes.dll" size="102400">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="OpenMetaverseTypes.dll" size="110592">
       <assemblyIdentity name="OpenMetaverseTypes" version="0.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>QOEZGR0z7yCsrGGB6aG++8Y+LTg=</dsig:DigestValue>
+        <dsig:DigestValue>eDK9YyqYnkNfNjhfIIIAVkOjToM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
