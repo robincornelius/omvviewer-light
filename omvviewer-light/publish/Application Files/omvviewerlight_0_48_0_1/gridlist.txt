@@ -1,8 +1,0 @@
-Angi https://login.agni.lindenlab.com/cgi-bin/login.cgi
-Aditi https://login.aditi.lindenlab.com/cgi-bin/login.cgi
-DeepGrid http://login.deepgrid.com:8002/
-OSGrid http://osgrid.org:8002
-OpenlifeGrid http:://logingrid.net:8002/
-CentralGrid http://maingrid.CentralGrid.com:8002
-Local http://127.0.0.1:9000
-Custom None
