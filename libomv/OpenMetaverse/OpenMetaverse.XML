@@ -13393,7 +13393,7 @@
         </member>
         <member name="M:OpenMetaverse.InventoryNode.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
             <summary>
-            
+            De-serialization handler for the InventoryNode Class
             </summary>
             <returns></returns>
         </member>

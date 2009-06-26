@@ -320,12 +320,9 @@ namespace OpenMetaverse
             BinaryFormatter bformatter = new BinaryFormatter();
             lock (Items)
             {
+                Logger.Log("Caching " + Items.Count.ToString() + " inventory items to " + filename, Helpers.LogLevel.Info);
                 foreach (KeyValuePair<UUID, InventoryNode> kvp in Items)
                 {
-                   // if (kvp.Value.Parent != null && kvp.Value.Parent.Data.Name != null)
-                   //     Console.WriteLine("Saving " + kvp.Value.Parent.Data.Name + "/" + kvp.Value.Data.Name);
-                   // else
-                   //     Console.WriteLine("Saving /" + kvp.Value.Data.Name);
                     bformatter.Serialize(stream, kvp.Value);
                 }
             }

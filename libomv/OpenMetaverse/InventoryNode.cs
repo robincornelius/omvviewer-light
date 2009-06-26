@@ -119,52 +119,16 @@ namespace OpenMetaverse
         }
 
         /// <summary>
-        /// 
+        /// De-serialization handler for the InventoryNode Class
         /// </summary>
         /// <returns></returns>
         public InventoryNode(SerializationInfo info, StreamingContext ctxt)
         {
             parentID = (UUID)info.GetValue("Parent", typeof(UUID));
             Type type = (Type)info.GetValue("Type", typeof(Type));
-           
-            if (type == typeof(InventoryAnimation))
-                data = new InventoryAnimation(info, ctxt);
-
-            if (type == typeof(InventoryAttachment))
-                data = new InventoryAttachment(info, ctxt);
-
-            if (type == typeof(InventoryCallingCard))
-                data = new InventoryCallingCard(info, ctxt);
-
-            if (type == typeof(InventoryFolder))
-                data = new InventoryFolder(info, ctxt);
-
-            if (type == typeof(InventoryGesture))
-                data = new InventoryGesture(info, ctxt);
-
-            if (type == typeof(InventoryLandmark))
-                data = new InventoryLandmark(info, ctxt);
-
-            if (type == typeof(InventoryLSL))
-                data = new InventoryLSL(info, ctxt);
-
-            if (type == typeof(InventoryNotecard))
-                data = new InventoryNotecard(info, ctxt);
-
-            if (type == typeof(InventoryObject))
-                data = new InventoryObject(info, ctxt);
-
-            if (type == typeof(InventorySnapshot))
-                data = new InventorySnapshot(info, ctxt);
-
-            if (type == typeof(InventorySound))
-                data = new InventorySound(info, ctxt);
-
-            if (type == typeof(InventoryTexture))
-                data = new InventoryTexture(info, ctxt);
-
-            if (type == typeof(InventoryWearable))
-                data = new InventoryWearable(info, ctxt);
+         
+            System.Reflection.ConstructorInfo ctr = type.GetConstructor(new Type[] {typeof(SerializationInfo),typeof(StreamingContext)});
+            data = (InventoryBase) ctr.Invoke(new Object[] { info, ctxt });
         }
 
         /// <summary>

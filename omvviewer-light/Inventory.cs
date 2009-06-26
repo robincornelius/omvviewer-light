@@ -1190,7 +1190,7 @@ namespace omvviewerlight
 							{
 
                                 AssetNotecard note = new AssetNotecard();
-								note.Text="Add your notes here....";
+								note.BodyText="Add your notes here....";
 								note.Encode();
 								
 						        MainClass.client.Inventory.RequestUploadNotecardAsset(note.AssetData, itemx.UUID,delegate (bool success2,string status,UUID item_uuid, UUID asset_uuid)
@@ -1583,7 +1583,7 @@ namespace omvviewerlight
 				{
 	                fetchrun=true;
 					Console.WriteLine("Fetch Complete");
-                    MainClass.client.Inventory.Store.cache_inventory_to_disk(MainClass.client.Settings.TEXTURE_CACHE_DIR + "\\"+ MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
+                    //MainClass.client.Inventory.Store.cache_inventory_to_disk(MainClass.client.Settings.TEXTURE_CACHE_DIR + "\\"+ MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
   
 					Gtk.Application.Invoke(delegate{
 						this.label_fetched.Text="fetched "+this.no_items.ToString()+" items (Finished)";
