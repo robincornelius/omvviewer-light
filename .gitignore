@@ -1,2 +1,5 @@
 *.pdb
 *.XML
+omvviewer-light/obj
+omvviewer-light/obj/*
+omvviewer-light/obj/*/*

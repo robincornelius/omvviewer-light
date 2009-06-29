@@ -80,6 +80,9 @@ namespace omvviewerlight
 
 			groupkey=groupID;
 			already_member=mine;
+
+            this.label_name.Text = " Waiting ....";
+            this.label_foundedby.Text = "Waiting ...";
 			
 			store_members = new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(UUID));			
 			treeview_members.AppendColumn("Member name",new CellRendererText(),"text",0);
