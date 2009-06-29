@@ -145,7 +145,7 @@ namespace omvviewerlight
 			height=args.Allocation.Height;	
 			width=args.Allocation.Width;
 			
-			
+					
 				
                 Gtk.Application.Invoke(delegate
                 {

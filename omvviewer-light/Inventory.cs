@@ -488,7 +488,7 @@ namespace omvviewerlight
                     }
 
                     this.no_items = 0;
-                    MainClass.client.Inventory.Store.read_inventory_cache(MainClass.client.Settings.TEXTURE_CACHE_DIR + "\\" + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
+                    MainClass.client.Inventory.Store.RestoreFromDisk(MainClass.client.Settings.TEXTURE_CACHE_DIR + System.IO.Path.DirectorySeparatorChar + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
 
                     fetcherrunning = true;
                     Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
@@ -1429,6 +1429,7 @@ namespace omvviewerlight
             {
 
             }
+			
         
 		}
 		
@@ -1450,6 +1451,12 @@ namespace omvviewerlight
 			
 			TreePath path = inventory.GetPath(iter);
 			path.Down();
+			
+			InventoryNode node=MainClass.client.Inventory.Store.GetNodeFor(start);
+			if(node.NeedsUpdate==true)
+			{
+				alreadyseen=false;
+			}
 
            //Check for a waiting here, we need to use this to decide which fetcher to use in a moment
             if (cache == false)

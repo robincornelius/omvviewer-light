@@ -108,7 +108,7 @@ public partial class MainWindow: Gtk.Window
         //if (onLogoutWork != null)
         {
             Console.WriteLine("Running logout tasks first");
-            MainClass.client.Inventory.Store.cache_inventory_to_disk(MainClass.client.Settings.TEXTURE_CACHE_DIR + "\\" + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
+            MainClass.client.Inventory.Store.SaveToDisk(MainClass.client.Settings.TEXTURE_CACHE_DIR + System.IO.Path.DirectorySeparatorChar + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
             Console.WriteLine("Done");
         }
      
