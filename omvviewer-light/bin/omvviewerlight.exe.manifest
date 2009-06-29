@@ -114,26 +114,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="omvviewerlight.exe" size="610304">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="omvviewerlight.exe" size="589824">
       <assemblyIdentity name="omvviewerlight" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>icuSeQPZA++GRW/Lt8J55lK0nKg=</dsig:DigestValue>
+        <dsig:DigestValue>NHIJ35RUEAv94szJZDs6QrX18eE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="OpenMetaverse.dll" size="1605632">
-      <assemblyIdentity name="OpenMetaverse" version="1.0.0.17273" language="neutral" processorArchitecture="msil" />
+      <assemblyIdentity name="OpenMetaverse" version="1.0.0.17942" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>KoAN1jEcTGbY6y2pxFw8rHINZFc=</dsig:DigestValue>
+        <dsig:DigestValue>yVmbhDFXxe9Zww18w9UJN3e4068=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -145,19 +145,19 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>FbrHIItwABm2txG+5xkmyGdcD7g=</dsig:DigestValue>
+        <dsig:DigestValue>4nRpBYIhHto27SXievLZI8hJMms=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="OpenMetaverse.StructuredData.dll" size="114688">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="OpenMetaverse.StructuredData.dll" size="102400">
       <assemblyIdentity name="OpenMetaverse.StructuredData" version="0.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>iXV+aQXWeXkgdS4Mb7VpQVs7PDw=</dsig:DigestValue>
+        <dsig:DigestValue>3SYBEGgRROx5iPkeB/AmlZLdrBg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

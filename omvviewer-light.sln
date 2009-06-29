@@ -11,9 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMetaverse.Http", "libom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMetaverseTypes", "libomv\OpenMetaverseTypes\OpenMetaverseTypes.csproj", "{C7C629BE-97FF-4F65-9908-48832BBA88C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMetaverse.StructuredData", "libomv\OpenMetaverse.StructuredData\OpenMetaverse.StructuredData.csproj", "{32E99A61-BE0A-42C3-98E9-0D7388B3C03E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpServer", "libomv\HttpServer\HttpServer.csproj", "{455E7D70-1C85-4D7F-9F01-DC801B8B8C34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMetaverse.StructuredData", "libomv\OpenMetaverse.StructuredData\OpenMetaverse.StructuredData.csproj", "{32E99A61-BE0A-42C3-98E9-0D7388B3C03E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,14 +37,14 @@ Global
 		{C7C629BE-97FF-4F65-9908-48832BBA88C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7C629BE-97FF-4F65-9908-48832BBA88C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7C629BE-97FF-4F65-9908-48832BBA88C2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{32E99A61-BE0A-42C3-98E9-0D7388B3C03E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{32E99A61-BE0A-42C3-98E9-0D7388B3C03E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{32E99A61-BE0A-42C3-98E9-0D7388B3C03E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{32E99A61-BE0A-42C3-98E9-0D7388B3C03E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{455E7D70-1C85-4D7F-9F01-DC801B8B8C34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{455E7D70-1C85-4D7F-9F01-DC801B8B8C34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{455E7D70-1C85-4D7F-9F01-DC801B8B8C34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{455E7D70-1C85-4D7F-9F01-DC801B8B8C34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32E99A61-BE0A-42C3-98E9-0D7388B3C03E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32E99A61-BE0A-42C3-98E9-0D7388B3C03E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32E99A61-BE0A-42C3-98E9-0D7388B3C03E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32E99A61-BE0A-42C3-98E9-0D7388B3C03E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
