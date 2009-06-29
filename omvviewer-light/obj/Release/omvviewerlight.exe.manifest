@@ -85,7 +85,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>N6lPFPntB9j/rjTcHvotPO7Em+k=</dsig:DigestValue>
+        <dsig:DigestValue>VHg6pzcWEUPzVdrHahSTYjPLUSA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -121,19 +121,19 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>2IjglEVgxhTi8nN6A70NM/rltQ0=</dsig:DigestValue>
+        <dsig:DigestValue>OpRppz+TXpIDXMmKP03+luCwitE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="OpenMetaverse.dll" size="1773568">
-      <assemblyIdentity name="OpenMetaverse" version="1.0.0.17178" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="OpenMetaverse.dll" size="1605632">
+      <assemblyIdentity name="OpenMetaverse" version="1.0.0.16814" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>yOFzoL0dHNoIynBCMSODHz4n6uM=</dsig:DigestValue>
+        <dsig:DigestValue>vyuCOoa/yVTy71+MkA/Z9n/bmZ4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -145,7 +145,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>hgoscDu6cO+ya6zQW7N6zI7cZx0=</dsig:DigestValue>
+        <dsig:DigestValue>GXo+mMh+rQQdtJp5BmxaS61Ki/E=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -157,7 +157,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>jjYohJunZ0Tx6WQsLycQE1qL5v0=</dsig:DigestValue>
+        <dsig:DigestValue>wlRiqpTaYbeYk+vIpQMZHyIn4FY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -169,7 +169,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>eDK9YyqYnkNfNjhfIIIAVkOjToM=</dsig:DigestValue>
+        <dsig:DigestValue>aGZg2DA8gxzs4PhXQtWSDCZllcw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

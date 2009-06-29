@@ -3,3 +3,8 @@ C:\omvviewer\trunk\bin\HttpServer.pdb
 C:\omvviewer\trunk\HttpServer\obj\Debug\ResolveAssemblyReference.cache
 C:\omvviewer\trunk\HttpServer\obj\Debug\HttpServer.dll
 C:\omvviewer\trunk\HttpServer\obj\Debug\HttpServer.pdb
+C:\omvviewer\omvviewer-light\libomv\bin\HttpServer.dll
+C:\omvviewer\omvviewer-light\libomv\bin\HttpServer.pdb
+C:\omvviewer\omvviewer-light\libomv\HttpServer\obj\Debug\ResolveAssemblyReference.cache
+C:\omvviewer\omvviewer-light\libomv\HttpServer\obj\Debug\HttpServer.dll
+C:\omvviewer\omvviewer-light\libomv\HttpServer\obj\Debug\HttpServer.pdb

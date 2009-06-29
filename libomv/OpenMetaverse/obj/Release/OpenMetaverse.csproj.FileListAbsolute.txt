@@ -6,5 +6,5 @@ C:\omvviewer\omvviewer-light\omvviewer-light\bin\OpenMetaverse.dll
 C:\omvviewer\omvviewer-light\omvviewer-light\bin\OpenMetaverse.XML
 C:\omvviewer\omvviewer-light\libomv\OpenMetaverse\obj\Release\ResolveAssemblyReference.cache
 C:\omvviewer\omvviewer-light\libomv\OpenMetaverse\obj\Release\OpenMetaverse.dll
-C:\omvviewer\omvviewer-light\omvviewer-light\bin\OpenMetaverse.pdb
-C:\omvviewer\omvviewer-light\libomv\OpenMetaverse\obj\Release\OpenMetaverse.pdb
+C:\omvviewer\omvviewer-light\libomv\bin\OpenMetaverse.dll
+C:\omvviewer\omvviewer-light\libomv\bin\OpenMetaverse.XML

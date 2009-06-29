@@ -2,16 +2,18 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual C# Express 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "omvviewer-light", "omvviewer-light\omvviewer-light.csproj", "{F59E711D-2669-4BC6-ACA4-2F7E9B8EDD0E}"
 	ProjectSection(ProjectDependencies) = postProject
-		{BD4C2A30-C3F2-40DE-9416-2DA7CC747B46} = {BD4C2A30-C3F2-40DE-9416-2DA7CC747B46}
+		{D36060B9-322E-498C-8F33-C0126562A176} = {D36060B9-322E-498C-8F33-C0126562A176}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMetaverse", "libomv\OpenMetaverse\OpenMetaverse.csproj", "{BD4C2A30-C3F2-40DE-9416-2DA7CC747B46}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMetaverse", "libomv\OpenMetaverse\OpenMetaverse.csproj", "{D36060B9-322E-498C-8F33-C0126562A176}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMetaverse.Http", "libomv\OpenMetaverse.Http\OpenMetaverse.Http.csproj", "{9385E29D-3601-4228-A5EE-0CB40E4F92FC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMetaverseTypes", "libomv\OpenMetaverseTypes\OpenMetaverseTypes.csproj", "{C7C629BE-97FF-4F65-9908-48832BBA88C2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMetaverse.StructuredData", "libomv\OpenMetaverse.StructuredData\OpenMetaverse.StructuredData.csproj", "{32E99A61-BE0A-42C3-98E9-0D7388B3C03E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpServer", "libomv\HttpServer\HttpServer.csproj", "{455E7D70-1C85-4D7F-9F01-DC801B8B8C34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +25,10 @@ Global
 		{F59E711D-2669-4BC6-ACA4-2F7E9B8EDD0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F59E711D-2669-4BC6-ACA4-2F7E9B8EDD0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F59E711D-2669-4BC6-ACA4-2F7E9B8EDD0E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BD4C2A30-C3F2-40DE-9416-2DA7CC747B46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BD4C2A30-C3F2-40DE-9416-2DA7CC747B46}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BD4C2A30-C3F2-40DE-9416-2DA7CC747B46}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BD4C2A30-C3F2-40DE-9416-2DA7CC747B46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D36060B9-322E-498C-8F33-C0126562A176}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D36060B9-322E-498C-8F33-C0126562A176}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D36060B9-322E-498C-8F33-C0126562A176}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D36060B9-322E-498C-8F33-C0126562A176}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9385E29D-3601-4228-A5EE-0CB40E4F92FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9385E29D-3601-4228-A5EE-0CB40E4F92FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9385E29D-3601-4228-A5EE-0CB40E4F92FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +41,10 @@ Global
 		{32E99A61-BE0A-42C3-98E9-0D7388B3C03E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32E99A61-BE0A-42C3-98E9-0D7388B3C03E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32E99A61-BE0A-42C3-98E9-0D7388B3C03E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{455E7D70-1C85-4D7F-9F01-DC801B8B8C34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{455E7D70-1C85-4D7F-9F01-DC801B8B8C34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{455E7D70-1C85-4D7F-9F01-DC801B8B8C34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{455E7D70-1C85-4D7F-9F01-DC801B8B8C34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

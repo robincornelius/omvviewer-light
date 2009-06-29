@@ -5008,6 +5008,15 @@
             <param name="simulator">Simulator parcel is in</param>
             <param name="localID">Simulator local ID of parcel</param>
         </member>
+        <member name="M:OpenMetaverse.ParcelManager.RequestRemoteParcelID(OpenMetaverse.Vector3,System.UInt64,OpenMetaverse.UUID)">
+            <summary>
+            Requests the UUID of the parcel in a remote region at a specified location
+            </summary>
+            <param name="location">Location of the parcel in the remote region</param>
+            <param name="regionHandle">Remote region handle</param>
+            <param name="regionID">Remote region UUID</param>
+            <returns>If successful UUID of the remote parcel, UUID.Zero otherwise</returns>
+        </member>
         <member name="M:OpenMetaverse.ParcelManager.ParcelPropertiesReplyHandler(System.String,OpenMetaverse.Interfaces.IMessage,OpenMetaverse.Simulator)">
             <summary>
             ParcelProperties replies sent over CAPS
@@ -10057,8 +10066,41 @@
             </summary>
             <returns>An <see cref="T:OpenMetaverse.StructuredData.OSDMap"/> containing the objects data</returns>
         </member>
-        <member name="F:OpenMetaverse.Messages.Linden.RemoteParcelRequestMessage.ParcelID">
+        <member name="F:OpenMetaverse.Messages.Linden.RemoteParcelRequestRequest.Location">
+            <summary>Local sim position of the parcel we are looking up</summary>
+        </member>
+        <member name="F:OpenMetaverse.Messages.Linden.RemoteParcelRequestRequest.RegionHandle">
+            <summary>Region handle of the parcel we are looking up</summary>
+        </member>
+        <member name="F:OpenMetaverse.Messages.Linden.RemoteParcelRequestRequest.RegionID">
+            <summary>Region <see cref="T:OpenMetaverse.UUID"/> of the parcel we are looking up</summary>
+        </member>
+        <member name="M:OpenMetaverse.Messages.Linden.RemoteParcelRequestRequest.Serialize">
+            <summary>
+            Serialize the object
+            </summary>
+            <returns>An <see cref="T:OpenMetaverse.StructuredData.OSDMap"/> containing the objects data</returns>
+        </member>
+        <member name="M:OpenMetaverse.Messages.Linden.RemoteParcelRequestRequest.Deserialize(OpenMetaverse.StructuredData.OSDMap)">
+            <summary>
+            Deserialize the message
+            </summary>
+            <param name="map">An <see cref="T:OpenMetaverse.StructuredData.OSDMap"/> containing the data</param>
+        </member>
+        <member name="F:OpenMetaverse.Messages.Linden.RemoteParcelRequestReply.ParcelID">
             <summary>The grid-wide unique parcel ID</summary>
+        </member>
+        <member name="M:OpenMetaverse.Messages.Linden.RemoteParcelRequestReply.Serialize">
+            <summary>
+            Serialize the object
+            </summary>
+            <returns>An <see cref="T:OpenMetaverse.StructuredData.OSDMap"/> containing the objects data</returns>
+        </member>
+        <member name="M:OpenMetaverse.Messages.Linden.RemoteParcelRequestReply.Deserialize(OpenMetaverse.StructuredData.OSDMap)">
+            <summary>
+            Deserialize the message
+            </summary>
+            <param name="map">An <see cref="T:OpenMetaverse.StructuredData.OSDMap"/> containing the data</param>
         </member>
         <member name="M:OpenMetaverse.Messages.Linden.RemoteParcelRequestMessage.Serialize">
             <summary>
@@ -10274,18 +10316,6 @@
             </summary>
             <param name="map">An <see cref="T:OpenMetaverse.StructuredData.OSDMap"/> containing the data</param>
         </member>
-        <member name="M:OpenMetaverse.Messages.Linden.ISearchStatRequest.Serialize">
-            <summary>
-            Serialize the object
-            </summary>
-            <returns>An <see cref="T:OpenMetaverse.StructuredData.OSDMap"/> containing the objects data</returns>
-        </member>
-        <member name="M:OpenMetaverse.Messages.Linden.ISearchStatRequest.Deserialize(OpenMetaverse.StructuredData.OSDMap)">
-            <summary>
-            Deserialize the message
-            </summary>
-            <param name="map">An <see cref="T:OpenMetaverse.StructuredData.OSDMap"/> containing the data</param>
-        </member>
         <member name="M:OpenMetaverse.Messages.Linden.SearchStatRequestMessage.Serialize">
             <summary>
             Serialize the object
@@ -10298,26 +10328,14 @@
             </summary>
             <param name="map">An <see cref="T:OpenMetaverse.StructuredData.OSDMap"/> containing the data</param>
         </member>
-        <member name="M:OpenMetaverse.Messages.Linden.IChatSessionRequest.Serialize">
-            <summary>
-            Serialize the object
-            </summary>
-            <returns>An <see cref="T:OpenMetaverse.StructuredData.OSDMap"/> containing the objects data</returns>
-        </member>
-        <member name="M:OpenMetaverse.Messages.Linden.IChatSessionRequest.Deserialize(OpenMetaverse.StructuredData.OSDMap)">
-            <summary>
-            Deserialize the message
-            </summary>
-            <param name="map">An <see cref="T:OpenMetaverse.StructuredData.OSDMap"/> containing the data</param>
+        <member name="F:OpenMetaverse.Messages.Linden.ChatSessionRequestBlock.Method">
+            <summary>A string containing the method used</summary>
         </member>
         <member name="T:OpenMetaverse.Messages.Linden.ChatSessionRequestStartConference">
             <summary>
             A request sent from an agent to the Simulator to begin a new conference.
             Contains a list of Agents to be in the conference
             </summary>
-        </member>
-        <member name="F:OpenMetaverse.Messages.Linden.ChatSessionRequestStartConference.Method">
-            <summary>A string containing the method used, for a new session (non group) this will be "start conference"</summary>
         </member>
         <member name="F:OpenMetaverse.Messages.Linden.ChatSessionRequestStartConference.AgentsBlock">
             <summary>An array containing the <see cref="T:OpenMetaverse.UUID"/> of the agents invited to this conference</summary>
@@ -10344,22 +10362,20 @@
             </summary>
         </member>
         <member name="F:OpenMetaverse.Messages.Linden.ChatSessionRequestMuteUpdate.SessionID">
-            <summary>
-            The Session ID
-            </summary>
+            <summary>The Session ID</summary>
         </member>
-        <member name="F:OpenMetaverse.Messages.Linden.ChatSessionRequestMuteUpdate.Method">
-            <summary>
-            The method used to update session, currently known valid values:
-             mute update
-            </summary>
+        <member name="F:OpenMetaverse.Messages.Linden.ChatSessionRequestMuteUpdate.AgentID">
+            <summary></summary>
         </member>
         <member name="F:OpenMetaverse.Messages.Linden.ChatSessionRequestMuteUpdate.RequestKey">
-            <summary>
-            A list containing Key/Value pairs, known valid values:
+            <summary>A list containing Key/Value pairs, known valid values:
             key: text value: true/false - allow/disallow specified agents ability to use text in session
             key: voice value: true/false - allow/disallow specified agents ability to use voice in session
             </summary>
+            <remarks>"text" or "voice"</remarks>
+        </member>
+        <member name="F:OpenMetaverse.Messages.Linden.ChatSessionRequestMuteUpdate.RequestValue">
+            <summary></summary>
         </member>
         <member name="M:OpenMetaverse.Messages.Linden.ChatSessionRequestMuteUpdate.Serialize">
             <summary>
@@ -10594,11 +10610,6 @@
             Deserialize the message
             </summary>
             <param name="map">An <see cref="T:OpenMetaverse.StructuredData.OSDMap"/> containing the data</param>
-        </member>
-        <member name="T:OpenMetaverse.Messages.CableBeach.RegionInfo">
-            <summary>
-            Holds information about a grid region
-            </summary>
         </member>
         <member name="T:OpenMetaverse.Assets.AssetScriptBinary">
             <summary>
@@ -12205,9 +12216,6 @@
         <member name="F:OpenMetaverse.Simulator.IsEstateManager">
             <summary></summary>
         </member>
-        <member name="F:OpenMetaverse.Simulator.Estate">
-            <summary></summary>
-        </member>
         <member name="F:OpenMetaverse.Simulator.Flags">
             <summary></summary>
         </member>
@@ -12836,6 +12844,19 @@
             <param name="simulator">A reference to the <seealso cref="T:OpenMetaverse.Simulator"/> object where the object resides</param>
             <param name="localID">The objects ID which is local to the simulator the object is in</param>
         </member>
+        <member name="M:OpenMetaverse.ObjectManager.ClickObject(OpenMetaverse.Simulator,System.UInt32,OpenMetaverse.Vector3,OpenMetaverse.Vector3,System.Int32,OpenMetaverse.Vector3,OpenMetaverse.Vector3,OpenMetaverse.Vector3)">
+            <summary>
+            Perform a click action on an object
+            </summary>
+            <param name="simulator">A reference to the <seealso cref="T:OpenMetaverse.Simulator"/> object where the object resides</param>
+            <param name="localID">The objects ID which is local to the simulator the object is in</param>
+            <param name="uvCoord"></param>
+            <param name="stCoord"></param>
+            <param name="faceIndex"></param>
+            <param name="position"></param>
+            <param name="normal"></param>
+            <param name="binormal"></param>
+        </member>
         <member name="M:OpenMetaverse.ObjectManager.AddPrim(OpenMetaverse.Simulator,OpenMetaverse.Primitive.ConstructionData,OpenMetaverse.UUID,OpenMetaverse.Vector3,OpenMetaverse.Vector3,OpenMetaverse.Quaternion)">
             <summary>
             Create, or "rez" a new prim object in a simulator
@@ -13240,11 +13261,23 @@
             storing objects.
             </remarks>
         </member>
+        <member name="E:OpenMetaverse.ObjectManager.OnObjectTerseUpdate">
+            <summary>
+            This event will be raised when a terse object update packet is 
+            received, containing the updated position, rotation, and 
+            movement-related vectors
+            </summary>
+        </member>
         <member name="E:OpenMetaverse.ObjectManager.OnObjectUpdated">
             <summary>
             This event will be raised when a terse object update packet is 
             received, containing the updated position, rotation, and 
             movement-related vectors
+            </summary>
+        </member>
+        <member name="E:OpenMetaverse.ObjectManager.OnObjectDataBlockUpdate">
+            <summary>
+            Triggers the OnObjectDataBlockUpdate event.
             </summary>
         </member>
         <member name="E:OpenMetaverse.ObjectManager.OnAvatarSitChanged">
@@ -13262,6 +13295,12 @@
         <member name="E:OpenMetaverse.ObjectManager.OnObjectProperties">
             <summary>
             This event will be raised when an objects properties are received
+            from the simulator
+            </summary>
+        </member>
+        <member name="E:OpenMetaverse.ObjectManager.OnObjectPropertiesUpdated">
+            <summary>
+            This event will be raised when an objects properties are updated
             from the simulator
             </summary>
         </member>
@@ -13303,6 +13342,14 @@
             <param name="simulator"></param>
             <param name="props"></param>
         </member>
+        <member name="T:OpenMetaverse.ObjectManager.ObjectPropertiesUpdatedCallback">
+            <summary>
+            
+            </summary>
+            <param name="simulator"></param>
+            <param name="prim"></param>
+            <param name="props"></param>
+        </member>
         <member name="T:OpenMetaverse.ObjectManager.ObjectPropertiesFamilyCallback">
             <summary>
             
@@ -13331,16 +13378,37 @@
         </member>
         <member name="T:OpenMetaverse.ObjectManager.ObjectUpdatedCallback">
             <summary>
-            Called whenever an object disappears
+            Called whenever an object terse update is received
             </summary>
             <param name="simulator"></param>
             <param name="update"></param>
             <param name="regionHandle"></param>
             <param name="timeDilation"></param>
         </member>
+        <member name="T:OpenMetaverse.ObjectManager.ObjectUpdatedTerseCallback">
+            <summary>
+            Called whenever an object terse update is received
+            This is different than the above in that the update to the prim has not happened yet
+            </summary>
+            <param name="simulator"></param>
+            <param name="prim"></param>
+            <param name="update"></param>
+        </member>
+        <member name="T:OpenMetaverse.ObjectManager.ObjectDataBlockUpdateCallback">
+            <summary>
+            Called whenever an major object update is received
+            This is when major changes are happening to the contructionData changing the shape of an object
+            </summary>
+            <param name="simulator"></param>
+            <param name="prim"></param>
+            <param name="constructionData"></param>
+            <param name="block"></param>
+            <param name="update"></param>
+            <param name="nameValues"></param>
+        </member>
         <member name="T:OpenMetaverse.ObjectManager.KillObjectCallback">
             <summary>
-            
+            Called whenever an object disappears
             </summary>
             <param name="simulator"></param>
             <param name="objectID"></param>
@@ -13395,7 +13463,6 @@
             <summary>
             De-serialization handler for the InventoryNode Class
             </summary>
-            <returns></returns>
         </member>
         <member name="M:OpenMetaverse.InventoryNode.ToString">
             <summary>
@@ -13414,6 +13481,12 @@
         </member>
         <member name="P:OpenMetaverse.InventoryNode.Nodes">
             <summary></summary>
+        </member>
+        <member name="P:OpenMetaverse.InventoryNode.NeedsUpdate">
+            <summary>
+            For inventory folder nodes specifies weather the folder needs to be
+            refreshed from the server
+            </summary>
         </member>
         <member name="T:OpenMetaverse.InventoryException">
             <summary>
@@ -13464,17 +13537,18 @@
             <param name="uuid">The UUID to check.</param>
             <returns>true if inventory contains uuid, false otherwise</returns>
         </member>
-        <member name="M:OpenMetaverse.Inventory.cache_inventory_to_disk(System.String)">
+        <member name="M:OpenMetaverse.Inventory.SaveToDisk(System.String)">
             <summary>
-            Save the current inventory structure to a cache file
+            Saves the current inventory structure to a cache file
             </summary>
             <param name="filename">Name of the cache file to save to</param>
         </member>
-        <member name="M:OpenMetaverse.Inventory.read_inventory_cache(System.String)">
+        <member name="M:OpenMetaverse.Inventory.RestoreFromDisk(System.String)">
             <summary>
             Loads in inventory cache file into the inventory structure. Note only valid to call after login has been successful.
             </summary>
             <param name="filename">Name of the cache file to load</param>
+            <returns>The number of inventory items sucessfully reconstructed into the inventory node tree</returns>
         </member>
         <member name="E:OpenMetaverse.Inventory.OnInventoryObjectUpdated">
             <summary>
@@ -14249,12 +14323,6 @@
             <remarks>Subscribe to <code>OnGroupLeft</code> event to receive confirmation</remarks>
             <param name="groupID">The group to leave</param>
         </member>
-        <member name="M:OpenMetaverse.GroupManager.setUserGroupFlags(OpenMetaverse.UUID,System.Boolean,System.Boolean)">
-            <summary>Set preferences for recieving group notices and listing group in prfile</summary>
-            <param name="groupID">The group to modify user preference on</param>
-            <param name="rcv_notices">Weather to recieve group notices from this group</param>
-            <param name="show_in_profile">Weather to list this group in your profile</param>        
-        </member>
         <member name="M:OpenMetaverse.GroupManager.EjectGroupMemberReplyHandler(OpenMetaverse.Packets.Packet,OpenMetaverse.Simulator)">
             <summary>
             Packet Handler for EjectGroupMemberReply, fired when an avatar is ejected from 
@@ -14345,8 +14413,11 @@
             <summary>
             Callback for the member list of a group
             </summary>
+            <param name="requestID"><seealso cref="T:OpenMetaverse.UUID"/> returned by RequestGroupMembers</param>
+            <param name="groupID"><seealso cref="T:OpenMetaverse.UUID"/> of the group</param>
+            <param name="memberCount">Total number of members in the group</param>
             <param name="members">A dictionary containing the members of a group
-            where the Key is the group <seealso cref="T:OpenMetaverse.UUID"/>, and the values are the members</param>
+            where key is <seealso cref="T:OpenMetaverse.UUID"/> and value is <seealso cref="T:OpenMetaverse.GroupMember"/> struct</param>
         </member>
         <member name="T:OpenMetaverse.GroupManager.GroupRolesCallback">
             <summary>

@@ -422,8 +422,11 @@ namespace omvviewerlight
             return name_poll;
         }
 
-		void onGroupMembers(Dictionary <UUID,GroupMember> members)		
+		void onGroupMembers(UUID requestID, UUID groupID, int memberCount,Dictionary <UUID,GroupMember> members)		
 		{
+
+            if (request_members != requestID)
+                return;
 
             Console.WriteLine("All group members recieved");
             name_poll = false;
