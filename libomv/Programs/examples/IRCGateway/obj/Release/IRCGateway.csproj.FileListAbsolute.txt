@@ -1,3 +1,0 @@
-C:\omvviewer\trunk\bin\IRCGateway.exe
-C:\omvviewer\trunk\Programs\examples\IRCGateway\obj\Release\ResolveAssemblyReference.cache
-C:\omvviewer\trunk\Programs\examples\IRCGateway\obj\Release\IRCGateway.exe

@@ -1,5 +1,0 @@
-C:\omvviewer\trunk\bin\SimExport.exe
-C:\omvviewer\trunk\bin\SimExport.pdb
-C:\omvviewer\trunk\Programs\SimExport\obj\Debug\ResolveAssemblyReference.cache
-C:\omvviewer\trunk\Programs\SimExport\obj\Debug\SimExport.exe
-C:\omvviewer\trunk\Programs\SimExport\obj\Debug\SimExport.pdb

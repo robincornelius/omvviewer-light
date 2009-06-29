@@ -1,5 +1,0 @@
-C:\omvviewer\trunk\bin\Simian.Tests.dll
-C:\omvviewer\trunk\bin\Simian.Tests.pdb
-C:\omvviewer\trunk\Programs\Simian.Tests\obj\Debug\ResolveAssemblyReference.cache
-C:\omvviewer\trunk\Programs\Simian.Tests\obj\Debug\Simian.Tests.dll
-C:\omvviewer\trunk\Programs\Simian.Tests\obj\Debug\Simian.Tests.pdb

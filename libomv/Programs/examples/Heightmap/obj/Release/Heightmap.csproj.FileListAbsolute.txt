@@ -1,5 +1,0 @@
-C:\omvviewer\trunk\bin\Heightmap.exe
-C:\omvviewer\trunk\Programs\examples\Heightmap\obj\Release\ResolveAssemblyReference.cache
-C:\omvviewer\trunk\Programs\examples\Heightmap\obj\Release\Heightmap.frmHeightmap.resources
-C:\omvviewer\trunk\Programs\examples\Heightmap\obj\Release\Heightmap.csproj.GenerateResource.Cache
-C:\omvviewer\trunk\Programs\examples\Heightmap\obj\Release\Heightmap.exe

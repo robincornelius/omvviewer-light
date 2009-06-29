@@ -1,3 +1,0 @@
-C:\omvviewer\trunk\bin\SimExport.exe
-C:\omvviewer\trunk\Programs\SimExport\obj\Release\ResolveAssemblyReference.cache
-C:\omvviewer\trunk\Programs\SimExport\obj\Release\SimExport.exe

@@ -1,6 +1,0 @@
-C:\omvviewer\trunk\bin\AvatarPreview.exe
-C:\omvviewer\trunk\Programs\AvatarPreview\obj\Release\ResolveAssemblyReference.cache
-C:\omvviewer\trunk\Programs\AvatarPreview\obj\Release\AvatarPreview.frmAvatar.resources
-C:\omvviewer\trunk\Programs\AvatarPreview\obj\Release\AvatarPreview.Properties.Resources.resources
-C:\omvviewer\trunk\Programs\AvatarPreview\obj\Release\AvatarPreview.csproj.GenerateResource.Cache
-C:\omvviewer\trunk\Programs\AvatarPreview\obj\Release\AvatarPreview.exe

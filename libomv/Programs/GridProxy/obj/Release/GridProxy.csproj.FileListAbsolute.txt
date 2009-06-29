@@ -1,3 +1,0 @@
-C:\omvviewer\trunk\bin\GridProxy.dll
-C:\omvviewer\trunk\Programs\GridProxy\obj\Release\ResolveAssemblyReference.cache
-C:\omvviewer\trunk\Programs\GridProxy\obj\Release\GridProxy.dll

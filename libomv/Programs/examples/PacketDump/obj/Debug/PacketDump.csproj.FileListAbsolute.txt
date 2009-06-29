@@ -1,5 +1,0 @@
-C:\omvviewer\trunk\bin\PacketDump.exe
-C:\omvviewer\trunk\bin\PacketDump.pdb
-C:\omvviewer\trunk\Programs\examples\PacketDump\obj\Debug\ResolveAssemblyReference.cache
-C:\omvviewer\trunk\Programs\examples\PacketDump\obj\Debug\PacketDump.exe
-C:\omvviewer\trunk\Programs\examples\PacketDump\obj\Debug\PacketDump.pdb

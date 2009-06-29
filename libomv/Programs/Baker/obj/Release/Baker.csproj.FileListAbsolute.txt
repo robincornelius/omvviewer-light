@@ -1,5 +1,0 @@
-C:\omvviewer\trunk\bin\Baker.exe
-C:\omvviewer\trunk\Programs\Baker\obj\Release\ResolveAssemblyReference.cache
-C:\omvviewer\trunk\Programs\Baker\obj\Release\Baker.frmBaker.resources
-C:\omvviewer\trunk\Programs\Baker\obj\Release\Baker.csproj.GenerateResource.Cache
-C:\omvviewer\trunk\Programs\Baker\obj\Release\Baker.exe

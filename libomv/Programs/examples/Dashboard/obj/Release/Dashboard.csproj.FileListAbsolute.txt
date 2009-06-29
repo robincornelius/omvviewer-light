@@ -1,5 +1,0 @@
-C:\omvviewer\trunk\bin\Dashboard.exe
-C:\omvviewer\trunk\Programs\examples\Dashboard\obj\Release\ResolveAssemblyReference.cache
-C:\omvviewer\trunk\Programs\examples\Dashboard\obj\Release\Dashboard.Dashboard.resources
-C:\omvviewer\trunk\Programs\examples\Dashboard\obj\Release\Dashboard.csproj.GenerateResource.Cache
-C:\omvviewer\trunk\Programs\examples\Dashboard\obj\Release\Dashboard.exe

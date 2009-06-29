@@ -1,4 +1,0 @@
-C:\omvviewer\trunk\bin\OpenMetaverse.GUI.dll
-C:\omvviewer\trunk\bin\OpenMetaverse.GUI.XML
-C:\omvviewer\trunk\OpenMetaverse.GUI\obj\Release\ResolveAssemblyReference.cache
-C:\omvviewer\trunk\OpenMetaverse.GUI\obj\Release\OpenMetaverse.GUI.dll
