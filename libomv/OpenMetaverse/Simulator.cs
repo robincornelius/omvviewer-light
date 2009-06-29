@@ -287,8 +287,6 @@ namespace OpenMetaverse
         /// <summary></summary>
         public bool IsEstateManager;
         /// <summary></summary>
-        public EstateTools Estate;
-        /// <summary></summary>
         public RegionFlags Flags;
         /// <summary></summary>
         public SimAccess Access;
@@ -456,7 +454,6 @@ namespace OpenMetaverse
             Client = client;
 
             Handle = handle;
-            Estate = new EstateTools(Client);
             Network = Client.Network;
             PacketArchive = new IncomingPacketIDCollection(Settings.PACKET_ARCHIVE_SIZE);
             InBytes = new Queue<long>(Client.Settings.STATS_QUEUE_SIZE);
@@ -865,8 +862,8 @@ namespace OpenMetaverse
             // Check if this packet came from the server we expected it to come from
             if (!remoteEndPoint.Address.Equals(((IPEndPoint)buffer.RemoteEndPoint).Address))
             {
-               // Logger.Log("Received " + buffer.DataLength + " bytes of data from unrecognized source " +
-                //    ((IPEndPoint)buffer.RemoteEndPoint).ToString(), Helpers.LogLevel.Warning, Client);
+                Logger.Log("Received " + buffer.DataLength + " bytes of data from unrecognized source " +
+                    ((IPEndPoint)buffer.RemoteEndPoint).ToString(), Helpers.LogLevel.Warning, Client);
                 return;
             }
 
@@ -1073,7 +1070,9 @@ namespace OpenMetaverse
             ResendUnacked();
 
             // Start the ACK handling functions again after NETWORK_TICK_INTERVAL milliseconds
-            AckTimer.Change(Settings.NETWORK_TICK_INTERVAL, Timeout.Infinite);
+            Timer timer = AckTimer;
+            if (timer != null)
+                timer.Change(Settings.NETWORK_TICK_INTERVAL, Timeout.Infinite);
         }
 
         private void StatsTimer_Elapsed(object obj)

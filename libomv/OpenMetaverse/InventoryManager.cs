@@ -745,8 +745,6 @@ namespace OpenMetaverse
             info.AddValue("PreferredType", PreferredType, typeof(AssetType));
             info.AddValue("Version", Version);
             info.AddValue("DescendentCount", DescendentCount);
-            Console.WriteLine("Saved folder " + this.Name + " version " + Version.ToString());
-
         }
 
         /// <summary>
@@ -757,9 +755,7 @@ namespace OpenMetaverse
             PreferredType = (AssetType)info.GetValue("PreferredType", typeof(AssetType));
             Version=(int)info.GetValue("Version",typeof(int));
             DescendentCount = (int)info.GetValue("DescendentCount", typeof(int));
-            Console.WriteLine("Loaded folder " + this.Name + " version " + Version.ToString());
         }
-
 
         /// <summary>
         /// 
@@ -3292,6 +3288,7 @@ namespace OpenMetaverse
             // FIXME: reply.AgentData.Descendants is not parentFolder.DescendentCount if we didn't 
             // request items and folders
             parentFolder.DescendentCount = reply.AgentData.Descendents;
+            _Store.GetNodeFor(reply.AgentData.FolderID).NeedsUpdate = false;
 
             #region FindObjectsByPath Handling
 

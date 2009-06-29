@@ -169,7 +169,7 @@ namespace OpenMetaverse
         /// <param name="message">The message to log at the DEBUG level to the
         /// current logging engine</param>
         /// <param name="client">Instance of the client</param>
-        // [System.Diagnostics.Conditional("DEBUG")]
+        [System.Diagnostics.Conditional("DEBUG")]
         public static void DebugLog(object message, GridClient client)
         {
             if (Settings.LOG_LEVEL == Helpers.LogLevel.Debug)

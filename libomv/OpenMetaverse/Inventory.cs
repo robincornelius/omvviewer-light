@@ -311,29 +311,37 @@ namespace OpenMetaverse
         }
 
         /// <summary>
-        /// Save the current inventory structure to a cache file
+        /// Saves the current inventory structure to a cache file
         /// </summary>
         /// <param name="filename">Name of the cache file to save to</param>
-        public void cache_inventory_to_disk(string filename)
+        public void SaveToDisk(string filename)
         {
-            Stream stream = File.Open(filename, FileMode.Create);
-            BinaryFormatter bformatter = new BinaryFormatter();
-            lock (Items)
-            {
-                Logger.Log("Caching " + Items.Count.ToString() + " inventory items to " + filename, Helpers.LogLevel.Info);
-                foreach (KeyValuePair<UUID, InventoryNode> kvp in Items)
+	        try
+	        {
+                Stream stream = File.Open(filename, FileMode.Create);
+                BinaryFormatter bformatter = new BinaryFormatter();
+                lock (Items)
                 {
-                    bformatter.Serialize(stream, kvp.Value);
+                    Logger.Log("Caching " + Items.Count.ToString() + " inventory items to " + filename, Helpers.LogLevel.Info);
+                    foreach (KeyValuePair<UUID, InventoryNode> kvp in Items)
+                    {
+                        bformatter.Serialize(stream, kvp.Value);
+                    }
                 }
+                stream.Close();
+	        }
+            catch (Exception e)
+            {
+                Logger.Log("Error saving inventory cache to disk :"+e.Message,Helpers.LogLevel.Error);
             }
-            stream.Close();
         }
 
         /// <summary>
         /// Loads in inventory cache file into the inventory structure. Note only valid to call after login has been successful.
         /// </summary>
         /// <param name="filename">Name of the cache file to load</param>
-        public int read_inventory_cache(string filename)
+        /// <returns>The number of inventory items sucessfully reconstructed into the inventory node tree</returns>
+        public int RestoreFromDisk(string filename)
         {
             List<InventoryNode> nodes = new List<InventoryNode>();
             int item_count = 0;
@@ -358,22 +366,18 @@ namespace OpenMetaverse
             catch (Exception e)
             {
                 Logger.Log("Error accessing inventory cache file :" + e.Message, Helpers.LogLevel.Error);
-                //Bleh we seem to bump the end
+                return -1;
             }
 
             Logger.Log("Read " + item_count.ToString() + " items from inventory cache file", Helpers.LogLevel.Info);
 
             item_count = 0;
-
-            List<InventoryNode> del_nodes = new List<InventoryNode>();
-
-            List<UUID> dirty_nodes = new List<UUID>();
-
+            List<InventoryNode> del_nodes = new List<InventoryNode>(); //nodes that we have processed and will delete
 
             // Because we could get child nodes before parents we must itterate around and only add nodes who have
             // a parent already in the list because we must update both child and parent to link together
+            // But sometimes we have seen orphin nodes due to bad/incomplete data when caching so we have an emergency abort route
             int stuck = 0;
-
             
             while (nodes.Count != 0 && stuck<5)
             {
@@ -398,7 +402,7 @@ namespace OpenMetaverse
                             if (cache_folder.Version != server_folder.Version)
                             {
                                 Logger.DebugLog("Inventory Cache/Server version mismatch on "+node.Data.Name+" "+cache_folder.Version.ToString()+" vs "+server_folder.Version.ToString());
-                                dirty_nodes.Add(cache_folder.UUID);
+                                pnode.NeedsUpdate = true;
                             }
                             del_nodes.Add(node);
                         }
@@ -411,14 +415,10 @@ namespace OpenMetaverse
                             //nodes other than the root are populated.
                             if (!Items.ContainsKey(node.Data.UUID))
                             {
-                                if(!dirty_nodes.Contains(node.ParentID))
-                                {
-                                   // Console.WriteLine("Adding " + pnode.Data.Name + "/" + node.Data.Name);
-                                    Items.Add(node.Data.UUID, node);
-                                    node.Parent = pnode; //Update this node with its parent
-                                    pnode.Nodes.Add(node.Data.UUID, node); // Add to the parents child list
-                                    item_count++;
-                                }
+                                Items.Add(node.Data.UUID, node);
+                                node.Parent = pnode; //Update this node with its parent
+                                pnode.Nodes.Add(node.Data.UUID, node); // Add to the parents child list
+                                item_count++;
                             }
                         }
 
@@ -437,8 +437,6 @@ namespace OpenMetaverse
 
                 del_nodes.Clear();
             }
-
-            dirty_nodes.Clear();
 
             Logger.Log("Reassembled " + item_count.ToString() + " items from inventory cache file", Helpers.LogLevel.Info);
             return item_count;

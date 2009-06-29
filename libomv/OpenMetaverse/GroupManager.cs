@@ -447,9 +447,12 @@ namespace OpenMetaverse
         /// <summary>
         /// Callback for the member list of a group
         /// </summary>
+        /// <param name="requestID"><seealso cref="UUID"/> returned by RequestGroupMembers</param>
+        /// <param name="groupID"><seealso cref="UUID"/> of the group</param>
+        /// <param name="memberCount">Total number of members in the group</param>
         /// <param name="members">A dictionary containing the members of a group
-        /// where the Key is the group <seealso cref="UUID"/>, and the values are the members</param>
-        public delegate void GroupMembersCallback(Dictionary<UUID, GroupMember> members);
+        /// where key is <seealso cref="UUID"/> and value is <seealso cref="GroupMember"/> struct</param>
+        public delegate void GroupMembersCallback(UUID requestID, UUID groupID, int memberCount, Dictionary<UUID, GroupMember> members);
 
         /// <summary>
         /// Callback for the role list of a group
@@ -1124,21 +1127,6 @@ namespace OpenMetaverse
             Client.Network.SendPacket(p);
         }
 
-        /// <summary>Set preferences for recieving group notices and listing group in prfile</summary>
-        /// <param name="groupID">The group to modify user preference on</param>
-        /// <param name="rcv_notices">Weather to recieve group notices from this group</param>
-        /// <param name="show_in_profile">Weather to list this group in your profile</param>        
-        public void setUserGroupFlags(UUID groupID, bool rcv_notices, bool show_in_profile)
-        {
-            SetGroupAcceptNoticesPacket p = new SetGroupAcceptNoticesPacket();
-            p.AgentData.AgentID = Client.Self.AgentID;
-            p.AgentData.SessionID = Client.Self.SessionID;
-            p.Data.GroupID = groupID;
-            p.Data.AcceptNotices = rcv_notices;
-            p.NewData.ListInProfile = show_in_profile;
-            Client.Network.SendPacket(p);
-        }
-
         #region Packet Handlers
 
         private void AgentGroupDataUpdateHandler(string capsKey, IMessage message, Simulator simulator)
@@ -1341,9 +1329,9 @@ namespace OpenMetaverse
             }
 
             // Check if we've received all the group members that are showing up
-            if (OnGroupMembers != null && groupMemberCache != null && groupMemberCache.Count >= members.GroupData.MemberCount)
+            if (OnGroupMembers != null && groupMemberCache != null)
             {
-                try { OnGroupMembers(groupMemberCache); }
+                try { OnGroupMembers(members.GroupData.RequestID, members.GroupData.GroupID, members.GroupData.MemberCount, groupMemberCache); }
                 catch (Exception e) { Logger.Log(e.Message, Helpers.LogLevel.Error, Client, e); }
             }
         }

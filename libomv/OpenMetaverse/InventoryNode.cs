@@ -38,6 +38,7 @@ namespace OpenMetaverse
         private InventoryNode parent;
         private UUID parentID; //used for de-seralization 
         private InventoryNodeDictionary nodes;
+        private bool needsUpdate = false;
 
         /// <summary></summary>
         public InventoryBase Data
@@ -70,6 +71,16 @@ namespace OpenMetaverse
                 return nodes;
             }
             set { nodes = value; }
+        }
+
+        /// <summary>
+        /// For inventory folder nodes specifies weather the folder needs to be
+        /// refreshed from the server
+        /// </summary>
+        public bool NeedsUpdate
+        {
+            get { return needsUpdate; }
+            set { needsUpdate = value; }
         }
 
         /// <summary>
@@ -121,12 +132,12 @@ namespace OpenMetaverse
         /// <summary>
         /// De-serialization handler for the InventoryNode Class
         /// </summary>
-        /// <returns></returns>
         public InventoryNode(SerializationInfo info, StreamingContext ctxt)
         {
             parentID = (UUID)info.GetValue("Parent", typeof(UUID));
             Type type = (Type)info.GetValue("Type", typeof(Type));
          
+	    // Construct a new inventory object based on the Type stored in Type
             System.Reflection.ConstructorInfo ctr = type.GetConstructor(new Type[] {typeof(SerializationInfo),typeof(StreamingContext)});
             data = (InventoryBase) ctr.Invoke(new Object[] { info, ctxt });
         }
