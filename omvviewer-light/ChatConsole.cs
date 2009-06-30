@@ -588,10 +588,10 @@ namespace omvviewerlight
 
             redtab();
 			
-			if(MainClass.appsettings.notify_IM && im_target==UUID.Zero)
+			if(MainClass.appsettings.notify_IM && this.current_chat_type==chat_type.CHAT_TYPE_IM)
 				windownotify();
 
-			if(MainClass.appsettings.notify_group_IM && im_target!=UUID.Zero)
+            if (MainClass.appsettings.notify_group_IM && this.current_chat_type == chat_type.CHAT_TYPE_GROUP_IM)
 				windownotify();
 
 			
@@ -621,6 +621,7 @@ namespace omvviewerlight
 			
 			if((MainClass.appsettings.notify_chat && sourcetype==ChatSourceType.Agent) || sourcetype==ChatSourceType.System)
 				windownotify();
+
 			if(MainClass.appsettings.notify_object_chat && sourcetype==ChatSourceType.Object)
 				windownotify();
 							
