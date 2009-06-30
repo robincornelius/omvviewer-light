@@ -63,12 +63,12 @@ namespace omvviewerlight
             treeview1.AppendColumn(groupColumn);
 		
             treeview1.Model=store;
-	
-			//REFACTOR ME, MAINCLASS IS DUPLICATING
-			MainClass.client.Groups.OnCurrentGroups += new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
-			MainClass.client.Groups.OnGroupJoined += new OpenMetaverse.GroupManager.GroupJoinedCallback(onGroupJoined);
-    		MainClass.client.Groups.OnGroupLeft += new OpenMetaverse.GroupManager.GroupLeftCallback(onGroupLeft);
 
+            MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onRegister();
+
+	
             if (MainClass.client != null)
             {
                 if (MainClass.client.Network.LoginStatusCode == OpenMetaverse.LoginStatus.Success)
@@ -77,6 +77,24 @@ namespace omvviewerlight
                }
             }	
 		}
+
+        void MainClass_onDeregister()
+        {
+            //REFACTOR ME, MAINCLASS IS DUPLICATING
+            MainClass.client.Groups.OnCurrentGroups -= new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
+            MainClass.client.Groups.OnGroupJoined -= new OpenMetaverse.GroupManager.GroupJoinedCallback(onGroupJoined);
+            MainClass.client.Groups.OnGroupLeft -= new OpenMetaverse.GroupManager.GroupLeftCallback(onGroupLeft);
+
+        }
+
+        void MainClass_onRegister()
+        {
+            //REFACTOR ME, MAINCLASS IS DUPLICATING
+            MainClass.client.Groups.OnCurrentGroups += new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
+            MainClass.client.Groups.OnGroupJoined += new OpenMetaverse.GroupManager.GroupJoinedCallback(onGroupJoined);
+            MainClass.client.Groups.OnGroupLeft += new OpenMetaverse.GroupManager.GroupLeftCallback(onGroupLeft);
+
+        }
 
 		void onGroupJoined(UUID group,bool success)
 		{

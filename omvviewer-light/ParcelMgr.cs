@@ -76,13 +76,12 @@ namespace omvviewerlight
 		{
 
 			this.Build();
-            MainClass.client.Parcels.OnParcelInfo += new OpenMetaverse.ParcelManager.ParcelInfoCallback(onParcelInfo);
-			MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-            MainClass.client.Parcels.OnSimParcelsDownloaded += new OpenMetaverse.ParcelManager.SimParcelsDownloaded(onParcelsDownloaded);
-            MainClass.client.Parcels.OnParcelProperties += new OpenMetaverse.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
-            MainClass.client.Parcels.OnPrimOwnersListReply += new OpenMetaverse.ParcelManager.ParcelObjectOwnersListReplyCallback(onParcelObjectOwners);
-            MainClass.client.Parcels.OnParcelDwell += new OpenMetaverse.ParcelManager.ParcelDwellCallback(onDwell);
-			
+
+            MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onRegister();
+
+     
 			parcels_store=new Gtk.TreeStore (typeof(Gdk.Pixbuf),typeof(string),typeof(string),typeof(string),typeof(string),typeof(Parcel),typeof(int));
 			parcels_access=new Gtk.TreeStore(typeof(string),typeof(UUID));
 			parcels_ban=new Gtk.TreeStore(typeof(string),typeof(UUID));
@@ -105,8 +104,7 @@ namespace omvviewerlight
 			this.treeview_objectlist.AppendColumn("Prims",new Gtk.CellRendererText(),"text",1);
 			this.treeview_objectlist.Model=this.parcel_prim_owners;
 			
-			MainClass.client.Settings.ALWAYS_REQUEST_PARCEL_ACL=true;
-			MainClass.client.Settings.ALWAYS_REQUEST_PARCEL_DWELL=true;
+			
 			
 			this.label_parcelgroup.Text="";
 			this.label_parcelowner.Text="";
@@ -144,6 +142,29 @@ namespace omvviewerlight
             }	
 			
 		}
+
+        void MainClass_onDeregister()
+        {
+            MainClass.client.Parcels.OnParcelInfo -= new OpenMetaverse.ParcelManager.ParcelInfoCallback(onParcelInfo);
+            MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
+            MainClass.client.Parcels.OnSimParcelsDownloaded -= new OpenMetaverse.ParcelManager.SimParcelsDownloaded(onParcelsDownloaded);
+            MainClass.client.Parcels.OnParcelProperties -= new OpenMetaverse.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
+            MainClass.client.Parcels.OnPrimOwnersListReply -= new OpenMetaverse.ParcelManager.ParcelObjectOwnersListReplyCallback(onParcelObjectOwners);
+            MainClass.client.Parcels.OnParcelDwell -= new OpenMetaverse.ParcelManager.ParcelDwellCallback(onDwell);
+        }
+
+        void MainClass_onRegister()
+        {
+            MainClass.client.Parcels.OnParcelInfo += new OpenMetaverse.ParcelManager.ParcelInfoCallback(onParcelInfo);
+            MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
+            MainClass.client.Parcels.OnSimParcelsDownloaded += new OpenMetaverse.ParcelManager.SimParcelsDownloaded(onParcelsDownloaded);
+            MainClass.client.Parcels.OnParcelProperties += new OpenMetaverse.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
+            MainClass.client.Parcels.OnPrimOwnersListReply += new OpenMetaverse.ParcelManager.ParcelObjectOwnersListReplyCallback(onParcelObjectOwners);
+            MainClass.client.Parcels.OnParcelDwell += new OpenMetaverse.ParcelManager.ParcelDwellCallback(onDwell);
+            MainClass.client.Settings.ALWAYS_REQUEST_PARCEL_ACL = true;
+            MainClass.client.Settings.ALWAYS_REQUEST_PARCEL_DWELL = true;
+
+        }
 			
 		void onDwell (UUID parcelid,int localid,float dwell)
 		{

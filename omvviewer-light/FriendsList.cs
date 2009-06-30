@@ -105,15 +105,33 @@ namespace omvviewerlight
 			this.img_edit_theirs=MainClass.GetResource("ff_edit_theirs.png");
 			this.img_map_me=MainClass.GetResource("ff_visible_map.png");
 			this.img_see_my_status=MainClass.GetResource("ff_visible_online.png");
-			
-			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);		
-			MainClass.client.Friends.OnFriendOnline += new OpenMetaverse.FriendsManager.FriendOnlineEvent(onFriendOnline);
-			MainClass.client.Friends.OnFriendOffline += new OpenMetaverse.FriendsManager.FriendOfflineEvent(onFriendOffline);
+
+            MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onRegister();
+
+            treeview_friends.CursorChanged += new EventHandler(treeview_friends_CursorChanged);
+        }
+
+        void MainClass_onDeregister()
+        {
+            MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+            MainClass.client.Friends.OnFriendOnline -= new OpenMetaverse.FriendsManager.FriendOnlineEvent(onFriendOnline);
+            MainClass.client.Friends.OnFriendOffline -= new OpenMetaverse.FriendsManager.FriendOfflineEvent(onFriendOffline);
+            MainClass.client.Friends.OnFriendshipResponse -= new FriendsManager.FriendshipResponseEvent(Friends_OnFriendshipResponse);
+            MainClass.client.Friends.OnFriendshipTerminated -= new FriendsManager.FriendshipTerminatedEvent(Friends_OnFriendshipTerminated);
+            MainClass.client.Friends.OnFriendRights -= new FriendsManager.FriendRightsEvent(Friends_OnFriendRights);
+
+        }
+
+        void MainClass_onRegister()
+        {
+            MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+            MainClass.client.Friends.OnFriendOnline += new OpenMetaverse.FriendsManager.FriendOnlineEvent(onFriendOnline);
+            MainClass.client.Friends.OnFriendOffline += new OpenMetaverse.FriendsManager.FriendOfflineEvent(onFriendOffline);
             MainClass.client.Friends.OnFriendshipResponse += new FriendsManager.FriendshipResponseEvent(Friends_OnFriendshipResponse);
             MainClass.client.Friends.OnFriendshipTerminated += new FriendsManager.FriendshipTerminatedEvent(Friends_OnFriendshipTerminated);
             MainClass.client.Friends.OnFriendRights += new FriendsManager.FriendRightsEvent(Friends_OnFriendRights);
-
-            treeview_friends.CursorChanged += new EventHandler(treeview_friends_CursorChanged);
         }
 
         void treeview_friends_CursorChanged(object sender, EventArgs e)

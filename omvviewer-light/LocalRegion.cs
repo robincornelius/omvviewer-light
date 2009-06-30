@@ -32,11 +32,12 @@ namespace omvviewerlight
 		public LocalRegion()
 		{
 
-            MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-            MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
             
 			this.Build();
-			
+
+            MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onRegister();
 		
 			
             maps[0] = this.map1;
@@ -77,7 +78,19 @@ namespace omvviewerlight
             }	
 		}
 
-      
+        void MainClass_onDeregister()
+        {
+            MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
+            MainClass.client.Grid.OnGridRegion -= new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
+ 
+        }
+
+        void MainClass_onRegister()
+        {
+            MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
+            MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
+ 
+        }
 		
 		void onResize(object o,SizeAllocatedArgs args)
 		{

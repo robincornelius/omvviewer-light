@@ -56,6 +56,47 @@ namespace omvviewerlight
 		public static AVNameCache name_cache;
 		public static MySettings appsettings;
 
+        public delegate void register();
+        public static event register onRegister;
+
+        public delegate void deregister();
+        public static event deregister onDeregister;
+
+        static void doregister()
+        {
+            if (onRegister != null)
+                onRegister();
+        }
+
+        static void doderegister()
+        {
+            if (onDeregister != null)
+                onDeregister();
+        }
+
+        public static void getMeANewClient()
+        {
+            if(client!=null)
+                doderegister();
+            client=new GridClient();
+
+            client.Settings.USE_TEXTURE_CACHE = true;
+            // client.Settings.USE_LLSD_LOGIN = true;
+
+            string res_dir = System.AppDomain.CurrentDomain.BaseDirectory + System.IO.Path.DirectorySeparatorChar + "openmetaverse_data";
+
+            OpenMetaverse.Settings.RESOURCE_DIR = res_dir;
+
+            Console.WriteLine("Setting resource dir to " + res_dir);
+
+            string cache = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + System.IO.Path.DirectorySeparatorChar + "omvviewer-light" + System.IO.Path.DirectorySeparatorChar + "omvviewer_cache";
+
+            Console.WriteLine("Setting texture cache to :" + cache);
+            client.Settings.TEXTURE_CACHE_DIR = cache;
+
+            doregister();
+        }
+
 
         static bool monodevelop = false;
 
@@ -124,23 +165,9 @@ namespace omvviewerlight
                 string check = resNames[0];
                 if (check.Contains("omvviewerlight.art."))
                     monodevelop = true;
-				
-               
-        client = new GridClient();
-		client.Settings.USE_TEXTURE_CACHE = true;
-        // client.Settings.USE_LLSD_LOGIN = true;
 
-		string res_dir=System.AppDomain.CurrentDomain.BaseDirectory+System.IO.Path.DirectorySeparatorChar +"openmetaverse_data";
+                getMeANewClient();
 
-		OpenMetaverse.Settings.RESOURCE_DIR=res_dir;
-        
-		Console.WriteLine("Setting resource dir to "+res_dir);      
-          
-		string cache = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + System.IO.Path.DirectorySeparatorChar + "omvviewer-light" + System.IO.Path.DirectorySeparatorChar + "omvviewer_cache";
-				
-        Console.WriteLine("Setting texture cache to :"+cache);
-		client.Settings.TEXTURE_CACHE_DIR=cache;
-              
                 name_cache = new AVNameCache();
                 Gtk.Application.Init();
 

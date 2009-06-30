@@ -53,9 +53,11 @@ namespace omvviewerlight
 			
 			treeview1.Model=store;
 			
-			MainClass.client.Directory.OnEventsReply += new OpenMetaverse.DirectoryManager.EventReplyCallback(onEvents);
-			MainClass.client.Directory.OnEventInfo += new OpenMetaverse.DirectoryManager.EventInfoCallback(onEventInfo);
-			this.combobox_category.InsertText(0,OpenMetaverse.DirectoryManager.EventCategories.Sports.ToString());	
+            MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onRegister();
+
+            this.combobox_category.InsertText(0,OpenMetaverse.DirectoryManager.EventCategories.Sports.ToString());	
 			this.combobox_category.InsertText(0,OpenMetaverse.DirectoryManager.EventCategories.Pageants.ToString());
 			this.combobox_category.InsertText(0,OpenMetaverse.DirectoryManager.EventCategories.Nightlife.ToString());
 			this.combobox_category.InsertText(0,OpenMetaverse.DirectoryManager.EventCategories.Miscellaneous.ToString());
@@ -73,6 +75,20 @@ namespace omvviewerlight
 			this.button_teleport.Sensitive=false;
 			
 		}
+
+
+        void MainClass_onDeregister()
+        {
+            MainClass.client.Directory.OnEventsReply -= new OpenMetaverse.DirectoryManager.EventReplyCallback(onEvents);
+            MainClass.client.Directory.OnEventInfo -= new OpenMetaverse.DirectoryManager.EventInfoCallback(onEventInfo);
+
+        }
+
+        void MainClass_onRegister()
+        {
+            MainClass.client.Directory.OnEventsReply += new OpenMetaverse.DirectoryManager.EventReplyCallback(onEvents);
+            MainClass.client.Directory.OnEventInfo += new OpenMetaverse.DirectoryManager.EventInfoCallback(onEventInfo);
+        }
 
 		new public void Dispose()
 		{

@@ -37,8 +37,13 @@ namespace omvviewerlight
 		public GroupSearch()
 		{
 			this.Build();
-			MainClass.client.Directory.OnDirGroupsReply+=new OpenMetaverse.DirectoryManager.DirGroupsReplyCallback(onGroupReply);
-		    store= new Gtk.ListStore (typeof(string),typeof(string),typeof(UUID));
+
+            MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onRegister();
+
+
+            store= new Gtk.ListStore (typeof(string),typeof(string),typeof(UUID));
 
             MyTreeViewColumn mycol;
             mycol = new MyTreeViewColumn("Name", new Gtk.CellRendererText(), "text", 0,true);
@@ -53,6 +58,19 @@ namespace omvviewerlight
 			treeview1.Model=store;
 
 		}
+
+
+        void MainClass_onDeregister()
+        {
+            MainClass.client.Directory.OnDirGroupsReply -= new OpenMetaverse.DirectoryManager.DirGroupsReplyCallback(onGroupReply);
+
+        }
+
+        void MainClass_onRegister()
+        {
+            MainClass.client.Directory.OnDirGroupsReply += new OpenMetaverse.DirectoryManager.DirGroupsReplyCallback(onGroupReply);
+
+        }
 
 		new public void Dispose()
 		{

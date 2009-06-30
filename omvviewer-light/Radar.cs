@@ -58,20 +58,38 @@ namespace omvviewerlight
 			treeview_radar.AppendColumn("Dist.",new Gtk.CellRendererText(),"text",2);
 			treeview_radar.Model=store;
 
-            MainClass.client.Grid.OnCoarseLocationUpdate += new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
-			MainClass.client.Self.OnChat += new OpenMetaverse.AgentManager.ChatCallback(onChat);
-			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-	
-			MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
+            MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onRegister();
+
             
 			AutoPilot.onAutoPilotFinished+=new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
 
-            MainClass.client.Network.OnSimDisconnected += new NetworkManager.SimDisconnectedCallback(Network_OnSimDisconnected);
 			
 			this.store.SetSortFunc(2,sort_Vector3);	
             store.SetSortColumnId(2,Gtk.SortType.Ascending);
             Gtk.Timeout.Add(10000, kickrefresh);
 		}
+
+        void MainClass_onDeregister()
+        {
+            MainClass.client.Grid.OnCoarseLocationUpdate -= new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
+            MainClass.client.Self.OnChat -= new OpenMetaverse.AgentManager.ChatCallback(onChat);
+            MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+            MainClass.client.Self.OnTeleport -= new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
+            MainClass.client.Network.OnSimDisconnected -= new NetworkManager.SimDisconnectedCallback(Network_OnSimDisconnected);
+
+        }
+
+        void MainClass_onRegister()
+        {
+            MainClass.client.Grid.OnCoarseLocationUpdate += new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
+            MainClass.client.Self.OnChat += new OpenMetaverse.AgentManager.ChatCallback(onChat);
+            MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+            MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
+            MainClass.client.Network.OnSimDisconnected += new NetworkManager.SimDisconnectedCallback(Network_OnSimDisconnected);
+
+        }
 
         void Network_OnSimDisconnected(Simulator simulator, NetworkManager.DisconnectType reason)
         {

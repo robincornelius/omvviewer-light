@@ -77,12 +77,30 @@ namespace omvviewerlight
 			dosetup();
             current_chat_type = chat_type.CHAT_TYPE_CHAT;
 
-			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);		
-			MainClass.client.Self.OnChat += new OpenMetaverse.AgentManager.ChatCallback(onChat);
+            MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onRegister();
+
+	
+		}
+
+        void MainClass_onRegister()
+        {
+            MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+            MainClass.client.Self.OnChat += new OpenMetaverse.AgentManager.ChatCallback(onChat);
             MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
             MainClass.client.Friends.OnFriendOffline += new FriendsManager.FriendOfflineEvent(Friends_OnFriendOffline);
             MainClass.client.Friends.OnFriendOnline += new FriendsManager.FriendOnlineEvent(Friends_OnFriendOnline);
-		}
+        }
+
+        void MainClass_onDeregister()
+        {
+            MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+            MainClass.client.Self.OnChat -= new OpenMetaverse.AgentManager.ChatCallback(onChat);
+            MainClass.client.Self.OnInstantMessage -= new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
+            MainClass.client.Friends.OnFriendOffline -= new FriendsManager.FriendOfflineEvent(Friends_OnFriendOffline);
+            MainClass.client.Friends.OnFriendOnline -= new FriendsManager.FriendOnlineEvent(Friends_OnFriendOnline);
+        }
 		
         void Friends_OnFriendOnline(FriendInfo friend)
         {

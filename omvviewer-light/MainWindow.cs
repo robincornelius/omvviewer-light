@@ -199,27 +199,11 @@ public partial class MainWindow: Gtk.Window
 		
 		this.statusbar1.ShowAll();
 		
-		MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
-		
-		MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-		MainClass.client.Self.OnBalanceUpdated += new OpenMetaverse.AgentManager.BalanceCallback(onBalance);
-		MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
-		MainClass.client.Network.OnDisconnected += new OpenMetaverse.NetworkManager.DisconnectedCallback(onDisconnect);
-		
-		MainClass.client.Friends.OnFriendshipOffered += new OpenMetaverse.FriendsManager.FriendshipOfferedEvent(onFriendship);
-		MainClass.client.Self.OnAlertMessage += new OpenMetaverse.AgentManager.AlertMessageCallback(onAlertMessage);
-		MainClass.client.Self.OnScriptQuestion += new OpenMetaverse.AgentManager.ScriptQuestionCallback(onScriptCallback);
-		MainClass.client.Self.OnScriptDialog +=new OpenMetaverse.AgentManager.ScriptDialogCallback(onScriptDialogue);
-		MainClass.client.Self.OnGroupChatLeft += new OpenMetaverse.AgentManager.GroupChatLeftCallback(onLeaveGroupChat);
-        MainClass.client.Friends.OnFriendshipResponse += new FriendsManager.FriendshipResponseEvent(Friends_OnFriendshipResponse);
-        MainClass.client.Friends.OnFriendshipTerminated += new FriendsManager.FriendshipTerminatedEvent(Friends_OnFriendshipTerminated);
-		MainClass.client.Avatars.OnAvatarGroups += new OpenMetaverse.AvatarManager.AvatarGroupsCallback(onAvatarGroups);
 
-        MainClass.client.Parcels.OnParcelDwell += new ParcelManager.ParcelDwellCallback(Parcels_OnParcelDwell);
-        MainClass.client.Inventory.OnObjectOffered +=new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
 
-        MainClass.client.Network.OnCurrentSimChanged += new NetworkManager.CurrentSimChangedCallback(Network_OnCurrentSimChanged);
-        MainClass.client.Grid.OnGridRegion += new GridManager.GridRegionCallback(Grid_OnGridRegion);
+        MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+        MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+        MainClass_onRegister();
 
 		//this.menubar1.get
 		
@@ -236,7 +220,6 @@ public partial class MainWindow: Gtk.Window
 		this.SittingAction.Sensitive=false;
 		
 		this.WindowStateEvent += delegate { if (this.Visible) { trayIcon.Blinking = false; this.UrgencyHint = false; };};
-        MainClass.client.Self.OnAvatarSitResponse += new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
         
 
         this.DeleteEvent += new DeleteEventHandler(MainWindow_DeleteEvent);
@@ -247,6 +230,63 @@ public partial class MainWindow: Gtk.Window
         this.statusbar1.Push(1, "Logged out");
 
 	}
+
+
+    void MainClass_onDeregister()
+    {
+        MainClass.client.Self.OnInstantMessage -= new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
+
+        MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+        MainClass.client.Self.OnBalanceUpdated -= new OpenMetaverse.AgentManager.BalanceCallback(onBalance);
+        MainClass.client.Self.OnTeleport -= new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
+        MainClass.client.Network.OnDisconnected -= new OpenMetaverse.NetworkManager.DisconnectedCallback(onDisconnect);
+
+        MainClass.client.Friends.OnFriendshipOffered -= new OpenMetaverse.FriendsManager.FriendshipOfferedEvent(onFriendship);
+        MainClass.client.Self.OnAlertMessage -= new OpenMetaverse.AgentManager.AlertMessageCallback(onAlertMessage);
+        MainClass.client.Self.OnScriptQuestion -= new OpenMetaverse.AgentManager.ScriptQuestionCallback(onScriptCallback);
+        MainClass.client.Self.OnScriptDialog -= new OpenMetaverse.AgentManager.ScriptDialogCallback(onScriptDialogue);
+        MainClass.client.Self.OnGroupChatLeft -= new OpenMetaverse.AgentManager.GroupChatLeftCallback(onLeaveGroupChat);
+        MainClass.client.Friends.OnFriendshipResponse -= new FriendsManager.FriendshipResponseEvent(Friends_OnFriendshipResponse);
+        MainClass.client.Friends.OnFriendshipTerminated -= new FriendsManager.FriendshipTerminatedEvent(Friends_OnFriendshipTerminated);
+        MainClass.client.Avatars.OnAvatarGroups -= new OpenMetaverse.AvatarManager.AvatarGroupsCallback(onAvatarGroups);
+
+        MainClass.client.Parcels.OnParcelDwell -= new ParcelManager.ParcelDwellCallback(Parcels_OnParcelDwell);
+        MainClass.client.Inventory.OnObjectOffered -= new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
+
+        MainClass.client.Network.OnCurrentSimChanged -= new NetworkManager.CurrentSimChangedCallback(Network_OnCurrentSimChanged);
+        MainClass.client.Grid.OnGridRegion -= new GridManager.GridRegionCallback(Grid_OnGridRegion);
+        MainClass.client.Self.OnAvatarSitResponse -= new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
+   
+     
+    }
+
+    void MainClass_onRegister()
+    {
+        MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
+
+        MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+        MainClass.client.Self.OnBalanceUpdated += new OpenMetaverse.AgentManager.BalanceCallback(onBalance);
+        MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
+        MainClass.client.Network.OnDisconnected += new OpenMetaverse.NetworkManager.DisconnectedCallback(onDisconnect);
+
+        MainClass.client.Friends.OnFriendshipOffered += new OpenMetaverse.FriendsManager.FriendshipOfferedEvent(onFriendship);
+        MainClass.client.Self.OnAlertMessage += new OpenMetaverse.AgentManager.AlertMessageCallback(onAlertMessage);
+        MainClass.client.Self.OnScriptQuestion += new OpenMetaverse.AgentManager.ScriptQuestionCallback(onScriptCallback);
+        MainClass.client.Self.OnScriptDialog += new OpenMetaverse.AgentManager.ScriptDialogCallback(onScriptDialogue);
+        MainClass.client.Self.OnGroupChatLeft += new OpenMetaverse.AgentManager.GroupChatLeftCallback(onLeaveGroupChat);
+        MainClass.client.Friends.OnFriendshipResponse += new FriendsManager.FriendshipResponseEvent(Friends_OnFriendshipResponse);
+        MainClass.client.Friends.OnFriendshipTerminated += new FriendsManager.FriendshipTerminatedEvent(Friends_OnFriendshipTerminated);
+        MainClass.client.Avatars.OnAvatarGroups += new OpenMetaverse.AvatarManager.AvatarGroupsCallback(onAvatarGroups);
+
+        MainClass.client.Parcels.OnParcelDwell += new ParcelManager.ParcelDwellCallback(Parcels_OnParcelDwell);
+        MainClass.client.Inventory.OnObjectOffered += new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
+
+        MainClass.client.Network.OnCurrentSimChanged += new NetworkManager.CurrentSimChangedCallback(Network_OnCurrentSimChanged);
+        MainClass.client.Grid.OnGridRegion += new GridManager.GridRegionCallback(Grid_OnGridRegion);
+        MainClass.client.Self.OnAvatarSitResponse += new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
+   
+    }
+
 
 void  Grid_OnGridRegion(GridRegion region)
 {

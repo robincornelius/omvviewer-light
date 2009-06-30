@@ -38,7 +38,11 @@ namespace omvviewerlight
 		{
 			this.Build();
 			//this.map1.setsize(250);
-            MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(Network_OnEventQueueRunning);
+
+            MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onRegister();
+
             this.SizeAllocated += new Gtk.SizeAllocatedHandler(onResize);
 
             if (MainClass.client != null)
@@ -49,6 +53,18 @@ namespace omvviewerlight
                 }
             }
         }
+
+        void MainClass_onDeregister()
+        {
+            MainClass.client.Network.OnEventQueueRunning -= new OpenMetaverse.NetworkManager.EventQueueRunningCallback(Network_OnEventQueueRunning);
+      
+        }
+
+        void MainClass_onRegister()
+        {
+            MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(Network_OnEventQueueRunning);
+      
+         }
 
         void onResize(object o, SizeAllocatedArgs args)
         {

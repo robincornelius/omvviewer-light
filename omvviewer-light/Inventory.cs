@@ -191,12 +191,12 @@ namespace omvviewerlight
 			this.inventory.SetSortFunc(1, sortinventoryfunc);
             this.inventory.SetSortColumnId(1, SortType.Ascending);
         
-            MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-            MainClass.client.Network.OnLogoutReply += new NetworkManager.LogoutCallback(Network_OnLogoutReply);
-			MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
-            MainClass.client.Inventory.OnItemReceived += new InventoryManager.ItemReceivedCallback(Inventory_OnItemReceived);
-            MainWindow.OnInventoryAccepted += new MainWindow.InventoryAccepted(win_OnInventoryAccepted);
-			
+  
+            MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onRegister();
+
+
 			this.label_aquired.Text="";
 			this.label_createdby.Text="";
 			this.label_name.Text="";
@@ -213,6 +213,26 @@ namespace omvviewerlight
 				}
             }
 		}
+
+        void MainClass_onDeregister()
+        {
+            MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+            MainClass.client.Network.OnLogoutReply -= new NetworkManager.LogoutCallback(Network_OnLogoutReply);
+            MainClass.client.Network.OnEventQueueRunning -= new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
+            MainClass.client.Inventory.OnItemReceived -= new InventoryManager.ItemReceivedCallback(Inventory_OnItemReceived);
+            MainWindow.OnInventoryAccepted -= new MainWindow.InventoryAccepted(win_OnInventoryAccepted);
+
+        }
+
+        void MainClass_onRegister()
+        {
+            MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+            MainClass.client.Network.OnLogoutReply += new NetworkManager.LogoutCallback(Network_OnLogoutReply);
+            MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
+            MainClass.client.Inventory.OnItemReceived += new InventoryManager.ItemReceivedCallback(Inventory_OnItemReceived);
+            MainWindow.OnInventoryAccepted += new MainWindow.InventoryAccepted(win_OnInventoryAccepted);
+
+        }
 
         void item_name_Edited(object o, EditedArgs args)
         {

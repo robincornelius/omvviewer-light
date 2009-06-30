@@ -52,14 +52,13 @@ namespace omvviewerlight
 		public LoginControl()
 		{
 			this.Build();
-			MainClass.client.Network.OnConnected += new OpenMetaverse.NetworkManager.ConnectedCallback(onConnected);
-			MainClass.client.Network.OnDisconnected += new OpenMetaverse.NetworkManager.DisconnectedCallback(onDisconnected);
-			MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-			MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
+		
 
-			OpenMetaverse.Settings.LOG_LEVEL=OpenMetaverse.Helpers.LogLevel.Debug;
-		    OpenMetaverse.Logger.OnLogMessage += new OpenMetaverse.Logger.LogCallback(onLogMessage);
-           
+
+            MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onRegister();
+
             this.entry_pass.Visibility=false;
 
             entry_first.Text =  MainClass.appsettings.FirstName;
@@ -125,6 +124,30 @@ namespace omvviewerlight
 
             }
 		}
+
+
+        void MainClass_onDeregister()
+        {
+
+            MainClass.client.Network.OnConnected -= new OpenMetaverse.NetworkManager.ConnectedCallback(onConnected);
+            MainClass.client.Network.OnDisconnected -= new OpenMetaverse.NetworkManager.DisconnectedCallback(onDisconnected);
+            MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+            MainClass.client.Network.OnEventQueueRunning -= new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
+
+        }
+
+        void MainClass_onRegister()
+        {
+
+            MainClass.client.Network.OnConnected += new OpenMetaverse.NetworkManager.ConnectedCallback(onConnected);
+            MainClass.client.Network.OnDisconnected += new OpenMetaverse.NetworkManager.DisconnectedCallback(onDisconnected);
+            MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+            MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
+
+            OpenMetaverse.Settings.LOG_LEVEL = OpenMetaverse.Helpers.LogLevel.Debug;
+            OpenMetaverse.Logger.OnLogMessage += new OpenMetaverse.Logger.LogCallback(onLogMessage);
+
+        }
 
         void oncleanuptime()
         {
@@ -212,6 +235,8 @@ namespace omvviewerlight
                 }
 
                 MainClass.userlogout = false;
+
+                MainClass.getMeANewClient();
 			});
 		}
 		

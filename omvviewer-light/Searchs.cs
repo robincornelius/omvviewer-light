@@ -47,8 +47,23 @@ namespace omvviewerlight
 			treeview1.AppendColumn("Name",new Gtk.CellRendererText(),"text",1);		
 			store.SetSortColumnId(1,Gtk.SortType.Ascending);
 			treeview1.Model=store;
-			MainClass.client.Directory.OnDirPeopleReply += new OpenMetaverse.DirectoryManager.DirPeopleReplyCallback(onFindPeople);
-		}
+	
+            MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onRegister();
+        }
+
+        void MainClass_onDeregister()
+        {
+            MainClass.client.Directory.OnDirPeopleReply -= new OpenMetaverse.DirectoryManager.DirPeopleReplyCallback(onFindPeople);
+
+        }
+
+        void MainClass_onRegister()
+        {
+            MainClass.client.Directory.OnDirPeopleReply += new OpenMetaverse.DirectoryManager.DirPeopleReplyCallback(onFindPeople);
+
+        }
 
 		new public void Dispose()
 		{

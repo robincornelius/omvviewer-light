@@ -66,8 +66,25 @@ namespace omvviewerlight
 			treeview1.Model=store;
             store.SetSortColumnId(0, Gtk.SortType.Ascending);
 
-			MainClass.client.Directory.OnPlacesReply += new OpenMetaverse.DirectoryManager.PlacesReplyCallback(onPlaces);
+
+            MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onRegister();
+
 		}
+
+        void MainClass_onDeregister()
+        {
+            MainClass.client.Directory.OnPlacesReply -= new OpenMetaverse.DirectoryManager.PlacesReplyCallback(onPlaces);
+          
+        }
+
+        void MainClass_onRegister()
+        {
+            MainClass.client.Directory.OnPlacesReply += new OpenMetaverse.DirectoryManager.PlacesReplyCallback(onPlaces);
+
+        }
+
 		
 		new public void Dispose()
 		{
