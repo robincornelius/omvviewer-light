@@ -109,8 +109,9 @@ namespace omvviewerlight
         Gdk.Pixbuf folder_bodypart = MainClass.GetResource("inv_folder_bodypart.png");
         Gdk.Pixbuf folder_callingcard = MainClass.GetResource("inv_folder_callingcard.png");
         Gdk.Pixbuf folder_clothing = MainClass.GetResource("inv_folder_clothing.png");
+        MyTreeViewColumn col;
+        Gtk.CellRendererText renderer;
 
-      
         bool inventoryloaded = false;
 
         Gtk.TreeModelFilter filter;
@@ -163,12 +164,13 @@ namespace omvviewerlight
 			this.Build();		
 			
             treeview_inv.AppendColumn("",new CellRendererPixbuf(),"pixbuf",0);
-
+            
             Gtk.CellRendererText item_name = new Gtk.CellRendererText();
+            renderer = item_name;
             item_name.Editable = true;
             item_name.Edited += new EditedHandler(item_name_Edited);
           
-			MyTreeViewColumn col = new MyTreeViewColumn("Name", item_name, "text", 1,true);
+			col = new MyTreeViewColumn("Name", item_name, "text", 1,true);
             col.setmodel(inventory);
 
             treeview_inv.InsertColumn(col, 1);
@@ -495,11 +497,19 @@ namespace omvviewerlight
                         {
                             if (kvp.Value.Data.ParentUUID == UUID.Zero)
                             {
-                                Gtk.TreeIter iterx = inventory.AppendValues(folder_closed, kvp.Value.Data.Name, kvp.Value.Data.UUID, null);
-                                Console.Write("Creating top level folder " + kvp.Value.Data.Name + " : " + MainClass.client.Inventory.Store.Items[kvp.Value.Data.UUID].ToString());
-                                inventory.AppendValues(iterx, folder_closed, "Waiting...", kvp.Value.Data.UUID, null);
-                                if (kvp.Value.Data.Name == "My Inventory")
-                                    TLI = iterx;
+                                if (!assetmap.ContainsKey(MainClass.client.Inventory.Store.RootFolder.UUID))
+                                {
+                                    InventoryFolder fdr = new InventoryFolder(MainClass.client.Inventory.Store.RootFolder.UUID);
+                                    fdr.Name = "My Inventory";
+                                    Gtk.TreeIter iterx = inventory.AppendValues(folder_closed, kvp.Value.Data.Name, kvp.Value.Data.UUID, fdr);
+                                    Console.Write("Creating top level folder " + kvp.Value.Data.Name + " : " + MainClass.client.Inventory.Store.Items[kvp.Value.Data.UUID].ToString());
+                                    assetmap.Add(MainClass.client.Inventory.Store.RootFolder.UUID, iterx);
+                                    inventory.AppendValues(iterx, folder_closed, "Waiting...", kvp.Value.Data.UUID, null);
+                                    if (kvp.Value.Data.Name == "My Inventory")
+                                        TLI = iterx;
+                                }
+
+                               
                             }
                             Console.Write(kvp.Value.Data.ParentUUID.ToString() + " : ");
                         }
@@ -868,11 +878,12 @@ namespace omvviewerlight
                         }
                         else
                         {
-                            // Do not display menu for our system level folders
-                            if (item.UUID == MainClass.client.Inventory.Store.RootFolder.UUID)
+                          
+      
+                          if (item.UUID == MainClass.client.Inventory.Store.LibraryFolder.UUID)
                                 return;
-                            if (item.UUID == MainClass.client.Inventory.Store.LibraryFolder.UUID)
-                                return;
+
+
 
                             Gtk.MenuItem menu_wear_folder = new MenuItem("Wear folder contents");
                             Gtk.ImageMenuItem menu_give_folder = new ImageMenuItem("Give folder to user");
@@ -913,8 +924,11 @@ namespace omvviewerlight
 
                             Gtk.Label x = new Gtk.Label("Folder Item");
 
-                            //menu.Append(menu_debork);
-                            menu.Append(menu_wear_folder);
+                            if (item.UUID != MainClass.client.Inventory.Store.RootFolder.UUID)
+                            {
+                                //menu.Append(menu_debork);
+                                menu.Append(menu_wear_folder);
+                            }
 
                             if (paths.Length == 1)
                             {
@@ -923,17 +937,28 @@ namespace omvviewerlight
                                 menu.Append(new_script);
                                 menu.Append(new_folder);
                             }
-                            menu.Append(new Gtk.SeparatorMenuItem());
-                            menu.Append(menu_give_folder);
+
+                            if (item.UUID != MainClass.client.Inventory.Store.RootFolder.UUID)
+                            {
+                                menu.Append(new Gtk.SeparatorMenuItem());
+                                menu.Append(menu_give_folder);
+                            }
 
                             menu.Append(new Gtk.SeparatorMenuItem());
-                            menu.Append(menu_cut_folder);
-                            //menu.Append(menu_copy_folder);
+
+                            if (item.UUID != MainClass.client.Inventory.Store.RootFolder.UUID)
+                            {
+                                menu.Append(menu_cut_folder);
+                            }
+                                //menu.Append(menu_copy_folder);
                             if (cutcopylist.Count > 0)
                                 menu.Append(menu_paste_folder);
 
-                            menu.Append(new Gtk.SeparatorMenuItem());
-                            menu.Append(menu_delete_folder);
+                            if (item.UUID != MainClass.client.Inventory.Store.RootFolder.UUID)
+                            {
+                                menu.Append(new Gtk.SeparatorMenuItem());
+                                menu.Append(menu_delete_folder);
+                            }
                         }
                     }
                     if (item is InventoryNotecard)
@@ -1175,8 +1200,15 @@ namespace omvviewerlight
                             nf.Name = "New Folder";
                             nf.ParentUUID = item.UUID;
                             nf.Version = 1;
-							assetmap.Add(newfolder,inventory.AppendValues(iterx, buf, "New Folder", newfolder, (InventoryBase)nf)); 
-                 		}
+                            Gtk.TreeIter newiter=inventory.AppendValues(iterx, buf, "New Folder", newfolder, (InventoryBase)nf);
+							assetmap.Add(newfolder,newiter);
+                            treeview_inv.Selection.UnselectAll();
+                           
+
+                            treeview_inv.Selection.SelectIter(filter.ConvertChildIterToIter(newiter));
+                            treeview_inv.ScrollToCell(inventory.GetPath(newiter), null, true, (float)0.5, (float)0.5);
+                            treeview_inv.SetCursor(inventory.GetPath(newiter), null, true);
+                        }
  		            }
                 }
 			}	
@@ -1218,8 +1250,9 @@ namespace omvviewerlight
 									if(success2 && assetmap.TryGetValue(item.UUID,out iterx))
 									{
 										Gdk.Pixbuf buf = getprettyicon(itemx);	
-									 	assetmap.Add(item_uuid,inventory.AppendValues(iterx, buf, "New Note", itemx.UUID, itemx)); 
-									}		
+									 	assetmap.Add(item_uuid,inventory.AppendValues(iterx, buf, "New Note", itemx.UUID, itemx));
+                                        treeview_inv.Selection.SelectIter(iterx);
+                                    }		
 							    });
 							}
 						});
@@ -1259,8 +1292,9 @@ namespace omvviewerlight
 									if(success2 && assetmap.TryGetValue(item.UUID,out iterx))
 									{
 										Gdk.Pixbuf buf = getprettyicon(itemx);	
-									 	assetmap.Add(item_uuid,inventory.AppendValues(iterx, buf, "New Script", itemx.UUID, itemx)); 
-									}		
+									 	assetmap.Add(item_uuid,inventory.AppendValues(iterx, buf, "New Script", itemx.UUID, itemx));
+                                        treeview_inv.Selection.SelectIter(iterx);
+                                    }		
 							    });
 							}
 						});

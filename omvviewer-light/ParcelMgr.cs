@@ -416,7 +416,6 @@ namespace omvviewerlight
                         this.parcelsnapshot.clear();
                     }
 
-
                     AsyncNameUpdate ud;
 
                     this.label_parcelowner.Text = "Waiting...";

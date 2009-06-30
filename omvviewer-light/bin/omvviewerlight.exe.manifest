@@ -121,19 +121,19 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>60/eAgSjZPLf7GuFod7LAlD6Wo4=</dsig:DigestValue>
+        <dsig:DigestValue>Wy+/p6kPNwF5+xrbMofFXsfsBOQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="OpenMetaverse.dll" size="1605632">
-      <assemblyIdentity name="OpenMetaverse" version="1.0.0.24458" language="neutral" processorArchitecture="msil" />
+      <assemblyIdentity name="OpenMetaverse" version="1.0.0.26888" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>rh+Rfl4cVDi9Z+08fPg//ExF/tk=</dsig:DigestValue>
+        <dsig:DigestValue>YO74QcsNFhT8HvfYqDqWJ9AzQXg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -145,7 +145,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>1Ja8CBeyqR7ZDyD0hL6YLSI4QQY=</dsig:DigestValue>
+        <dsig:DigestValue>RtbzCQwHgCG9dlhWukggQikV8JA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -157,7 +157,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>JNgx1hT0KBhNIsLHPlOp8YVidTw=</dsig:DigestValue>
+        <dsig:DigestValue>ZF54bCYTi9n4LALqfjO7B5wJyq4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
