@@ -132,13 +132,16 @@ namespace omvviewerlight
 
                 if (paths.Length == 1)
                 {
-                    Gtk.MenuItem menu_IM = new MenuItem("IM");
+
+                    Gtk.ImageMenuItem menu_IM = new ImageMenuItem("IM");
+                    menu_IM.Image = new Gtk.Image(MainClass.GetResource("icon_group.png"));
                     menu_IM.ButtonPressEvent += new ButtonPressEventHandler(menu_IM_ButtonPressEvent);
                     menu.Append(menu_IM);
                 }
                 else if (paths.Length > 1)
                 {
-                    Gtk.MenuItem menu_IM = new MenuItem("Confrence");
+                    Gtk.ImageMenuItem menu_IM = new ImageMenuItem("Confrence");
+                    menu_IM.Image = new Gtk.Image(MainClass.GetResource("icn_voice-groupfocus.png"));
                     menu_IM.ButtonPressEvent += new ButtonPressEventHandler(menu_IM_ButtonPressEvent);
                     menu.Append(menu_IM);
                 }

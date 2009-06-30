@@ -44,6 +44,11 @@ namespace omvviewerlight
         public delegate void Decodecomplete();
         public event Decodecomplete OnDecodeComplete;
 
+        public delegate void Update();
+        public event Update OnUpdate;
+
+        bool gotdata = false;
+
         public TryGetImage(Gtk.Image target, UUID asset, bool asynccallback)
 		{
             TryGetImageWork(target, asset, true, 256, 256, asynccallback);
@@ -113,16 +118,17 @@ namespace omvviewerlight
        void statusupdate(TextureRequestState state, AssetTexture assetTexture)
        {
 
-            if (state == TextureRequestState.Finished)
-                onGotImage(assetTexture);
+           if (state == TextureRequestState.Finished && gotdata == false)
+           {
+               gotdata = true;
+               onGotImage(assetTexture);
+           }
        }
  
         void onProgress(UUID image, int recieved, int total)
 		{
 			if(target_asset!=image)
 			    return;
-
-            //Console.WriteLine("** Progress " + recieved.ToString() + " - " + total.ToString());
 
             progress(target_image.Pixbuf,  (float)recieved/(float)total);
 	}
@@ -157,8 +163,13 @@ namespace omvviewerlight
 					p[3]=255;
                 }	
 		    }
+
+            if (OnUpdate != null)
+                OnUpdate();
+            
             Gtk.Application.Invoke(delegate
             {
+            
                 try
                 {
                     target_image.QueueDraw();

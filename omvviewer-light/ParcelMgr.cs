@@ -113,7 +113,9 @@ namespace omvviewerlight
 			this.lable_forsaleto.Text="";
 
             this.parcelsnapshot.baseimage.Pixbuf = MainClass.GetResource("trying.png");
-			
+            this.parcel_map = MainClass.GetResource("trying.png");
+            //this.image9.Pixbuf = this.parcel_map;
+            this.parcelmap.baseimage.Pixbuf = this.parcel_map;
 
             if (MainClass.client != null)
             {
@@ -128,10 +130,9 @@ namespace omvviewerlight
 
                     nextcol = 0;
                    
-                    this.parcel_map = MainClass.GetResource("trying.png");
-                    //this.image9.Pixbuf = this.parcel_map;
-					this.parcelmap.baseimage.Pixbuf=this.parcel_map;
-					
+                  
+
+ 
                     populate_tree();
                     updateparcelmap(MainClass.client.Network.CurrentSim.ParcelMap);
 
@@ -310,8 +311,7 @@ namespace omvviewerlight
 
          Gtk.Application.Invoke(delegate
          {
-             //this.image9.QueueDraw();
-			 this.parcelmap.QueueDraw();
+             this.parcelmap.forceupdate();
          });
      }
 
@@ -338,7 +338,6 @@ namespace omvviewerlight
 			Gtk.Application.Invoke(delegate
             {
 				this.parcel_map = MainClass.GetResource("trying.png");
-				//this.image9.Pixbuf=this.parcel_map;
 				this.parcelmap.baseimage.Pixbuf=this.parcel_map;
 				this.parcelmap.setimage();
 				
@@ -363,72 +362,85 @@ namespace omvviewerlight
 				parcels_ban.Clear();
 					
 				Parcel parcel;
-				
-				
+
 				if(MainClass.client.Network.CurrentSim.Parcels.TryGetValue(id, out parcel))
 				{
+
+                    Console.WriteLine(parcel.Flags.ToString());
+
+                    this.checkbox_nopayment.Active = (OpenMetaverse.ParcelFlags.DenyAnonymous == (parcel.Flags & OpenMetaverse.ParcelFlags.DenyAnonymous));
+                    this.checkbutton_noageverify.Active = (OpenMetaverse.ParcelFlags.DenyAgeUnverified == (parcel.Flags & OpenMetaverse.ParcelFlags.DenyAgeUnverified));
+                    this.entry_time.Text = parcel.PassHours.ToString();
+                    this.entry_price.Text = parcel.PassPrice.ToString();
+                    this.checkbutton_publicaccess.Active = !(OpenMetaverse.ParcelFlags.UseAccessList == (parcel.Flags & OpenMetaverse.ParcelFlags.UseAccessList));
+                    //this.checkbutton_sellpasses;
+                    this.checkbutton_groupaccess.Active = (OpenMetaverse.ParcelFlags.UseAccessGroup == (parcel.Flags & OpenMetaverse.ParcelFlags.UseAccessGroup));
+
+                    this.entry_maxprims.Text = parcel.MaxPrims.ToString();
+                    this.entry_primsgroup.Text = parcel.GroupPrims.ToString();
+                    this.entry_bonus.Text = parcel.ParcelPrimBonus.ToString();
+                    this.entry_primsowner.Text = parcel.OwnerPrims.ToString();
+                    this.entry_primsother.Text = parcel.OtherPrims.ToString();
+                    this.entry_totalprims.Text = parcel.TotalPrims.ToString();
+
+
+                    this.parcel_image = parcel.SnapshotID;
+
+                    if (parcel.SnapshotID != UUID.Zero)
+                    {
+                        if (getter != null)
+                            getter.abort();
+
+
+                        Console.WriteLine("** FETCHING A NEW IMAGE **" + parcel.SnapshotID.ToString());
+
+                        TryGetImage i = new TryGetImage(parcelsnapshot.baseimage, parcel.SnapshotID, 256, 256, true);
+                        i.OnDecodeComplete += delegate
+                        {
+                            parcelsnapshot.setimage();
+                        };
+                        i.OnUpdate += delegate
+                        {
+                            Gtk.Application.Invoke(delegate
+                            {
+                                parcelmap.forceupdate();
+                            });
+                        };
+
+                        i.go();
+                        getter = i;
+                    }
+                    else
+                    {
+                        //this.image_parcelsnap.Clear();
+                        this.parcelsnapshot.clear();
+                    }
+
+
+                    AsyncNameUpdate ud;
+
+                    this.label_parcelowner.Text = "Waiting...";
+
+                    if (parcel.IsGroupOwned == false)
+                    {
+                        AsyncNameUpdate an;
+                        an = new AsyncNameUpdate(parcel.OwnerID, false);
+                        an.onNameCallBack += delegate(string namex, object[] values) { this.label_parcelowner.Text = namex; };
+                        an.go();
+                    }
+                    else
+                    {
+                        this.label_parcelowner.Text = "(group)";
+                    }
+
+                    this.label_parcelgroup.Text = "Waiting...";
+                    ud = new AsyncNameUpdate(parcel.GroupID, true);
+                    ud.onGroupNameCallBack += delegate(string namex, object[] values) { this.label_parcelgroup.Text = namex; };
+                    ud.go();
+
+
                     foreach (OpenMetaverse.ParcelManager.ParcelAccessEntry entry in parcel.AccessWhiteList)
 					{
-						
-						Console.WriteLine(parcel.Flags.ToString());
-
-                        this.checkbox_nopayment.Active = (OpenMetaverse.ParcelFlags.DenyAnonymous == (parcel.Flags & OpenMetaverse.ParcelFlags.DenyAnonymous));
-                        this.checkbutton_noageverify.Active = (OpenMetaverse.ParcelFlags.DenyAgeUnverified == (parcel.Flags & OpenMetaverse.ParcelFlags.DenyAgeUnverified));
-						this.entry_time.Text=parcel.PassHours.ToString();
-						this.entry_price.Text=parcel.PassPrice.ToString();
-                        this.checkbutton_publicaccess.Active = !(OpenMetaverse.ParcelFlags.UseAccessList == (parcel.Flags & OpenMetaverse.ParcelFlags.UseAccessList));
-						//this.checkbutton_sellpasses;
-                        this.checkbutton_groupaccess.Active = (OpenMetaverse.ParcelFlags.UseAccessGroup == (parcel.Flags & OpenMetaverse.ParcelFlags.UseAccessGroup));
-						
-						this.entry_maxprims.Text=parcel.MaxPrims.ToString();
-						this.entry_primsgroup.Text=parcel.GroupPrims.ToString();
-						this.entry_bonus.Text=parcel.ParcelPrimBonus.ToString();
-						this.entry_primsowner.Text=parcel.OwnerPrims.ToString();
-						this.entry_primsother.Text=parcel.OtherPrims.ToString();
-						this.entry_totalprims.Text=parcel.TotalPrims.ToString();
-
-						this.parcel_image=parcel.SnapshotID;
-						
-						if(parcel.SnapshotID!=UUID.Zero)
-						{
-							if(getter!=null)
-								getter.abort();
-							
-
-							TryGetImage i = new TryGetImage(parcelsnapshot.baseimage,parcel.SnapshotID,256,256,true);
-							i.OnDecodeComplete += delegate
-							{                               
-								parcelsnapshot.setimage();                               
-							};
-							i.go();
-							getter=i;
-						}
-						else
-						{
-							//this.image_parcelsnap.Clear();
-							this.parcelsnapshot.clear();
-						}
-					
-						AsyncNameUpdate ud;
-				
-						this.label_parcelowner.Text="Waiting...";
-
-                        if (parcel.IsGroupOwned == false)
-                        {
-                            AsyncNameUpdate an;
-                            an = new AsyncNameUpdate(parcel.OwnerID, false);
-                            an.onNameCallBack += delegate(string namex, object[] values) { this.label_parcelowner.Text = namex; };
-                            an.go();
-                        }
-                        else
-                        {
-                            this.label_parcelowner.Text = "(group)";
-                        }
-					
-						this.label_parcelgroup.Text="Waiting...";
-						ud=new AsyncNameUpdate(parcel.GroupID,true);
-                        ud.onGroupNameCallBack += delegate(string namex, object[] values) { this.label_parcelgroup.Text = namex; };
-                        ud.go();
 						
 						if(entry.AgentID==UUID.Zero)
 							continue;
@@ -448,12 +460,12 @@ namespace omvviewerlight
 										
 						Console.WriteLine(entry.AgentID.ToString()+" Flags = "+entry.Flags.ToString());
 							Gtk.TreeIter iter2=this.parcels_ban.AppendValues("Waiting...");			
-							AsyncNameUpdate ud=new AsyncNameUpdate(entry.AgentID,false);  
-							ud.addparameters(iter2);
-							ud.onNameCallBack += delegate(string namex,object[] values){ Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; this.parcels_ban.SetValue(iterx,0,namex);};
-                            ud.go();
+							AsyncNameUpdate ud2=new AsyncNameUpdate(entry.AgentID,false);  
+							ud2.addparameters(iter2);
+							ud2.onNameCallBack += delegate(string namex,object[] values){ Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; this.parcels_ban.SetValue(iterx,0,namex);};
+                            ud2.go();
                         }		
-					
+                    }
 					
 						bool allowed=false;
 
@@ -491,7 +503,7 @@ namespace omvviewerlight
 
                              }
                          }
-					else
+					    else
 					{
 						this.label_forsale.Text="No";
                                  this.label_price1.Text="";
@@ -501,11 +513,11 @@ namespace omvviewerlight
 				}
 				else			
 				{
-						Console.WriteLine("No parcel in dictionary for id "+id.ToString()+"\n");
+						//Console.WriteLine("No parcel in dictionary for id "+id.ToString()+"\n");
 				
 				}
 					
-		}
+
 			
 		}
 

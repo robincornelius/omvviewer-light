@@ -77,5 +77,13 @@ namespace omvviewerlight
 		
 		}
 
+        public void forceupdate()
+        {
+            if (baseimage.Pixbuf == null)
+                return;
+            dispimage.Pixbuf = baseimage.Pixbuf.ScaleSimple(oldwidth,oldheight, InterpType.Bilinear);
+            dispimage.QueueDraw();
+        }
+
 	}
 }
