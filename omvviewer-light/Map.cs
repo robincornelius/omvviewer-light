@@ -245,18 +245,17 @@ namespace omvviewerlight
 			Console.WriteLine("Map Cleaned up");
 		}		
 		
-		new public void Dispose()
-		{
-			running=false;
-			MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-			MainClass.client.Objects.OnNewAvatar -= new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
-            MainClass.client.Self.OnTeleport -= new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
-			MainClass.client.Grid.OnGridRegion -= new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
-			AutoPilot.onAutoPilotFinished -= new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
-			
-			//Finalize();
-			//System.GC.SuppressFinalize(this);
-		}
+        new public void Dispose()
+        {
+            running = false;
+
+            MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onDeregister();
+
+            AutoPilot.onAutoPilotFinished -= new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
+	
+        }
 
 		
         bool kickrefresh()

@@ -80,9 +80,6 @@ namespace omvviewerlight
 			if(gs!=null)
 				gs.Dispose();
 			gs=null;
-			
-			//Finalize();
-			//System.GC.SuppressFinalize(this);
 		}
 		
 		Gtk.Label addtabwithicon(string filename,string label,Gtk.Widget contents)

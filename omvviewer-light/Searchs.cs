@@ -65,14 +65,12 @@ namespace omvviewerlight
 
         }
 
-		new public void Dispose()
-		{
-			
-			MainClass.client.Directory.OnDirPeopleReply -= new OpenMetaverse.DirectoryManager.DirPeopleReplyCallback(onFindPeople);
-			
-			//Finalize();
-			//System.GC.SuppressFinalize(this);
-		}
+        new public void Dispose()
+        {
+            MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onDeregister();
+        }
 		
 		void onFindPeople(UUID query,List <OpenMetaverse.DirectoryManager.AgentSearchData> people)
 		{

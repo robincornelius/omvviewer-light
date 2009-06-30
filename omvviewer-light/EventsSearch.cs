@@ -90,15 +90,13 @@ namespace omvviewerlight
             MainClass.client.Directory.OnEventInfo += new OpenMetaverse.DirectoryManager.EventInfoCallback(onEventInfo);
         }
 
-		new public void Dispose()
-		{
-			
-			MainClass.client.Directory.OnEventsReply -= new OpenMetaverse.DirectoryManager.EventReplyCallback(onEvents);
-			MainClass.client.Directory.OnEventInfo -= new OpenMetaverse.DirectoryManager.EventInfoCallback(onEventInfo);
-			
-			//Finalize();
-			//System.GC.SuppressFinalize(this);
-		}
+        new public void Dispose()
+        {
+            MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onDeregister();
+        }
+		
 		
 		void onEventInfo(OpenMetaverse.DirectoryManager.EventInfo anevent)
 	    {

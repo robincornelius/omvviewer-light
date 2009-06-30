@@ -85,14 +85,13 @@ namespace omvviewerlight
 
         }
 
-		
-		new public void Dispose()
-		{
-			
-			MainClass.client.Directory.OnPlacesReply -= new OpenMetaverse.DirectoryManager.PlacesReplyCallback(onPlaces);
-			//Finalize();
-			//System.GC.SuppressFinalize(this);
-		}
+
+        new public void Dispose()
+        {
+            MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onDeregister();
+        }
 		
 
 		int numericsort(Gtk.TreeModel model, Gtk.TreeIter a, Gtk.TreeIter b)

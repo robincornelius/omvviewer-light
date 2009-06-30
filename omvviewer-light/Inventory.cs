@@ -137,28 +137,26 @@ namespace omvviewerlight
 
 		~Inventory()
 		{
-         //   System.Runtime.Serialization.SerializationInfo info=new System.Runtime.Serialization.SerializationInfo(typeof(OpenMetaverse.InventoryNode),
-         //   MainClass.client.Inventory.Store.Items.GetObjectData(
-			Console.WriteLine("Inventory Cleaned up");
+  			Console.WriteLine("Inventory Cleaned up");
 		}
 	    	
         new public void Dispose()
-		{
+        {
             Console.WriteLine("Running cleanup code for inventory");
-			
+
+            MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onDeregister();
+
             this.treeview_inv.RowExpanded -= new Gtk.RowExpandedHandler(onRowExpanded);
             this.treeview_inv.RowCollapsed -= new Gtk.RowCollapsedHandler(onRowCollapsed);
-            MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             this.treeview_inv.ButtonPressEvent -= new ButtonPressEventHandler(treeview_inv_ButtonPressEvent);			
-			MainClass.client.Network.OnEventQueueRunning -= new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
-        	
+
             Gtk.Notebook p;
             p = (Gtk.Notebook)this.Parent;
             p.RemovePage(p.PageNum(this));
-			
-			//Finalize();
-			//System.GC.SuppressFinalize(this);
-		}
+        }
+		
 
 		public Inventory()
 		{

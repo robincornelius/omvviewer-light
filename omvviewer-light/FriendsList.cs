@@ -134,6 +134,14 @@ namespace omvviewerlight
             MainClass.client.Friends.OnFriendRights += new FriendsManager.FriendRightsEvent(Friends_OnFriendRights);
         }
 
+        new public void Dispose()
+        {
+            MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onDeregister();
+        }
+		
+
         void treeview_friends_CursorChanged(object sender, EventArgs e)
         {
             Gtk.TreeModel mod;

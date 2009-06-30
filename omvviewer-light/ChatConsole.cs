@@ -101,6 +101,14 @@ namespace omvviewerlight
             MainClass.client.Friends.OnFriendOffline -= new FriendsManager.FriendOfflineEvent(Friends_OnFriendOffline);
             MainClass.client.Friends.OnFriendOnline -= new FriendsManager.FriendOnlineEvent(Friends_OnFriendOnline);
         }
+
+        new public void Dispose()
+        {
+            MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onDeregister();
+        }
+		
 		
         void Friends_OnFriendOnline(FriendInfo friend)
         {

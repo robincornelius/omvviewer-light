@@ -88,20 +88,19 @@ namespace omvviewerlight
             this.map1.SetGridRegion(MainClass.client.Network.CurrentSim.RegionID, MainClass.client.Network.CurrentSim.Handle);
         }
 
-      	new public void Dispose()
-		{
-			Gtk.Notebook p;
-			p=(Gtk.Notebook)this.Parent;
-			p.RemovePage(p.PageNum(this));
+        new public void Dispose()
+        {
+            MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onDeregister();
 
-			this.map1.Dispose();
-			this.radar1.Dispose();
-			this.teleportto1.Dispose();
-			
-			//Todo kill child widgets
-			//Finalize();
-			//System.GC.SuppressFinalize(this);
+            Gtk.Notebook p;
+            p = (Gtk.Notebook)this.Parent;
+            p.RemovePage(p.PageNum(this));
 
-		}
+            this.map1.Dispose();
+            this.radar1.Dispose();
+            this.teleportto1.Dispose();
+        }
 	}
 }

@@ -91,6 +91,13 @@ namespace omvviewerlight
             MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
  
         }
+
+        new public void Dispose()
+        {
+            MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onDeregister();
+        }
 		
 		void onResize(object o,SizeAllocatedArgs args)
 		{

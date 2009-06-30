@@ -57,6 +57,14 @@ namespace omvviewerlight
 
         }
 
+        new public void Dispose()
+        {
+            MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onDeregister();
+        }
+		
+
 
 		public void reqname(UUID name)
 		{

@@ -288,6 +288,13 @@ public partial class MainWindow: Gtk.Window
     }
 
 
+    new public void Dispose()
+    {
+        MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
+        MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
+        MainClass_onDeregister();
+    }
+
 void  Grid_OnGridRegion(GridRegion region)
 {
     lock (MainClass.win.grid_regions)
