@@ -78,14 +78,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="HttpServer.dll" size="102400">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="HttpServer.dll" size="110592">
       <assemblyIdentity name="HttpServer" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>VHg6pzcWEUPzVdrHahSTYjPLUSA=</dsig:DigestValue>
+        <dsig:DigestValue>2J27ou39XmEaYFwVmYpfj4/4ZaU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -114,26 +114,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="omvviewerlight.exe" size="618496">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="omvviewerlight.exe" size="622592">
       <assemblyIdentity name="omvviewerlight" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>Wy+/p6kPNwF5+xrbMofFXsfsBOQ=</dsig:DigestValue>
+        <dsig:DigestValue>yQagaERlwfuslgadNJDBhUeoQqA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="OpenMetaverse.dll" size="1605632">
-      <assemblyIdentity name="OpenMetaverse" version="1.0.0.26888" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="OpenMetaverse.dll" size="1744896">
+      <assemblyIdentity name="OpenMetaverse" version="1.0.0.27986" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>YO74QcsNFhT8HvfYqDqWJ9AzQXg=</dsig:DigestValue>
+        <dsig:DigestValue>Cqe+TdK4c9C+xaUfndFfl3cR33A=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -145,19 +145,19 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>RtbzCQwHgCG9dlhWukggQikV8JA=</dsig:DigestValue>
+        <dsig:DigestValue>AfSMajuh4F2NNVMrFHi9HJJKR7E=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="OpenMetaverse.StructuredData.dll" size="102400">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="OpenMetaverse.StructuredData.dll" size="114688">
       <assemblyIdentity name="OpenMetaverse.StructuredData" version="0.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>ZF54bCYTi9n4LALqfjO7B5wJyq4=</dsig:DigestValue>
+        <dsig:DigestValue>XVUpo3g97GOvjuT9D9pgePfYJkU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -169,7 +169,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>aGZg2DA8gxzs4PhXQtWSDCZllcw=</dsig:DigestValue>
+        <dsig:DigestValue>/AQiP90TE0TuK2ETUN1eklHGulY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

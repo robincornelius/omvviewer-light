@@ -56,7 +56,7 @@ namespace omvviewerlight
 
             MainClass.onRegister += new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
-            MainClass_onRegister();
+            if(MainClass.client != null ) { MainClass_onRegister(); }
 
 	
             if (MainClass.client != null)

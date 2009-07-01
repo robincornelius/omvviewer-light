@@ -194,7 +194,7 @@ namespace omvviewerlight
   
             MainClass.onRegister += new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
-            MainClass_onRegister();
+            if(MainClass.client != null ) { MainClass_onRegister(); }
 
 
 			this.label_aquired.Text="";
@@ -226,6 +226,17 @@ namespace omvviewerlight
 
         void MainClass_onRegister()
         {
+           
+            inventory.Clear();
+            inventoryloaded = false;
+            assetmap.Clear();
+
+           filteractive = false;
+           fetcherrunning = false;
+           fetchrun = false;
+           recursion = 0;
+           abortfetch = false;
+
             MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             MainClass.client.Network.OnLogoutReply += new NetworkManager.LogoutCallback(Network_OnLogoutReply);
             MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
@@ -408,7 +419,8 @@ namespace omvviewerlight
 	                        if (ret == -1)
 	                            return bb;
 						}
-											//Two non-system folders
+					
+						//Two non-system folders
 						if (((InventoryFolder)itema).PreferredType == AssetType.Unknown && ((InventoryFolder)itemb).PreferredType == AssetType.Unknown)
 						{
 							//do name sort
@@ -1404,12 +1416,9 @@ namespace omvviewerlight
                     inventoryloaded = true;
                     Gtk.Application.Invoke(delegate
                     {
-                        
+                       
                         inventory.Clear();
                         populate_top_level_inv();
-
-                        
- 
                     });
                 }
 				 
@@ -1511,7 +1520,14 @@ namespace omvviewerlight
             // Ok we need to find and remove the previous Waiting.... it should be the first child of the current iter
 			
 			TreePath path = inventory.GetPath(iter);
-			path.Down();
+
+            if (path == null)
+            {
+                Console.WriteLine("*!*!*!*! WTF? we got a NULL path in the fetchinventory()");
+                return;
+            }
+            
+            path.Down();
 			
 			InventoryNode node=MainClass.client.Inventory.Store.GetNodeFor(start);
 			if(node.NeedsUpdate==true)
@@ -2076,6 +2092,7 @@ namespace omvviewerlight
 
 	}
 	
-			
+	
+		
 	}	
 }

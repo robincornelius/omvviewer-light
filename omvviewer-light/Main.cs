@@ -50,7 +50,7 @@ namespace omvviewerlight
 
 		public static bool userlogout = false;
 
-    	public static GridClient client;
+    	public static GridClient client=null;
 		public static MainWindow win;
 
 		public static AVNameCache name_cache;
@@ -70,14 +70,40 @@ namespace omvviewerlight
 
         static void doderegister()
         {
-            if (onDeregister != null)
+            if (onDeregister != null && MainClass.client !=null)
                 onDeregister();
+        }
+
+        public static void killclient()
+        {
+            if (client != null)
+            {
+                Console.WriteLine("** Kill network manager ***");
+
+                client.Network.Shutdown(NetworkManager.DisconnectType.ClientInitiated);
+                doderegister();
+            }
+
+            client = null;
+
         }
 
         public static void getMeANewClient()
         {
-            if(client!=null)
+            Console.WriteLine("** TRYING TO GET A NEW CLIENT ***");
+
+            if (client != null)
+            {
+                Console.WriteLine("** Kill network manager ***");
+
+                client.Network.Shutdown(NetworkManager.DisconnectType.ClientInitiated);
                 doderegister();
+                client = null;
+            }
+
+
+            Console.WriteLine("** NEW CLIENT ***");
+
             client=new GridClient();
 
             client.Settings.USE_TEXTURE_CACHE = true;
@@ -105,10 +131,23 @@ namespace omvviewerlight
         // This is stupid
         public static Gdk.Pixbuf GetResource(string name)
         {
-			if(!monodevelop)
-                return Pixbuf.LoadFromResource(name);
-            else
-                return Pixbuf.LoadFromResource("omvviewerlight.art." + name);          
+    
+            Gdk.Pixbuf buf=null;
+
+                try
+                {
+                    if (!monodevelop)
+                        buf = Pixbuf.LoadFromResource(name);
+                    else
+                        buf = Pixbuf.LoadFromResource("omvviewerlight.art." + name);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error loading pixbuf");
+                }
+
+                return buf;
+
         }
 
         private static bool GtkProbe()
@@ -165,8 +204,6 @@ namespace omvviewerlight
                 string check = resNames[0];
                 if (check.Contains("omvviewerlight.art."))
                     monodevelop = true;
-
-                getMeANewClient();
 
                 name_cache = new AVNameCache();
                 Gtk.Application.Init();

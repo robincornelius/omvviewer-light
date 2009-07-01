@@ -108,7 +108,7 @@ namespace omvviewerlight
 
             MainClass.onRegister += new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
-            MainClass_onRegister();
+            if(MainClass.client != null ) { MainClass_onRegister(); }
 
             treeview_friends.CursorChanged += new EventHandler(treeview_friends_CursorChanged);
         }
@@ -126,6 +126,7 @@ namespace omvviewerlight
 
         void MainClass_onRegister()
         {
+            store.Clear();
             MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             MainClass.client.Friends.OnFriendOnline += new OpenMetaverse.FriendsManager.FriendOnlineEvent(onFriendOnline);
             MainClass.client.Friends.OnFriendOffline += new OpenMetaverse.FriendsManager.FriendOfflineEvent(onFriendOffline);
@@ -136,6 +137,8 @@ namespace omvviewerlight
 
         new public void Dispose()
         {
+            Console.WriteLine("Disposing of the friendslist control");
+
             MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
             MainClass_onDeregister();
@@ -254,7 +257,6 @@ namespace omvviewerlight
 				Gtk.Application.Invoke(delegate {
 					lock(store)
 					{
-						store.Clear();
 						populate_list();
 						store.Foreach(myfunc);
 					}				

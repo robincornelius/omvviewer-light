@@ -60,7 +60,7 @@ namespace omvviewerlight
 
             MainClass.onRegister += new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
-            MainClass_onRegister();
+            if(MainClass.client != null ) { MainClass_onRegister(); }
 
             
 			AutoPilot.onAutoPilotFinished+=new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
@@ -73,6 +73,7 @@ namespace omvviewerlight
 
         void MainClass_onDeregister()
         {
+            running = false;
             MainClass.client.Grid.OnCoarseLocationUpdate -= new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
             MainClass.client.Self.OnChat -= new OpenMetaverse.AgentManager.ChatCallback(onChat);
             MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
@@ -136,21 +137,17 @@ namespace omvviewerlight
 
 		new public void Dispose()
 		{
-			running=false;
-			MainClass.client.Self.OnChat -= new OpenMetaverse.AgentManager.ChatCallback(onChat);
-			MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-			MainClass.client.Self.OnTeleport -= new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
-			AutoPilot.onAutoPilotFinished-=new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
-			
-			//Finalize();
-			//System.GC.SuppressFinalize(this);
+            MainClass_onDeregister();
 		}
 		
         bool kickrefresh()
         {
 
-			if(running==false)
+            if (running == false)
 				return false;
+
+            if (MainClass.client == null)
+                return true;
 			
 			if (MainClass.client.Network.CurrentSim == null)
                 return true;
@@ -266,6 +263,8 @@ namespace omvviewerlight
 		   {
               // if (this.av_tree.ContainsKey(id))
                {
+                   if (MainClass.client == null)
+                       return;
 
                    double dist;
 

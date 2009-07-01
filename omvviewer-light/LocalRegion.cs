@@ -37,7 +37,7 @@ namespace omvviewerlight
 
             MainClass.onRegister += new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
-            MainClass_onRegister();
+            if(MainClass.client != null ) { MainClass_onRegister(); }
 		
 			
             maps[0] = this.map1;
@@ -87,6 +87,8 @@ namespace omvviewerlight
 
         void MainClass_onRegister()
         {
+            requested = false;
+            needdata = true;
             MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
             MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
  
@@ -94,6 +96,8 @@ namespace omvviewerlight
 
         new public void Dispose()
         {
+            Console.WriteLine("Disposing of the LocalRegion control");
+
             MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
             MainClass_onDeregister();

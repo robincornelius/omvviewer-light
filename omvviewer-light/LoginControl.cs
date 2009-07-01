@@ -38,26 +38,15 @@ namespace omvviewerlight
 		Dictionary<string,string> gridlist = new Dictionary<string,string>();
 		LoginParams login;
 		bool loginbut=true;
-		
 		bool trying;
         
-        ~LoginControl()
-        {
-            //This is ugly but works. GC should be called when we need it as we want to do this
-            //when the app is going down anyway
-			//Console.WriteLine("Clean up time");
-			//oncleanuptime();
-        }
-
 		public LoginControl()
 		{
 			this.Build();
-		
-
 
             MainClass.onRegister += new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
-            MainClass_onRegister();
+            if(MainClass.client != null ) { MainClass_onRegister(); }
 
             this.entry_pass.Visibility=false;
 
@@ -133,7 +122,7 @@ namespace omvviewerlight
             MainClass.client.Network.OnDisconnected -= new OpenMetaverse.NetworkManager.DisconnectedCallback(onDisconnected);
             MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             MainClass.client.Network.OnEventQueueRunning -= new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
-
+            OpenMetaverse.Logger.OnLogMessage -= new OpenMetaverse.Logger.LogCallback(onLogMessage);
         }
 
         void MainClass_onRegister()
@@ -151,6 +140,8 @@ namespace omvviewerlight
 
         new public void Dispose()
         {
+            Console.WriteLine("Disposing of the login control");
+
             MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
             MainClass_onDeregister();
@@ -161,8 +152,7 @@ namespace omvviewerlight
 			
 			MainClass.appsettings.FirstName=entry_first.Text;
 		    MainClass.appsettings.LastName= entry_last.Text;
-            // This is a shit place to do this
-            
+           
             if(this.checkbutton_rememberpass.Active)
             {
                MainClass.appsettings.Password=entry_pass.Text;
@@ -173,33 +163,24 @@ namespace omvviewerlight
             }
 			
 			MainClass.appsettings.Save();
-
             MainClass.appsettings.remember_pass=this.checkbutton_rememberpass.Active;
-             
-
-			  MainClass.appsettings.SelectedGrid=combobox_grid.Active;
+			MainClass.appsettings.SelectedGrid=combobox_grid.Active;
 		
 		}
 
- 
 		void onEventQueue(Simulator sim)
 		{
 			if(sim.ID==MainClass.client.Network.CurrentSim.ID)
 			{
 				this.trying=false;
 				MainClass.client.Self.Movement.Flags=0;
-				MainClass.client.Self.Movement.SendUpdate();
-            //    Gtk.Application.Invoke(delegate
-             //   {
-             //       Thread loginRunner = new Thread(new ThreadStart(this.appearencethread));
-             //       loginRunner.Start();
-             //   });
-				
+				MainClass.client.Self.Movement.SendUpdate();	
 			}	
 		}
 		
 		bool OnPulseProgress()
 		{
+
 			if(trying==true)
 			{
 				this.progressbar2.Pulse();
@@ -240,10 +221,15 @@ namespace omvviewerlight
                     md.Run();
                     md.Destroy();
                 }
+                else
+                {
 
-                MainClass.userlogout = false;
 
-                MainClass.getMeANewClient();
+                }
+
+                //MainClass.userlogout = false;
+                MainClass.killclient();
+
 			});
 		}
 		
@@ -280,23 +266,13 @@ namespace omvviewerlight
 				MainClass.client.Throttle.Resend =  MainClass.appsettings.ThrottleResend;
 				MainClass.client.Throttle.Task=  MainClass.appsettings.ThrottleTask;
 				MainClass.client.Throttle.Texture= MainClass.appsettings.ThrottleTexture;	
-		  
-
-                 //   Gtk.Application.Invoke(delegate
-                 //  {
-                 //     
-                 //      Thread appearenceRunner = new Thread(new ThreadStart(this.appearencethread));
-                 //      appearenceRunner.Start();
-                 //  });
-
-				
                 MainClass.userlogout = false;          
               }
 		}
 
 		void onLogMessage(object obj, OpenMetaverse.Helpers.LogLevel level)
 		{
-			if(level >= OpenMetaverse.Helpers.LogLevel.Warning)
+			//if(level >= OpenMetaverse.Helpers.LogLevel.Warning)
 			{
 				Gtk.Application.Invoke(delegate {
 					this.textview_log.Buffer.InsertAtCursor(obj.ToString()+"\n");
@@ -343,9 +319,6 @@ namespace omvviewerlight
 		
 		void appearencethread()
 		{
-    //        AutoResetEvent appearanceEvent = new AutoResetEvent(false);
-    //        AppearanceManager.AppearanceUpdatedCallback callback = delegate(Primitive.TextureEntry te) { appearanceEvent.Set(); };
-    //        MainClass.client.Appearance.OnAppearanceUpdated += callback;
 
 			Console.Write("Appearence thread go\n");
 			MainClass.client.Appearance.SetPreviousAppearance(true);
@@ -367,7 +340,9 @@ namespace omvviewerlight
 				this.textview_loginmsg.Buffer.Text="Connecting to login server...";
 				this.textview_loginmsg.QueueDraw();
 				//LoginParams login;
-			
+
+                MainClass.getMeANewClient();
+
 				login=MainClass.client.Network.DefaultLoginParams(entry_first.Text,entry_last.Text,entry_pass.Text,"omvviewer","2.0");
 				StreamReader s=null;
               
@@ -478,6 +453,7 @@ namespace omvviewerlight
 		
 		bool debounce()
 		{
+                Console.WriteLine("Debounce");
 				this.button_login.Sensitive=true;
 			    return false;
 		}

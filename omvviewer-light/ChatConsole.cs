@@ -79,13 +79,13 @@ namespace omvviewerlight
 
             MainClass.onRegister += new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
-            MainClass_onRegister();
-
+        
 	
 		}
 
         void MainClass_onRegister()
         {
+            textview_chat.Buffer.Clear();
             MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             MainClass.client.Self.OnChat += new OpenMetaverse.AgentManager.ChatCallback(onChat);
             MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
@@ -116,6 +116,8 @@ namespace omvviewerlight
 
         new public void Dispose()
         {
+            Console.WriteLine("Disposing of the chatconsole control");
+
             MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
             MainClass_onDeregister();
@@ -404,6 +406,7 @@ namespace omvviewerlight
 		
 		bool kick_group_join()
 		{
+            Console.WriteLine("Kick_group_join");
 			if(joined_group_chat==true)
 				return false;
 
@@ -689,6 +692,7 @@ namespace omvviewerlight
 		
 		bool ClearLookAt()
 		{
+            Console.WriteLine("Clear lookat");
 			MainClass.client.Self.LookAtEffect(MainClass.client.Self.AgentID,UUID.Zero,Vector3d.Zero,LookAtType.Clear,UUID.Zero);
 			lookatrunning=false;
 			return false;
@@ -880,7 +884,7 @@ namespace omvviewerlight
 		
 	bool StopTyping()
 	 {
-			
+         Console.WriteLine("Stop typing");
 					  //  Console.Write("\nSending typing message\n");
                         byte[] binaryBucket;
                         binaryBucket = new byte[0];

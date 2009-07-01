@@ -72,7 +72,6 @@ namespace omvviewerlight
 			type=TargetType.TARGET_OBJECT;
 			target_object=tobject;
 			Active=true;
-			//GLib.Timeout.Add(1000,Think);
             MainClass.client.Grid.OnCoarseLocationUpdate += new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
 
 		}
@@ -82,7 +81,6 @@ namespace omvviewerlight
 			type=TargetType.TARGET_AVATAR;
 			target_avatar=target;
 			Active=true;
-			//GLib.Timeout.Add(1000,Think);
 			follow=followon;
             MainClass.client.Grid.OnCoarseLocationUpdate += new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
 
@@ -93,7 +91,6 @@ namespace omvviewerlight
 			type=TargetType.TARGET_POS;
             target_pos_global = globalpos;
 			Active=true;
-			//GLib.Timeout.Add(1000,Think);
             MainClass.client.Grid.OnCoarseLocationUpdate += new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
 		}
 

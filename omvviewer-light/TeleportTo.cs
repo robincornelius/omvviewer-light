@@ -42,10 +42,12 @@ namespace omvviewerlight
 		public TeleportTo()
 		{
 			this.Build();		
-            MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-            MainClass.client.Objects.OnObjectUpdated += new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);    
-			AutoPilot.onAutoPilotFinished += new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
-			this.button_autopilot.Label="Move To";	
+      
+            MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+            if (MainClass.client != null) { MainClass_onRegister(); }
+            
+            this.button_autopilot.Label="Move To";	
 			this.button_autopilot.Image=new Gtk.Image(Stetic.IconLoader.LoadIcon(this, "stock_draw-curved-connector-starts-with-arrow", Gtk.IconSize.Menu, 16));
 
 			if(MainClass.client!=null)
@@ -56,16 +58,27 @@ namespace omvviewerlight
 				}
 			}			
 		}
-		
+
+        void MainClass_onDeregister()
+        {
+            MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
+            MainClass.client.Objects.OnObjectUpdated -= new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);
+            AutoPilot.onAutoPilotFinished -= new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
+
+        }
+
+        void MainClass_onRegister()
+        {
+            MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
+            MainClass.client.Objects.OnObjectUpdated += new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);
+            AutoPilot.onAutoPilotFinished += new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
+
+        }
+
 		
 		new public void Dispose()
 		{
-            MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-            MainClass.client.Objects.OnObjectUpdated += new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);    
-			AutoPilot.onAutoPilotFinished -= new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
-
-			//Finalize();
-			//System.GC.SuppressFinalize(this);
+            MainClass_onDeregister();
 		}
 		
 		

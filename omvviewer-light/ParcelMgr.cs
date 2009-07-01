@@ -57,19 +57,16 @@ namespace omvviewerlight
 		
         new public void Dispose()
         {
-            MainClass.client.Parcels.OnParcelInfo -= new OpenMetaverse.ParcelManager.ParcelInfoCallback(onParcelInfo);
-            MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-            MainClass.client.Parcels.OnSimParcelsDownloaded -= new OpenMetaverse.ParcelManager.SimParcelsDownloaded(onParcelsDownloaded);
-            MainClass.client.Parcels.OnParcelProperties -= new OpenMetaverse.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
-            MainClass.client.Parcels.OnPrimOwnersListReply -= new OpenMetaverse.ParcelManager.ParcelObjectOwnersListReplyCallback(onParcelObjectOwners);
-		
+
+            Console.WriteLine("Disposing of the parcelmgr control");
+
+            MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onDeregister();
+	
             Gtk.Notebook p;
             p = (Gtk.Notebook)this.Parent;
             p.RemovePage(p.PageNum(this));
-			
-			//Finalize();
-			//System.GC.SuppressFinalize(this);
-
         }
 
 		public ParcelMgr()
@@ -79,7 +76,7 @@ namespace omvviewerlight
 
             MainClass.onRegister += new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
-            MainClass_onRegister();
+            if(MainClass.client != null ) { MainClass_onRegister(); }
 
      
 			parcels_store=new Gtk.TreeStore (typeof(Gdk.Pixbuf),typeof(string),typeof(string),typeof(string),typeof(string),typeof(Parcel),typeof(int));
@@ -130,9 +127,6 @@ namespace omvviewerlight
 
                     nextcol = 0;
                    
-                  
-
- 
                     populate_tree();
                     updateparcelmap(MainClass.client.Network.CurrentSim.ParcelMap);
 
@@ -146,6 +140,11 @@ namespace omvviewerlight
 
         void MainClass_onDeregister()
         {
+            parcel_prim_owners.Clear();
+            parcels_access.Clear();
+            parcels_store.Clear();
+            parcels_ban.Clear();
+
             MainClass.client.Parcels.OnParcelInfo -= new OpenMetaverse.ParcelManager.ParcelInfoCallback(onParcelInfo);
             MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
             MainClass.client.Parcels.OnSimParcelsDownloaded -= new OpenMetaverse.ParcelManager.SimParcelsDownloaded(onParcelsDownloaded);
@@ -261,7 +260,7 @@ namespace omvviewerlight
                      Gtk.Application.Invoke(delegate
                      {
                          Gtk.TreeIter iter = parcels_store.AppendValues(pb, parcel.Name, parcel.Area.ToString(), parcel.Dwell.ToString(), saleinfo, parcel, parcel.LocalID);
-                         this.parcel_to_tree.Add(parcel.LocalID, iter);
+                         this.parcel_to_tree[parcel.LocalID]=iter;
                      });
                  }
 

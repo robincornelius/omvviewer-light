@@ -61,19 +61,16 @@ namespace omvviewerlight
 
         new public void Dispose()
         {
-            MainClass.client.Objects.OnObjectProperties -= new OpenMetaverse.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
-            MainClass.client.Groups.OnGroupNames -= new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
-            MainClass.client.Self.OnAvatarSitResponse -= new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
-			AutoPilot.onAutoPilotFinished-=new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
-
-
+          
+            AutoPilot.onAutoPilotFinished-=new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
+            MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onDeregister();
 
             Gtk.Notebook p;
             p = (Gtk.Notebook)this.Parent;
             p.RemovePage(p.PageNum(this));
-			
-			//Finalize();
-			//System.GC.SuppressFinalize(this);
+
 		}
 
 		public ObjectsLayout()
@@ -159,13 +156,16 @@ namespace omvviewerlight
         
             MainClass.onRegister += new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
-            MainClass_onRegister();
+            if(MainClass.client != null ) { MainClass_onRegister(); }
 
         
         }
 
         void MainClass_onDeregister()
         {
+            store.Clear();
+            PrimsWaiting.Clear();
+            FetchedPrims.Clear();
             MainClass.client.Objects.OnObjectProperties -= new OpenMetaverse.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
             MainClass.client.Groups.OnGroupNames -= new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
             MainClass.client.Self.OnAvatarSitResponse -= new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
@@ -174,7 +174,6 @@ namespace omvviewerlight
 
         void MainClass_onRegister()
         {
-
             MainClass.client.Objects.OnObjectProperties += new OpenMetaverse.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
             MainClass.client.Groups.OnGroupNames += new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
             MainClass.client.Self.OnAvatarSitResponse += new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
@@ -351,8 +350,8 @@ namespace omvviewerlight
 				{
                   	for (int i = 0; i < objects.Count; ++i) {
 						localids[i] = objects[i].LocalID;
-                        PrimsWaiting.Add(objects[i].ID, objects[i]);
-					}
+                        PrimsWaiting[objects[i].ID]=objects[i];
+ 					}
 				}
 			}
 

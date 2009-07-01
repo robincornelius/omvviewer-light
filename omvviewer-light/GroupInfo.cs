@@ -382,7 +382,7 @@ namespace omvviewerlight
 
         bool updategroupmembers()
         {
-
+            Console.WriteLine("Update group members");
             List<UUID> names = new List<UUID>();
 
             if (!MainClass.client.Groups.GroupMembersCaches.ContainsKey(request_members))

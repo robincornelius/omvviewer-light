@@ -49,6 +49,7 @@ namespace omvviewerlight
 		void logout()
 		{
 			MainClass.client.Network.Logout();
+            MainClass.killclient();
             GLib.Timeout.Add(5000, killme);
             
 		}
@@ -56,6 +57,7 @@ namespace omvviewerlight
         bool killme()
         {
             abort = true;
+            MainClass.killclient();
             Gtk.Application.Quit();
             return false;
         }

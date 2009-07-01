@@ -41,7 +41,7 @@ public partial class MainWindow: Gtk.Window
 
     public delegate void LogoutWork();
     public event LogoutWork onLogoutWork;
-
+    AutoResetEvent appearancesetting= new AutoResetEvent(true);
 
     public delegate void InventoryAccepted(AssetType type, UUID objectID);
     public static event InventoryAccepted OnInventoryAccepted;
@@ -108,7 +108,8 @@ public partial class MainWindow: Gtk.Window
         //if (onLogoutWork != null)
         {
             Console.WriteLine("Running logout tasks first");
-            MainClass.client.Inventory.Store.SaveToDisk(MainClass.client.Settings.TEXTURE_CACHE_DIR + System.IO.Path.DirectorySeparatorChar + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
+            if(MainClass.client.Inventory.Store!=null)
+                MainClass.client.Inventory.Store.SaveToDisk(MainClass.client.Settings.TEXTURE_CACHE_DIR + System.IO.Path.DirectorySeparatorChar + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
             Console.WriteLine("Done");
         }
      
@@ -161,7 +162,9 @@ public partial class MainWindow: Gtk.Window
 				
 		this.Icon=MainClass.GetResource("omvviewer-light.xpm");
 		status_location=new Gtk.Label("Location: Unknown (0,0,0)");
-		
+
+        appearancesetting.Set();
+
 		status_balance=new Gtk.HBox();
 		status_balance_lable=new Gtk.Label("?");
 		Gtk.Image balicon=new Gtk.Image();
@@ -203,7 +206,7 @@ public partial class MainWindow: Gtk.Window
 
         MainClass.onRegister += new MainClass.register(MainClass_onRegister);
         MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
-        MainClass_onRegister();
+        if(MainClass.client != null ) { MainClass_onRegister(); }
 
 		//this.menubar1.get
 		
@@ -310,8 +313,19 @@ void  Grid_OnGridRegion(GridRegion region)
         if (MainClass.client.Network.LoginStatusCode == LoginStatus.Success)
         {
             Console.WriteLine("Changed Sim, forcing a rebake");
-            MainClass.client.Appearance.SetPreviousAppearance(true);
+            Thread app=new Thread(new ThreadStart(setappearance));
+            app.Start();
         }
+    }
+
+    void setappearance()
+    {
+
+        appearancesetting.WaitOne(30000, false);
+        appearancesetting.Reset();
+        Console.WriteLine("Setting appearance");
+        MainClass.client.Appearance.SetPreviousAppearance(true);
+        appearancesetting.Set();
     }
 
 	void OnInventoryOffered(InstantMessage details,AssetType type,UUID id,bool fromtask)
@@ -776,6 +790,8 @@ void  Grid_OnGridRegion(GridRegion region)
         {
             MainClass.client.Self.RequestBalance();
 			MainClass.client.Avatars.RequestAvatarProperties(MainClass.client.Self.AgentID);
+            Thread app = new Thread(new ThreadStart(setappearance));
+            app.Start();
 
 			Gtk.Application.Invoke(delegate
             {
@@ -812,6 +828,10 @@ void  Grid_OnGridRegion(GridRegion region)
 	
 	bool OnUpdateStatus()
 	{
+
+        if (MainClass.client == null)
+            return true;
+
 		if(MainClass.client.Network.LoginStatusCode==LoginStatus.Success)
 		{
 			status_location.Text="Location: "+MainClass.client.Network.CurrentSim.Name+MainClass.prettyvector(MainClass.client.Self.SimPosition,2);
@@ -1068,8 +1088,11 @@ void  Grid_OnGridRegion(GridRegion region)
 
 	protected virtual void OnAvaiableActionActivated (object sender, System.EventArgs e)
 	{
-		MainClass.client.Self.Movement.Away=false;
-        MainClass.client.Self.Movement.SendUpdate(true);
+        if (MainClass.client != null)
+        {
+            MainClass.client.Self.Movement.Away = false;
+            MainClass.client.Self.Movement.SendUpdate(true);
+        }
 	}
 
 	protected virtual void OnBusyActionActivated (object sender, System.EventArgs e)
@@ -1079,14 +1102,17 @@ void  Grid_OnGridRegion(GridRegion region)
 
 	protected virtual void OnAwayActionActivated (object sender, System.EventArgs e)
 	{
-		MainClass.client.Self.Movement.Away=true;
-        MainClass.client.Self.Movement.SendUpdate(true);
+        if (MainClass.client != null)
+        {
+            MainClass.client.Self.Movement.Away = true;
+            MainClass.client.Self.Movement.SendUpdate(true);
+        }
 		
 	}
 
 	protected virtual void OnStandingActionActivated (object sender, System.EventArgs e)
 	{
-		if(this.StandingAction.Active==true)
+        if (MainClass.client != null && this.StandingAction.Active == true)
         { 
 			MainClass.client.Self.Stand();
 	        MainClass.client.Self.Fly(false);			
@@ -1096,19 +1122,19 @@ void  Grid_OnGridRegion(GridRegion region)
 
 	protected virtual void OnGroundSitActionActivated (object sender, System.EventArgs e)
 	{
-	     if(this.GroundSitAction.Active==true)		
+        if (MainClass.client != null && this.GroundSitAction.Active == true)		
              MainClass.client.Self.SitOnGround();
 	}
 
 	protected virtual void OnCrouchActionActivated (object sender, System.EventArgs e)
 	{
-         if(this.CrouchAction.Active==true)		
+        if (MainClass.client != null && this.CrouchAction.Active == true)		
              MainClass.client.Self.Crouch(true); 
 	}
 
 	protected virtual void OnFlyActionActivated (object sender, System.EventArgs e)
 	{
-          if(this.FlyAction.Active==true)
+        if (MainClass.client != null && this.FlyAction.Active == true)
 	          MainClass.client.Self.Fly(true);	
     }
 	
