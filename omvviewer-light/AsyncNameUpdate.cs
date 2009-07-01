@@ -58,12 +58,6 @@ namespace omvviewerlight
 			callbackvalues1=values;
 		}
 		
-		void AsynNamesUpdate_deinit()
-		{
-			MainClass.client.Groups.OnGroupNames -= new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
-			MainClass.client.Avatars.OnAvatarNames -= new OpenMetaverse.AvatarManager.AvatarNamesCallback(onAvatarNames);
-		}
-		
 		public AsyncNameUpdate(UUID key,bool group)
 		{
 
@@ -81,10 +75,25 @@ namespace omvviewerlight
 				group_target=UUID.Zero;
 			}
 
+            MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onRegister();
+
+		}
+
+        void MainClass_onDeregister()
+        {
+            MainClass.client.Groups.OnGroupNames -= new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
+            MainClass.client.Avatars.OnAvatarNames -= new OpenMetaverse.AvatarManager.AvatarNamesCallback(onAvatarNames);
+
+        }
+
+        void MainClass_onRegister()
+        {
             MainClass.client.Groups.OnGroupNames += new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
             MainClass.client.Avatars.OnAvatarNames += new OpenMetaverse.AvatarManager.AvatarNamesCallback(onAvatarNames);
 
-		}
+        }
 		
 		void onAvatarNames(Dictionary <UUID,string>names)
 		{
@@ -105,8 +114,8 @@ namespace omvviewerlight
 			{
 				Gtk.Application.Invoke(delegate {
 					if(onNameCallBack!=null)
-						onNameCallBack(name,this.callbackvalues1);			
-					AsynNamesUpdate_deinit();
+						onNameCallBack(name,this.callbackvalues1);
+                    MainClass_onDeregister();
 				});
 			}
 			else
@@ -123,8 +132,8 @@ namespace omvviewerlight
 			{
 				Gtk.Application.Invoke(delegate {			
 					if(onGroupNameCallBack!=null)
-						onGroupNameCallBack(name,this.callbackvalues1);			
-					AsynNamesUpdate_deinit();
+						onGroupNameCallBack(name,this.callbackvalues1);
+                    MainClass_onDeregister();
 				});	
 			}
 			else
