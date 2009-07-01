@@ -1204,7 +1204,6 @@ namespace omvviewerlight
 							assetmap.Add(newfolder,newiter);
                             treeview_inv.Selection.UnselectAll();
                            
-
                             treeview_inv.Selection.SelectIter(filter.ConvertChildIterToIter(newiter));
                             treeview_inv.ScrollToCell(inventory.GetPath(newiter), null, true, (float)0.5, (float)0.5);
                             treeview_inv.SetCursor(inventory.GetPath(newiter), null, true);
@@ -1249,9 +1248,14 @@ namespace omvviewerlight
 	  
 									if(success2 && assetmap.TryGetValue(item.UUID,out iterx))
 									{
-										Gdk.Pixbuf buf = getprettyicon(itemx);	
-									 	assetmap.Add(item_uuid,inventory.AppendValues(iterx, buf, "New Note", itemx.UUID, itemx));
-                                        treeview_inv.Selection.SelectIter(iterx);
+										Gdk.Pixbuf buf = getprettyicon(itemx);
+                                        Gtk.TreeIter newiter = inventory.AppendValues(iterx, buf, "New Note", itemx.UUID, itemx);
+                                        assetmap.Add(item_uuid,newiter);
+                                        
+                                        treeview_inv.Selection.SelectIter(filter.ConvertChildIterToIter(newiter));
+                                        treeview_inv.ScrollToCell(inventory.GetPath(newiter), null, true, (float)0.5, (float)0.5);
+                                        treeview_inv.SetCursor(inventory.GetPath(newiter), null, true);
+                                        
                                     }		
 							    });
 							}
@@ -1291,9 +1295,14 @@ namespace omvviewerlight
 	  
 									if(success2 && assetmap.TryGetValue(item.UUID,out iterx))
 									{
-										Gdk.Pixbuf buf = getprettyicon(itemx);	
-									 	assetmap.Add(item_uuid,inventory.AppendValues(iterx, buf, "New Script", itemx.UUID, itemx));
-                                        treeview_inv.Selection.SelectIter(iterx);
+										Gdk.Pixbuf buf = getprettyicon(itemx);
+                                        Gtk.TreeIter newiter = inventory.AppendValues(iterx, buf, "New Script", itemx.UUID, itemx);
+									 	assetmap.Add(item_uuid,newiter);
+
+                                        treeview_inv.Selection.SelectIter(filter.ConvertChildIterToIter(newiter));
+                                        treeview_inv.ScrollToCell(inventory.GetPath(newiter), null, true, (float)0.5, (float)0.5);
+                                        treeview_inv.SetCursor(inventory.GetPath(newiter), null, true);
+                                       
                                     }		
 							    });
 							}
