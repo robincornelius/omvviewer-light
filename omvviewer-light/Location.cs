@@ -37,7 +37,6 @@ namespace omvviewerlight
 		public Location()
 		{
 			this.Build();
-			//this.map1.setsize(250);
 
             MainClass.onRegister += new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
@@ -52,12 +51,13 @@ namespace omvviewerlight
                     requested = true;
                 }
             }
+
         }
 
         void MainClass_onDeregister()
         {
-            MainClass.client.Network.OnEventQueueRunning -= new OpenMetaverse.NetworkManager.EventQueueRunningCallback(Network_OnEventQueueRunning);
-      
+            if(MainClass.client!=null)
+                MainClass.client.Network.OnEventQueueRunning -= new OpenMetaverse.NetworkManager.EventQueueRunningCallback(Network_OnEventQueueRunning);
         }
 
         void MainClass_onRegister()

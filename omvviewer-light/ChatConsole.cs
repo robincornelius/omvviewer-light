@@ -51,8 +51,6 @@ namespace omvviewerlight
 		bool istypingsent=false;
 		
 		public Gtk.Label tabLabel;
-	//	public UUID im_target=OpenMetaverse.UUID.Zero;
-	//	public UUID im_target=OpenMetaverse.UUID.Zero;
 		bool lookatrunning=false;
 		UUID lookat;
 		byte [] bucket;
@@ -79,14 +77,12 @@ namespace omvviewerlight
 
             MainClass.onRegister += new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
-        
-	
+            //This class is always present so we don't need to add at constructor time
 		}
 
         void MainClass_onRegister()
         {
             textview_chat.Buffer.Clear();
-            MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             MainClass.client.Self.OnChat += new OpenMetaverse.AgentManager.ChatCallback(onChat);
             MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
             MainClass.client.Friends.OnFriendOffline += new FriendsManager.FriendOfflineEvent(Friends_OnFriendOffline);
@@ -96,12 +92,16 @@ namespace omvviewerlight
 
         void MainClass_onDeregister()
         {
-            MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             MainClass.client.Self.OnChat -= new OpenMetaverse.AgentManager.ChatCallback(onChat);
             MainClass.client.Self.OnInstantMessage -= new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
             MainClass.client.Friends.OnFriendOffline -= new FriendsManager.FriendOfflineEvent(Friends_OnFriendOffline);
             MainClass.client.Friends.OnFriendOnline -= new FriendsManager.FriendOnlineEvent(Friends_OnFriendOnline);
             MainClass.client.Self.OnMoneyBalanceReplyReceived -= new AgentManager.MoneyBalanceReplyCallback(Self_OnMoneyBalanceReplyReceived);
+ 
+            //H ope this works! this *may* be defined and if we are aborting there approprate cleanup
+            //may not get run. They are only enabled via optional code paths
+            MainClass.client.Self.OnInstantMessage -= new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
+            MainClass.client.Self.OnGroupChatJoin -= new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
 
         }
 
@@ -109,15 +109,19 @@ namespace omvviewerlight
         {
             if (current_chat_type == chat_type.CHAT_TYPE_CHAT)
             {
-                if(description!="")
-                    displaychat(description, "Payment :", this.systemchat, this.systemchat);
+                if (description != "")
+                {
+                    Gtk.Application.Invoke(delegate
+                    {
+                        displaychat(description, "Payment :", this.systemchat, this.systemchat);
+                    });
+                }
             }
         }
 
         new public void Dispose()
         {
             Console.WriteLine("Disposing of the chatconsole control");
-
             MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
             MainClass_onDeregister();
@@ -128,10 +132,10 @@ namespace omvviewerlight
         {
             if(current_chat_type==chat_type.CHAT_TYPE_CHAT)
             {
-				AsyncNameUpdate ud=new AsyncNameUpdate(friend.UUID,false);
-                ud.onNameCallBack += delegate(string namex, object[] values) { displaychat("is online", namex, onoffline, onoffline); };
-                ud.go();
-				   
+                //SIGH this is necessary to prevent a bunch of " is online" messages at login
+                 AsyncNameUpdate ud = new AsyncNameUpdate(friend.UUID, false);
+                 ud.onNameCallBack += delegate(string namex, object[] values) { displaychat("is online", namex, onoffline, onoffline); };
+                 ud.go();             
             }
             else if (current_chat_type == chat_type.CHAT_TYPE_IM && im_target == friend.UUID)
             {
@@ -157,19 +161,6 @@ namespace omvviewerlight
                 Gtk.Application.Invoke(delegate
                 {
                     displaychat("is offline", friend.Name, onoffline, onoffline);
-                });
-            }
-        }
-
-      		
-        void onLogin(LoginStatus status, string message)
-        {
-            if (LoginStatus.Success == status)
-            {
-                Gtk.Application.Invoke(delegate
-                {
-                    //The login reply comes in way too late and we loose some chat
-                    //this.textview_chat.Buffer.Clear();
                 });
             }
         }
@@ -220,7 +211,6 @@ namespace omvviewerlight
                         MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
                         this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter, "Trying to join group chat session, please wait........\n");
                         Gtk.Timeout.Add(10000, kick_group_join);
-                        //MainClass.client.Self.ChatterBoxAcceptInvite(im.IMSessionID);
                         MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
                         MainClass.win.im_windows.Add(im.IMSessionID, this);
                         onIM(im, null);
@@ -232,13 +222,11 @@ namespace omvviewerlight
                         Logger.Log("Starting a new confrence chat for session id " + im.IMSessionID.ToString(), Helpers.LogLevel.Info);
                         current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
                         this.im_target = im.IMSessionID;
-                        //MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
                         show_group_list(im.IMSessionID);
                         MainClass.win.im_windows.Add(im.IMSessionID, this);
                         MainClass.client.Self.ChatterBoxAcceptInvite(im.IMSessionID);
                         bucket = im.BinaryBucket;
                         onIM(im, null);
-
                     }
 
                 }
@@ -249,7 +237,6 @@ namespace omvviewerlight
                     {
                         this.displaychat(im.Message, im.FromAgentName, objectchat, objectchat);
                     }
-
 
                     return;
                 }
@@ -400,8 +387,7 @@ namespace omvviewerlight
               MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
 			  current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
               this.im_target = UUID.Random();
-              //FIXME
-              //MainClass.client.Self.StartIMConfrence(targets, this.im_target);
+              MainClass.client.Self.StartIMConference(targets, this.im_target);
 		}
 		
 		bool kick_group_join()
@@ -412,7 +398,6 @@ namespace omvviewerlight
 
 			this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter,"Retrying to join group chat session, please wait........\n");
 			MainClass.client.Self.RequestJoinGroupChat(im_target);
-            //MainClass.client.Self.ChatterBoxAcceptInvite(im_target);
 			
 			return true;
 		}
@@ -492,25 +477,15 @@ namespace omvviewerlight
 	
 			nb.RemovePage(pageno);
 			
-	        MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);		
-			MainClass.client.Self.OnChat -= new OpenMetaverse.AgentManager.ChatCallback(onChat);
-            MainClass.client.Self.OnInstantMessage -= new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
-            MainClass.client.Friends.OnFriendOffline -= new FriendsManager.FriendOfflineEvent(Friends_OnFriendOffline);
-            MainClass.client.Friends.OnFriendOnline -= new FriendsManager.FriendOnlineEvent(Friends_OnFriendOnline);
-			MainClass.win.getnotebook().SwitchPage -=  new SwitchPageHandler(onSwitchPage);
-			
+			MainClass_onDeregister();            
+            MainClass.win.getnotebook().SwitchPage -=  new SwitchPageHandler(onSwitchPage);
 			this.Destroy();	
-			//Finalize();
-			//System.GC.SuppressFinalize(this);
 		}
 		
 		
 		void onIM(InstantMessage im, Simulator sim)
 		{
-				
-            
 			Console.WriteLine("New IM recieved "+im.ToString());
-			Console.WriteLine("Bucket is "+im.BinaryBucket.Length.ToString() + " DATA :"+MainWindow.BytesToString(im.BinaryBucket));
 			
             if (this.current_chat_type==chat_type.CHAT_TYPE_CHAT)
             {
@@ -519,12 +494,19 @@ namespace omvviewerlight
               
                if (im.Dialog == OpenMetaverse.InstantMessageDialog.InventoryOffered)
                 {
-                    displaychat(im.FromAgentName+" gave you "+im.Message, "(new inventory)", this.systemchat,this.systemchat);
+                    Gtk.Application.Invoke(delegate
+                    {
+                        displaychat(im.FromAgentName + " gave you " + im.Message, "(new inventory)", this.systemchat, this.systemchat);
+                    });
                     return;
                 }
                 if (im.Dialog == OpenMetaverse.InstantMessageDialog.TaskInventoryOffered)
                 {
-                    displaychat(im.FromAgentName + " gave you " + im.Message, "(new inventory)", this.systemchat, this.systemchat);
+                    Gtk.Application.Invoke(delegate
+                    {
+                        displaychat(im.FromAgentName + " gave you " + im.Message, "(new inventory)", this.systemchat, this.systemchat);
+                    });
+                    
                     return;
                 }
 
@@ -609,12 +591,6 @@ namespace omvviewerlight
             if (MainClass.appsettings.notify_group_IM && this.current_chat_type == chat_type.CHAT_TYPE_GROUP_IM)
 				windownotify();
 
-			
-            // Is this from an object?
-            //null session ID
-
-           
-           
             Gtk.Application.Invoke(delegate
             {
                 displaychat(im.Message, im.FromAgentName, avchat, bold); 
@@ -630,7 +606,6 @@ namespace omvviewerlight
 
 			if(message=="")
 				return; //WTF???? why do i get empty messages which are not the above types
-
 
             redtab();
 			

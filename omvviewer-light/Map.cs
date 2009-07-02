@@ -114,7 +114,8 @@ namespace omvviewerlight
 
             if (this.scalemap != null)
             {
-                this.scalemap.Pixbuf = this.objects_map.Pixbuf.ScaleSimple(height, width, InterpType.Bilinear);
+                if(height>25 && width>25)
+                    this.scalemap.Pixbuf = this.objects_map.Pixbuf.ScaleSimple(height, width, InterpType.Bilinear);
             }
         }
 
@@ -202,17 +203,24 @@ namespace omvviewerlight
         {
 
             running = false;
-            MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-            MainClass.client.Objects.OnNewAvatar -= new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
-            MainClass.client.Self.OnTeleport -= new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
-            MainClass.client.Grid.OnGridRegion -= new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
+            if (MainClass.client != null)
+            {
+                MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
+                MainClass.client.Objects.OnNewAvatar -= new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
+                MainClass.client.Self.OnTeleport -= new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
+                MainClass.client.Grid.OnGridRegion -= new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
+                MainClass.client.Grid.OnCoarseLocationUpdate -= new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
+                MainClass.client.Network.OnSimConnected -= new NetworkManager.SimConnectedCallback(Network_OnSimConnected);
+            }
             AutoPilot.onAutoPilotFinished -= new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
-            MainClass.client.Grid.OnCoarseLocationUpdate -= new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
-            MainClass.client.Network.OnSimConnected -= new NetworkManager.SimConnectedCallback(Network_OnSimConnected);         
+
         }
 
         void MainClass_onRegister()
         {
+
+            lastsim = UUID.Zero;
+            requested = false;
 
             MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
             MainClass.client.Objects.OnNewAvatar += new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
@@ -481,11 +489,6 @@ namespace omvviewerlight
             {
                 basemap = new Gtk.Image(MainClass.GetResource("water.png"));
             });
-		
-            //Gtk.Application.Invoke(delegate
-            //{
-            //    this.label1.Text = this_maps_sim.Name;
-			//});
         }
 	
 		void showme(Gdk.Pixbuf buf,Gdk.Pixbuf src,Vector3 pos)

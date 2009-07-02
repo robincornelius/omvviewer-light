@@ -207,6 +207,7 @@ namespace omvviewerlight
 				this.button_login.Label="Login";
 				this.loginbut=true;
 				this.trying=false;
+                progressbar2.Fraction = 0.0;
 				this.enablebuttons();
                 if (!MainClass.win.Visible)
                 {
@@ -326,6 +327,8 @@ namespace omvviewerlight
 		
 		protected virtual void OnButton1Clicked (object sender, System.EventArgs e)
 		{
+            MainClass.userlogout = true;
+
 			oncleanuptime();
 			Console.WriteLine("button 1 clicked "+button_login.Label);
 			if(this.loginbut==true)
@@ -398,7 +401,17 @@ namespace omvviewerlight
             }
 			else
 			{
-				Console.WriteLine("Trying to logout user request");
+                Console.WriteLine("Trying to logout user request");
+                this.button_login.Sensitive = false;
+                trying = true;
+                progressbar2.Fraction=0.1;
+                GLib.Timeout.Add(100, OnPulseProgress);
+                
+                Console.WriteLine("Running logout tasks first");
+                if (MainClass.client.Inventory.Store != null)
+                    MainClass.client.Inventory.Store.SaveToDisk(MainClass.client.Settings.TEXTURE_CACHE_DIR + System.IO.Path.DirectorySeparatorChar + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
+               
+                Console.WriteLine("Done");
                 MainClass.userlogout = true;
 				MainClass.client.Network.Logout();
 				this.trying=false;
@@ -436,6 +449,7 @@ namespace omvviewerlight
 			this.radiobutton2.Sensitive=true;
 			this.radiobutton3.Sensitive=true;
 			this.entry_location.Sensitive=true;
+            this.button_login.Sensitive = true;
 
 		}
 

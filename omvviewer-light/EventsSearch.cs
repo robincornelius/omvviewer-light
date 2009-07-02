@@ -79,9 +79,11 @@ namespace omvviewerlight
 
         void MainClass_onDeregister()
         {
-            MainClass.client.Directory.OnEventsReply -= new OpenMetaverse.DirectoryManager.EventReplyCallback(onEvents);
-            MainClass.client.Directory.OnEventInfo -= new OpenMetaverse.DirectoryManager.EventInfoCallback(onEventInfo);
-
+            if (MainClass.client != null)
+            {
+                MainClass.client.Directory.OnEventsReply -= new OpenMetaverse.DirectoryManager.EventReplyCallback(onEvents);
+                MainClass.client.Directory.OnEventInfo -= new OpenMetaverse.DirectoryManager.EventInfoCallback(onEventInfo);
+            }
         }
 
         void MainClass_onRegister()

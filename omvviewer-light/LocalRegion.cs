@@ -22,24 +22,18 @@ namespace omvviewerlight
 		bool requested=false;
 		GridRegion[] regions=new GridRegion[9];
         Map[] maps = new Map[9];
-        //Gtk.Image[] baseimages = new Gtk.Image[9];
 		int size=150;
 		int oldsize=0;
-        bool needdata = false;
-	
-			
+   
 	
 		public LocalRegion()
 		{
 
-            
 			this.Build();
 
             MainClass.onRegister += new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
-            if(MainClass.client != null ) { MainClass_onRegister(); }
-		
-			
+           
             maps[0] = this.map1;
             maps[1] = this.map2;
             maps[2] = this.map3;
@@ -61,37 +55,53 @@ namespace omvviewerlight
             maps[7].onclickMap += delegate { mapclick(7); };
             maps[8].onclickMap += delegate { mapclick(8); };
 
-
             this.SizeAllocated+=new Gtk.SizeAllocatedHandler(onResize);
-			                                                
-			requested=true;
 
+            if (MainClass.client != null) { MainClass_onRegister(); }
+                            
             if (MainClass.client != null)
             {
                 if (MainClass.client.Network.LoginStatusCode == OpenMetaverse.LoginStatus.Success)
                 {
-                    needdata = true;
-
-                    //if(MainClass.client.Network.CurrentSim!=null && MainClass.client.Network.CurrentSim.Name!=null)
-                        //MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name, GridLayerType.Objects);
+                    requestnewgridregion();
                 }
             }	
 		}
 
         void MainClass_onDeregister()
         {
-            MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-            MainClass.client.Grid.OnGridRegion -= new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
- 
+            if (MainClass.client != null)
+            {
+                MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
+                MainClass.client.Grid.OnGridRegion -= new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
+                MainClass.client.Network.OnLogin -= new NetworkManager.LoginCallback(Network_OnLogin);
+            }
         }
 
         void MainClass_onRegister()
         {
             requested = false;
-            needdata = true;
+            
+            for (int x = 0; x < 9; x++)
+            {
+                maps[x].SetAsWater();
+                regions[x] = new OpenMetaverse.GridRegion();
+                regions[x].Name = "";
+
+                Gtk.Tooltips name = new Gtk.Tooltips();
+                name.SetTip(maps[x], "Empty", "");
+                name.Enable();
+            }
+
             MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
             MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
- 
+            MainClass.client.Network.OnLogin += new NetworkManager.LoginCallback(Network_OnLogin);
+        }
+
+        void Network_OnLogin(LoginStatus login, string message)
+        {
+            //if (login == LoginStatus.Success)
+             //   requestnewgridregion();
         }
 
         new public void Dispose()
@@ -117,13 +127,6 @@ namespace omvviewerlight
             {
 				maps[x].set_optimal_size(size);
 		    }
-
-            if (needdata == true)
-            {
-                needdata = false;
-                if(MainClass.client.Network.CurrentSim!=null && MainClass.client.Network.CurrentSim.Name!=null)
-                    MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name, GridLayerType.Objects);
-            }
 		}
 		
 		void onGridRegion(GridRegion region)
@@ -167,20 +170,13 @@ namespace omvviewerlight
 	
 			});
 		}
-		
-		void onNewSim(Simulator lastsim)
-	    {
-            if (lastsim == MainClass.client.Network.CurrentSim)
-                return;
 
-			requested=true;
+        void requestnewgridregion()
+        {
+
             cx = 0;
             cy = 0;
-            for (int x = 0; x < 9; x++)
-            {
-                maps[x].SetAsWater();
-            }
-  
+           
             Gtk.Application.Invoke(delegate{
 
                 
@@ -194,10 +190,19 @@ namespace omvviewerlight
                     name.Enable();
                 }
                  
-
+                Console.WriteLine("Requesting map region for current region");
+                requested = true;
                 MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name, GridLayerType.Objects);
+               
+            });           
+        }
 
-                Console.WriteLine("Requesting map region for current region");            });           
+		void onNewSim(Simulator lastsim)
+	    {
+            if (lastsim == MainClass.client.Network.CurrentSim)
+                return;
+
+            requestnewgridregion();
         }
 
 

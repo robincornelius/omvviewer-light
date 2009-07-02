@@ -73,17 +73,22 @@ namespace omvviewerlight
 
         void MainClass_onDeregister()
         {
-            running = false;
-            MainClass.client.Grid.OnCoarseLocationUpdate -= new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
-            MainClass.client.Self.OnChat -= new OpenMetaverse.AgentManager.ChatCallback(onChat);
-            MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-            MainClass.client.Self.OnTeleport -= new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
-            MainClass.client.Network.OnSimDisconnected -= new NetworkManager.SimDisconnectedCallback(Network_OnSimDisconnected);
-
+            if (MainClass.client != null)
+            {
+                MainClass.client.Grid.OnCoarseLocationUpdate -= new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
+                MainClass.client.Self.OnChat -= new OpenMetaverse.AgentManager.ChatCallback(onChat);
+                MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+                MainClass.client.Self.OnTeleport -= new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
+                MainClass.client.Network.OnSimDisconnected -= new NetworkManager.SimDisconnectedCallback(Network_OnSimDisconnected);
+            }
         }
 
         void MainClass_onRegister()
         {
+            av_tree.Clear();
+            av_typing.Clear();
+            lastsim = UUID.Zero;
+
             MainClass.client.Grid.OnCoarseLocationUpdate += new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
             MainClass.client.Self.OnChat += new OpenMetaverse.AgentManager.ChatCallback(onChat);
             MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
@@ -156,8 +161,7 @@ namespace omvviewerlight
                 return true;
 
 
-
-            foreach (Simulator sim in MainClass.client.Network.Simulators)
+            MainClass.client.Network.Simulators.ForEach(delegate(Simulator sim)
             {
                 sim.AvatarPositions.ForEach(delegate(KeyValuePair<UUID, Vector3> kvp)
                 {
@@ -171,18 +175,18 @@ namespace omvviewerlight
 
                             AsyncNameUpdate ud = new AsyncNameUpdate(kvp.Key, false);
 
-                            ud.onNameCallBack += delegate(string name, object[] values) 
-                            { 
+                            ud.onNameCallBack += delegate(string name, object[] values)
+                            {
                                 // We need to check that this iter still exists
-                                if(av_tree.ContainsKey(kvp.Key))
-                                    store.SetValue(iter, 1, name); 
+                                if (av_tree.ContainsKey(kvp.Key))
+                                    store.SetValue(iter, 1, name);
                             };
                             ud.go();
 
                         }
                     }
                 });
-            }
+            });
 
             calcdistance();
             return true;

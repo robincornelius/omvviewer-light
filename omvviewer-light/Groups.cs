@@ -71,10 +71,12 @@ namespace omvviewerlight
         void MainClass_onDeregister()
         {
             //REFACTOR ME, MAINCLASS IS DUPLICATING
-            MainClass.client.Groups.OnCurrentGroups -= new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
-            MainClass.client.Groups.OnGroupJoined -= new OpenMetaverse.GroupManager.GroupJoinedCallback(onGroupJoined);
-            MainClass.client.Groups.OnGroupLeft -= new OpenMetaverse.GroupManager.GroupLeftCallback(onGroupLeft);
-
+            if (MainClass.client != null)
+            {
+                MainClass.client.Groups.OnCurrentGroups -= new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
+                MainClass.client.Groups.OnGroupJoined -= new OpenMetaverse.GroupManager.GroupJoinedCallback(onGroupJoined);
+                MainClass.client.Groups.OnGroupLeft -= new OpenMetaverse.GroupManager.GroupLeftCallback(onGroupLeft);
+            }
         }
 
         void MainClass_onRegister()

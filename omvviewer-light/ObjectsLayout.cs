@@ -166,10 +166,13 @@ namespace omvviewerlight
             store.Clear();
             PrimsWaiting.Clear();
             FetchedPrims.Clear();
-            MainClass.client.Objects.OnObjectProperties -= new OpenMetaverse.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
-            MainClass.client.Groups.OnGroupNames -= new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
-            MainClass.client.Self.OnAvatarSitResponse -= new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
-            MainClass.client.Objects.OnObjectUpdated -= new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);
+            if (MainClass.client != null)
+            {
+                MainClass.client.Objects.OnObjectProperties -= new OpenMetaverse.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
+                MainClass.client.Groups.OnGroupNames -= new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
+                MainClass.client.Self.OnAvatarSitResponse -= new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
+                MainClass.client.Objects.OnObjectUpdated -= new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);
+            }
         }
 
         void MainClass_onRegister()

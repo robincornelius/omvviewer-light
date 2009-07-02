@@ -216,12 +216,14 @@ namespace omvviewerlight
 
         void MainClass_onDeregister()
         {
-            MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-            MainClass.client.Network.OnLogoutReply -= new NetworkManager.LogoutCallback(Network_OnLogoutReply);
-            MainClass.client.Network.OnEventQueueRunning -= new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
-            MainClass.client.Inventory.OnItemReceived -= new InventoryManager.ItemReceivedCallback(Inventory_OnItemReceived);
+            if (MainClass.client != null)
+            {
+                MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
+                MainClass.client.Network.OnLogoutReply -= new NetworkManager.LogoutCallback(Network_OnLogoutReply);
+                MainClass.client.Network.OnEventQueueRunning -= new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
+            }
+            
             MainWindow.OnInventoryAccepted -= new MainWindow.InventoryAccepted(win_OnInventoryAccepted);
-
         }
 
         void MainClass_onRegister()
@@ -240,7 +242,6 @@ namespace omvviewerlight
             MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
             MainClass.client.Network.OnLogoutReply += new NetworkManager.LogoutCallback(Network_OnLogoutReply);
             MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
-            MainClass.client.Inventory.OnItemReceived += new InventoryManager.ItemReceivedCallback(Inventory_OnItemReceived);
             MainWindow.OnInventoryAccepted += new MainWindow.InventoryAccepted(win_OnInventoryAccepted);
 
         }
@@ -250,7 +251,6 @@ namespace omvviewerlight
             Gtk.TreeModel mod;
             Gtk.TreeIter iter;
             
-
             TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
             if (mod.GetIter(out iter, paths[0]))
             {
@@ -289,46 +289,9 @@ namespace omvviewerlight
             }
         }
 
-        void Inventory_OnItemReceived(InventoryItem item)
-        {
-            Console.WriteLine("On item received: " + item.ToString());
-        }
-
-        void Inventory_OnCacheDelete(List<UUID> delete_list)
-        {
-            Console.WriteLine("Cache delete");
-            Gtk.Application.Invoke(delegate
-            {
-                foreach (UUID item in delete_list)
-                {
-                    if (this.assetmap.ContainsKey(item))
-                    {
-                        Console.WriteLine("Trying to remove item " + item.ToString());
-                        TreeIter iter = assetmap[item];
-                        //this.inventory.Remove(ref iter);
-                        //invmap.Remove(item);
-                        //if(assetmap.ContainsKey(item))
-                        //    assetmap.Remove(item);
-                        string name=(string)inventory.GetValue(iter, 1);
-                        inventory.SetValue(iter, 1, name + " (delete)");
-                    }
-
-                }
-            });
-        }
-
         void Network_OnLogoutReply(List<UUID> inventoryItems)
         {
             abortfetch = true;
-            try
-            {
-                //Save cache inventory;
-                //MainClass.client.Inventory.Store.cache_inventory_to_disk(MainClass.client.Settings.TEXTURE_CACHE_DIR + "\\" + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine("Exception saving inventory :"+e.Message);
-            }
         }
      
         private bool FilterTree(Gtk.TreeModel model, Gtk.TreeIter iter)
@@ -1416,7 +1379,6 @@ namespace omvviewerlight
                     inventoryloaded = true;
                     Gtk.Application.Invoke(delegate
                     {
-                       
                         inventory.Clear();
                         populate_top_level_inv();
                     });
@@ -1581,10 +1543,13 @@ namespace omvviewerlight
 			//Console.WriteLine("Possible refilter");
 			if(filteractive==true)
 			{
+                System.Threading.AutoResetEvent waitfilter = new System.Threading.AutoResetEvent(false);
 				Gtk.Application.Invoke(delegate{
 					filter.Refilter();
 					filter.Refilter(); //*sigh*
+                    waitfilter.Set();
             	});
+                waitfilter.WaitOne();
             }
 			
 					//Console.WriteLine("Update fetch data");

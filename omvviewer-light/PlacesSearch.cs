@@ -75,7 +75,8 @@ namespace omvviewerlight
 
         void MainClass_onDeregister()
         {
-            MainClass.client.Directory.OnPlacesReply -= new OpenMetaverse.DirectoryManager.PlacesReplyCallback(onPlaces);
+            if (MainClass.client != null)
+                MainClass.client.Directory.OnPlacesReply -= new OpenMetaverse.DirectoryManager.PlacesReplyCallback(onPlaces);
           
         }
 

@@ -56,13 +56,21 @@ namespace omvviewerlight
                 {	
 					MainClass.win.tp_target_widget=this; //MEMORY LEAK, needs to be killed if this widget is removed
 				}
-			}			
+			}
+
+         
+            this.label_current.Text = "";
+
 		}
 
         void MainClass_onDeregister()
         {
-            MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-            MainClass.client.Objects.OnObjectUpdated -= new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);
+            if (MainClass.client != null)
+            {
+                MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
+                MainClass.client.Objects.OnObjectUpdated -= new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);
+            }
+            
             AutoPilot.onAutoPilotFinished -= new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
 
         }
@@ -87,29 +95,28 @@ namespace omvviewerlight
         {
             if (update.LocalID == MainClass.client.Self.LocalID)
             {
-                Gtk.Application.Invoke(delegate
-                {
-					if(userclicked==false)
-					{
-					localupdate=true;
-					this.spinbutton_x.Value = MainClass.client.Self.SimPosition.X;
-                    this.spinbutton_y.Value = MainClass.client.Self.SimPosition.Y;
-                    this.spinbutton_z.Value = MainClass.client.Self.SimPosition.Z;
-					localupdate=false;
-					}
+                if(userclicked==false)
+				{
+                    Gtk.Application.Invoke(delegate
+                    {
+    					
+					    localupdate=true;
+					    this.spinbutton_x.Value = MainClass.client.Self.SimPosition.X;
+                        this.spinbutton_y.Value = MainClass.client.Self.SimPosition.Y;
+                        this.spinbutton_z.Value = MainClass.client.Self.SimPosition.Z;
+					    localupdate=false;
+                    });
 
-					if(target==true)
-					{
-						if(Math.Abs(MainClass.client.Self.SimPosition.X-spinbutton_x.Value)<1)
-							if(Math.Abs(MainClass.client.Self.SimPosition.Y-spinbutton_y.Value)<1)
-						    {
-							   target=false;
-							   MainClass.client.Self.AutoPilotCancel();
-						    }
-						
-					}
-				});
-
+					    if(target==true)
+					    {
+						    if(Math.Abs(MainClass.client.Self.SimPosition.X-spinbutton_x.Value)<1)
+							    if(Math.Abs(MainClass.client.Self.SimPosition.Y-spinbutton_y.Value)<1)
+						        {
+							       target=false;
+							       MainClass.client.Self.AutoPilotCancel();
+						        }
+					    }
+                }
             }
         }
 
@@ -128,6 +135,7 @@ namespace omvviewerlight
 				this.entry_simname.Text=MainClass.client.Network.CurrentSim.Name;
 				MainClass.win.tp_target_widget=this; //MEMORY LEAK, needs to be killed if this widget is removed
 				MainClass.client.Self.AutoPilotCancel();
+                this.label_current.Text = MainClass.client.Network.CurrentSim.Name;
 			});
            
 		}
@@ -155,10 +163,13 @@ namespace omvviewerlight
 			pos.X=(float)this.spinbutton_x.Value;
 			pos.Y=(float)this.spinbutton_y.Value;
 			pos.Z=(float)this.spinbutton_z.Value;
-			TeleportProgress tp = new TeleportProgress();
-			tp.Show();
+
+            TeleportProgress tp = new TeleportProgress();
+            if (entry_simname.Text != MainClass.client.Network.CurrentSim.Name)
+            {
+                tp.Show();
+            }
 			tp.teleport(entry_simname.Text,pos);
-		
 		}
 
 		protected virtual void OnButtonTphomeClicked (object sender, System.EventArgs e)

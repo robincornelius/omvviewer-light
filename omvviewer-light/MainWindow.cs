@@ -1033,23 +1033,25 @@ void  Grid_OnGridRegion(GridRegion region)
 			
 		}
 		
-        //Should this be here?
-		Gtk.Application.Invoke(delegate {		
-		        if(!this.Visible)
-		        {
-			        trayIcon.Blinking=true;
-			        this.UrgencyHint=true;
-		        }
-	        });
-
         if (im.Dialog==InstantMessageDialog.MessageFromObject)
-            return; //Its an object Im, chat weill grab this for us
+            return; //Its an object Im, chat will grab this for us
 
         if (im_windows.ContainsKey(im.IMSessionID))
 		    return; // Do nothing handler is registered
 		
 		if(active_ims.Contains(im.IMSessionID))
            return;
+
+        //We only want the following stuff here for a new window create
+        if (im.Dialog != OpenMetaverse.InstantMessageDialog.MessageFromAgent &&
+            im.Dialog != OpenMetaverse.InstantMessageDialog.SessionSend &&
+            im.Dialog != OpenMetaverse.InstantMessageDialog.SessionGroupStart &&
+            im.Dialog != OpenMetaverse.InstantMessageDialog.BusyAutoResponse &&
+            im.Dialog != OpenMetaverse.InstantMessageDialog.SessionAdd
+            )
+        {
+            return;
+        }
 
         if (im.BinaryBucket.Length>1)
         {           

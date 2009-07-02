@@ -145,12 +145,15 @@ namespace omvviewerlight
             parcels_store.Clear();
             parcels_ban.Clear();
 
-            MainClass.client.Parcels.OnParcelInfo -= new OpenMetaverse.ParcelManager.ParcelInfoCallback(onParcelInfo);
-            MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-            MainClass.client.Parcels.OnSimParcelsDownloaded -= new OpenMetaverse.ParcelManager.SimParcelsDownloaded(onParcelsDownloaded);
-            MainClass.client.Parcels.OnParcelProperties -= new OpenMetaverse.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
-            MainClass.client.Parcels.OnPrimOwnersListReply -= new OpenMetaverse.ParcelManager.ParcelObjectOwnersListReplyCallback(onParcelObjectOwners);
-            MainClass.client.Parcels.OnParcelDwell -= new OpenMetaverse.ParcelManager.ParcelDwellCallback(onDwell);
+            if (MainClass.client != null)
+            {
+                MainClass.client.Parcels.OnParcelInfo -= new OpenMetaverse.ParcelManager.ParcelInfoCallback(onParcelInfo);
+                MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
+                MainClass.client.Parcels.OnSimParcelsDownloaded -= new OpenMetaverse.ParcelManager.SimParcelsDownloaded(onParcelsDownloaded);
+                MainClass.client.Parcels.OnParcelProperties -= new OpenMetaverse.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
+                MainClass.client.Parcels.OnPrimOwnersListReply -= new OpenMetaverse.ParcelManager.ParcelObjectOwnersListReplyCallback(onParcelObjectOwners);
+                MainClass.client.Parcels.OnParcelDwell -= new OpenMetaverse.ParcelManager.ParcelDwellCallback(onDwell);
+            }
         }
 
         void MainClass_onRegister()
