@@ -250,6 +250,7 @@ namespace omvviewerlight
 				    button_login.Image=new Gtk.Image(Stetic.IconLoader.LoadIcon(this, "gtk-connect", Gtk.IconSize.Menu, 16));
 					this.trying=false;
 					this.enablebuttons();
+                    MainClass.killclient();
 			    });			
 	
 			if(LoginStatus.Success==login)

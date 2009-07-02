@@ -282,10 +282,10 @@ namespace omvviewerlight
             if(assetmap.TryGetValue(folder,out iter))
             {
                 //request an update of that folder
-                TreePath path = inventory.GetPath(iter);
-                Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
-                invthreaddata x = new invthreaddata(folder, path.ToString(), iter, false,true);
-                invRunner.Start(x);
+              //  TreePath path = inventory.GetPath(iter);
+              //  Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
+              //  invthreaddata x = new invthreaddata(folder, path.ToString(), iter, false,true);
+                //invRunner.Start(x);
             }
         }
 
@@ -337,7 +337,7 @@ namespace omvviewerlight
                     return false;
                 }
             }
-              
+            
         }
         
 
@@ -1427,42 +1427,48 @@ namespace omvviewerlight
 
 		void onRowExpanded(object o,Gtk.RowExpandedArgs args)
 		{
-            // Avoid updaing rows in the middle of a filter operation
-            if (filteractive == true)
-                return;
-
-            //We can't do this or it confuses the hell out of stuff
-            if (fetcherrunning == true)
-                return;
-
-            try
+            lock (inventory)
             {
-                TreeIter iter = filter.ConvertIterToChildIter(args.Iter);
-                
-                UUID key = (UUID)this.inventory.GetValue(iter, 2);
 
-                if (inventory.GetValue(iter, 0) == folder_closed)
-                    inventory.SetValue(iter, 0, folder_open);
+                // Avoid updaing rows in the middle of a filter operation
+                if (filteractive == true)
+                    return;
 
-                TreePath path = inventory.GetPath(iter);
-                path.Down();
-                TreeIter iter2;
-                inventory.GetIter(out iter2, path);
+                //We can't do this or it confuses the hell out of stuff
+                //if (fetcherrunning == true)
+                  //  return;
 
-                string Name = inventory.GetValue(iter2, 1).ToString();
-                //if (Name == "Waiting...")
+                try
                 {
-                    Thread invRunner = new Thread(new ParameterizedThreadStart(UpdateRow));
-                    invthreaddata x = new invthreaddata(key, filter.ConvertPathToChildPath(args.Path).ToString(), iter,false,true);
-                    invRunner.Start(x);
+                    TreeIter iter = filter.ConvertIterToChildIter(args.Iter);
+
+                    UUID key = (UUID)this.inventory.GetValue(iter, 2);
+
+                    if (inventory.GetValue(iter, 0) == folder_closed)
+                        inventory.SetValue(iter, 0, folder_open);
+
+                    TreePath path = inventory.GetPath(iter);
+                    path.Down();
+                    TreeIter iter2;
+                    inventory.GetIter(out iter2, path);
+
+                    string Name = inventory.GetValue(iter2, 1).ToString();
+                    //if (Name == "Waiting...")
+                    {
+  
+                        Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
+                        invthreaddata itd = new invthreaddata(key, filter.ConvertPathToChildPath(args.Path).ToString(), iter, false, false);
+                        invRunner.Start(itd);
+
+                       
+                    }
                 }
-            }
-            catch
-            {
+                catch
+                {
+
+                }
 
             }
-			
-        
 		}
 		
 		void fetchinventory(object x)
@@ -1474,40 +1480,53 @@ namespace omvviewerlight
             bool cache = itd.cacheonly;
 			bool alreadyseen=true;
             bool recurse = itd.recurse;
+            List<InventoryBase> myObjects;
+            List <invthreaddata> runners= new List<invthreaddata>();
        		
-             List<InventoryBase> myObjects;
-			
-			//Console.WriteLine("Starting fetch all cache is "+cache.ToString());			
-			
-            // Ok we need to find and remove the previous Waiting.... it should be the first child of the current iter
-			
-			TreePath path = inventory.GetPath(iter);
+            System.Threading.AutoResetEvent prefetch=new AutoResetEvent(false);
+            TreePath path=null;
 
-            if (path == null)
+            Gtk.Application.Invoke(delegate
             {
-                Console.WriteLine("*!*!*!*! WTF? we got a NULL path in the fetchinventory()");
-                return;
-            }
-            
-            path.Down();
-			
-			InventoryNode node=MainClass.client.Inventory.Store.GetNodeFor(start);
-			if(node.NeedsUpdate==true)
-			{
-				alreadyseen=false;
-			}
 
-           //Check for a waiting here, we need to use this to decide which fetcher to use in a moment
-            if (cache == false)
-            {
-                TreeIter childiter;
-                inventory.GetIter(out childiter, path);
-                if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
-                {              
-                    alreadyseen = false;
-                }
-            }
-			
+                path = inventory.GetPath(iter);
+
+                 if (path == null)
+                 {
+                     Console.WriteLine("*!*!*!*! WTF? we got a NULL path in the fetchinventory()");
+                     return;
+                 }
+
+                 path.Down();
+
+                 if (MainClass.client == null)
+                 {
+                     recursion--;
+                     return;
+                 }
+
+                 InventoryNode node = MainClass.client.Inventory.Store.GetNodeFor(start);
+                 if (node.NeedsUpdate == true)
+                 {
+                     alreadyseen = false;
+                 }
+
+                 //Check for a waiting here, we need to use this to decide which fetcher to use in a moment
+                 if (cache == false)
+                 {
+                     TreeIter childiter;
+                     inventory.GetIter(out childiter, path);
+                     if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
+                     {
+                         alreadyseen = false;
+                     }
+                 }
+
+                 prefetch.Set();
+            });
+
+            prefetch.WaitOne();
+
             // Use an approprate fetcher based on various flags
             if(cache==true || alreadyseen==true)
                 myObjects = MainClass.client.Inventory.Store.GetContents(start);
@@ -1516,51 +1535,44 @@ namespace omvviewerlight
 			
 			//Console.WriteLine("Got objects # "+myObjects.Count.ToString());
 
+            AutoResetEvent postfetch = new AutoResetEvent(false);
 
-            lock(inventory)
+            Gtk.Application.Invoke(delegate
             {
-            //We should preserve Waiting... messages for folders we don't yet have the children for
-            //or else the user can't open them as there is no + to click on. But we need to get rid
-            // of them for folders we have just got the data for!
-            if (cache == false || (cache==true && myObjects.Count>0 ))
-            {
-                TreeIter childiter;
-                inventory.GetIter(out childiter, path);
-                if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
+                    //We should preserve Waiting... messages for folders we don't yet have the children for
+                    //or else the user can't open them as there is no + to click on. But we need to get rid
+                    // of them for folders we have just got the data for!
+                    if (cache == false || (cache==true && myObjects.Count>0 ))
+                    {
+                        TreeIter childiter;
+                        inventory.GetIter(out childiter, path);
+                        if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
+                        {
+                            inventory.Remove(ref childiter);
+                            alreadyseen = false;
+                        }
+                    }
+              
+
+                if (myObjects == null || myObjects.Count==0)
                 {
-                    inventory.Remove(ref childiter);
-                    alreadyseen = false;
-                }
-            }
-            }
+				    recursion--;
+                    return;
+			    }
+    			
+			    //Console.WriteLine("Possible refilter");
+			    if(filteractive==true)
+			    {
+			       filter.Refilter();
+			       filter.Refilter(); //*sigh*
+	            }
 
-            if (myObjects == null || myObjects.Count==0)
-            {
-				recursion--;
-                return;
-			}
-			
-			//Console.WriteLine("Possible refilter");
-			if(filteractive==true)
-			{
-                System.Threading.AutoResetEvent waitfilter = new System.Threading.AutoResetEvent(false);
-				Gtk.Application.Invoke(delegate{
-					filter.Refilter();
-					filter.Refilter(); //*sigh*
-                    waitfilter.Set();
-            	});
-                waitfilter.WaitOne();
-            }
-			
-					//Console.WriteLine("Update fetch data");
-	
+                this.label_fetched.Text="fetched "+this.no_items.ToString()+" items";
+           
           
-			Gtk.Application.Invoke(delegate{
-				this.label_fetched.Text="fetched "+this.no_items.ToString()+" items";
-			});
+			
 			List<InventoryBase> folders = new List<InventoryBase>();
 
-         
 			foreach (InventoryBase item in myObjects)
             {
 
@@ -1576,55 +1588,51 @@ namespace omvviewerlight
                     if (itemx is InventoryFolder)
 					{
 						invthreaddata itd2 = new invthreaddata(item.UUID, path.ToString(), iterx,cache,true);
-                        fetchinventory((object)itd2);
+                        runners.Add(itd2);
+                        //fetchinventory((object)itd2);
                     }
                     continue;
                 }
 
-                System.Threading.AutoResetEvent ar = new System.Threading.AutoResetEvent(false);
-                   lock(inventory)
-                   {
+              
                    this.no_items++;
                    Gdk.Pixbuf buf = getprettyicon(item);
 				  
-				
-				   Gtk.Application.Invoke(delegate{
-					    global_thread_tree = inventory.AppendValues(iter, buf, item.Name, item.UUID, item);
+				 
+					  global_thread_tree = inventory.AppendValues(iter, buf, item.Name, item.UUID, item);
                                                
                         if (!assetmap.ContainsKey(item.UUID))
                             assetmap.Add(item.UUID, global_thread_tree);
-                        ar.Set();
-			        });
- 
-                    }
-				
-				    ar.WaitOne();
+
 				
 					Gtk.TreeIter iter2=global_thread_tree;
 					
                      if (item is InventoryFolder)
                      {
-                     
-                         System.Threading.AutoResetEvent ar2=new System.Threading.AutoResetEvent(false);
-					
-					Gtk.Application.Invoke(delegate{
-		            lock(inventory)
-                    {             
-					inventory.AppendValues(iter2, item_object, "Waiting...", item.UUID, null);
-                    ar2.Set();
-                        }
-					     });					     
-						
-					   ar2.WaitOne();
+					    inventory.AppendValues(iter2, item_object, "Waiting...", item.UUID, null);
 					    invthreaddata itd2 = new invthreaddata(((InventoryFolder)item).UUID, "", iter2,cache,true);
-                        if (abortfetch == true)
+                        runners.Add(itd2);
+
+                         if (abortfetch == true)
                             return;
-						fetchinventory((object)itd2);
                      }
 			}
 
-            recursion--;
+            postfetch.Set();
+            });
+
+            postfetch.WaitOne();
+
+            foreach (invthreaddata itdn in runners)
+            {
+                if (abortfetch == true)
+                    return;
+
+                fetchinventory((object)itdn);
+            }
 			
+            recursion--;
+
             if (recursion == 0)
             {
 				fetcherrunning = false;
@@ -1632,119 +1640,15 @@ namespace omvviewerlight
 				{
 	                fetchrun=true;
 					Console.WriteLine("Fetch Complete");
-                    //MainClass.client.Inventory.Store.cache_inventory_to_disk(MainClass.client.Settings.TEXTURE_CACHE_DIR + "\\"+ MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
-  
-					Gtk.Application.Invoke(delegate{
+ 
+                    Gtk.Application.Invoke(delegate{
 						this.label_fetched.Text="fetched "+this.no_items.ToString()+" items (Finished)";
 					});
 	             }
             }
 			return;
 		}
-		
-        void UpdateRow(object x)
-        {
-            
-	        UUID key;
-            //Gtk.RowExpandedArgs args;
-			Gtk.TreePath path;
-			invthreaddata xx=(invthreaddata)x;
-            key = ((invthreaddata)x).key;
-            TreeIter incommingIter = ((invthreaddata)x).iter;
-            //args = ((invthreaddata)x).args;
-
-//            if (MainClass.client.Inventory.Store.GetNodeStatus(key) == OpenMetaverse.InventoryNode.CacheState.STATE_NETWORK)
-//            {
-//                Console.WriteLine("Not fetching row for " + key.ToString() + " alreay in state network");
- //               //return;
- //           }
-
-            List<InventoryBase> myObjects = MainClass.client.Inventory.FolderContents(key, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
 			
-            Gtk.Application.Invoke(delegate{			
-
- 			string paths=((invthreaddata)x).path;
-			path=new Gtk.TreePath(paths);
-
-
-			incomming.Add(xx,myObjects);
-
-			Gtk.TreeIter childiter;
-             
-		    path.Down();
-
-            //And tidy that waiting
-            if (inventory.GetIter(out childiter, path))
-            {
-                if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
-                    inventory.Remove(ref childiter);
-            }
-
-            if (myObjects == null)
-                return;
-
-             foreach (InventoryBase item in myObjects)
-             {
-				 Gdk.Pixbuf buf = getprettyicon(item);
-                 string msg="";
-
-                 if (!assetmap.ContainsKey(item.UUID))
-                 {
-                     lock(MainClass.client.Appearance.Wearables)
-                         MainClass.client.Appearance.Wearables.ForEach(delegate(KeyValuePair <WearableType,OpenMetaverse.AppearanceManager.WearableData> kvp)
-                         
-                         {
-                             if (kvp.Value.Item.UUID == item.UUID)
-                                 msg = " (WORN) ";
-                         });
-
-
-                     lock( MainClass.client.Network.CurrentSim.ObjectsPrimitives)
-                         MainClass.client.Network.CurrentSim.ObjectsPrimitives.ForEach(delegate(KeyValuePair<uint, Primitive> kvp)
-                         {
-                             if((kvp.Value.ID==item.UUID))
-                                 msg = " (ATTACHED) ";
-                         });
-
-					this.no_items++;
-                     label_fetched.Text="Fetched "+no_items.ToString()+" items";
-                     Gtk.TreeIter iter2 = inventory.AppendValues(incommingIter, buf, item.Name + msg, item.UUID, item);
-                    lock(inventory)
-                    {                    
-
-                     if(!assetmap.ContainsKey(item.UUID))
-					   assetmap.Add(item.UUID, iter2);
-					else
-					{
-						assetmap[item.UUID]=iter2;
-					}
-                     if (item is InventoryFolder)
-                     {
-						inventory.AppendValues(iter2, item_object, "Waiting...", item.UUID, null);
-                     }
-                 }
-
-                
-
-                 path.Up();
-
-               
-
-                 this.treeview_inv.ExpandRow(path, false);
-
-                }
-                //And tidy that waiting
-             //  if (inventory.GetIter(out childiter, path))
-             //  {
-             //     if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
-             //     inventory.Remove(ref childiter);
-             //  }
-
-			}
-			
-});
-        }
-		
         Gdk.Pixbuf getprettyfoldericon(InventoryFolder item)
         {
             // Assume this is a InventoryFolder
@@ -1934,7 +1838,7 @@ namespace omvviewerlight
 
 		protected virtual void OnEntrySearchChanged (object sender, System.EventArgs e)
 		{
-			
+           
         lock(inventory)
         {
 			if(fetchrun==false && fetcherrunning==false)
@@ -1945,9 +1849,12 @@ namespace omvviewerlight
                 invthreaddata itd = new invthreaddata(MainClass.client.Inventory.Store.RootFolder.UUID, "0:0", TLI,false,true);
                 invRunner.Start(itd);
 			}
-			
+
+            filteractive = true;
+
+            filter.ClearCache();
             filtered.Clear(); //*sigh*
-           
+            
             if (this.entry_search.Text == "")
             {
                 filteractive = false;
@@ -1956,7 +1863,7 @@ namespace omvviewerlight
             }
            
             //Becuase we use our own filter we have to do two passes at the data to first find matches, then to find parents of matches
-            filteractive = true;
+          
             filter.Refilter();
             filter.Refilter(); //*sigh*
           

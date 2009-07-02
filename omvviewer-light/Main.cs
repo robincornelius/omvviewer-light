@@ -39,10 +39,9 @@ using System.IO;
 using Gdk;
 using System.Windows.Forms;
 
-
 namespace omvviewerlight
 {
-	class MainClass
+  	class MainClass
 	{
         [DllImport("Kernel32")]
         public extern static bool SetDllDirectory(string path);
