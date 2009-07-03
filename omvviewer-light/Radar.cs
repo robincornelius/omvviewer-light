@@ -283,8 +283,6 @@ namespace omvviewerlight
                    self_pos.X = self_pos.X + regionX;
                    self_pos.Y = self_pos.Y + regionY;
 
-                   Simulator target_sim = null;
-
                    MainClass.client.Network.Simulators.ForEach(delegate(Simulator sim)
                    {
                        //foreach (Simulator sim in MainClass.client.Network.Simulators)

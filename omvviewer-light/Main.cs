@@ -142,7 +142,7 @@ namespace omvviewerlight
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Error loading pixbuf");
+                    Console.WriteLine("Error loading pixbuf :"+e.Message);
                 }
 
                 return buf;
@@ -160,7 +160,7 @@ namespace omvviewerlight
             }
             catch (Exception e)
             {
-                Console.WriteLine("GTK not found");
+                Console.WriteLine("GTK not found :" + e.Message);
                 return false;
             }
 

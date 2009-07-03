@@ -581,10 +581,6 @@ namespace OpenMetaverse
                 if (StatsTimer != null) StatsTimer.Dispose();
                 if (PingTimer != null) PingTimer.Dispose();
 
-                AckTimer = null;
-                StatsTimer = null;
-                PingTimer = null;
-
                 // Kill the current CAPS system
                 if (Caps != null)
                 {

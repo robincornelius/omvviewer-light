@@ -7,4 +7,5 @@ C:\omvviewer\omvviewer-light\omvviewer-light\bin\OpenMetaverseTypes.XML
 C:\omvviewer\omvviewer-light\libomv\OpenMetaverseTypes\obj\Release\ResolveAssemblyReference.cache
 C:\omvviewer\omvviewer-light\libomv\OpenMetaverseTypes\obj\Release\OpenMetaverseTypes.dll
 C:\omvviewer\omvviewer-light\omvviewer-light\bin\OpenMetaverseTypes.pdb
-C:\omvviewer\omvviewer-light\libomv\OpenMetaverseTypes\obj\Release\OpenMetaverseTypes.pdb
+C:\omvviewer\omvviewer-light\libomv\bin\OpenMetaverseTypes.dll
+C:\omvviewer\omvviewer-light\libomv\bin\OpenMetaverseTypes.XML

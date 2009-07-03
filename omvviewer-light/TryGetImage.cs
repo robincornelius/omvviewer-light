@@ -176,7 +176,7 @@ namespace omvviewerlight
                 }
                 catch (Exception e)
                 {
-                       Console.WriteLine("Exception when updating progress");
+                    Console.WriteLine("Exception when updating progress :" + e.Message);
                 }
             });		
         }

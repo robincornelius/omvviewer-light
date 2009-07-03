@@ -1,7 +1,7 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{32E99A61-BE0A-42C3-98E9-0D7388B3C03E}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -25,26 +25,6 @@
     <FileUpgradeFlags>
     </FileUpgradeFlags>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>DEBUG;TRACE;VISUAL_STUDIO</DefineConstants>
-    <DocumentationFile>OpenMetaverse.StructuredData.XML</DocumentationFile>
-    <DebugSymbols>true</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\omvviewer-light\bin\</OutputPath>
-    <RegisterForComInterop>False</RegisterForComInterop>
-    <RemoveIntegerChecks>False</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <NoStdLib>False</NoStdLib>
-    <NoWarn>1591,1574,0419,0618</NoWarn>
-    <DebugType>full</DebugType>
-  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
@@ -57,7 +37,26 @@
     <DebugSymbols>True</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <Optimize>False</Optimize>
-    <OutputPath>../bin/</OutputPath>
+    <OutputPath>..\bin\</OutputPath>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <RemoveIntegerChecks>False</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>False</NoStdLib>
+    <NoWarn>1591,1574,0419,0618</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;VISUAL_STUDIO</DefineConstants>
+    <DocumentationFile>OpenMetaverse.StructuredData.XML</DocumentationFile>
+    <DebugSymbols>False</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>True</Optimize>
+    <OutputPath>..\bin\</OutputPath>
     <RegisterForComInterop>False</RegisterForComInterop>
     <RemoveIntegerChecks>False</RemoveIntegerChecks>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
@@ -74,38 +73,38 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="../OpenMetaverseTypes/OpenMetaverseTypes.csproj">
+    <ProjectReference Include="..\OpenMetaverseTypes\OpenMetaverseTypes.csproj">
       <Name>OpenMetaverseTypes</Name>
-      <Project>{623408AE-DC36-410D-AC83-75673D3F2C48}</Project>
+      <Project>{E84E2F78-A9B0-4229-8D80-EEB602E0BC0C}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="StructuredData.cs">
     </Compile>
-    <Compile Include="JSON/IJsonWrapper.cs">
+    <Compile Include="JSON\IJsonWrapper.cs">
     </Compile>
-    <Compile Include="JSON/JsonData.cs">
+    <Compile Include="JSON\JsonData.cs">
     </Compile>
-    <Compile Include="JSON/JsonException.cs">
+    <Compile Include="JSON\JsonException.cs">
     </Compile>
-    <Compile Include="JSON/JsonMapper.cs">
+    <Compile Include="JSON\JsonMapper.cs">
     </Compile>
-    <Compile Include="JSON/JsonReader.cs">
+    <Compile Include="JSON\JsonReader.cs">
     </Compile>
-    <Compile Include="JSON/JsonWriter.cs">
+    <Compile Include="JSON\JsonWriter.cs">
     </Compile>
-    <Compile Include="JSON/Lexer.cs">
+    <Compile Include="JSON\Lexer.cs">
     </Compile>
-    <Compile Include="JSON/OSDJson.cs">
+    <Compile Include="JSON\OSDJson.cs">
     </Compile>
-    <Compile Include="JSON/ParserToken.cs">
+    <Compile Include="JSON\ParserToken.cs">
     </Compile>
-    <Compile Include="LLSD/BinaryLLSD.cs">
+    <Compile Include="LLSD\BinaryLLSD.cs">
     </Compile>
-    <Compile Include="LLSD/NotationLLSD.cs">
+    <Compile Include="LLSD\NotationLLSD.cs">
     </Compile>
-    <Compile Include="LLSD/XmlLLSD.cs">
+    <Compile Include="LLSD\XmlLLSD.cs">
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />

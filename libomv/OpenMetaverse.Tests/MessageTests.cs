@@ -68,7 +68,6 @@ namespace OpenMetaverse.Tests
             g1.GroupInsigniaID = UUID.Random();
             g1.GroupName = "Group Name Test 1";
             g1.GroupPowers = GroupPowers.Accountable | GroupPowers.AllowLandmark | GroupPowers.AllowSetHome;
-            g1.ListInProfile = false;
             blocks[0] = g1;
 
             AgentGroupDataUpdateMessage.GroupData g2 = new AgentGroupDataUpdateMessage.GroupData();
@@ -78,10 +77,21 @@ namespace OpenMetaverse.Tests
             g2.GroupInsigniaID = UUID.Random();
             g2.GroupName = "Group Name Test 2";
             g2.GroupPowers = GroupPowers.ChangeActions | GroupPowers.DeedObject;
-            g2.ListInProfile = true;
             blocks[1] = g2;
 
             s.GroupDataBlock = blocks;
+
+            AgentGroupDataUpdateMessage.NewGroupData[] nblocks = new AgentGroupDataUpdateMessage.NewGroupData[2];
+
+            AgentGroupDataUpdateMessage.NewGroupData ng1 = new AgentGroupDataUpdateMessage.NewGroupData();
+            ng1.ListInProfile = false;
+            nblocks[0] = ng1;
+
+            AgentGroupDataUpdateMessage.NewGroupData ng2 = new AgentGroupDataUpdateMessage.NewGroupData();
+            ng2.ListInProfile = true;
+            nblocks[1] = ng2;
+
+            s.NewGroupDataBlock = nblocks;
 
             OSDMap map = s.Serialize();
 
@@ -98,8 +108,12 @@ namespace OpenMetaverse.Tests
                 Assert.AreEqual(s.GroupDataBlock[i].GroupInsigniaID, t.GroupDataBlock[i].GroupInsigniaID);
                 Assert.AreEqual(s.GroupDataBlock[i].GroupName, t.GroupDataBlock[i].GroupName);
                 Assert.AreEqual(s.GroupDataBlock[i].GroupPowers, t.GroupDataBlock[i].GroupPowers);
-                Assert.AreEqual(s.GroupDataBlock[i].ListInProfile, t.GroupDataBlock[i].ListInProfile);
-}
+            }
+
+            for (int i = 0; i < t.NewGroupDataBlock.Length; i++)
+            {
+                Assert.AreEqual(s.NewGroupDataBlock[i].ListInProfile, t.NewGroupDataBlock[i].ListInProfile);
+            }
         }
 
         [Test]
@@ -845,13 +859,13 @@ namespace OpenMetaverse.Tests
         }
 
         [Test]
-        public void RemoteParcelRequestMessage()
+        public void RemoteParcelRequestReply()
         {
-            RemoteParcelRequestMessage s = new RemoteParcelRequestMessage();
+            RemoteParcelRequestReply s = new RemoteParcelRequestReply();
             s.ParcelID = UUID.Random();
             OSDMap map = s.Serialize();
 
-            RemoteParcelRequestMessage t = new RemoteParcelRequestMessage();
+            RemoteParcelRequestReply t = new RemoteParcelRequestReply();
             t.Deserialize(map);
 
             Assert.AreEqual(s.ParcelID, t.ParcelID);
@@ -1147,28 +1161,28 @@ namespace OpenMetaverse.Tests
 
         [Test]
         [Category("Benchmark")]
-        public void ReflectionPerformanceRemoteParcelRequest()
+        public void ReflectionPerformanceRemoteParcelResponse()
         {
             DateTime messageTestTime = DateTime.UtcNow;
             for (int x = 0; x < TEST_ITER; x++)
             {
-                RemoteParcelRequestMessage s = new RemoteParcelRequestMessage();
+                RemoteParcelRequestReply s = new RemoteParcelRequestReply();
                 s.ParcelID = UUID.Random();
                 OSDMap map = s.Serialize();
 
-                RemoteParcelRequestMessage t = new RemoteParcelRequestMessage();
+                RemoteParcelRequestReply t = new RemoteParcelRequestReply();
                 t.Deserialize(map);
 
                 Assert.AreEqual(s.ParcelID, t.ParcelID);
             }
             TimeSpan duration = DateTime.UtcNow - messageTestTime;
-            Console.WriteLine("RemoteParcelRequestMessage: OMV Message System Serialization/Deserialization Passes: {0} Total time: {1}", TEST_ITER, duration);
+            Console.WriteLine("RemoteParcelRequestReply: OMV Message System Serialization/Deserialization Passes: {0} Total time: {1}", TEST_ITER, duration);
 
             BinaryFormatter formatter = new BinaryFormatter();
             DateTime xmlTestTime = DateTime.UtcNow;
             for (int x = 0; x < TEST_ITER; x++)
             {
-                RemoteParcelRequestMessage s = new RemoteParcelRequestMessage();
+                RemoteParcelRequestReply s = new RemoteParcelRequestReply();
                 s.ParcelID = UUID.Random();
                 
                 MemoryStream stream = new MemoryStream();
@@ -1176,12 +1190,12 @@ namespace OpenMetaverse.Tests
                 formatter.Serialize(stream, s);
 
                 stream.Seek(0, SeekOrigin.Begin);
-                RemoteParcelRequestMessage t = (RemoteParcelRequestMessage)formatter.Deserialize(stream);
+                RemoteParcelRequestReply t = (RemoteParcelRequestReply)formatter.Deserialize(stream);
 
                 Assert.AreEqual(s.ParcelID, t.ParcelID);
             }
             TimeSpan durationxml = DateTime.UtcNow - xmlTestTime;
-            Console.WriteLine("RemoteParcelRequestMessage: .NET BinarySerialization/Deserialization Passes: {0} Total time: {1}", TEST_ITER, durationxml);
+            Console.WriteLine("RemoteParcelRequestReply: .NET BinarySerialization/Deserialization Passes: {0} Total time: {1}", TEST_ITER, durationxml);
         }
 
 
