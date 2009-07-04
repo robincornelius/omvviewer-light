@@ -18,6 +18,10 @@ namespace Stetic {
         internal static void Initialize(Gtk.Widget iconRenderer) {
             if ((Stetic.Gui.initialized == false)) {
                 Stetic.Gui.initialized = true;
+                Gtk.IconFactory w1 = new Gtk.IconFactory();
+                Gtk.IconSet w2 = new Gtk.IconSet(Gdk.Pixbuf.LoadFromResource("icn_voice-groupfocus.png"));
+                w1.Add("Groups", w2);
+                w1.AddDefault();
             }
         }
     }

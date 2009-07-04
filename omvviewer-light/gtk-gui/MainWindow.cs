@@ -54,6 +54,10 @@ public partial class MainWindow {
     
     private Gtk.Action BrowserAction;
     
+    private Gtk.Action HelpAction;
+    
+    private Gtk.Action AboutAction;
+    
     private Gtk.VBox vbox6;
     
     private Gtk.MenuBar menubar1;
@@ -74,12 +78,12 @@ public partial class MainWindow {
         this.StatusAction = new Gtk.Action("StatusAction", Mono.Unix.Catalog.GetString("Status"), null, null);
         this.StatusAction.ShortLabel = Mono.Unix.Catalog.GetString("Status");
         w1.Add(this.StatusAction, null);
-        this.BusyAction = new Gtk.RadioAction("BusyAction", Mono.Unix.Catalog.GetString("Busy"), null, null, 0);
+        this.BusyAction = new Gtk.RadioAction("BusyAction", Mono.Unix.Catalog.GetString("Busy"), null, "gtk-dialog-error", 0);
         this.BusyAction.Group = new GLib.SList(System.IntPtr.Zero);
         this.BusyAction.Sensitive = false;
         this.BusyAction.ShortLabel = Mono.Unix.Catalog.GetString("Busy");
         w1.Add(this.BusyAction, null);
-        this.AwayAction = new Gtk.RadioAction("AwayAction", Mono.Unix.Catalog.GetString("Away"), null, null, 0);
+        this.AwayAction = new Gtk.RadioAction("AwayAction", Mono.Unix.Catalog.GetString("Away"), null, "gtk-redo", 0);
         this.AwayAction.Group = this.BusyAction.Group;
         this.AwayAction.ShortLabel = Mono.Unix.Catalog.GetString("Away");
         w1.Add(this.AwayAction, null);
@@ -96,19 +100,19 @@ public partial class MainWindow {
         this.FlyAction.ShortLabel = Mono.Unix.Catalog.GetString("Fly");
         w1.Add(this.FlyAction, null);
         this.AvaiableAction = new Gtk.RadioAction("AvaiableAction", Mono.Unix.Catalog.GetString("Avaiable"), null, "gtk-yes", 0);
-        this.AvaiableAction.Group = this.AwayAction.Group;
+        this.AvaiableAction.Group = this.BusyAction.Group;
         this.AvaiableAction.ShortLabel = Mono.Unix.Catalog.GetString("Avaiable");
         w1.Add(this.AvaiableAction, null);
         this.StandingAction = new Gtk.RadioAction("StandingAction", Mono.Unix.Catalog.GetString("Standing"), null, null, 0);
-        this.StandingAction.Group = this.GroundSitAction.Group;
+        this.StandingAction.Group = this.FlyAction.Group;
         this.StandingAction.ShortLabel = Mono.Unix.Catalog.GetString("Standing");
         w1.Add(this.StandingAction, null);
         this.SittingAction = new Gtk.RadioAction("SittingAction", Mono.Unix.Catalog.GetString("Sitting"), null, null, 0);
-        this.SittingAction.Group = this.GroundSitAction.Group;
+        this.SittingAction.Group = this.StandingAction.Group;
         this.SittingAction.Sensitive = false;
         this.SittingAction.ShortLabel = Mono.Unix.Catalog.GetString("Sitting");
         w1.Add(this.SittingAction, null);
-        this.ToolsAction = new Gtk.Action("ToolsAction", Mono.Unix.Catalog.GetString("Tools"), null, null);
+        this.ToolsAction = new Gtk.Action("ToolsAction", Mono.Unix.Catalog.GetString("Tools"), null, "gtk-execute");
         this.ToolsAction.ShortLabel = Mono.Unix.Catalog.GetString("Tools");
         w1.Add(this.ToolsAction, null);
         this.ParcelAction = new Gtk.ToggleAction("ParcelAction", Mono.Unix.Catalog.GetString("Parcel"), null, null);
@@ -123,7 +127,7 @@ public partial class MainWindow {
         this.LocationAction = new Gtk.ToggleAction("LocationAction", Mono.Unix.Catalog.GetString("Location"), null, null);
         this.LocationAction.ShortLabel = Mono.Unix.Catalog.GetString("Location");
         w1.Add(this.LocationAction, null);
-        this.GroupsAction = new Gtk.ToggleAction("GroupsAction", Mono.Unix.Catalog.GetString("Groups"), null, null);
+        this.GroupsAction = new Gtk.ToggleAction("GroupsAction", Mono.Unix.Catalog.GetString("Groups"), null, "Groups");
         this.GroupsAction.ShortLabel = Mono.Unix.Catalog.GetString("Groups");
         w1.Add(this.GroupsAction, null);
         this.SearchAction = new Gtk.ToggleAction("SearchAction", Mono.Unix.Catalog.GetString("Search"), null, null);
@@ -141,6 +145,12 @@ public partial class MainWindow {
         this.BrowserAction = new Gtk.Action("BrowserAction", Mono.Unix.Catalog.GetString("Browser"), null, null);
         this.BrowserAction.ShortLabel = Mono.Unix.Catalog.GetString("Browser");
         w1.Add(this.BrowserAction, null);
+        this.HelpAction = new Gtk.Action("HelpAction", Mono.Unix.Catalog.GetString("Help"), null, "gtk-help");
+        this.HelpAction.ShortLabel = Mono.Unix.Catalog.GetString("Help");
+        w1.Add(this.HelpAction, null);
+        this.AboutAction = new Gtk.Action("AboutAction", Mono.Unix.Catalog.GetString("About"), null, "gtk-about");
+        this.AboutAction.ShortLabel = Mono.Unix.Catalog.GetString("About");
+        w1.Add(this.AboutAction, null);
         this.UIManager.InsertActionGroup(w1, 0);
         this.AddAccelGroup(this.UIManager.AccelGroup);
         this.WidthRequest = 800;
@@ -154,7 +164,7 @@ public partial class MainWindow {
         this.vbox6.Name = "vbox6";
         this.vbox6.Spacing = 6;
         // Container child vbox6.Gtk.Box+BoxChild
-        this.UIManager.AddUiFromString("<ui><menubar name='menubar1'><menu name='StatusAction' action='StatusAction'><menuitem name='AvaiableAction' action='AvaiableAction'/><menuitem name='BusyAction' action='BusyAction'/><menuitem name='AwayAction' action='AwayAction'/><separator/><menuitem name='StandingAction' action='StandingAction'/><menuitem name='GroundSitAction' action='GroundSitAction'/><menuitem name='CrouchAction' action='CrouchAction'/><menuitem name='FlyAction' action='FlyAction'/><menuitem name='SittingAction' action='SittingAction'/></menu><menu name='ToolsAction' action='ToolsAction'><menuitem name='ParcelAction' action='ParcelAction'/><menuitem name='ObjectsAction' action='ObjectsAction'/><menuitem name='InventoryAction' action='InventoryAction'/><menuitem name='LocationAction' action='LocationAction'/><menuitem name='GroupsAction' action='GroupsAction'/><menuitem name='SearchAction' action='SearchAction'/></menu><menu name='SettingsAction' action='SettingsAction'><menuitem name='PreferencesAction' action='PreferencesAction'/></menu><menu name='VIewAction' action='VIewAction'><menuitem name='BrowserAction' action='BrowserAction'/></menu></menubar></ui>");
+        this.UIManager.AddUiFromString("<ui><menubar name='menubar1'><menu name='StatusAction' action='StatusAction'><menuitem name='AvaiableAction' action='AvaiableAction'/><menuitem name='BusyAction' action='BusyAction'/><menuitem name='AwayAction' action='AwayAction'/><separator/><menuitem name='StandingAction' action='StandingAction'/><menuitem name='GroundSitAction' action='GroundSitAction'/><menuitem name='CrouchAction' action='CrouchAction'/><menuitem name='FlyAction' action='FlyAction'/><menuitem name='SittingAction' action='SittingAction'/></menu><menu name='ToolsAction' action='ToolsAction'><menuitem name='ParcelAction' action='ParcelAction'/><menuitem name='ObjectsAction' action='ObjectsAction'/><menuitem name='InventoryAction' action='InventoryAction'/><menuitem name='LocationAction' action='LocationAction'/><menuitem name='GroupsAction' action='GroupsAction'/><menuitem name='SearchAction' action='SearchAction'/></menu><menu name='SettingsAction' action='SettingsAction'><menuitem name='PreferencesAction' action='PreferencesAction'/></menu><menu name='HelpAction' action='HelpAction'><menuitem name='AboutAction' action='AboutAction'/></menu></menubar></ui>");
         this.menubar1 = ((Gtk.MenuBar)(this.UIManager.GetWidget("/menubar1")));
         this.menubar1.Name = "menubar1";
         this.vbox6.Add(this.menubar1);
@@ -215,5 +225,6 @@ public partial class MainWindow {
         this.SearchAction.Toggled += new System.EventHandler(this.OnSearchActionToggled);
         this.PreferencesAction.Activated += new System.EventHandler(this.OnPreferencesActionActivated);
         this.BrowserAction.Activated += new System.EventHandler(this.OnBrowserActionActivated);
+        this.AboutAction.Activated += new System.EventHandler(this.OnAboutActionActivated);
     }
 }
