@@ -202,12 +202,27 @@ namespace omvviewerlight {
             this.button_touch.CanFocus = true;
             this.button_touch.Name = "button_touch";
             this.button_touch.UseUnderline = true;
-            this.button_touch.Label = Mono.Unix.Catalog.GetString("Touch");
+            // Container child button_touch.Gtk.Container+ContainerChild
+            Gtk.Alignment w16 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            Gtk.HBox w17 = new Gtk.HBox();
+            w17.Spacing = 2;
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Image w18 = new Gtk.Image();
+            w18.Pixbuf = MainClass.GetResource("touch.png");
+            w17.Add(w18);
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Label w20 = new Gtk.Label();
+            w20.LabelProp = Mono.Unix.Catalog.GetString("Touch");
+            w20.UseUnderline = true;
+            w17.Add(w20);
+            w16.Add(w17);
+            this.button_touch.Add(w16);
             this.hbox3.Add(this.button_touch);
-            Gtk.Box.BoxChild w16 = ((Gtk.Box.BoxChild)(this.hbox3[this.button_touch]));
-            w16.Position = 0;
-            w16.Expand = false;
-            w16.Fill = false;
+            Gtk.Box.BoxChild w24 = ((Gtk.Box.BoxChild)(this.hbox3[this.button_touch]));
+            w24.Position = 0;
+            w24.Expand = false;
+            w24.Fill = false;
             // Container child hbox3.Gtk.Box+BoxChild
             this.button_siton = new Gtk.Button();
             this.button_siton.WidthRequest = 75;
@@ -217,10 +232,10 @@ namespace omvviewerlight {
             this.button_siton.UseUnderline = true;
             this.button_siton.Label = Mono.Unix.Catalog.GetString("Sit on");
             this.hbox3.Add(this.button_siton);
-            Gtk.Box.BoxChild w17 = ((Gtk.Box.BoxChild)(this.hbox3[this.button_siton]));
-            w17.Position = 1;
-            w17.Expand = false;
-            w17.Fill = false;
+            Gtk.Box.BoxChild w25 = ((Gtk.Box.BoxChild)(this.hbox3[this.button_siton]));
+            w25.Position = 1;
+            w25.Expand = false;
+            w25.Fill = false;
             // Container child hbox3.Gtk.Box+BoxChild
             this.button_lookat = new Gtk.Button();
             this.button_lookat.WidthRequest = 75;
@@ -228,12 +243,27 @@ namespace omvviewerlight {
             this.button_lookat.CanFocus = true;
             this.button_lookat.Name = "button_lookat";
             this.button_lookat.UseUnderline = true;
-            this.button_lookat.Label = Mono.Unix.Catalog.GetString("Look at");
+            // Container child button_lookat.Gtk.Container+ContainerChild
+            Gtk.Alignment w26 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            Gtk.HBox w27 = new Gtk.HBox();
+            w27.Spacing = 2;
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Image w28 = new Gtk.Image();
+            w28.Pixbuf = Stetic.IconLoader.LoadIcon(this, "gtk-find", Gtk.IconSize.Menu, 16);
+            w27.Add(w28);
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Label w30 = new Gtk.Label();
+            w30.LabelProp = Mono.Unix.Catalog.GetString("Look at");
+            w30.UseUnderline = true;
+            w27.Add(w30);
+            w26.Add(w27);
+            this.button_lookat.Add(w26);
             this.hbox3.Add(this.button_lookat);
-            Gtk.Box.BoxChild w18 = ((Gtk.Box.BoxChild)(this.hbox3[this.button_lookat]));
-            w18.Position = 2;
-            w18.Expand = false;
-            w18.Fill = false;
+            Gtk.Box.BoxChild w34 = ((Gtk.Box.BoxChild)(this.hbox3[this.button_lookat]));
+            w34.Position = 2;
+            w34.Expand = false;
+            w34.Fill = false;
             // Container child hbox3.Gtk.Box+BoxChild
             this.button_pay = new Gtk.Button();
             this.button_pay.WidthRequest = 75;
@@ -242,31 +272,31 @@ namespace omvviewerlight {
             this.button_pay.Name = "button_pay";
             this.button_pay.UseUnderline = true;
             // Container child button_pay.Gtk.Container+ContainerChild
-            Gtk.Alignment w19 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            Gtk.Alignment w35 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
             // Container child GtkAlignment.Gtk.Container+ContainerChild
-            Gtk.HBox w20 = new Gtk.HBox();
-            w20.Spacing = 2;
+            Gtk.HBox w36 = new Gtk.HBox();
+            w36.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
-            Gtk.Image w21 = new Gtk.Image();
-            w21.Pixbuf = MainClass.GetResource("status_money.png");
-            w20.Add(w21);
+            Gtk.Image w37 = new Gtk.Image();
+            w37.Pixbuf = MainClass.GetResource("status_money.png");
+            w36.Add(w37);
             // Container child GtkHBox.Gtk.Container+ContainerChild
-            Gtk.Label w23 = new Gtk.Label();
-            w23.LabelProp = Mono.Unix.Catalog.GetString("Pay");
-            w23.UseUnderline = true;
-            w20.Add(w23);
-            w19.Add(w20);
-            this.button_pay.Add(w19);
+            Gtk.Label w39 = new Gtk.Label();
+            w39.LabelProp = Mono.Unix.Catalog.GetString("Pay");
+            w39.UseUnderline = true;
+            w36.Add(w39);
+            w35.Add(w36);
+            this.button_pay.Add(w35);
             this.hbox3.Add(this.button_pay);
-            Gtk.Box.BoxChild w27 = ((Gtk.Box.BoxChild)(this.hbox3[this.button_pay]));
-            w27.Position = 3;
-            w27.Expand = false;
-            w27.Fill = false;
+            Gtk.Box.BoxChild w43 = ((Gtk.Box.BoxChild)(this.hbox3[this.button_pay]));
+            w43.Position = 3;
+            w43.Expand = false;
+            w43.Fill = false;
             this.vbox1.Add(this.hbox3);
-            Gtk.Box.BoxChild w28 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox3]));
-            w28.Position = 1;
-            w28.Expand = false;
-            w28.Fill = false;
+            Gtk.Box.BoxChild w44 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox3]));
+            w44.Position = 1;
+            w44.Expand = false;
+            w44.Fill = false;
             // Container child vbox1.Gtk.Box+BoxChild
             this.hbox4 = new Gtk.HBox();
             this.hbox4.Name = "hbox4";
@@ -280,26 +310,26 @@ namespace omvviewerlight {
             this.button_buy.Name = "button_buy";
             this.button_buy.UseUnderline = true;
             // Container child button_buy.Gtk.Container+ContainerChild
-            Gtk.Alignment w29 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            Gtk.Alignment w45 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
             // Container child GtkAlignment.Gtk.Container+ContainerChild
-            Gtk.HBox w30 = new Gtk.HBox();
-            w30.Spacing = 2;
+            Gtk.HBox w46 = new Gtk.HBox();
+            w46.Spacing = 2;
             // Container child GtkHBox.Gtk.Container+ContainerChild
-            Gtk.Image w31 = new Gtk.Image();
-            w31.Pixbuf = MainClass.GetResource("status_money.png");
-            w30.Add(w31);
+            Gtk.Image w47 = new Gtk.Image();
+            w47.Pixbuf = MainClass.GetResource("status_money.png");
+            w46.Add(w47);
             // Container child GtkHBox.Gtk.Container+ContainerChild
-            Gtk.Label w33 = new Gtk.Label();
-            w33.LabelProp = Mono.Unix.Catalog.GetString("Buy");
-            w33.UseUnderline = true;
-            w30.Add(w33);
-            w29.Add(w30);
-            this.button_buy.Add(w29);
+            Gtk.Label w49 = new Gtk.Label();
+            w49.LabelProp = Mono.Unix.Catalog.GetString("Buy");
+            w49.UseUnderline = true;
+            w46.Add(w49);
+            w45.Add(w46);
+            this.button_buy.Add(w45);
             this.hbox4.Add(this.button_buy);
-            Gtk.Box.BoxChild w37 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_buy]));
-            w37.Position = 0;
-            w37.Expand = false;
-            w37.Fill = false;
+            Gtk.Box.BoxChild w53 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_buy]));
+            w53.Position = 0;
+            w53.Expand = false;
+            w53.Fill = false;
             // Container child hbox4.Gtk.Box+BoxChild
             this.button_take = new Gtk.Button();
             this.button_take.WidthRequest = 75;
@@ -307,12 +337,27 @@ namespace omvviewerlight {
             this.button_take.CanFocus = true;
             this.button_take.Name = "button_take";
             this.button_take.UseUnderline = true;
-            this.button_take.Label = Mono.Unix.Catalog.GetString("Take");
+            // Container child button_take.Gtk.Container+ContainerChild
+            Gtk.Alignment w54 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            Gtk.HBox w55 = new Gtk.HBox();
+            w55.Spacing = 2;
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Image w56 = new Gtk.Image();
+            w56.Pixbuf = Stetic.IconLoader.LoadIcon(this, "gtk-save", Gtk.IconSize.Menu, 16);
+            w55.Add(w56);
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Label w58 = new Gtk.Label();
+            w58.LabelProp = Mono.Unix.Catalog.GetString("Take");
+            w58.UseUnderline = true;
+            w55.Add(w58);
+            w54.Add(w55);
+            this.button_take.Add(w54);
             this.hbox4.Add(this.button_take);
-            Gtk.Box.BoxChild w38 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_take]));
-            w38.Position = 1;
-            w38.Expand = false;
-            w38.Fill = false;
+            Gtk.Box.BoxChild w62 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_take]));
+            w62.Position = 1;
+            w62.Expand = false;
+            w62.Fill = false;
             // Container child hbox4.Gtk.Box+BoxChild
             this.button_take_copy = new Gtk.Button();
             this.button_take_copy.WidthRequest = 75;
@@ -320,12 +365,27 @@ namespace omvviewerlight {
             this.button_take_copy.CanFocus = true;
             this.button_take_copy.Name = "button_take_copy";
             this.button_take_copy.UseUnderline = true;
-            this.button_take_copy.Label = Mono.Unix.Catalog.GetString("Take copy");
+            // Container child button_take_copy.Gtk.Container+ContainerChild
+            Gtk.Alignment w63 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            Gtk.HBox w64 = new Gtk.HBox();
+            w64.Spacing = 2;
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Image w65 = new Gtk.Image();
+            w65.Pixbuf = Stetic.IconLoader.LoadIcon(this, "gtk-save-as", Gtk.IconSize.Menu, 16);
+            w64.Add(w65);
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Label w67 = new Gtk.Label();
+            w67.LabelProp = Mono.Unix.Catalog.GetString("Copy");
+            w67.UseUnderline = true;
+            w64.Add(w67);
+            w63.Add(w64);
+            this.button_take_copy.Add(w63);
             this.hbox4.Add(this.button_take_copy);
-            Gtk.Box.BoxChild w39 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_take_copy]));
-            w39.Position = 2;
-            w39.Expand = false;
-            w39.Fill = false;
+            Gtk.Box.BoxChild w71 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_take_copy]));
+            w71.Position = 2;
+            w71.Expand = false;
+            w71.Fill = false;
             // Container child hbox4.Gtk.Box+BoxChild
             this.button_return = new Gtk.Button();
             this.button_return.WidthRequest = 75;
@@ -333,17 +393,32 @@ namespace omvviewerlight {
             this.button_return.CanFocus = true;
             this.button_return.Name = "button_return";
             this.button_return.UseUnderline = true;
-            this.button_return.Label = Mono.Unix.Catalog.GetString("Return");
+            // Container child button_return.Gtk.Container+ContainerChild
+            Gtk.Alignment w72 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            Gtk.HBox w73 = new Gtk.HBox();
+            w73.Spacing = 2;
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Image w74 = new Gtk.Image();
+            w74.Pixbuf = Stetic.IconLoader.LoadIcon(this, "gtk-refresh", Gtk.IconSize.Menu, 16);
+            w73.Add(w74);
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Label w76 = new Gtk.Label();
+            w76.LabelProp = Mono.Unix.Catalog.GetString("Return");
+            w76.UseUnderline = true;
+            w73.Add(w76);
+            w72.Add(w73);
+            this.button_return.Add(w72);
             this.hbox4.Add(this.button_return);
-            Gtk.Box.BoxChild w40 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_return]));
-            w40.Position = 3;
-            w40.Expand = false;
-            w40.Fill = false;
+            Gtk.Box.BoxChild w80 = ((Gtk.Box.BoxChild)(this.hbox4[this.button_return]));
+            w80.Position = 3;
+            w80.Expand = false;
+            w80.Fill = false;
             this.vbox1.Add(this.hbox4);
-            Gtk.Box.BoxChild w41 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox4]));
-            w41.Position = 2;
-            w41.Expand = false;
-            w41.Fill = false;
+            Gtk.Box.BoxChild w81 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox4]));
+            w81.Position = 2;
+            w81.Expand = false;
+            w81.Fill = false;
             // Container child vbox1.Gtk.Box+BoxChild
             this.hbox5 = new Gtk.HBox();
             this.hbox5.Name = "hbox5";
@@ -356,17 +431,32 @@ namespace omvviewerlight {
             this.button_moveto.CanFocus = true;
             this.button_moveto.Name = "button_moveto";
             this.button_moveto.UseUnderline = true;
-            this.button_moveto.Label = Mono.Unix.Catalog.GetString("Move to");
+            // Container child button_moveto.Gtk.Container+ContainerChild
+            Gtk.Alignment w82 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            Gtk.HBox w83 = new Gtk.HBox();
+            w83.Spacing = 2;
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Image w84 = new Gtk.Image();
+            w84.Pixbuf = MainClass.GetResource("move.png");
+            w83.Add(w84);
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Label w86 = new Gtk.Label();
+            w86.LabelProp = Mono.Unix.Catalog.GetString("Move to");
+            w86.UseUnderline = true;
+            w83.Add(w86);
+            w82.Add(w83);
+            this.button_moveto.Add(w82);
             this.hbox5.Add(this.button_moveto);
-            Gtk.Box.BoxChild w42 = ((Gtk.Box.BoxChild)(this.hbox5[this.button_moveto]));
-            w42.Position = 0;
-            w42.Expand = false;
-            w42.Fill = false;
+            Gtk.Box.BoxChild w90 = ((Gtk.Box.BoxChild)(this.hbox5[this.button_moveto]));
+            w90.Position = 0;
+            w90.Expand = false;
+            w90.Fill = false;
             this.vbox1.Add(this.hbox5);
-            Gtk.Box.BoxChild w43 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox5]));
-            w43.Position = 3;
-            w43.Expand = false;
-            w43.Fill = false;
+            Gtk.Box.BoxChild w91 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox5]));
+            w91.Position = 3;
+            w91.Expand = false;
+            w91.Fill = false;
             // Container child vbox1.Gtk.Box+BoxChild
             this.hbox6 = new Gtk.HBox();
             this.hbox6.Name = "hbox6";
@@ -381,95 +471,95 @@ namespace omvviewerlight {
             this.label2.Xalign = 0F;
             this.label2.LabelProp = Mono.Unix.Catalog.GetString("Name");
             this.vbox3.Add(this.label2);
-            Gtk.Box.BoxChild w44 = ((Gtk.Box.BoxChild)(this.vbox3[this.label2]));
-            w44.Position = 0;
-            w44.Expand = false;
-            w44.Fill = false;
+            Gtk.Box.BoxChild w92 = ((Gtk.Box.BoxChild)(this.vbox3[this.label2]));
+            w92.Position = 0;
+            w92.Expand = false;
+            w92.Fill = false;
             // Container child vbox3.Gtk.Box+BoxChild
             this.label3 = new Gtk.Label();
             this.label3.Name = "label3";
             this.label3.Xalign = 0F;
             this.label3.LabelProp = Mono.Unix.Catalog.GetString("Key");
             this.vbox3.Add(this.label3);
-            Gtk.Box.BoxChild w45 = ((Gtk.Box.BoxChild)(this.vbox3[this.label3]));
-            w45.Position = 1;
-            w45.Expand = false;
-            w45.Fill = false;
+            Gtk.Box.BoxChild w93 = ((Gtk.Box.BoxChild)(this.vbox3[this.label3]));
+            w93.Position = 1;
+            w93.Expand = false;
+            w93.Fill = false;
             // Container child vbox3.Gtk.Box+BoxChild
             this.label4 = new Gtk.Label();
             this.label4.Name = "label4";
             this.label4.Xalign = 0F;
             this.label4.LabelProp = Mono.Unix.Catalog.GetString("Description");
             this.vbox3.Add(this.label4);
-            Gtk.Box.BoxChild w46 = ((Gtk.Box.BoxChild)(this.vbox3[this.label4]));
-            w46.Position = 2;
-            w46.Expand = false;
-            w46.Fill = false;
+            Gtk.Box.BoxChild w94 = ((Gtk.Box.BoxChild)(this.vbox3[this.label4]));
+            w94.Position = 2;
+            w94.Expand = false;
+            w94.Fill = false;
             // Container child vbox3.Gtk.Box+BoxChild
             this.label6 = new Gtk.Label();
             this.label6.Name = "label6";
             this.label6.Xalign = 0F;
             this.label6.LabelProp = Mono.Unix.Catalog.GetString("Owner");
             this.vbox3.Add(this.label6);
-            Gtk.Box.BoxChild w47 = ((Gtk.Box.BoxChild)(this.vbox3[this.label6]));
-            w47.Position = 3;
-            w47.Expand = false;
-            w47.Fill = false;
+            Gtk.Box.BoxChild w95 = ((Gtk.Box.BoxChild)(this.vbox3[this.label6]));
+            w95.Position = 3;
+            w95.Expand = false;
+            w95.Fill = false;
             // Container child vbox3.Gtk.Box+BoxChild
             this.label7 = new Gtk.Label();
             this.label7.Name = "label7";
             this.label7.Xalign = 0F;
             this.label7.LabelProp = Mono.Unix.Catalog.GetString("Group");
             this.vbox3.Add(this.label7);
-            Gtk.Box.BoxChild w48 = ((Gtk.Box.BoxChild)(this.vbox3[this.label7]));
-            w48.Position = 4;
-            w48.Expand = false;
-            w48.Fill = false;
+            Gtk.Box.BoxChild w96 = ((Gtk.Box.BoxChild)(this.vbox3[this.label7]));
+            w96.Position = 4;
+            w96.Expand = false;
+            w96.Fill = false;
             // Container child vbox3.Gtk.Box+BoxChild
             this.label9 = new Gtk.Label();
             this.label9.Name = "label9";
             this.label9.Xalign = 0.01F;
             this.label9.LabelProp = Mono.Unix.Catalog.GetString("For sale");
             this.vbox3.Add(this.label9);
-            Gtk.Box.BoxChild w49 = ((Gtk.Box.BoxChild)(this.vbox3[this.label9]));
-            w49.Position = 5;
-            w49.Expand = false;
-            w49.Fill = false;
+            Gtk.Box.BoxChild w97 = ((Gtk.Box.BoxChild)(this.vbox3[this.label9]));
+            w97.Position = 5;
+            w97.Expand = false;
+            w97.Fill = false;
             // Container child vbox3.Gtk.Box+BoxChild
             this.label5 = new Gtk.Label();
             this.label5.Name = "label5";
             this.label5.Xalign = 0F;
             this.label5.LabelProp = Mono.Unix.Catalog.GetString("Position");
             this.vbox3.Add(this.label5);
-            Gtk.Box.BoxChild w50 = ((Gtk.Box.BoxChild)(this.vbox3[this.label5]));
-            w50.Position = 6;
-            w50.Expand = false;
-            w50.Fill = false;
+            Gtk.Box.BoxChild w98 = ((Gtk.Box.BoxChild)(this.vbox3[this.label5]));
+            w98.Position = 6;
+            w98.Expand = false;
+            w98.Fill = false;
             // Container child vbox3.Gtk.Box+BoxChild
             this.label10 = new Gtk.Label();
             this.label10.Name = "label10";
             this.label10.Xalign = 0F;
             this.label10.LabelProp = Mono.Unix.Catalog.GetString("Distance");
             this.vbox3.Add(this.label10);
-            Gtk.Box.BoxChild w51 = ((Gtk.Box.BoxChild)(this.vbox3[this.label10]));
-            w51.Position = 7;
-            w51.Expand = false;
-            w51.Fill = false;
+            Gtk.Box.BoxChild w99 = ((Gtk.Box.BoxChild)(this.vbox3[this.label10]));
+            w99.Position = 7;
+            w99.Expand = false;
+            w99.Fill = false;
             // Container child vbox3.Gtk.Box+BoxChild
             this.label8 = new Gtk.Label();
             this.label8.Name = "label8";
             this.label8.Xalign = 0F;
             this.label8.LabelProp = Mono.Unix.Catalog.GetString("Text");
             this.vbox3.Add(this.label8);
-            Gtk.Box.BoxChild w52 = ((Gtk.Box.BoxChild)(this.vbox3[this.label8]));
-            w52.Position = 8;
-            w52.Expand = false;
-            w52.Fill = false;
+            Gtk.Box.BoxChild w100 = ((Gtk.Box.BoxChild)(this.vbox3[this.label8]));
+            w100.Position = 8;
+            w100.Expand = false;
+            w100.Fill = false;
             this.hbox6.Add(this.vbox3);
-            Gtk.Box.BoxChild w53 = ((Gtk.Box.BoxChild)(this.hbox6[this.vbox3]));
-            w53.Position = 0;
-            w53.Expand = false;
-            w53.Fill = false;
+            Gtk.Box.BoxChild w101 = ((Gtk.Box.BoxChild)(this.hbox6[this.vbox3]));
+            w101.Position = 0;
+            w101.Expand = false;
+            w101.Fill = false;
             // Container child hbox6.Gtk.Box+BoxChild
             this.vbox4 = new Gtk.VBox();
             this.vbox4.Name = "vbox4";
@@ -480,100 +570,100 @@ namespace omvviewerlight {
             this.label_name.Xalign = 0F;
             this.label_name.LabelProp = Mono.Unix.Catalog.GetString("label3");
             this.vbox4.Add(this.label_name);
-            Gtk.Box.BoxChild w54 = ((Gtk.Box.BoxChild)(this.vbox4[this.label_name]));
-            w54.Position = 0;
-            w54.Expand = false;
-            w54.Fill = false;
+            Gtk.Box.BoxChild w102 = ((Gtk.Box.BoxChild)(this.vbox4[this.label_name]));
+            w102.Position = 0;
+            w102.Expand = false;
+            w102.Fill = false;
             // Container child vbox4.Gtk.Box+BoxChild
             this.label_key = new Gtk.Label();
             this.label_key.Name = "label_key";
             this.label_key.Xalign = 0F;
             this.label_key.LabelProp = Mono.Unix.Catalog.GetString("label2");
             this.vbox4.Add(this.label_key);
-            Gtk.Box.BoxChild w55 = ((Gtk.Box.BoxChild)(this.vbox4[this.label_key]));
-            w55.Position = 1;
-            w55.Expand = false;
-            w55.Fill = false;
+            Gtk.Box.BoxChild w103 = ((Gtk.Box.BoxChild)(this.vbox4[this.label_key]));
+            w103.Position = 1;
+            w103.Expand = false;
+            w103.Fill = false;
             // Container child vbox4.Gtk.Box+BoxChild
             this.label_desc = new Gtk.Label();
             this.label_desc.Name = "label_desc";
             this.label_desc.Xalign = 0F;
             this.label_desc.LabelProp = Mono.Unix.Catalog.GetString("label4");
             this.vbox4.Add(this.label_desc);
-            Gtk.Box.BoxChild w56 = ((Gtk.Box.BoxChild)(this.vbox4[this.label_desc]));
-            w56.Position = 2;
-            w56.Expand = false;
-            w56.Fill = false;
+            Gtk.Box.BoxChild w104 = ((Gtk.Box.BoxChild)(this.vbox4[this.label_desc]));
+            w104.Position = 2;
+            w104.Expand = false;
+            w104.Fill = false;
             // Container child vbox4.Gtk.Box+BoxChild
             this.label_owner = new Gtk.Label();
             this.label_owner.Name = "label_owner";
             this.label_owner.Xalign = 0F;
             this.label_owner.LabelProp = Mono.Unix.Catalog.GetString("label6");
             this.vbox4.Add(this.label_owner);
-            Gtk.Box.BoxChild w57 = ((Gtk.Box.BoxChild)(this.vbox4[this.label_owner]));
-            w57.Position = 3;
-            w57.Expand = false;
-            w57.Fill = false;
+            Gtk.Box.BoxChild w105 = ((Gtk.Box.BoxChild)(this.vbox4[this.label_owner]));
+            w105.Position = 3;
+            w105.Expand = false;
+            w105.Fill = false;
             // Container child vbox4.Gtk.Box+BoxChild
             this.label_group = new Gtk.Label();
             this.label_group.Name = "label_group";
             this.label_group.Xalign = 0F;
             this.label_group.LabelProp = Mono.Unix.Catalog.GetString("label8");
             this.vbox4.Add(this.label_group);
-            Gtk.Box.BoxChild w58 = ((Gtk.Box.BoxChild)(this.vbox4[this.label_group]));
-            w58.Position = 4;
-            w58.Expand = false;
-            w58.Fill = false;
+            Gtk.Box.BoxChild w106 = ((Gtk.Box.BoxChild)(this.vbox4[this.label_group]));
+            w106.Position = 4;
+            w106.Expand = false;
+            w106.Fill = false;
             // Container child vbox4.Gtk.Box+BoxChild
             this.label_forsale = new Gtk.Label();
             this.label_forsale.Name = "label_forsale";
             this.label_forsale.Xalign = 0F;
             this.label_forsale.LabelProp = Mono.Unix.Catalog.GetString("label10");
             this.vbox4.Add(this.label_forsale);
-            Gtk.Box.BoxChild w59 = ((Gtk.Box.BoxChild)(this.vbox4[this.label_forsale]));
-            w59.Position = 5;
-            w59.Expand = false;
-            w59.Fill = false;
+            Gtk.Box.BoxChild w107 = ((Gtk.Box.BoxChild)(this.vbox4[this.label_forsale]));
+            w107.Position = 5;
+            w107.Expand = false;
+            w107.Fill = false;
             // Container child vbox4.Gtk.Box+BoxChild
             this.label_pos = new Gtk.Label();
             this.label_pos.Name = "label_pos";
             this.label_pos.Xalign = 0F;
             this.label_pos.LabelProp = Mono.Unix.Catalog.GetString("label4");
             this.vbox4.Add(this.label_pos);
-            Gtk.Box.BoxChild w60 = ((Gtk.Box.BoxChild)(this.vbox4[this.label_pos]));
-            w60.Position = 6;
-            w60.Expand = false;
-            w60.Fill = false;
+            Gtk.Box.BoxChild w108 = ((Gtk.Box.BoxChild)(this.vbox4[this.label_pos]));
+            w108.Position = 6;
+            w108.Expand = false;
+            w108.Fill = false;
             // Container child vbox4.Gtk.Box+BoxChild
             this.label_distance = new Gtk.Label();
             this.label_distance.Name = "label_distance";
             this.label_distance.Xalign = 0F;
             this.label_distance.LabelProp = Mono.Unix.Catalog.GetString("label6");
             this.vbox4.Add(this.label_distance);
-            Gtk.Box.BoxChild w61 = ((Gtk.Box.BoxChild)(this.vbox4[this.label_distance]));
-            w61.Position = 7;
-            w61.Expand = false;
-            w61.Fill = false;
+            Gtk.Box.BoxChild w109 = ((Gtk.Box.BoxChild)(this.vbox4[this.label_distance]));
+            w109.Position = 7;
+            w109.Expand = false;
+            w109.Fill = false;
             // Container child vbox4.Gtk.Box+BoxChild
             this.label_float_text = new Gtk.Label();
             this.label_float_text.Name = "label_float_text";
             this.label_float_text.Xalign = 0F;
             this.label_float_text.LabelProp = Mono.Unix.Catalog.GetString("label8");
             this.vbox4.Add(this.label_float_text);
-            Gtk.Box.BoxChild w62 = ((Gtk.Box.BoxChild)(this.vbox4[this.label_float_text]));
-            w62.Position = 8;
-            w62.Expand = false;
-            w62.Fill = false;
+            Gtk.Box.BoxChild w110 = ((Gtk.Box.BoxChild)(this.vbox4[this.label_float_text]));
+            w110.Position = 8;
+            w110.Expand = false;
+            w110.Fill = false;
             this.hbox6.Add(this.vbox4);
-            Gtk.Box.BoxChild w63 = ((Gtk.Box.BoxChild)(this.hbox6[this.vbox4]));
-            w63.Position = 1;
-            w63.Expand = false;
-            w63.Fill = false;
+            Gtk.Box.BoxChild w111 = ((Gtk.Box.BoxChild)(this.hbox6[this.vbox4]));
+            w111.Position = 1;
+            w111.Expand = false;
+            w111.Fill = false;
             this.vbox1.Add(this.hbox6);
-            Gtk.Box.BoxChild w64 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox6]));
-            w64.Position = 4;
-            w64.Expand = false;
-            w64.Fill = false;
+            Gtk.Box.BoxChild w112 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox6]));
+            w112.Position = 4;
+            w112.Expand = false;
+            w112.Fill = false;
             // Container child vbox1.Gtk.Box+BoxChild
             this.GtkScrolledWindow1 = new Gtk.ScrolledWindow();
             this.GtkScrolledWindow1.Name = "GtkScrolledWindow1";
@@ -587,13 +677,13 @@ namespace omvviewerlight {
             this.textview1.WrapMode = ((Gtk.WrapMode)(2));
             this.GtkScrolledWindow1.Add(this.textview1);
             this.vbox1.Add(this.GtkScrolledWindow1);
-            Gtk.Box.BoxChild w66 = ((Gtk.Box.BoxChild)(this.vbox1[this.GtkScrolledWindow1]));
-            w66.Position = 5;
+            Gtk.Box.BoxChild w114 = ((Gtk.Box.BoxChild)(this.vbox1[this.GtkScrolledWindow1]));
+            w114.Position = 5;
             this.hbox1.Add(this.vbox1);
-            Gtk.Box.BoxChild w67 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox1]));
-            w67.Position = 1;
-            w67.Expand = false;
-            w67.Fill = false;
+            Gtk.Box.BoxChild w115 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox1]));
+            w115.Position = 1;
+            w115.Expand = false;
+            w115.Fill = false;
             this.Add(this.hbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();

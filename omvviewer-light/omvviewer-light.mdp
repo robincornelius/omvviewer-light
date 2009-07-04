@@ -13,8 +13,8 @@
       <CustomCommands>
         <Command type="AfterBuild" name="Clear source" command="gtk-gui/fuckingmonodevelop.sh" workingdir="${ProjectDir}/gtk-gui/" />
       </CustomCommands>
-      <Output directory="bin/" assemblyKeyFile="." assembly="omvviewer-light" />
-      <Build debugmode="False" target="Exe" />
+      <Output directory="bin/" assemblyKeyFile="/home/robin/omvviewer-light-stuff/omvviewer-light/omvviewer-light/." assembly="omvviewer-light" />
+      <Build debugmode="True" target="Exe" />
       <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
       <EnvironmentVariables />
       <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="True" generateoverflowchecks="True" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />

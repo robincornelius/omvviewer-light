@@ -534,8 +534,8 @@ namespace omvviewerlight
 					{		
 	 					if(avgroup.GroupID==this.groupkey)
 						{
-					        this.checkbutton_group_notices.Active=avgroup.AcceptNotices;						
-							this.checkbutton_showinpofile.Active = avgroup.ListInProfile;
+					        //this.checkbutton_group_notices.Active= avgroup.AcceptNotices;						
+							//this.checkbutton_showinpofile.Active = avgroup.ListInProfile;
 	                        break;							
 						}
 				}
@@ -603,12 +603,12 @@ namespace omvviewerlight
 
 		protected virtual void OnCheckbuttonGroupNoticesClicked (object sender, System.EventArgs e)
 		{
-		     //MainClass.client.Groups.setUserGroupFlags(this.groupkey,this.checkbutton_group_notices.Active,this.checkbutton_showinpofile.Active);	
+			MainClass.client.Groups.SetGroupAcceptNotices(this.groupkey,this.checkbutton_group_notices.Active,this.checkbutton_showinpofile.Active);
 		}
 
 		protected virtual void OnCheckbuttonShowinpofileClicked (object sender, System.EventArgs e)
 		{
-		     //MainClass.client.Groups.setUserGroupFlags(this.groupkey,this.checkbutton_group_notices.Active,this.checkbutton_showinpofile.Active);				
+			MainClass.client.Groups.SetGroupAcceptNotices(this.groupkey,this.checkbutton_group_notices.Active,this.checkbutton_showinpofile.Active);
 		}
 
 		protected virtual void OnTreeviewMembers1CursorChanged (object sender, System.EventArgs e)
@@ -624,14 +624,6 @@ namespace omvviewerlight
 			{
 				UUID id=(UUID)mod.GetValue(iter,3);
                 GroupMember member;
-				//Now populate the roles list
-
-               // if (!MainClass.client.Groups.GroupRolesCaches.TryGetValue(request_roles, out grouproles))
-              //      return;
-              //  if(!MainClass.client.Groups.GroupRolesMembersCaches.TryGetValue(request_roles_members, out rolesmembers))
-              //       return;
-              //  if (!MainClass.client.Groups.GroupMembersCaches.TryGetValue(request_members, out groupmembers)) 
-              //       return;
 
                 store_membersandroles_powers.Clear();
 
@@ -1017,11 +1009,7 @@ namespace omvviewerlight
 		    Dictionary <UUID, GroupRole> grouproles;
             List<KeyValuePair<UUID,UUID>> rolesmembers;
 	
-//                if (!MainClass.client.Groups.GroupRolesCaches.TryGetValue(request_roles, out grouproles))
-  //                  return false;
-    //            if(!MainClass.client.Groups.GroupRolesMembersCaches.TryGetValue(request_roles_members, out rolesmembers))
-      //               return false;
-			     GroupRole role;
+		     GroupRole role;
              // rolesmember.Value is the user UUID
 	         // .key is the group role UUID			
 					   if(group_roles.TryGetValue(UUID.Zero,out role))
@@ -1081,14 +1069,14 @@ namespace omvviewerlight
 			Gtk.TreeIter iter;
 			
             if(this.treeview_notice_list.Selection.GetSelected(out mod,out iter))			
-				{
+			{
 					GroupNoticeList notice=(GroupNoticeList)mod.GetValue(iter,3);
 					if(notice.AssetType==AssetType.Notecard)
 					{
                    //NotecardReader nr=new NotecardReader(notice.
                   
                    
-}            
+			}            
 
             }
 		}

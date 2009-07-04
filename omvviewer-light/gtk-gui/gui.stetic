@@ -1959,7 +1959,8 @@ Shout</property>
                     <property name="WidthRequest">75</property>
                     <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">resource:touch.png</property>
                     <property name="Label" translatable="yes">Touch</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonTouchClicked" />
@@ -1995,7 +1996,8 @@ Shout</property>
                     <property name="WidthRequest">75</property>
                     <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">stock:gtk-find Menu</property>
                     <property name="Label" translatable="yes">Look at</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonLookatClicked" />
@@ -2064,7 +2066,8 @@ Shout</property>
                     <property name="WidthRequest">75</property>
                     <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">stock:gtk-save Menu</property>
                     <property name="Label" translatable="yes">Take</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonTakeClicked" />
@@ -2082,8 +2085,9 @@ Shout</property>
                     <property name="WidthRequest">75</property>
                     <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
-                    <property name="Label" translatable="yes">Take copy</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">stock:gtk-save-as Menu</property>
+                    <property name="Label" translatable="yes">Copy</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonTakeCopyClicked" />
                   </widget>
@@ -2100,7 +2104,8 @@ Shout</property>
                     <property name="WidthRequest">75</property>
                     <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">stock:gtk-refresh Menu</property>
                     <property name="Label" translatable="yes">Return</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonReturnClicked" />
@@ -2131,7 +2136,8 @@ Shout</property>
                     <property name="WidthRequest">75</property>
                     <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">resource:move.png</property>
                     <property name="Label" translatable="yes">Move to</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonMovetoClicked" />
@@ -3209,7 +3215,8 @@ Resident Michelle2 Zenovka
                   <widget class="Gtk.Button" id="button_groupim">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">resource:icn_voice-groupfocus.png</property>
                     <property name="Label" translatable="yes">Start IM</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonGroupimClicked" />
@@ -3225,7 +3232,8 @@ Resident Michelle2 Zenovka
                   <widget class="Gtk.Button" id="button_info">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">stock:gtk-dialog-question Menu</property>
                     <property name="Label" translatable="yes">Group Info</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonInfoClicked" />
@@ -3241,7 +3249,8 @@ Resident Michelle2 Zenovka
                   <widget class="Gtk.Button" id="Activate_group">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">stock:gtk-apply Menu</property>
                     <property name="Label" translatable="yes">Activate</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnActivateGroupClicked" />
@@ -3961,12 +3970,14 @@ Resident Michelle2 Zenovka
                     <child>
                       <widget class="Gtk.HBox" id="hbox11">
                         <property name="MemberName" />
+                        <property name="Homogeneous">True</property>
                         <property name="Spacing">6</property>
                         <child>
                           <widget class="Gtk.Button" id="button_join">
                             <property name="MemberName" />
                             <property name="CanFocus">True</property>
-                            <property name="Type">TextOnly</property>
+                            <property name="Type">TextAndIcon</property>
+                            <property name="Icon">stock:gtk-add Menu</property>
                             <property name="Label" translatable="yes">Join</property>
                             <property name="UseUnderline">True</property>
                             <signal name="Clicked" handler="OnButtonJoinClicked" />
@@ -3982,7 +3993,8 @@ Resident Michelle2 Zenovka
                           <widget class="Gtk.Button" id="button_leave">
                             <property name="MemberName" />
                             <property name="CanFocus">True</property>
-                            <property name="Type">TextOnly</property>
+                            <property name="Type">TextAndIcon</property>
+                            <property name="Icon">stock:gtk-remove Menu</property>
                             <property name="Label" translatable="yes">Leave</property>
                             <property name="UseUnderline">True</property>
                             <signal name="Clicked" handler="OnButtonLeaveClicked" />
@@ -3998,7 +4010,8 @@ Resident Michelle2 Zenovka
                           <widget class="Gtk.Button" id="button_invite">
                             <property name="MemberName" />
                             <property name="CanFocus">True</property>
-                            <property name="Type">TextOnly</property>
+                            <property name="Type">TextAndIcon</property>
+                            <property name="Icon">resource:icn_voice-groupfocus.png</property>
                             <property name="Label" translatable="yes">Invite</property>
                             <property name="UseUnderline">True</property>
                             <signal name="Clicked" handler="OnButtonInviteClicked" />
@@ -4013,9 +4026,7 @@ Resident Michelle2 Zenovka
                       </widget>
                       <packing>
                         <property name="Position">4</property>
-                        <property name="AutoSize">True</property>
-                        <property name="Expand">False</property>
-                        <property name="Fill">False</property>
+                        <property name="AutoSize">False</property>
                       </packing>
                     </child>
                   </widget>
