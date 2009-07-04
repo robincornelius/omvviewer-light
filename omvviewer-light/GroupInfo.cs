@@ -384,19 +384,24 @@ namespace omvviewerlight
             if (groupID != this.groupkey)
                 return;
 
+            group_titles=titles;
+
+            if (titles.Count == 0)
+                return;
+
             Console.Write("Group titles recieved\n");
 
 			Gtk.Application.Invoke(delegate {	
 			group_titles.Clear();
 			combobox_active_title.Clear();
-				
+
 			    foreach(KeyValuePair  <UUID,OpenMetaverse.GroupTitle> title in titles)
-			    {
-                    group_titles.Add(title.Key, title.Value);
-				    this.combobox_active_title.InsertText(0,title.Value.Title);
-				    if(title.Value.Selected)
-						    this.combobox_active_title.Active=0;
-			    }	
+			    { 
+     
+                    combobox_active_title.AppendText(title.Value.Title);
+   			    }
+                this.combobox_active_title.Active = 0;
+
 			});
 		}
 
