@@ -1,16 +1,24 @@
-<Combine name="omvviewer-light" fileversion="2.0">
+<Combine fileversion="2.0" name="omvviewer-light">
   <Configurations active="Debug">
     <Configuration name="Release" ctype="CombineConfiguration">
       <Entry build="True" name="omvviewer-light" configuration="Release" />
+      <Entry build="True" name="build libomv" configuration="Release" />
     </Configuration>
     <Configuration name="Debug" ctype="CombineConfiguration">
       <Entry build="True" name="omvviewer-light" configuration="Debug" />
+      <Entry build="True" name="build libomv" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Default" ctype="CombineConfiguration">
+      <Entry build="True" name="omvviewer-light" configuration="Default" />
+      <Entry build="True" name="build libomv" configuration="Default" />
     </Configuration>
   </Configurations>
   <StartMode startupentry="omvviewer-light" single="True">
     <Execute type="None" entry="omvviewer-light" />
+    <Execute type="None" entry="build libomv" />
   </StartMode>
   <Entries>
     <Entry filename="omvviewer-light/omvviewer-light.mdp" />
+    <Entry filename="build libomv/build libomv.mdp" />
   </Entries>
 </Combine>

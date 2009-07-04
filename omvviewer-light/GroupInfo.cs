@@ -167,7 +167,7 @@ namespace omvviewerlight
             MainClass.client.Groups.OnGroupRolesMembers += new OpenMetaverse.GroupManager.GroupRolesMembersCallback(onGroupRolesMembers);
 			MainClass.client.Groups.OnGroupNoticesList += new GroupManager.GroupNoticesListCallback(Groups_OnGroupNoticesList);
             MainClass.client.Groups.OnGroupAccountSummary += new OpenMetaverse.GroupManager.GroupAccountSummaryCallback(onAccountSummary);			
-           		
+           	
             MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);			
 			
 			MainClass.client.Groups.RequestGroupProfile(groupID);
@@ -392,14 +392,15 @@ namespace omvviewerlight
             Console.Write("Group titles recieved\n");
 
 			Gtk.Application.Invoke(delegate {	
-			group_titles.Clear();
-			combobox_active_title.Clear();
+		
+			//combobox_active_title.Clear();
 
-			    foreach(KeyValuePair  <UUID,OpenMetaverse.GroupTitle> title in titles)
+			    foreach(KeyValuePair  <UUID,OpenMetaverse.GroupTitle> title in group_titles)
 			    { 
-     
+					Console.WriteLine("Appending "+title.Value.Title);
                     combobox_active_title.AppendText(title.Value.Title);
    			    }
+				
                 this.combobox_active_title.Active = 0;
 
 			});
