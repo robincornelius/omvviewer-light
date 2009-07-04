@@ -394,16 +394,46 @@ namespace omvviewerlight
 			Gtk.Application.Invoke(delegate {	
 		
 			//combobox_active_title.Clear();
-
+			int x=0;
 			    foreach(KeyValuePair  <UUID,OpenMetaverse.GroupTitle> title in group_titles)
 			    { 
 					Console.WriteLine("Appending "+title.Value.Title);
                     combobox_active_title.AppendText(title.Value.Title);
-   			    }
-				
-                this.combobox_active_title.Active = 0;
-
+				}				
+				trysetcurrenttitle();
 			});
+		}
+		
+		void trysetcurrenttitle()
+		{
+			Console.WriteLine("** TRY SET CURRENT TITLE");
+			
+			GroupMember member;
+			if(group_members.TryGetValue(MainClass.client.Self.AgentID,out member))
+			{
+			Console.WriteLine("** FOUND MEMBER");
+
+				combobox_active_title.Model.Foreach(
+					delegate(TreeModel model, TreePath path, TreeIter iter)
+				    {
+						string title = (string)model.GetValue(iter,0);
+								Console.WriteLine("** CHECKING TITLE "+title+" against "+member.Title);
+
+					    if (title==member.Title)
+						{	
+							combobox_active_title.SetActiveIter(iter);
+							return true;
+						
+						}
+						return false;
+					});
+				
+				
+			}
+			else
+			{
+				Console.WriteLine("Defering title untill group member load");	
+			}
 		}
 
         bool updategroupmembers()
@@ -459,6 +489,8 @@ namespace omvviewerlight
                 return;
 
             group_members = members;
+			
+			trysetcurrenttitle();
 
             Console.WriteLine("All group members recieved");
             name_poll = false;
