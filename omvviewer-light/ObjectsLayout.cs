@@ -568,7 +568,7 @@ namespace omvviewerlight
 					
 						if(parcel.OwnerID==MainClass.client.Self.AgentID)
 							allowed=true;
-
+						
 						if (parcel.OwnerID == MainClass.client.Self.ActiveGroup || parcel.GroupID==MainClass.client.Self.ActiveGroup)
 						{
 							 if(prim.GroupID==parcel.GroupID)
@@ -586,9 +586,6 @@ namespace omvviewerlight
 						}
 					}
 					
-				
-					this.button_return.Sensitive=allowed;
-
 				}
 			
 			}
@@ -718,9 +715,7 @@ namespace omvviewerlight
 				
 				if(FetchedPrims.TryGetValue(id,out prim))
 				{
-					Gtk.MessageDialog md=new Gtk.MessageDialog(MainClass.win,Gtk.DialogFlags.DestroyWithParent,Gtk.MessageType.Info,Gtk.ButtonsType.Ok,false,"Sorry that is not yet implemented");
-					md.Run();
-					md.Destroy();
+					MainClass.client.Inventory.RequestDeRezToInventory(prim.LocalID,DeRezDestination.AgentInventoryCopy,MainClass.client.Inventory.FindFolderForType(AssetType.Object),UUID.Random());
 				}
 			}
 		}

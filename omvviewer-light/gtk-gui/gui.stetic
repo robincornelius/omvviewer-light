@@ -3776,7 +3776,7 @@ Resident Michelle2 Zenovka
       <widget class="Gtk.Notebook" id="notebook1">
         <property name="MemberName" />
         <property name="CanFocus">True</property>
-        <property name="CurrentPage">0</property>
+        <property name="CurrentPage">2</property>
         <child>
           <widget class="Gtk.VBox" id="vbox1">
             <property name="MemberName" />
@@ -4776,7 +4776,8 @@ Resident Michelle2 Zenovka
                   <widget class="Gtk.Button" id="button_attachment">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">stock:stock_attach LargeToolbar</property>
                     <property name="Label" translatable="yes">Get attachment</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonAttachmentClicked" />
@@ -4805,7 +4806,8 @@ Resident Michelle2 Zenovka
                     <property name="MemberName" />
                     <property name="Sensitive">False</property>
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">stock:gtk-edit Menu</property>
                     <property name="Label" translatable="yes">Create new notice</property>
                     <property name="UseUnderline">True</property>
                     <signal name="Clicked" handler="OnButtonSendNoticeClicked" />
