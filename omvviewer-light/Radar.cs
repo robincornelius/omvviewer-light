@@ -272,17 +272,13 @@ namespace omvviewerlight
 
                    double dist;
 
-                   Vector3 self_pos;
+                   Vector3d self_pos;
                    if (MainClass.client.Network.CurrentSim == null)
                        return;  //opensim protection
           
-                   self_pos = MainClass.client.Self.RelativePosition;
-
-                   uint regionX, regionY;
-                   Utils.LongToUInts(MainClass.client.Network.CurrentSim.Handle, out regionX, out regionY);
-                   self_pos.X = self_pos.X + regionX;
-                   self_pos.Y = self_pos.Y + regionY;
-
+                   self_pos = MainClass.client.Self.GlobalPosition;					
+				   uint regionX,regionY;
+					
                    MainClass.client.Network.Simulators.ForEach(delegate(Simulator sim)
                    {
                        //foreach (Simulator sim in MainClass.client.Network.Simulators)
@@ -301,7 +297,7 @@ namespace omvviewerlight
 
                                    target_pos.X = target_pos.X + regionX;
                                    target_pos.Y = target_pos.Y + regionY;
-                                   dist = Vector3.Distance(target_pos, self_pos);
+                                   dist = Vector3d.Distance(new Vector3d(target_pos), self_pos);
 
                                    if (av_tree.ContainsKey(kvp.Key))
                                    {
