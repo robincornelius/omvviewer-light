@@ -2,23 +2,43 @@
   <Configurations active="Debug">
     <Configuration name="Release" ctype="CombineConfiguration">
       <Entry build="True" name="omvviewer-light" configuration="Release" />
-      <Entry build="True" name="build libomv" configuration="Release" />
+      <Entry build="True" name="OpenMetaverse" configuration="Release" />
+      <Entry build="True" name="HttpServer" configuration="Release" />
+      <Entry build="True" name="OpenMetaverse.Http" configuration="Release" />
+      <Entry build="True" name="OpenMetaverseTypes" configuration="Release" />
+      <Entry build="True" name="OpenMetaverse.StructuredData" configuration="Release" />
     </Configuration>
     <Configuration name="Debug" ctype="CombineConfiguration">
       <Entry build="True" name="omvviewer-light" configuration="Debug" />
-      <Entry build="True" name="build libomv" configuration="Debug" />
+      <Entry build="True" name="OpenMetaverse" configuration="Debug" />
+      <Entry build="True" name="HttpServer" configuration="Debug" />
+      <Entry build="True" name="OpenMetaverse.Http" configuration="Debug" />
+      <Entry build="True" name="OpenMetaverseTypes" configuration="Debug" />
+      <Entry build="True" name="OpenMetaverse.StructuredData" configuration="Debug" />
     </Configuration>
     <Configuration name="Default" ctype="CombineConfiguration">
       <Entry build="True" name="omvviewer-light" configuration="Default" />
-      <Entry build="True" name="build libomv" configuration="Default" />
+      <Entry build="True" name="OpenMetaverse" configuration="Default" />
+      <Entry build="True" name="HttpServer" configuration="Default" />
+      <Entry build="True" name="OpenMetaverse.Http" configuration="Default" />
+      <Entry build="True" name="OpenMetaverseTypes" configuration="Default" />
+      <Entry build="True" name="OpenMetaverse.StructuredData" configuration="Default" />
     </Configuration>
   </Configurations>
   <StartMode startupentry="omvviewer-light" single="True">
     <Execute type="None" entry="omvviewer-light" />
-    <Execute type="None" entry="build libomv" />
+    <Execute type="None" entry="OpenMetaverse" />
+    <Execute type="None" entry="HttpServer" />
+    <Execute type="None" entry="OpenMetaverse.Http" />
+    <Execute type="None" entry="OpenMetaverseTypes" />
+    <Execute type="None" entry="OpenMetaverse.StructuredData" />
   </StartMode>
   <Entries>
     <Entry filename="omvviewer-light/omvviewer-light.mdp" />
-    <Entry filename="build libomv/build libomv.mdp" />
+    <Entry filename="libomv/OpenMetaverse/OpenMetaverse.mdp" />
+    <Entry filename="libomv/HttpServer/HttpServer.mdp" />
+    <Entry filename="libomv/OpenMetaverse.Http/OpenMetaverse.Http.mdp" />
+    <Entry filename="libomv/OpenMetaverseTypes/OpenMetaverseTypes.mdp" />
+    <Entry filename="libomv/OpenMetaverse.StructuredData/OpenMetaverse.StructuredData.mdp" />
   </Entries>
 </Combine>

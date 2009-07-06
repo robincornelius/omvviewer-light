@@ -3,6 +3,7 @@
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <CustomCommands>
         <Command type="AfterBuild" command="gtk-gui/fuckingmonodevelop.sh" workingdir="${ProjectDir}/gtk-gui/" />
+        <Command type="BeforeBuild" command="../copy_libs.sh" workingdir="${SolutionDir}" />
       </CustomCommands>
       <Output directory="bin/" assemblyKeyFile="." assembly="omvviewer-light" />
       <Build debugmode="True" target="Exe" />
