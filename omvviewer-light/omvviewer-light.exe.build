@@ -108,13 +108,14 @@
 
             </resources>
             <sources failonempty="true">
+                <include name="About.cs" />
                 <include name="AVNameCache.cs" />
                 <include name="AssemblyInfo.cs" />
                 <include name="AutoPilot.cs" />                
                 <include name="AsyncNameUpdate.cs" />
                 <include name="ChatConsole.cs" />
                 <include name="ChatLayout.cs" />
-		<include name="CloseMinimiseDlg.cs" />     
+		        <include name="CloseMinimiseDlg.cs" />     
                 <include name="EventsSearch.cs" />
                 <include name="FriendsList.cs" />
                 <include name="Friendshiprequest.cs" />
@@ -126,7 +127,7 @@
                 <include name="Location.cs" />
                 <include name="LocalRegion.cs" />
                 <include name="LoginControl.cs" />
- 		<include name="LogoutDlg.cs" />
+ 		        <include name="LogoutDlg.cs" />
                 <include name="Main.cs" />
                 <include name="MainWindow.cs" />
                 <include name="Map.cs" />
@@ -157,9 +158,10 @@
                 <include name="Properties/Settings.Designer.cs" />
                 <include name="gtk-gui/MainWindow.cs" />
                 <include name="gtk-gui/generated.cs" />
+                <include name="gtk-gui/omvviewerlight.About.cs" />
                 <include name="gtk-gui/omvviewerlight.ChatConsole.cs" />
                 <include name="gtk-gui/omvviewerlight.ChatLayout.cs" />
-		<include name="gtk-gui/omvviewerlight.CloseMinimiseDlg.cs" />  
+		        <include name="gtk-gui/omvviewerlight.CloseMinimiseDlg.cs" />  
                 <include name="gtk-gui/omvviewerlight.EventsSearch.cs" />
                 <include name="gtk-gui/omvviewerlight.FriendsList.cs" />
                 <include name="gtk-gui/omvviewerlight.Friendshiprequest.cs" />
@@ -171,14 +173,14 @@
                 <include name="gtk-gui/omvviewerlight.Location.cs" />
                 <include name="gtk-gui/omvviewerlight.LocalRegion.cs" />
                 <include name="gtk-gui/omvviewerlight.LoginControl.cs" />
- 		<include name="gtk-gui/omvviewerlight.LogoutDlg.cs" />
+ 		        <include name="gtk-gui/omvviewerlight.LogoutDlg.cs" />
                 <include name="gtk-gui/omvviewerlight.Map.cs" />
                 <include name="gtk-gui/omvviewerlight.Movment.cs" />
                 <include name="gtk-gui/omvviewerlight.NamePicker.cs" />
                 <include name="gtk-gui/omvviewerlight.NotecardReader.cs" />
                 <include name="gtk-gui/omvviewerlight.ObjectsLayout.cs" />
                 <include name="gtk-gui/omvviewerlight.PayWindow.cs" />
-		<include name="gtk-gui/omvviewerlight.ParcelMgr.cs" />
+		        <include name="gtk-gui/omvviewerlight.ParcelMgr.cs" />
                 <include name="gtk-gui/omvviewerlight.PlacesSearch.cs" />
                 <include name="gtk-gui/omvviewerlight.Preferences.cs" />
                 <include name="gtk-gui/omvviewerlight.ProfileVIew.cs" />
