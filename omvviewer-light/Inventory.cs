@@ -1540,20 +1540,7 @@ namespace omvviewerlight
 
             Gtk.Application.Invoke(delegate
             {
-                    //We should preserve Waiting... messages for folders we don't yet have the children for
-                    //or else the user can't open them as there is no + to click on. But we need to get rid
-                    // of them for folders we have just got the data for!
-                    if (cache == false || (cache==true && myObjects.Count>0 ))
-                    {
-                        TreeIter childiter;
-                        inventory.GetIter(out childiter, path);
-                        if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
-                        {
-                            inventory.Remove(ref childiter);
-                            alreadyseen = false;
-                        }
-                    }
-              
+                   
 
                 if (myObjects == null || myObjects.Count==0)
                 {
@@ -1601,10 +1588,10 @@ namespace omvviewerlight
                    Gdk.Pixbuf buf = getprettyicon(item);
 				  
 				 
-					  global_thread_tree = inventory.AppendValues(iter, buf, item.Name, item.UUID, item);
+				   global_thread_tree = inventory.AppendValues(iter, buf, item.Name, item.UUID, item);
                                                
-                        if (!assetmap.ContainsKey(item.UUID))
-                            assetmap.Add(item.UUID, global_thread_tree);
+                   if (!assetmap.ContainsKey(item.UUID))
+                           assetmap.Add(item.UUID, global_thread_tree);
 
 				
 					Gtk.TreeIter iter2=global_thread_tree;
@@ -1622,6 +1609,25 @@ namespace omvviewerlight
                         }
                      }
 			}
+
+
+            //We should preserve Waiting... messages for folders we don't yet have the children for
+            //or else the user can't open them as there is no + to click on. But we need to get rid
+            // of them for folders we have just got the data for!
+            if (cache == false || (cache == true && myObjects.Count > 0))
+            {
+                TreeIter childiter;
+                inventory.GetIter(out childiter, path);
+                if ("Waiting..." == (string)inventory.GetValue(childiter, 1))
+                {
+                    inventory.Remove(ref childiter);
+
+                    alreadyseen = false;
+                }
+            }
+              
+
+           
 
             postfetch.Set();
             });
