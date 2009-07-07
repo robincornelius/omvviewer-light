@@ -44,7 +44,7 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>index.html</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationRevision>5</ApplicationRevision>
     <ApplicationVersion>0.48.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -597,65 +597,183 @@
     <EmbeddedResource Include="art\ff_edit_mine.png" />
     <EmbeddedResource Include="art\ff_visible_map.png" />
     <EmbeddedResource Include="art\ff_visible_online.png" />
-    <None Include="openmetaverse_data\blush_alpha.png" />
-    <None Include="openmetaverse_data\bodyfreckles_alpha.png" />
-    <None Include="openmetaverse_data\body_skingrain.png" />
-    <None Include="openmetaverse_data\bump_face_wrinkles.png" />
-    <None Include="openmetaverse_data\bump_head_base.png" />
-    <None Include="openmetaverse_data\bump_lowerbody_base.png" />
-    <None Include="openmetaverse_data\bump_pants_wrinkles.png" />
-    <None Include="openmetaverse_data\bump_shirt_wrinkles.png" />
-    <None Include="openmetaverse_data\bump_upperbody_base.png" />
-    <None Include="openmetaverse_data\eyebrows_alpha.png" />
-    <None Include="openmetaverse_data\eyeliner_alpha.png" />
-    <None Include="openmetaverse_data\eyeshadow_inner_alpha.png" />
-    <None Include="openmetaverse_data\eyeshadow_outer_alpha.png" />
-    <None Include="openmetaverse_data\eyewhite.png" />
-    <None Include="openmetaverse_data\facehair_chincurtains_alpha.png" />
-    <None Include="openmetaverse_data\facehair_moustache_alpha.png" />
-    <None Include="openmetaverse_data\facehair_sideburns_alpha.png" />
-    <None Include="openmetaverse_data\facehair_soulpatch_alpha.png" />
-    <None Include="openmetaverse_data\freckles_alpha.png" />
-    <None Include="openmetaverse_data\gloves_fingers_alpha.png" />
-    <None Include="openmetaverse_data\glove_length_alpha.png" />
-    <None Include="openmetaverse_data\head_alpha.png" />
-    <None Include="openmetaverse_data\head_color.png" />
-    <None Include="openmetaverse_data\head_hair.png" />
-    <None Include="openmetaverse_data\head_highlights_alpha.png" />
-    <None Include="openmetaverse_data\head_shading_alpha.png" />
-    <None Include="openmetaverse_data\head_skingrain.png" />
-    <None Include="openmetaverse_data\jacket_length_lower_alpha.png" />
-    <None Include="openmetaverse_data\jacket_length_upper_alpha.png" />
-    <None Include="openmetaverse_data\jacket_open_lower_alpha.png" />
-    <None Include="openmetaverse_data\jacket_open_upper_alpha.png" />
-    <None Include="openmetaverse_data\lipgloss_alpha.png" />
-    <None Include="openmetaverse_data\lipstick_alpha.png" />
-    <None Include="openmetaverse_data\lips_mask.png" />
-    <None Include="openmetaverse_data\lowerbody_color.png" />
-    <None Include="openmetaverse_data\lowerbody_highlights_alpha.png" />
-    <None Include="openmetaverse_data\lowerbody_shading_alpha.png" />
-    <None Include="openmetaverse_data\nailpolish_alpha.png" />
-    <None Include="openmetaverse_data\pants_length_alpha.png" />
-    <None Include="openmetaverse_data\pants_waist_alpha.png" />
-    <None Include="openmetaverse_data\rosyface_alpha.png" />
-    <None Include="openmetaverse_data\rouge_alpha.png" />
-    <None Include="openmetaverse_data\shirt_bottom_alpha.png" />
-    <None Include="openmetaverse_data\shirt_collar_alpha.png" />
-    <None Include="openmetaverse_data\shirt_collar_back_alpha.png" />
-    <None Include="openmetaverse_data\shirt_sleeve_alpha.png" />
-    <None Include="openmetaverse_data\shoe_height_alpha.png" />
-    <None Include="openmetaverse_data\skirt_length_alpha.png" />
-    <None Include="openmetaverse_data\skirt_slit_back_alpha.png" />
-    <None Include="openmetaverse_data\skirt_slit_front_alpha.png" />
-    <None Include="openmetaverse_data\skirt_slit_left_alpha.png" />
-    <None Include="openmetaverse_data\skirt_slit_right_alpha.png" />
-    <None Include="openmetaverse_data\underpants_trial_female.png" />
-    <None Include="openmetaverse_data\underpants_trial_male.png" />
-    <None Include="openmetaverse_data\undershirt_trial_female.png" />
-    <None Include="openmetaverse_data\upperbodyfreckles_alpha.png" />
-    <None Include="openmetaverse_data\upperbody_color.png" />
-    <None Include="openmetaverse_data\upperbody_highlights_alpha.png" />
-    <None Include="openmetaverse_data\upperbody_shading_alpha.png" />
+    <Content Include="openmetaverse_data\blush_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\bodyfreckles_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\body_skingrain.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\bump_face_wrinkles.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\bump_head_base.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\bump_lowerbody_base.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\bump_pants_wrinkles.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\bump_shirt_wrinkles.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\bump_upperbody_base.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\eyebrows_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\eyeliner_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\eyeshadow_inner_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\eyeshadow_outer_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\eyewhite.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\facehair_chincurtains_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\facehair_moustache_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\facehair_sideburns_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\facehair_soulpatch_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\freckles_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\gloves_fingers_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\glove_length_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\head_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\head_color.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\head_hair.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\head_highlights_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\head_shading_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\head_skingrain.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\jacket_length_lower_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\jacket_length_upper_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\jacket_open_lower_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\jacket_open_upper_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\lipgloss_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\lipstick_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\lips_mask.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\lowerbody_color.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\lowerbody_highlights_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\lowerbody_shading_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\nailpolish_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\pants_length_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\pants_waist_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\rosyface_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\rouge_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\shirt_bottom_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\shirt_collar_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\shirt_collar_back_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\shirt_sleeve_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\shoe_height_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\skirt_length_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\skirt_slit_back_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\skirt_slit_front_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\skirt_slit_left_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\skirt_slit_right_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\underpants_trial_female.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\underpants_trial_male.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\undershirt_trial_female.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\upperbodyfreckles_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\upperbody_color.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\upperbody_highlights_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="openmetaverse_data\upperbody_shading_alpha.tga">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
