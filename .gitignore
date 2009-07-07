@@ -7,3 +7,9 @@ libomv/OpenMetaverseTypes/obj/*
 libomv/*/obj/*
 .svn
 
+libomv/bin/OpenMetaverse.Http.dll
+libomv/bin/OpenMetaverse.StructuredData.dll
+libomv/bin/OpenMetaverse.dll
+app.publish/
+vs2CE.tmp
+publish/
