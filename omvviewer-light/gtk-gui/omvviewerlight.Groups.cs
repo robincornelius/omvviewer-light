@@ -66,51 +66,96 @@ namespace omvviewerlight {
             this.button_groupim.CanFocus = true;
             this.button_groupim.Name = "button_groupim";
             this.button_groupim.UseUnderline = true;
-            this.button_groupim.Label = Mono.Unix.Catalog.GetString("Start IM");
+            // Container child button_groupim.Gtk.Container+ContainerChild
+            Gtk.Alignment w3 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            Gtk.HBox w4 = new Gtk.HBox();
+            w4.Spacing = 2;
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Image w5 = new Gtk.Image();
+            w5.Pixbuf = MainClass.GetResource("icn_voice-groupfocus.png");
+            w4.Add(w5);
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Label w7 = new Gtk.Label();
+            w7.LabelProp = Mono.Unix.Catalog.GetString("Start IM");
+            w7.UseUnderline = true;
+            w4.Add(w7);
+            w3.Add(w4);
+            this.button_groupim.Add(w3);
             this.hbox2.Add(this.button_groupim);
-            Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.hbox2[this.button_groupim]));
-            w3.Position = 0;
-            w3.Expand = false;
-            w3.Fill = false;
+            Gtk.Box.BoxChild w11 = ((Gtk.Box.BoxChild)(this.hbox2[this.button_groupim]));
+            w11.Position = 0;
+            w11.Expand = false;
+            w11.Fill = false;
             // Container child hbox2.Gtk.Box+BoxChild
             this.button_info = new Gtk.Button();
             this.button_info.CanFocus = true;
             this.button_info.Name = "button_info";
             this.button_info.UseUnderline = true;
-            this.button_info.Label = Mono.Unix.Catalog.GetString("Group Info");
+            // Container child button_info.Gtk.Container+ContainerChild
+            Gtk.Alignment w12 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            Gtk.HBox w13 = new Gtk.HBox();
+            w13.Spacing = 2;
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Image w14 = new Gtk.Image();
+            w14.Pixbuf = Stetic.IconLoader.LoadIcon(this, "gtk-dialog-question", Gtk.IconSize.Menu, 16);
+            w13.Add(w14);
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Label w16 = new Gtk.Label();
+            w16.LabelProp = Mono.Unix.Catalog.GetString("Group Info");
+            w16.UseUnderline = true;
+            w13.Add(w16);
+            w12.Add(w13);
+            this.button_info.Add(w12);
             this.hbox2.Add(this.button_info);
-            Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox2[this.button_info]));
-            w4.Position = 1;
-            w4.Expand = false;
-            w4.Fill = false;
+            Gtk.Box.BoxChild w20 = ((Gtk.Box.BoxChild)(this.hbox2[this.button_info]));
+            w20.Position = 1;
+            w20.Expand = false;
+            w20.Fill = false;
             // Container child hbox2.Gtk.Box+BoxChild
             this.Activate_group = new Gtk.Button();
             this.Activate_group.CanFocus = true;
             this.Activate_group.Name = "Activate_group";
             this.Activate_group.UseUnderline = true;
-            this.Activate_group.Label = Mono.Unix.Catalog.GetString("Activate");
+            // Container child Activate_group.Gtk.Container+ContainerChild
+            Gtk.Alignment w21 = new Gtk.Alignment(0.5F, 0.5F, 0F, 0F);
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            Gtk.HBox w22 = new Gtk.HBox();
+            w22.Spacing = 2;
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Image w23 = new Gtk.Image();
+            w23.Pixbuf = Stetic.IconLoader.LoadIcon(this, "gtk-apply", Gtk.IconSize.Menu, 16);
+            w22.Add(w23);
+            // Container child GtkHBox.Gtk.Container+ContainerChild
+            Gtk.Label w25 = new Gtk.Label();
+            w25.LabelProp = Mono.Unix.Catalog.GetString("Activate");
+            w25.UseUnderline = true;
+            w22.Add(w25);
+            w21.Add(w22);
+            this.Activate_group.Add(w21);
             this.hbox2.Add(this.Activate_group);
-            Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.hbox2[this.Activate_group]));
-            w5.Position = 2;
-            w5.Expand = false;
-            w5.Fill = false;
+            Gtk.Box.BoxChild w29 = ((Gtk.Box.BoxChild)(this.hbox2[this.Activate_group]));
+            w29.Position = 2;
+            w29.Expand = false;
+            w29.Fill = false;
             this.vbox1.Add(this.hbox2);
-            Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
-            w6.Position = 1;
-            w6.Expand = false;
-            w6.Fill = false;
+            Gtk.Box.BoxChild w30 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
+            w30.Position = 1;
+            w30.Expand = false;
+            w30.Fill = false;
             this.hbox1.Add(this.vbox1);
-            Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox1]));
-            w7.Position = 0;
-            w7.Expand = false;
-            w7.Fill = false;
+            Gtk.Box.BoxChild w31 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox1]));
+            w31.Position = 0;
+            w31.Expand = false;
+            w31.Fill = false;
             // Container child hbox1.Gtk.Box+BoxChild
             this.vbox2 = new Gtk.VBox();
             this.vbox2.Name = "vbox2";
             this.vbox2.Spacing = 6;
             this.hbox1.Add(this.vbox2);
-            Gtk.Box.BoxChild w8 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox2]));
-            w8.Position = 1;
+            Gtk.Box.BoxChild w32 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox2]));
+            w32.Position = 1;
             this.Add(this.hbox1);
             if ((this.Child != null)) {
                 this.Child.ShowAll();

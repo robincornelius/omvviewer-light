@@ -1373,6 +1373,15 @@ void  Grid_OnGridRegion(GridRegion region)
         public void setmapwidget(omvviewerlight.Map Mapwidget)
         {
             this.map_widget = Mapwidget;
+	}		protected virtual void OnAboutActionActivated (object sender, System.EventArgs e)
+		{
+		About ab = new About();
+        	
+        	ab.Run();
+        	ab.Destroy();
+        
         }
+
+
 
 }

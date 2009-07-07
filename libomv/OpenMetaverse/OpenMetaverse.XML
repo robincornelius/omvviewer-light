@@ -10611,6 +10611,11 @@
             </summary>
             <param name="map">An <see cref="T:OpenMetaverse.StructuredData.OSDMap"/> containing the data</param>
         </member>
+        <member name="T:OpenMetaverse.Messages.CableBeach.RegionInfo">
+            <summary>
+            Holds information about a grid region
+            </summary>
+        </member>
         <member name="T:OpenMetaverse.Assets.AssetScriptBinary">
             <summary>
             Represents an AssetScriptBinary object containing the 
@@ -13752,11 +13757,17 @@
         <member name="F:OpenMetaverse.GroupTitle.GroupID">
             <summary>Key of the group</summary>
         </member>
+        <member name="F:OpenMetaverse.GroupTitle.RoleID">
+            <summary>ID of the role title belongs to</summary>
+        </member>
         <member name="F:OpenMetaverse.GroupTitle.Title">
             <summary>Group Title</summary>
         </member>
         <member name="F:OpenMetaverse.GroupTitle.Selected">
             <summary>Whether title is Active</summary>
+        </member>
+        <member name="M:OpenMetaverse.GroupTitle.ToString">
+            <summary>Returns group title</summary>
         </member>
         <member name="T:OpenMetaverse.Group">
             <summary>
@@ -13816,6 +13827,9 @@
         </member>
         <member name="F:OpenMetaverse.Group.GroupRolesCount">
             <summary>The number of roles this group has configured</summary>
+        </member>
+        <member name="F:OpenMetaverse.Group.ListInProfile">
+            <summary>Show this group in agent's profile</summary>
         </member>
         <member name="M:OpenMetaverse.Group.ToString">
             <summary>Returns the name of the group</summary>
@@ -14017,6 +14031,9 @@
         <member name="F:OpenMetaverse.GroupPowers.ChangeOptions">
             <summary>Can toggle 'Open Enrollment' and change 'Signup fee'</summary>
         </member>
+        <member name="F:OpenMetaverse.GroupPowers.MemberVisible">
+            <summary>Member is visible in the public member list</summary>
+        </member>
         <member name="F:OpenMetaverse.GroupPowers.CreateRole">
             <summary>Can create new roles</summary>
         </member>
@@ -14058,6 +14075,12 @@
         <member name="F:OpenMetaverse.GroupPowers.JoinChat">
             <summary>Can join group chat sessions</summary>
         </member>
+        <member name="F:OpenMetaverse.GroupPowers.AllowVoiceChat">
+            <summary>Can use voice chat in Group Chat sessions</summary>
+        </member>
+        <member name="F:OpenMetaverse.GroupPowers.ModerateChat">
+            <summary>Can moderate group chat sessions</summary>
+        </member>
         <member name="F:OpenMetaverse.GroupPowers.FindPlaces">
             <summary>Can toggle "Show in Find Places" and set search category</summary>
         </member>
@@ -14088,9 +14111,6 @@
         <member name="F:OpenMetaverse.GroupPowers.AllowLandmark">
             <summary>Can always create landmarks for group owned parcels</summary>
         </member>
-        <member name="F:OpenMetaverse.GroupPowers.AllowVoiceChat">
-            <summary>Can use voice chat in Group Chat sessions</summary>
-        </member>
         <member name="F:OpenMetaverse.GroupPowers.AllowSetHome">
             <summary>Can set home location on any group owned parcel</summary>
         </member>
@@ -14112,14 +14132,14 @@
         <member name="F:OpenMetaverse.GroupPowers.ReturnNonGroup">
             <summary>Can return non-group owned/set objects</summary>
         </member>
+        <member name="F:OpenMetaverse.GroupPowers.ReturnGroupOwned">
+            <summary>Can return group owned objects</summary>
+        </member>
         <member name="F:OpenMetaverse.GroupPowers.LandGardening">
             <summary>Can landscape using Linden plants</summary>
         </member>
         <member name="F:OpenMetaverse.GroupPowers.DeedObject">
             <summary>Can deed objects to group</summary>
-        </member>
-        <member name="F:OpenMetaverse.GroupPowers.ModerateChat">
-            <summary>Can moderate group chat sessions</summary>
         </member>
         <member name="F:OpenMetaverse.GroupPowers.ObjectManipulate">
             <summary>Can move group owned objects</summary>
@@ -14142,9 +14162,6 @@
         <member name="F:OpenMetaverse.GroupPowers.VoteOnProposal">
             <summary>Can vote on group proposals</summary>
         </member>
-        <member name="F:OpenMetaverse.GroupPowers.ReturnGroupOwned">
-            <summary>Can return group owned objects</summary>
-        </member>
         <member name="T:OpenMetaverse.GroupManager">
             <summary>
             Handles all network traffic related to reading and writing group
@@ -14163,14 +14180,14 @@
         <member name="F:OpenMetaverse.GroupManager.GroupRolesMembersRequests">
             <summary>Currently-active group role-member requests</summary>
         </member>
-        <member name="F:OpenMetaverse.GroupManager.GroupMembersCaches">
-            <summary>A list of all the lists of group members, indexed by the group ID</summary>
+        <member name="F:OpenMetaverse.GroupManager.TempGroupMembers">
+            <summary>Dictionary keeping group members while request is in progress</summary>
         </member>
-        <member name="F:OpenMetaverse.GroupManager.GroupRolesCaches">
-            <summary>A list of all the lists of group roles, indexed by the group ID</summary>
+        <member name="F:OpenMetaverse.GroupManager.TempGroupRolesMembers">
+            <summary>Dictionary keeping mebmer/role mapping while request is in progress</summary>
         </member>
-        <member name="F:OpenMetaverse.GroupManager.GroupRolesMembersCaches">
-            <summary>A list of all the role to member mappings, indexed by the group ID</summary>
+        <member name="F:OpenMetaverse.GroupManager.TempGroupRoles">
+            <summary>Dictionary keeping GroupRole information while request is in progress</summary>
         </member>
         <member name="F:OpenMetaverse.GroupManager.GroupName2KeyCache">
             <summary>Caches group name lookups</summary>
@@ -14255,6 +14272,14 @@
             <summary>Set this avatar's tier contribution</summary>
             <param name="group">Group ID to change tier in</param>
             <param name="contribution">amount of tier to donate</param>
+        </member>
+        <member name="M:OpenMetaverse.GroupManager.SetGroupAcceptNotices(OpenMetaverse.UUID,System.Boolean,System.Boolean)">
+            <summary>
+            Save wheather agent wants to accept group notices and list this group in their profile
+            </summary>
+            <param name="groupID">Group <see cref="T:OpenMetaverse.UUID"/></param>
+            <param name="acceptNotices">Accept notices from this group</param>
+            <param name="listInProfile">List this group in the profile</param>
         </member>
         <member name="M:OpenMetaverse.GroupManager.RequestJoinGroup(OpenMetaverse.UUID)">
             <summary>Request to join a group</summary>
@@ -14415,35 +14440,40 @@
             </summary>
             <param name="requestID"><seealso cref="T:OpenMetaverse.UUID"/> returned by RequestGroupMembers</param>
             <param name="groupID"><seealso cref="T:OpenMetaverse.UUID"/> of the group</param>
-            <param name="memberCount">Total number of members in the group</param>
             <param name="members">A dictionary containing the members of a group
-            where key is <seealso cref="T:OpenMetaverse.UUID"/> and value is <seealso cref="T:OpenMetaverse.GroupMember"/> struct</param>
+            where key is member <seealso cref="T:OpenMetaverse.UUID"/> and value is <seealso cref="T:OpenMetaverse.GroupMember"/> struct</param>
         </member>
         <member name="T:OpenMetaverse.GroupManager.GroupRolesCallback">
             <summary>
-            Callback for the role list of a group
+            Callback for retrieving group roles
             </summary>
-            <param name="roles">A dictionary containing the roles of a group
-            where the Key is the group <seealso cref="T:OpenMetaverse.UUID"/>, and the values are the roles</param>
+            <param name="requestID"><seealso cref="T:OpenMetaverse.UUID"/> of the request returned from RequestGroupRoles</param>
+            <param name="groupID"><seealso cref="T:OpenMetaverse.UUID"/> of the group</param>
+            <param name="roles">A dictionary containing role <seealso cref="T:OpenMetaverse.UUID"/>s as the key
+            and <seealso cref="T:OpenMetaverse.GroupRole"/> structs as values</param>
         </member>
         <member name="T:OpenMetaverse.GroupManager.GroupRolesMembersCallback">
             <summary>
             Callback for a pairing of roles to members
             </summary>
-            <param name="rolesMembers">A List of Keyvalue pairs containing the role ID and the members assigned to 
-            that role</param>
+            <param name="requestID"><seealso cref="T:OpenMetaverse.UUID"/> of the request returned from RequestGroupRolesMembers</param>
+            <param name="groupID"><seealso cref="T:OpenMetaverse.UUID"/> of the group</param>
+            <param name="rolesMembers">List containing role/member pairs</param>
         </member>
         <member name="T:OpenMetaverse.GroupManager.GroupTitlesCallback">
             <summary>
             Callback for the title list of a group
             </summary>
+            <param name="requestID"><seealso cref="T:OpenMetaverse.UUID"/> of the request returned from RequestGroupTitles</param>
+            <param name="groupID">Group <seealso cref="T:OpenMetaverse.UUID"/></param>
             <param name="titles">A dictionary containing the titles of a group
-            where the Key is the group <seealso cref="T:OpenMetaverse.UUID"/>, and the values are the title details</param>
+            where the Key is the role <seealso cref="T:OpenMetaverse.UUID"/>, and the values are the title details</param>
         </member>
         <member name="T:OpenMetaverse.GroupManager.GroupAccountSummaryCallback">
             <summary>
             Callback fired when group account summary information is received
             </summary>
+            <param name="groupID">Group <seealso cref="T:OpenMetaverse.UUID"/></param>
             <param name="summary">The group account summary information</param>
         </member>
         <member name="T:OpenMetaverse.GroupManager.GroupCreatedCallback">

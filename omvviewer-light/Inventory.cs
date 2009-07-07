@@ -1482,6 +1482,7 @@ namespace omvviewerlight
             bool recurse = itd.recurse;
             List<InventoryBase> myObjects;
             List <invthreaddata> runners= new List<invthreaddata>();
+        
        		
             System.Threading.AutoResetEvent prefetch=new AutoResetEvent(false);
             TreePath path=null;
@@ -1557,6 +1558,7 @@ namespace omvviewerlight
                 if (myObjects == null || myObjects.Count==0)
                 {
 				    recursion--;
+                    postfetch.Set();
                     return;
 			    }
     			
@@ -1613,8 +1615,11 @@ namespace omvviewerlight
 					    invthreaddata itd2 = new invthreaddata(((InventoryFolder)item).UUID, "", iter2,cache,true);
                         runners.Add(itd2);
 
-                         if (abortfetch == true)
+                        if (abortfetch == true)
+                        {
+                            postfetch.Set();
                             return;
+                        }
                      }
 			}
 
@@ -1623,12 +1628,21 @@ namespace omvviewerlight
 
             postfetch.WaitOne();
 
-            foreach (invthreaddata itdn in runners)
-            {
-                if (abortfetch == true)
-                    return;
+            if (abortfetch == true)
+                return;
 
-                fetchinventory((object)itdn);
+            if (myObjects == null || myObjects.Count == 0)
+                return;
+
+            if (recurse)
+            {
+                foreach (invthreaddata itdn in runners)
+                {
+                    if (abortfetch == true)
+                        return;
+
+                    fetchinventory((object)itdn);
+                }
             }
 			
             recursion--;

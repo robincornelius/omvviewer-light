@@ -53,7 +53,7 @@ namespace omvviewerlight
             treeview1.AppendColumn(groupColumn);
 		
             treeview1.Model=store;
-
+		
             MainClass.onRegister += new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
             if(MainClass.client != null ) { MainClass_onRegister(); }

@@ -284,7 +284,7 @@ namespace omvviewerlight
         public void changeregion(GridRegion region)
 		{
             
-            if (current_region.RegionHandle != null && current_region.RegionHandle == region.RegionHandle)
+            if (current_region.RegionHandle == region.RegionHandle)
             {
                 //Nothing to do;
                 return;

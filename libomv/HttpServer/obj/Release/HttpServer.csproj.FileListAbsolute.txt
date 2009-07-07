@@ -1,8 +1,0 @@
-C:\omvviewer\trunk\bin\HttpServer.dll
-C:\omvviewer\trunk\HttpServer\obj\Release\ResolveAssemblyReference.cache
-C:\omvviewer\trunk\HttpServer\obj\Release\HttpServer.dll
-C:\omvviewer\omvviewer-light\omvviewer-light\bin\HttpServer.dll
-C:\omvviewer\omvviewer-light\libomv\HttpServer\obj\Release\ResolveAssemblyReference.cache
-C:\omvviewer\omvviewer-light\libomv\HttpServer\obj\Release\HttpServer.dll
-C:\omvviewer\omvviewer-light\omvviewer-light\bin\HttpServer.pdb
-C:\omvviewer\omvviewer-light\libomv\HttpServer\obj\Release\HttpServer.pdb

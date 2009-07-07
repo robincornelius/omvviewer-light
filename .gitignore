@@ -5,3 +5,5 @@ omvviewer-light/obj/*
 omvviewer-light/obj/*/*
 libomv/OpenMetaverseTypes/obj/*
 libomv/*/obj/*
+.svn
+
