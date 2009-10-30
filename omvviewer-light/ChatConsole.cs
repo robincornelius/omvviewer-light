@@ -431,7 +431,8 @@ namespace omvviewerlight
 		void onSettingsUpdate()
 		{
 		    settagtable();				
-		}
+		}
+
 		void dosetup()
 		{
 			Build();
@@ -488,13 +489,18 @@ namespace omvviewerlight
 		
 		void onIM(InstantMessage im, Simulator sim)
 		{
-			Console.WriteLine("New IM recieved "+im.ToString());
 			
             if (this.current_chat_type==chat_type.CHAT_TYPE_CHAT)
             {
                 //we are the chat console not an IM window;
                 //We handle Some types of IM packet here
-              
+
+                // we also do the console logging here
+
+                if (im.Dialog != InstantMessageDialog.StartTyping && im.Dialog != InstantMessageDialog.StopTyping)
+                    Console.WriteLine("New IM recieved " + im.ToString() + " " + OpenMetaverse.Utils.BytesToString(im.BinaryBucket));
+
+
                if (im.Dialog == OpenMetaverse.InstantMessageDialog.InventoryOffered)
                 {
                     Gtk.Application.Invoke(delegate
@@ -522,7 +528,7 @@ namespace omvviewerlight
                 }
 
                 return;
-            }
+            }	
 
             //Not group IM ignore messages not destine for im_target
             if (current_chat_type == chat_type.CHAT_TYPE_GROUP_IM || current_chat_type == chat_type.CHAT_TYPE_CONFRENCE) 
@@ -533,7 +539,7 @@ namespace omvviewerlight
 			
             if(current_chat_type==chat_type.CHAT_TYPE_IM)
 			{
-				if(im.FromAgentID!=im_target && im.IMSessionID!=im_target)
+                if (im.FromAgentID != im_target || im.Dialog != InstantMessageDialog.MessageFromAgent || im.BinaryBucket.Length>1)
 					return;
 			}
 
@@ -584,8 +590,6 @@ namespace omvviewerlight
 					return;	
                 }
     						
-            Console.Write("IM FROM " + im.FromAgentID + " : " + im.FromAgentName + " : " + im.IMSessionID + "\n");
-
             redtab();
 			
 			if(MainClass.appsettings.notify_IM && this.current_chat_type==chat_type.CHAT_TYPE_IM)
@@ -762,7 +766,8 @@ namespace omvviewerlight
 				{
 					MainClass.win.UrgencyHint = true;
 				}
-				});
+				});
+
         }
 
         public void displaychat(string message, string name, TextTag message_tag, TextTag name_tag)
@@ -845,35 +850,30 @@ namespace omvviewerlight
         protected virtual void OnEntryChatChanged (object sender, System.EventArgs e)
 		{
 			if(im_target!=OpenMetaverse.UUID.Zero)
-				{
-					if(istypingsent==false)
-					{	
-					  //  Console.Write("\nSending typing message\n");
-                        byte[] binaryBucket;
-                        binaryBucket = new byte[0];
-					    MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_target,"typing",im_target,InstantMessageDialog.StartTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
-					    MainClass.client.Self.AnimationStart(Animations.TYPE,true);
-                        istypingsent=true;
-					    GLib.Timeout.Add(10000,StopTyping);
-				    }
-
+			{
+				if(istypingsent==false)
+				{	
+				  //  Console.Write("\nSending typing message\n");
+                  byte[] binaryBucket;
+                  binaryBucket = new byte[0];
+			      MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_target,"typing",im_target,InstantMessageDialog.StartTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
+				  MainClass.client.Self.AnimationStart(Animations.TYPE,true);
+                  istypingsent=true;
+				  GLib.Timeout.Add(10000,StopTyping);
+				 }
             }			
-	}
+	    }
 		
-	bool StopTyping()
-	 {
-         Console.WriteLine("Stop typing");
-					  //  Console.Write("\nSending typing message\n");
-                        byte[] binaryBucket;
-                        binaryBucket = new byte[0];
-			MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_target,"",im_target,InstantMessageDialog.StopTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
-					    MainClass.client.Self.AnimationStop(Animations.TYPE,true);
- 			
-istypingsent=false;
-		     return false;	
-			
-		 
-      }
-							
+	    bool StopTyping()
+	    {
+            Console.WriteLine("Stop typing");
+            byte[] binaryBucket;
+            binaryBucket = new byte[0];
+		    MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_target,"",im_target,InstantMessageDialog.StopTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
+		    MainClass.client.Self.AnimationStop(Animations.TYPE,true);
+     			
+            istypingsent=false;
+		    return false;	 
+      }	
 	}
 }
