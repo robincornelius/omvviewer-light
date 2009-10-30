@@ -43,21 +43,22 @@ namespace omvviewerlight
 
             this.checkbutton_hideminimise.Active = MainClass.appsettings.minimise;
             this.checkbutton_showtimestamps.Active = MainClass.appsettings.timestamps;
-						
-			this.hscale_asset.Value=     MainClass.client.Throttle.Asset;
-			this.hscale_cloud.Value=    MainClass.client.Throttle.Cloud;
-			this.hscale_land.Value=     MainClass.client.Throttle.Land;
-			this.hscale_resend.Value=    MainClass.client.Throttle.Resend;
-			this.hscale_task.Value=      MainClass.client.Throttle.Task;
-			this.hscale_texture.Value=     MainClass.client.Throttle.Texture;
-			this.hscale_wind.Value=   MainClass.client.Throttle.Wind;
-			
+
+            if (MainClass.client != null)
+            {
+
+                this.hscale_asset.Value = MainClass.client.Throttle.Asset;
+                this.hscale_cloud.Value = MainClass.client.Throttle.Cloud;
+                this.hscale_land.Value = MainClass.client.Throttle.Land;
+                this.hscale_resend.Value = MainClass.client.Throttle.Resend;
+                this.hscale_task.Value = MainClass.client.Throttle.Task;
+                this.hscale_texture.Value = MainClass.client.Throttle.Texture;
+                this.hscale_wind.Value = MainClass.client.Throttle.Wind;
+            }
+
             this.colorbutton_normal.Color = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat);
             this.colorbutton_object.Color = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_object);
             this.colorbutton_ownerim.Color =MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_object_owner);
-
-		//	col=MainClass.appsettings.color_chat_online;
-		//	this.col.Color=new Gdk.Color((byte)(col>>16 & 0x0000FF),(byte)(col>>8 & 0x0000FF),(byte)(col>>0 & 0x0000FF));
 
             this.colorbutton_system.Color = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_system);
             this.colorbutton_typing.Color =MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_typing);
@@ -67,8 +68,7 @@ namespace omvviewerlight
 			this.checkbutton_notifyobjectchat.Active=MainClass.appsettings.notify_object_chat;
 			this.checkbutton_notifyGroupIM.Active=MainClass.appsettings.notify_group_IM;
 			this.checkbutton_notifyIM.Active=MainClass.appsettings.notify_IM;
-			
-			
+						
 		}
 
         void applysettings()
@@ -88,13 +88,16 @@ namespace omvviewerlight
             MainClass.appsettings.ThrottleTexture = (float)this.hscale_texture.Value;
             MainClass.appsettings.ThrottleWind = (float)this.hscale_wind.Value;
 
-            MainClass.client.Throttle.Asset = (float)this.hscale_asset.Value;
-            MainClass.client.Throttle.Cloud = (float)this.hscale_cloud.Value;
-            MainClass.client.Throttle.Land = (float)this.hscale_land.Value;
-            MainClass.client.Throttle.Resend = (float)this.hscale_resend.Value;
-            MainClass.client.Throttle.Task = (float)this.hscale_task.Value;
-            MainClass.client.Throttle.Texture = (float)this.hscale_texture.Value;
-            MainClass.client.Throttle.Wind = (float)this.hscale_wind.Value;
+            if (MainClass.client != null)
+            {
+                MainClass.client.Throttle.Asset = (float)this.hscale_asset.Value;
+                MainClass.client.Throttle.Cloud = (float)this.hscale_cloud.Value;
+                MainClass.client.Throttle.Land = (float)this.hscale_land.Value;
+                MainClass.client.Throttle.Resend = (float)this.hscale_resend.Value;
+                MainClass.client.Throttle.Task = (float)this.hscale_task.Value;
+                MainClass.client.Throttle.Texture = (float)this.hscale_texture.Value;
+                MainClass.client.Throttle.Wind = (float)this.hscale_wind.Value;
+            }
 
             MainClass.appsettings.color_chat = MainClass.appsettings.converttosetting(this.colorbutton_normal.Color);
             MainClass.appsettings.color_chat_object = MainClass.appsettings.converttosetting(this.colorbutton_object.Color);
