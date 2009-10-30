@@ -29,12 +29,18 @@ using Gdk;
 namespace omvviewerlight
 {
 	
+  
 	sealed class MySettings : ApplicationSettingsBase
 	{
 	
 		public delegate void SettingsUpdate();
         public event SettingsUpdate onSettingsUpdate;
-		
+
+        ulong RGB(int r, int g, int b)
+        {
+            return (ulong)((((ulong)r << 32) + (ulong)g) << 16) + (ulong)b; 
+        }
+
 		public void notify()
 		{
 			if(onSettingsUpdate!=null)
@@ -257,6 +263,13 @@ namespace omvviewerlight
 			get { try{return (ulong)this["color_chat_online"];} catch{return (((0<<32)+255)<<16)+255;}  }
 			set { this["color_chat_online"] = value; }
 		}
+
+        [UserScopedSettingAttribute()]
+        public ulong color_chat_highlight
+        {
+            get {  return (((255<<32)+0)<<16)+0;}
+            set { this["color_chat_highlight"] = value; }
+        }
 
         public Gdk.Color convertfromsetting(ulong col)
         {			

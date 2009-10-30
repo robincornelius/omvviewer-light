@@ -42,6 +42,7 @@ namespace omvviewerlight
         public Gtk.TextTag systemchat;
 		Gtk.TextTag ownerobjectchat;
         Gtk.TextTag onoffline;
+        Gtk.TextTag highlightchat;
 
         Gtk.TextTag typing_tag;
 		TextMark preTyping;
@@ -425,8 +426,10 @@ namespace omvviewerlight
             MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_typing);
 
             onoffline.Weight = Pango.Weight.Bold;
-            onoffline.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_online);   
-		}
+            onoffline.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_online);
+
+            highlightchat.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_highlight);   
+        }
 		
 		void onSettingsUpdate()
 		{
@@ -446,7 +449,8 @@ namespace omvviewerlight
             objectIMchat = new Gtk.TextTag("objectIMchat");
             typing_tag = new Gtk.TextTag("typing");
             onoffline = new Gtk.TextTag("onoffline");
-			
+            highlightchat = new Gtk.TextTag("hightlight");
+
 			MainClass.appsettings.onSettingsUpdate+=new MySettings.SettingsUpdate(onSettingsUpdate);
 			
 			textview_chat.Buffer.TagTable.Add(bold);
@@ -456,7 +460,8 @@ namespace omvviewerlight
 			textview_chat.Buffer.TagTable.Add(ownerobjectchat);
             textview_chat.Buffer.TagTable.Add(typing_tag);
             textview_chat.Buffer.TagTable.Add(onoffline);
-			
+            textview_chat.Buffer.TagTable.Add(highlightchat);	    
+
 		    settagtable();		
 		}
 
@@ -814,6 +819,17 @@ namespace omvviewerlight
                 textview_chat.Buffer.InsertWithTags(ref iter, buffer, name_tag);
                 iter = textview_chat.Buffer.EndIter;
                 buffer = message + "\n";
+
+                if (current_chat_type != chat_type.CHAT_TYPE_IM)
+                {
+                       //If highlight==true
+                       if(buffer.ToLower().Contains(MainClass.client.Self.FirstName.ToLower())) 
+                       {
+                           Console.WriteLine("Highlighting messsage");
+                           message_tag = this.highlightchat;
+                       }
+                }
+
                 textview_chat.Buffer.InsertWithTags(ref iter, buffer, message_tag);
                 TextMark mark = textview_chat.Buffer.CreateMark("xyz", textview_chat.Buffer.EndIter, true);
                 textview_chat.ScrollMarkOnscreen(mark);
