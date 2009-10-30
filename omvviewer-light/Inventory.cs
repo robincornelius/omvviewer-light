@@ -1656,7 +1656,7 @@ namespace omvviewerlight
             if (recursion == 0)
             {
 				fetcherrunning = false;
-				if(cache==false)
+				if(cache==false && recurse==true)
 				{
 	                fetchrun=true;
 					Console.WriteLine("Fetch Complete");
