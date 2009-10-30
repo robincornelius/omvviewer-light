@@ -1,7 +1,7 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F59E711D-2669-4BC6-ACA4-2F7E9B8EDD0E}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -24,9 +24,10 @@
     </FileUpgradeFlags>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <SignManifests>true</SignManifests>
-    <ManifestCertificateThumbprint>0DB8568C639B078DA9EBBB6B1FDAC8FAC1426128</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>9AA21AF1C283C1947EE5FC924474AB4BF9A5F124</ManifestCertificateThumbprint>
     <SignAssembly>false</SignAssembly>
     <GenerateManifests>true</GenerateManifests>
+    <ManifestKeyFile>omvviewer-light_TemporaryKey.pfx</ManifestKeyFile>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
@@ -44,8 +45,8 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>index.html</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>5</ApplicationRevision>
-    <ApplicationVersion>0.48.0.%2a</ApplicationVersion>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>0.48.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -795,6 +796,7 @@
     <Content Include="openmetaverse_data\upperbody_shading_alpha.tga">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="omvviewer-light_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

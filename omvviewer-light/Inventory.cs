@@ -1540,8 +1540,6 @@ namespace omvviewerlight
 
             Gtk.Application.Invoke(delegate
             {
-                   
-
                 if (myObjects == null || myObjects.Count==0)
                 {
 				    recursion--;
@@ -1559,7 +1557,6 @@ namespace omvviewerlight
                 this.label_fetched.Text="fetched "+this.no_items.ToString()+" items";
            
           
-			
 			List<InventoryBase> folders = new List<InventoryBase>();
 
 			foreach (InventoryBase item in myObjects)
@@ -1626,9 +1623,6 @@ namespace omvviewerlight
                 }
             }
               
-
-           
-
             postfetch.Set();
             });
 
