@@ -892,7 +892,8 @@ void  Grid_OnGridRegion(GridRegion region)
 		}
 
 		button.Clicked += new EventHandler(cs.clickclosed);
-		this.notebook.SwitchPage += new SwitchPageHandler(cs.onSwitchPage);
+		this.notebook.SwitchPage += new SwitchPageHandler(cs.onSwitchPage);
+
 	}
 	
 	public void startGroupIM(UUID id)
@@ -1346,7 +1347,8 @@ void  Grid_OnGridRegion(GridRegion region)
 				    md.Destroy();
 					ObjectOfferEvent.Set();
 			});
-			
+			
+
 		    ObjectOfferEvent.WaitOne(1000*3600,false);
 	
            if (object_offer_result == ResponseType.Yes)
@@ -1373,7 +1375,8 @@ void  Grid_OnGridRegion(GridRegion region)
         public void setmapwidget(omvviewerlight.Map Mapwidget)
         {
             this.map_widget = Mapwidget;
-	}		protected virtual void OnAboutActionActivated (object sender, System.EventArgs e)
+	}
+		protected virtual void OnAboutActionActivated (object sender, System.EventArgs e)
 		{
 		About ab = new About();
         	
