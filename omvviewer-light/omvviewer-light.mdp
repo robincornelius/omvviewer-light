@@ -215,6 +215,7 @@
     <ProjectReference type="Assembly" localcopy="True" refto="bin/Tao.FreeGlut.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="bin/Tao.OpenGl.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="bin/OpenMetaverse.dll" />
+    <ProjectReference type="Gac" localcopy="True" refto="System.Xml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   </References>
   <LanguageParameters ApplicationIcon="." ctype="CSharpProjectParameters" />
 </Project>

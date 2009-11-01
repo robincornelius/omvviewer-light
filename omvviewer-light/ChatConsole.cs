@@ -29,6 +29,7 @@ using Gdk;
 using Gtk;
 using GLib;
 
+
 namespace omvviewerlight
 {
 	[System.ComponentModel.ToolboxItem(true)]
@@ -70,6 +71,7 @@ namespace omvviewerlight
 		};
 		
 		chat_type current_chat_type=chat_type.CHAT_TYPE_NONE;
+
 		
 		public ChatConsole()
 		{
@@ -78,7 +80,7 @@ namespace omvviewerlight
 
             MainClass.onRegister += new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
-            //This class is always present so we don't need to add at constructor time
+            //This class is always present so we don't need to add at constructor time	
 		}
 
         void MainClass_onRegister()

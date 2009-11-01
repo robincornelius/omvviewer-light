@@ -24,7 +24,9 @@ omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using OpenMetaverse;
+using OpenMetaverse.StructuredData;
 
 namespace omvviewerlight
 {
@@ -36,7 +38,8 @@ namespace omvviewerlight
 		Gtk.ListStore store;	
 		private Dictionary<UUID, bool> av_typing = new Dictionary<UUID, bool>();
         private Dictionary<UUID, Gtk.TreeIter> av_tree = new Dictionary<UUID, Gtk.TreeIter>();
-        UUID lastsim = new UUID();
+	    private Dictionary<UUID,string> client_list = new Dictionary<UUID, string>();
+		UUID lastsim = new UUID();
 		const float DISTANCE_BUFFER = 3f;
 
 		bool running=true;
@@ -47,7 +50,7 @@ namespace omvviewerlight
 		
 		public Radar()
 		{      
-			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(UUID));
+			store= new Gtk.ListStore (typeof(string),typeof(string),typeof(string),typeof(string),typeof(UUID));
 			this.Build();
 			Gtk.TreeViewColumn tvc;
 			treeview_radar.AppendColumn("",new Gtk.CellRendererText(),"text",0);
@@ -56,6 +59,9 @@ namespace omvviewerlight
 			tvc.Sizing=Gtk.TreeViewColumnSizing.Autosize;
 			
 			treeview_radar.AppendColumn("Dist.",new Gtk.CellRendererText(),"text",2);
+
+			treeview_radar.AppendColumn("Client.",new Gtk.CellRendererText(),"text",3);
+	
 			treeview_radar.Model=store;
 
             MainClass.onRegister += new MainClass.register(MainClass_onRegister);
@@ -65,6 +71,28 @@ namespace omvviewerlight
             
 			AutoPilot.onAutoPilotFinished+=new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
 
+			
+			StreamReader SR=File.OpenText("client_list.xml");
+			OSDMap client_list_xml=(OSDMap)OpenMetaverse.StructuredData.OSDParser.Deserialize(SR.ReadToEnd());
+			SR.Close();		
+			
+			int count=client_list_xml.Count;
+			
+			foreach(KeyValuePair<string, OSD> kvp in client_list_xml)
+			{
+				Console.WriteLine(kvp.Key);
+				string map=kvp.Value.ToString();
+				
+				char[] x=new char[]{' ','\n','\r'};
+				map.TrimStart(x);
+				Console.WriteLine();
+				OSD client=kvp.Value;
+				//client_list[new UUID(kvp.Key)]=map["name"].AsString();
+			
+			}
+			
+			
+			
 			
 			this.store.SetSortFunc(2,sort_Vector3);	
             store.SetSortColumnId(2,Gtk.SortType.Ascending);
@@ -170,7 +198,7 @@ namespace omvviewerlight
                         if (!this.av_tree.ContainsKey(kvp.Key))
                         {
                             Gtk.TreeIter iter;
-                            iter = store.AppendValues("", "Waiting...", "", kvp.Key);
+                            iter = store.AppendValues("", "Waiting...", "", "",kvp.Key);
                             av_tree.Add(kvp.Key, iter);
 
                             AsyncNameUpdate ud = new AsyncNameUpdate(kvp.Key, false);
@@ -179,7 +207,9 @@ namespace omvviewerlight
                             {
                                 // We need to check that this iter still exists
                                 if (av_tree.ContainsKey(kvp.Key))
+								{
                                     store.SetValue(iter, 1, name);
+								}
                             };
                             ud.go();
 
@@ -189,10 +219,36 @@ namespace omvviewerlight
             });
 
             calcdistance();
+			clientpoke();
             return true;
 
         }
 
+		void clientpoke()
+		{
+			
+			Gtk.TreeIter iter;
+			MainClass.client.Network.Simulators.ForEach(delegate(Simulator sim)
+            {
+				sim.ObjectsAvatars.ForEach(delegate(Avatar av)
+				{
+				
+					if(av_tree.TryGetValue(av.ID,out iter))
+					{
+						UUID id=av.Textures.GetFace(0).TextureID;
+						string client="";		
+						if(client_list.TryGetValue(id,out client))
+						{
+							store.SetValue(iter,3,client);							
+						}
+					}
+										
+				});;
+				
+			});
+
+		}
+		
 		int sort_Vector3(Gtk.TreeModel model,Gtk.TreeIter a,Gtk.TreeIter b)
 		{
             
@@ -362,7 +418,7 @@ namespace omvviewerlight
 			
 			if(this.treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
-                UUID id=(UUID)mod.GetValue(iter,3);
+                UUID id=(UUID)mod.GetValue(iter,4);
                 Avatar avatar = AutoPilot.findavatarinsims(id);
 				if(avatar!=null)
 				{
@@ -379,7 +435,7 @@ namespace omvviewerlight
 			
 			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
-                UUID id=(UUID)mod.GetValue(iter,3);
+                UUID id=(UUID)mod.GetValue(iter,4);
                 Avatar avatar = AutoPilot.findavatarinsims(id);
 				if(avatar!=null)
 				{
@@ -396,7 +452,7 @@ namespace omvviewerlight
 			
 			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
-                UUID id = (UUID)mod.GetValue(iter, 3);
+                UUID id = (UUID)mod.GetValue(iter, 4);
                 Avatar avatar = AutoPilot.findavatarinsims(id);
                 if (avatar != null)
 				{
@@ -419,7 +475,7 @@ namespace omvviewerlight
 			
 			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
-				UUID id=(UUID)mod.GetValue(iter,3);		
+				UUID id=(UUID)mod.GetValue(iter,4);		
 				AutoPilot.set_target_avatar(id,true);
 				this.button1.Label="STOP";
 			}
@@ -432,7 +488,7 @@ namespace omvviewerlight
 			
 			if(treeview_radar.Selection.GetSelected(out mod,out iter))			
 			{
-				UUID id=(UUID)mod.GetValue(iter,3);
+				UUID id=(UUID)mod.GetValue(iter,4);
                 Avatar avatar = AutoPilot.findavatarinsims(id);
 				if(avatar!=null)
 				{

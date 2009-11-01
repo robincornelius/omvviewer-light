@@ -258,6 +258,7 @@ namespace omvviewerlight
 				Console.Write("Login status login\n");
                 Thread.Sleep(5000);
     
+
 				MainClass.client.Groups.RequestCurrentGroups();
 				MainClass.client.Self.RetrieveInstantMessages();
 				
