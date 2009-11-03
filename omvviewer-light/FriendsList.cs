@@ -43,7 +43,6 @@ namespace omvviewerlight
 
 		public FriendsList()
 		{			
-			Console.Write("Building friends list window\n");
 			this.Build();
 			store= new Gtk.ListStore (typeof(Gdk.Pixbuf),typeof(string),typeof(Gdk.Pixbuf),typeof(Gdk.Pixbuf),typeof(Gdk.Pixbuf),typeof(Gdk.Pixbuf),typeof(string),typeof(bool));
             

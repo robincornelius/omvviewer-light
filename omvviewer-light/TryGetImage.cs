@@ -90,7 +90,6 @@ namespace omvviewerlight
 
         public void go()
         {
-            Logger.Log("TryGetImage:: GO() asset :"+target_asset.ToString(),Helpers.LogLevel.Debug);
             dowork();
         }
 
@@ -109,8 +108,12 @@ namespace omvviewerlight
 		
 		public void abort()
 	   {
-            MainClass.client.Assets.OnImageRecieveProgress -= new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
-            MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
+           if (MainClass.client != null)
+           {
+               MainClass.client.Assets.OnImageRecieveProgress -= new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
+           }
+            
+           MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
 
         }
 			   
@@ -190,7 +193,7 @@ namespace omvviewerlight
             MainClass.client.Assets.OnImageRecieveProgress -= new OpenMetaverse.AssetManager.ImageReceiveProgressCallback(onProgress);
             MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
 
-            Console.Write("Downloaded asset " + this_asset.AssetID.ToString() + "\n");
+            Logger.Log("Downloaded asset " + this_asset.AssetID.ToString() + "\n",Helpers.LogLevel.Debug);
             byte[] tgaFile = null;
             ManagedImage imgData=null;
 

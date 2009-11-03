@@ -157,6 +157,8 @@ namespace omvviewerlight
 
 			Gtk.Application.Invoke(delegate {
 
+            Logger.Log("Got grid region for :"+e.Region.Name+" ("+e.Region.RegionHandle.ToString()+")", Helpers.LogLevel.Debug);
+       
             if (e.Region.RegionHandle == MainClass.client.Network.CurrentSim.Handle && requested==true)
             {
                 requested = false;
@@ -203,13 +205,12 @@ namespace omvviewerlight
             cy = 0;
            
             Gtk.Application.Invoke(delegate{
-
-                
+         
                 for (int x = 0; x < 9; x++)
                 {
                     regions[x] = new OpenMetaverse.GridRegion();
                     regions[x].Name = "";
-                   
+                    maps[x].SetAsWater();
                     Gtk.Tooltips name = new Gtk.Tooltips();
                     name.SetTip(maps[x], "Empty", "");
                     name.Enable();

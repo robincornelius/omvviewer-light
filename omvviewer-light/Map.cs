@@ -108,6 +108,7 @@ namespace omvviewerlight
             objects_map_ID = UUID.Zero;
             terrain_map_ID = UUID.Zero;
             this_maps_region_handle = 0;
+            current_region.RegionHandle = 0;
             current_region.Name = "Empty";
 
             objects_map = new Gtk.Image(MainClass.GetResource("water.png"));
@@ -280,8 +281,9 @@ namespace omvviewerlight
 		
         void Grid_GridRegion(object sender, GridRegionEventArgs e)
 		{
-            
-            if (current_region.RegionHandle == e.Region.RegionHandle)
+
+            return;
+            if (current_region.RegionHandle != e.Region.RegionHandle)
             {
                 //Nothing to do;
                 return;
@@ -289,9 +291,13 @@ namespace omvviewerlight
 
 			current_region=e.Region;
 			this.objects_map_ID=e.Region.MapImageID;
-			Gdk.Pixbuf pb= MainClass.GetResource("trying.png");
-			objects_map = new Gtk.Image(pb);
-			this.image.Pixbuf=pb;	
+
+            Gtk.Application.Invoke(delegate
+            {
+                Gdk.Pixbuf pb = MainClass.GetResource("trying.png");
+                objects_map = new Gtk.Image(pb);
+                this.image.Pixbuf = pb;
+            });
 
 			TryGetImage tgi=new TryGetImage(this.objects_map,e.Region.MapImageID,350,350,true);
             tgi.OnDecodeComplete += new TryGetImage.Decodecomplete(delegate()
@@ -307,20 +313,6 @@ namespace omvviewerlight
             tgi.go();
 		}
 		
-		void onGridRegion(GridRegion region)
-		{
-            lock (MainClass.win.grid_regions)
-            {
-                if (!MainClass.win.grid_regions.ContainsKey(region.RegionHandle))
-                {
-                    MainClass.win.grid_regions.Add(region.RegionHandle, region);
-                }
-
-                update_map_for_region(region.RegionHandle);
-            }
-            
-		}
-
         void update_map_for_region(ulong regionID)
         {
 
@@ -336,10 +328,7 @@ namespace omvviewerlight
             {
                 current_region=region;
                 requested = true;
-				
-				Console.Write("Got grid region reply, requesting texture :"+region.MapImageID.ToString()+"\n");
-				
-				Logger.Log("Assuming this is an objects overlay",Helpers.LogLevel.Debug);
+								
 				this.objects_map_ID=region.MapImageID;
 				Gdk.Pixbuf pb= MainClass.GetResource("trying.png");
 				objects_map = new Gtk.Image(pb);

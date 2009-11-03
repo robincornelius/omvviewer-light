@@ -597,8 +597,7 @@ namespace omvviewerlight
                e.IM.Dialog!=InstantMessageDialog.BusyAutoResponse
 				)
 				{
-                    Console.Write("IM REJECTED IN IM WINDOW FROM " + e.IM.FromAgentID + " : " + e.IM.FromAgentName + " : " + e.IM.IMSessionID + "\n");
-					return;	
+        			return;	
                 }
     						
             redtab();
@@ -879,8 +878,7 @@ namespace omvviewerlight
 			{
 				if(istypingsent==false)
 				{	
-				  //  Console.Write("\nSending typing message\n");
-                  byte[] binaryBucket;
+		          byte[] binaryBucket;
                   binaryBucket = new byte[0];
 			      MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_target,"typing",im_target,InstantMessageDialog.StartTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);
 				  MainClass.client.Self.AnimationStart(Animations.TYPE,true);
