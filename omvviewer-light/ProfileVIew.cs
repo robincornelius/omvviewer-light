@@ -78,7 +78,7 @@ namespace omvviewerlight
 
         ~ProfileVIew()
 		{
-			Console.WriteLine("ProfileView Cleaned up");
+			Logger.Log("ProfileView Cleaned up",Helpers.LogLevel.Debug);
 		}		
 		
 		
@@ -90,7 +90,7 @@ namespace omvviewerlight
             MainClass.client.Avatars.PickInfoReply -= new EventHandler<PickInfoReplyEventArgs>(Avatars_PickInfoReply);
             MainClass.client.Avatars.AvatarPicksReply -= new EventHandler<AvatarPicksReplyEventArgs>(Avatars_AvatarPicksReply);
             this.DeleteEvent -= new DeleteEventHandler(OnDeleteEvent);
-            Console.WriteLine("Profile view go bye bye");
+            Logger.Log("Profile view go bye bye",Helpers.LogLevel.Debug);
 			this.Destroy();	
 			//Finalize();
 			//System.GC.SuppressFinalize(this);

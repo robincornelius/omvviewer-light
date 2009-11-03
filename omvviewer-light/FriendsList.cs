@@ -139,7 +139,7 @@ namespace omvviewerlight
 
             new public void Dispose()
         {
-            Console.WriteLine("Disposing of the friendslist control");
+            Logger.Log("Disposing of the friendslist control",Helpers.LogLevel.Debug);
 
             MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);

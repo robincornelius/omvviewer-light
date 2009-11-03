@@ -1,8 +1,29 @@
-// LocalRegion.cs created with MonoDevelop
-// User: robin at 19:07 09/02/2009
-//
-// To change standard headers go to Edit->Preferences->Coding->Standard Headers
-//
+/*
+omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(tm)
+    Copyright (C) 2008,2009  Robin Cornelius <robin.cornelius@gmail.com>
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+    1. Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+    2. Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+    3. The name of the author may not be used to endorse or promote products
+        derived from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+    IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+    OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+    IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+    NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+    THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 using System;
 using OpenMetaverse;
@@ -15,8 +36,6 @@ namespace omvviewerlight
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class LocalRegion : Gtk.Bin
 	{
-        
-
 		uint cy;
 		uint cx;
 		bool requested=false;
@@ -68,6 +87,7 @@ namespace omvviewerlight
             }	
 		}
 
+
         void MainClass_onDeregister()
         {
             if (MainClass.client != null)
@@ -97,10 +117,9 @@ namespace omvviewerlight
         }
 
 
-
         new public void Dispose()
         {
-            Console.WriteLine("Disposing of the LocalRegion control");
+            Logger.Log("Disposing of the LocalRegion control",Helpers.LogLevel.Debug);
 
             MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
@@ -121,8 +140,9 @@ namespace omvviewerlight
             {
 				maps[x].set_optimal_size(size);
 		    }
-		}
+        }
 
+#region libomv_events
 
         void Grid_GridRegion(object sender, GridRegionEventArgs e)
 		{
@@ -142,7 +162,7 @@ namespace omvviewerlight
                 requested = false;
                 cx = (uint)e.Region.X;
                 cy = (uint)e.Region.Y;
-                Console.WriteLine("Requesting neighbour grid");
+                Logger.Log("Requesting neighbour grid",Helpers.LogLevel.Debug);
                 MainClass.client.Grid.RequestMapBlocks(GridLayerType.Objects, (ushort)(e.Region.X - 1), (ushort)(e.Region.Y - 1), (ushort)(e.Region.X + 1), (ushort)(e.Region.Y + 1), false);
             }
 
@@ -164,7 +184,17 @@ namespace omvviewerlight
 			regions[index]=e.Region;
 	
 			});
-		}
+        }
+
+        void Network_SimChanged(object sender, SimChangedEventArgs e)
+        {
+            if (e.PreviousSimulator == MainClass.client.Network.CurrentSim)
+                return;
+
+            requestnewgridregion();
+        }
+
+#endregion
 
         void requestnewgridregion()
         {
@@ -185,19 +215,11 @@ namespace omvviewerlight
                     name.Enable();
                 }
                  
-                Console.WriteLine("Requesting map region for current region");
+                Logger.Log("Requesting map region for current region",Helpers.LogLevel.Debug);
                 requested = true;
                 MainClass.client.Grid.RequestMapRegion(MainClass.client.Network.CurrentSim.Name, GridLayerType.Objects);
                
             });           
-        }
-
-        void Network_SimChanged(object sender, SimChangedEventArgs e)
-        {
-            if (e.PreviousSimulator == MainClass.client.Network.CurrentSim)
-                return;
-
-            requestnewgridregion();
         }
 
         void mapclick(int x)

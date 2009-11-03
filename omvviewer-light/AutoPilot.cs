@@ -245,12 +245,12 @@ namespace omvviewerlight
                 if (distance > 2.5)
 				{
                     
-					//Console.WriteLine("Autopilot think");
-                    //Console.WriteLine("Target at " + targetpos.ToString());
-                    //Console.WriteLine("I'm at Global" + MainClass.client.Self.GlobalPosition.ToString());
-                    //Console.WriteLine("I'm at Local" + MainClass.client.Self.SimPosition.ToString());
-                    //Console.WriteLine("Distance is " + distance.ToString());
-                    //Console.WriteLine("Local vector is "+(new Vector3(targetpos)-new Vector3(MainClass.client.Self.GlobalPosition)).ToString());
+					//Logger.Log("Autopilot think",Helpers.LogLevel.Debug);
+                    //Logger.Log("Target at " + targetpos.ToString(),Helpers.LogLevel.Debug);
+                    //Logger.Log("I'm at Global" + MainClass.client.Self.GlobalPosition.ToString(),Helpers.LogLevel.Debug);
+                    //Logger.Log("I'm at Local" + MainClass.client.Self.SimPosition.ToString(),Helpers.LogLevel.Debug);
+                    //Logger.Log("Distance is " + distance.ToString(),Helpers.LogLevel.Debug);
+                    //Logger.Log("Local vector is "+(new Vector3(targetpos)-new Vector3(MainClass.client.Self.GlobalPosition)).ToString(),Helpers.LogLevel.Debug);
                     Vector3 heading=new Vector3(targetpos)-new Vector3(MainClass.client.Self.GlobalPosition);
                     heading.Normalize();
                     heading = MainClass.client.Self.SimPosition + heading;
@@ -263,7 +263,7 @@ namespace omvviewerlight
                      MainClass.client.Self.AutoPilotCancel();
 					 if(onAutoPilotFinished!=null)
 						onAutoPilotFinished();
-				     Console.WriteLine("Stopping autopilot");
+				     Logger.Log("Stopping autopilot",Helpers.LogLevel.Debug);
 					return false;
                  }
                         

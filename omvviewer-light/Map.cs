@@ -247,12 +247,12 @@ namespace omvviewerlight
     
 		~Map()
 		{
-			Console.WriteLine("Map Cleaned up");
+			Logger.Log("Map Cleaned up",Helpers.LogLevel.Debug);
 		}		
 		
         new public void Dispose()
         {
-            Console.WriteLine("Disposing of the map control");
+            Logger.Log("Disposing of the map control",Helpers.LogLevel.Debug);
 
             running = false;
 
@@ -339,7 +339,7 @@ namespace omvviewerlight
 				
 				Console.Write("Got grid region reply, requesting texture :"+region.MapImageID.ToString()+"\n");
 				
-				Console.WriteLine("Assuming this is an objects overlay");
+				Logger.Log("Assuming this is an objects overlay",Helpers.LogLevel.Debug);
 				this.objects_map_ID=region.MapImageID;
 				Gdk.Pixbuf pb= MainClass.GetResource("trying.png");
 				objects_map = new Gtk.Image(pb);
@@ -420,7 +420,7 @@ namespace omvviewerlight
                 }
                 catch
                 {
-                    Console.WriteLine("Map, caught exception cloning pixbuf\n");
+                    Logger.Log("Map, caught exception cloning pixbuf\n",Helpers.LogLevel.Debug);
                     return;
                 }
                  
@@ -579,7 +579,7 @@ namespace omvviewerlight
 			Vector3 pos;
 			if(args.Event.X>marginX && args.Event.X<(width-marginX) && args.Event.Y>marginY && args.Event.Y<(height-marginY)) 
 			{
-				Console.WriteLine("In the box");	
+				Logger.Log("In the box",Helpers.LogLevel.Debug);	
 				pos.X=(float)(256.0*((args.Event.X-marginX)/this.image.Pixbuf.Width));
 				pos.Y=(float)(256.0*((args.Event.Y-marginY)/this.image.Pixbuf.Height));
 		}

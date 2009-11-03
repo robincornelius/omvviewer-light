@@ -183,7 +183,7 @@ namespace omvviewerlight
 			
 			if(this.button_autopilot.Label=="Move To")
 			{			
-				Console.WriteLine("Autopilot on");
+				Logger.Log("Autopilot on",Helpers.LogLevel.Debug);
 				userclicked=false;
 				Vector3 pos;
 				pos=new Vector3();
@@ -199,9 +199,9 @@ namespace omvviewerlight
                     AutoPilot.set_target_pos(AutoPilot.localtoglobalpos(pos, MainClass.client.Network.CurrentSim.Handle));
                 }
 
-                Console.WriteLine("Autopilot target global is " + AutoPilot.localtoglobalpos(pos, MainClass.client.Network.CurrentSim.Handle).ToString());
-                Console.WriteLine("Agent is now local " + MainClass.client.Self.RelativePosition.ToString());
-                Console.WriteLine("Agent is now global " + MainClass.client.Self.GlobalPosition.ToString());
+                Logger.Log("Autopilot target global is " + AutoPilot.localtoglobalpos(pos, MainClass.client.Network.CurrentSim.Handle).ToString(),Helpers.LogLevel.Debug);
+                Logger.Log("Agent is now local " + MainClass.client.Self.RelativePosition.ToString(),Helpers.LogLevel.Debug);
+                Logger.Log("Agent is now global " + MainClass.client.Self.GlobalPosition.ToString(),Helpers.LogLevel.Debug);
 
 				this.button_autopilot.Label="Stop";
 				this.button_autopilot.Image=new Gtk.Image(Stetic.IconLoader.LoadIcon(this, "gtk-cancel", Gtk.IconSize.Menu, 16));
@@ -217,7 +217,7 @@ namespace omvviewerlight
 		
 		public void settarget(Vector3 pos,GridRegion region)
 		{
-			Console.WriteLine("Set target from map");
+			Logger.Log("Set target from map",Helpers.LogLevel.Debug);
 			userclicked=true;
             this.entry_simname.Text = region.Name;
 			this.spinbutton_x.Value=pos.X;

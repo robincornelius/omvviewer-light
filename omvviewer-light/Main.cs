@@ -77,7 +77,7 @@ namespace omvviewerlight
         {
             if (client != null)
             {
-                Console.WriteLine("** Kill network manager ***");
+                Logger.Log("** Kill network manager ***",Helpers.LogLevel.Debug);
 
                 client.Network.Shutdown(NetworkManager.DisconnectType.ClientInitiated);
                 doderegister();
@@ -89,11 +89,11 @@ namespace omvviewerlight
 
         public static void getMeANewClient()
         {
-            Console.WriteLine("** TRYING TO GET A NEW CLIENT ***");
+            Logger.Log("** TRYING TO GET A NEW CLIENT ***",Helpers.LogLevel.Debug);
 
             if (client != null)
             {
-                Console.WriteLine("** Kill network manager ***");
+                Logger.Log("** Kill network manager ***",Helpers.LogLevel.Debug);
 
                 client.Network.Shutdown(NetworkManager.DisconnectType.ClientInitiated);
                 doderegister();
@@ -101,7 +101,7 @@ namespace omvviewerlight
             }
 
 
-            Console.WriteLine("** NEW CLIENT ***");
+            Logger.Log("** NEW CLIENT ***",Helpers.LogLevel.Debug);
 
             client=new GridClient();
 
@@ -112,11 +112,11 @@ namespace omvviewerlight
 
             OpenMetaverse.Settings.RESOURCE_DIR = res_dir;
 
-            Console.WriteLine("Setting resource dir to " + res_dir);
+            Logger.Log("Setting resource dir to " + res_dir,Helpers.LogLevel.Debug);
 
             string cache = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + System.IO.Path.DirectorySeparatorChar + "omvviewer-light" + System.IO.Path.DirectorySeparatorChar + "omvviewer_cache";
 
-            Console.WriteLine("Setting texture cache to :" + cache);
+            Logger.Log("Setting texture cache to :" + cache,Helpers.LogLevel.Debug);
             client.Settings.ASSET_CACHE_DIR = cache;
 
             doregister();
@@ -142,7 +142,7 @@ namespace omvviewerlight
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Error loading pixbuf :"+e.Message);
+                    Logger.Log("Error loading pixbuf :"+e.Message,Helpers.LogLevel.Debug);
                 }
 
                 return buf;
@@ -153,14 +153,14 @@ namespace omvviewerlight
         {
             try
             {
-                Console.WriteLine("Probing for GTK");
+                Logger.Log("Probing for GTK",Helpers.LogLevel.Debug);
                 Gtk.Application.Init();
-                Console.WriteLine("GTK found");
+                Logger.Log("GTK found",Helpers.LogLevel.Debug);
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine("GTK not found :" + e.Message);
+                Logger.Log("GTK not found :" + e.Message,Helpers.LogLevel.Debug);
                 return false;
             }
 

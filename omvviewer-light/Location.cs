@@ -25,6 +25,7 @@ omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(
 using System;
 using Gtk;
 using Gdk;
+using OpenMetaverse;
 
 namespace omvviewerlight
 {
@@ -90,7 +91,7 @@ namespace omvviewerlight
 
         new public void Dispose()
         {
-            Console.WriteLine("Disposing of the Location control");
+            Logger.Log("Disposing of the Location control",Helpers.LogLevel.Debug);
 
             MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);

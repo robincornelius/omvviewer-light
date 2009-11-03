@@ -55,7 +55,7 @@ namespace omvviewerlight
 			{
 				if(blocks.ContainsKey(blockname))
 				{
-					Console.WriteLine("Failed to create a block of name "+blockname);
+					Logger.Log("Failed to create a block of name "+blockname,Helpers.LogLevel.Debug);
 				}
 				else
 				{
@@ -98,20 +98,20 @@ namespace omvviewerlight
 				    break;
 				
 				//Find each line by looking for the newline
-				//Console.WriteLine("pos is "+pos.ToString()+" lastpos is "+lastpos.ToString());
+				//Logger.Log("pos is "+pos.ToString()+" lastpos is "+lastpos.ToString(),Helpers.LogLevel.Debug);
 				string line=block.Substring(lastpos,pos-lastpos);
 				string Value;
 				
 				if(line.IndexOf('{')!=-1)
 				{
 				   int stm;
-				   Console.WriteLine("New block ("+key+")");
+				   Logger.Log("New block ("+key+")",Helpers.LogLevel.Debug);
 				   EmbeddedData new_block=addblock(key);
 				   lastpos=new_block.parseblock(block,pos+1,out stm)+1;
 				   pos=lastpos;
 				   if(lastpos==0)
 				   {
-						Console.WriteLine("End found true");
+						Logger.Log("End found true",Helpers.LogLevel.Debug);
 						endfound=true;
 						startoftext=stm;
 						return -1;
@@ -121,7 +121,7 @@ namespace omvviewerlight
 				   
 				if(line.IndexOf('}')!=-1)
 				{      
-					Console.WriteLine("End block");
+					Logger.Log("End block",Helpers.LogLevel.Debug);
 					startoftext=0;
 					return pos;
 				}
@@ -141,11 +141,11 @@ namespace omvviewerlight
 				Value=Value.Trim(trim);
 				this.keys.Add(key,Value);
 				lastpos=pos+1;
-				Console.WriteLine(key+" ---> "+Value);
+				Logger.Log(key+" ---> "+Value,Helpers.LogLevel.Debug);
 			
 				if(key.IndexOf("Text length")!=-1)
 				{
-					Console.WriteLine("Got text length marker its the end");
+					Logger.Log("Got text length marker its the end",Helpers.LogLevel.Debug);
 					endfound=true;
 					startoftext=pos;
 					return -1;			
@@ -190,7 +190,7 @@ namespace omvviewerlight
 
 		~NotecardReader()
 		{
-			Console.WriteLine("NotecardReader Cleaned up");
+			Logger.Log("NotecardReader Cleaned up",Helpers.LogLevel.Debug);
 		}		
 		
 		
@@ -210,7 +210,7 @@ namespace omvviewerlight
             if (MainClass.client.Inventory.Store.Contains(item))
             {
                 // retrieve asset from store
-                Console.WriteLine("asset in store, requesting");            
+                Logger.Log("asset in store, requesting",Helpers.LogLevel.Debug);            
 				InventoryItem ii = (InventoryItem)MainClass.client.Inventory.Store[item];
 				
 				if(ii is InventoryLSL)
@@ -220,15 +220,15 @@ namespace omvviewerlight
 				
 				target_asset=ii.AssetUUID;
 				target_id=ii.UUID;
-				Console.WriteLine("Asset id is "+ii.AssetUUID.ToString());
-				Console.WriteLine("Id is "+ii.UUID.ToString());
+				Logger.Log("Asset id is "+ii.AssetUUID.ToString(),Helpers.LogLevel.Debug);
+				Logger.Log("Id is "+ii.UUID.ToString(),Helpers.LogLevel.Debug);
 			    Gtk.Application.Invoke(delegate{
 					this.textview_notecard.Buffer.Text="Requesting asset, please wait....";
 					this.entry_title.Text=ii.Name;
 				});
 				
                 MainClass.client.Assets.RequestInventoryAsset(ii,true,new AssetManager.AssetReceivedCallback(this.asset_recieved));
-				Console.WriteLine("transfer Id is "+transfer_id);
+				Logger.Log("transfer Id is "+transfer_id,Helpers.LogLevel.Debug);
 			}
 			else
 			{
@@ -236,23 +236,23 @@ namespace omvviewerlight
 					this.textview_notecard.Buffer.Text="Opening embedded inventory, please wait....";
 				});
 				
-				Console.WriteLine("Asset not in store, requesting directly");				
-				Console.WriteLine("Notecard id "+this.target_id.ToString());
-				Console.WriteLine("Item id "+item.ToString());
-				Console.WriteLine("Folder id "+MainClass.client.Inventory.FindFolderForType(AssetType.Notecard));
+				Logger.Log("Asset not in store, requesting directly",Helpers.LogLevel.Debug);				
+				Logger.Log("Notecard id "+this.target_id.ToString(),Helpers.LogLevel.Debug);
+				Logger.Log("Item id "+item.ToString(),Helpers.LogLevel.Debug);
+				Logger.Log("Folder id "+MainClass.client.Inventory.FindFolderForType(AssetType.Notecard),Helpers.LogLevel.Debug);
 				MainClass.client.Inventory.RequestCopyItemFromNotecard(UUID.Zero,this.target_id,MainClass.client.Inventory.FindFolderForType(AssetType.Notecard),item,itemcopiedcallback);
 			}
 		}
 		
 		void itemcopiedcallback(InventoryBase item)
 		{
-			Console.WriteLine("item copied callback "+item.UUID.ToString());
+			Logger.Log("item copied callback "+item.UUID.ToString(),Helpers.LogLevel.Debug);
 			
 			    InventoryItem ii = (InventoryItem)MainClass.client.Inventory.Store[item.UUID];			
 				target_asset=ii.AssetUUID;
 				target_id=ii.UUID;
-				Console.WriteLine("Asset id is "+ii.AssetUUID.ToString());
-				Console.WriteLine("Id is "+ii.UUID.ToString());
+				Logger.Log("Asset id is "+ii.AssetUUID.ToString(),Helpers.LogLevel.Debug);
+				Logger.Log("Id is "+ii.UUID.ToString(),Helpers.LogLevel.Debug);
 			    Gtk.Application.Invoke(delegate{
 				
 			        this.textview_notecard.Buffer.Text="Requesting asset, please wait....";
@@ -265,8 +265,8 @@ namespace omvviewerlight
 		
         void asset_recieved(AssetDownload transfer, Asset asset)
         {
-            Console.WriteLine("Asset retrieved id " + asset.AssetID.ToString());
-            Console.WriteLine("target_asset" + this.target_asset.ToString());
+            Logger.Log("Asset retrieved id " + asset.AssetID.ToString(),Helpers.LogLevel.Debug);
+            Logger.Log("target_asset" + this.target_asset.ToString(),Helpers.LogLevel.Debug);
             if (transfer_id != transfer.ID)
                 return;
             shownote(asset);
@@ -280,7 +280,7 @@ namespace omvviewerlight
 				if(asset==null || asset.AssetData==null)
 					{
 						this.textview_notecard.Buffer.Text="Asset transfer failed";
-						Console.WriteLine("No asset data");
+						Logger.Log("No asset data",Helpers.LogLevel.Debug);
 						return;
 					}
 					
@@ -303,12 +303,12 @@ namespace omvviewerlight
 					char []gg=this.textview_notecard.Buffer.Text.Substring(link_pos+1,1).ToCharArray();
 					int idx=gg[0];
 					idx=idx-0xdc00; //check here for other inventory types
-					Console.WriteLine("Found embedded index "+idx.ToString());
+					Logger.Log("Found embedded index "+idx.ToString(),Helpers.LogLevel.Debug);
 					EmbeddedInventory inventory;
 						
 					if(this.embedded_inv.TryGetValue(idx,out inventory))
 				    {				
-						Console.WriteLine("GOt embedded item "+inventory.name);
+						Logger.Log("GOt embedded item "+inventory.name,Helpers.LogLevel.Debug);
 						Gtk.TextTag link_tag=new Gtk.TextTag("link"+idx.ToString());
 						link_tag.ForegroundGdk=new Gdk.Color(0,0,255);
 						link_tag.Underline=Pango.Underline.Single;
@@ -343,8 +343,8 @@ namespace omvviewerlight
 		{
 			if(args.Event.Type==Gdk.EventType.ButtonPress)
 			{
-			    Console.WriteLine("CLick");
-				Console.WriteLine(o.ToString());
+			    Logger.Log("CLick",Helpers.LogLevel.Debug);
+				Logger.Log(o.ToString(),Helpers.LogLevel.Debug);
 				Gtk.TextTag tag=(Gtk.TextTag)o;
 				EmbeddedInventory inventory;
 				if(this.iter_uuid_dict.TryGetValue(tag,out inventory))
@@ -421,8 +421,8 @@ namespace omvviewerlight
 			
 		void OnNoteUpdated(bool success,string status,UUID item_uuid, UUID asset_uuid)
 		{
-			Console.WriteLine("Notecard uploaded");
-			Console.WriteLine("BOOL = "+success.ToString()+" status = "+status+" item ID is "+item_uuid.ToString()+" Asset UUID is "+asset_uuid.ToString());
+			Logger.Log("Notecard uploaded",Helpers.LogLevel.Debug);
+			Logger.Log("BOOL = "+success.ToString()+" status = "+status+" item ID is "+item_uuid.ToString()+" Asset UUID is "+asset_uuid.ToString(),Helpers.LogLevel.Debug);
 			button_save.Sensitive=true;
 
 		}

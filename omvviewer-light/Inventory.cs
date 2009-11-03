@@ -138,12 +138,12 @@ namespace omvviewerlight
 
 		~Inventory()
 		{
-  			Console.WriteLine("Inventory Cleaned up");
+  			Logger.Log("Inventory Cleaned up",Helpers.LogLevel.Debug);
 		}
 	    	
         new public void Dispose()
         {
-            Console.WriteLine("Running cleanup code for inventory");
+            Logger.Log("Running cleanup code for inventory",Helpers.LogLevel.Debug);
 
             MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
@@ -518,7 +518,7 @@ namespace omvviewerlight
                 if (items.Count > 0)
                     MainClass.client.Appearance.WearOutfit(items, true);
                 else
-                    Console.WriteLine("Failed to fetch inventory of folder " + item.ToString());
+                    Logger.Log("Failed to fetch inventory of folder " + item.ToString(),Helpers.LogLevel.Debug);
             }
         }
 
@@ -732,7 +732,7 @@ namespace omvviewerlight
 					
 					
 					    UUID id=(UUID)mod.GetValue(iter, 2);
-						Console.WriteLine("ID is "+id.ToString());
+						Logger.Log("ID is "+id.ToString(),Helpers.LogLevel.Debug);
 						InventoryBase item = (InventoryBase)MainClass.client.Inventory.Store.Items[id].Data;
 			
 			            MainClass.client.Inventory.MoveFolder(id,MainClass.client.Inventory.Store.RootFolder.UUID);
@@ -771,7 +771,7 @@ namespace omvviewerlight
                     Gtk.TreeIter iter;
                     InventoryBase item = null;
 
-                    Console.WriteLine("ROOT IS " + MainClass.client.Inventory.Store.RootFolder.UUID.ToString());
+                    Logger.Log("ROOT IS " + MainClass.client.Inventory.Store.RootFolder.UUID.ToString(),Helpers.LogLevel.Debug);
 
                     TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
 
@@ -837,9 +837,9 @@ namespace omvviewerlight
 
                     Gtk.Menu menu = new Gtk.Menu();
 
-                    Console.WriteLine("Item is " + item.ToString() + " ID is " + item.UUID.ToString());
+                    Logger.Log("Item is " + item.ToString() + " ID is " + item.UUID.ToString(),Helpers.LogLevel.Debug);
 
-                    Console.WriteLine("Item parent is " + item.ToString() + " ID is " + item.ParentUUID.ToString());
+                    Logger.Log("Item parent is " + item.ToString() + " ID is " + item.ParentUUID.ToString(),Helpers.LogLevel.Debug);
 
                     if (item is InventoryLandmark)
                     {
@@ -1492,7 +1492,7 @@ namespace omvviewerlight
 
                  if (path == null)
                  {
-                     Console.WriteLine("*!*!*!*! WTF? we got a NULL path in the fetchinventory()");
+                     Logger.Log("*!*!*!*! WTF? we got a NULL path in the fetchinventory()",Helpers.LogLevel.Debug);
                      return;
                  }
 
@@ -1532,7 +1532,7 @@ namespace omvviewerlight
             else 
  	            myObjects = MainClass.client.Inventory.FolderContents(start, MainClass.client.Self.AgentID, true, true, InventorySortOrder.ByDate, 30000);
 			
-			//Console.WriteLine("Got objects # "+myObjects.Count.ToString());
+			//Logger.Log("Got objects # "+myObjects.Count.ToString(),Helpers.LogLevel.Debug);
 
             AutoResetEvent postfetch = new AutoResetEvent(false);
 
@@ -1545,7 +1545,7 @@ namespace omvviewerlight
                     return;
 			    }
     			
-			    //Console.WriteLine("Possible refilter");
+			    //Logger.Log("Possible refilter",Helpers.LogLevel.Debug);
 			    if(filteractive==true)
 			    {
 			       filter.Refilter();
@@ -1651,7 +1651,7 @@ namespace omvviewerlight
 				if(cache==false && recurse==true)
 				{
 	                fetchrun=true;
-					Console.WriteLine("Fetch Complete");
+					Logger.Log("Fetch Complete",Helpers.LogLevel.Debug);
  
                     Gtk.Application.Invoke(delegate{
 						this.label_fetched.Text="fetched "+this.no_items.ToString()+" items (Finished)";
@@ -1807,7 +1807,7 @@ namespace omvviewerlight
 					InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
 					if(item==null)
                        continue;
-					//Console.WriteLine("ITEM ID" + item.UUID.ToString() + " Parent " + item.ParentUUID.ToString());
+					//Logger.Log("ITEM ID" + item.UUID.ToString() + " Parent " + item.ParentUUID.ToString(),Helpers.LogLevel.Debug);
 
                     if (item is InventoryItem)
                     {

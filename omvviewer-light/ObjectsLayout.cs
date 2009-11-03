@@ -56,7 +56,7 @@ namespace omvviewerlight
 		
 		~ObjectsLayout()
 		{
-			Console.WriteLine("ObjectsLayout Cleaned up");
+			Logger.Log("ObjectsLayout Cleaned up",Helpers.LogLevel.Debug);
 		}		
 
         new public void Dispose()
@@ -189,7 +189,7 @@ namespace omvviewerlight
             {
                 if (MainClass.client.Network.CurrentSim.ObjectsAvatars[MainClass.client.Self.LocalID].ParentID == 0)
                 {
-                    //Console.WriteLine("** Update is " + update.ToString() + " \nbyes are " + update.State.ToString() + "\n parent is " + MainClass.client.Network.CurrentSim.ObjectsAvatars[MainClass.client.Self.LocalID].ParentID);
+                    //Logger.Log("** Update is " + update.ToString() + " \nbyes are " + update.State.ToString() + "\n parent is " + MainClass.client.Network.CurrentSim.ObjectsAvatars[MainClass.client.Self.LocalID].ParentID,Helpers.LogLevel.Debug);
                     if (sat == true)
                     {
                         sat = false;
@@ -332,7 +332,7 @@ namespace omvviewerlight
 
                     if (prims != null)
 					{
-						Console.WriteLine("Requesting properties for "+prims.Count.ToString()+" objects");
+						Logger.Log("Requesting properties for "+prims.Count.ToString()+" objects",Helpers.LogLevel.Debug);
                         RequestObjectProperties(prims, 250,sim);
 					}
                 }
@@ -393,7 +393,7 @@ namespace omvviewerlight
                             PrimsWaiting.Remove(e.Properties.ObjectID);
                             if (FetchedPrims.ContainsKey(e.Properties.ObjectID))
                             {
-                                Console.WriteLine("Trying to add a duplicate prim to FetchedPrims WTF? " + e.Properties.ObjectID.ToString());
+                                Logger.Log("Trying to add a duplicate prim to FetchedPrims WTF? " + e.Properties.ObjectID.ToString(),Helpers.LogLevel.Debug);
                                 return;
                             }
                             else
@@ -455,7 +455,7 @@ namespace omvviewerlight
                 
 				if(FetchedPrims.TryGetValue(id,out prim))
 				{
-				Console.WriteLine(prim.ToString());
+				Logger.Log(prim.ToString(),Helpers.LogLevel.Debug);
 
 					this.label_name.Text=prim.Properties.Name;
 					this.label_desc.Text=prim.Properties.Description;
@@ -531,7 +531,7 @@ namespace omvviewerlight
 					
 					this.button_take_copy.Sensitive=((prim.Flags & PrimFlags.ObjectCopy)==PrimFlags.ObjectCopy);
 					
-					Console.WriteLine(prim.Flags.ToString());
+					Logger.Log(prim.Flags.ToString(),Helpers.LogLevel.Debug);
 					this.textview1.Buffer.SetText(prim.Flags.ToString());
 				
 					if((prim.Flags & PrimFlags.ObjectYouOwner)==PrimFlags.ObjectYouOwner)
@@ -624,7 +624,7 @@ namespace omvviewerlight
 				
 				if(FetchedPrims.TryGetValue(id,out prim))
 				{
-					Console.WriteLine("Touching prim "+prim.LocalID.ToString());
+					Logger.Log("Touching prim "+prim.LocalID.ToString(),Helpers.LogLevel.Debug);
 					MainClass.client.Self.Touch(prim.LocalID);
 				}
 			}

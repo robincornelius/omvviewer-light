@@ -67,7 +67,7 @@ namespace omvviewerlight
 			         s = File.OpenText("gridlist.txt");
 			
 			if(s==null)
-				Console.WriteLine("Can't find a gridlist.txt");
+				Logger.Log("Can't find a gridlist.txt",Helpers.LogLevel.Debug);
 				
 			try
 			{
@@ -84,7 +84,7 @@ namespace omvviewerlight
 			}
 			catch(Exception e)
 			{
-                Console.WriteLine(e.ToString());
+                Logger.Log(e.ToString(),Helpers.LogLevel.Debug);
 			}					
 			
 			int selected=MainClass.appsettings.SelectedGrid;
@@ -142,7 +142,7 @@ namespace omvviewerlight
 
         new public void Dispose()
         {
-            Console.WriteLine("Disposing of the login control");
+            Logger.Log("Disposing of the login control",Helpers.LogLevel.Debug);
 
             MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
@@ -208,7 +208,7 @@ namespace omvviewerlight
 		
         void Network_Disconnected(object sender, DisconnectedEventArgs e)
 		{
-			Console.WriteLine("on disconnected");
+			Logger.Log("on disconnected",Helpers.LogLevel.Debug);
 			Gtk.Application.Invoke(delegate {
 				this.button_login.Label="Login";
 				this.loginbut=true;
@@ -313,7 +313,7 @@ namespace omvviewerlight
 
                 try
                 {
-					Console.WriteLine("Trying to logout after login exception");
+					Logger.Log("Trying to logout after login exception",Helpers.LogLevel.Debug);
                     MainClass.client.Network.Logout();
                 }
                 catch (Exception ee)
@@ -331,7 +331,7 @@ namespace omvviewerlight
             MainClass.userlogout = true;
 
 			oncleanuptime();
-			Console.WriteLine("button 1 clicked "+button_login.Label);
+			Logger.Log("button 1 clicked "+button_login.Label,Helpers.LogLevel.Debug);
 			if(this.loginbut==true)
 			{
 				this.button_login.Sensitive=false;
@@ -367,7 +367,7 @@ namespace omvviewerlight
 	                }
 	                catch(Exception ee)
 	                {
-	                    Console.WriteLine(ee.ToString());
+	                    Logger.Log(ee.ToString(),Helpers.LogLevel.Debug);
 	                }
 				}
 
@@ -402,17 +402,17 @@ namespace omvviewerlight
             }
 			else
 			{
-                Console.WriteLine("Trying to logout user request");
+                Logger.Log("Trying to logout user request",Helpers.LogLevel.Debug);
                 this.button_login.Sensitive = false;
                 trying = true;
                 progressbar2.Fraction=0.1;
                 GLib.Timeout.Add(100, OnPulseProgress);
                 
-                Console.WriteLine("Running logout tasks first");
+                Logger.Log("Running logout tasks first",Helpers.LogLevel.Debug);
                 if (MainClass.client.Inventory.Store != null)
                     MainClass.client.Inventory.Store.SaveToDisk(MainClass.client.Settings.ASSET_CACHE_DIR + System.IO.Path.DirectorySeparatorChar + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
                
-                Console.WriteLine("Done");
+                Logger.Log("Done",Helpers.LogLevel.Debug);
                 MainClass.userlogout = true;
 				MainClass.client.Network.Logout();
 				this.trying=false;
@@ -468,7 +468,7 @@ namespace omvviewerlight
 		
 		bool debounce()
 		{
-                Console.WriteLine("Debounce");
+                Logger.Log("Debounce",Helpers.LogLevel.Debug);
 				this.button_login.Sensitive=true;
 			    return false;
 		}

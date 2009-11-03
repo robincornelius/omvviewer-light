@@ -37,7 +37,7 @@ namespace omvviewerlight
         Quaternion rotation;
 		~Movment()
 		{
-			Console.WriteLine("Movement Cleaned up");
+			Logger.Log("Movement Cleaned up",Helpers.LogLevel.Debug);
 		}		
 
 		

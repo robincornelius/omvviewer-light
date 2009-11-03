@@ -45,7 +45,7 @@ namespace omvviewerlight
 		bool running=true;
 		~Radar()
 		{
-			Console.WriteLine("Radar Cleaned up");
+			Logger.Log("Radar Cleaned up",Helpers.LogLevel.Debug);
 		}		
 		
 		public Radar()
@@ -309,7 +309,7 @@ namespace omvviewerlight
 			{					
 				Gtk.Application.Invoke(delegate
 				{
-					   Console.WriteLine("Clearing all radar lists");
+					   Logger.Log("Clearing all radar lists",Helpers.LogLevel.Debug);
 	                   store.Clear();
 					   av_tree.Clear();
 					   av_typing.Clear();
@@ -365,7 +365,7 @@ namespace omvviewerlight
                                }
                                catch
                                {
-                                   Console.WriteLine("Exceptioned on store setvalue for radar");
+                                   Logger.Log("Exceptioned on store setvalue for radar",Helpers.LogLevel.Debug);
                                }
                            }
 
@@ -506,7 +506,7 @@ namespace omvviewerlight
 					{
 						if(!MainClass.client.Network.CurrentSim.ObjectsPrimitives.ContainsKey(avatar.ParentID))
 						{
-							Console.WriteLine("AV is seated and i can't find the parent prim in dictionay");
+							Logger.Log("AV is seated and i can't find the parent prim in dictionay",Helpers.LogLevel.Debug);
 						}
 						else
 						{

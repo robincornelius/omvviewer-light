@@ -237,7 +237,7 @@ namespace omvviewerlight
             MainClass.client.Groups.GroupAccountSummaryReply -= new EventHandler<GroupAccountSummaryReplyEventArgs>(Groups_GroupAccountSummaryReply);
             MainClass.client.Self.IM += new EventHandler<InstantMessageEventArgs>(Self_IM);
 
-            Console.WriteLine("GroupInfo view go bye bye");
+            Logger.Log("GroupInfo view go bye bye",Helpers.LogLevel.Debug);
             //this.Destroy();	
 			//Finalize();
 			//System.GC.SuppressFinalize(this);
@@ -245,7 +245,7 @@ namespace omvviewerlight
 			
 		~GroupInfo()
         {
-           Console.WriteLine("Group info cleaned up");
+           Logger.Log("Group info cleaned up",Helpers.LogLevel.Debug);
         }
 
         void Groups_GroupAccountSummaryReply(object sender, GroupAccountSummaryReplyEventArgs e)
@@ -405,7 +405,7 @@ namespace omvviewerlight
 			int x=0;
 			    foreach(KeyValuePair  <UUID,OpenMetaverse.GroupTitle> title in group_titles)
 			    { 
-					Console.WriteLine("Appending "+title.Value.Title);
+					Logger.Log("Appending "+title.Value.Title,Helpers.LogLevel.Debug);
                     combobox_active_title.AppendText(title.Value.Title);
 				}				
 				trysetcurrenttitle();
@@ -414,18 +414,18 @@ namespace omvviewerlight
 		
 		void trysetcurrenttitle()
 		{
-			Console.WriteLine("** TRY SET CURRENT TITLE");
+			Logger.Log("** TRY SET CURRENT TITLE",Helpers.LogLevel.Debug);
 			
 			GroupMember member;
 			if(group_members.TryGetValue(MainClass.client.Self.AgentID,out member))
 			{
-			Console.WriteLine("** FOUND MEMBER");
+			Logger.Log("** FOUND MEMBER",Helpers.LogLevel.Debug);
 
 				combobox_active_title.Model.Foreach(
 					delegate(TreeModel model, TreePath path, TreeIter iter)
 				    {
 						string title = (string)model.GetValue(iter,0);
-								Console.WriteLine("** CHECKING TITLE "+title+" against "+member.Title);
+								Logger.Log("** CHECKING TITLE "+title+" against "+member.Title,Helpers.LogLevel.Debug);
 
 					    if (title==member.Title)
 						{	
@@ -440,13 +440,13 @@ namespace omvviewerlight
 			}
 			else
 			{
-				Console.WriteLine("Defering title untill group member load");	
+				Logger.Log("Defering title untill group member load",Helpers.LogLevel.Debug);	
 			}
 		}
 
         bool updategroupmembers()
         {
-            Console.WriteLine("Update group members");
+            Logger.Log("Update group members",Helpers.LogLevel.Debug);
             List<UUID> names = new List<UUID>();
 
             //???????????
@@ -501,7 +501,7 @@ namespace omvviewerlight
 			
 			trysetcurrenttitle();
 
-            Console.WriteLine("All group members recieved");
+            Logger.Log("All group members recieved",Helpers.LogLevel.Debug);
             name_poll = false;
 
             store_roles_list.Foreach(delegate(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
@@ -636,11 +636,11 @@ namespace omvviewerlight
 
                 store_membersandroles_powers.Clear();
 
-				Console.WriteLine("Tring to get group powers for id "+id.ToString());
+				Logger.Log("Tring to get group powers for id "+id.ToString(),Helpers.LogLevel.Debug);
 				
                 if (group_members.TryGetValue(id, out member))
                 {
-					Console.WriteLine("Got a power "+member.Powers.ToString());
+					Logger.Log("Got a power "+member.Powers.ToString(),Helpers.LogLevel.Debug);
 					showpowers(store_membersandroles_powers,member.Powers);
 					this.treeview_allowed_ability1.ExpandAll();
                 }

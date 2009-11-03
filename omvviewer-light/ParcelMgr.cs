@@ -52,13 +52,13 @@ namespace omvviewerlight
 
 		~ParcelMgr()
 		{
-			Console.WriteLine("ParcelMgr Cleaned up");
+			Logger.Log("ParcelMgr Cleaned up",Helpers.LogLevel.Debug);
 		}		
 		
         new public void Dispose()
         {
 
-            Console.WriteLine("Disposing of the parcelmgr control");
+            Logger.Log("Disposing of the parcelmgr control",Helpers.LogLevel.Debug);
 
             MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
@@ -130,7 +130,7 @@ namespace omvviewerlight
                     populate_tree();
                     updateparcelmap(MainClass.client.Network.CurrentSim.ParcelMap);
 
-                    Console.WriteLine("Requesting parcel info for sim:" + MainClass.client.Network.CurrentSim.Name);
+                    Logger.Log("Requesting parcel info for sim:" + MainClass.client.Network.CurrentSim.Name,Helpers.LogLevel.Debug);
                     MainClass.client.Parcels.RequestAllSimParcels(MainClass.client.Network.CurrentSim);
 
                  }
@@ -175,7 +175,7 @@ namespace omvviewerlight
 			
         void Parcels_ParcelDwellReply(object sender, ParcelDwellReplyEventArgs e)
 		{
-			//Console.WriteLine("Got dwell for "+parcelid.ToString()+" : local id "+localid.ToString()+" is "+dwell.ToString());
+			//Logger.Log("Got dwell for "+parcelid.ToString()+" : local id "+localid.ToString()+" is "+dwell.ToString(),Helpers.LogLevel.Debug);
 			Gtk.TreeIter iter;
 			if(this.parcel_to_tree.TryGetValue(e.LocalID,out iter))
 			{
@@ -191,7 +191,7 @@ namespace omvviewerlight
 			Gtk.Application.Invoke(delegate{
 			for(int i = 0; i < e.PrimOwners.Count; i++)
 			{
-				Console.WriteLine(e.PrimOwners[i].ToString());        
+				Logger.Log(e.PrimOwners[i].ToString(),Helpers.LogLevel.Debug);        
 				Gtk.TreeIter iter2=parcel_prim_owners.AppendValues("Waiting...",e.PrimOwners[i].Count.ToString(),e.PrimOwners[i].OwnerID);			
 				AsyncNameUpdate ud=new AsyncNameUpdate(e.PrimOwners[i].OwnerID,false);  
 				ud.addparameters(iter2);
@@ -227,7 +227,7 @@ namespace omvviewerlight
                  {
                      colmaptoid.Add((uint)parcel.LocalID, colmap[nextcol]);
                      thiscol = nextcol;
-                     Console.WriteLine("ID " + parcel.LocalID.ToString() + "Setting col to " + nextcol.ToString());
+                     Logger.Log("ID " + parcel.LocalID.ToString() + "Setting col to " + nextcol.ToString(),Helpers.LogLevel.Debug);
 
                      nextcol++;
                      if (nextcol >= colmap.Length)
@@ -326,7 +326,7 @@ namespace omvviewerlight
 
         void Parcels_SimParcelsDownloaded(object sender, SimParcelsDownloadedEventArgs e)
 		{
-			Console.WriteLine("All Parcels download");
+			Logger.Log("All Parcels download",Helpers.LogLevel.Debug);
             updateparcelmap(e.ParcelMap);
 		}
 
@@ -352,7 +352,7 @@ namespace omvviewerlight
 				
 			});
 
-			Console.WriteLine("Requesting parcel info for sim:"+MainClass.client.Network.CurrentSim.Name);
+			Logger.Log("Requesting parcel info for sim:"+MainClass.client.Network.CurrentSim.Name,Helpers.LogLevel.Debug);
 			MainClass.client.Parcels.RequestAllSimParcels(MainClass.client.Network.CurrentSim);
 		}
 
@@ -375,7 +375,7 @@ namespace omvviewerlight
 				if(MainClass.client.Network.CurrentSim.Parcels.TryGetValue(id, out parcel))
 				{
 
-                    Console.WriteLine(parcel.Flags.ToString());
+                    Logger.Log(parcel.Flags.ToString(),Helpers.LogLevel.Debug);
 
                     this.checkbox_nopayment.Active = (OpenMetaverse.ParcelFlags.DenyAnonymous == (parcel.Flags & OpenMetaverse.ParcelFlags.DenyAnonymous));
                     this.checkbutton_noageverify.Active = (OpenMetaverse.ParcelFlags.DenyAgeUnverified == (parcel.Flags & OpenMetaverse.ParcelFlags.DenyAgeUnverified));
@@ -400,7 +400,7 @@ namespace omvviewerlight
                             getter.abort();
 
 
-                        Console.WriteLine("** FETCHING A NEW IMAGE **" + parcel.SnapshotID.ToString());
+                        Logger.Log("** FETCHING A NEW IMAGE **" + parcel.SnapshotID.ToString(),Helpers.LogLevel.Debug);
 
                         TryGetImage i = new TryGetImage(parcelsnapshot.baseimage, parcel.SnapshotID, 256, 256, true);
                         i.OnDecodeComplete += delegate
@@ -452,7 +452,7 @@ namespace omvviewerlight
 						if(entry.AgentID==UUID.Zero)
 							continue;
 						
-						    Console.WriteLine(entry.AgentID.ToString()+" Flags = "+entry.Flags.ToString());
+						    Logger.Log(entry.AgentID.ToString()+" Flags = "+entry.Flags.ToString(),Helpers.LogLevel.Debug);
 							Gtk.TreeIter iter2=this.parcels_access.AppendValues("Waiting...");			
 							ud=new AsyncNameUpdate(entry.AgentID,false);  
 							ud.addparameters(iter2);
@@ -465,7 +465,7 @@ namespace omvviewerlight
 						if(entry.AgentID==UUID.Zero)
 							continue;
 										
-						Console.WriteLine(entry.AgentID.ToString()+" Flags = "+entry.Flags.ToString());
+						Logger.Log(entry.AgentID.ToString()+" Flags = "+entry.Flags.ToString(),Helpers.LogLevel.Debug);
 							Gtk.TreeIter iter2=this.parcels_ban.AppendValues("Waiting...");			
 							AsyncNameUpdate ud2=new AsyncNameUpdate(entry.AgentID,false);  
 							ud2.addparameters(iter2);
@@ -520,7 +520,7 @@ namespace omvviewerlight
 				}
 				else			
 				{
-						//Console.WriteLine("No parcel in dictionary for id "+id.ToString()+"\n");
+						//Logger.Log("No parcel in dictionary for id "+id.ToString()+"\n",Helpers.LogLevel.Debug);
 				
 				}
 					
@@ -544,7 +544,7 @@ namespace omvviewerlight
 			if(this.treeview_parcels.Selection.GetSelected(out mod,out iter))			
 			{
 				int id=(int)mod.GetValue(iter,6);
-				Console.WriteLine("Requesting parcel prim owners for sim "+MainClass.client.Network.CurrentSim.Name+" parcel :"+id.ToString());
+				Logger.Log("Requesting parcel prim owners for sim "+MainClass.client.Network.CurrentSim.Name+" parcel :"+id.ToString(),Helpers.LogLevel.Debug);
 				MainClass.client.Parcels.RequestObjectOwners(MainClass.client.Network.CurrentSim,id);
 			}
 		}

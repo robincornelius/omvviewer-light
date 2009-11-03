@@ -24,6 +24,7 @@ omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(
 
 using System;
 using Gtk;
+using OpenMetaverse;
 
 namespace omvviewerlight
 {
@@ -58,7 +59,7 @@ namespace omvviewerlight
 
 		~Search()
 		{
-			Console.WriteLine("Search cleaned up");
+			Logger.Log("Search cleaned up",Helpers.LogLevel.Debug);
 		}
 		
         new public void Dispose()

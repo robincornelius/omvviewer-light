@@ -64,7 +64,7 @@ namespace omvviewerlight
 			if(target==null)
 				return;
 
-            Console.WriteLine("New try get image for " + asset.ToString());
+            Logger.Log("New try get image for " + asset.ToString(),Helpers.LogLevel.Debug);
 
             MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
 
@@ -90,7 +90,7 @@ namespace omvviewerlight
 
         public void go()
         {
-            Console.WriteLine("TryGetImage:: GO() asset :"+target_asset.ToString());
+            Logger.Log("TryGetImage:: GO() asset :"+target_asset.ToString(),Helpers.LogLevel.Debug);
             dowork();
         }
 
@@ -176,7 +176,7 @@ namespace omvviewerlight
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Exception when updating progress :" + e.Message);
+                    Logger.Log("Exception when updating progress :" + e.Message,Helpers.LogLevel.Debug);
                 }
             });		
         }
@@ -235,7 +235,7 @@ namespace omvviewerlight
 				return;
 			}
 			
-            Console.WriteLine("Decoded :"+this.target_asset.ToString());
+            Logger.Log("Decoded :"+this.target_asset.ToString(),Helpers.LogLevel.Debug);
             
             Gtk.Application.Invoke(delegate
             {
@@ -246,7 +246,7 @@ namespace omvviewerlight
                         if (target_image.Pixbuf != null)
                         {
                             target_image.Pixbuf = buf;
-                            Console.WriteLine("TryGetImage:: Image Done queuing for a redraw "+this.target_asset.ToString());
+                            Logger.Log("TryGetImage:: Image Done queuing for a redraw "+this.target_asset.ToString(),Helpers.LogLevel.Debug);
                             if(target_image!=null)
                                 target_image.QueueDraw();
 
@@ -268,7 +268,7 @@ namespace omvviewerlight
                 catch (Exception e)
                 {
                     Console.Write("*** Image decode blew whist trying to write image into pixbuf ***\n");
-                    Console.WriteLine(e.Message);
+                    Logger.Log(e.Message,Helpers.LogLevel.Debug);
                 }
 
                
@@ -279,14 +279,14 @@ namespace omvviewerlight
 		{
             if (asset == null)
             {
-                Console.WriteLine("Try get image got a null asset");
+                Logger.Log("Try get image got a null asset",Helpers.LogLevel.Debug);
                 return;
 		    }
 			if(asset.AssetID==this.target_asset)
 			{
 	            this_asset = asset;
 	            Thread decode = new Thread(new ThreadStart(this.decodethread));
-	            Console.WriteLine("Begining a decode thread for asset "+asset.AssetID.ToString());
+	            Logger.Log("Begining a decode thread for asset "+asset.AssetID.ToString(),Helpers.LogLevel.Debug);
 				decode.Start();
 	        }
 		}	

@@ -46,12 +46,12 @@ namespace omvviewerlight
  		            if (MainClass.client.Inventory.Store.Contains(texture))
 		            {
 		                // retrieve asset from store
-		                Console.WriteLine("asset in store, requesting");            
+		                Logger.Log("asset in store, requesting",Helpers.LogLevel.Debug);            
 						InventoryItem ii = (InventoryItem)MainClass.client.Inventory.Store[texture];			
 						target_asset=ii.AssetUUID;
 			
-						Console.WriteLine("Asset id is "+ii.AssetUUID.ToString());
-						Console.WriteLine("Id is "+ii.UUID.ToString());
+						Logger.Log("Asset id is "+ii.AssetUUID.ToString(),Helpers.LogLevel.Debug);
+						Logger.Log("Id is "+ii.UUID.ToString(),Helpers.LogLevel.Debug);
 //					    Gtk.Application.Invoke(delegate{
 //							this.textview_notecard.Buffer.Text="Requesting asset, please wait....";
 //							this.entry_title.Text=ii.Name;
@@ -68,8 +68,8 @@ namespace omvviewerlight
 		
 		void onAsset(AssetDownload transfer,Asset asset)
         {
-			Console.WriteLine("Asset retrieved id "+asset.AssetID.ToString());
-			Console.WriteLine("target_asset"+this.target_asset.ToString());
+			Logger.Log("Asset retrieved id "+asset.AssetID.ToString(),Helpers.LogLevel.Debug);
+			Logger.Log("target_asset"+this.target_asset.ToString(),Helpers.LogLevel.Debug);
 			if(asset.AssetID!=target_asset)
 				return;
 			new TryGetImage(this.image,asset.AssetID,false);

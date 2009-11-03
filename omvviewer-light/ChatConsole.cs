@@ -129,7 +129,7 @@ namespace omvviewerlight
 
         new public void Dispose()
         {
-            Console.WriteLine("Disposing of the chatconsole control");
+            Logger.Log("Disposing of the chatconsole control",Helpers.LogLevel.Debug);
             MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
             MainClass_onDeregister();
@@ -302,7 +302,7 @@ namespace omvviewerlight
                 return;
             }
 
-			Console.WriteLine("On groupchat join for "+e.SessionID.ToString());
+			Logger.Log("On groupchat join for "+e.SessionID.ToString(),Helpers.LogLevel.Debug);
 
             if (!MainClass.win.im_windows.ContainsKey(e.SessionID))
                 MainClass.win.im_windows.Add(e.SessionID,this);
@@ -403,7 +403,7 @@ namespace omvviewerlight
 		
 		bool kick_group_join()
 		{
-            Console.WriteLine("Kick_group_join");
+            Logger.Log("Kick_group_join",Helpers.LogLevel.Debug);
 			if(joined_group_chat==true)
 				return false;
 
@@ -509,7 +509,7 @@ namespace omvviewerlight
                 // we also do the console logging here
 
                 if (e.IM.Dialog != InstantMessageDialog.StartTyping && e.IM.Dialog != InstantMessageDialog.StopTyping)
-                    Console.WriteLine("New IM recieved " + e.IM.ToString() + " " + OpenMetaverse.Utils.BytesToString(e.IM.BinaryBucket));
+                    Logger.Log("New IM recieved " + e.IM.ToString() + " " + OpenMetaverse.Utils.BytesToString(e.IM.BinaryBucket),Helpers.LogLevel.Debug);
 
 
                if (e.IM.Dialog == OpenMetaverse.InstantMessageDialog.InventoryOffered)
@@ -688,7 +688,7 @@ namespace omvviewerlight
 		
 		bool ClearLookAt()
 		{
-            Console.WriteLine("Clear lookat");
+            Logger.Log("Clear lookat",Helpers.LogLevel.Debug);
 			MainClass.client.Self.LookAtEffect(MainClass.client.Self.AgentID,UUID.Zero,Vector3d.Zero,LookAtType.Clear,UUID.Zero);
             lookat = UUID.Zero;
             lookatrunning=false;
@@ -751,7 +751,7 @@ namespace omvviewerlight
                     }
                     catch (Exception ee)
                     {
-                        Console.WriteLine(ee.ToString());
+                        Logger.Log(ee.ToString(),Helpers.LogLevel.Debug);
                         channel = 0;
                     }
                 }
@@ -835,7 +835,7 @@ namespace omvviewerlight
                        //If highlight==true
                        if(buffer.ToLower().Contains(MainClass.client.Self.FirstName.ToLower())) 
                        {
-                           Console.WriteLine("Highlighting messsage");
+                           Logger.Log("Highlighting messsage",Helpers.LogLevel.Debug);
                            message_tag = this.highlightchat;
                        }
                 }
@@ -892,7 +892,7 @@ namespace omvviewerlight
 		
 	    bool StopTyping()
 	    {
-            Console.WriteLine("Stop typing");
+            Logger.Log("Stop typing",Helpers.LogLevel.Debug);
             byte[] binaryBucket;
             binaryBucket = new byte[0];
 		    MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im_target,"",im_target,InstantMessageDialog.StopTyping,InstantMessageOnline.Online,Vector3.Zero, UUID.Zero,binaryBucket);

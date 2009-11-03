@@ -107,10 +107,10 @@ public partial class MainWindow: Gtk.Window
 		MainClass.userlogout = true;
         //if (onLogoutWork != null)
         {
-            Console.WriteLine("Running logout tasks first");
+            Logger.Log("Running logout tasks first",Helpers.LogLevel.Debug);
             if(MainClass.client.Inventory.Store!=null)
                 MainClass.client.Inventory.Store.SaveToDisk(MainClass.client.Settings.ASSET_CACHE_DIR + System.IO.Path.DirectorySeparatorChar + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
-            Console.WriteLine("Done");
+            Logger.Log("Done",Helpers.LogLevel.Debug);
         }
      
         LogoutDlg ld = new LogoutDlg();
@@ -308,7 +308,7 @@ public partial class MainWindow: Gtk.Window
     {
         if (MainClass.client.Network.LoginStatusCode == LoginStatus.Success)
         {
-            //Console.WriteLine("Changed Sim, forcing a rebake");
+            //Logger.Log("Changed Sim, forcing a rebake",Helpers.LogLevel.Debug);
             //Thread app=new Thread(new ThreadStart(setappearance));
             //app.Start();
         }
@@ -507,7 +507,7 @@ public partial class MainWindow: Gtk.Window
 	{
 		if(e.Message=="Autopilot canceled")
 		{
-			Console.WriteLine("Autopilot cancled");
+			Logger.Log("Autopilot cancled",Helpers.LogLevel.Debug);
 			return;
 		}
 		
@@ -1074,7 +1074,7 @@ public partial class MainWindow: Gtk.Window
                 im_queue.Add(e.IM);
 
                 if (im_registering.Contains(e.IM.FromAgentID))
-                    Console.WriteLine("Got 2nd IM when we are still processing window");
+                    Logger.Log("Got 2nd IM when we are still processing window",Helpers.LogLevel.Debug);
                 else
                 {
                     im_registering.Add(e.IM.FromAgentID);
