@@ -579,13 +579,12 @@ namespace omvviewerlight
 			Vector3 pos;
 			if(args.Event.X>marginX && args.Event.X<(width-marginX) && args.Event.Y>marginY && args.Event.Y<(height-marginY)) 
 			{
-				Logger.Log("In the box",Helpers.LogLevel.Debug);	
 				pos.X=(float)(256.0*((args.Event.X-marginX)/this.image.Pixbuf.Width));
 				pos.Y=(float)(256.0*((args.Event.Y-marginY)/this.image.Pixbuf.Height));
-		}
-				else{
-			Console.Write("Not in box");	
-			return;
+		    }
+			else
+            {
+			    return;
             }
 			
 			pos.Z=0;

@@ -468,8 +468,7 @@ namespace omvviewerlight
 		
 		bool debounce()
 		{
-                Logger.Log("Debounce",Helpers.LogLevel.Debug);
-				this.button_login.Sensitive=true;
+     			this.button_login.Sensitive=true;
 			    return false;
 		}
 	

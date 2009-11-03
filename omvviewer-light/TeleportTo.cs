@@ -217,7 +217,6 @@ namespace omvviewerlight
 		
 		public void settarget(Vector3 pos,GridRegion region)
 		{
-			Logger.Log("Set target from map",Helpers.LogLevel.Debug);
 			userclicked=true;
             this.entry_simname.Text = region.Name;
 			this.spinbutton_x.Value=pos.X;
