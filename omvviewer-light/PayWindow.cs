@@ -45,14 +45,10 @@ namespace omvviewerlight
 			this.Build();
 			is_object=true;
 			amountpay=amount;
-		    MainClass.client.Avatars.UUIDNameReply += new EventHandler<UUIDNameReplyEventArgs>(Avatars_UUIDNameReply);
-            resident_key=prim.Properties.OwnerID;
-			request_name(prim.Properties.OwnerID);
-					
+            resident_key=prim.Properties.OwnerID;					
 			object_key=prim.Properties.ObjectID;
 			object_name=prim.Properties.Name;
 								
-			refresh();
 		}
 
 	
@@ -61,71 +57,33 @@ namespace omvviewerlight
 		{
 			is_object=false;
 			amountpay=amount;
-            MainClass.client.Avatars.UUIDNameReply += new EventHandler<UUIDNameReplyEventArgs>(Avatars_UUIDNameReply);
-            resident_key = target;	
-			request_name(target);
-			this.Build();
-			refresh();
-		}	
+            resident_key = target;
+
+            resident = "Waiting...";
+            AsyncNameUpdate ud = new AsyncNameUpdate(target, false);
+            ud.onNameCallBack += new AsyncNameUpdate.NameCallBack(ud_onNameCallBack);
+            ud.go();             
+
+            this.Build();
+		}
+
+        void ud_onNameCallBack(string name, object[] values)
+        {
+            this.entry1.Text = amountpay.ToString();
+
+            if (is_object)
+            {
+                this.label_payinfo.Text = "Pay\nResident :" + name + "\nVia Object :" + object_name;
+            }
+            else
+            {
+                this.label_payinfo.Text = "Pay\nResident :" + name;
+            }
+
+        }	
 	
-		void request_name(UUID id)
-		{
-			Console.Write("Requesting name for ID : "+id.ToString()+"\n");
-			if(!MainClass.name_cache.av_names.ContainsKey(id))
-			{
-				Console.Write("Not found sending to server\n");
-				MainClass.client.Avatars.RequestAvatarName(id);			
-			}
-			else
-			{
-				Console.Write("Already known :"+MainClass.name_cache.av_names[id]+"\n");
-			}
-		}
-		
-		void refresh()
-		{
-			this.entry1.Text=amountpay.ToString();
-			
-			if(!MainClass.name_cache.av_names.TryGetValue(resident_key, out resident))
-			{
-				resident="Waiting......";
-			}
-			
-			if(is_object)
-			{
-				this.label_payinfo.Text="Pay\nResident :"+resident+"\nVia Object :"+object_name;								
-			}
-			else
-			{
-				this.label_payinfo.Text="Pay\nResident :"+resident;		
-			}
-			
-		}
-
-        void Avatars_UUIDNameReply(object sender, UUIDNameReplyEventArgs e)
-	    {
-			//what the hell, lets cache them to the program store if we find them
-			//Possible to do, move this type of stuff more global
-			Console.Write("Got new names \n");
-			
-			foreach(KeyValuePair<UUID,string> name in e.Names)
-			{
-				//if(!MainClass.name_cache.av_names.ContainsKey(name.Key))
-				//	MainClass.name_cache.av_names.Add(name.Key,name.Value);		
-			
-				Console.Write("Names = "+name.Value+"\n");
-			}
-			
-			Gtk.Application.Invoke(delegate {	
-				refresh();
-				this.QueueDraw();
-			});
-			
-	    }
-
 		protected virtual void OnButtonCancelClicked (object sender, System.EventArgs e)
 		{
-            MainClass.client.Avatars.UUIDNameReply -= new EventHandler<UUIDNameReplyEventArgs>(Avatars_UUIDNameReply);
             this.Destroy();
 		}
 
@@ -144,7 +102,6 @@ namespace omvviewerlight
 			else
 				MainClass.client.Self.GiveAvatarMoney(this.resident_key,amount);
 
-            MainClass.client.Avatars.UUIDNameReply -= new EventHandler<UUIDNameReplyEventArgs>(Avatars_UUIDNameReply);
 
 			this.Destroy();
 		}

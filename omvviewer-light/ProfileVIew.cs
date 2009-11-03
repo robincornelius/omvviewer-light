@@ -51,7 +51,6 @@ namespace omvviewerlight
 			resident=key;
 
             MainClass.client.Avatars.AvatarPropertiesReply += new EventHandler<AvatarPropertiesReplyEventArgs>(Avatars_AvatarPropertiesReply);
-            MainClass.client.Avatars.UUIDNameReply += new EventHandler<UUIDNameReplyEventArgs>(Avatars_UUIDNameReply);
             MainClass.client.Avatars.PickInfoReply += new EventHandler<PickInfoReplyEventArgs>(Avatars_PickInfoReply);
             MainClass.client.Avatars.AvatarPicksReply += new EventHandler<AvatarPicksReplyEventArgs>(Avatars_AvatarPicksReply);
 
@@ -67,10 +66,13 @@ namespace omvviewerlight
 			this.label_pay.Text="";
 			this.label_status.Text="";	
 			Gdk.Pixbuf buf=MainClass.GetResource("trying.png");
-			this.image3.Pixbuf=buf.ScaleSimple(128,128,Gdk.InterpType.Bilinear);
-			
+			this.image3.Pixbuf=buf.ScaleSimple(128,128,Gdk.InterpType.Bilinear);	
 			this.image7.Pixbuf=buf.ScaleSimple(128,128,Gdk.InterpType.Bilinear);
-			
+
+            AsyncNameUpdate ud = new AsyncNameUpdate(key, false);
+            ud.onNameCallBack += delegate(string namex, object[] values) { this.label_name.Text=namex; };
+            ud.go();             
+         			
 		}
 
 
@@ -85,7 +87,6 @@ namespace omvviewerlight
         {
             picks_waiting.Clear();
             MainClass.client.Avatars.AvatarPropertiesReply -= new EventHandler<AvatarPropertiesReplyEventArgs>(Avatars_AvatarPropertiesReply);
-            MainClass.client.Avatars.UUIDNameReply -= new EventHandler<UUIDNameReplyEventArgs>(Avatars_UUIDNameReply);
             MainClass.client.Avatars.PickInfoReply -= new EventHandler<PickInfoReplyEventArgs>(Avatars_PickInfoReply);
             MainClass.client.Avatars.AvatarPicksReply -= new EventHandler<AvatarPicksReplyEventArgs>(Avatars_AvatarPicksReply);
             this.DeleteEvent -= new DeleteEventHandler(OnDeleteEvent);
@@ -119,64 +120,22 @@ namespace omvviewerlight
 
 
 
-		void Avatars_AvatarPicksReply(object sender, AvatarPicksReplyEventArgs e)
-	    {
-			if(e.AvatarID!=	resident)
-				return;
-		
-			Gtk.Application.Invoke(delegate {	
-				foreach(KeyValuePair<UUID,string> pick in e.Picks)
-				{	
-					//this.notebook_picks.InsertPage(
-					this.picks_waiting.Add(pick.Key);
-					MainClass.client.Avatars.RequestPickInfo(resident,pick.Key);
-				}
-			});
-		}
+        void Avatars_AvatarPicksReply(object sender, AvatarPicksReplyEventArgs e)
+        {
+            if (e.AvatarID != resident)
+                return;
 
-
-	                                                   
-		    void Avatars_UUIDNameReply(object sender, UUIDNameReplyEventArgs e)
-			{
-			//what the hell, lets cache them to the program store if we find them
-			//Possible to do, move this type of stuff more global
-			Console.Write("Got new names \n");
-			
-			foreach(KeyValuePair<UUID,string> name in e.Names)
-			{
-				//if(!MainClass.av_names.ContainsKey(name.Key))
-					//MainClass.av_names.Add(name.Key,name.Value);		
-			
-				Console.Write("Names = "+name.Value+"\n");
-			}
-
-			Gtk.Application.Invoke(delegate {	
-				if(MainClass.name_cache.av_names.ContainsKey(resident))
-				{
-					this.label_name.Text=MainClass.name_cache.av_names[resident];
-				}
-				else
-				{
-					this.label_name.Text="Waiting....";
-				}
-				this.QueueDraw();
-			});
-			
-		
-			Gtk.Application.Invoke(delegate {	
-				if(MainClass.name_cache.av_names.ContainsKey(partner_key))
-				{
-					this.label_partner.Text=MainClass.name_cache.av_names[partner_key];
-				}
-				else
-				{
-					this.label_partner.Text="Waiting....";
-				}
-				this.QueueDraw();
-			});
-				
-		}
-
+            Gtk.Application.Invoke(delegate
+            {
+                foreach (KeyValuePair<UUID, string> pick in e.Picks)
+                {
+                    //this.notebook_picks.InsertPage(
+                    this.picks_waiting.Add(pick.Key);
+                    MainClass.client.Avatars.RequestPickInfo(resident, pick.Key);
+                }
+            });
+        }
+	
         void Avatars_AvatarPropertiesReply(object sender, AvatarPropertiesReplyEventArgs e)
             {
 			if(e.AvatarID!=	resident)
