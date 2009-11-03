@@ -308,6 +308,29 @@ namespace OpenMetaverse
             }
         }
 
+        /// <summary>
+        /// Ensures that values are in range 0-1
+        /// </summary>
+        public void ClampValues()
+        {
+            if (R < 0f)
+                R = 0f;
+            if (G < 0f)
+                G = 0f;
+            if (B < 0f)
+                B = 0f;
+            if (A < 0f)
+                A = 0f;
+            if (R > 1f)
+                R = 1f;
+            if (G > 1f)
+                G = 1f;
+            if (B > 1f)
+                B = 1f;
+            if (A > 1f)
+                A = 1f;
+        }
+
         #endregion Public Methods
 
         #region Static Methods
@@ -399,6 +422,22 @@ namespace OpenMetaverse
             return new Color4((float)r, (float)g, (float)b, 1f);
         }
 
+        /// <summary>
+        /// Performs linear interpolation between two colors
+        /// </summary>
+        /// <param name="value1">Color to start at</param>
+        /// <param name="value2">Color to end at</param>
+        /// <param name="amount">Amount to interpolate</param>
+        /// <returns>The interpolated color</returns>
+        public static Color4 Lerp(Color4 value1, Color4 value2, float amount)
+        {
+            return new Color4(
+                Utils.Lerp(value1.R, value2.R, amount),
+                Utils.Lerp(value1.G, value2.G, amount),
+                Utils.Lerp(value1.B, value2.B, amount),
+                Utils.Lerp(value1.A, value2.A, amount));
+        }
+
         #endregion Static Methods
 
         #region Overrides
@@ -440,6 +479,39 @@ namespace OpenMetaverse
         public static bool operator !=(Color4 lhs, Color4 rhs)
         {
             return !(lhs == rhs);
+        }
+
+        public static Color4 operator +(Color4 lhs, Color4 rhs)
+        {
+            lhs.R += rhs.R;
+            lhs.G += rhs.G;
+            lhs.B += rhs.B;
+            lhs.A += rhs.A;
+            lhs.ClampValues();
+
+            return lhs;
+        }
+
+        public static Color4 operator -(Color4 lhs, Color4 rhs)
+        {
+            lhs.R -= rhs.R;
+            lhs.G -= rhs.G;
+            lhs.B -= rhs.B;
+            lhs.A -= rhs.A;
+            lhs.ClampValues();
+
+            return lhs;
+        }
+
+        public static Color4 operator *(Color4 lhs, Color4 rhs)
+        {
+            lhs.R *= rhs.R;
+            lhs.G *= rhs.G;
+            lhs.B *= rhs.B;
+            lhs.A *= rhs.A;
+            lhs.ClampValues();
+
+            return lhs;
         }
 
         #endregion Operators

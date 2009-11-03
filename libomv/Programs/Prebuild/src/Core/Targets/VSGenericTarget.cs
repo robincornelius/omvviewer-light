@@ -207,7 +207,7 @@ namespace Prebuild.Core.Targets
 			#region Project File
 			using (ps)
 			{
-				ps.WriteLine("<Project DefaultTargets=\"Build\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\" ToolsVersion=\"3.5\">");
+				ps.WriteLine("<Project DefaultTargets=\"Build\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\" ToolsVersion=\"{0}\">", this.Version == VSVersion.VS10 ? "4.0" : "3.5");
 				ps.WriteLine("  <PropertyGroup>");
 				ps.WriteLine("    <ProjectType>Local</ProjectType>");
 				ps.WriteLine("    <ProductVersion>{0}</ProductVersion>", this.ProductVersion);
@@ -278,6 +278,7 @@ namespace Prebuild.Core.Targets
 					ps.WriteLine("    <WarningLevel>{0}</WarningLevel>", conf.Options["WarningLevel"]);
 					ps.WriteLine("    <NoStdLib>{0}</NoStdLib>", conf.Options["NoStdLib"]);
 					ps.WriteLine("    <NoWarn>{0}</NoWarn>", conf.Options["SuppressWarnings"]);
+                    ps.WriteLine("    <PlatformTarget>{0}</PlatformTarget>", conf.Options.PlatformTarget);
 					ps.WriteLine("  </PropertyGroup>");
 				}
 
@@ -292,7 +293,8 @@ namespace Prebuild.Core.Targets
 
                     if (projectNode == null)
                     {
-                        otherReferences.Add(refr);
+                        if (!otherReferences.Contains(refr))
+                            otherReferences.Add(refr);
                     }
                     else
                     {
@@ -313,8 +315,32 @@ namespace Prebuild.Core.Targets
 					ps.WriteLine("</Name>");
 
 					// TODO: Allow reference to *.exe files
-					if (!String.IsNullOrEmpty(refr.Path))
-						ps.WriteLine("      <HintPath>{0}</HintPath>", Helper.MakePathRelativeTo(project.FullPath, refr.Path + "\\" + refr.Name + ".dll"));
+                    if (!String.IsNullOrEmpty(refr.Path))
+                    {
+                        ps.WriteLine("      <HintPath>{0}</HintPath>", Helper.MakePathRelativeTo(project.FullPath, refr.Path + "\\" + refr.Name + ".dll"));
+                    }
+                    else
+                    {
+                        foreach (ReferencePathNode node in project.ReferencePaths)
+                        {
+                            try
+                            {
+                                string fullRefPath = Helper.ResolvePath(node.Path);
+                                if (File.Exists(fullRefPath + refr.Name + ".dll"))
+                                {
+                                    ps.WriteLine("      <HintPath>{0}</HintPath>", fullRefPath + refr.Name + ".dll");
+                                    break;
+                                }
+                                else if (File.Exists(fullRefPath + refr.Name + ".exe"))
+                                {
+                                    ps.WriteLine("      <HintPath>{0}</HintPath>", fullRefPath + refr.Name + ".exe");
+                                    break;
+                                }
+                            }
+                            catch (Exception)
+                            { }
+                        }
+                    }
 					ps.WriteLine("    </Reference>");
 				}
 				ps.WriteLine("  </ItemGroup>");
@@ -615,6 +641,9 @@ namespace Prebuild.Core.Targets
                             break;
                         case VSVersion.VS90:
                             ss.WriteLine("# Visual Studio 2008");
+                            break;
+                        case VSVersion.VS10:
+                            ss.WriteLine("# Visual Studio 2010");
                             break;
                     }
 

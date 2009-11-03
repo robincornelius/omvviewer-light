@@ -18,19 +18,19 @@ namespace OpenMetaverse.TestClient
 
         public CloneProfileCommand(TestClient testClient)
         {
-            testClient.Avatars.OnAvatarInterests += new AvatarManager.AvatarInterestsCallback(Avatars_OnAvatarInterests);
-            testClient.Avatars.OnAvatarProperties += new AvatarManager.AvatarPropertiesCallback(Avatars_OnAvatarProperties);
-            testClient.Avatars.OnAvatarGroups += new AvatarManager.AvatarGroupsCallback(Avatars_OnAvatarGroups);
-            testClient.Groups.OnGroupJoined += new GroupManager.GroupJoinedCallback(Groups_OnGroupJoined);
-            testClient.Avatars.OnAvatarPicks += new AvatarManager.AvatarPicksCallback(Avatars_OnAvatarPicks);
-            testClient.Avatars.OnPickInfo += new AvatarManager.PickInfoCallback(Avatars_OnPickInfo);
+            testClient.Avatars.AvatarInterestsReply += new EventHandler<AvatarInterestsReplyEventArgs>(Avatars_AvatarInterestsReply);
+            testClient.Avatars.AvatarPropertiesReply += new EventHandler<AvatarPropertiesReplyEventArgs>(Avatars_AvatarPropertiesReply);
+            testClient.Avatars.AvatarGroupsReply += new EventHandler<AvatarGroupsReplyEventArgs>(Avatars_AvatarGroupsReply);            
+            testClient.Groups.GroupJoinedReply += new EventHandler<GroupOperationEventArgs>(Groups_OnGroupJoined);
+            testClient.Avatars.AvatarPicksReply += new EventHandler<AvatarPicksReplyEventArgs>(Avatars_AvatarPicksReply);            
+            testClient.Avatars.PickInfoReply += new EventHandler<PickInfoReplyEventArgs>(Avatars_PickInfoReply);
 
             Name = "cloneprofile";
             Description = "Clones another avatars profile as closely as possible. WARNING: This command will " +
                 "destroy your existing profile! Usage: cloneprofile [targetuuid]";
             Category = CommandCategory.Other;
         }
-
+        
         public override string Execute(string[] args, UUID fromAgentID)
         {
             if (args.Length != 1)
@@ -79,57 +79,46 @@ namespace OpenMetaverse.TestClient
             }
 
             return "Synchronized our profile to the profile of " + targetID.ToString();
+        }                           
+
+        void Groups_OnGroupJoined(object sender, GroupOperationEventArgs e)
+        {
+            Console.WriteLine(Client.ToString() + (e.Success ? " joined " : " failed to join ") +
+                e.GroupID.ToString());
+
+            if (e.Success)
+            {
+                Console.WriteLine(Client.ToString() + " setting " + e.GroupID.ToString() +
+                    " as the active group");
+                Client.Groups.ActivateGroup(e.GroupID);
+            }
         }
 
-        void Avatars_OnAvatarPicks(UUID avatarid, Dictionary<UUID, string> picks)
+        void Avatars_PickInfoReply(object sender, PickInfoReplyEventArgs e)
         {
-            foreach (KeyValuePair<UUID, string> kvp in picks)
+            Client.Self.PickInfoUpdate(e.PickID, e.Pick.TopPick, e.Pick.ParcelID, e.Pick.Name, e.Pick.PosGlobal, e.Pick.SnapshotID, e.Pick.Desc);
+        }
+
+        void Avatars_AvatarPicksReply(object sender, AvatarPicksReplyEventArgs e)
+        {
+            foreach (KeyValuePair<UUID, string> kvp in e.Picks)
             {
-                if (avatarid == Client.Self.AgentID)
+                if (e.AvatarID == Client.Self.AgentID)
                 {
                     Client.Self.PickDelete(kvp.Key);
                 }
                 else
                 {
-                    Client.Avatars.RequestPickInfo(avatarid, kvp.Key);
+                    Client.Avatars.RequestPickInfo(e.AvatarID, kvp.Key);
                 }
             }
         }
 
-        void Avatars_OnPickInfo(UUID pickid, ProfilePick pick)
-        {
-            Client.Self.PickInfoUpdate(pickid, pick.TopPick, pick.ParcelID, pick.Name, pick.PosGlobal, pick.SnapshotID, pick.Desc);
-        }
-
-        void Avatars_OnAvatarProperties(UUID avatarID, Avatar.AvatarProperties properties)
+        void Avatars_AvatarGroupsReply(object sender, AvatarGroupsReplyEventArgs e)
         {
             lock (ReceivedProfileEvent)
             {
-                Properties = properties;
-                ReceivedProperties = true;
-
-                if (ReceivedInterests && ReceivedProperties && ReceivedGroups)
-                    ReceivedProfileEvent.Set();
-            }
-        }
-
-        void Avatars_OnAvatarInterests(UUID avatarID, Avatar.Interests interests)
-        {
-            lock (ReceivedProfileEvent)
-            {
-                Interests = interests;
-                ReceivedInterests = true;
-
-                if (ReceivedInterests && ReceivedProperties && ReceivedGroups)
-                    ReceivedProfileEvent.Set();
-            }
-        }
-
-        void Avatars_OnAvatarGroups(UUID avatarID, List<AvatarGroup> groups)
-        {
-            lock (ReceivedProfileEvent)
-            {
-                foreach (AvatarGroup group in groups)
+                foreach (AvatarGroup group in e.Groups)
                 {
                     Groups.Add(group.GroupID);
                 }
@@ -141,17 +130,30 @@ namespace OpenMetaverse.TestClient
             }
         }
 
-        void Groups_OnGroupJoined(UUID groupID, bool success)
+        void Avatars_AvatarPropertiesReply(object sender, AvatarPropertiesReplyEventArgs e)
         {
-            Console.WriteLine(Client.ToString() + (success ? " joined " : " failed to join ") +
-                groupID.ToString());
-
-            if (success)
+            lock (ReceivedProfileEvent)
             {
-                Console.WriteLine(Client.ToString() + " setting " + groupID.ToString() +
-                    " as the active group");
-                Client.Groups.ActivateGroup(groupID);
+                Properties = e.Properties;
+                ReceivedProperties = true;
+
+                if (ReceivedInterests && ReceivedProperties && ReceivedGroups)
+                    ReceivedProfileEvent.Set();
             }
         }
+
+        void Avatars_AvatarInterestsReply(object sender, AvatarInterestsReplyEventArgs e)
+        {
+            lock (ReceivedProfileEvent)
+            {
+                Interests = e.Interests;
+                ReceivedInterests = true;
+
+                if (ReceivedInterests && ReceivedProperties && ReceivedGroups)
+                    ReceivedProfileEvent.Set();
+            }
+        }        
+
+
     }
 }

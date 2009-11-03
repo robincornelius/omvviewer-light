@@ -86,40 +86,42 @@ namespace omvviewerlight
         void MainClass_onRegister()
         {
             textview_chat.Buffer.Clear();
-            MainClass.client.Self.OnChat += new OpenMetaverse.AgentManager.ChatCallback(onChat);
-            MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
-            MainClass.client.Friends.OnFriendOffline += new FriendsManager.FriendOfflineEvent(Friends_OnFriendOffline);
-            MainClass.client.Friends.OnFriendOnline += new FriendsManager.FriendOnlineEvent(Friends_OnFriendOnline);
-            MainClass.client.Self.OnMoneyBalanceReplyReceived += new AgentManager.MoneyBalanceReplyCallback(Self_OnMoneyBalanceReplyReceived);
+
+            MainClass.client.Self.ChatFromSimulator += new EventHandler<ChatEventArgs>(Self_ChatFromSimulator);
+            MainClass.client.Self.IM += new EventHandler<InstantMessageEventArgs>(Self_IM);
+            MainClass.client.Friends.FriendOffline += new EventHandler<FriendInfoEventArgs>(Friends_FriendOffline);
+            MainClass.client.Friends.FriendOnline += new EventHandler<FriendInfoEventArgs>(Friends_FriendOnline);
+            MainClass.client.Self.MoneyBalanceReply += new EventHandler<MoneyBalanceReplyEventArgs>(Self_MoneyBalanceReply);
+            MainClass.client.Self.GroupChatJoined += new EventHandler<GroupChatJoinedEventArgs>(Self_GroupChatJoined);
+
         }
 
+        
         void MainClass_onDeregister()
         {
             if(MainClass.client!=null)
             {
-                MainClass.client.Self.OnChat -= new OpenMetaverse.AgentManager.ChatCallback(onChat);
-                MainClass.client.Self.OnInstantMessage -= new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
-                MainClass.client.Friends.OnFriendOffline -= new FriendsManager.FriendOfflineEvent(Friends_OnFriendOffline);
-                MainClass.client.Friends.OnFriendOnline -= new FriendsManager.FriendOnlineEvent(Friends_OnFriendOnline);
-                MainClass.client.Self.OnMoneyBalanceReplyReceived -= new AgentManager.MoneyBalanceReplyCallback(Self_OnMoneyBalanceReplyReceived);
-     
-                //H ope this works! this *may* be defined and if we are aborting there approprate cleanup
-                //may not get run. They are only enabled via optional code paths
-                MainClass.client.Self.OnInstantMessage -= new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
-                MainClass.client.Self.OnGroupChatJoin -= new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
+                MainClass.client.Self.ChatFromSimulator -= new EventHandler<ChatEventArgs>(Self_ChatFromSimulator);
+                MainClass.client.Self.IM -= new EventHandler<InstantMessageEventArgs>(Self_IM);
+                MainClass.client.Friends.FriendOffline -= new EventHandler<FriendInfoEventArgs>(Friends_FriendOffline);
+                MainClass.client.Friends.FriendOnline -= new EventHandler<FriendInfoEventArgs>(Friends_FriendOnline);
+                MainClass.client.Self.MoneyBalanceReply -= new EventHandler<MoneyBalanceReplyEventArgs>(Self_MoneyBalanceReply);
+
+                MainClass.client.Self.GroupChatJoined -= new EventHandler<GroupChatJoinedEventArgs>(Self_GroupChatJoined);
+   
             }
 
         }
 
-        void Self_OnMoneyBalanceReplyReceived(UUID transactionID, bool transactionSuccess, int balance, int metersCredit, int metersCommitted, string description)
+        void Self_MoneyBalanceReply(object sender, MoneyBalanceReplyEventArgs e)
         {
             if (current_chat_type == chat_type.CHAT_TYPE_CHAT)
             {
-                if (description != "")
+                if (e.Description != "")
                 {
                     Gtk.Application.Invoke(delegate
                     {
-                        displaychat(description, "Payment :", this.systemchat, this.systemchat);
+                        displaychat(e.Description, "Payment :", this.systemchat, this.systemchat);
                     });
                 }
             }
@@ -133,40 +135,39 @@ namespace omvviewerlight
             MainClass_onDeregister();
         }
 		
-		
-        void Friends_OnFriendOnline(FriendInfo friend)
+        void Friends_FriendOnline(object sender, FriendInfoEventArgs e)
         {
             if(current_chat_type==chat_type.CHAT_TYPE_CHAT)
             {
                 //SIGH this is necessary to prevent a bunch of " is online" messages at login
-                 AsyncNameUpdate ud = new AsyncNameUpdate(friend.UUID, false);
+                 AsyncNameUpdate ud = new AsyncNameUpdate(e.Friend.UUID, false);
                  ud.onNameCallBack += delegate(string namex, object[] values) { displaychat("is online", namex, onoffline, onoffline); };
                  ud.go();             
             }
-            else if (current_chat_type == chat_type.CHAT_TYPE_IM && im_target == friend.UUID)
+            else if (current_chat_type == chat_type.CHAT_TYPE_IM && im_target == e.Friend.UUID)
             {
                 Gtk.Application.Invoke(delegate
                 {
-                    displaychat("is online", friend.Name, onoffline, onoffline);
+                    displaychat("is online", e.Friend.Name, onoffline, onoffline);
                 });
             }
         }
 
-        void Friends_OnFriendOffline(FriendInfo friend)
+        void Friends_FriendOffline(object sender, FriendInfoEventArgs e)
         {
             if (current_chat_type == chat_type.CHAT_TYPE_CHAT)
             {
                 //this is the main chat winddow, notify for all friends here
                 Gtk.Application.Invoke(delegate
                 {
-                    displaychat("is offline", friend.Name, onoffline, onoffline);
+                    displaychat("is offline", e.Friend.Name, onoffline, onoffline);
                 });
             }
-            else if (current_chat_type == chat_type.CHAT_TYPE_IM && im_target == friend.UUID)
+            else if (current_chat_type == chat_type.CHAT_TYPE_IM && im_target == e.Friend.UUID)
             {
                 Gtk.Application.Invoke(delegate
                 {
-                    displaychat("is offline", friend.Name, onoffline, onoffline);
+                    displaychat("is offline", e.Friend.Name, onoffline, onoffline);
                 });
             }
         }
@@ -181,6 +182,7 @@ namespace omvviewerlight
 			groupchatlist.setsession(target);
 		}
 		
+
 		public ChatConsole(InstantMessage im)
 		{
             lock (MainClass.win.im_queue)
@@ -198,7 +200,10 @@ namespace omvviewerlight
                         foreach (InstantMessage qim in MainClass.win.im_queue)
                         {
                             if (qim.FromAgentID == im_target)
-                                onIM(qim, null);
+                            {
+                                InstantMessageEventArgs e = new InstantMessageEventArgs(qim, null);
+                                this.Self_IM(this, e);
+                            }
                         }
 
                         MainClass.win.im_queue.RemoveAll(TestRemove);
@@ -214,12 +219,14 @@ namespace omvviewerlight
                         Logger.Log("Starting a new group chat for session id " + im.IMSessionID.ToString(), Helpers.LogLevel.Info);
                         current_chat_type = chat_type.CHAT_TYPE_GROUP_IM;
                         this.im_target = im.IMSessionID;
-                        MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
                         this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter, "Trying to join group chat session, please wait........\n");
                         Gtk.Timeout.Add(10000, kick_group_join);
                         MainClass.client.Self.RequestJoinGroupChat(im.IMSessionID);
                         MainClass.win.im_windows.Add(im.IMSessionID, this);
-                        onIM(im, null);
+
+                        InstantMessageEventArgs e = new InstantMessageEventArgs(im, null);
+                        Self_IM(this, e);
+                       
 
                     }
                     else
@@ -232,7 +239,8 @@ namespace omvviewerlight
                         MainClass.win.im_windows.Add(im.IMSessionID, this);
                         MainClass.client.Self.ChatterBoxAcceptInvite(im.IMSessionID);
                         bucket = im.BinaryBucket;
-                        onIM(im, null);
+                        InstantMessageEventArgs e = new InstantMessageEventArgs(im, null);
+                        Self_IM(this, e);
                     }
 
                 }
@@ -246,8 +254,6 @@ namespace omvviewerlight
 
                     return;
                 }
-
-                MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
             }
 		}
 
@@ -287,31 +293,29 @@ namespace omvviewerlight
             MainClass.win.trayIcon.Blinking = false;
 		}
 
-        void onGroupChatJoin(UUID groupChatSessionID, string sessionName, UUID tmpSessionID, bool success)
-		{
+        void Self_GroupChatJoined(object sender, GroupChatJoinedEventArgs e)
+        {
 
-            if (success == false)
+            if (e.Success == false)
             {
-                this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter, "Failed to join group chat "+sessionName+".. retrying...\n");
+                this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter, "Failed to join group chat "+e.SessionName+".. retrying...\n");
                 return;
             }
 
-			Console.WriteLine("On groupchat join for "+groupChatSessionID.ToString());
+			Console.WriteLine("On groupchat join for "+e.SessionID.ToString());
 
-            if (!MainClass.win.im_windows.ContainsKey(groupChatSessionID))
-                MainClass.win.im_windows.Add(groupChatSessionID,this);
+            if (!MainClass.win.im_windows.ContainsKey(e.SessionID))
+                MainClass.win.im_windows.Add(e.SessionID,this);
 
-			if(groupChatSessionID!=im_target && im_target!=tmpSessionID)
+			if(e.SessionID!=im_target && im_target!=e.TmpSessionID)
 				return;
 			
-			if(tmpSessionID==im_target)
+			if(e.TmpSessionID==im_target)
 			{
-				im_target=groupChatSessionID;
-                this.bucket = OpenMetaverse.Utils.StringToBytes(sessionName);
+				im_target=e.SessionID;
+                this.bucket = OpenMetaverse.Utils.StringToBytes(e.SessionName);
 			}
 			
-            MainClass.client.Self.OnGroupChatJoin -= new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
-
 			this.joined_group_chat=true;
 			
 			string buffer="Joined group chat\n";
@@ -364,7 +368,7 @@ namespace omvviewerlight
 		{
 			dosetup();
             current_chat_type = chat_type.CHAT_TYPE_IM;
-			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
+//			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
             im_target = target;
             if(!MainClass.win.im_windows.ContainsKey(target))
                 MainClass.win.im_windows.Add(target, this);
@@ -376,8 +380,9 @@ namespace omvviewerlight
 			dosetup();
             current_chat_type = chat_type.CHAT_TYPE_GROUP_IM;
 			im_target=target;
-	        MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
-			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
+
+//	        MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
+//			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
 			this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter,"Trying to join group chat session, please wait........\n");
 			joined_group_chat=false;
 			Gtk.Timeout.Add(10000,kick_group_join);
@@ -389,8 +394,8 @@ namespace omvviewerlight
 		{
 			  dosetup();
 			  this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter,"Trying to join confrence chat session, please wait........\n");
-			  MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
-              MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
+//			  MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
+//            MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
 			  current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
               this.im_target = UUID.Random();
               MainClass.client.Self.StartIMConference(targets, this.im_target);
@@ -493,8 +498,7 @@ namespace omvviewerlight
 			this.Destroy();	
 		}
 		
-		
-		void onIM(InstantMessage im, Simulator sim)
+        void Self_IM(object sender, InstantMessageEventArgs e)
 		{
 			
             if (this.current_chat_type==chat_type.CHAT_TYPE_CHAT)
@@ -504,33 +508,33 @@ namespace omvviewerlight
 
                 // we also do the console logging here
 
-                if (im.Dialog != InstantMessageDialog.StartTyping && im.Dialog != InstantMessageDialog.StopTyping)
-                    Console.WriteLine("New IM recieved " + im.ToString() + " " + OpenMetaverse.Utils.BytesToString(im.BinaryBucket));
+                if (e.IM.Dialog != InstantMessageDialog.StartTyping && e.IM.Dialog != InstantMessageDialog.StopTyping)
+                    Console.WriteLine("New IM recieved " + e.IM.ToString() + " " + OpenMetaverse.Utils.BytesToString(e.IM.BinaryBucket));
 
 
-               if (im.Dialog == OpenMetaverse.InstantMessageDialog.InventoryOffered)
+               if (e.IM.Dialog == OpenMetaverse.InstantMessageDialog.InventoryOffered)
                 {
                     Gtk.Application.Invoke(delegate
                     {
-                        displaychat(im.FromAgentName + " gave you " + im.Message, "(new inventory)", this.systemchat, this.systemchat);
+                        displaychat(e.IM.FromAgentName + " gave you " + e.IM.Message, "(new inventory)", this.systemchat, this.systemchat);
                     });
                     return;
                 }
-                if (im.Dialog == OpenMetaverse.InstantMessageDialog.TaskInventoryOffered)
+                if (e.IM.Dialog == OpenMetaverse.InstantMessageDialog.TaskInventoryOffered)
                 {
                     Gtk.Application.Invoke(delegate
                     {
-                        displaychat(im.FromAgentName + " gave you " + im.Message, "(new inventory)", this.systemchat, this.systemchat);
+                        displaychat(e.IM.FromAgentName + " gave you " + e.IM.Message, "(new inventory)", this.systemchat, this.systemchat);
                     });
                     
                     return;
                 }
 
-                if (im.Dialog == InstantMessageDialog.MessageFromObject)
+                if (e.IM.Dialog == InstantMessageDialog.MessageFromObject)
                 {
                     Gtk.Application.Invoke(delegate
                     {
-                        displaychat(im.Message, im.FromAgentName, objectIMchat, objectIMchat);
+                        displaychat(e.IM.Message, e.IM.FromAgentName, objectIMchat, objectIMchat);
                     });
                 }
 
@@ -540,31 +544,31 @@ namespace omvviewerlight
             //Not group IM ignore messages not destine for im_target
             if (current_chat_type == chat_type.CHAT_TYPE_GROUP_IM || current_chat_type == chat_type.CHAT_TYPE_CONFRENCE) 
 			{
-                if (im.IMSessionID != im_target)
+                if (e.IM.IMSessionID != im_target)
                     return;
 			}
 			
             if(current_chat_type==chat_type.CHAT_TYPE_IM)
 			{
-                if (im.FromAgentID != im_target || im.Dialog != InstantMessageDialog.MessageFromAgent || im.BinaryBucket.Length>1)
+                if (e.IM.FromAgentID != im_target || e.IM.Dialog != InstantMessageDialog.MessageFromAgent || e.IM.BinaryBucket.Length>1)
 					return;
 			}
 
 			// Is this a typing message
 			
-			if(im.Dialog == InstantMessageDialog.StartTyping)
+			if(e.IM.Dialog == InstantMessageDialog.StartTyping)
 			{
 				if(istyping==false)
 				{
 	                 Gtk.Application.Invoke(delegate
 	                 {
-	                     displaychat("is typing...", im.FromAgentName, typing_tag, typing_tag);
+	                     displaychat("is typing...", e.IM.FromAgentName, typing_tag, typing_tag);
 	                 });
 				}
 				return;
 			}
 
-			if(im.Dialog == InstantMessageDialog.StopTyping)
+			if(e.IM.Dialog == InstantMessageDialog.StopTyping)
 			{
 				if(istyping==false)
 				{
@@ -587,13 +591,13 @@ namespace omvviewerlight
 			// Pretty much eveything not directly associated with this IM session
             // All invites,requests,accepts etc are handled in MainWindow
 
-			   if(im.Dialog!=OpenMetaverse.InstantMessageDialog.MessageFromAgent &&
-			   im.Dialog!=OpenMetaverse.InstantMessageDialog.SessionSend &&
-			   im.Dialog!=OpenMetaverse.InstantMessageDialog.SessionGroupStart &&
-               im.Dialog!=InstantMessageDialog.BusyAutoResponse
+			   if(e.IM.Dialog!=OpenMetaverse.InstantMessageDialog.MessageFromAgent &&
+			   e.IM.Dialog!=OpenMetaverse.InstantMessageDialog.SessionSend &&
+			   e.IM.Dialog!=OpenMetaverse.InstantMessageDialog.SessionGroupStart &&
+               e.IM.Dialog!=InstantMessageDialog.BusyAutoResponse
 				)
 				{
-                    Console.Write("IM REJECTED IN IM WINDOW FROM " + im.FromAgentID + " : " + im.FromAgentName + " : " + im.IMSessionID + "\n");
+                    Console.Write("IM REJECTED IN IM WINDOW FROM " + e.IM.FromAgentID + " : " + e.IM.FromAgentName + " : " + e.IM.IMSessionID + "\n");
 					return;	
                 }
     						
@@ -607,44 +611,45 @@ namespace omvviewerlight
 
             Gtk.Application.Invoke(delegate
             {
-                displaychat(im.Message, im.FromAgentName, avchat, bold); 
+                displaychat(e.IM.Message, e.IM.FromAgentName, avchat, bold); 
 			});	
 	
 			}
-			                                       
-		void onChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourcetype,string fromName, UUID id, UUID ownerid, Vector3 position)
-		{
 
-			if(type==ChatType.StartTyping || type==ChatType.StopTyping || type==ChatType.Debug)
+        void Self_ChatFromSimulator(object sender, ChatEventArgs e)
+        {
+
+			if(e.Type==ChatType.StartTyping || e.Type==ChatType.StopTyping || e.Type==ChatType.Debug)
 				return;
 
-			if(message=="")
+			if(e.Message=="")
 				return; //WTF???? why do i get empty messages which are not the above types
 
             redtab();
 			
-			if((MainClass.appsettings.notify_chat && sourcetype==ChatSourceType.Agent) || sourcetype==ChatSourceType.System)
+			if((MainClass.appsettings.notify_chat && e.SourceType==ChatSourceType.Agent) || e.SourceType==ChatSourceType.System)
 				windownotify();
 
-			if(MainClass.appsettings.notify_object_chat && sourcetype==ChatSourceType.Object)
+			if(MainClass.appsettings.notify_object_chat && e.SourceType==ChatSourceType.Object)
 				windownotify();
-							
-			if(type==ChatType.Whisper)
-				fromName=fromName+" whispers";
-			if(type==ChatType.Shout)
-				fromName=fromName+" shouts";
+
+//FIXME				
+//			if(e.Type==ChatType.Whisper)
+//				e.FromName=e.FromName+" whispers";
+//			if(e.Type==ChatType.Shout)
+//				e.FromName=e.FromName+" shouts";
 	
-			if(sourcetype==ChatSourceType.Agent)
+			if(e.SourceType==ChatSourceType.Agent)
 			{
 				Gtk.Application.Invoke(delegate {						
-                    displaychat(message, fromName, avchat, bold);
-					if(id!=MainClass.client.Self.AgentID)
+                    displaychat(e.Message, e.FromName, avchat, bold);
+					if(e.SourceID!=MainClass.client.Self.AgentID)
 					{
 						if(lookatrunning==false)
 						{
 							this.lookat=UUID.Random();
-							MainClass.client.Self.LookAtEffect(MainClass.client.Self.AgentID,id,Vector3d.Zero,LookAtType.Mouselook,lookat);
-							GLib.Timeout.Add(3000,ClearLookAt);
+							//MainClass.client.Self.LookAtEffect(MainClass.client.Self.AgentID,id,Vector3d.Zero,LookAtType.Mouselook,lookat);
+							//GLib.Timeout.Add(3000,ClearLookAt);
 							lookatrunning=true;
 						}
 					}
@@ -652,27 +657,28 @@ namespace omvviewerlight
 				return;
 			}
 
-			if(type==ChatType.OwnerSay)
+			if(e.Type==ChatType.OwnerSay)
 			{
 				Gtk.Application.Invoke(delegate {
-                    displaychat(message, fromName, ownerobjectchat, ownerobjectchat);
+                    displaychat(e.Message, e.FromName, ownerobjectchat, ownerobjectchat);
 				});
 				return;		
 			}
 			
-			if(sourcetype==ChatSourceType.Object)
+			if(e.SourceType==ChatSourceType.Object)
 			{
 				Gtk.Application.Invoke(delegate {
-                    displaychat(message, fromName, objectchat, objectchat);
+                    displaychat(e.Message, e.FromName, objectchat, objectchat);
 					});
 				return;
 			}
 
-			if(sourcetype==ChatSourceType.System)
+			if(e.SourceType==ChatSourceType.System)
 			{
 				Gtk.Application.Invoke(delegate {
-                    fromName = "Secondlife ";
-                    displaychat(message, fromName, systemchat, systemchat);		
+                    //FIXME
+                    //e.FromName = "Secondlife ";
+                    displaychat(e.Message, e.FromName, systemchat, systemchat);		
 				});
 				return;
 			}

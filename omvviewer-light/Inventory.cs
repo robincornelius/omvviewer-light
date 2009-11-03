@@ -218,9 +218,8 @@ namespace omvviewerlight
         {
             if (MainClass.client != null)
             {
-                MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-                MainClass.client.Network.OnLogoutReply -= new NetworkManager.LogoutCallback(Network_OnLogoutReply);
-                MainClass.client.Network.OnEventQueueRunning -= new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
+                MainClass.client.Network.LoggedOut -= new EventHandler<LoggedOutEventArgs>(Network_LoggedOut);
+                MainClass.client.Network.EventQueueRunning -= new EventHandler<EventQueueRunningEventArgs>(Network_EventQueueRunning);
             }
             
             MainWindow.OnInventoryAccepted -= new MainWindow.InventoryAccepted(win_OnInventoryAccepted);
@@ -239,11 +238,13 @@ namespace omvviewerlight
            recursion = 0;
            abortfetch = false;
 
-            MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-            MainClass.client.Network.OnLogoutReply += new NetworkManager.LogoutCallback(Network_OnLogoutReply);
-            MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
+            MainClass.client.Network.LoggedOut += new EventHandler<LoggedOutEventArgs>(Network_LoggedOut);
+            MainClass.client.Network.EventQueueRunning += new EventHandler<EventQueueRunningEventArgs>(Network_EventQueueRunning);
+           
+            
             MainWindow.OnInventoryAccepted += new MainWindow.InventoryAccepted(win_OnInventoryAccepted);
 
+           
         }
 
         void item_name_Edited(object o, EditedArgs args)
@@ -289,7 +290,8 @@ namespace omvviewerlight
             }
         }
 
-        void Network_OnLogoutReply(List<UUID> inventoryItems)
+
+        void Network_LoggedOut(object sender, LoggedOutEventArgs e)
         {
             abortfetch = true;
         }
@@ -491,7 +493,7 @@ namespace omvviewerlight
                     }
 
                     this.no_items = 0;
-                    MainClass.client.Inventory.Store.RestoreFromDisk(MainClass.client.Settings.TEXTURE_CACHE_DIR + System.IO.Path.DirectorySeparatorChar + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
+                    MainClass.client.Inventory.Store.RestoreFromDisk(MainClass.client.Settings.ASSET_CACHE_DIR + System.IO.Path.DirectorySeparatorChar + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
 
                     fetcherrunning = true;
                     Thread invRunner = new Thread(new ParameterizedThreadStart(fetchinventory));
@@ -511,7 +513,8 @@ namespace omvviewerlight
 
             if (item is InventoryFolder)
             {
-                MainClass.client.Appearance.WearOutfit(item.UUID,true);
+                //MainClass.client.Appearance.WearOutfit(item.UUID,true);
+                //FIXME
             }
         }
 
@@ -1339,18 +1342,18 @@ namespace omvviewerlight
 			Gtk.TreeIter iter;
 
             TreePath[] paths = treeview_inv.Selection.GetSelectedRows(out mod);
-            List<InventoryBase> ibs = new List<InventoryBase>();
+            List<InventoryItem> ibs = new List<InventoryItem>();
 
             foreach (TreePath path in paths)
             {
                 if (mod.GetIter(out iter, path))
                 {
-                    InventoryBase item = (InventoryBase)mod.GetValue(iter, 3);
+                    InventoryItem item = (InventoryItem)mod.GetValue(iter, 3);
                     ibs.Add(item);
                 }
             }
 
-            MainClass.client.Appearance.AddToOutfit(ibs, true);
+            MainClass.client.Appearance.AddToOutfit(ibs);
         }
 		
         void menu_attach_item_ButtonPressEvent(object o, ButtonPressEventArgs args)
@@ -1370,9 +1373,9 @@ namespace omvviewerlight
             }
         }
 
-		void onEventQueue(Simulator sim)
+        void Network_EventQueueRunning(object sender, EventQueueRunningEventArgs e)
 		{
-			if(sim.ID==MainClass.client.Network.CurrentSim.ID)
+			if(e.Simulator.ID==MainClass.client.Network.CurrentSim.ID)
 			{
                 if (inventoryloaded == false)
                 {
@@ -1385,15 +1388,6 @@ namespace omvviewerlight
                 }
 				 
 			}
-		}
-
-        void onLogin(LoginStatus status, string message)
-		{
-			if(LoginStatus.Success==status)
-			{
-
-			}
-
 		}
 				
 		void onRowCollapsed(object o,Gtk.RowCollapsedArgs args)

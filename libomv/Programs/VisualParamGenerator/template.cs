@@ -1,8 +1,71 @@
 using System;
 using System.Collections.Generic;
 
-namespace libsecondlife
+namespace OpenMetaverse
 {
+    /// <summary>
+    /// Operation to apply when applying color to texture
+    /// </summary>
+    public enum VisualColorOperation
+    {
+        Add,
+        Blend,
+        Multiply
+    }
+
+    /// <summary>
+    /// Information needed to translate visual param value to RGBA color
+    /// </summary>
+    public struct VisualColorParam
+    {
+        public VisualColorOperation Operation;
+        public Color4[] Colors;
+
+        /// <summary>
+        /// Construct VisualColorParam
+        /// </summary>
+        /// <param name="operation">Operation to apply when applying color to texture</param>
+        /// <param name="colors">Colors</param>
+        public VisualColorParam(VisualColorOperation operation, Color4[] colors)
+        {
+            Operation = operation;
+            Colors = colors;
+        }
+    }
+
+    /// <summary>
+    /// Represents alpha blending and bump infor for a visual parameter
+    /// such as sleive length
+    /// </summary>
+    public struct VisualAlphaParam
+    {
+        /// <summary>Stregth of the alpha to apply</summary>
+        public float Domain;
+
+        /// <summary>File containing the alpha channel</summary>
+        public string TGAFile;
+
+        /// <summary>Skip blending if parameter value is 0</summary>
+        public bool SkipIfZero;
+
+        /// <summary>Use miltiply insted of alpha blending</summary>
+        public bool MultiplyBlend;
+
+        /// <summary>
+        /// Create new alhpa information for a visual param
+        /// </summary>
+        /// <param name="domain">Stregth of the alpha to apply</param>
+        /// <param name="tgaFile">File containing the alpha channel</param>
+        /// <param name="skipIfZero">Skip blending if parameter value is 0</param>
+        /// <param name="multiplyBlend">Use miltiply insted of alpha blending</param>
+        public VisualAlphaParam(float domain, string tgaFile, bool skipIfZero, bool multiplyBlend)
+        {
+            Domain = domain;
+            TGAFile = tgaFile;
+            SkipIfZero = skipIfZero;
+            MultiplyBlend = multiplyBlend;
+        }
+    }
     /// <summary>
     /// A single visual characteristic of an avatar mesh, such as eyebrow height
     /// </summary>
@@ -28,7 +91,14 @@ namespace libsecondlife
         public float MinValue;
         /// <summary>Maximum value</summary>
         public float MaxValue;
-
+        /// <summary>Is this param used for creation of bump layer?</summary>
+        public bool IsBumpAttribute;
+        /// <summary>Alpha blending/bump info</summary>
+        public VisualAlphaParam? AlphaParams;
+        /// <summary>Color information</summary>
+        public VisualColorParam? ColorParams;
+        /// <summary>Array of param IDs that are drivers for this parameter</summary>
+        public int[] Drivers;
         /// <summary>
         /// Set all the values through the constructor
         /// </summary>
@@ -42,7 +112,11 @@ namespace libsecondlife
         /// <param name="def">Default value</param>
         /// <param name="min">Minimum value</param>
         /// <param name="max">Maximum value</param>
-        public VisualParam(int paramID, string name, int group, string wearable, string label, string labelMin, string labelMax, float def, float min, float max)
+        /// <param name="isBumpAttribute">Is this param used for creation of bump layer?</param>
+        /// <param name="drivers">Array of param IDs that are drivers for this parameter</param>
+        /// <param name="alpha">Alpha blending/bump info</param>
+        /// <param name="colorParams">Color information</param>
+        public VisualParam(int paramID, string name, int group, string wearable, string label, string labelMin, string labelMax, float def, float min, float max, bool isBumpAttribute, int[] drivers, VisualAlphaParam? alpha, VisualColorParam? colorParams)
         {
             ParamID = paramID;
             Name = name;
@@ -54,6 +128,10 @@ namespace libsecondlife
             DefaultValue = def;
             MaxValue = max;
             MinValue = min;
+            IsBumpAttribute = isBumpAttribute;
+            Drivers = drivers;
+            AlphaParams = alpha;
+            ColorParams = colorParams;
         }
     }
 
@@ -62,6 +140,8 @@ namespace libsecondlife
     /// </summary>
     public static class VisualParams
     {
+        public static SortedList<int, VisualParam> Params = new SortedList<int, VisualParam>();
+
         public static VisualParam Find(string name, string wearable)
         {
             foreach (KeyValuePair<int, VisualParam> param in Params)
@@ -70,8 +150,6 @@ namespace libsecondlife
 
             return new VisualParam();
         }
-
-        public static SortedList<int, VisualParam> Params = new SortedList<int, VisualParam>();
 
         static VisualParams()
         {

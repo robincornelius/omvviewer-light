@@ -21,10 +21,9 @@ namespace IRCGateway
             else
             {
                 _Client = new GridClient();
-                _Client.Network.OnLogin += new NetworkManager.LoginCallback(Network_OnLogin);
-                _Client.Self.OnChat += new AgentManager.ChatCallback(Self_OnChat);
-                _Client.Self.OnInstantMessage += new AgentManager.InstantMessageCallback(Self_OnInstantMessage);
-
+                _Client.Network.LoginProgress += Network_OnLogin;
+                _Client.Self.ChatFromSimulator += Self_ChatFromSimulator;                
+                _Client.Self.IM += Self_IM;
                 _ClientLogin = _Client.Network.DefaultLoginParams(args[0], args[1], args[2], "", "IRCGateway");
 
                 _AutoJoinChannel = args[6];
@@ -36,6 +35,27 @@ namespace IRCGateway
 
                 string read = Console.ReadLine();
                 while (read != null) read = Console.ReadLine();                
+            }
+        }
+
+        static void Self_IM(object sender, InstantMessageEventArgs e)
+        {
+            if (e.IM.Dialog == InstantMessageDialog.RequestTeleport)
+            {
+                if (e.IM.FromAgentID == _MasterID)
+                {
+                    _Client.Self.TeleportLureRespond(e.IM.FromAgentID, true);
+                }
+            }
+        }
+
+        static void Self_ChatFromSimulator(object sender, ChatEventArgs e)
+        {
+            if (e.FromName != _Client.Self.Name && e.Type == ChatType.Normal && e.AudibleLevel == ChatAudibleLevel.Fully)
+            {
+                string str = "<" + e.FromName + "> " + e.Message;
+                _IRC.SendMessage(_AutoJoinChannel, str);
+                Console.WriteLine("[SL->IRC] " + str);
             }
         }
 
@@ -55,31 +75,9 @@ namespace IRCGateway
             }
         }
 
-        static void Self_OnInstantMessage(InstantMessage im, Simulator simulator)
+        static void Network_OnLogin(object sender, LoginProgressEventArgs e)
         {
-            if (im.Dialog == InstantMessageDialog.RequestTeleport)
-            {
-                if (im.FromAgentID == _MasterID)
-                {
-                    _Client.Self.TeleportLureRespond(im.FromAgentID, true);
-                }
-            }
+            _IRC.SendMessage(_AutoJoinChannel, e.Message);
         }
-
-        static void Network_OnLogin(LoginStatus login, string message)
-        {
-            _IRC.SendMessage(_AutoJoinChannel, message);
-        }
-
-        static void Self_OnChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourceType, string fromName, UUID id, UUID ownerid, Vector3 position)
-        {
-            if (fromName != _Client.Self.Name &&  type == ChatType.Normal && audible == ChatAudibleLevel.Fully)
-            {
-                string str = "<" + fromName + "> " + message;
-                _IRC.SendMessage(_AutoJoinChannel, str);
-                Console.WriteLine("[SL->IRC] " + str);
-            }
-        }
-
     }
 }

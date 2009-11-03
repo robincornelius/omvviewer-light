@@ -45,8 +45,8 @@ namespace omvviewerlight
 			this.Build();
 			is_object=true;
 			amountpay=amount;
-			MainClass.client.Avatars.OnAvatarNames += new OpenMetaverse.AvatarManager.AvatarNamesCallback(on_avnames);
-			resident_key=prim.Properties.OwnerID;
+		    MainClass.client.Avatars.UUIDNameReply += new EventHandler<UUIDNameReplyEventArgs>(Avatars_UUIDNameReply);
+            resident_key=prim.Properties.OwnerID;
 			request_name(prim.Properties.OwnerID);
 					
 			object_key=prim.Properties.ObjectID;
@@ -54,14 +54,15 @@ namespace omvviewerlight
 								
 			refresh();
 		}
+
 	
 	public PayWindow(UUID target,int amount) : 
 				base(Gtk.WindowType.Toplevel)
 		{
 			is_object=false;
 			amountpay=amount;
-			MainClass.client.Avatars.OnAvatarNames += new OpenMetaverse.AvatarManager.AvatarNamesCallback(on_avnames);
-			resident_key=target;	
+            MainClass.client.Avatars.UUIDNameReply += new EventHandler<UUIDNameReplyEventArgs>(Avatars_UUIDNameReply);
+            resident_key = target;	
 			request_name(target);
 			this.Build();
 			refresh();
@@ -100,14 +101,14 @@ namespace omvviewerlight
 			}
 			
 		}
-					
-		void on_avnames(Dictionary<UUID, string> names)
+
+        void Avatars_UUIDNameReply(object sender, UUIDNameReplyEventArgs e)
 	    {
 			//what the hell, lets cache them to the program store if we find them
 			//Possible to do, move this type of stuff more global
 			Console.Write("Got new names \n");
 			
-			foreach(KeyValuePair<UUID,string> name in names)
+			foreach(KeyValuePair<UUID,string> name in e.Names)
 			{
 				//if(!MainClass.name_cache.av_names.ContainsKey(name.Key))
 				//	MainClass.name_cache.av_names.Add(name.Key,name.Value);		
@@ -124,8 +125,8 @@ namespace omvviewerlight
 
 		protected virtual void OnButtonCancelClicked (object sender, System.EventArgs e)
 		{
-			MainClass.client.Avatars.OnAvatarNames -= new OpenMetaverse.AvatarManager.AvatarNamesCallback(on_avnames);
-			this.Destroy();
+            MainClass.client.Avatars.UUIDNameReply -= new EventHandler<UUIDNameReplyEventArgs>(Avatars_UUIDNameReply);
+            this.Destroy();
 		}
 
 		protected virtual void OnButtonPayClicked (object sender, System.EventArgs e)
@@ -142,7 +143,9 @@ namespace omvviewerlight
 				MainClass.client.Self.GiveObjectMoney(object_key,amount,object_name);
 			else
 				MainClass.client.Self.GiveAvatarMoney(this.resident_key,amount);
-		
+
+            MainClass.client.Avatars.UUIDNameReply -= new EventHandler<UUIDNameReplyEventArgs>(Avatars_UUIDNameReply);
+
 			this.Destroy();
 		}
 	}

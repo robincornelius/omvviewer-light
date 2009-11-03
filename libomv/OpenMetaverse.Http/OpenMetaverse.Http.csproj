@@ -1,13 +1,12 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9385E29D-3601-4228-A5EE-0CB40E4F92FC}</ProjectGuid>
+    <ProjectGuid>{085F646E-B306-4DA8-9092-FFEE7717146F}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon></ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>OpenMetaverse.Http</AssemblyName>
@@ -15,13 +14,11 @@
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>
-    </AppDesignerFolder>
+    <AppDesignerFolder></AppDesignerFolder>
     <RootNamespace>OpenMetaverse.Http</RootNamespace>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject></StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
   </PropertyGroup>
@@ -32,8 +29,7 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE;DEBUG;VISUAL_STUDIO</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile></DocumentationFile>
     <DebugSymbols>True</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <Optimize>False</Optimize>
@@ -66,27 +62,29 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System">
-      <Name>System</Name>
+        <Name>System</Name>
     </Reference>
     <Reference Include="System.Xml">
-      <Name>System.Xml</Name>
+        <Name>System.Xml</Name>
     </Reference>
     <Reference Include="log4net">
-      <Name>log4net</Name>
+        <Name>log4net</Name>
+      <HintPath>c:\omvviewer\trunk\bin\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Security">
-      <Name>Mono.Security</Name>
+        <Name>Mono.Security</Name>
+      <HintPath>c:\omvviewer\trunk\bin\Mono.Security.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenMetaverseTypes\OpenMetaverseTypes.csproj">
       <Name>OpenMetaverseTypes</Name>
-      <Project>{E84E2F78-A9B0-4229-8D80-EEB602E0BC0C}</Project>
+      <Project>{324CD9AB-535D-4780-A65D-34DC94D06BE1}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
     <ProjectReference Include="..\OpenMetaverse.StructuredData\OpenMetaverse.StructuredData.csproj">
       <Name>OpenMetaverse.StructuredData</Name>
-      <Project>{B576B3E1-91C2-4AAD-82F1-4D829ADB54F0}</Project>
+      <Project>{C35D2962-1ED7-4503-BD28-EC9A1AF3036A}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
     <ProjectReference Include="..\HttpServer\HttpServer.csproj">

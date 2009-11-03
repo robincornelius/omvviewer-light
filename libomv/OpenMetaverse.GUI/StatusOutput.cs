@@ -26,6 +26,7 @@
 
 using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace OpenMetaverse.GUI
@@ -35,6 +36,11 @@ namespace OpenMetaverse.GUI
     /// </summary>
     public class StatusOutput : RichTextBox
     {
+        /// <summary>
+        /// A file that output should be logged to (or null, to disable logging)
+        /// </summary>
+        public string LogFile = null;
+
         private GridClient _Client;
 
         /// <summary>
@@ -65,28 +71,37 @@ namespace OpenMetaverse.GUI
                 this.SelectionStart = this.Text.Length;
                 this.SelectionColor = color;
                 DateTime now = DateTime.Now;
-                this.SelectedText = string.Format("{0}[{1}:{2}] {3}", Environment.NewLine, now.Hour.ToString().PadLeft(2, '0'), now.Minute.ToString().PadLeft(2, '0'), text);
+                string output = String.Format("{0}[{1}:{2}] {3}", Environment.NewLine, now.Hour.ToString().PadLeft(2, '0'), now.Minute.ToString().PadLeft(2, '0'), text);
+                this.SelectedText = output;
                 this.ScrollToCaret();
+
+                if (LogFile != null)
+                    File.AppendAllText(LogFile, output);
             }
         }
 
         private void InitializeClient(GridClient client)
         {
             _Client = client;
-            _Client.Network.OnCurrentSimChanged += new NetworkManager.CurrentSimChangedCallback(Network_OnCurrentSimChanged);
-            _Client.Network.OnDisconnected += new NetworkManager.DisconnectedCallback(Network_OnDisconnected);
-            _Client.Network.OnLogin += new NetworkManager.LoginCallback(Network_OnLogin);
-            _Client.Self.OnAlertMessage += new AgentManager.AlertMessageCallback(Self_OnAlertMessage);
-            _Client.Self.OnMoneyBalanceReplyReceived += new AgentManager.MoneyBalanceReplyCallback(Self_OnMoneyBalanceReplyReceived);
+            _Client.Network.SimChanged += Network_OnCurrentSimChanged;
+            _Client.Network.Disconnected += Network_OnDisconnected;
+            _Client.Network.LoginProgress += Network_OnLogin;
+            _Client.Self.AlertMessage += Self_AlertMessage;
+            _Client.Self.MoneyBalanceReply += Self_MoneyBalanceReply;
         }
 
-        void Self_OnMoneyBalanceReplyReceived(UUID transactionID, bool transactionSuccess, int balance, int metersCredit, int metersCommitted, string description)
+        void Self_AlertMessage(object sender, AlertMessageEventArgs e)
         {
-            if (description != String.Empty) LogText(description, Color.Green);
-            LogText("Balance: L$" + balance, Color.Green);
+            LogText(e.Message, Color.Gray);
         }
 
-        void Network_OnCurrentSimChanged(Simulator PreviousSimulator)
+        void Self_MoneyBalanceReply(object sender, MoneyBalanceReplyEventArgs e)
+        {
+            if (e.Description != String.Empty) LogText(e.Description, Color.Green);
+            LogText("Balance: L$" + e.Balance, Color.Green);
+        }
+        
+        void Network_OnCurrentSimChanged(object sender, SimChangedEventArgs e)
         {
             if (Client.Network.CurrentSim != null)
             {
@@ -94,21 +109,15 @@ namespace OpenMetaverse.GUI
             }
         }
 
-        void Network_OnDisconnected(NetworkManager.DisconnectType reason, string message)
+        void Network_OnDisconnected(object sender, DisconnectedEventArgs e)
         {
-            LogText("Disconnected" + (message != null && message != String.Empty ? ": " + message : "."), Color.Black);
+            LogText("Disconnected" + (!String.IsNullOrEmpty(e.Message) ? ": " + e.Message : "."), Color.Black);
         }
 
-        void Network_OnLogin(LoginStatus login, string message)
+        void Network_OnLogin(object sender, LoginProgressEventArgs e)
         {
-            if (login == LoginStatus.Failed) LogText("Login failed: " + message, Color.Red);
-            else if (login != LoginStatus.Success) LogText(message, Color.Black);
+            if (e.Status == LoginStatus.Failed) LogText("Login failed: " + e.Message, Color.Red);
+            else if (e.Status != LoginStatus.Success) LogText(e.Message, Color.Black);
         }
-
-        void Self_OnAlertMessage(string message)
-        {
-            LogText(message, Color.Gray);
-        }
-
     }
 }

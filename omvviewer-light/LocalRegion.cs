@@ -72,9 +72,8 @@ namespace omvviewerlight
         {
             if (MainClass.client != null)
             {
-                MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-                MainClass.client.Grid.OnGridRegion -= new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
-                MainClass.client.Network.OnLogin -= new NetworkManager.LoginCallback(Network_OnLogin);
+                MainClass.client.Network.SimChanged -= new EventHandler<SimChangedEventArgs>(Network_SimChanged);
+                MainClass.client.Grid.GridRegion -= new EventHandler<GridRegionEventArgs>(Grid_GridRegion);
             }
         }
 
@@ -93,16 +92,11 @@ namespace omvviewerlight
                 name.Enable();
             }
 
-            MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-            MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
-            MainClass.client.Network.OnLogin += new NetworkManager.LoginCallback(Network_OnLogin);
+            MainClass.client.Network.SimChanged += new EventHandler<SimChangedEventArgs>(Network_SimChanged);
+            MainClass.client.Grid.GridRegion += new EventHandler<GridRegionEventArgs>(Grid_GridRegion);
         }
 
-        void Network_OnLogin(LoginStatus login, string message)
-        {
-            //if (login == LoginStatus.Success)
-             //   requestnewgridregion();
-        }
+
 
         new public void Dispose()
         {
@@ -128,31 +122,32 @@ namespace omvviewerlight
 				maps[x].set_optimal_size(size);
 		    }
 		}
-		
-		void onGridRegion(GridRegion region)
+
+
+        void Grid_GridRegion(object sender, GridRegionEventArgs e)
 		{
 
             lock (MainClass.win.grid_regions)
             {
-                if (!MainClass.win.grid_regions.ContainsKey(region.RegionHandle))
+                if (!MainClass.win.grid_regions.ContainsKey(e.Region.RegionHandle))
                 {
-                    MainClass.win.grid_regions.Add(region.RegionHandle, region);
+                    MainClass.win.grid_regions.Add(e.Region.RegionHandle, e.Region);
                 }
             }
 
 			Gtk.Application.Invoke(delegate {
 
-            if (region.RegionHandle == MainClass.client.Network.CurrentSim.Handle && requested==true)
+            if (e.Region.RegionHandle == MainClass.client.Network.CurrentSim.Handle && requested==true)
             {
                 requested = false;
-                cx = (uint)region.X;
-                cy = (uint)region.Y;
+                cx = (uint)e.Region.X;
+                cy = (uint)e.Region.Y;
                 Console.WriteLine("Requesting neighbour grid");
-                MainClass.client.Grid.RequestMapBlocks(GridLayerType.Objects, (ushort)(region.X - 1), (ushort)(region.Y - 1), (ushort)(region.X + 1), (ushort)(region.Y + 1), false);
+                MainClass.client.Grid.RequestMapBlocks(GridLayerType.Objects, (ushort)(e.Region.X - 1), (ushort)(e.Region.Y - 1), (ushort)(e.Region.X + 1), (ushort)(e.Region.Y + 1), false);
             }
 
-            int col = (int)2 - (((int)cx + (int)1) - (int)region.X); //FFS
-            int row = (((int)cy + (int)1) - (int)region.Y);
+            int col = (int)2 - (((int)cx + (int)1) - (int)e.Region.X); //FFS
+            int row = (((int)cy + (int)1) - (int)e.Region.Y);
 
             if (row < 0 || row > 2)
                 return;
@@ -161,12 +156,12 @@ namespace omvviewerlight
 
             int index = (row * 3) + col;
 
-            maps[index].SetGridRegion(UUID.Zero, region.RegionHandle);
+            maps[index].SetGridRegion(UUID.Zero, e.Region.RegionHandle);
            
             Gtk.Tooltips name = new Gtk.Tooltips();
-            name.SetTip(maps[index], region.Name, "");
+            name.SetTip(maps[index], e.Region.Name, "");
             name.Enable();		
-			regions[index]=region;
+			regions[index]=e.Region;
 	
 			});
 		}
@@ -197,9 +192,9 @@ namespace omvviewerlight
             });           
         }
 
-		void onNewSim(Simulator lastsim)
-	    {
-            if (lastsim == MainClass.client.Network.CurrentSim)
+        void Network_SimChanged(object sender, SimChangedEventArgs e)
+        {
+            if (e.PreviousSimulator == MainClass.client.Network.CurrentSim)
                 return;
 
             requestnewgridregion();
@@ -210,8 +205,10 @@ namespace omvviewerlight
         {
             if (MainClass.win.map_widget == null)
                 return;
-            if (regions[x].Name != "")
-                MainClass.win.map_widget.changeregion(regions[x]);
+            
+            //FIXME
+            //if (regions[x].Name != "")
+                //MainClass.win.map_widget.changeregion(regions[x]);
         }
 
 		

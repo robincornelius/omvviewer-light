@@ -80,18 +80,17 @@ namespace omvviewerlight
 			
 			foreach(KeyValuePair<string, OSD> kvp in client_list_xml)
 			{
-				Console.WriteLine(kvp.Key);
-				string map=kvp.Value.ToString();
-				
-				char[] x=new char[]{' ','\n','\r'};
-				map.TrimStart(x);
-				Console.WriteLine();
-				OSD client=kvp.Value;
-				//client_list[new UUID(kvp.Key)]=map["name"].AsString();
-			
-			}
-			
-			
+			    try
+                {
+                    OSD client=kvp.Value;
+                    OSDMap map = (OSDMap)client;
+                    client_list[new UUID(kvp.Key)]=map["name"].AsString();
+                }
+                catch(Exception e)
+                {
+
+                }
+            }
 			
 			
 			this.store.SetSortFunc(2,sort_Vector3);	
@@ -103,11 +102,11 @@ namespace omvviewerlight
         {
             if (MainClass.client != null)
             {
-                MainClass.client.Grid.OnCoarseLocationUpdate -= new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
-                MainClass.client.Self.OnChat -= new OpenMetaverse.AgentManager.ChatCallback(onChat);
-                MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-                MainClass.client.Self.OnTeleport -= new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
-                MainClass.client.Network.OnSimDisconnected -= new NetworkManager.SimDisconnectedCallback(Network_OnSimDisconnected);
+            MainClass.client.Grid.CoarseLocationUpdate -= new EventHandler<CoarseLocationUpdateEventArgs>(Grid_CoarseLocationUpdate);
+            MainClass.client.Self.ChatFromSimulator -= new EventHandler<ChatEventArgs>(Self_ChatFromSimulator);
+            MainClass.client.Network.LoginProgress -= new EventHandler<LoginProgressEventArgs>(Network_LoginProgress);
+            MainClass.client.Self.TeleportProgress -= new EventHandler<TeleportEventArgs>(Self_TeleportProgress);
+            MainClass.client.Network.SimDisconnected -= new EventHandler<SimDisconnectedEventArgs>(Network_SimDisconnected);
             }
         }
 
@@ -117,19 +116,21 @@ namespace omvviewerlight
             av_typing.Clear();
             lastsim = UUID.Zero;
 
-            MainClass.client.Grid.OnCoarseLocationUpdate += new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
-            MainClass.client.Self.OnChat += new OpenMetaverse.AgentManager.ChatCallback(onChat);
-            MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-            MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
-            MainClass.client.Network.OnSimDisconnected += new NetworkManager.SimDisconnectedCallback(Network_OnSimDisconnected);
-
+            MainClass.client.Grid.CoarseLocationUpdate += new EventHandler<CoarseLocationUpdateEventArgs>(Grid_CoarseLocationUpdate);
+            MainClass.client.Self.ChatFromSimulator += new EventHandler<ChatEventArgs>(Self_ChatFromSimulator);
+            MainClass.client.Network.LoginProgress += new EventHandler<LoginProgressEventArgs>(Network_LoginProgress);
+            MainClass.client.Self.TeleportProgress += new EventHandler<TeleportEventArgs>(Self_TeleportProgress);
+            MainClass.client.Network.SimDisconnected += new EventHandler<SimDisconnectedEventArgs>(Network_SimDisconnected);
         }
 
-        void Network_OnSimDisconnected(Simulator simulator, NetworkManager.DisconnectType reason)
+        
+        
+        
+        void Network_SimDisconnected(object sender, SimDisconnectedEventArgs e)
         {
-            lock (simulator.ObjectsAvatars)  
+            lock (e.Simulator.ObjectsAvatars)  
             {
-                simulator.AvatarPositions.ForEach(delegate (KeyValuePair <UUID,Vector3> kvp)
+                e.Simulator.AvatarPositions.ForEach(delegate (KeyValuePair <UUID,Vector3> kvp)
                 {
                     if (kvp.Value != null && kvp.Key != UUID.Zero)
                     {
@@ -147,13 +148,14 @@ namespace omvviewerlight
             }
         }
 
-        void Grid_OnCoarseLocationUpdate(Simulator sim, List<UUID> newEntries, List<UUID> removedEntries)
+
+        void Grid_CoarseLocationUpdate(object sender, CoarseLocationUpdateEventArgs e)
         {
             Gtk.Application.Invoke(delegate
             {
                 lock(av_tree)
                 {
-                    foreach (UUID id in removedEntries)
+                    foreach (UUID id in e.RemovedEntries)
                     {
                         if(av_tree.ContainsKey(id))
                         {
@@ -276,10 +278,11 @@ namespace omvviewerlight
 			
 			return 0;
 		}
-		
-		void onTeleport(string Message, OpenMetaverse.TeleportStatus status,OpenMetaverse.TeleportFlags flags)
+
+
+        void Self_TeleportProgress(object sender, TeleportEventArgs e)
 	    {
-			if(status==OpenMetaverse.TeleportStatus.Finished)
+			if(e.Status==OpenMetaverse.TeleportStatus.Finished)
 			{
 
                 if(MainClass.client.Network.CurrentSim.ID == lastsim)
@@ -299,10 +302,10 @@ namespace omvviewerlight
                  lastsim=MainClass.client.Network.CurrentSim.ID;
 			}
 	    }
-		
-		void onLogin(LoginStatus status,string message)
+
+	    void Network_LoginProgress(object sender, LoginProgressEventArgs e)
 		{
-			if(status==LoginStatus.ConnectingToSim)
+			if(e.Status==LoginStatus.ConnectingToSim)
 			{					
 				Gtk.Application.Invoke(delegate
 				{
@@ -373,20 +376,20 @@ namespace omvviewerlight
                }
            });
         }
-			
-		void onChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourcetype,string fromName, UUID id, UUID ownerid, Vector3 position)
-		{
+
+        void Self_ChatFromSimulator(object sender, ChatEventArgs e)
+        {
             
 			Gtk.Application.Invoke(delegate
 			{
 
                 lock(av_tree)
                 {
-                    if (type == ChatType.StartTyping)
+                    if (e.Type == ChatType.StartTyping)
                     {
                         foreach (KeyValuePair<UUID, Gtk.TreeIter> kvp in av_tree)
                         {
-                            if (kvp.Key == id)
+                            if (kvp.Key == e.SourceID)
                             {
                                 store.SetValue(kvp.Value, 0, "*");
                                 return;
@@ -394,11 +397,11 @@ namespace omvviewerlight
                         }
                     }
 
-                    if (type == ChatType.StopTyping)
+                    if (e.Type == ChatType.StopTyping)
                     {
                         foreach (KeyValuePair<UUID, Gtk.TreeIter> kvp in av_tree)
                         {
-                            if (kvp.Key == id)
+                            if (kvp.Key == e.SourceID)
                             {
                                 store.SetValue(kvp.Value, 0, " ");
                                 return;

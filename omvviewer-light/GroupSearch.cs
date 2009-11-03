@@ -63,14 +63,14 @@ namespace omvviewerlight
         void MainClass_onDeregister()
         {
             if(MainClass.client!=null)
-                MainClass.client.Directory.OnDirGroupsReply -= new OpenMetaverse.DirectoryManager.DirGroupsReplyCallback(onGroupReply);
+                MainClass.client.Directory.DirGroupsReply -= new EventHandler<DirGroupsReplyEventArgs>(Directory_DirGroupsReply);
         }
 
         void MainClass_onRegister()
         {
-            MainClass.client.Directory.OnDirGroupsReply += new OpenMetaverse.DirectoryManager.DirGroupsReplyCallback(onGroupReply);
-
+            MainClass.client.Directory.DirGroupsReply += new EventHandler<DirGroupsReplyEventArgs>(Directory_DirGroupsReply);
         }
+
 
 		new public void Dispose()
 		{
@@ -112,15 +112,15 @@ namespace omvviewerlight
             }
         }
 
-		void onGroupReply(UUID thisqueryid,List <OpenMetaverse.DirectoryManager.GroupSearchData> MatchedGroups)
-	    {
-			if(queryid!=thisqueryid)
+        void Directory_DirGroupsReply(object sender, DirGroupsReplyEventArgs e)
+        {
+			if(queryid!=e.QueryID)
 				return;
 
 			Gtk.Application.Invoke(delegate{
 				
-				this.label_search_progress.Text="Returned "+MatchedGroups.Count.ToString()+" results";
-				foreach (OpenMetaverse.DirectoryManager.GroupSearchData agroup in MatchedGroups)
+				this.label_search_progress.Text="Returned "+e.MatchedGroups.Count.ToString()+" results";
+				foreach (OpenMetaverse.DirectoryManager.GroupSearchData agroup in e.MatchedGroups)
 				{
 					store.AppendValues(agroup.GroupName,agroup.Members.ToString(),agroup.GroupID);
 				
@@ -135,7 +135,7 @@ namespace omvviewerlight
             this.queryid = UUID.Zero;
             lock(store)
                 this.store.Clear();
-			queryid=MainClass.client.Directory.StartGroupSearch(OpenMetaverse.DirectoryManager.DirFindFlags.Groups,this.entry_search.Text,0);
+			queryid=MainClass.client.Directory.StartGroupSearch(this.entry_search.Text,0);
 		}
 
 		protected virtual void OnButtonViewGroupProfileClicked (object sender, System.EventArgs e)

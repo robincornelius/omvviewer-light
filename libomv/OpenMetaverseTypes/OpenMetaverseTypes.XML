@@ -655,6 +655,58 @@
         <member name="F:OpenMetaverse.Vector2.UnitY">
             <summary>A vector with a value of 0,1</summary>
         </member>
+        <member name="T:OpenMetaverse.Parallel">
+            <summary>
+            Provides helper methods for parallelizing loops
+            </summary>
+        </member>
+        <member name="M:OpenMetaverse.Parallel.For(System.Int32,System.Int32,System.Action{System.Int32})">
+            <summary>
+            Executes a for loop in which iterations may run in parallel
+            </summary>
+            <param name="fromInclusive">The loop will be started at this index</param>
+            <param name="toExclusive">The loop will be terminated before this index is reached</param>
+            <param name="body">Method body to run for each iteration of the loop</param>
+        </member>
+        <member name="M:OpenMetaverse.Parallel.For(System.Int32,System.Int32,System.Int32,System.Action{System.Int32})">
+            <summary>
+            Executes a for loop in which iterations may run in parallel
+            </summary>
+            <param name="threadCount">The number of concurrent execution threads to run</param>
+            <param name="fromInclusive">The loop will be started at this index</param>
+            <param name="toExclusive">The loop will be terminated before this index is reached</param>
+            <param name="body">Method body to run for each iteration of the loop</param>
+        </member>
+        <member name="M:OpenMetaverse.Parallel.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
+            <summary>
+            Executes a foreach loop in which iterations may run in parallel
+            </summary>
+            <typeparam name="T">Object type that the collection wraps</typeparam>
+            <param name="enumerable">An enumerable collection to iterate over</param>
+            <param name="body">Method body to run for each object in the collection</param>
+        </member>
+        <member name="M:OpenMetaverse.Parallel.ForEach``1(System.Int32,System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
+            <summary>
+            Executes a foreach loop in which iterations may run in parallel
+            </summary>
+            <typeparam name="T">Object type that the collection wraps</typeparam>
+            <param name="threadCount">The number of concurrent execution threads to run</param>
+            <param name="enumerable">An enumerable collection to iterate over</param>
+            <param name="body">Method body to run for each object in the collection</param>
+        </member>
+        <member name="M:OpenMetaverse.Parallel.Invoke(System.Action[])">
+            <summary>
+            Executes a series of tasks in parallel
+            </summary>
+            <param name="actions">A series of method bodies to execute</param>
+        </member>
+        <member name="M:OpenMetaverse.Parallel.Invoke(System.Int32,System.Action[])">
+            <summary>
+            Executes a series of tasks in parallel
+            </summary>
+            <param name="threadCount">The number of concurrent execution threads to run</param>
+            <param name="actions">A series of method bodies to execute</param>
+        </member>
         <member name="T:OpenMetaverse.Color4">
             <summary>
             An 8-bit color structure including an alpha channel
@@ -759,6 +811,11 @@
             <param name="pos">Position in the destination array to start
             writing. Must be at least 16 bytes before the end of the array</param>
         </member>
+        <member name="M:OpenMetaverse.Color4.ClampValues">
+            <summary>
+            Ensures that values are in range 0-1
+            </summary>
+        </member>
         <member name="M:OpenMetaverse.Color4.FromHSV(System.Double,System.Double,System.Double)">
             <summary>
             Create an RGB color from a hue, saturation, value combination
@@ -767,6 +824,15 @@
             <param name="saturation">Saturation</param>
             <param name="value">Value</param>
             <returns>An fully opaque RGB color (alpha is 1.0)</returns>
+        </member>
+        <member name="M:OpenMetaverse.Color4.Lerp(OpenMetaverse.Color4,OpenMetaverse.Color4,System.Single)">
+            <summary>
+            Performs linear interpolation between two colors
+            </summary>
+            <param name="value1">Color to start at</param>
+            <param name="value2">Color to end at</param>
+            <param name="amount">Amount to interpolate</param>
+            <returns>The interpolated color</returns>
         </member>
         <member name="F:OpenMetaverse.Color4.Black">
             <summary>A Color4 with zero RGB values and fully opaque (alpha 1.0)</summary>
@@ -1836,6 +1902,9 @@
         </member>
         <member name="F:OpenMetaverse.UUID.Zero">
             <summary>An UUID with a value of all zeroes</summary>
+        </member>
+        <member name="F:OpenMetaverse.UUID.ZeroString">
+            <summary>A cache of UUID.Zero as a string to optimize a common path</summary>
         </member>
         <member name="F:OpenMetaverse.ExpiringCache`2.syncRoot">
             <summary>For thread safety</summary>

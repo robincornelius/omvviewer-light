@@ -159,7 +159,7 @@ namespace OpenMetaverse
         /// <returns>A terse string representation of the input number</returns>
         public static string FloatToTerseString(float val)
         {
-            string s = string.Format("{0:.00}", val);
+            string s = string.Format(Utils.EnUsCulture, "{0:.00}", val);
 
             if (val == 0)
                 return ".00";
@@ -303,9 +303,9 @@ namespace OpenMetaverse
             {
                 Logger.Log(String.Format("Zerodecoding error: i={0}, srclen={1}, bodylen={2}, zerolen={3}\n{4}\n{5}",
                     i, srclen, bodylen, zerolen, Utils.BytesToHexString(src, srclen, null), ex), LogLevel.Error);
+                throw new IndexOutOfRangeException(String.Format("Zerodecoding error: i={0}, srclen={1}, bodylen={2}, zerolen={3}\n{4}\n{5}",
+                    i, srclen, bodylen, zerolen, Utils.BytesToHexString(src, srclen, null)), ex.InnerException);
             }
-
-            return 0;
         }
 
         /// <summary>
@@ -442,9 +442,9 @@ namespace OpenMetaverse
         /// was not successfully loaded</returns>
         public static System.IO.Stream GetResourceStream(string resourceName)
         {
-            return GetResourceStream(resourceName, Settings.RESOURCE_DIR);
+            return GetResourceStream(resourceName, "openmetaverse_data");
         }
-        
+
         /// <summary>
         /// Attempts to load a file either embedded in the assembly or found in
         /// a given search path
@@ -470,7 +470,7 @@ namespace OpenMetaverse
             try
             {
                 return new System.IO.FileStream(
-                    System.IO.Path.Combine(System.IO.Path.Combine(System.Environment.CurrentDirectory, searchPath), resourceName),
+                    System.IO.Path.Combine(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), searchPath), resourceName),
                     System.IO.FileMode.Open);
             }
             catch (Exception)
@@ -480,7 +480,6 @@ namespace OpenMetaverse
 
             return null;
         }
-
         /// <summary>
         /// Converts a list of primitives to an object that can be serialized
         /// with the LLSD system
@@ -521,11 +520,36 @@ namespace OpenMetaverse
             return prims;
         }
 
-        public static AttachmentPoint StateToAttachmentPoint(uint state)
+        /// <summary>
+        /// Converts a struct or class object containing fields only into a key value separated string
+        /// </summary>
+        /// <param name="t">The struct object</param>
+        /// <returns>A string containing the struct fields as the keys, and the field value as the value separated</returns>
+        /// <example>
+        /// <code>
+        /// // Add the following code to any struct or class containing only fields to override the ToString() 
+        /// // method to display the values of the passed object
+        /// 
+        /// /// <summary>Print the struct data as a string</summary>
+        /// ///<returns>A string containing the field name, and field value</returns>
+        ///public override string ToString()
+        ///{
+        ///    return Helpers.StructToString(this);
+        ///}
+        /// </code>
+        /// </example>
+        public static string StructToString(object t)
         {
-            const uint ATTACHMENT_MASK = 0xF0;
-            uint fixedState = (((byte)state & ATTACHMENT_MASK) >> 4) | (((byte)state & ~ATTACHMENT_MASK) << 4);
-            return (AttachmentPoint)fixedState;
+            StringBuilder result = new StringBuilder();            
+            Type structType = t.GetType();
+            FieldInfo[] fields = structType.GetFields();
+            
+            foreach (FieldInfo field in fields)
+            {
+                result.Append(field.Name + ": " + field.GetValue(t) + " ");
+            }
+            result.AppendLine();
+            return result.ToString().TrimEnd();
         }
     }
 }

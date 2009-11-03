@@ -75,7 +75,7 @@ namespace OpenMetaverse
 
         /// <summary>Number of milliseconds before an asset transfer will time
         /// out</summary>
-        public const int TRANSFER_TIMEOUT = 30 * 1000;
+        public int TRANSFER_TIMEOUT = 90 * 1000;
 
         /// <summary>Number of milliseconds before a teleport attempt will time
         /// out</summary>
@@ -158,6 +158,10 @@ namespace OpenMetaverse
         /// <summary>Enable/disable sending periodic camera updates</summary>
         public bool SEND_AGENT_UPDATES = true;
 
+        /// <summary>Enable/disable automatically setting agent appearance at
+        /// login and after sim crossing</summary>
+        public bool SEND_AGENT_APPEARANCE = true;
+
         /// <summary>Enable/disable automatically setting the bandwidth throttle
         /// after connecting to each simulator</summary>
         /// <remarks>The default throttle uses the equivalent of the maximum
@@ -226,6 +230,11 @@ namespace OpenMetaverse
         /// estimates for simulated objects</summary>
         public bool USE_INTERPOLATION_TIMER = true;
 
+        /// <summary>
+        /// If true, utilization statistics will be tracked. There is a minor penalty
+        /// in CPU time for enabling this option.
+        /// </summary>
+        public bool TRACK_UTILIZATION = true;
         #endregion
         #region Parcel Tracking
 
@@ -246,19 +255,19 @@ namespace OpenMetaverse
         public bool ALWAYS_REQUEST_PARCEL_DWELL = true;
 
         #endregion
-        #region Texture Cache
+        #region Asset Cache
 
         /// <summary>
-        /// If true, images downloaded from the server will be cached 
-        /// in a local directory
+        /// If true, images, and other assets downloaded from the server 
+        /// will be cached in a local directory
         /// </summary>
-        public bool USE_TEXTURE_CACHE = false;
+        public bool USE_ASSET_CACHE = true;
 
         /// <summary>Path to store cached texture data</summary>
-        public string TEXTURE_CACHE_DIR = RESOURCE_DIR + "/cache";
+        public string ASSET_CACHE_DIR = RESOURCE_DIR + "/cache";
 
         /// <summary>Maximum size cached files are allowed to take on disk (bytes)</summary>
-        public long TEXTURE_CACHE_MAX_SIZE = 1024 * 1024 * 1024; // 1GB
+        public long ASSET_CACHE_MAX_SIZE = 1024 * 1024 * 1024; // 1GB
 
         #endregion
         #region Misc
@@ -275,6 +284,9 @@ namespace OpenMetaverse
 
         /// <summary>Throttle outgoing packet rate</summary>
         public bool THROTTLE_OUTGOING_PACKETS = true;
+
+        /// <summary>UUID of a texture used by some viewers to indentify type of client used</summary>
+        public UUID CLIENT_IDENTIFICATION_TAG = UUID.Zero;
 
         #endregion
         #region Texture Pipeline
@@ -324,20 +336,18 @@ namespace OpenMetaverse
         public Settings(GridClient client)
         {
             Client = client;
-            Client.Network.RegisterCallback(Packets.PacketType.EconomyData, new NetworkManager.PacketCallback(EconomyDataHandler));
+            Client.Network.RegisterCallback(Packets.PacketType.EconomyData, EconomyDataHandler);
         }
 
         #endregion
         #region Packet Callbacks
 
-        /// <summary>
-        /// Gets the cost of uploading an asset to the grid
-        /// </summary>
-        /// <param name="packet"></param>
-        /// <param name="simulator"></param>
-        private void EconomyDataHandler(Packet packet, Simulator simulator)
+        /// <summary>Process an incoming packet and raise the appropriate events</summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">The EventArgs object containing the packet data</param>
+        protected void EconomyDataHandler(object sender, PacketReceivedEventArgs e)
         {
-            EconomyDataPacket econ = (EconomyDataPacket)packet;
+            EconomyDataPacket econ = (EconomyDataPacket)e.Packet;
 
             priceUpload = econ.Info.PriceUpload;
         }

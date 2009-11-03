@@ -36,8 +36,8 @@ namespace GridImageUpload
         private void InitClient()
         {
             Client = new GridClient();
-            Client.Network.OnEventQueueRunning += new NetworkManager.EventQueueRunningCallback(Network_OnEventQueueRunning);
-            Client.Network.OnLogin += new NetworkManager.LoginCallback(Network_OnLogin);
+            Client.Network.EventQueueRunning += Network_OnEventQueueRunning;
+            Client.Network.LoginProgress += Network_OnLogin;
 
             // Turn almost everything off since we are only interested in uploading textures
             Settings.LOG_LEVEL = Helpers.LogLevel.None;
@@ -230,27 +230,27 @@ namespace GridImageUpload
             }
         }
 
-        void Network_OnLogin(LoginStatus login, string message)
+        private void Network_OnLogin(object sender, LoginProgressEventArgs e)
         {
             if (InvokeRequired)
             {
                 BeginInvoke(new MethodInvoker(
                     delegate()
                     {
-                        Network_OnLogin(login, message);
+                        Network_OnLogin(sender, e);
                     }
                     ));
                 return;
             }
-            if (login == LoginStatus.Success)
+            if (e.Status == LoginStatus.Success)
             {
-                MessageBox.Show("Connected: " + message);
+                MessageBox.Show("Connected: " + e.Message);
                 cmdConnect.Enabled = true;
             }
-            else if (login == LoginStatus.Failed)
+            else if (e.Status == LoginStatus.Failed)
             {
                 MessageBox.Show(this, String.Format("Error logging in ({0}): {1}", Client.Network.LoginErrorKey,
-     Client.Network.LoginMessage));
+                    Client.Network.LoginMessage));
                 cmdConnect.Text = "Connect";
                 cmdConnect.Enabled = true;
                 txtFirstName.Enabled = txtLastName.Enabled = txtPassword.Enabled = true;
@@ -293,17 +293,17 @@ namespace GridImageUpload
             if (sendTo.Length > 0)
             {
                 AutoResetEvent lookupEvent = new AutoResetEvent(false);
-                UUID thisQueryID = UUID.Random();
+                UUID thisQueryID = UUID.Zero;
                 bool lookupSuccess = false;
 
-                DirectoryManager.DirPeopleReplyCallback callback =
-                    delegate(UUID queryID, List<DirectoryManager.AgentSearchData> matchedPeople)
+                EventHandler<DirPeopleReplyEventArgs> callback =
+                    delegate(object s, DirPeopleReplyEventArgs ep)
                     {
-                        if (queryID == thisQueryID)
+                        if (ep.QueryID == thisQueryID)
                         {
-                            if (matchedPeople.Count > 0)
+                            if (ep.MatchedPeople.Count > 0)
                             {
-                                SendToID = matchedPeople[0].AgentID;
+                                SendToID = ep.MatchedPeople[0].AgentID;
                                 lookupSuccess = true;
                             }
 
@@ -311,11 +311,11 @@ namespace GridImageUpload
                         }
                     };
 
-                Client.Directory.OnDirPeopleReply += callback;
-                Client.Directory.StartPeopleSearch(DirectoryManager.DirFindFlags.People, sendTo, 0, thisQueryID);
+                Client.Directory.DirPeopleReply += callback;
+                thisQueryID = Client.Directory.StartPeopleSearch(sendTo, 0);
 
                 bool eventSuccess = lookupEvent.WaitOne(10 * 1000, false);
-                Client.Directory.OnDirPeopleReply -= callback;
+                Client.Directory.DirPeopleReply -= callback;
 
                 if (eventSuccess && lookupSuccess)
                 {
@@ -338,8 +338,12 @@ namespace GridImageUpload
 
                 string name = System.IO.Path.GetFileNameWithoutExtension(FileName);
 
+                Permissions perms = new Permissions();
+                perms.EveryoneMask = PermissionMask.All;
+                perms.NextOwnerMask = PermissionMask.All;
+
                 Client.Inventory.RequestCreateItemFromAsset(UploadData, name, "Uploaded with SL Image Upload", AssetType.Texture,
-                    InventoryType.Texture, Client.Inventory.FindFolderForType(AssetType.Texture),
+                    InventoryType.Texture, Client.Inventory.FindFolderForType(AssetType.Texture), perms,
                     delegate(bool success, string status, UUID itemID, UUID assetID)
                     {
                         if (this.InvokeRequired)
@@ -353,37 +357,10 @@ namespace GridImageUpload
                             UpdateAssetID();
 
                             // Fix the permissions on the new upload since they are fscked by default
-                            InventoryItem item = Client.Inventory.FetchItem(itemID, Client.Self.AgentID, 1000 * 15);
+                            InventoryItem item = (InventoryItem)Client.Inventory.Store[itemID];
 
                             Transferred = UploadData.Length;
                             BeginInvoke((MethodInvoker)delegate() { SetProgress(); });
-
-                            if (item != null)
-                            {
-                                item.Permissions.EveryoneMask = PermissionMask.All;
-                                item.Permissions.NextOwnerMask = PermissionMask.All;
-                                Client.Inventory.RequestUpdateItem(item);
-
-                                Logger.Log("Created inventory item " + itemID.ToString(), Helpers.LogLevel.Info, Client);
-                                MessageBox.Show("Created inventory item " + itemID.ToString());
-
-                                // FIXME: We should be watching the callback for RequestUpdateItem instead of a dumb sleep
-                                System.Threading.Thread.Sleep(2000);
-
-                                if (SendToID != UUID.Zero)
-                                {
-                                    Logger.Log("Sending item to " + SendToID.ToString(), Helpers.LogLevel.Info, Client);
-                                    Client.Inventory.GiveItem(itemID, name, AssetType.Texture, SendToID, true);
-                                    MessageBox.Show("Sent item to " + SendToID.ToString());
-                                }
-                            }
-                            else
-                            {
-                                Logger.DebugLog("Created inventory item " + itemID.ToString() + " but failed to fetch it," +
-                                    " cannot update permissions or send to another avatar", Client);
-                                MessageBox.Show("Created inventory item " + itemID.ToString() + " but failed to fetch it," +
-                                    " cannot update permissions or send to another avatar");
-                            }
                         }
                         else
                         {
@@ -399,9 +376,9 @@ namespace GridImageUpload
             prgUpload.Value = Transferred;
         }
 
-        private void Network_OnEventQueueRunning(Simulator simulator)
+        private void Network_OnEventQueueRunning(object sender, EventQueueRunningEventArgs e)
         {
-            Logger.DebugLog("Event queue is running for " + simulator.ToString() + ", enabling uploads", Client);
+            Logger.DebugLog("Event queue is running for " + e.Simulator.ToString() + ", enabling uploads", Client);
             EnableUpload();
         }
 

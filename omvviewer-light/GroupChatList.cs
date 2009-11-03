@@ -35,7 +35,8 @@ namespace omvviewerlight
 
             this.treeview_members.Selection.Mode = SelectionMode.Multiple;    
             this.treeview_members.ButtonPressEvent += new ButtonPressEventHandler(treeview_ButtonPressEvent);
-			Dictionary <UUID,TreeIter> memberstree= new Dictionary<UUID,TreeIter>();			
+			Dictionary <UUID,TreeIter> memberstree= new Dictionary<UUID,TreeIter>();
+			
 			treeview_members.Model=store;
 		
         }
@@ -235,16 +236,15 @@ namespace omvviewerlight
 			 	        ud.go();						
 	  			    });	
 				
-	        MainClass.client.Self.OnChatSessionMemberAdded += new OpenMetaverse.AgentManager.ChatSessionMemberAddedCallback(onGroupChatMemberAdded);
-			MainClass.client.Self.OnChatSessionMemberLeft += new OpenMetaverse.AgentManager.ChatSessionMemberLeftCallback(onGroupChatMemberLeft);	
-
+	        MainClass.client.Self.ChatSessionMemberAdded += new EventHandler<ChatSessionMemberAddedEventArgs>(Self_ChatSessionMemberAdded);
+            MainClass.client.Self.ChatSessionMemberLeft += new EventHandler<ChatSessionMemberLeftEventArgs>(Self_ChatSessionMemberLeft);
             });			
 
 		}
-		
-		void onGroupChatMemberAdded(UUID thissession, UUID key)
+
+        void Self_ChatSessionMemberAdded(object sender, ChatSessionMemberAddedEventArgs e)   
 		{
-			if(session!=thissession)
+			if(session!=e.SessionID)
 			return;
 			
             Gtk.Application.Invoke(delegate
@@ -254,13 +254,13 @@ namespace omvviewerlight
                 (
                     delegate (ChatSessionMember member2)
                     {
-                        return member2.AvatarKey==key;
+                        return member2.AvatarKey==e.AgentID;
                     }
                 );
 
 
                 Gtk.TreeIter iter = store.AppendValues("Waiting...", member);
-		        AsyncNameUpdate ud=new AsyncNameUpdate(key,false);  
+		        AsyncNameUpdate ud=new AsyncNameUpdate(e.AgentID,false);  
 			    ud.addparameters(iter);
 
 			    ud.onNameCallBack += delegate(string namex,object[] values)
@@ -268,7 +268,11 @@ namespace omvviewerlight
                     Gtk.TreeIter iterx=(Gtk.TreeIter)values[0];
 
                     Gtk.Application.Invoke(delegate {
-                        lock(store){store.SetValue(iterx,0,namex);};
+                        lock(store)
+                        {
+                            if(store.IterIsValid(iterx))
+                                store.SetValue(iterx,0,namex);
+                        };
                     });
                 };
 
@@ -276,9 +280,9 @@ namespace omvviewerlight
                });
          }
 
-		void onGroupChatMemberLeft(UUID thissession, UUID key)
-		{
-			if(session!=thissession)
+        void Self_ChatSessionMemberLeft(object sender, ChatSessionMemberLeftEventArgs e)
+        {
+			if(session!=e.SessionID)
 			return;
             Gtk.Application.Invoke(delegate{
 			    lock(store)
@@ -286,7 +290,7 @@ namespace omvviewerlight
 			        store.Foreach(delegate(Gtk.TreeModel mod, Gtk.TreePath path, Gtk.TreeIter iter)
                     {
 				        UUID id=((ChatSessionMember)store.GetValue(iter,1)).AvatarKey;
- 				        if(id==key)
+ 				        if(id==e.AgentID)
                         {
 
                             Gtk.Application.Invoke(delegate

@@ -118,25 +118,27 @@ namespace omvviewerlight
         void MainClass_onDeregister()
         {
 
-            MainClass.client.Network.OnConnected -= new OpenMetaverse.NetworkManager.ConnectedCallback(onConnected);
-            MainClass.client.Network.OnDisconnected -= new OpenMetaverse.NetworkManager.DisconnectedCallback(onDisconnected);
-            MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-            MainClass.client.Network.OnEventQueueRunning -= new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
+            MainClass.client.Network.SimConnected -= new EventHandler<SimConnectedEventArgs>(Network_SimConnected);
+            MainClass.client.Network.Disconnected -= new EventHandler<DisconnectedEventArgs>(Network_Disconnected);
+            MainClass.client.Network.LoginProgress -= new EventHandler<LoginProgressEventArgs>(Network_LoginProgress);
+            MainClass.client.Network.EventQueueRunning -= new EventHandler<EventQueueRunningEventArgs>(Network_EventQueueRunning);
             OpenMetaverse.Logger.OnLogMessage -= new OpenMetaverse.Logger.LogCallback(onLogMessage);
         }
 
         void MainClass_onRegister()
         {
 
-            MainClass.client.Network.OnConnected += new OpenMetaverse.NetworkManager.ConnectedCallback(onConnected);
-            MainClass.client.Network.OnDisconnected += new OpenMetaverse.NetworkManager.DisconnectedCallback(onDisconnected);
-            MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-            MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(onEventQueue);
+       
+            MainClass.client.Network.SimConnected += new EventHandler<SimConnectedEventArgs>(Network_SimConnected);
+            MainClass.client.Network.Disconnected += new EventHandler<DisconnectedEventArgs>(Network_Disconnected);
+            MainClass.client.Network.LoginProgress += new EventHandler<LoginProgressEventArgs>(Network_LoginProgress);
+            MainClass.client.Network.EventQueueRunning += new EventHandler<EventQueueRunningEventArgs>(Network_EventQueueRunning);
 
             OpenMetaverse.Settings.LOG_LEVEL = OpenMetaverse.Helpers.LogLevel.Debug;
             OpenMetaverse.Logger.OnLogMessage += new OpenMetaverse.Logger.LogCallback(onLogMessage);
 
         }
+
 
         new public void Dispose()
         {
@@ -168,9 +170,11 @@ namespace omvviewerlight
 		
 		}
 
-		void onEventQueue(Simulator sim)
+
+
+        void Network_EventQueueRunning(object sender, EventQueueRunningEventArgs e)
 		{
-			if(sim.ID==MainClass.client.Network.CurrentSim.ID)
+			if(e.Simulator.ID==MainClass.client.Network.CurrentSim.ID)
 			{
 				this.trying=false;
 				MainClass.client.Self.Movement.Flags=0;
@@ -194,13 +198,15 @@ namespace omvviewerlight
 			
 			return true;
 		}
-		
-		void onConnected(object sender)
+
+
+
+        void Network_SimConnected(object sender, SimConnectedEventArgs e)
 		{
 			Console.Write("Connected to simulator\n");
 		}
 		
-		void onDisconnected(OpenMetaverse.NetworkManager.DisconnectType reason, string message)
+        void Network_Disconnected(object sender, DisconnectedEventArgs e)
 		{
 			Console.WriteLine("on disconnected");
 			Gtk.Application.Invoke(delegate {
@@ -236,14 +242,14 @@ namespace omvviewerlight
 		
 		/// <summary>Called any time the login status changes, will eventually
         /// return LoginStatus.Success or LoginStatus.Failure</summary>
-		void onLogin(LoginStatus login, string message)
-		{
+        void Network_LoginProgress(object sender, LoginProgressEventArgs e)
+        {
 			Gtk.Application.Invoke(delegate {
-				this.textview_loginmsg.Buffer.Text=message;	
+				this.textview_loginmsg.Buffer.Text=e.Message;	
 				this.textview_loginmsg.QueueDraw();
 			});
 			
-			if(LoginStatus.Failed==login)
+			if(LoginStatus.Failed==e.Status)
 				Gtk.Application.Invoke(delegate {
 					this.button_login.Label="Login";
 					this.loginbut=true;
@@ -253,7 +259,7 @@ namespace omvviewerlight
                     MainClass.killclient();
 			    });			
 	
-			if(LoginStatus.Success==login)
+			if(LoginStatus.Success==e.Status)
 			{
 				Console.Write("Login status login\n");
                 Thread.Sleep(5000);
@@ -411,7 +417,7 @@ namespace omvviewerlight
                 
                 Console.WriteLine("Running logout tasks first");
                 if (MainClass.client.Inventory.Store != null)
-                    MainClass.client.Inventory.Store.SaveToDisk(MainClass.client.Settings.TEXTURE_CACHE_DIR + System.IO.Path.DirectorySeparatorChar + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
+                    MainClass.client.Inventory.Store.SaveToDisk(MainClass.client.Settings.ASSET_CACHE_DIR + System.IO.Path.DirectorySeparatorChar + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
                
                 Console.WriteLine("Done");
                 MainClass.userlogout = true;

@@ -202,8 +202,10 @@ namespace omvviewerlight
 			this.target_id=target;
 			this.notecard_item_id=notecard_item_id_in;
 			
-			MainClass.client.Assets.OnAssetReceived += new OpenMetaverse.AssetManager.AssetReceivedCallback(onAsset);
-			
+            //FIX ME
+			//MainClass.client.Assets.OnAssetReceived += new OpenMetaverse.AssetManager.AssetReceivedCallback(onAsset);
+		
+
 			// verify asset is loaded in store;
             if (MainClass.client.Inventory.Store.Contains(item))
             {
@@ -225,7 +227,8 @@ namespace omvviewerlight
 					this.entry_title.Text=ii.Name;
 				});
 				
-				transfer_id=MainClass.client.Assets.RequestInventoryAsset(ii,true);
+                //FIXME
+				//transfer_id=MainClass.client.Assets.RequestInventoryAsset(ii,true);
 				Console.WriteLine("transfer Id is "+transfer_id);
 			}
 			else
@@ -257,7 +260,8 @@ namespace omvviewerlight
 				    this.entry_title.Text=ii.Name;
 			});
 			
-				MainClass.client.Assets.RequestInventoryAsset(ii,true);
+                //FIXME
+				//MainClass.client.Assets.RequestInventoryAsset(ii,true);
 		}
 		
 		void onAsset(AssetDownload transfer,Asset asset)
@@ -266,7 +270,8 @@ namespace omvviewerlight
 			Console.WriteLine("target_asset"+this.target_asset.ToString());
 			if(transfer_id!=transfer.ID)
 				return;
-			MainClass.client.Assets.OnAssetReceived -= new OpenMetaverse.AssetManager.AssetReceivedCallback(onAsset);
+            //FIXME
+			//MainClass.client.Assets.OnAssetReceived -= new OpenMetaverse.AssetManager.AssetReceivedCallback(onAsset);
 			shownote(asset);
 		}
 	
@@ -404,14 +409,14 @@ namespace omvviewerlight
 			{
                 OpenMetaverse.Assets.AssetNotecard nd = new OpenMetaverse.Assets.AssetNotecard(this.textview_notecard.Buffer.Text);
 				nd.Encode();	
-				MainClass.client.Inventory.RequestUploadNotecardAsset(nd.AssetData,this.target_id,new InventoryManager.NotecardUploadedAssetCallback(OnNoteUpdated));
+				MainClass.client.Inventory.RequestUploadNotecardAsset(nd.AssetData,this.target_id,new InventoryManager.InventoryUploadedAssetCallback(OnNoteUpdated));
 			}
 			
 			if(asset_type==AssetType.LSLText)
 			{
                 OpenMetaverse.Assets.AssetScriptText nd = new OpenMetaverse.Assets.AssetScriptText(this.textview_notecard.Buffer.Text);
-				nd.Encode();	
-				MainClass.client.Inventory.RequestUploadNotecardAsset(nd.AssetData,this.target_id,new InventoryManager.NotecardUploadedAssetCallback(OnNoteUpdated));				
+				nd.Encode();
+                MainClass.client.Inventory.RequestUploadNotecardAsset(nd.AssetData, this.target_id, new InventoryManager.InventoryUploadedAssetCallback(OnNoteUpdated));				
 			}
 			
 		}

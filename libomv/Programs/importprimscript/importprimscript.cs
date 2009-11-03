@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.IO;
 using System.Drawing;
+using System.Globalization;
 using OpenMetaverse;
 using OpenMetaverse.Http;
 using OpenMetaverse.Imaging;
@@ -64,7 +65,7 @@ namespace importprimscript
             }
 
             // Add callback handlers for asset uploads finishing. new prims spotted, and logging
-            Client.Objects.OnNewPrim += new ObjectManager.NewPrimCallback(Objects_OnNewPrim);
+            Client.Objects.ObjectUpdate += new EventHandler<PrimEventArgs>(Objects_OnNewPrim);
             Logger.OnLogMessage += new Logger.LogCallback(Client_OnLogMessage);
 
             // Optimize the connection for our purposes
@@ -86,13 +87,14 @@ namespace importprimscript
             // Create a handler for the event queue connecting, so we know when
             // it is safe to start uploading
             AutoResetEvent eventQueueEvent = new AutoResetEvent(false);
-            NetworkManager.EventQueueRunningCallback eventQueueCallback =
-                delegate(Simulator simulator)
+            EventHandler<EventQueueRunningEventArgs> eventQueueCallback =
+                delegate(object sender, EventQueueRunningEventArgs e)
                 {
-                    if (simulator == Client.Network.CurrentSim)
+                    if (e.Simulator == Client.Network.CurrentSim)
                         eventQueueEvent.Set();
                 };
-            Client.Network.OnEventQueueRunning += eventQueueCallback;
+            
+            Client.Network.EventQueueRunning += eventQueueCallback;
 
             int x = Int32.Parse(args[args.Length - 4]);
             int y = Int32.Parse(args[args.Length - 3]);
@@ -121,7 +123,7 @@ namespace importprimscript
             }
 
             // Don't need this anymore
-            Client.Network.OnEventQueueRunning -= eventQueueCallback;
+            Client.Network.EventQueueRunning -= eventQueueCallback;
 
             // Set the root position for the import
             RootPosition = Client.Self.SimPosition;
@@ -238,8 +240,9 @@ namespace importprimscript
             return newAssetID;
         }
 
-        static void Objects_OnNewPrim(Simulator simulator, Primitive prim, ulong regionHandle, ushort timeDilation)
+        static void Objects_OnNewPrim(object sender, PrimEventArgs e)
         {
+            Primitive prim = e.Prim;
             if (CurrentSculpt != null && (prim.Flags & PrimFlags.CreateSelected) != 0 &&
                 !RezzedPrims.Contains(prim.LocalID))
             {
@@ -334,14 +337,14 @@ namespace importprimscript
                                     if (words.Length >= 9)
                                     {
                                         float x, y, z;
-                                        x = Single.Parse(words[2]);
-                                        y = Single.Parse(words[3]);
-                                        z = Single.Parse(words[4]);
+                                        x = Single.Parse(words[2], CultureInfo.InvariantCulture);
+                                        y = Single.Parse(words[3], CultureInfo.InvariantCulture);
+                                        z = Single.Parse(words[4], CultureInfo.InvariantCulture);
                                         current.Scale = new Vector3(x, y, z);
 
-                                        x = Single.Parse(words[6]);
-                                        y = Single.Parse(words[7]);
-                                        z = Single.Parse(words[8]);
+                                        x = Single.Parse(words[6], CultureInfo.InvariantCulture);
+                                        y = Single.Parse(words[7], CultureInfo.InvariantCulture);
+                                        z = Single.Parse(words[8], CultureInfo.InvariantCulture);
                                         current.Offset = new Vector3(x, y, z);
                                     }
                                     break;

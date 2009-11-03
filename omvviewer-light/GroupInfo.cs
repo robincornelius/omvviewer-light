@@ -106,10 +106,10 @@ namespace omvviewerlight
 			assigned_roles = new Gtk.ListStore (typeof(bool),typeof(string),typeof(GroupPowers));					
 			this.treeview_assigned_roles.AppendColumn("",new Gtk.CellRendererToggle(),"active",0);
 			this.treeview_assigned_roles.AppendColumn("Role",new CellRendererText(),"text",1);
-			this.treeview_assigned_roles.Model=assigned_roles;
-			
+	        this.treeview_assigned_roles.Model=assigned_roles;
+		
             //Tree view for group notices
-            notice_list = new Gtk.ListStore(typeof(string), typeof(string), typeof(UUID),typeof(GroupNoticeList));
+            notice_list = new Gtk.ListStore(typeof(string), typeof(string), typeof(UUID),typeof(OpenMetaverse.GroupNoticesListEntry));
             this.treeview_notice_list.AppendColumn("From", new CellRendererText(), "text", 0);
             this.treeview_notice_list.AppendColumn("Subject", new CellRendererText(), "text", 1);
             this.treeview_notice_list.Model = notice_list;
@@ -159,18 +159,16 @@ namespace omvviewerlight
             this.treeview_groupland.AppendColumn("Region",new CellRendererText(), "text", 1);
             this.treeview_groupland.AppendColumn("Area",new CellRendererText(), "text", 2);
             			
-           
-			MainClass.client.Groups.OnGroupProfile += new OpenMetaverse.GroupManager.GroupProfileCallback(onGroupProfile);
-            MainClass.client.Groups.OnGroupMembers += new OpenMetaverse.GroupManager.GroupMembersCallback(onGroupMembers);
-            MainClass.client.Groups.OnGroupTitles += new OpenMetaverse.GroupManager.GroupTitlesCallback(onGroupTitles);
-            MainClass.client.Groups.OnGroupRoles += new OpenMetaverse.GroupManager.GroupRolesCallback(onGroupRoles);
-            MainClass.client.Groups.OnGroupRolesMembers += new OpenMetaverse.GroupManager.GroupRolesMembersCallback(onGroupRolesMembers);
-			MainClass.client.Groups.OnGroupNoticesList += new GroupManager.GroupNoticesListCallback(Groups_OnGroupNoticesList);
-            MainClass.client.Groups.OnGroupAccountSummary += new OpenMetaverse.GroupManager.GroupAccountSummaryCallback(onAccountSummary);			
-           	
-            MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);			
-			
-			MainClass.client.Groups.RequestGroupProfile(groupID);
+            MainClass.client.Groups.GroupProfile += new EventHandler<GroupProfileEventArgs>(Groups_GroupProfile);
+            MainClass.client.Groups.GroupMembersReply += new EventHandler<GroupMembersReplyEventArgs>(Groups_GroupMembersReply);
+            MainClass.client.Groups.GroupTitlesReply += new EventHandler<GroupTitlesReplyEventArgs>(Groups_GroupTitlesReply);
+            MainClass.client.Groups.GroupRoleDataReply += new EventHandler<GroupRolesDataReplyEventArgs>(Groups_GroupRoleDataReply);
+            MainClass.client.Groups.GroupRoleMembersReply += new EventHandler<GroupRolesMembersReplyEventArgs>(Groups_GroupRoleMembersReply);
+            MainClass.client.Groups.GroupNoticesListReply += new EventHandler<GroupNoticesListReplyEventArgs>(Groups_GroupNoticesListReply);
+            MainClass.client.Groups.GroupAccountSummaryReply += new EventHandler<GroupAccountSummaryReplyEventArgs>(Groups_GroupAccountSummaryReply);
+            MainClass.client.Self.IM += new EventHandler<InstantMessageEventArgs>(Self_IM);
+
+            MainClass.client.Groups.RequestGroupProfile(groupID);
 
             rcvd_names.Clear();
 
@@ -182,13 +180,14 @@ namespace omvviewerlight
 			{
 				request_titles = MainClass.client.Groups.RequestGroupTitles(groupID);
 	            request_roles = MainClass.client.Groups.RequestGroupRoles(groupID);  //this is indexed by group ID
-	            request_roles_members = MainClass.client.Groups.RequestGroupRoleMembers(groupID);
+	            request_roles_members = MainClass.client.Groups.RequestGroupRolesMembers(groupID);
+               
 	            request_roles = groupID; //CORRECT
 	            request_roles_members = groupID;
 	            request_titles = groupID;
 	            //request_members = group.ID;
 				
-				MainClass.client.Groups.RequestGroupNoticeList(groupID);
+				MainClass.client.Groups.RequestGroupNoticesList(groupID);
                // MainClass.client.Groups.RequestGroupAccountSummary(groupID,7,1);
 			}
 			else
@@ -217,7 +216,8 @@ namespace omvviewerlight
         [GLib.ConnectBefore]
         void OnDeleteEvent(object o, DeleteEventArgs args)
 		{
-			MainClass.client.Groups.OnGroupProfile -= new OpenMetaverse.GroupManager.GroupProfileCallback(onGroupProfile);
+            /*
+            MainClass.client.Groups.OnGroupProfile -= new OpenMetaverse.GroupManager.GroupProfileCallback(onGroupProfile);
             MainClass.client.Groups.OnGroupMembers -= new OpenMetaverse.GroupManager.GroupMembersCallback(onGroupMembers);
             MainClass.client.Groups.OnGroupTitles -= new OpenMetaverse.GroupManager.GroupTitlesCallback(onGroupTitles);
             MainClass.client.Groups.OnGroupRoles -= new OpenMetaverse.GroupManager.GroupRolesCallback(onGroupRoles);
@@ -226,6 +226,16 @@ namespace omvviewerlight
             MainClass.client.Groups.OnGroupAccountSummary -= new OpenMetaverse.GroupManager.GroupAccountSummaryCallback(onAccountSummary);			
            		
 			MainClass.client.Self.OnInstantMessage -= new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);			
+            */
+
+            MainClass.client.Groups.GroupProfile -= new EventHandler<GroupProfileEventArgs>(Groups_GroupProfile);
+            MainClass.client.Groups.GroupMembersReply -= new EventHandler<GroupMembersReplyEventArgs>(Groups_GroupMembersReply);
+            MainClass.client.Groups.GroupTitlesReply -= new EventHandler<GroupTitlesReplyEventArgs>(Groups_GroupTitlesReply);
+            MainClass.client.Groups.GroupRoleDataReply -= new EventHandler<GroupRolesDataReplyEventArgs>(Groups_GroupRoleDataReply);
+            MainClass.client.Groups.GroupRoleMembersReply -= new EventHandler<GroupRolesMembersReplyEventArgs>(Groups_GroupRoleMembersReply);
+            MainClass.client.Groups.GroupNoticesListReply -= new EventHandler<GroupNoticesListReplyEventArgs>(Groups_GroupNoticesListReply);
+            MainClass.client.Groups.GroupAccountSummaryReply -= new EventHandler<GroupAccountSummaryReplyEventArgs>(Groups_GroupAccountSummaryReply);
+            MainClass.client.Self.IM += new EventHandler<InstantMessageEventArgs>(Self_IM);
 
             Console.WriteLine("GroupInfo view go bye bye");
             //this.Destroy();	
@@ -238,48 +248,45 @@ namespace omvviewerlight
            Console.WriteLine("Group info cleaned up");
         }
 
-        void onAccountSummary(UUID groupID, GroupAccountSummary summary)
+        void Groups_GroupAccountSummaryReply(object sender, GroupAccountSummaryReplyEventArgs e)
 		{
-            if (groupID != this.groupkey)
+            if (e.GroupID != this.groupkey)
                 return;
 
 				Gtk.Application.Invoke(delegate{
-                this.label_group_balance.Text=summary.Balance.ToString();
-				this.label_grouptaxcurrent.Text=summary.GroupTaxCurrent.ToString();
-				this.label_grouptaxesitmate.Text=summary.GroupTaxEstimate.ToString();
-				this.label_landtaxcurrent.Text=summary.LandTaxCurrent.ToString();
-				this.label_landtaxestimate.Text=summary.LandTaxEstimate.ToString();
-                this.label_total_credits.Text=summary.TotalCredits.ToString();
-                this.label_total_debits.Text=summary.TotalDebits.ToString();
+                this.label_group_balance.Text=e.Summary.Balance.ToString();
+				this.label_grouptaxcurrent.Text=e.Summary.GroupTaxCurrent.ToString();
+				this.label_grouptaxesitmate.Text=e.Summary.GroupTaxEstimate.ToString();
+				this.label_landtaxcurrent.Text=e.Summary.LandTaxCurrent.ToString();
+				this.label_landtaxestimate.Text=e.Summary.LandTaxEstimate.ToString();
+                this.label_total_credits.Text=e.Summary.TotalCredits.ToString();
+                this.label_total_debits.Text=e.Summary.TotalDebits.ToString();
 		 
           });		
 	    }
 		
-
-        void Groups_OnGroupNoticesList(UUID groupID, GroupNoticeList notice)
+        void Groups_GroupNoticesListReply(object sender, GroupNoticesListReplyEventArgs e)
         {
-			if (groupID != this.groupkey)
+			if (e.GroupID != this.groupkey)
 			return;
 			
-			if(!this.recieved_notices.Contains(notice.NoticeID))
-				{
+            e.Notices.ForEach(delegate (GroupNoticesListEntry notice){
                 this.recieved_notices.Add(notice.NoticeID);
-					Gtk.Application.Invoke(delegate{
-				this.notice_list.AppendValues(notice.FromName, notice.Subject, notice.NoticeID,notice);
-                
-                Console.Write("Notice list entry: From: "+notice.FromName+"\nSubject: "+notice.Subject + "\n");
-			});
-             } 
+				Gtk.Application.Invoke(delegate{
+    				this.notice_list.AppendValues(notice.FromName, notice.Subject, notice.NoticeID,notice);            
+                    Console.Write("Notice list entry: From: "+notice.FromName+"\nSubject: "+notice.Subject + "\n");
+			    });
+            });
        }
 
-        void onGroupRolesMembers(UUID requestID, UUID groupID, List<KeyValuePair<UUID, UUID>> rolesmember)
-		{
-            if (groupID != this.groupkey)
+        void Groups_GroupRoleMembersReply(object sender, GroupRolesMembersReplyEventArgs e)
+ 		{
+            if (e.GroupID != this.groupkey)
                 return; 
             
             Console.Write("Group roles members recieved\n");
 
-            group_roles_members = rolesmember;
+            group_roles_members = e.RolesMembers;
 
 			Gtk.Application.Invoke(delegate{
 			this.button_invite.Sensitive=checkaccess(MainClass.client.Self.AgentID,GroupPowers.Invite);
@@ -313,19 +320,19 @@ namespace omvviewerlight
 			//rolesmembers=rolesmember;
 		}
 
-        void onGroupRoles(UUID requestID, UUID groupID, Dictionary<UUID, GroupRole> roles)
+        void Groups_GroupRoleDataReply(object sender, GroupRolesDataReplyEventArgs e)
 		{
 
-            if (groupID != this.groupkey)
+            if (e.GroupID != this.groupkey)
                 return;
 
-            this.group_roles = roles;
+            this.group_roles = e.Roles;
 
  			// Maybe we should flag up that the roles have been recieved?
 			Console.Write("Group roles recieved\n");
 			//grouproles=roles;
 			
-			foreach(KeyValuePair <UUID,GroupRole> kvp in roles)
+			foreach(KeyValuePair <UUID,GroupRole> kvp in e.Roles)
 			{
                 //The count is not valid untill grouprolesmembers has returned *sigh*
                 //TO DO MOVE ME THERE
@@ -366,25 +373,26 @@ namespace omvviewerlight
         void GroupWindow_DeleteEvent(object o, DeleteEventArgs args)
         {
             nobody_cares = true;
-            MainClass.client.Groups.OnGroupProfile -= new OpenMetaverse.GroupManager.GroupProfileCallback(onGroupProfile);
-            MainClass.client.Groups.OnGroupMembers -= new OpenMetaverse.GroupManager.GroupMembersCallback(onGroupMembers);
-            MainClass.client.Groups.OnGroupTitles -= new OpenMetaverse.GroupManager.GroupTitlesCallback(onGroupTitles);
-            MainClass.client.Groups.OnGroupRoles -= new OpenMetaverse.GroupManager.GroupRolesCallback(onGroupRoles);
-            MainClass.client.Groups.OnGroupRolesMembers -= new OpenMetaverse.GroupManager.GroupRolesMembersCallback(onGroupRolesMembers);
-            MainClass.client.Groups.OnGroupNoticesList -= new GroupManager.GroupNoticesListCallback(Groups_OnGroupNoticesList);
-			MainClass.client.Self.OnInstantMessage -= new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);			
-			     
+            MainClass.client.Groups.GroupProfile -= new EventHandler<GroupProfileEventArgs>(Groups_GroupProfile);
+            MainClass.client.Groups.GroupMembersReply -= new EventHandler<GroupMembersReplyEventArgs>(Groups_GroupMembersReply);
+            MainClass.client.Groups.GroupTitlesReply -= new EventHandler<GroupTitlesReplyEventArgs>(Groups_GroupTitlesReply);
+            MainClass.client.Groups.GroupRoleDataReply -= new EventHandler<GroupRolesDataReplyEventArgs>(Groups_GroupRoleDataReply);
+            MainClass.client.Groups.GroupRoleMembersReply -= new EventHandler<GroupRolesMembersReplyEventArgs>(Groups_GroupRoleMembersReply);
+            MainClass.client.Groups.GroupNoticesListReply -= new EventHandler<GroupNoticesListReplyEventArgs>(Groups_GroupNoticesListReply);
+            MainClass.client.Groups.GroupAccountSummaryReply -= new EventHandler<GroupAccountSummaryReplyEventArgs>(Groups_GroupAccountSummaryReply);
+            MainClass.client.Self.IM -= new EventHandler<InstantMessageEventArgs>(Self_IM);
+	     
 			
 			this.DeleteEvent -= new DeleteEventHandler(GroupWindow_DeleteEvent);
-        }
-		
-		void onGroupTitles(UUID requestID,UUID groupID,Dictionary <UUID,OpenMetaverse.GroupTitle> titles)
+        }		
+
+        void Groups_GroupTitlesReply(object sender, GroupTitlesReplyEventArgs e)
 		{
 
-            if (groupID != this.groupkey)
+            if (e.GroupID != this.groupkey)
                 return;
 
-            group_titles=titles;
+            group_titles=e.Titles;
 
             if (titles.Count == 0)
                 return;
@@ -482,13 +490,14 @@ namespace omvviewerlight
             return name_poll;
         }
 
-		void onGroupMembers(UUID requestID, UUID groupID,Dictionary <UUID,GroupMember> members)		
+
+        void Groups_GroupMembersReply(object sender, GroupMembersReplyEventArgs e)
 		{
 
-            if (groupID != this.groupkey)
+            if (e.GroupID != this.groupkey)
                 return;
 
-            group_members = members;
+            group_members = e.Members;
 			
 			trysetcurrenttitle();
 
@@ -514,18 +523,18 @@ namespace omvviewerlight
             return;
 
 		}
-		
-		void onGroupProfile(Group group)
+   		
+        void Groups_GroupProfile(object sender, GroupProfileEventArgs e)
 		{
 			
-			if(group.ID!=this.groupkey)
+			if(e.Group.ID!=this.groupkey)
 				return;
 			
 			Gtk.Application.Invoke(delegate {	
 			
-			this.entry_enrollmentfee.Text=group.MembershipFee.ToString();
+			this.entry_enrollmentfee.Text=e.Group.MembershipFee.ToString();
 			
-			if(group.MembershipFee>0)
+			if(e.Group.MembershipFee>0)
 				this.checkbutton_mature.Active=true;
 			
 			    if(this.already_member==true)
@@ -541,36 +550,36 @@ namespace omvviewerlight
 				}
 			}
 				
-			this.checkbutton_openenrolement.Active=group.OpenEnrollment;
-			this.checkbutton_showinsearch.Active=group.ShowInList;
-			this.checkbutton_mature.Active=group.MaturePublish;
-			this.textview_group_charter.Buffer.Text=group.Charter;
+			this.checkbutton_openenrolement.Active=e.Group.OpenEnrollment;
+			this.checkbutton_showinsearch.Active=e.Group.ShowInList;
+			this.checkbutton_mature.Active=e.Group.MaturePublish;
+			this.textview_group_charter.Buffer.Text=e.Group.Charter;
 
-			if((group.Powers & GroupPowers.SendNotices)==GroupPowers.SendNotices)
+			if((e.Group.Powers & GroupPowers.SendNotices)==GroupPowers.SendNotices)
 					this.button_send_notice.Sensitive=true;
 				else
 					this.button_send_notice.Sensitive=false;
 		
 				
-			TryGetImage img=new TryGetImage(this.image_group_emblem,group.InsigniaID,128,128,false);
-			this.label_name.Text=group.Name;
+			TryGetImage img=new TryGetImage(this.image_group_emblem,e.Group.InsigniaID,128,128,false);
+			this.label_name.Text=e.Group.Name;
 	
-			AsyncNameUpdate ud=new AsyncNameUpdate(group.FounderID,false);  
+			AsyncNameUpdate ud=new AsyncNameUpdate(e.Group.FounderID,false);  
 			ud.onNameCallBack += delegate(string namex,object[] values){this.label_foundedby.Text="Founded by "+namex;};
             ud.go();
 
-			this.entry_enrollmentfee.Text=group.MembershipFee.ToString();
-			if(group.MembershipFee>0)
+			this.entry_enrollmentfee.Text=e.Group.MembershipFee.ToString();
+			if(e.Group.MembershipFee>0)
 				this.checkbutton_mature.Active=true;
 			
-			this.checkbutton_openenrolement.Active=group.OpenEnrollment;
-			this.checkbutton_showinsearch.Active=group.ShowInList;
-			this.checkbutton_mature.Active=group.MaturePublish;
-			this.textview_group_charter.Buffer.Text=group.Charter;
+			this.checkbutton_openenrolement.Active=e.Group.OpenEnrollment;
+			this.checkbutton_showinsearch.Active=e.Group.ShowInList;
+			this.checkbutton_mature.Active=e.Group.MaturePublish;
+			this.textview_group_charter.Buffer.Text=e.Group.Charter;
 				
 			if(!this.already_member)
 			{
-				if(group.OpenEnrollment==true)
+				if(e.Group.OpenEnrollment==true)
 					this.button_join.Sensitive=true;					
             }
 				
@@ -665,7 +674,8 @@ namespace omvviewerlight
 				if(this.treeview_notice_list.Selection.GetSelected(out mod,out iter))			
 			{
 				UUID id=(UUID)mod.GetValue(iter,2);
-				GroupNoticeList notice=(GroupNoticeList)mod.GetValue(iter,3);
+                 
+				GroupNoticesListEntry notice=(GroupNoticesListEntry)mod.GetValue(iter,3);
 				MainClass.client.Groups.RequestGroupNotice(id);
                 this.entry1.Text=notice.Subject;
 				if(notice.HasAttachment)
@@ -679,14 +689,14 @@ namespace omvviewerlight
 			}
 		
 		}
+
+        void Self_IM(object sender, InstantMessageEventArgs e)
+        {
 			
-		void onIM(InstantMessage im, Simulator sim)
-		{
-			
-			if(im.Dialog!=OpenMetaverse.InstantMessageDialog.GroupNoticeRequested)
+			if(e.IM.Dialog!=OpenMetaverse.InstantMessageDialog.GroupNoticeRequested)
 				return;
 		      
-            textview_notice.Buffer.Text=im.Message;
+            textview_notice.Buffer.Text=e.IM.Message;
             
 		}
 
@@ -1070,7 +1080,8 @@ namespace omvviewerlight
 			
             if(this.treeview_notice_list.Selection.GetSelected(out mod,out iter))			
 			{
-					GroupNoticeList notice=(GroupNoticeList)mod.GetValue(iter,3);
+                    
+					GroupNoticesListEntry notice=(GroupNoticesListEntry)mod.GetValue(iter,3);
 					if(notice.AssetType==AssetType.Notecard)
 					{
                    //NotecardReader nr=new NotecardReader(notice.

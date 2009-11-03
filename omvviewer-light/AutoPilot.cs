@@ -59,7 +59,7 @@ namespace omvviewerlight
 			if(onAutoPilotFinished!=null)
 				onAutoPilotFinished();
 
-            MainClass.client.Grid.OnCoarseLocationUpdate -= new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
+            MainClass.client.Grid.CoarseLocationUpdate -= new EventHandler<CoarseLocationUpdateEventArgs>(Grid_CoarseLocationUpdate);
 
 			Active=false;
 			follow=false;
@@ -72,17 +72,17 @@ namespace omvviewerlight
 			type=TargetType.TARGET_OBJECT;
 			target_object=tobject;
 			Active=true;
-            MainClass.client.Grid.OnCoarseLocationUpdate += new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
+            MainClass.client.Grid.CoarseLocationUpdate += new EventHandler<CoarseLocationUpdateEventArgs>(Grid_CoarseLocationUpdate);
 
 		}
-		
+   		
 		public static void set_target_avatar (UUID target,bool followon)
 		{
 			type=TargetType.TARGET_AVATAR;
 			target_avatar=target;
 			Active=true;
 			follow=followon;
-            MainClass.client.Grid.OnCoarseLocationUpdate += new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
+              MainClass.client.Grid.CoarseLocationUpdate += new EventHandler<CoarseLocationUpdateEventArgs>(Grid_CoarseLocationUpdate);
 
 		}
 		
@@ -91,10 +91,10 @@ namespace omvviewerlight
 			type=TargetType.TARGET_POS;
             target_pos_global = globalpos;
 			Active=true;
-            MainClass.client.Grid.OnCoarseLocationUpdate += new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
+          MainClass.client.Grid.CoarseLocationUpdate += new EventHandler<CoarseLocationUpdateEventArgs>(Grid_CoarseLocationUpdate);
 		}
 
-        static void Grid_OnCoarseLocationUpdate(Simulator sim, System.Collections.Generic.List<UUID> newEntries, System.Collections.Generic.List<UUID> removedEntries)
+        static void Grid_CoarseLocationUpdate(object sender, CoarseLocationUpdateEventArgs e)
         {
             Think();
         }

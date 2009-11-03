@@ -49,6 +49,7 @@ namespace OpenMetaverse.TestClient
         public bool Running = true;
         public bool GetTextures = false;
         public volatile int PendingLogins = 0;
+        public string onlyAvatar = String.Empty;
 
         ClientManager()
         {
@@ -127,43 +128,43 @@ namespace OpenMetaverse.TestClient
             ++PendingLogins;
 
             TestClient client = new TestClient(this);
-            client.Network.OnLogin +=
-                delegate(LoginStatus login, string message)
+            client.Network.LoginProgress +=
+                delegate(object sender, LoginProgressEventArgs e)
                 {
-                    Logger.Log(String.Format("Login {0}: {1}", login, message), Helpers.LogLevel.Info, client);
+                    Logger.Log(String.Format("Login {0}: {1}", e.Status, e.Message), Helpers.LogLevel.Info, client);
 
-                    if (login == LoginStatus.Success)
+                    if (e.Status == LoginStatus.Success)
                     {
                         Clients[client.Self.AgentID] = client;
 
                         if (client.MasterKey == UUID.Zero)
                         {
-                            UUID query = UUID.Random();
-                            DirectoryManager.DirPeopleReplyCallback peopleDirCallback =
-                                delegate(UUID queryID, List<DirectoryManager.AgentSearchData> matchedPeople)
+                            UUID query = UUID.Zero;
+                            EventHandler<DirPeopleReplyEventArgs> peopleDirCallback =
+                                delegate(object sender2, DirPeopleReplyEventArgs dpe)
                                 {
-                                    if (queryID == query)
+                                    if (dpe.QueryID == query)
                                     {
-                                        if (matchedPeople.Count != 1)
+                                        if (dpe.MatchedPeople.Count != 1)
                                         {
                                             Logger.Log("Unable to resolve master key from " + client.MasterName, Helpers.LogLevel.Warning);
                                         }
                                         else
                                         {
-                                            client.MasterKey = matchedPeople[0].AgentID;
+                                            client.MasterKey = dpe.MatchedPeople[0].AgentID;
                                             Logger.Log("Master key resolved to " + client.MasterKey, Helpers.LogLevel.Info);
                                         }
                                     }
                                 };
 
-                            client.Directory.OnDirPeopleReply += peopleDirCallback;
-                            client.Directory.StartPeopleSearch(DirectoryManager.DirFindFlags.People, client.MasterName, 0, query);
+                            client.Directory.DirPeopleReply += peopleDirCallback;
+                            query = client.Directory.StartPeopleSearch(client.MasterName, 0);
                         }
 
                         Logger.Log("Logged in " + client.ToString(), Helpers.LogLevel.Info);
                         --PendingLogins;
                     }
-                    else if (login == LoginStatus.Failed)
+                    else if (e.Status == LoginStatus.Failed)
                     {
                         Logger.Log("Failed to login " + account.FirstName + " " + account.LastName + ": " +
                             client.Network.LoginMessage, Helpers.LogLevel.Warning);
@@ -247,6 +248,28 @@ namespace OpenMetaverse.TestClient
             // Allow for comments when cmdline begins with ';' or '#'
             if (firstToken[0] == ';' || firstToken[0] == '#')
                 return;
+
+            if ('@' == firstToken[0]) {
+                onlyAvatar = String.Empty;
+                if (tokens.Length == 3) {
+                    bool found = false;
+                    onlyAvatar = tokens[1]+" "+tokens[2];
+                    foreach (TestClient client in Clients.Values) {
+                        if ((client.ToString() == onlyAvatar) && (client.Network.Connected)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) {
+                        Logger.Log("Commanding only "+onlyAvatar+" now", Helpers.LogLevel.Info);
+                    } else {
+                        Logger.Log("Commanding nobody now. Avatar "+onlyAvatar+" is offline", Helpers.LogLevel.Info);
+                    }
+                } else {
+                    Logger.Log("Commanding all avatars now", Helpers.LogLevel.Info);
+                }
+                return;
+            }
             
             string[] args = new string[tokens.Length - 1];
             if (args.Length > 0)
@@ -308,11 +331,13 @@ namespace OpenMetaverse.TestClient
                         delegate(object state)
                         {
                             TestClient testClient = (TestClient)state;
-                            if (testClient.Commands.ContainsKey(firstToken))
-                                Logger.Log(testClient.Commands[firstToken].Execute(args, fromAgentID),
-                                    Helpers.LogLevel.Info, testClient);
-                            else
-                                Logger.Log("Unknown command " + firstToken, Helpers.LogLevel.Warning);
+                            if ((String.Empty == onlyAvatar) || (testClient.ToString() == onlyAvatar)) {
+                                if (testClient.Commands.ContainsKey(firstToken))
+                                    Logger.Log(testClient.Commands[firstToken].Execute(args, fromAgentID),
+                                        Helpers.LogLevel.Info, testClient);
+                                else
+                                    Logger.Log("Unknown command " + firstToken, Helpers.LogLevel.Warning);
+                            }
 
                             ++completed;
                         },

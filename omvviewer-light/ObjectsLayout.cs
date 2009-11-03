@@ -168,24 +168,24 @@ namespace omvviewerlight
             FetchedPrims.Clear();
             if (MainClass.client != null)
             {
-                MainClass.client.Objects.OnObjectProperties -= new OpenMetaverse.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
-                MainClass.client.Groups.OnGroupNames -= new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
-                MainClass.client.Self.OnAvatarSitResponse -= new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
-                MainClass.client.Objects.OnObjectUpdated -= new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);
+                MainClass.client.Objects.ObjectProperties -= new EventHandler<ObjectPropertiesEventArgs>(Objects_ObjectProperties);
+                MainClass.client.Groups.GroupNamesReply -= new EventHandler<GroupNamesEventArgs>(Groups_GroupNamesReply);
+                MainClass.client.Self.AvatarSitResponse -= new EventHandler<AvatarSitResponseEventArgs>(Self_AvatarSitResponse);
+                MainClass.client.Objects.ObjectUpdate -= new EventHandler<PrimEventArgs>(Objects_ObjectUpdate);
             }
         }
 
         void MainClass_onRegister()
         {
-            MainClass.client.Objects.OnObjectProperties += new OpenMetaverse.ObjectManager.ObjectPropertiesCallback(Objects_OnObjectProperties);
-            MainClass.client.Groups.OnGroupNames += new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
-            MainClass.client.Self.OnAvatarSitResponse += new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
-            MainClass.client.Objects.OnObjectUpdated += new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);
+            MainClass.client.Objects.ObjectProperties += new EventHandler<ObjectPropertiesEventArgs>(Objects_ObjectProperties);
+            MainClass.client.Groups.GroupNamesReply += new EventHandler<GroupNamesEventArgs>(Groups_GroupNamesReply);
+            MainClass.client.Self.AvatarSitResponse += new EventHandler<AvatarSitResponseEventArgs>(Self_AvatarSitResponse);
+            MainClass.client.Objects.ObjectUpdate += new EventHandler<PrimEventArgs>(Objects_ObjectUpdate);
         }
 
-        void Objects_OnObjectUpdated(Simulator simulator, ObjectUpdate update, ulong regionHandle, ushort timeDilation)
+        void Objects_ObjectUpdate(object sender, PrimEventArgs e)
         {
-            if (update.LocalID == MainClass.client.Self.LocalID)
+            if (e.Prim.LocalID == MainClass.client.Self.LocalID)
             {
                 if (MainClass.client.Network.CurrentSim.ObjectsAvatars[MainClass.client.Self.LocalID].ParentID == 0)
                 {
@@ -202,7 +202,7 @@ namespace omvviewerlight
             }
         }
 
-        void Self_OnAvatarSitResponse(UUID objectID, bool autoPilot, Vector3 cameraAtOffset, Vector3 cameraEyeOffset, bool forceMouselook, Vector3 sitPosition, Quaternion sitRotation)
+        void Self_AvatarSitResponse(object sender, AvatarSitResponseEventArgs e)
         {
             Gtk.Application.Invoke(delegate
             {
@@ -278,7 +278,7 @@ namespace omvviewerlight
             setupsort(1);
         }
 			
-		void onGroupNames(Dictionary <UUID,string>groups)
+        void Groups_GroupNamesReply(object sender, GroupNamesEventArgs e)
 	    {
 			Gtk.TreeModel mod;
 			Gtk.TreeIter iter;
@@ -363,16 +363,16 @@ namespace omvviewerlight
             //return AllPropertiesReceived.WaitOne(2000 + msPerRequest * objects.Count, false);
         }
 
-		void Objects_OnObjectProperties(Simulator simulator, Primitive.ObjectProperties properties)
+        void Objects_ObjectProperties(object sender, ObjectPropertiesEventArgs e)
         {
             try
             {
                 lock (PrimsWaiting)
                 {
                     Primitive prim;
-                    if (PrimsWaiting.TryGetValue(properties.ObjectID, out prim))
+                    if (PrimsWaiting.TryGetValue(e.Properties.ObjectID, out prim))
                     {
-                        prim.Properties = properties;
+                        prim.Properties = e.Properties;
                         Gtk.Application.Invoke(delegate
                         {
                             Vector3 self_pos;
@@ -390,15 +390,15 @@ namespace omvviewerlight
                                 }
                             }
 
-                            PrimsWaiting.Remove(properties.ObjectID);
-                            if (FetchedPrims.ContainsKey(properties.ObjectID))
+                            PrimsWaiting.Remove(e.Properties.ObjectID);
+                            if (FetchedPrims.ContainsKey(e.Properties.ObjectID))
                             {
-                                Console.WriteLine("Trying to add a duplicate prim to FetchedPrims WTF? " + properties.ObjectID.ToString());
+                                Console.WriteLine("Trying to add a duplicate prim to FetchedPrims WTF? " + e.Properties.ObjectID.ToString());
                                 return;
                             }
                             else
                             {
-                                FetchedPrims.Add(properties.ObjectID, prim);
+                                FetchedPrims.Add(e.Properties.ObjectID, prim);
                             }
                             Gtk.Application.Invoke(delegate
                             {
@@ -412,7 +412,7 @@ namespace omvviewerlight
                                     owner = this.img_group;
                                
 
-                                store.AppendValues(prim.Properties.Name, prim.Properties.Description, MainClass.cleandistance(Vector3d.Distance(AutoPilot.localtoglobalpos(prim.Position, simulator.Handle), AutoPilot.localtoglobalpos(self_pos, MainClass.client.Network.CurrentSim.Handle)).ToString(),2), prim.Properties.ObjectID, simulator.Handle,
+                                store.AppendValues(prim.Properties.Name, prim.Properties.Description, MainClass.cleandistance(Vector3d.Distance(AutoPilot.localtoglobalpos(prim.Position, e.Simulator.Handle), AutoPilot.localtoglobalpos(self_pos, MainClass.client.Network.CurrentSim.Handle)).ToString(),2), prim.Properties.ObjectID, e.Simulator.Handle,
                                     owner,
                                     (prim.Flags & PrimFlags.Money) == PrimFlags.Money ? this.img_pay : this.img_blank,
                                     (prim.Flags & PrimFlags.Touch) == PrimFlags.Touch ? this.img_touch : this.img_blank,
@@ -430,11 +430,11 @@ namespace omvviewerlight
                     }
                 }
             }
-            catch(Exception e)
+            catch(Exception ee)
             {
                 // General messups, we can get here if we try to scan for objects too soon after login and ourself is not
                 // in the dictionary yet. Can't be bothered to test *every* object property if we are valid so just catch the exception
-                Logger.Log("Error: Scanning for object triggered exception: "+e.Message, Helpers.LogLevel.Error);
+                Logger.Log("Error: Scanning for object triggered exception: "+ee.Message, Helpers.LogLevel.Error);
             }
         }
 

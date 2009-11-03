@@ -57,14 +57,14 @@ namespace omvviewerlight
         void MainClass_onDeregister()
         {
             if(MainClass.client!=null)
-                MainClass.client.Network.OnEventQueueRunning -= new OpenMetaverse.NetworkManager.EventQueueRunningCallback(Network_OnEventQueueRunning);
+                MainClass.client.Network.EventQueueRunning -= new EventHandler<OpenMetaverse.EventQueueRunningEventArgs>(Network_EventQueueRunning);
         }
 
         void MainClass_onRegister()
         {
-            MainClass.client.Network.OnEventQueueRunning += new OpenMetaverse.NetworkManager.EventQueueRunningCallback(Network_OnEventQueueRunning);
-      
-         }
+            MainClass.client.Network.EventQueueRunning += new EventHandler<OpenMetaverse.EventQueueRunningEventArgs>(Network_EventQueueRunning);
+        }
+
 
         void onResize(object o, SizeAllocatedArgs args)
         {
@@ -83,7 +83,7 @@ namespace omvviewerlight
             }
         }
 
-        void Network_OnEventQueueRunning(OpenMetaverse.Simulator simulator)
+        void Network_EventQueueRunning(object sender, OpenMetaverse.EventQueueRunningEventArgs e)
         {
             this.map1.SetGridRegion(MainClass.client.Network.CurrentSim.RegionID, MainClass.client.Network.CurrentSim.Handle);
         }

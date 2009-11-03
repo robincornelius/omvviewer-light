@@ -147,49 +147,53 @@ namespace omvviewerlight
 
             if (MainClass.client != null)
             {
-                MainClass.client.Parcels.OnParcelInfo -= new OpenMetaverse.ParcelManager.ParcelInfoCallback(onParcelInfo);
-                MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-                MainClass.client.Parcels.OnSimParcelsDownloaded -= new OpenMetaverse.ParcelManager.SimParcelsDownloaded(onParcelsDownloaded);
-                MainClass.client.Parcels.OnParcelProperties -= new OpenMetaverse.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
-                MainClass.client.Parcels.OnPrimOwnersListReply -= new OpenMetaverse.ParcelManager.ParcelObjectOwnersListReplyCallback(onParcelObjectOwners);
-                MainClass.client.Parcels.OnParcelDwell -= new OpenMetaverse.ParcelManager.ParcelDwellCallback(onDwell);
+                MainClass.client.Parcels.ParcelInfoReply += new EventHandler<ParcelInfoReplyEventArgs>(Parcels_ParcelInfoReply);
+                MainClass.client.Network.SimChanged += new EventHandler<SimChangedEventArgs>(Network_SimChanged);
+                MainClass.client.Parcels.SimParcelsDownloaded += new EventHandler<SimParcelsDownloadedEventArgs>(Parcels_SimParcelsDownloaded);
+                MainClass.client.Parcels.ParcelProperties += new EventHandler<ParcelPropertiesEventArgs>(Parcels_ParcelProperties);
+                MainClass.client.Parcels.ParcelObjectOwnersReply += new EventHandler<ParcelObjectOwnersReplyEventArgs>(Parcels_ParcelObjectOwnersReply);
+                MainClass.client.Parcels.ParcelDwellReply += new EventHandler<ParcelDwellReplyEventArgs>(Parcels_ParcelDwellReply);
             }
         }
 
         void MainClass_onRegister()
         {
-            MainClass.client.Parcels.OnParcelInfo += new OpenMetaverse.ParcelManager.ParcelInfoCallback(onParcelInfo);
-            MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-            MainClass.client.Parcels.OnSimParcelsDownloaded += new OpenMetaverse.ParcelManager.SimParcelsDownloaded(onParcelsDownloaded);
-            MainClass.client.Parcels.OnParcelProperties += new OpenMetaverse.ParcelManager.ParcelPropertiesCallback(onParcelProperties);
-            MainClass.client.Parcels.OnPrimOwnersListReply += new OpenMetaverse.ParcelManager.ParcelObjectOwnersListReplyCallback(onParcelObjectOwners);
-            MainClass.client.Parcels.OnParcelDwell += new OpenMetaverse.ParcelManager.ParcelDwellCallback(onDwell);
+            MainClass.client.Parcels.ParcelInfoReply += new EventHandler<ParcelInfoReplyEventArgs>(Parcels_ParcelInfoReply);
+            MainClass.client.Network.SimChanged += new EventHandler<SimChangedEventArgs>(Network_SimChanged);
+            MainClass.client.Parcels.SimParcelsDownloaded += new EventHandler<SimParcelsDownloadedEventArgs>(Parcels_SimParcelsDownloaded);
+            MainClass.client.Parcels.ParcelProperties += new EventHandler<ParcelPropertiesEventArgs>(Parcels_ParcelProperties);
+            MainClass.client.Parcels.ParcelObjectOwnersReply += new EventHandler<ParcelObjectOwnersReplyEventArgs>(Parcels_ParcelObjectOwnersReply);
+            MainClass.client.Parcels.ParcelDwellReply += new EventHandler<ParcelDwellReplyEventArgs>(Parcels_ParcelDwellReply);
+
             MainClass.client.Settings.ALWAYS_REQUEST_PARCEL_ACL = true;
             MainClass.client.Settings.ALWAYS_REQUEST_PARCEL_DWELL = true;
 
         }
+
+
+
 			
-		void onDwell (UUID parcelid,int localid,float dwell)
+        void Parcels_ParcelDwellReply(object sender, ParcelDwellReplyEventArgs e)
 		{
 			//Console.WriteLine("Got dwell for "+parcelid.ToString()+" : local id "+localid.ToString()+" is "+dwell.ToString());
 			Gtk.TreeIter iter;
-			if(this.parcel_to_tree.TryGetValue(localid,out iter))
+			if(this.parcel_to_tree.TryGetValue(e.LocalID,out iter))
 			{
 				Gtk.Application.Invoke(delegate{
-					this.parcels_store.SetValue(iter,3,dwell.ToString());
+					this.parcels_store.SetValue(iter,3,e.Dwell.ToString());
 						
 				});
 			}
 		}
 			
-		void onParcelObjectOwners(Simulator sim,List <OpenMetaverse.ParcelManager.ParcelPrimOwners> primOwners)
+        void Parcels_ParcelObjectOwnersReply(object sender, ParcelObjectOwnersReplyEventArgs e)
 		{
 			Gtk.Application.Invoke(delegate{
-			for(int i = 0; i < primOwners.Count; i++)
+			for(int i = 0; i < e.PrimOwners.Count; i++)
 			{
-				Console.WriteLine(primOwners[i].ToString());        
-				Gtk.TreeIter iter2=parcel_prim_owners.AppendValues("Waiting...",primOwners[i].Count.ToString(),primOwners[i].OwnerID);			
-				AsyncNameUpdate ud=new AsyncNameUpdate(primOwners[i].OwnerID,false);  
+				Console.WriteLine(e.PrimOwners[i].ToString());        
+				Gtk.TreeIter iter2=parcel_prim_owners.AppendValues("Waiting...",e.PrimOwners[i].Count.ToString(),e.PrimOwners[i].OwnerID);			
+				AsyncNameUpdate ud=new AsyncNameUpdate(e.PrimOwners[i].OwnerID,false);  
 				ud.addparameters(iter2);
 				ud.onNameCallBack += delegate(string namex,object[] values){ Gtk.TreeIter iterx=(Gtk.TreeIter)values[0]; parcel_prim_owners.SetValue(iterx,0,namex);};
                 ud.go();
@@ -198,11 +202,12 @@ namespace omvviewerlight
 			});
 						
 		}
-		
-	void onParcelProperties(Simulator Sim,Parcel parcel, ParcelResult result, int selectedprims,int sequenceID, bool snapSelection)
-	{
-		
-		MainClass.client.Parcels.DwellRequest(Sim,parcel.LocalID);
+
+
+
+    void Parcels_ParcelProperties(object sender, ParcelPropertiesEventArgs e)
+	{	
+		MainClass.client.Parcels.RequestDwell(e.Simulator,e.Parcel.LocalID);
         populate_tree();
         updateparcelmap(MainClass.client.Network.CurrentSim.ParcelMap);
 			
@@ -317,19 +322,21 @@ namespace omvviewerlight
          });
      }
 
-		void onParcelsDownloaded(Simulator sim,InternalDictionary <int,Parcel> simParcels,int[,] parcelmap)
+
+
+        void Parcels_SimParcelsDownloaded(object sender, SimParcelsDownloadedEventArgs e)
 		{
 			Console.WriteLine("All Parcels download");
-            updateparcelmap(parcelmap);
+            updateparcelmap(e.ParcelMap);
 		}
 
-        void onParcelInfo(ParcelInfo pinfo)
+        void Parcels_ParcelInfoReply(object sender, ParcelInfoReplyEventArgs e)
 		{
 		
 		}
-		
-		void onNewSim(Simulator lastsim)
-	    {
+
+        void Network_SimChanged(object sender, SimChangedEventArgs e)
+        {
 			this.parcels_store.Clear();
 			this.parcels_access.Clear();
 			this.parcels_ban.Clear();
@@ -384,7 +391,6 @@ namespace omvviewerlight
                     this.entry_primsowner.Text = parcel.OwnerPrims.ToString();
                     this.entry_primsother.Text = parcel.OtherPrims.ToString();
                     this.entry_totalprims.Text = parcel.TotalPrims.ToString();
-
 
                     this.parcel_image = parcel.SnapshotID;
 
@@ -539,7 +545,7 @@ namespace omvviewerlight
 			{
 				int id=(int)mod.GetValue(iter,6);
 				Console.WriteLine("Requesting parcel prim owners for sim "+MainClass.client.Network.CurrentSim.Name+" parcel :"+id.ToString());
-				MainClass.client.Parcels.ObjectOwnersRequest(MainClass.client.Network.CurrentSim,id);
+				MainClass.client.Parcels.RequestObjectOwners(MainClass.client.Network.CurrentSim,id);
 			}
 		}
 

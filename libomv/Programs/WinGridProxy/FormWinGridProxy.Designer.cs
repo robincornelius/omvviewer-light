@@ -226,6 +226,9 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.autoColorizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
+            this.asDecodedTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelProxyConfig.SuspendLayout();
             this.panelMainWindow.SuspendLayout();
             this.splitContainerSessionsTabs.Panel1.SuspendLayout();
@@ -1468,6 +1471,8 @@
             this.toolStripSeparator7,
             this.saveSessionArchiveToolStripMenuItem,
             this.loadSessionArchiveToolStripMenuItem,
+            this.toolStripSeparator18,
+            this.exportToolStripMenuItem,
             this.toolStripSeparator8,
             this.settingsToolStripMenuItem,
             this.toolStripSeparator9,
@@ -1684,6 +1689,7 @@
             // 
             // saveFilterSelectionsToolStripMenuItem
             // 
+            this.saveFilterSelectionsToolStripMenuItem.Enabled = false;
             this.saveFilterSelectionsToolStripMenuItem.Name = "saveFilterSelectionsToolStripMenuItem";
             this.saveFilterSelectionsToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.saveFilterSelectionsToolStripMenuItem.Text = "Save Filter Selections";
@@ -1691,6 +1697,7 @@
             // 
             // loadFilterSelectionsToolStripMenuItem
             // 
+            this.loadFilterSelectionsToolStripMenuItem.Enabled = false;
             this.loadFilterSelectionsToolStripMenuItem.Name = "loadFilterSelectionsToolStripMenuItem";
             this.loadFilterSelectionsToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.loadFilterSelectionsToolStripMenuItem.Text = "Load Filter Selections";
@@ -2070,6 +2077,26 @@
             this.autoColorizeToolStripMenuItem.Text = "Auto Colorize";
             this.autoColorizeToolStripMenuItem.Click += new System.EventHandler(this.autoColorizeToolStripMenuItem_Click);
             // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.asDecodedTextToolStripMenuItem});
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.exportToolStripMenuItem.Text = "Export";
+            // 
+            // toolStripSeparator18
+            // 
+            this.toolStripSeparator18.Name = "toolStripSeparator18";
+            this.toolStripSeparator18.Size = new System.Drawing.Size(182, 6);
+            // 
+            // asDecodedTextToolStripMenuItem
+            // 
+            this.asDecodedTextToolStripMenuItem.Name = "asDecodedTextToolStripMenuItem";
+            this.asDecodedTextToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.asDecodedTextToolStripMenuItem.Text = "As Decoded Text";
+            this.asDecodedTextToolStripMenuItem.Click += new System.EventHandler(this.asDecodedTextToolStripMenuItem_Click);
+            // 
             // FormWinGridProxy
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2340,6 +2367,9 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemPlugins;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
         private System.Windows.Forms.RichTextBox richTextBoxDebugLog;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator18;
+        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem asDecodedTextToolStripMenuItem;
     }
 }
 

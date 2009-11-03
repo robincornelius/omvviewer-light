@@ -205,13 +205,16 @@ namespace omvviewerlight
             running = false;
             if (MainClass.client != null)
             {
-                MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-                MainClass.client.Objects.OnNewAvatar -= new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
-                MainClass.client.Self.OnTeleport -= new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
-                MainClass.client.Grid.OnGridRegion -= new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
-                MainClass.client.Grid.OnCoarseLocationUpdate -= new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
-                MainClass.client.Network.OnSimConnected -= new NetworkManager.SimConnectedCallback(Network_OnSimConnected);
-            }
+                //FIXME
+                //MainClass.client.Objects.OnNewAvatar -= new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
+                MainClass.client.Network.SimChanged -= new EventHandler<SimChangedEventArgs>(Network_SimChanged);
+                MainClass.client.Self.TeleportProgress -= new EventHandler<TeleportEventArgs>(Self_TeleportProgress);
+                MainClass.client.Grid.GridRegion -= new EventHandler<GridRegionEventArgs>(Grid_GridRegion);
+                MainClass.client.Grid.CoarseLocationUpdate -= new EventHandler<CoarseLocationUpdateEventArgs>(Grid_CoarseLocationUpdate);
+                MainClass.client.Network.SimConnected -= new EventHandler<SimConnectedEventArgs>(Network_SimConnected);
+
+                
+             }
             AutoPilot.onAutoPilotFinished -= new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
 
         }
@@ -222,24 +225,31 @@ namespace omvviewerlight
             lastsim = UUID.Zero;
             requested = false;
 
-            MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-            MainClass.client.Objects.OnNewAvatar += new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
-            MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
-            MainClass.client.Grid.OnGridRegion += new OpenMetaverse.GridManager.GridRegionCallback(onGridRegion);
-            AutoPilot.onAutoPilotFinished += new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
-            MainClass.client.Grid.OnCoarseLocationUpdate += new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
-            MainClass.client.Network.OnSimConnected += new NetworkManager.SimConnectedCallback(Network_OnSimConnected);
+            //FIXME
+            //MainClass.client.Objects.OnNewAvatar += new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
 
-  
+            MainClass.client.Network.SimChanged += new EventHandler<SimChangedEventArgs>(Network_SimChanged);
+            MainClass.client.Self.TeleportProgress += new EventHandler<TeleportEventArgs>(Self_TeleportProgress);
+            MainClass.client.Grid.GridRegion += new EventHandler<GridRegionEventArgs>(Grid_GridRegion);
+            MainClass.client.Grid.CoarseLocationUpdate += new EventHandler<CoarseLocationUpdateEventArgs>(Grid_CoarseLocationUpdate);
+            MainClass.client.Network.SimConnected += new EventHandler<SimConnectedEventArgs>(Network_SimConnected);
+
+            AutoPilot.onAutoPilotFinished += new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
+       
         }
 
-        void Network_OnSimConnected(Simulator simulator)
+
+
+
+
+
+        void Network_SimConnected(object sender, SimConnectedEventArgs e)
         {
-            Logger.Log("OnSimConnected for " + simulator.Name, Helpers.LogLevel.Info);
+            Logger.Log("OnSimConnected for " + e.Simulator.Name, Helpers.LogLevel.Info);
             
         }
 
-        void Grid_OnCoarseLocationUpdate(Simulator sim, List<UUID> newEntries, List<UUID> removedEntries)
+        void Grid_CoarseLocationUpdate(object sender, CoarseLocationUpdateEventArgs e)
         {
             Gtk.Application.Invoke(delegate
             {
@@ -281,22 +291,22 @@ namespace omvviewerlight
 
         }
 		
-        public void changeregion(GridRegion region)
+        void Grid_GridRegion(object sender, GridRegionEventArgs e)
 		{
             
-            if (current_region.RegionHandle == region.RegionHandle)
+            if (current_region.RegionHandle == e.Region.RegionHandle)
             {
                 //Nothing to do;
                 return;
             }
 
-			current_region=region;
-			this.objects_map_ID=region.MapImageID;
+			current_region=e.Region;
+			this.objects_map_ID=e.Region.MapImageID;
 			Gdk.Pixbuf pb= MainClass.GetResource("trying.png");
 			objects_map = new Gtk.Image(pb);
 			this.image.Pixbuf=pb;	
 
-			TryGetImage tgi=new TryGetImage(this.objects_map,region.MapImageID,350,350,true);
+			TryGetImage tgi=new TryGetImage(this.objects_map,e.Region.MapImageID,350,350,true);
             tgi.OnDecodeComplete += new TryGetImage.Decodecomplete(delegate()
 			{
 				  Gtk.Application.Invoke(delegate
@@ -367,9 +377,9 @@ namespace omvviewerlight
             }
         }
 
-		void onTeleport(string Message, OpenMetaverse.TeleportStatus status,OpenMetaverse.TeleportFlags flags)
+        void Self_TeleportProgress(object sender, TeleportEventArgs e)
 	    {
-			if(status==OpenMetaverse.TeleportStatus.Finished)
+			if(e.Status==OpenMetaverse.TeleportStatus.Finished)
 			{
 
                 if (lastsim != null && this_maps_sim!=null)
@@ -394,15 +404,16 @@ namespace omvviewerlight
                     lastsim = this_maps_sim.ID;
 			}
 	    }
-					
-		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
-		{
-			
-	            Gtk.Application.Invoke(delegate
-	                {
-	                    drawavs();
-	                });
-		}
+
+		//FIXME			
+//		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
+//		{
+//			
+//	            Gtk.Application.Invoke(delegate
+//	                {
+//	                    drawavs();
+//	                });
+//		}
 
 			
 		void drawavs()
@@ -482,8 +493,8 @@ namespace omvviewerlight
 			}
 		}
 
-		void onNewSim(Simulator lastsim)
-	    {
+        void Network_SimChanged(object sender, SimChangedEventArgs e)
+        {
 			MainClass.win.map_widget=this;
             Gtk.Application.Invoke(delegate
             {

@@ -76,16 +76,16 @@ namespace omvviewerlight
         void MainClass_onDeregister()
         {
             if (MainClass.client != null)
-                MainClass.client.Directory.OnPlacesReply -= new OpenMetaverse.DirectoryManager.PlacesReplyCallback(onPlaces);
+                MainClass.client.Directory.PlacesReply -= new EventHandler<PlacesReplyEventArgs>(Directory_PlacesReply);
           
         }
 
         void MainClass_onRegister()
         {
-            MainClass.client.Directory.OnPlacesReply += new OpenMetaverse.DirectoryManager.PlacesReplyCallback(onPlaces);
-
+            MainClass.client.Directory.PlacesReply += new EventHandler<PlacesReplyEventArgs>(Directory_PlacesReply);
         }
 
+      
 
         new public void Dispose()
         {
@@ -126,21 +126,21 @@ namespace omvviewerlight
                     return -1;
             }
         }
-				
-			void onPlaces(UUID query,List <OpenMetaverse.DirectoryManager.PlacesSearchData> matchedplaces)
-			{
-				if(query!=queryid)
+
+            void Directory_PlacesReply(object sender, PlacesReplyEventArgs e)
+            {
+				if(e.QueryID!=queryid)
 					return;
 
 			
 			
-                places_found += matchedplaces.Count;
+                places_found += e.MatchedPlaces.Count;
 				Gtk.Application.Invoke(delegate {
 
                     this.label_info.Text = "Search returned " + places_found.ToString() + " results";
 	    
 
-				foreach(OpenMetaverse.DirectoryManager.PlacesSearchData place in matchedplaces)
+				foreach(OpenMetaverse.DirectoryManager.PlacesSearchData place in e.MatchedPlaces)
 				{	
 					Vector3 pos=new Vector3(((int)place.GlobalX)&0x0000FF,((int)place.GlobalY)&0x0000FF,place.GlobalZ);
 					store.AppendValues(place.Name,place.SimName,place.Dwell.ToString(),MainClass.prettyvector(pos,2),pos,place.SnapshotID);

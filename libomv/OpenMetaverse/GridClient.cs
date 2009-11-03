@@ -101,6 +101,8 @@ namespace OpenMetaverse
         /// <summary>Throttling total bandwidth usage, or allocating bandwidth
         /// for specific data stream types</summary>
         public AgentThrottle Throttle;
+
+        public Stats.UtilizationStatistics Stats;
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -118,26 +120,13 @@ namespace OpenMetaverse
             Objects = new ObjectManager(this);
             Groups = new GroupManager(this);
             Assets = new AssetManager(this);
-            Appearance = new AppearanceManager(this, Assets);
+            Appearance = new AppearanceManager(this);
             Inventory = new InventoryManager(this);
             Directory = new DirectoryManager(this);
             Terrain = new TerrainManager(this);
             Sound = new SoundManager(this);
             Throttle = new AgentThrottle(this);
-
-            //if (Settings.ENABLE_INVENTORY_STORE)
-            //    InventoryStore = new Inventory(Inventory);
-            //if (Settings.ENABLE_LIBRARY_STORE)
-            //    LibraryStore = new Inventory(Inventory);
-
-            //Inventory.OnSkeletonsReceived +=
-            //    delegate(InventoryManager manager)
-            //    {
-            //        if (Settings.ENABLE_INVENTORY_STORE)
-            //            InventoryStore.InitializeFromSkeleton(Inventory.InventorySkeleton);
-            //        if (Settings.ENABLE_LIBRARY_STORE)
-            //            LibraryStore.InitializeFromSkeleton(Inventory.LibrarySkeleton);
-            //    };
+            Stats = new OpenMetaverse.Stats.UtilizationStatistics();            
         }
 
         /// <summary>

@@ -109,7 +109,7 @@ public partial class MainWindow: Gtk.Window
         {
             Console.WriteLine("Running logout tasks first");
             if(MainClass.client.Inventory.Store!=null)
-                MainClass.client.Inventory.Store.SaveToDisk(MainClass.client.Settings.TEXTURE_CACHE_DIR + System.IO.Path.DirectorySeparatorChar + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
+                MainClass.client.Inventory.Store.SaveToDisk(MainClass.client.Settings.ASSET_CACHE_DIR + System.IO.Path.DirectorySeparatorChar + MainClass.client.Inventory.Store.RootFolder.UUID.ToString() + ".osl");
             Console.WriteLine("Done");
         }
      
@@ -237,59 +237,53 @@ public partial class MainWindow: Gtk.Window
 
     void MainClass_onDeregister()
     {
-        MainClass.client.Self.OnInstantMessage -= new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
-
-        MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-        MainClass.client.Self.OnBalanceUpdated -= new OpenMetaverse.AgentManager.BalanceCallback(onBalance);
-        MainClass.client.Self.OnTeleport -= new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
-        MainClass.client.Network.OnDisconnected -= new OpenMetaverse.NetworkManager.DisconnectedCallback(onDisconnect);
-
-        MainClass.client.Friends.OnFriendshipOffered -= new OpenMetaverse.FriendsManager.FriendshipOfferedEvent(onFriendship);
-        MainClass.client.Self.OnAlertMessage -= new OpenMetaverse.AgentManager.AlertMessageCallback(onAlertMessage);
-        MainClass.client.Self.OnScriptQuestion -= new OpenMetaverse.AgentManager.ScriptQuestionCallback(onScriptCallback);
-        MainClass.client.Self.OnScriptDialog -= new OpenMetaverse.AgentManager.ScriptDialogCallback(onScriptDialogue);
-        MainClass.client.Self.OnGroupChatLeft -= new OpenMetaverse.AgentManager.GroupChatLeftCallback(onLeaveGroupChat);
-        MainClass.client.Friends.OnFriendshipResponse -= new FriendsManager.FriendshipResponseEvent(Friends_OnFriendshipResponse);
-        MainClass.client.Friends.OnFriendshipTerminated -= new FriendsManager.FriendshipTerminatedEvent(Friends_OnFriendshipTerminated);
-        MainClass.client.Avatars.OnAvatarGroups -= new OpenMetaverse.AvatarManager.AvatarGroupsCallback(onAvatarGroups);
-
-        MainClass.client.Parcels.OnParcelDwell -= new ParcelManager.ParcelDwellCallback(Parcels_OnParcelDwell);
-        MainClass.client.Inventory.OnObjectOffered -= new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
-
-        MainClass.client.Network.OnCurrentSimChanged -= new NetworkManager.CurrentSimChangedCallback(Network_OnCurrentSimChanged);
-        MainClass.client.Grid.OnGridRegion -= new GridManager.GridRegionCallback(Grid_OnGridRegion);
-        MainClass.client.Self.OnAvatarSitResponse -= new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
-   
+        MainClass.client.Self.IM -= new EventHandler<InstantMessageEventArgs>(Self_IM);
+        MainClass.client.Network.LoginProgress -= new EventHandler<LoginProgressEventArgs>(Network_LoginProgress);
+        MainClass.client.Self.MoneyBalanceReply -= new EventHandler<MoneyBalanceReplyEventArgs>(Self_MoneyBalanceReply);
+        MainClass.client.Self.TeleportProgress -= new EventHandler<TeleportEventArgs>(Self_TeleportProgress);
+        MainClass.client.Network.Disconnected -= new EventHandler<DisconnectedEventArgs>(Network_Disconnected);
+        MainClass.client.Friends.FriendshipOffered -= new EventHandler<FriendshipOfferedEventArgs>(Friends_FriendshipOffered);
+        MainClass.client.Self.AlertMessage -= new EventHandler<AlertMessageEventArgs>(Self_AlertMessage);
+        MainClass.client.Self.ScriptQuestion -= new EventHandler<ScriptQuestionEventArgs>(Self_ScriptQuestion);
+        MainClass.client.Self.ScriptDialog -= new EventHandler<ScriptDialogEventArgs>(Self_ScriptDialog);
+        MainClass.client.Self.GroupChatLeft -= new EventHandler<GroupChatLeftEventArgs>(Self_GroupChatLeft);
+        MainClass.client.Friends.FriendshipResponse -= new EventHandler<FriendshipResponseEventArgs>(Friends_FriendshipResponse);
+        MainClass.client.Friends.FriendshipTerminated -= new EventHandler<FriendshipTerminatedEventArgs>(Friends_FriendshipTerminated);
+        MainClass.client.Parcels.ParcelDwellReply -= new EventHandler<ParcelDwellReplyEventArgs>(Parcels_ParcelDwellReply);
+        MainClass.client.Inventory.InventoryObjectOffered -= new EventHandler<InventoryObjectOfferedEventArgs>(Inventory_InventoryObjectOffered);
+        MainClass.client.Network.SimChanged -= new EventHandler<SimChangedEventArgs>(Network_SimChanged);
+        MainClass.client.Grid.GridRegion -= new EventHandler<GridRegionEventArgs>(Grid_GridRegion);
+        MainClass.client.Self.AvatarSitResponse -= new EventHandler<AvatarSitResponseEventArgs>(Self_AvatarSitResponse);
+        MainClass.client.Groups.CurrentGroups -= new EventHandler<CurrentGroupsEventArgs>(Groups_CurrentGroups);
      
     }
 
     void MainClass_onRegister()
     {
-        MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
 
-        MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-        MainClass.client.Self.OnBalanceUpdated += new OpenMetaverse.AgentManager.BalanceCallback(onBalance);
-        MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
-        MainClass.client.Network.OnDisconnected += new OpenMetaverse.NetworkManager.DisconnectedCallback(onDisconnect);
-
-        MainClass.client.Friends.OnFriendshipOffered += new OpenMetaverse.FriendsManager.FriendshipOfferedEvent(onFriendship);
-        MainClass.client.Self.OnAlertMessage += new OpenMetaverse.AgentManager.AlertMessageCallback(onAlertMessage);
-        MainClass.client.Self.OnScriptQuestion += new OpenMetaverse.AgentManager.ScriptQuestionCallback(onScriptCallback);
-        MainClass.client.Self.OnScriptDialog += new OpenMetaverse.AgentManager.ScriptDialogCallback(onScriptDialogue);
-        MainClass.client.Self.OnGroupChatLeft += new OpenMetaverse.AgentManager.GroupChatLeftCallback(onLeaveGroupChat);
-        MainClass.client.Friends.OnFriendshipResponse += new FriendsManager.FriendshipResponseEvent(Friends_OnFriendshipResponse);
-        MainClass.client.Friends.OnFriendshipTerminated += new FriendsManager.FriendshipTerminatedEvent(Friends_OnFriendshipTerminated);
-        MainClass.client.Avatars.OnAvatarGroups += new OpenMetaverse.AvatarManager.AvatarGroupsCallback(onAvatarGroups);
-
-        MainClass.client.Parcels.OnParcelDwell += new ParcelManager.ParcelDwellCallback(Parcels_OnParcelDwell);
-        MainClass.client.Inventory.OnObjectOffered += new InventoryManager.ObjectOfferedCallback(Inventory_OnObjectOffered);
-
-        MainClass.client.Network.OnCurrentSimChanged += new NetworkManager.CurrentSimChangedCallback(Network_OnCurrentSimChanged);
-        MainClass.client.Grid.OnGridRegion += new GridManager.GridRegionCallback(Grid_OnGridRegion);
-        MainClass.client.Self.OnAvatarSitResponse += new AgentManager.AvatarSitResponseCallback(Self_OnAvatarSitResponse);
-   
+        MainClass.client.Self.IM += new EventHandler<InstantMessageEventArgs>(Self_IM);
+        MainClass.client.Network.LoginProgress += new EventHandler<LoginProgressEventArgs>(Network_LoginProgress);
+        MainClass.client.Self.MoneyBalanceReply += new EventHandler<MoneyBalanceReplyEventArgs>(Self_MoneyBalanceReply);
+        MainClass.client.Self.TeleportProgress += new EventHandler<TeleportEventArgs>(Self_TeleportProgress);
+        MainClass.client.Network.Disconnected += new EventHandler<DisconnectedEventArgs>(Network_Disconnected);
+        MainClass.client.Friends.FriendshipOffered += new EventHandler<FriendshipOfferedEventArgs>(Friends_FriendshipOffered);
+        MainClass.client.Self.AlertMessage += new EventHandler<AlertMessageEventArgs>(Self_AlertMessage);
+        MainClass.client.Self.ScriptQuestion += new EventHandler<ScriptQuestionEventArgs>(Self_ScriptQuestion);
+        MainClass.client.Self.ScriptDialog += new EventHandler<ScriptDialogEventArgs>(Self_ScriptDialog);
+        MainClass.client.Self.GroupChatLeft += new EventHandler<GroupChatLeftEventArgs>(Self_GroupChatLeft);
+        MainClass.client.Friends.FriendshipResponse += new EventHandler<FriendshipResponseEventArgs>(Friends_FriendshipResponse);
+        MainClass.client.Friends.FriendshipTerminated += new EventHandler<FriendshipTerminatedEventArgs>(Friends_FriendshipTerminated);
+        MainClass.client.Parcels.ParcelDwellReply += new EventHandler<ParcelDwellReplyEventArgs>(Parcels_ParcelDwellReply);
+        MainClass.client.Inventory.InventoryObjectOffered += new EventHandler<InventoryObjectOfferedEventArgs>(Inventory_InventoryObjectOffered);
+        MainClass.client.Network.SimChanged += new EventHandler<SimChangedEventArgs>(Network_SimChanged);
+        MainClass.client.Grid.GridRegion += new EventHandler<GridRegionEventArgs>(Grid_GridRegion);
+        MainClass.client.Self.AvatarSitResponse += new EventHandler<AvatarSitResponseEventArgs>(Self_AvatarSitResponse);
+        MainClass.client.Groups.CurrentGroups += new EventHandler<CurrentGroupsEventArgs>(Groups_CurrentGroups);
+     
+    
     }
 
+   
 
     new public void Dispose()
     {
@@ -298,23 +292,25 @@ public partial class MainWindow: Gtk.Window
         MainClass_onDeregister();
     }
 
-void  Grid_OnGridRegion(GridRegion region)
+
+
+    void Grid_GridRegion(object sender, GridRegionEventArgs e)
 {
     lock (MainClass.win.grid_regions)
     {
-        if(!grid_regions.ContainsKey(region.RegionHandle))
-            grid_regions.Add(region.RegionHandle, region);
+        if(!grid_regions.ContainsKey(e.Region.RegionHandle))
+            grid_regions.Add(e.Region.RegionHandle, e.Region);
     }
 
 }
 
-    void Network_OnCurrentSimChanged(Simulator PreviousSimulator)
+    void Network_SimChanged(object sender, SimChangedEventArgs e)
     {
         if (MainClass.client.Network.LoginStatusCode == LoginStatus.Success)
         {
-            Console.WriteLine("Changed Sim, forcing a rebake");
-            Thread app=new Thread(new ThreadStart(setappearance));
-            app.Start();
+            //Console.WriteLine("Changed Sim, forcing a rebake");
+            //Thread app=new Thread(new ThreadStart(setappearance));
+            //app.Start();
         }
     }
 
@@ -328,29 +324,34 @@ void  Grid_OnGridRegion(GridRegion region)
         appearancesetting.Set();
     }
 
-	void OnInventoryOffered(InstantMessage details,AssetType type,UUID id,bool fromtask)
+    void Inventory_InventoryObjectOffered(object sender, InventoryObjectOfferedEventArgs e)
 	{
+        //FIXME
+        /*
 			Gtk.Application.Invoke(delegate {
                 MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.YesNo, false,details.FromAgentName + " has offered you\n"+details.Message+"\n Would you like to accept");
                 md.Response += delegate { md.Destroy(); };
                 md.ShowAll();
 			});
-
+        */
 			
 	}
-	
-    void Parcels_OnParcelDwell(UUID parcelID, int localID, float dwell)
+
+
+    void Parcels_ParcelDwellReply(object sender, ParcelDwellReplyEventArgs e)
     {
-        if (this.current_parcelid == localID)
+        if (this.current_parcelid == e.LocalID)
         {
             Gtk.Application.Invoke(delegate
             {
-                current_parcel_dwell = (int)dwell;
+                current_parcel_dwell = (int)e.Dwell;
                 this.updatestatusinfo(true);
             });
         }
    }
 
+
+//FIXME??
 	void onAvatarGroups(UUID avatarID, List<AvatarGroup> avatarGroupsi)
 	{
 		Console.WriteLine("On Avatar groups");
@@ -437,7 +438,8 @@ void  Grid_OnGridRegion(GridRegion region)
        }
    }
 
-    void Self_OnAvatarSitResponse(UUID objectID, bool autoPilot, Vector3 cameraAtOffset, Vector3 cameraEyeOffset, bool forceMouselook, Vector3 sitPosition, Quaternion sitRotation)
+
+   	void Self_AvatarSitResponse(object sender, AvatarSitResponseEventArgs e)
     {
 		Gtk.Application.Invoke(delegate{
 	        // we sat down
@@ -462,28 +464,29 @@ void  Grid_OnGridRegion(GridRegion region)
 			this.SittingAction.Activate();		
     }	
 
-    void Friends_OnFriendshipTerminated(UUID agentID, string agentName)
+
+    void Friends_FriendshipTerminated(object sender, FriendshipTerminatedEventArgs e)
     {
         Gtk.Application.Invoke(delegate
         {
-            MessageDialog md = new Gtk.MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Close, true, agentName+" has terminated your friendship");
+            MessageDialog md = new Gtk.MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Close, true, e.AgentName+" has terminated your friendship");
             ResponseType result = (ResponseType)md.Run();
             md.Destroy();	
         });
     }
 
-    void Friends_OnFriendshipResponse(UUID agentID, string agentName, bool accepted)
+    void Friends_FriendshipResponse(object sender, FriendshipResponseEventArgs e)
     {
         Gtk.Application.Invoke(delegate
         {
             string msg = "";
-            if (accepted)
+            if (e.Accepted)
             {
-                msg = agentName + " accepted your friendship request";
+                msg = e.AgentName + " accepted your friendship request";
             }
             else
             {
-                msg = agentName + " declined your friendship request";
+                msg = e.AgentName + " declined your friendship request";
             }
 
             MessageDialog md = new Gtk.MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Close, true, msg);
@@ -492,26 +495,29 @@ void  Grid_OnGridRegion(GridRegion region)
         });
     }	
 
-	void onLeaveGroupChat(UUID session_id)
-	{
-		Console.Write("Left group chat for session "+session_id.ToString()+"\n");
-		if(MainClass.win.active_ims.Contains(session_id))
-		   MainClass.win.active_ims.Remove(session_id);
-		
+
+
+
+    void Self_GroupChatLeft(object sender, GroupChatLeftEventArgs e)
+  	{
+		Console.Write("Left group chat for session "+e.SessionID.ToString()+"\n");
+		if(MainClass.win.active_ims.Contains(e.SessionID))
+		   MainClass.win.active_ims.Remove(e.SessionID);
 	}
-	
-	void onScriptDialogue(string message,string objectName,UUID imageID,UUID objectID,string FirstName,string lastName,int chatChannel,List <string> buttons)
+
+    void Self_ScriptDialog(object sender, ScriptDialogEventArgs e)
 	{
         Gtk.Application.Invoke(delegate
         {
-            ScriptDialogue d = new ScriptDialogue(message, objectName, imageID, objectID, FirstName, lastName, chatChannel, buttons);
+            ScriptDialogue d = new ScriptDialogue(e.Message, e.ObjectName, e.ImageID, e.ObjectID, e.FirstName, e.LastName, e.Channel, e.ButtonLabels);
             d.Show();
         });
 	}
-	
-	void onAlertMessage(string message)
+
+
+    void Self_AlertMessage(object sender, AlertMessageEventArgs e)
 	{
-		if(message=="Autopilot canceled")
+		if(e.Message=="Autopilot canceled")
 		{
 			Console.WriteLine("Autopilot cancled");
 			return;
@@ -519,18 +525,19 @@ void  Grid_OnGridRegion(GridRegion region)
 		
 		Gtk.Application.Invoke(delegate {						
 			string msg;
-			msg="<b>ALERT FROM SECONDLIFE</b>\n"+message;
+			msg="<b>ALERT FROM SECONDLIFE</b>\n"+e.Message;
 			MessageDialog md= new Gtk.MessageDialog(this,DialogFlags.Modal,MessageType.Info,ButtonsType.Close,true,msg);
             md.Response += delegate { md.Destroy(); };
             md.ShowAll();
 		});	
 	}
-	
-	void onScriptCallback(Simulator sim,UUID taskID,UUID itemID,string objectName,string objectOwner,OpenMetaverse.ScriptPermission questions)
+
+
+	void Self_ScriptQuestion(object sender, ScriptQuestionEventArgs e)
 	{
 		string message;
 		
-		switch(questions)
+		switch(e.Questions)
 		{
 		case ScriptPermission.Attach:
 			message="Attach to you";
@@ -572,17 +579,17 @@ void  Grid_OnGridRegion(GridRegion region)
 
 		Gtk.Application.Invoke(delegate {						
 			string msg;
-			msg="The object : "+objectName+"Owner by :"+objectOwner+"Would like to \n"+message+"\n Would you like to allow this?";
+			msg="The object : "+e.ObjectName+"Owner by :"+e.ObjectOwnerName+"Would like to \n"+message+"\n Would you like to allow this?";
 			MessageDialog md= new Gtk.MessageDialog(this,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,true,msg);
             md.Response += delegate(object o, ResponseArgs args)
             {
                 if (args.ResponseId == ResponseType.Yes)
                 {
-                    MainClass.client.Self.ScriptQuestionReply(sim, itemID, taskID, questions);
+                    MainClass.client.Self.ScriptQuestionReply(e.Simulator, e.ItemID, e.TaskID, e.Questions);
                 }
                 else
                 {
-                    MainClass.client.Self.ScriptQuestionReply(sim, itemID, taskID, ScriptPermission.None);
+                    MainClass.client.Self.ScriptQuestionReply(e.Simulator, e.ItemID, e.TaskID, ScriptPermission.None);
                 }
                 md.Destroy();
             };
@@ -595,24 +602,24 @@ void  Grid_OnGridRegion(GridRegion region)
 	{
 		return this.notebook;
 	}
-	
-	void onFriendship(UUID agentID,string agentname,UUID sessionid)
+
+    void Friends_FriendshipOffered(object sender, FriendshipOfferedEventArgs e)
 	{
 		Gtk.Application.Invoke(delegate {						
 		
 			string msg;
-			msg="You have recieved a friendship request from "+agentname+"\n They would like to become your friend \n do you want to accept?";
+			msg="You have recieved a friendship request from "+e.AgentName+"\n They would like to become your friend \n do you want to accept?";
 			MessageDialog md= new Gtk.MessageDialog(this,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,true,msg);
 
             md.Response += delegate(object o, ResponseArgs args)
             {
                 if (args.ResponseId == ResponseType.Yes)
                 {
-                    MainClass.client.Friends.AcceptFriendship(agentID, sessionid);
+                    MainClass.client.Friends.AcceptFriendship(e.AgentID, e.SessionID);
                 }
                 else
                 {
-                    MainClass.client.Friends.DeclineFriendship(agentID, sessionid);
+                    MainClass.client.Friends.DeclineFriendship(e.AgentID, e.SessionID);
                 }
 
                 md.Destroy();
@@ -636,8 +643,10 @@ void  Grid_OnGridRegion(GridRegion region)
 	    notebook.ShowAll();
         return lable;		
 	}
-	
-	void onDisconnect(OpenMetaverse.NetworkManager.DisconnectType Reason,string msg)	                                       
+
+
+
+    void Network_Disconnected(object sender, DisconnectedEventArgs e)
     {
 		Gtk.Application.Invoke(delegate {						
 			if(status_icons!=null)
@@ -649,10 +658,13 @@ void  Grid_OnGridRegion(GridRegion region)
 
 		});
 	}
-			
-	void onTeleport(string Message, OpenMetaverse.TeleportStatus status,OpenMetaverse.TeleportFlags flags)
+
+
+		
+    void Self_TeleportProgress(object sender, TeleportEventArgs e)
     {		
-		Gtk.Application.Invoke(delegate {						
+      
+        Gtk.Application.Invoke(delegate {						
 			status_location.Text="Location: "+MainClass.client.Network.CurrentSim.Name+MainClass.prettyvector(MainClass.client.Self.SimPosition,2);	
 		});
 	}
@@ -744,8 +756,9 @@ void  Grid_OnGridRegion(GridRegion region)
 	        an2.onGroupNameCallBack += delegate(string namex, object[] values) { this.parcel_group = namex; updatestatusinfo(true); };
 	        an2.go();
 
-			MainClass.client.Parcels.DwellRequest(MainClass.client.Network.CurrentSim,parcel.LocalID);
-			
+			MainClass.client.Parcels.RequestDwell(MainClass.client.Network.CurrentSim,parcel.LocalID);
+            
+
 			lastparcelid = parcelid;
 
 			Gtk.Application.Invoke(delegate {		
@@ -776,17 +789,19 @@ void  Grid_OnGridRegion(GridRegion region)
         tooltips1.Enable();
  
     }
-			                                                
-	void onBalance(int balance)
-	{
+
+
+
+    void Self_MoneyBalanceReply(object sender, MoneyBalanceReplyEventArgs e)
+    {
 		Gtk.Application.Invoke(delegate {
-			status_balance_lable.Text=MainClass.client.Self.Balance.ToString();
+			status_balance_lable.Text=e.Balance.ToString();
 		});
 	}
 	
-	void onLogin(LoginStatus login, string message)
+    void Network_LoginProgress(object sender, LoginProgressEventArgs e)
 	{
-        if (login == LoginStatus.Success)
+        if (e.Status == LoginStatus.Success)
         {
             MainClass.client.Self.RequestBalance();
 			MainClass.client.Avatars.RequestAvatarProperties(MainClass.client.Self.AgentID);
@@ -805,7 +820,6 @@ void  Grid_OnGridRegion(GridRegion region)
                 this.GroundSitAction.Sensitive = true;
                 this.SittingAction.Sensitive = false;
 
-                MainClass.client.Groups.OnCurrentGroups += new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
                 MainClass.client.Groups.RequestCurrentGroups();
                 trayIcon.Tooltip = "Logged in as\n" + MainClass.client.Self.Name;
 
@@ -815,17 +829,18 @@ void  Grid_OnGridRegion(GridRegion region)
         {
             Gtk.Application.Invoke(delegate
             {
-                trayIcon.Tooltip = "Status: " + login.ToString();
+                trayIcon.Tooltip = "Status: " + e.Status.ToString();
                
             });
         }
         Gtk.Application.Invoke(delegate
         {
             this.statusbar1.Pop(1);
-            this.statusbar1.Push(1, login.ToString());
+            this.statusbar1.Push(1, e.Status.ToString());
         });
 	}
-	
+
+    
 	bool OnUpdateStatus()
 	{
 
@@ -941,66 +956,65 @@ void  Grid_OnGridRegion(GridRegion region)
                 return System.Text.UTF8Encoding.UTF8.GetString(bytes, 0, bytes.Length - 1);
             else
                 return System.Text.UTF8Encoding.UTF8.GetString(bytes, 0, bytes.Length);
-        }	
-	
-	   	
-	void onIM(InstantMessage im, Simulator sim)
-	{	
+        }
+
+
+ void Self_IM(object sender, InstantMessageEventArgs e)
+ {	
         // Note to self, if i do implement a dispatcher here these two need to be dispatched but not open 
         // new IM tabs so don't treat the same as the rest below.
-		if(im.Dialog==OpenMetaverse.InstantMessageDialog.StartTyping)
+		if(e.IM.Dialog==OpenMetaverse.InstantMessageDialog.StartTyping)
 			return;
 
-        if (im.Dialog == OpenMetaverse.InstantMessageDialog.StopTyping)
+        if (e.IM.Dialog == OpenMetaverse.InstantMessageDialog.StopTyping)
             return;
 
-		if(im.Dialog==OpenMetaverse.InstantMessageDialog.GroupNoticeRequested)
+		if(e.IM.Dialog==OpenMetaverse.InstantMessageDialog.GroupNoticeRequested)
 			return;
 
-        if (im.Dialog == OpenMetaverse.InstantMessageDialog.InventoryOffered)
+        if (e.IM.Dialog == OpenMetaverse.InstantMessageDialog.InventoryOffered)
             return;
     
-		if(im.Dialog==OpenMetaverse.InstantMessageDialog.TaskInventoryOffered)
+		if(e.IM.Dialog==OpenMetaverse.InstantMessageDialog.TaskInventoryOffered)
 		    return;
 		
-        if(im.Dialog==OpenMetaverse.InstantMessageDialog.FriendshipOffered)		
+        if(e.IM.Dialog==OpenMetaverse.InstantMessageDialog.FriendshipOffered)		
             return;
 
-		if(im.Dialog==OpenMetaverse.InstantMessageDialog.InventoryAccepted)
+		if(e.IM.Dialog==OpenMetaverse.InstantMessageDialog.InventoryAccepted)
 		{
 			Gtk.Application.Invoke(delegate {
-                MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Ok, false,im.FromAgentName + " accepted your inventory offer");
+                MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Ok, false,e.IM.FromAgentName + " accepted your inventory offer");
                 md.Response += delegate { md.Destroy(); };
                 md.ShowAll();
 			});
 			return;
 		}
 		
-		if(im.Dialog==OpenMetaverse.InstantMessageDialog.GroupNotice)
+		if(e.IM.Dialog==OpenMetaverse.InstantMessageDialog.GroupNotice)
 		{
 			//Hmm need to handle this differently than a standard IM
 			Gtk.Application.Invoke(delegate {	
-				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Info,ButtonsType.Ok,false,"GROUP NOTICE\nFrom:"+im.FromAgentName+"\n"+im.Message);
+				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Info,ButtonsType.Ok,false,"GROUP NOTICE\nFrom:"+e.IM.FromAgentName+"\n"+e.IM.Message);
                 md.Response += delegate { md.Destroy(); };
                 md.ShowAll();	
 			});
 			return;
 		}
 		
-		if(im.Dialog==OpenMetaverse.InstantMessageDialog.GroupInvitation)
+		if(e.IM.Dialog==OpenMetaverse.InstantMessageDialog.GroupInvitation)
 		{
 			Gtk.Application.Invoke(delegate {	
-				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,false,im.FromAgentName+" has invited you to join a group\n"+im.Message+"\nPress yes to accept or no to decline");
+				MessageDialog md = new MessageDialog(MainClass.win,DialogFlags.DestroyWithParent,MessageType.Question,ButtonsType.YesNo,false,e.IM.FromAgentName+" has invited you to join a group\n"+e.IM.Message+"\nPress yes to accept or no to decline");
 				md.Response += delegate(object o,ResponseArgs args) 
 				{
 					if(args.ResponseId==ResponseType.Yes)
 					{
-	                    MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im.FromAgentID,"",im.IMSessionID,InstantMessageDialog.GroupInvitationAccept,InstantMessageOnline.Offline,MainClass.client.Self.RelativePosition,MainClass.client.Network.CurrentSim.ID,null);
+	                    MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,e.IM.FromAgentID,"",e.IM.IMSessionID,InstantMessageDialog.GroupInvitationAccept,InstantMessageOnline.Offline,MainClass.client.Self.RelativePosition,MainClass.client.Network.CurrentSim.ID,null);
 				    }
 					else
 					{
-	                    MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,im.FromAgentID,"",im.IMSessionID,InstantMessageDialog.GroupInvitationDecline,InstantMessageOnline.Offline,MainClass.client.Self.RelativePosition,MainClass.client.Network.CurrentSim.ID,null);
-			     	
+	                    MainClass.client.Self.InstantMessage(MainClass.client.Self.Name,e.IM.FromAgentID,"",e.IM.IMSessionID,InstantMessageDialog.GroupInvitationDecline,InstantMessageOnline.Offline,MainClass.client.Self.RelativePosition,MainClass.client.Network.CurrentSim.ID,null); 	
 	                }
 					md.Destroy();	
          		};	
@@ -1010,20 +1024,20 @@ void  Grid_OnGridRegion(GridRegion region)
             });			
         }		
 		
-		if(im.Dialog==OpenMetaverse.InstantMessageDialog.RequestTeleport)
+		if(e.IM.Dialog==OpenMetaverse.InstantMessageDialog.RequestTeleport)
 		{
 			//Hmm need to handle this differently than a standard IM
 			Gtk.Application.Invoke(delegate {
-                MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.DestroyWithParent, MessageType.Question, ButtonsType.YesNo, false,im.FromAgentName + " would like you to join them\n" + im.Message + "\nPress yes to teleport or no to ignore");
+                MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.DestroyWithParent, MessageType.Question, ButtonsType.YesNo, false,e.IM.FromAgentName + " would like you to join them\n" + e.IM.Message + "\nPress yes to teleport or no to ignore");
 				md.Response += delegate(object o,ResponseArgs args) 
                 {
 					if(args.ResponseId==ResponseType.Yes)
 					{
-						MainClass.client.Self.TeleportLureRespond(im.FromAgentID,true);
+						MainClass.client.Self.TeleportLureRespond(e.IM.FromAgentID,true);
 					}
 					else
 					{
-						MainClass.client.Self.TeleportLureRespond(im.FromAgentID,false);
+						MainClass.client.Self.TeleportLureRespond(e.IM.FromAgentID,false);
 					}
 					md.Destroy();
 			     };
@@ -1034,56 +1048,56 @@ void  Grid_OnGridRegion(GridRegion region)
 			
 		}
 		
-        if (im.Dialog==InstantMessageDialog.MessageFromObject)
+        if (e.IM.Dialog==InstantMessageDialog.MessageFromObject)
             return; //Its an object Im, chat will grab this for us
 
-        if (im_windows.ContainsKey(im.IMSessionID))
+        if (im_windows.ContainsKey(e.IM.IMSessionID))
 		    return; // Do nothing handler is registered
 		
-		if(active_ims.Contains(im.IMSessionID))
+		if(active_ims.Contains(e.IM.IMSessionID))
            return;
 
         //We only want the following stuff here for a new window create
-        if (im.Dialog != OpenMetaverse.InstantMessageDialog.MessageFromAgent &&
-            im.Dialog != OpenMetaverse.InstantMessageDialog.SessionSend &&
-            im.Dialog != OpenMetaverse.InstantMessageDialog.SessionGroupStart &&
-            im.Dialog != OpenMetaverse.InstantMessageDialog.BusyAutoResponse &&
-            im.Dialog != OpenMetaverse.InstantMessageDialog.SessionAdd
+        if (e.IM.Dialog != OpenMetaverse.InstantMessageDialog.MessageFromAgent &&
+            e.IM.Dialog != OpenMetaverse.InstantMessageDialog.SessionSend &&
+            e.IM.Dialog != OpenMetaverse.InstantMessageDialog.SessionGroupStart &&
+            e.IM.Dialog != OpenMetaverse.InstantMessageDialog.BusyAutoResponse &&
+            e.IM.Dialog != OpenMetaverse.InstantMessageDialog.SessionAdd
             )
         {
             return;
         }
 
-        if (im.BinaryBucket.Length>1)
+        if (e.IM.BinaryBucket.Length>1)
         {           
               Gtk.Application.Invoke(delegate {	
-					ChatConsole imc=new ChatConsole(im);
+					ChatConsole imc=new ChatConsole(e.IM);
 					string lable;
-	                lable=BytesToString(im.BinaryBucket);
-                    makeimwindow(lable, imc, true, im.IMSessionID);
-                    active_ims.Add(im.IMSessionID);
+	                lable=BytesToString(e.IM.BinaryBucket);
+                    makeimwindow(lable, imc, true, e.IM.IMSessionID);
+                    active_ims.Add(e.IM.IMSessionID);
             });
             return;
   		}		
   
             lock (MainClass.win.im_queue)
             {
-                if (im_windows.ContainsKey(im.FromAgentID))
+                if (im_windows.ContainsKey(e.IM.FromAgentID))
                     return; // Do nothing handler is registered
 
-                im_queue.Add(im);
+                im_queue.Add(e.IM);
 
-                if (im_registering.Contains(im.FromAgentID))
+                if (im_registering.Contains(e.IM.FromAgentID))
                     Console.WriteLine("Got 2nd IM when we are still processing window");
                 else
                 {
-                    im_registering.Add(im.FromAgentID);
+                    im_registering.Add(e.IM.FromAgentID);
                     Gtk.Application.Invoke(delegate
                     {
-                        ChatConsole imc = new ChatConsole(im);
+                        ChatConsole imc = new ChatConsole(e.IM);
 
-                        makeimwindow("Waiting...", imc, false, im.FromAgentID);
-                        active_ims.Add(im.FromAgentID);
+                        makeimwindow("Waiting...", imc, false, e.IM.FromAgentID);
+                        active_ims.Add(e.IM.FromAgentID);
                     });
                 }
             }
@@ -1140,13 +1154,13 @@ void  Grid_OnGridRegion(GridRegion region)
         if (MainClass.client != null && this.FlyAction.Active == true)
 	          MainClass.client.Self.Fly(true);	
     }
-	
-    void onGroups(Dictionary<UUID,Group> groups)
-		{
+
+    void Groups_CurrentGroups(object sender, CurrentGroupsEventArgs e)
+    {
 			
 			Gtk.Application.Invoke(delegate {
 				
-				foreach(KeyValuePair <UUID,Group> group in groups)
+				foreach(KeyValuePair <UUID,Group> group in e.Groups)
 				{
 					if(!this.current_groups.Contains(group.Value))
 					{

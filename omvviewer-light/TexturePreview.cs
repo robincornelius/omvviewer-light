@@ -43,7 +43,8 @@ namespace omvviewerlight
 			this.label_title.Text=title;
 			if(isasset)
 			{
-					MainClass.client.Assets.OnAssetReceived += new OpenMetaverse.AssetManager.AssetReceivedCallback(onAsset);
+                    //FIXME
+					//MainClass.client.Assets.OnAssetReceived += new OpenMetaverse.AssetManager.AssetReceivedCallback(onAsset);
 		            if (MainClass.client.Inventory.Store.Contains(texture))
 		            {
 		                // retrieve asset from store
@@ -57,8 +58,9 @@ namespace omvviewerlight
 //							this.textview_notecard.Buffer.Text="Requesting asset, please wait....";
 //							this.entry_title.Text=ii.Name;
 //						});
-						
-					MainClass.client.Assets.RequestInventoryAsset(ii,true);				
+					
+	                //FIXME
+					//MainClass.client.Assets.RequestInventoryAsset(ii,true);				
 				}
 			}
 			else
@@ -73,7 +75,8 @@ namespace omvviewerlight
 			Console.WriteLine("target_asset"+this.target_asset.ToString());
 			if(asset.AssetID!=target_asset)
 				return;
-			MainClass.client.Assets.OnAssetReceived -= new OpenMetaverse.AssetManager.AssetReceivedCallback(onAsset);
+			//FIXME
+            //MainClass.client.Assets.OnAssetReceived -= new OpenMetaverse.AssetManager.AssetReceivedCallback(onAsset);
 			new TryGetImage(this.image,asset.AssetID,false);
 		}		
 	}

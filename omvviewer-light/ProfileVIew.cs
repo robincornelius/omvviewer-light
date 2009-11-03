@@ -49,12 +49,14 @@ namespace omvviewerlight
 	
 			picks_waiting=new List<UUID>();
 			resident=key;
-			
-			MainClass.client.Avatars.OnAvatarProperties += new OpenMetaverse.AvatarManager.AvatarPropertiesCallback(onAvatarProperties);
-			MainClass.client.Avatars.RequestAvatarProperties(key);
-			MainClass.client.Avatars.OnAvatarNames += new OpenMetaverse.AvatarManager.AvatarNamesCallback(on_avnames);
-			MainClass.client.Avatars.OnAvatarPicks += new OpenMetaverse.AvatarManager.AvatarPicksCallback(onPicks);
-			MainClass.client.Avatars.OnPickInfo += new OpenMetaverse.AvatarManager.PickInfoCallback(onPickInfo);
+
+            MainClass.client.Avatars.AvatarPropertiesReply += new EventHandler<AvatarPropertiesReplyEventArgs>(Avatars_AvatarPropertiesReply);
+            MainClass.client.Avatars.UUIDNameReply += new EventHandler<UUIDNameReplyEventArgs>(Avatars_UUIDNameReply);
+            MainClass.client.Avatars.PickInfoReply += new EventHandler<PickInfoReplyEventArgs>(Avatars_PickInfoReply);
+            MainClass.client.Avatars.AvatarPicksReply += new EventHandler<AvatarPicksReplyEventArgs>(Avatars_AvatarPicksReply);
+
+   			MainClass.client.Avatars.RequestAvatarProperties(key);
+	
 			MainClass.client.Avatars.RequestAvatarPicks(key);
             this.DeleteEvent += new DeleteEventHandler(OnDeleteEvent);
 			
@@ -71,7 +73,8 @@ namespace omvviewerlight
 			
 		}
 
-		~ProfileVIew()
+
+        ~ProfileVIew()
 		{
 			Console.WriteLine("ProfileView Cleaned up");
 		}		
@@ -81,10 +84,10 @@ namespace omvviewerlight
         void OnDeleteEvent(object o, DeleteEventArgs args)
         {
             picks_waiting.Clear();
-            MainClass.client.Avatars.OnAvatarProperties -= new OpenMetaverse.AvatarManager.AvatarPropertiesCallback(onAvatarProperties);
-            MainClass.client.Avatars.OnAvatarNames -= new OpenMetaverse.AvatarManager.AvatarNamesCallback(on_avnames);
-            MainClass.client.Avatars.OnAvatarPicks -= new OpenMetaverse.AvatarManager.AvatarPicksCallback(onPicks);
-            MainClass.client.Avatars.OnPickInfo -= new OpenMetaverse.AvatarManager.PickInfoCallback(onPickInfo);
+            MainClass.client.Avatars.AvatarPropertiesReply -= new EventHandler<AvatarPropertiesReplyEventArgs>(Avatars_AvatarPropertiesReply);
+            MainClass.client.Avatars.UUIDNameReply -= new EventHandler<UUIDNameReplyEventArgs>(Avatars_UUIDNameReply);
+            MainClass.client.Avatars.PickInfoReply -= new EventHandler<PickInfoReplyEventArgs>(Avatars_PickInfoReply);
+            MainClass.client.Avatars.AvatarPicksReply -= new EventHandler<AvatarPicksReplyEventArgs>(Avatars_AvatarPicksReply);
             this.DeleteEvent -= new DeleteEventHandler(OnDeleteEvent);
             Console.WriteLine("Profile view go bye bye");
 			this.Destroy();	
@@ -93,32 +96,36 @@ namespace omvviewerlight
 
         }
 			
-		
-		void onPickInfo(UUID pick,ProfilePick info)
+
+
+
+        void Avatars_PickInfoReply(object sender, PickInfoReplyEventArgs e)
 		{				
-			if(!this.picks_waiting.Contains(pick))
+			if(!this.picks_waiting.Contains(e.PickID))
 				return;
 			
-			picks_waiting.Remove(pick);
+			picks_waiting.Remove(e.PickID);
 			   
 			Gtk.Application.Invoke(delegate {	
 			
-				aPick tpick= new aPick(info.SnapshotID,info.Name,info.Desc,info.Name,info.SimName,info.PosGlobal);
-				Gtk.Label lable=new Gtk.Label(info.Name.Substring(0,info.Name.Length>10?10:info.Name.Length));
+				aPick tpick= new aPick(e.Pick.SnapshotID,e.Pick.Name,e.Pick.Desc,e.Pick.Name,e.Pick.SimName,e.Pick.PosGlobal);
+				Gtk.Label lable=new Gtk.Label(e.Pick.Name.Substring(0,e.Pick.Name.Length>10?10:e.Pick.Name.Length));
 				this.ShowAll();
 				
 				this.notebook_picks.InsertPage(tpick,lable,-1);
 				this.notebook_picks.ShowAll();
 			});
 		}
-		
-		void onPicks(UUID avatar, Dictionary<UUID,string> picks)
+
+
+
+		void Avatars_AvatarPicksReply(object sender, AvatarPicksReplyEventArgs e)
 	    {
-			if(avatar!=	resident)
+			if(e.AvatarID!=	resident)
 				return;
 		
 			Gtk.Application.Invoke(delegate {	
-				foreach(KeyValuePair<UUID,string> pick in picks)
+				foreach(KeyValuePair<UUID,string> pick in e.Picks)
 				{	
 					//this.notebook_picks.InsertPage(
 					this.picks_waiting.Add(pick.Key);
@@ -126,14 +133,16 @@ namespace omvviewerlight
 				}
 			});
 		}
-			                                                   
-		void on_avnames(Dictionary<UUID, string> names)
+
+
+	                                                   
+		    void Avatars_UUIDNameReply(object sender, UUIDNameReplyEventArgs e)
 			{
 			//what the hell, lets cache them to the program store if we find them
 			//Possible to do, move this type of stuff more global
 			Console.Write("Got new names \n");
 			
-			foreach(KeyValuePair<UUID,string> name in names)
+			foreach(KeyValuePair<UUID,string> name in e.Names)
 			{
 				//if(!MainClass.av_names.ContainsKey(name.Key))
 					//MainClass.av_names.Add(name.Key,name.Value);		
@@ -166,55 +175,55 @@ namespace omvviewerlight
 				this.QueueDraw();
 			});
 				
-		}		
-		
-		void onAvatarProperties(UUID id,OpenMetaverse.Avatar.AvatarProperties props)
-		{
-			if(id!=	resident)
+		}
+
+        void Avatars_AvatarPropertiesReply(object sender, AvatarPropertiesReplyEventArgs e)
+            {
+			if(e.AvatarID!=	resident)
 				return;
 
 			Gtk.Application.Invoke(delegate {
 				
-			this.label_born.Text=props.BornOn;
+			this.label_born.Text=e.Properties.BornOn;
 
-			partner_key=props.Partner;
+			partner_key=e.Properties.Partner;
 			
-			if(props.Online)
+			if(e.Properties.Online)
 				this.label_status.Text="Online";
 			else
 				this.label_status.Text="Offline";
 			
-			if(props.Transacted)
+			if(e.Properties.Transacted)
 				this.label_pay.Text="Pay info on file";
 			else
 				this.label_pay.Text="No";
 			
-			if(props.Identified)
+			if(e.Properties.Identified)
 				this.label_identified.Text="Yes";
 			else
 				this.label_identified.Text="No";
 			
-			this.textview2.Buffer.Text=props.AboutText;
+			this.textview2.Buffer.Text=e.Properties.AboutText;
 				
-			this.textview3.Buffer.Text=props.FirstLifeText;
+			this.textview3.Buffer.Text=e.Properties.FirstLifeText;
 				
-			profile_pic=props.ProfileImage;
-			firstlife_pic=props.FirstLifeImage;
+			profile_pic=e.Properties.ProfileImage;
+			firstlife_pic=e.Properties.FirstLifeImage;
 
 			TryGetImage getter= new TryGetImage(this.image7,profile_pic,128,128,false);
 			TryGetImage getter2= new TryGetImage(this.image3,firstlife_pic,128,128,false);
 							
-			if(MainClass.name_cache.av_names.ContainsKey(id))
+			if(MainClass.name_cache.av_names.ContainsKey(e.AvatarID))
 			{
-				this.label_name.Text=MainClass.name_cache.av_names[id];
+				this.label_name.Text=MainClass.name_cache.av_names[e.AvatarID];
 			}
 			else
 			{
-				MainClass.client.Avatars.RequestAvatarName(id);
+				MainClass.client.Avatars.RequestAvatarName(e.AvatarID);
 				this.label_name.Text="Waiting....";
 			}
 						
-			if(props.Partner!=UUID.Zero)
+			if(e.Properties.Partner!=UUID.Zero)
 			{	
 				if(MainClass.name_cache.av_names.ContainsKey(partner_key))
 				{

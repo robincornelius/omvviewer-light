@@ -17,9 +17,9 @@ namespace OpenMetaverse.TestClient
             Name = "textures";
             Description = "Turns automatic texture downloading on or off. Usage: textures [on/off]";
             Category = CommandCategory.Objects;
-
-            testClient.Objects.OnNewPrim += new ObjectManager.NewPrimCallback(Objects_OnNewPrim);
-            testClient.Objects.OnNewAvatar += new ObjectManager.NewAvatarCallback(Objects_OnNewAvatar);
+            
+            testClient.Objects.ObjectUpdate += new EventHandler<PrimEventArgs>(Objects_OnNewPrim);            
+            testClient.Objects.AvatarUpdate += Objects_OnNewAvatar;
         }
 
         public override string Execute(string[] args, UUID fromAgentID)
@@ -43,8 +43,9 @@ namespace OpenMetaverse.TestClient
             }
         }
 
-        void Objects_OnNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
+        void Objects_OnNewAvatar(object sender, AvatarUpdateEventArgs e)
         {
+            Avatar avatar = e.Avatar;
             if (enabled)
             {
                 // Search this avatar for textures
@@ -60,14 +61,14 @@ namespace OpenMetaverse.TestClient
 
                             // Determine if this is a baked outfit texture or a normal texture
                             ImageType type = ImageType.Normal;
-                            AppearanceManager.TextureIndex index = (AppearanceManager.TextureIndex)i;
+                            AvatarTextureIndex index = (AvatarTextureIndex)i;
                             switch (index)
                             {
-                                case AppearanceManager.TextureIndex.EyesBaked:
-                                case AppearanceManager.TextureIndex.HeadBaked:
-                                case AppearanceManager.TextureIndex.LowerBaked:
-                                case AppearanceManager.TextureIndex.SkirtBaked:
-                                case AppearanceManager.TextureIndex.UpperBaked:
+                                case AvatarTextureIndex.EyesBaked:
+                                case AvatarTextureIndex.HeadBaked:
+                                case AvatarTextureIndex.LowerBaked:
+                                case AvatarTextureIndex.SkirtBaked:
+                                case AvatarTextureIndex.UpperBaked:
                                     type = ImageType.Baked;
                                     break;
                             }
@@ -79,8 +80,10 @@ namespace OpenMetaverse.TestClient
             }
         }
 
-        void Objects_OnNewPrim(Simulator simulator, Primitive prim, ulong regionHandle, ushort timeDilation)
+        void Objects_OnNewPrim(object sender, PrimEventArgs e)
         {
+            Primitive prim = e.Prim;
+
             if (enabled)
             {
                 // Search this prim for textures

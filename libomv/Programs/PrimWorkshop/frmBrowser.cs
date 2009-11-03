@@ -49,7 +49,7 @@ namespace PrimWorkshop
         int ClickY = 0;
         uint LastHit = 0;
 
-        //
+        //warning CS0414: The private field `PrimWorkshop.frmBrowser.PivotPosition' is assigned but its value is never used
         Vector3 PivotPosition = Vector3.Zero;
         private bool Pivoting;
         Point LastPivot;
@@ -58,7 +58,7 @@ namespace PrimWorkshop
         const int SELECT_BUFSIZE = 512;
         uint[] SelectBuffer = new uint[SELECT_BUFSIZE];
 
-        //
+        //warning CS0414: The private field `PrimWorkshop.frmBrowser.msg' is assigned but its value is never used
         NativeMethods.Message msg;
         private bool AppStillIdle
         {
@@ -146,8 +146,8 @@ namespace PrimWorkshop
             Client.Settings.ALWAYS_DECODE_OBJECTS = true;
             Client.Settings.ALWAYS_REQUEST_OBJECTS = true;
             Client.Settings.SEND_AGENT_UPDATES = true;
-            Client.Settings.USE_TEXTURE_CACHE = true;
-            //Client.Settings.TEXTURE_CACHE_DIR = Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "cache";
+            Client.Settings.USE_ASSET_CACHE = true;
+            //Client.Settings.ASSET_CACHE_DIR = Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "cache";
             Client.Settings.ALWAYS_REQUEST_PARCEL_ACL = false;
             Client.Settings.ALWAYS_REQUEST_PARCEL_DWELL = false;
             // Crank up the throttle on texture downloads
@@ -157,14 +157,13 @@ namespace PrimWorkshop
             Client.Settings.OBJECT_TRACKING = false; // We use our own object tracking system
             Client.Settings.AVATAR_TRACKING = true; //but we want to use the libsl avatar system
 
-            Client.Network.OnLogin += new NetworkManager.LoginCallback(Network_OnLogin);
-            Client.Network.OnDisconnected += new NetworkManager.DisconnectedCallback(Network_OnDisconnected);
-            Client.Network.OnCurrentSimChanged += new NetworkManager.CurrentSimChangedCallback(Network_OnCurrentSimChanged);
-            Client.Network.OnEventQueueRunning += new NetworkManager.EventQueueRunningCallback(Network_OnEventQueueRunning);
-            Client.Objects.OnNewPrim += new ObjectManager.NewPrimCallback(Objects_OnNewPrim);
-            Client.Objects.OnObjectKilled += new ObjectManager.KillObjectCallback(Objects_OnObjectKilled);
+            Client.Network.LoginProgress += Network_OnLogin;
+            Client.Network.Disconnected += Network_OnDisconnected;
+            Client.Network.SimChanged += Network_OnCurrentSimChanged;
+            Client.Network.EventQueueRunning += Network_OnEventQueueRunning;            
+            Client.Objects.ObjectUpdate += Objects_OnNewPrim;
             Client.Terrain.OnLandPatch += new TerrainManager.LandPatchCallback(Terrain_OnLandPatch);
-            Client.Parcels.OnSimParcelsDownloaded += new ParcelManager.SimParcelsDownloaded(Parcels_OnSimParcelsDownloaded);
+            Client.Parcels.SimParcelsDownloaded += new EventHandler<SimParcelsDownloadedEventArgs>(Parcels_SimParcelsDownloaded);
 
             Client.Assets.OnImageRecieveProgress += new AssetManager.ImageReceiveProgressCallback(Assets_OnImageRecieveProgress);
             // Initialize the camera object
@@ -189,6 +188,32 @@ namespace PrimWorkshop
             float[] specularLight = { 0.5f, 0.5f, 0.5f, 0.0f };
             Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_SPECULAR, specularLight);
             */
+        }
+
+        void Objects_NewPrim(object sender, PrimEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        void Parcels_SimParcelsDownloaded(object sender, SimParcelsDownloadedEventArgs e)
+        {
+            TotalPrims = 0;
+
+            e.Parcels.ForEach(
+                delegate(Parcel parcel)
+                {
+                    TotalPrims += parcel.TotalPrims;
+                });
+
+            UpdatePrimProgress(); TotalPrims = 0;
+
+            e.Parcels.ForEach(
+                delegate(Parcel parcel)
+                {
+                    TotalPrims += parcel.TotalPrims;
+                });
+
+            UpdatePrimProgress();
         }
 
 
@@ -222,7 +247,7 @@ namespace PrimWorkshop
             {
                 for (int j = 0; j < 256; j++)
                 {
-                    LookupHeightTable[i + (j * 256)] = new HeightmapLookupValue(i + (j * 256), ((float)i * ((float)j / 127.0f)));
+                    LookupHeightTable[i + (j * 256)] = new HeightmapLookupValue((ushort)(i + (j * 256)), ((float)i * ((float)j / 127.0f)));
                 }
             }
             Array.Sort<HeightmapLookupValue>(LookupHeightTable);
@@ -356,7 +381,7 @@ namespace PrimWorkshop
                 // Copy all of relevant textures from the cache to the temp directory
                 foreach (UUID texture in textureList)
                 {
-                    string tempFileName = Client.Assets.Cache.ImageFileName(texture);
+                    string tempFileName = Client.Assets.Cache.AssetFileName(texture);
 
                     if (!String.IsNullOrEmpty(tempFileName))
                     {
@@ -919,8 +944,9 @@ namespace PrimWorkshop
             }
         }
 
-        private void Objects_OnNewPrim(Simulator simulator, Primitive prim, ulong regionHandle, ushort timeDilation)
+        private void Objects_OnNewPrim(object sender, PrimEventArgs e)
         {
+            Primitive prim = e.Prim;
             if (prim.PrimData.PCode == PCode.Grass || prim.PrimData.PCode == PCode.Tree || prim.PrimData.PCode == PCode.NewTree)
             {
                 lock (RenderFoliageList)
@@ -984,25 +1010,7 @@ namespace PrimWorkshop
 
             lock (RenderPrimList) RenderPrimList[prim.LocalID] = render;
         }
-
-        private void Objects_OnObjectKilled(Simulator simulator, uint objectID)
-        {
-            //
-        }
-
-        private void Parcels_OnSimParcelsDownloaded(Simulator simulator, InternalDictionary<int, Parcel> simParcels, int[,] parcelMap)
-        {
-            TotalPrims = 0;
-
-            simParcels.ForEach(
-                delegate(Parcel parcel)
-                {
-                    TotalPrims += parcel.TotalPrims;
-                });
-
-            UpdatePrimProgress();
-        }
-
+             
         private void Terrain_OnLandPatch(Simulator simulator, int x, int y, int width, float[] data)
         {
             if (Client != null && Client.Network.CurrentSim == simulator)
@@ -1018,13 +1026,13 @@ namespace PrimWorkshop
             }
         }
 
-        private void Network_OnLogin(LoginStatus login, string message)
+        private void Network_OnLogin(object sender, LoginProgressEventArgs e)
         {
-            if (login == LoginStatus.Success)
+            if (e.Status == LoginStatus.Success)
             {
                 // Success!
             }
-            else if (login == LoginStatus.Failed)
+            else if (e.Status == LoginStatus.Failed)
             {
                 BeginInvoke(
                     (MethodInvoker)delegate()
@@ -1037,7 +1045,7 @@ namespace PrimWorkshop
             }
         }
 
-        private void Network_OnDisconnected(NetworkManager.DisconnectType reason, string message)
+        private void Network_OnDisconnected(object sender, DisconnectedEventArgs e)
         {
             BeginInvoke(
                 (MethodInvoker)delegate()
@@ -1047,7 +1055,7 @@ namespace PrimWorkshop
                 });
         }
 
-        private void Network_OnCurrentSimChanged(Simulator PreviousSimulator)
+        private void Network_OnCurrentSimChanged(object sender, SimChangedEventArgs e)
         {
             Console.WriteLine("CurrentSim set to " + Client.Network.CurrentSim + ", downloading parcel information");
             
@@ -1061,9 +1069,9 @@ namespace PrimWorkshop
                 BeginInvoke((MethodInvoker)delegate() { cmdTeleport.Enabled = false; });
         }
 
-        private void Network_OnEventQueueRunning(Simulator simulator)
+        private void Network_OnEventQueueRunning(object sender, EventQueueRunningEventArgs e)
         {
-            if (simulator == Client.Network.CurrentSim)
+            if (e.Simulator == Client.Network.CurrentSim)
                 BeginInvoke((MethodInvoker)delegate() { cmdTeleport.Enabled = true; });
 
             // Now seems like a good time to start requesting parcel information
@@ -1823,10 +1831,10 @@ StartRender:
 
     public struct HeightmapLookupValue : IComparable<HeightmapLookupValue>
     {
-        public int Index;
+        public ushort Index;
         public float Value;
 
-        public HeightmapLookupValue(int index, float value)
+        public HeightmapLookupValue(ushort index, float value)
         {
             Index = index;
             Value = value;

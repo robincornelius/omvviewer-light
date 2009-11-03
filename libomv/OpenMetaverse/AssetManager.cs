@@ -31,6 +31,9 @@ using System.IO;
 using OpenMetaverse;
 using OpenMetaverse.Packets;
 using OpenMetaverse.Assets;
+using OpenMetaverse.Http;
+using OpenMetaverse.StructuredData;
+using OpenMetaverse.Messages.Linden;
 
 namespace OpenMetaverse
 {
@@ -60,7 +63,7 @@ namespace OpenMetaverse
         /// <summary>Equivalent to a 404 error</summary>
         UnknownSource = -2,
         /// <summary>Client does not have permission for that resource</summary>
-        InsufficientPermissiosn = -3,
+        InsufficientPermissions = -3,
         /// <summary>Unknown status</summary>
         Unknown = -4
     }
@@ -192,8 +195,8 @@ namespace OpenMetaverse
         public StatusCode Status;
         public float Priority;
         public Simulator Simulator;
-
-        internal AutoResetEvent HeaderReceivedEvent = new AutoResetEvent(false);
+        public AssetManager.AssetReceivedCallback Callback;
+        internal ManualResetEvent HeaderReceivedEvent = new ManualResetEvent(false);
 
         public AssetDownload()
             : base()
@@ -208,9 +211,9 @@ namespace OpenMetaverse
     {
         public ulong XferID;
         public UUID VFileID;
-        public AssetType Type;
         public uint PacketNum;
         public string Filename = String.Empty;
+        public TransferError Error = TransferError.None;
 
         public XferDownload()
             : base()
@@ -231,7 +234,7 @@ namespace OpenMetaverse
         public int DiscardLevel;
         public float Priority;
         internal int InitialDataSize;
-        internal AutoResetEvent HeaderReceivedEvent = new AutoResetEvent(false);
+        internal ManualResetEvent HeaderReceivedEvent = new ManualResetEvent(false);
 
         public ImageDownload()
             : base()
@@ -288,6 +291,9 @@ namespace OpenMetaverse
     /// </summary>
     public class AssetManager
     {
+        /// <summary>Number of milliseconds to wait for a transfer header packet if out of order data was received</summary>
+        const int TRANSFER_HEADER_TIMEOUT = 1000 * 15;
+
         #region Delegates
 
         /// <summary>
@@ -306,6 +312,11 @@ namespace OpenMetaverse
         /// </summary>
         /// <param name="upload"></param>
         public delegate void AssetUploadedCallback(AssetUpload upload);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newAssetID"></param>
+        public delegate void BakedTextureUploadedCallback(UUID newAssetID);
         /// <summary>
         /// 
         /// </summary>
@@ -330,8 +341,6 @@ namespace OpenMetaverse
         #region Events
 
         /// <summary></summary>
-        public event AssetReceivedCallback OnAssetReceived;
-        /// <summary></summary>
         public event XferReceivedCallback OnXferReceived;
         /// <summary></summary>
         public event AssetUploadedCallback OnAssetUploaded;
@@ -344,7 +353,7 @@ namespace OpenMetaverse
         #endregion Events
 
         /// <summary>Texture download cache</summary>
-        public TextureCache Cache;
+        public AssetCache Cache;
 
         private TexturePipeline Texture;
 
@@ -363,24 +372,37 @@ namespace OpenMetaverse
         public AssetManager(GridClient client)
         {
             Client = client;
-            Cache = new TextureCache(client);
+            Cache = new AssetCache(client);
             Texture = new TexturePipeline(client);
 
             // Transfer packets for downloading large assets
-            Client.Network.RegisterCallback(PacketType.TransferInfo, new NetworkManager.PacketCallback(TransferInfoHandler));
-            Client.Network.RegisterCallback(PacketType.TransferPacket, new NetworkManager.PacketCallback(TransferPacketHandler));
+            Client.Network.RegisterCallback(PacketType.TransferInfo, TransferInfoHandler);
+            Client.Network.RegisterCallback(PacketType.TransferPacket, TransferPacketHandler);
 
             // Xfer packets for uploading large assets
-            Client.Network.RegisterCallback(PacketType.RequestXfer, new NetworkManager.PacketCallback(RequestXferHandler));
-            Client.Network.RegisterCallback(PacketType.ConfirmXferPacket, new NetworkManager.PacketCallback(ConfirmXferPacketHandler));
-            Client.Network.RegisterCallback(PacketType.AssetUploadComplete, new NetworkManager.PacketCallback(AssetUploadCompleteHandler));
+            Client.Network.RegisterCallback(PacketType.RequestXfer, RequestXferHandler);
+            Client.Network.RegisterCallback(PacketType.ConfirmXferPacket, ConfirmXferPacketHandler);
+            Client.Network.RegisterCallback(PacketType.AssetUploadComplete, AssetUploadCompleteHandler);
 
-            // Xfer packet for downloading misc assets
-            Client.Network.RegisterCallback(PacketType.SendXferPacket, new NetworkManager.PacketCallback(SendXferPacketHandler));
+            // Xfer packets for downloading misc assets
+            Client.Network.RegisterCallback(PacketType.SendXferPacket, SendXferPacketHandler);
+            Client.Network.RegisterCallback(PacketType.AbortXfer, AbortXferHandler);
 
             // Simulator is responding to a request to download a file
-            Client.Network.RegisterCallback(PacketType.InitiateDownload, new NetworkManager.PacketCallback(InitiateDownloadPacketHandler));
+            Client.Network.RegisterCallback(PacketType.InitiateDownload, InitiateDownloadPacketHandler);
 
+        }
+        
+        /// <summary>
+        /// Request an asset download
+        /// </summary>
+        /// <param name="assetID">Asset UUID</param>
+        /// <param name="type">Asset type, must be correct for the transfer to succeed</param>
+        /// <param name="priority">Whether to give this transfer an elevated priority</param>
+        /// <param name="callback">The callback to fire when the simulator responds with the asset data</param>
+        public void RequestAsset(UUID assetID, AssetType type, bool priority, AssetReceivedCallback callback)
+        {
+            RequestAsset(assetID, type, priority, SourceType.Asset, UUID.Random(), callback);
         }
 
         /// <summary>
@@ -389,17 +411,51 @@ namespace OpenMetaverse
         /// <param name="assetID">Asset UUID</param>
         /// <param name="type">Asset type, must be correct for the transfer to succeed</param>
         /// <param name="priority">Whether to give this transfer an elevated priority</param>
-        /// <returns>The transaction ID generated for this transfer</returns>
-        public UUID RequestAsset(UUID assetID, AssetType type, bool priority)
+        /// <param name="sourceType">Source location of the requested asset</param>
+        /// <param name="callback">The callback to fire when the simulator responds with the asset data</param>
+        public void RequestAsset(UUID assetID, AssetType type, bool priority, SourceType sourceType, AssetReceivedCallback callback)
+        {
+            RequestAsset(assetID, type, priority, sourceType, UUID.Random(), callback);
+        }
+
+        /// <summary>
+        /// Request an asset download
+        /// </summary>
+        /// <param name="assetID">Asset UUID</param>
+        /// <param name="type">Asset type, must be correct for the transfer to succeed</param>
+        /// <param name="priority">Whether to give this transfer an elevated priority</param>
+        /// <param name="sourceType">Source location of the requested asset</param>
+        /// <param name="transactionID">UUID of the transaction</param>
+        /// <param name="callback">The callback to fire when the simulator responds with the asset data</param>
+        public void RequestAsset(UUID assetID, AssetType type, bool priority, SourceType sourceType, UUID transactionID, AssetReceivedCallback callback)
         {
             AssetDownload transfer = new AssetDownload();
-            transfer.ID = UUID.Random();
+            transfer.ID = transactionID;
             transfer.AssetID = assetID;
             //transfer.AssetType = type; // Set in TransferInfoHandler.
             transfer.Priority = 100.0f + (priority ? 1.0f : 0.0f);
             transfer.Channel = ChannelType.Asset;
-            transfer.Source = SourceType.Asset;
+            transfer.Source = sourceType;
             transfer.Simulator = Client.Network.CurrentSim;
+            transfer.Callback = callback;
+
+            // Check asset cache first
+            if (callback != null && Cache.HasAsset(assetID))
+            {
+                byte[] data = Cache.GetCachedAssetBytes(assetID);
+                transfer.AssetData = data;
+                transfer.Success = true;
+                transfer.Status = StatusCode.OK;
+
+                Asset asset = CreateAssetWrapper(type);
+                asset.AssetData = data;
+                asset.AssetID = assetID;
+
+                try { callback(transfer, asset); }
+                catch (Exception e) { Logger.Log(e.Message, Helpers.LogLevel.Error, Client, e); }
+
+                return;
+            }
 
             // Add this transfer to the dictionary
             lock (Transfers) Transfers[transfer.ID] = transfer;
@@ -417,7 +473,6 @@ namespace OpenMetaverse
             request.TransferInfo.Params = paramField;
 
             Client.Network.SendPacket(request, transfer.Simulator);
-            return transfer.ID;
         }
 
         /// <summary>
@@ -475,7 +530,8 @@ namespace OpenMetaverse
         /// <param name="ownerID">The owner of this asset</param>
         /// <param name="type">Asset type</param>
         /// <param name="priority">Whether to prioritize this asset download or not</param>
-        public UUID RequestInventoryAsset(UUID assetID, UUID itemID, UUID taskID, UUID ownerID, AssetType type, bool priority)
+        /// <param name="callback"></param>
+        public void RequestInventoryAsset(UUID assetID, UUID itemID, UUID taskID, UUID ownerID, AssetType type, bool priority, AssetReceivedCallback callback)
         {
             AssetDownload transfer = new AssetDownload();
             transfer.ID = UUID.Random();
@@ -485,6 +541,25 @@ namespace OpenMetaverse
             transfer.Channel = ChannelType.Asset;
             transfer.Source = SourceType.SimInventoryItem;
             transfer.Simulator = Client.Network.CurrentSim;
+            transfer.Callback = callback;
+
+            // Check asset cache first
+            if (callback != null && Cache.HasAsset(assetID))
+            {
+                byte[] data = Cache.GetCachedAssetBytes(assetID);
+                transfer.AssetData = data;
+                transfer.Success = true;
+                transfer.Status = StatusCode.OK;
+
+                Asset asset = CreateAssetWrapper(type);
+                asset.AssetData = data;
+                asset.AssetID = assetID;
+
+                try { callback(transfer, asset); }
+                catch (Exception e) { Logger.Log(e.Message, Helpers.LogLevel.Error, Client, e); }
+                
+                return;
+            }
 
             // Add this transfer to the dictionary
             lock (Transfers) Transfers[transfer.ID] = transfer;
@@ -507,12 +582,11 @@ namespace OpenMetaverse
             request.TransferInfo.Params = paramField;
 
             Client.Network.SendPacket(request, transfer.Simulator);
-            return transfer.ID;
         }
 
-        public UUID RequestInventoryAsset(InventoryItem item, bool priority)
+        public void RequestInventoryAsset(InventoryItem item, bool priority, AssetReceivedCallback callback)
         {
-            return RequestInventoryAsset(item.AssetUUID, item.UUID, UUID.Zero, item.OwnerID, item.AssetType, priority);
+            RequestInventoryAsset(item.AssetUUID, item.UUID, UUID.Zero, item.OwnerID, item.AssetType, priority, callback);
         }
 
         public void RequestEstateAsset()
@@ -633,7 +707,7 @@ namespace OpenMetaverse
             // Wait for the previous upload to receive a RequestXferPacket
             lock (PendingUploadLock)
             {
-                const int UPLOAD_CONFIRM_TIMEOUT = 10000;
+                const int UPLOAD_CONFIRM_TIMEOUT = 20 * 1000;
                 const int SLEEP_INTERVAL = 50;
                 int t = 0;
                 while (WaitingForUploadConfirm && t < UPLOAD_CONFIRM_TIMEOUT)
@@ -657,6 +731,107 @@ namespace OpenMetaverse
             }
         }
 
+        public void RequestUploadBakedTexture(byte[] textureData, BakedTextureUploadedCallback callback)
+        {
+            Uri url = null;
+
+            Caps caps = Client.Network.CurrentSim.Caps;
+            if (caps != null)
+                url = caps.CapabilityURI("UploadBakedTexture");
+
+            if (url != null)
+            {
+                // Fetch the uploader capability
+                CapsClient request = new CapsClient(url);
+                request.OnComplete +=
+                    delegate(CapsClient client, OSD result, Exception error)
+                    {
+                        if (error == null && result is OSDMap)
+                        {
+                            UploadBakedTextureMessage message = new UploadBakedTextureMessage();
+                            message.Deserialize((OSDMap)result);
+
+                            if (message.Request.State == "upload")
+                            {
+                                Uri uploadUrl = ((UploaderRequestUpload)message.Request).Url;
+
+                                if (uploadUrl != null)
+                                {
+                                    // POST the asset data
+                                    CapsClient upload = new CapsClient(uploadUrl);
+                                    upload.OnComplete +=
+                                        delegate(CapsClient client2, OSD result2, Exception error2)
+                                        {
+                                            if (error2 == null && result2 is OSDMap)
+                                            {
+                                                UploadBakedTextureMessage message2 = new UploadBakedTextureMessage();
+                                                message2.Deserialize((OSDMap)result2);
+
+                                                if (message2.Request.State == "complete")
+                                                {
+                                                    callback(((UploaderRequestComplete)message2.Request).AssetID);
+                                                    return;
+                                                }
+                                            }
+
+                                            Logger.Log("Bake upload failed during asset upload", Helpers.LogLevel.Warning, Client);
+                                            callback(UUID.Zero);
+                                        };
+                                    upload.BeginGetResponse(textureData, "application/octet-stream", Client.Settings.CAPS_TIMEOUT);
+                                    return;
+                                }
+                            }
+                        }
+
+                        Logger.Log("Bake upload failed during uploader retrieval", Helpers.LogLevel.Warning, Client);
+                        callback(UUID.Zero);
+                    };
+                request.BeginGetResponse(new OSDMap(), OSDFormat.Xml, Client.Settings.CAPS_TIMEOUT);
+            }
+            else
+            {
+                Logger.Log("UploadBakedTexture not available, falling back to UDP method", Helpers.LogLevel.Info, Client);
+
+                ThreadPool.QueueUserWorkItem(
+                    delegate(object o)
+                    {
+                        UUID transactionID = UUID.Random();
+                        BakedTextureUploadedCallback uploadCallback = (BakedTextureUploadedCallback)o;
+                        AutoResetEvent uploadEvent = new AutoResetEvent(false);
+                        AssetUploadedCallback udpCallback =
+                            delegate(AssetUpload upload)
+                            {
+                                if (upload.ID == transactionID)
+                                {
+                                    uploadEvent.Set();
+                                    uploadCallback(upload.Success ? upload.AssetID : UUID.Zero);
+                                }
+                            };
+
+                        OnAssetUploaded += udpCallback;
+
+                        UUID assetID;
+                        bool success;
+
+                        try
+                        {
+                            RequestUpload(out assetID, AssetType.Texture, textureData, true, transactionID);
+                            success = uploadEvent.WaitOne(Client.Settings.TRANSFER_TIMEOUT, false);
+                        }
+                        catch (Exception)
+                        {
+                            success = false;
+                        }
+
+                        OnAssetUploaded -= udpCallback;
+
+                        if (!success)
+                            uploadCallback(UUID.Zero);
+                    }, callback
+                );
+            }
+        }
+
         /// <summary>
         /// Request a texture asset from the simulator using the <see cref="TexturePipeline"/> system to 
         /// manage the requests and re-assemble the image from the packets received from the simulator
@@ -668,7 +843,10 @@ namespace OpenMetaverse
         /// to prioritize the request before lower valued requests. An image already being transferred using the <see cref="TexturePipeline"/> can have
         /// its priority changed by resending the request with the new priority value</param>
         /// <param name="discardLevel">Number of quality layers to discard.
-        /// This controls the end marker of the data sent</param>
+        /// This controls the end marker of the data sent. Sending with value -1 combined with priority of 0 cancels an in-progress
+        /// transfer.</param>
+        /// <remarks>A bug exists in the Linden Simulator where a -1 will occasionally be sent with a non-zero priority
+        /// indicating an off-by-one error.</remarks>
         /// <param name="packetStart">The packet number to begin the request at. A value of 0 begins the request
         /// from the start of the asset texture</param>
         /// <param name="callback">The <see cref="TextureDownloadCallback"/> callback to fire when the image is retrieved. The callback
@@ -726,7 +904,7 @@ namespace OpenMetaverse
         /// </example>
         public void RequestImage(UUID textureID, ImageType imageType, float priority, int discardLevel, 
             uint packetStart, TextureDownloadCallback callback, bool progress)
-        {
+        {            
             Texture.RequestTexture(textureID, imageType, priority, discardLevel, packetStart, callback, progress);
         }
 
@@ -835,6 +1013,9 @@ namespace OpenMetaverse
                 case AssetType.Landmark:
                     asset = new AssetLandmark();
                     break;
+                case AssetType.Gesture:
+                    asset = new AssetGesture();
+                    break;
                 default:
                     Logger.Log("Unimplemented asset type: " + type, Helpers.LogLevel.Error, Client);
                     return null;
@@ -914,84 +1095,90 @@ namespace OpenMetaverse
 
         #region Transfer Callbacks
 
-        private void TransferInfoHandler(Packet packet, Simulator simulator)
+        /// <summary>Process an incoming packet and raise the appropriate events</summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">The EventArgs object containing the packet data</param>
+        protected void TransferInfoHandler(object sender, PacketReceivedEventArgs e)
         {
-            if (OnAssetReceived != null)
+            TransferInfoPacket info = (TransferInfoPacket)e.Packet;
+            Transfer transfer;
+            AssetDownload download;
+
+            if (Transfers.TryGetValue(info.TransferInfo.TransferID, out transfer))
             {
-                TransferInfoPacket info = (TransferInfoPacket)packet;
-                Transfer transfer;
-                AssetDownload download;
+                download = (AssetDownload)transfer;
 
-                if (Transfers.TryGetValue(info.TransferInfo.TransferID, out transfer))
+                if (download.Callback == null) return;
+
+                download.Channel = (ChannelType)info.TransferInfo.ChannelType;
+                download.Status = (StatusCode)info.TransferInfo.Status;
+                download.Target = (TargetType)info.TransferInfo.TargetType;
+                download.Size = info.TransferInfo.Size;
+
+                // TODO: Once we support mid-transfer status checking and aborting this
+                // will need to become smarter
+                if (download.Status != StatusCode.OK)
                 {
-                    download = (AssetDownload)transfer;
+                    Logger.Log("Transfer failed with status code " + download.Status, Helpers.LogLevel.Warning, Client);
 
-                    download.Channel = (ChannelType)info.TransferInfo.ChannelType;
-                    download.Status = (StatusCode)info.TransferInfo.Status;
-                    download.Target = (TargetType)info.TransferInfo.TargetType;
-                    download.Size = info.TransferInfo.Size;
+                    lock (Transfers) Transfers.Remove(download.ID);
 
-                    // TODO: Once we support mid-transfer status checking and aborting this
-                    // will need to become smarter
-                    if (download.Status != StatusCode.OK)
-                    {
-                        Logger.Log("Transfer failed with status code " + download.Status, Helpers.LogLevel.Warning, Client);
+                    // No data could have been received before the TransferInfo packet
+                    download.AssetData = null;
 
-                        lock (Transfers) Transfers.Remove(download.ID);
-
-                        // No data could have been received before the TransferInfo packet
-                        download.AssetData = null;
-
-                        // Fire the event with our transfer that contains Success = false;
-                        try { OnAssetReceived(download, null); }
-                        catch (Exception e) { Logger.Log(e.Message, Helpers.LogLevel.Error, Client, e); }
-                    }
-                    else
-                    {
-                        download.AssetData = new byte[download.Size];
-
-                        if (download.Source == SourceType.Asset && info.TransferInfo.Params.Length == 20)
-                        {
-                            download.AssetID = new UUID(info.TransferInfo.Params, 0);
-                            download.AssetType = (AssetType)(sbyte)info.TransferInfo.Params[16];
-
-                            //Client.DebugLog(String.Format("TransferInfo packet received. AssetID: {0} Type: {1}",
-                            //    transfer.AssetID, type));
-                        }
-                        else if (download.Source == SourceType.SimInventoryItem && info.TransferInfo.Params.Length == 100)
-                        {
-                            // TODO: Can we use these?
-                            //UUID agentID = new UUID(info.TransferInfo.Params, 0);
-                            //UUID sessionID = new UUID(info.TransferInfo.Params, 16);
-                            //UUID ownerID = new UUID(info.TransferInfo.Params, 32);
-                            //UUID taskID = new UUID(info.TransferInfo.Params, 48);
-                            //UUID itemID = new UUID(info.TransferInfo.Params, 64);
-                            download.AssetID = new UUID(info.TransferInfo.Params, 80);
-                            download.AssetType = (AssetType)(sbyte)info.TransferInfo.Params[96];
-
-                            //Client.DebugLog(String.Format("TransferInfo packet received. AgentID: {0} SessionID: {1} " + 
-                            //    "OwnerID: {2} TaskID: {3} ItemID: {4} AssetID: {5} Type: {6}", agentID, sessionID, 
-                            //    ownerID, taskID, itemID, transfer.AssetID, type));
-                        }
-                        else
-                        {
-                            Logger.Log("Received a TransferInfo packet with a SourceType of " + download.Source.ToString() +
-                                " and a Params field length of " + info.TransferInfo.Params.Length,
-                                Helpers.LogLevel.Warning, Client);
-                        }
-                    }
+                    // Fire the event with our transfer that contains Success = false;
+                    try { download.Callback(download, null); }
+                    catch (Exception ex) { Logger.Log(ex.Message, Helpers.LogLevel.Error, Client, ex); }
                 }
                 else
                 {
-                    Logger.Log("Received a TransferInfo packet for an asset we didn't request, TransferID: " +
-                        info.TransferInfo.TransferID, Helpers.LogLevel.Warning, Client);
+                    download.AssetData = new byte[download.Size];
+
+                    if (download.Source == SourceType.Asset && info.TransferInfo.Params.Length == 20)
+                    {
+                        download.AssetID = new UUID(info.TransferInfo.Params, 0);
+                        download.AssetType = (AssetType)(sbyte)info.TransferInfo.Params[16];
+
+                        //Client.DebugLog(String.Format("TransferInfo packet received. AssetID: {0} Type: {1}",
+                        //    transfer.AssetID, type));
+                    }
+                    else if (download.Source == SourceType.SimInventoryItem && info.TransferInfo.Params.Length == 100)
+                    {
+                        // TODO: Can we use these?
+                        //UUID agentID = new UUID(info.TransferInfo.Params, 0);
+                        //UUID sessionID = new UUID(info.TransferInfo.Params, 16);
+                        //UUID ownerID = new UUID(info.TransferInfo.Params, 32);
+                        //UUID taskID = new UUID(info.TransferInfo.Params, 48);
+                        //UUID itemID = new UUID(info.TransferInfo.Params, 64);
+                        download.AssetID = new UUID(info.TransferInfo.Params, 80);
+                        download.AssetType = (AssetType)(sbyte)info.TransferInfo.Params[96];
+
+                        //Client.DebugLog(String.Format("TransferInfo packet received. AgentID: {0} SessionID: {1} " + 
+                        //    "OwnerID: {2} TaskID: {3} ItemID: {4} AssetID: {5} Type: {6}", agentID, sessionID, 
+                        //    ownerID, taskID, itemID, transfer.AssetID, type));
+                    }
+                    else
+                    {
+                        Logger.Log("Received a TransferInfo packet with a SourceType of " + download.Source.ToString() +
+                            " and a Params field length of " + info.TransferInfo.Params.Length,
+                            Helpers.LogLevel.Warning, Client);
+                    }
                 }
+                download.HeaderReceivedEvent.Set();
+            }
+            else
+            {
+                Logger.Log("Received a TransferInfo packet for an asset we didn't request, TransferID: " +
+                    info.TransferInfo.TransferID, Helpers.LogLevel.Warning, Client);
             }
         }
 
-        private void TransferPacketHandler(Packet packet, Simulator simulator)
+        /// <summary>Process an incoming packet and raise the appropriate events</summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">The EventArgs object containing the packet data</param>
+        protected void TransferPacketHandler(object sender, PacketReceivedEventArgs e)
         {
-            TransferPacketPacket asset = (TransferPacketPacket)packet;
+            TransferPacketPacket asset = (TransferPacketPacket)e.Packet;
             Transfer transfer;
             AssetDownload download;
 
@@ -1004,7 +1191,7 @@ namespace OpenMetaverse
                     Logger.DebugLog("TransferPacket received ahead of the transfer header, blocking...", Client);
 
                     // We haven't received the header yet, block until it's received or times out
-                    download.HeaderReceivedEvent.WaitOne(1000 * 5, false);
+                    download.HeaderReceivedEvent.WaitOne(TRANSFER_HEADER_TIMEOUT, false);
 
                     if (download.Size == 0)
                     {
@@ -1021,10 +1208,10 @@ namespace OpenMetaverse
                         lock (Transfers) Transfers.Remove(download.ID);
 
                         // Fire the event with our transfer that contains Success = false
-                        if (OnAssetReceived != null)
+                        if (download.Callback != null)
                         {
-                            try { OnAssetReceived(download, null); }
-                            catch (Exception e) { Logger.Log(e.Message, Helpers.LogLevel.Error, Client, e); }
+                            try { download.Callback(download, null); }
+                            catch (Exception ex) { Logger.Log(ex.Message, Helpers.LogLevel.Error, Client, ex); }
                         }
 
                         return;
@@ -1058,10 +1245,13 @@ namespace OpenMetaverse
                     download.Success = true;
                     lock (Transfers) Transfers.Remove(download.ID);
 
-                    if (OnAssetReceived != null)
+                    // Cache successful asset download
+                    Cache.SaveAssetToCache(download.AssetID, download.AssetData);
+
+                    if (download.Callback != null)
                     {
-                        try { OnAssetReceived(download, WrapAsset(download)); }
-                        catch (Exception e) { Logger.Log(e.Message, Helpers.LogLevel.Error, Client, e); }
+                        try { download.Callback(download, WrapAsset(download)); }
+                        catch (Exception ex) { Logger.Log(ex.Message, Helpers.LogLevel.Error, Client, ex); }
                     }
                 }
             }
@@ -1071,28 +1261,24 @@ namespace OpenMetaverse
 
         #region Xfer Callbacks
 
-        /// <summary>
-        /// Packet Handler for InitiateDownloadPacket, sent in response to EstateOwnerMessage 
-        /// requesting download of simulators RAW terrain file.
-        /// </summary>
-        /// <param name="packet">The InitiateDownloadPacket packet</param>
-        /// <param name="simulator">The simulator originating the packet</param>
-        /// <remarks>Only the Estate Owner will receive this when he/she makes the request</remarks>
-        private void InitiateDownloadPacketHandler(Packet packet, Simulator simulator)
+        /// <summary>Process an incoming packet and raise the appropriate events</summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">The EventArgs object containing the packet data</param>
+        protected void InitiateDownloadPacketHandler(object sender, PacketReceivedEventArgs e)
         {
             if (OnInitiateDownload != null)
             {
-                InitiateDownloadPacket request = (InitiateDownloadPacket)packet;
+                InitiateDownloadPacket request = (InitiateDownloadPacket)e.Packet;
                 try { OnInitiateDownload(Utils.BytesToString(request.FileData.SimFilename), 
                     Utils.BytesToString(request.FileData.ViewerFilename)); }
-                catch (Exception e) { Logger.Log(e.Message, Helpers.LogLevel.Error, Client, e); }
-            }
-            
+                catch (Exception ex) { Logger.Log(ex.Message, Helpers.LogLevel.Error, Client, ex); }
+            }            
         }
 
-        
-
-        private void RequestXferHandler(Packet packet, Simulator simulator)
+        /// <summary>Process an incoming packet and raise the appropriate events</summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">The EventArgs object containing the packet data</param>
+        protected void RequestXferHandler(object sender, PacketReceivedEventArgs e)
         {
             if (PendingUpload == null)
                 Logger.Log("Received a RequestXferPacket for an unknown asset upload", Helpers.LogLevel.Warning, Client);
@@ -1101,7 +1287,7 @@ namespace OpenMetaverse
                 AssetUpload upload = PendingUpload;
                 PendingUpload = null;
                 WaitingForUploadConfirm = false;
-                RequestXferPacket request = (RequestXferPacket)packet;
+                RequestXferPacket request = (RequestXferPacket)e.Packet;
 
                 upload.XferID = request.XferID.ID;
                 upload.Type = (AssetType)request.XferID.VFileType;
@@ -1114,9 +1300,12 @@ namespace OpenMetaverse
             }
         }
 
-        private void ConfirmXferPacketHandler(Packet packet, Simulator simulator)
+        /// <summary>Process an incoming packet and raise the appropriate events</summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">The EventArgs object containing the packet data</param>
+        protected void ConfirmXferPacketHandler(object sender, PacketReceivedEventArgs e)
         {
-            ConfirmXferPacketPacket confirm = (ConfirmXferPacketPacket)packet;
+            ConfirmXferPacketPacket confirm = (ConfirmXferPacketPacket)e.Packet;
 
             // Building a new UUID every time an ACK is received for an upload is a horrible
             // thing, but this whole Xfer system is horrible
@@ -1134,7 +1323,7 @@ namespace OpenMetaverse
                 if (OnUploadProgress != null)
                 {
                     try { OnUploadProgress(upload); }
-                    catch (Exception e) { Logger.Log(e.Message, Helpers.LogLevel.Error, Client, e); }
+                    catch (Exception ex) { Logger.Log(ex.Message, Helpers.LogLevel.Error, Client, ex); }
                 }
 
                 if (upload.Transferred < upload.Size)
@@ -1142,9 +1331,12 @@ namespace OpenMetaverse
             }
         }
 
-        private void AssetUploadCompleteHandler(Packet packet, Simulator simulator)
+        /// <summary>Process an incoming packet and raise the appropriate events</summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">The EventArgs object containing the packet data</param>
+        protected void AssetUploadCompleteHandler(object sender, PacketReceivedEventArgs e)
         {
-            AssetUploadCompletePacket complete = (AssetUploadCompletePacket)packet;
+            AssetUploadCompletePacket complete = (AssetUploadCompletePacket)e.Packet;
 
             // If we uploaded an asset in a single packet, RequestXferHandler()
             // will never be called so we need to set this here as well
@@ -1181,7 +1373,7 @@ namespace OpenMetaverse
                     lock (Transfers) Transfers.Remove(foundTransfer.Key);
 
                     try { OnAssetUploaded((AssetUpload)foundTransfer.Value); }
-                    catch (Exception e) { Logger.Log(e.Message, Helpers.LogLevel.Error, Client, e); }
+                    catch (Exception ex) { Logger.Log(ex.Message, Helpers.LogLevel.Error, Client, ex); }
                 }
                 else
                 {
@@ -1193,9 +1385,12 @@ namespace OpenMetaverse
             }
         }
 
-        private void SendXferPacketHandler(Packet packet, Simulator simulator)
+        /// <summary>Process an incoming packet and raise the appropriate events</summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">The EventArgs object containing the packet data</param>
+        protected void SendXferPacketHandler(object sender, PacketReceivedEventArgs e)
         {
-            SendXferPacketPacket xfer = (SendXferPacketPacket)packet;
+            SendXferPacketPacket xfer = (SendXferPacketPacket)e.Packet;
 
             // Lame ulong to UUID conversion, please go away Xfer system
             UUID transferID = new UUID(xfer.XferID.ID);
@@ -1267,9 +1462,40 @@ namespace OpenMetaverse
                     if (OnXferReceived != null)
                     {
                         try { OnXferReceived(download); }
-                        catch (Exception e) { Logger.Log(e.Message, Helpers.LogLevel.Error, Client, e); }
+                        catch (Exception ex) { Logger.Log(ex.Message, Helpers.LogLevel.Error, Client, ex); }
                     }
                 }
+            }
+        }
+
+        /// <summary>Process an incoming packet and raise the appropriate events</summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">The EventArgs object containing the packet data</param>
+        protected void AbortXferHandler(object sender, PacketReceivedEventArgs e)
+        {
+            AbortXferPacket abort = (AbortXferPacket)e.Packet;
+            XferDownload download = null;
+
+            // Lame ulong to UUID conversion, please go away Xfer system
+            UUID transferID = new UUID(abort.XferID.ID);
+
+            lock (Transfers)
+            {
+                Transfer transfer;
+                if (Transfers.TryGetValue(transferID, out transfer))
+                {
+                    download = (XferDownload)transfer;
+                    Transfers.Remove(transferID);
+                }
+            }
+
+            if (download != null && OnXferReceived != null)
+            {
+                download.Success = false;
+                download.Error = (TransferError)abort.XferID.Result;
+
+                try { OnXferReceived(download); }
+                catch (Exception ex) { Logger.Log(ex.Message, Helpers.LogLevel.Error, Client, ex); }
             }
         }
 

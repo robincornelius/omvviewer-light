@@ -115,27 +115,29 @@ namespace omvviewerlight
 
         void MainClass_onDeregister()
         {
-            MainClass.client.Network.OnLogin -= new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-            MainClass.client.Friends.OnFriendOnline -= new OpenMetaverse.FriendsManager.FriendOnlineEvent(onFriendOnline);
-            MainClass.client.Friends.OnFriendOffline -= new OpenMetaverse.FriendsManager.FriendOfflineEvent(onFriendOffline);
-            MainClass.client.Friends.OnFriendshipResponse -= new FriendsManager.FriendshipResponseEvent(Friends_OnFriendshipResponse);
-            MainClass.client.Friends.OnFriendshipTerminated -= new FriendsManager.FriendshipTerminatedEvent(Friends_OnFriendshipTerminated);
-            MainClass.client.Friends.OnFriendRights -= new FriendsManager.FriendRightsEvent(Friends_OnFriendRights);
-
+            MainClass.client.Network.LoginProgress -= new EventHandler<LoginProgressEventArgs>(Network_LoginProgress);
+            MainClass.client.Friends.FriendOnline -= new EventHandler<FriendInfoEventArgs>(Friends_FriendOnline);
+            MainClass.client.Friends.FriendOffline -= new EventHandler<FriendInfoEventArgs>(Friends_FriendOffline);
+            MainClass.client.Friends.FriendshipResponse -= new EventHandler<FriendshipResponseEventArgs>(Friends_FriendshipResponse);
+            MainClass.client.Friends.FriendshipTerminated -= new EventHandler<FriendshipTerminatedEventArgs>(Friends_FriendshipTerminated);
+            MainClass.client.Friends.FriendRightsUpdate -= new EventHandler<FriendInfoEventArgs>(Friends_FriendRightsUpdate);
+        
         }
 
         void MainClass_onRegister()
         {
             store.Clear();
-            MainClass.client.Network.OnLogin += new OpenMetaverse.NetworkManager.LoginCallback(onLogin);
-            MainClass.client.Friends.OnFriendOnline += new OpenMetaverse.FriendsManager.FriendOnlineEvent(onFriendOnline);
-            MainClass.client.Friends.OnFriendOffline += new OpenMetaverse.FriendsManager.FriendOfflineEvent(onFriendOffline);
-            MainClass.client.Friends.OnFriendshipResponse += new FriendsManager.FriendshipResponseEvent(Friends_OnFriendshipResponse);
-            MainClass.client.Friends.OnFriendshipTerminated += new FriendsManager.FriendshipTerminatedEvent(Friends_OnFriendshipTerminated);
-            MainClass.client.Friends.OnFriendRights += new FriendsManager.FriendRightsEvent(Friends_OnFriendRights);
+        
+            MainClass.client.Network.LoginProgress += new EventHandler<LoginProgressEventArgs>(Network_LoginProgress);
+            MainClass.client.Friends.FriendOnline += new EventHandler<FriendInfoEventArgs>(Friends_FriendOnline);
+            MainClass.client.Friends.FriendOffline += new EventHandler<FriendInfoEventArgs>(Friends_FriendOffline);
+            MainClass.client.Friends.FriendshipResponse += new EventHandler<FriendshipResponseEventArgs>(Friends_FriendshipResponse);
+            MainClass.client.Friends.FriendshipTerminated += new EventHandler<FriendshipTerminatedEventArgs>(Friends_FriendshipTerminated);
+            MainClass.client.Friends.FriendRightsUpdate += new EventHandler<FriendInfoEventArgs>(Friends_FriendRightsUpdate);
         }
 
-        new public void Dispose()
+
+            new public void Dispose()
         {
             Console.WriteLine("Disposing of the friendslist control");
 
@@ -183,7 +185,9 @@ namespace omvviewerlight
         }
 
 
-        void Friends_OnFriendRights(FriendInfo friend)
+
+
+        void Friends_FriendRightsUpdate(object sender, FriendInfoEventArgs e)
         {
             Gtk.Application.Invoke(delegate
             {
@@ -219,7 +223,9 @@ namespace omvviewerlight
             return 1;
         }
 
-        void Friends_OnFriendshipTerminated(UUID agentID, string agentName)
+
+        
+        void Friends_FriendshipTerminated(object sender, FriendshipTerminatedEventArgs e)
         {
             Gtk.Application.Invoke(delegate
             {
@@ -231,16 +237,16 @@ namespace omvviewerlight
             });
         }
 
-        void Friends_OnFriendshipResponse(UUID agentID, string agentName, bool accepted)
+        void Friends_FriendshipResponse(object sender, FriendshipResponseEventArgs e)
         {
             Gtk.Application.Invoke(delegate
             {
 				lock(store)
 				{
-                    if (accepted == true)
+                    if (e.Accepted == true)
                     {
-                        Gtk.TreeIter iter = store.AppendValues(online_img, agentName, agentID.ToString(), true);
-                        AsyncNameUpdate ud = new AsyncNameUpdate(agentID, false);
+                        Gtk.TreeIter iter = store.AppendValues(online_img, e.AgentName, e.AgentID.ToString(), true);
+                        AsyncNameUpdate ud = new AsyncNameUpdate(e.AgentID, false);
                         ud.addparameters(iter);
                         ud.onNameCallBack += delegate(string namex, object[] values) { Gtk.TreeIter iterx = (Gtk.TreeIter)values[0]; store.SetValue(iterx, 1, namex); };
                         ud.go();
@@ -249,10 +255,12 @@ namespace omvviewerlight
 			});
         }	
 		
-		void onLogin(LoginStatus status,string message)
+       
+        
+        void Network_LoginProgress(object sender, LoginProgressEventArgs e)
 		{
 						
-			if(LoginStatus.Success==status)
+			if(LoginStatus.Success==e.Status)
 			{
 				Gtk.Application.Invoke(delegate {
 					lock(store)
@@ -263,9 +271,9 @@ namespace omvviewerlight
 				});
 			}
 		}
-		
-		void onFriendOnline(FriendInfo friend)
-		{
+
+        void Friends_FriendOnline(object sender, FriendInfoEventArgs e)
+        {
 			Gtk.Application.Invoke(delegate {
 				lock(store)
 				{
@@ -275,8 +283,8 @@ namespace omvviewerlight
 		
 		}
 		
-		void onFriendOffline(FriendInfo friend)
-		{
+	    void Friends_FriendOffline(object sender, FriendInfoEventArgs e)
+       	{
 			Gtk.Application.Invoke(delegate {			
 				lock(store)
 				{

@@ -56,15 +56,15 @@ namespace omvviewerlight
         void MainClass_onDeregister()
         {
             if (MainClass.client != null)
-                MainClass.client.Directory.OnDirPeopleReply -= new OpenMetaverse.DirectoryManager.DirPeopleReplyCallback(onFindPeople);
-
+                MainClass.client.Directory.DirPeopleReply -= new EventHandler<DirPeopleReplyEventArgs>(Directory_DirPeopleReply);
+       
         }
 
         void MainClass_onRegister()
         {
-            MainClass.client.Directory.OnDirPeopleReply += new OpenMetaverse.DirectoryManager.DirPeopleReplyCallback(onFindPeople);
-
+            MainClass.client.Directory.DirPeopleReply += new EventHandler<DirPeopleReplyEventArgs>(Directory_DirPeopleReply);
         }
+
 
         new public void Dispose()
         {
@@ -72,22 +72,22 @@ namespace omvviewerlight
             MainClass.onDeregister -= new MainClass.deregister(MainClass_onDeregister);
             MainClass_onDeregister();
         }
-		
-		void onFindPeople(UUID query,List <OpenMetaverse.DirectoryManager.AgentSearchData> people)
-		{
-			if(query!=queryid)
+
+        void Directory_DirPeopleReply(object sender, DirPeopleReplyEventArgs e)
+        {
+			if(e.QueryID!=queryid)
 					return;
 
-            people_found += people.Count;
+            people_found += e.MatchedPeople.Count;
 			Gtk.Application.Invoke(delegate {
 
 
 			this.label_info.Text="Search returned "+people_found.ToString()+" results";
 			
-		     if (people.Count == 0)
+		     if (e.MatchedPeople.Count == 0)
                 return;
 		
-			foreach(OpenMetaverse.DirectoryManager.AgentSearchData person in people)
+			foreach(OpenMetaverse.DirectoryManager.AgentSearchData person in e.MatchedPeople)
 			{
 
                 if (person.AgentID == UUID.Zero)
@@ -114,7 +114,7 @@ namespace omvviewerlight
 			int queryStart=0;
 
 			store.Clear();
-			MainClass.client.Directory.StartPeopleSearch(findFlags,searchText,queryStart,queryid);
+			MainClass.client.Directory.StartPeopleSearch(searchText,queryStart);
 		}
 
 		protected virtual void OnButton2Clicked (object sender, System.EventArgs e)

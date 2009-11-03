@@ -105,7 +105,7 @@ namespace omvviewerlight
 
             client=new GridClient();
 
-            client.Settings.USE_TEXTURE_CACHE = true;
+            client.Settings.USE_ASSET_CACHE = true;
             // client.Settings.USE_LLSD_LOGIN = true;
 
             string res_dir = System.AppDomain.CurrentDomain.BaseDirectory + System.IO.Path.DirectorySeparatorChar + "openmetaverse_data";
@@ -117,7 +117,7 @@ namespace omvviewerlight
             string cache = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + System.IO.Path.DirectorySeparatorChar + "omvviewer-light" + System.IO.Path.DirectorySeparatorChar + "omvviewer_cache";
 
             Console.WriteLine("Setting texture cache to :" + cache);
-            client.Settings.TEXTURE_CACHE_DIR = cache;
+            client.Settings.ASSET_CACHE_DIR = cache;
 
             doregister();
         }

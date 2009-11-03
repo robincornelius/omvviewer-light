@@ -93,6 +93,11 @@
             RichTextBox GUI component for displaying a client's status output
             </summary>
         </member>
+        <member name="F:OpenMetaverse.GUI.StatusOutput.LogFile">
+            <summary>
+            A file that output should be logged to (or null, to disable logging)
+            </summary>
+        </member>
         <member name="P:OpenMetaverse.GUI.StatusOutput.Client">
             <summary>
             Gets or sets the GridClient associated with this control
@@ -207,20 +212,9 @@
             TreeView control for an unspecified client's nearby avatar list
             </summary>
         </member>
-        <member name="M:OpenMetaverse.GUI.AvatarList.#ctor(OpenMetaverse.GridClient)">
-            <summary>
-            TreeView control for the specified client's nearby avatar list
-            </summary>
-            <param name="client"></param>
-        </member>
         <member name="M:OpenMetaverse.GUI.AvatarList.ClearItems">
             <summary>
             Thread-safe method for clearing the TreeView control
-            </summary>
-        </member>
-        <member name="P:OpenMetaverse.GUI.AvatarList.Menu">
-            <summary>
-            Gets or sets the context menu associated with this control
             </summary>
         </member>
         <member name="E:OpenMetaverse.GUI.AvatarList.OnAvatarDoubleClick">
@@ -228,9 +222,24 @@
             Triggered when the user double clicks on an avatar in the list
             </summary>
         </member>
+        <member name="E:OpenMetaverse.GUI.AvatarList.OnAvatarAdded">
+            <summary>
+            Triggered when a new avatar is added to the list
+            </summary>
+        </member>
+        <member name="E:OpenMetaverse.GUI.AvatarList.OnAvatarRemoved">
+            <summary>
+            Triggered when an avatar is removed from the list
+            </summary>
+        </member>
         <member name="P:OpenMetaverse.GUI.AvatarList.Client">
             <summary>
             Gets or sets the GridClient associated with this control
+            </summary>
+        </member>
+        <member name="P:OpenMetaverse.GUI.AvatarList.SelectedAvatar">
+            <summary>
+            Returns the current selected avatar in the tracked avatars list
             </summary>
         </member>
         <member name="T:OpenMetaverse.GUI.TrackedAvatar">
@@ -257,6 +266,11 @@
         <member name="M:OpenMetaverse.GUI.LoginPanel.#ctor">
             <summary>
             Panel control for an unspecified client's login preferences
+            </summary>
+        </member>
+        <member name="M:OpenMetaverse.GUI.LoginPanel.Login">
+            <summary>
+            Begins login sequence using the parameters defined in .LoginParams
             </summary>
         </member>
         <member name="P:OpenMetaverse.GUI.LoginPanel.Client">
@@ -294,6 +308,11 @@
             Panel GUI component for interfacing with local chat
             </summary>
         </member>
+        <member name="F:OpenMetaverse.GUI.LocalChat.LogFile">
+            <summary>
+            A file that output should be logged to (or null, to disable logging)
+            </summary>
+        </member>
         <member name="M:OpenMetaverse.GUI.LocalChat.#ctor">
             <summary>
             Panel control for an unspecified client's local chat interaction
@@ -310,7 +329,7 @@
             </summary>
             <param name="name"></param>
             <param name="type"></param>
-            <param name="text"></param>
+            <param name="message"></param>
             <param name="color"></param>
         </member>
         <member name="M:OpenMetaverse.GUI.LocalChat.LogText(System.String,System.Drawing.Color)">

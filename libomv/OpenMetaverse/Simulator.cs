@@ -124,7 +124,7 @@ namespace OpenMetaverse
     }
 
     #endregion Enums
-
+    
     /// <summary>
     /// 
     /// </summary>
@@ -228,12 +228,11 @@ namespace OpenMetaverse
 
         #endregion Structs
 
-        #region Public Members
-
+        #region Public Members        
         /// <summary>A public reference to the client that this Simulator object
         /// is attached to</summary>
         public GridClient Client;
-        /// <summary></summary>
+        /// <summary>A Unique Cache identifier for this simulator</summary>
         public UUID ID = UUID.Zero;
         /// <summary>The capabilities for this simulator</summary>
         public Caps Caps = null;
@@ -284,7 +283,7 @@ namespace OpenMetaverse
         public UUID TerrainDetail2 = UUID.Zero;
         /// <summary></summary>
         public UUID TerrainDetail3 = UUID.Zero;
-        /// <summary></summary>
+        /// <summary>true if your agent has Estate Manager rights on this region</summary>
         public bool IsEstateManager;
         /// <summary></summary>
         public RegionFlags Flags;
@@ -358,7 +357,7 @@ namespace OpenMetaverse
 
         /// <summary>
         /// Provides access to an internal thread-safe multidimensional array containing a x,y grid mapped
-        /// each 64x64 parcel's LocalID.
+        /// to each 64x64 parcel's LocalID.
         /// </summary>
         public int[,] ParcelMap
         {
@@ -451,8 +450,8 @@ namespace OpenMetaverse
         public Simulator(GridClient client, IPEndPoint address, ulong handle)
             : base(address)
         {
-            Client = client;
-
+            Client = client;            
+            
             Handle = handle;
             Network = Client.Network;
             PacketArchive = new IncomingPacketIDCollection(Settings.PACKET_ARCHIVE_SIZE);
@@ -465,10 +464,26 @@ namespace OpenMetaverse
         /// </summary>
         public void Dispose()
         {
-            // Force all the CAPS connections closed for this simulator
-            if (Caps != null)
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public virtual void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                Caps.Disconnect(true);
+                if (AckTimer != null)
+                    AckTimer.Dispose();
+                if (PingTimer != null)
+                    PingTimer.Dispose();
+                if (StatsTimer != null)
+                    StatsTimer.Dispose();
+                if (ConnectedEvent != null)
+                    ConnectedEvent.Close();
+
+                // Force all the CAPS connections closed for this simulator
+                if (Caps != null)
+                    Caps.Disconnect(true);
             }
         }
 
@@ -580,6 +595,10 @@ namespace OpenMetaverse
                 if (AckTimer != null) AckTimer.Dispose();
                 if (StatsTimer != null) StatsTimer.Dispose();
                 if (PingTimer != null) PingTimer.Dispose();
+
+                AckTimer = null;
+                StatsTimer = null;
+                PingTimer = null;
 
                 // Kill the current CAPS system
                 if (Caps != null)
@@ -711,6 +730,13 @@ namespace OpenMetaverse
             }
 
             #endregion Queue or Send
+
+            #region Stats Tracking
+            if (Client.Settings.TRACK_UTILIZATION)
+            {
+                Client.Stats.Update(type.ToString(), OpenMetaverse.Stats.Type.Packet, dataLength, 0);
+            }
+            #endregion
         }
 
         internal void SendPacketFinal(NetworkManager.OutgoingPacket outgoingPacket)
@@ -962,17 +988,25 @@ namespace OpenMetaverse
             Network.PacketInbox.Enqueue(incomingPacket);
 
             #endregion Inbox Insertion
-        }
 
+            #region Stats Tracking
+            if (Client.Settings.TRACK_UTILIZATION)
+            {
+                Client.Stats.Update(packet.Type.ToString(), OpenMetaverse.Stats.Type.Packet, 0, packet.Length);
+            }
+            #endregion
+        }
+        
         protected override void PacketSent(UDPPacketBuffer buffer, int bytesSent)
         {
             // Stats tracking
             Interlocked.Add(ref Stats.SentBytes, bytesSent);
             Interlocked.Increment(ref Stats.SentPackets);
-
-            Client.Network.PacketSent(buffer.Data, bytesSent, this);
+            
+            Client.Network.RaisePacketSentEvent(buffer.Data, bytesSent, this);
         }
 
+        
         /// <summary>
         /// Sends out pending acknowledgements
         /// </summary>
@@ -1033,6 +1067,12 @@ namespace OpenMetaverse
                     {
                         if (outgoing.ResendCount < Client.Settings.MAX_RESEND_COUNT)
                         {
+                            if (Client.Settings.LOG_RESENDS)
+                            {
+                                Logger.DebugLog(String.Format("Resending packet #{0}, {1}ms have passed",
+                                    outgoing.SequenceNumber, now - outgoing.TickCount), Client);
+                            }
+
                             // The TickCount will be set to the current time when the packet
                             // is actually sent out again
                             outgoing.TickCount = 0;
@@ -1043,12 +1083,6 @@ namespace OpenMetaverse
                             // Stats tracking
                             Interlocked.Increment(ref outgoing.ResendCount);
                             Interlocked.Increment(ref Stats.ResentPackets);
-
-                            if (Client.Settings.LOG_RESENDS)
-                            {
-                                Logger.DebugLog(String.Format("Resending packet #{0}, {1}ms have passed",
-                                    outgoing.SequenceNumber, now - outgoing.TickCount), Client);
-                            }
 
                             SendPacketFinal(outgoing);
                         }
@@ -1070,9 +1104,8 @@ namespace OpenMetaverse
             ResendUnacked();
 
             // Start the ACK handling functions again after NETWORK_TICK_INTERVAL milliseconds
-            Timer timer = AckTimer;
-            if (timer != null)
-                timer.Change(Settings.NETWORK_TICK_INTERVAL, Timeout.Infinite);
+            try { AckTimer.Change(Settings.NETWORK_TICK_INTERVAL, Timeout.Infinite); }
+            catch (Exception) { }
         }
 
         private void StatsTimer_Elapsed(object obj)

@@ -3,7 +3,7 @@
     <ProjectType>Local</ProjectType>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D4A55DDA-6039-427F-806A-54D1337D830D}</ProjectGuid>
+    <ProjectGuid>{1324D2EE-B128-4F84-AF10-A1A78758BEAC}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ApplicationIcon></ApplicationIcon>
@@ -14,7 +14,7 @@
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <OutputType>Library</OutputType>
     <AppDesignerFolder></AppDesignerFolder>
     <RootNamespace>OpenMetaverse.Tests</RootNamespace>
@@ -77,17 +77,17 @@
   <ItemGroup>
     <ProjectReference Include="..\OpenMetaverse\OpenMetaverse.csproj">
       <Name>OpenMetaverse</Name>
-      <Project>{1D0D4B43-9007-48D8-9B65-E28F14D47233}</Project>
+      <Project>{D7DBC75C-26AF-4FB8-AAFA-6F43901712CA}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
     <ProjectReference Include="..\OpenMetaverseTypes\OpenMetaverseTypes.csproj">
       <Name>OpenMetaverseTypes</Name>
-      <Project>{E84E2F78-A9B0-4229-8D80-EEB602E0BC0C}</Project>
+      <Project>{324CD9AB-535D-4780-A65D-34DC94D06BE1}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
     <ProjectReference Include="..\OpenMetaverse.StructuredData\OpenMetaverse.StructuredData.csproj">
       <Name>OpenMetaverse.StructuredData</Name>
-      <Project>{B576B3E1-91C2-4AAD-82F1-4D829ADB54F0}</Project>
+      <Project>{C35D2962-1ED7-4503-BD28-EC9A1AF3036A}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
   </ItemGroup>

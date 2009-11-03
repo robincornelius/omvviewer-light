@@ -85,27 +85,26 @@ namespace omvviewerlight
         {
             if (MainClass.client != null)
             {
-                MainClass.client.Groups.OnGroupNames -= new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
-                MainClass.client.Avatars.OnAvatarNames -= new OpenMetaverse.AvatarManager.AvatarNamesCallback(onAvatarNames);
+            MainClass.client.Groups.GroupNamesReply -= new EventHandler<GroupNamesEventArgs>(Groups_GroupNamesReply);
+            MainClass.client.Avatars.UUIDNameReply -= new EventHandler<UUIDNameReplyEventArgs>(Avatars_UUIDNameReply);
             }
         }
 
         void MainClass_onRegister()
         {
-            MainClass.client.Groups.OnGroupNames += new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
-            MainClass.client.Avatars.OnAvatarNames += new OpenMetaverse.AvatarManager.AvatarNamesCallback(onAvatarNames);
-
+            MainClass.client.Groups.GroupNamesReply += new EventHandler<GroupNamesEventArgs>(Groups_GroupNamesReply);
+            MainClass.client.Avatars.UUIDNameReply += new EventHandler<UUIDNameReplyEventArgs>(Avatars_UUIDNameReply);
         }
-		
-		void onAvatarNames(Dictionary <UUID,string>names)
-		{
-			if(names.ContainsKey(av_target))
+   		
+	    void Avatars_UUIDNameReply(object sender, UUIDNameReplyEventArgs e)
+      	{
+			if(e.Names.ContainsKey(av_target))
 			   try_update_name_lable(av_target);
 		}
-		
-		void onGroupNames(Dictionary <UUID,string>groups)
-	    {
-			if(groups.ContainsKey(group_target))
+
+        void Groups_GroupNamesReply(object sender, GroupNamesEventArgs e)
+        {
+			if(e.GroupNames.ContainsKey(group_target))
 			   try_update_group_lable(group_target);	   
 		}
 		

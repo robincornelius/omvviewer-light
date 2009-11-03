@@ -169,7 +169,6 @@ namespace OpenMetaverse
             req.Add("ViewerStartAuction");
             req.Add("ViewerStats");
 
-
             _SeedRequest = new CapsClient(new Uri(_SeedCapsURI));
             _SeedRequest.OnComplete += new CapsClient.CompleteCallback(SeedRequestCompleteHandler);
             _SeedRequest.BeginGetResponse(req, OSDFormat.Xml, Simulator.Client.Settings.CAPS_TIMEOUT);
@@ -231,6 +230,13 @@ namespace OpenMetaverse
                     Simulator.Client.Network.CapsEvents.RaiseEvent(eventName, message, Simulator);
                 else
                     Simulator.Client.Network.CapsEvents.BeginRaiseEvent(eventName, message, Simulator);
+
+                #region Stats Tracking
+                if (Simulator.Client.Settings.TRACK_UTILIZATION)
+                {
+                    Simulator.Client.Stats.Update(eventName, OpenMetaverse.Stats.Type.Message, 0, body.ToString().Length);
+                }
+                #endregion
             }
             else
             {
@@ -258,6 +264,6 @@ namespace OpenMetaverse
                     }
                 }
             }
-        }
+        }        
     }
 }

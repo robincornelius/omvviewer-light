@@ -21,10 +21,10 @@ namespace groupmanager
         Dictionary<UUID, GroupTitle> Titles = new Dictionary<UUID,GroupTitle>();
         Dictionary<UUID, GroupMemberData> MemberData = new Dictionary<UUID, GroupMemberData>();
         Dictionary<UUID, string> Names = new Dictionary<UUID, string>();
-        GroupManager.GroupProfileCallback GroupProfileCallback;
-        GroupManager.GroupMembersCallback GroupMembersCallback;
-        GroupManager.GroupTitlesCallback GroupTitlesCallback;
-        AvatarManager.AvatarNamesCallback AvatarNamesCallback;
+        EventHandler<GroupProfileEventArgs> GroupProfileCallback;
+        EventHandler<GroupMembersReplyEventArgs> GroupMembersCallback;
+        EventHandler<GroupTitlesReplyEventArgs> GroupTitlesCallback;
+        EventHandler<UUIDNameReplyEventArgs> AvatarNamesCallback;
         
         public frmGroupInfo(Group group, GridClient client)
         {
@@ -33,22 +33,23 @@ namespace groupmanager
             while (!IsHandleCreated)
             {
                 // Force handle creation
+                // warning CS0219: The variable `temp' is assigned but its value is never used
                 IntPtr temp = Handle;
             }
 
-            GroupProfileCallback = new GroupManager.GroupProfileCallback(GroupProfileHandler);
-            GroupMembersCallback = new GroupManager.GroupMembersCallback(GroupMembersHandler);
-            GroupTitlesCallback = new GroupManager.GroupTitlesCallback(GroupTitlesHandler);
-            AvatarNamesCallback = new AvatarManager.AvatarNamesCallback(AvatarNamesHandler);
+            GroupMembersCallback = new EventHandler<GroupMembersReplyEventArgs>(GroupMembersHandler);
+            GroupProfileCallback = new EventHandler<GroupProfileEventArgs>(GroupProfileHandler);
+            GroupTitlesCallback = new EventHandler<GroupTitlesReplyEventArgs>(GroupTitlesHandler);
+            AvatarNamesCallback = new EventHandler<UUIDNameReplyEventArgs>(AvatarNamesHandler);
 
             Group = group;
             Client = client;
             
             // Register the callbacks for this form
-            Client.Groups.OnGroupProfile += GroupProfileCallback;
-            Client.Groups.OnGroupMembers += GroupMembersCallback;
-            Client.Groups.OnGroupTitles += GroupTitlesCallback;
-            Client.Avatars.OnAvatarNames += AvatarNamesCallback;
+            Client.Groups.GroupProfile += GroupProfileCallback;
+            Client.Groups.GroupMembersReply += GroupMembersCallback;
+            Client.Groups.GroupTitlesReply += GroupTitlesCallback;
+            Client.Avatars.UUIDNameReply += AvatarNamesCallback;
 
             // Request the group information
             Client.Groups.RequestGroupProfile(Group.ID);
@@ -59,15 +60,15 @@ namespace groupmanager
         ~frmGroupInfo()
         {
             // Unregister the callbacks for this form
-            Client.Groups.OnGroupProfile -= GroupProfileCallback;
-            Client.Groups.OnGroupMembers -= GroupMembersCallback;
-            Client.Groups.OnGroupTitles -= GroupTitlesCallback;
-            Client.Avatars.OnAvatarNames -= AvatarNamesCallback;
+            Client.Groups.GroupProfile -= GroupProfileCallback;
+            Client.Groups.GroupMembersReply -= GroupMembersCallback;
+            Client.Groups.GroupTitlesReply -= GroupTitlesCallback;
+            Client.Avatars.UUIDNameReply -= AvatarNamesCallback;
         }
 
-        private void GroupProfileHandler(Group profile)
+        private void GroupProfileHandler(object sender, GroupProfileEventArgs e)
         {
-            Profile = profile;
+            Profile = e.Group;
 
             if (Group.InsigniaID != UUID.Zero)
                 Client.Assets.RequestImage(Group.InsigniaID, ImageType.Normal,
@@ -119,11 +120,11 @@ namespace groupmanager
             Client.Avatars.RequestAvatarName(Profile.FounderID);
         }
 
-        private void AvatarNamesHandler(Dictionary<UUID, string> names)
+        private void AvatarNamesHandler(object sender, UUIDNameReplyEventArgs e)
         {
             lock (Names)
             {
-                foreach (KeyValuePair<UUID, string> agent in names)
+                foreach (KeyValuePair<UUID, string> agent in e.Names)
                 {
                     Names[agent.Key] = agent.Value;
                 }
@@ -212,9 +213,9 @@ namespace groupmanager
             }
         }
 
-        private void GroupMembersHandler(UUID requestID, UUID groupID, Dictionary<UUID, GroupMember> members)
+        private void GroupMembersHandler(object sender, GroupMembersReplyEventArgs e)
         {
-            Members = members;
+            Members = e.Members;
 
             UpdateMembers();
         }
@@ -255,9 +256,9 @@ namespace groupmanager
             }
         }
 
-        private void GroupTitlesHandler(UUID requestID, UUID groupID, Dictionary<UUID, GroupTitle> titles)
+        private void GroupTitlesHandler(object sender, GroupTitlesReplyEventArgs e)
         {
-            Titles = titles;
+            Titles = e.Titles;
 
             UpdateTitles();
         }

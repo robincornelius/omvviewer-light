@@ -67,8 +67,8 @@ namespace omvviewerlight
         {
             if (MainClass.client != null)
             {
-                MainClass.client.Network.OnCurrentSimChanged -= new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-                MainClass.client.Objects.OnObjectUpdated -= new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);
+                MainClass.client.Network.SimChanged -= new EventHandler<SimChangedEventArgs>(Network_SimChanged);
+                MainClass.client.Objects.ObjectUpdate -= new EventHandler<PrimEventArgs>(Objects_ObjectUpdate);
             }
             
             AutoPilot.onAutoPilotFinished -= new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
@@ -77,23 +77,21 @@ namespace omvviewerlight
 
         void MainClass_onRegister()
         {
-            MainClass.client.Network.OnCurrentSimChanged += new OpenMetaverse.NetworkManager.CurrentSimChangedCallback(onNewSim);
-            MainClass.client.Objects.OnObjectUpdated += new ObjectManager.ObjectUpdatedCallback(Objects_OnObjectUpdated);
+    
+            MainClass.client.Network.SimChanged += new EventHandler<SimChangedEventArgs>(Network_SimChanged);
+            MainClass.client.Objects.ObjectUpdate += new EventHandler<PrimEventArgs>(Objects_ObjectUpdate);
             AutoPilot.onAutoPilotFinished += new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
 
         }
-
 		
 		new public void Dispose()
 		{
             MainClass_onDeregister();
 		}
 		
-		
-
-        void Objects_OnObjectUpdated(Simulator simulator, ObjectUpdate update, ulong regionHandle, ushort timeDilation)
+		void Objects_ObjectUpdate(object sender, PrimEventArgs e)
         {
-            if (update.LocalID == MainClass.client.Self.LocalID)
+            if (e.Prim.LocalID == MainClass.client.Self.LocalID)
             {
                 if(userclicked==false)
 				{
@@ -120,9 +118,8 @@ namespace omvviewerlight
             }
         }
 
-        void onNewSim(Simulator lastsim)
+        void Network_SimChanged(object sender, SimChangedEventArgs e)
         {
-		
 		   userclicked=false;
            validregion = false;
            Gtk.Application.Invoke(delegate

@@ -43,9 +43,10 @@ namespace omvviewerlight
 				base(Gtk.WindowType.Toplevel)
 		{
 			this.Build();
-			MainClass.client.Self.OnTeleport += new OpenMetaverse.AgentManager.TeleportCallback(onTeleport);
-		}
-		
+	        MainClass.client.Self.TeleportProgress += new EventHandler<TeleportEventArgs>(Self_TeleportProgress);
+        }
+
+    	
 		public void teleportassetid(UUID asset,string name)
 		{
    
@@ -112,39 +113,39 @@ namespace omvviewerlight
 		    MainClass.client.Self.GoHome();
 			
 		}
-		
-		void onTeleport(string Message, OpenMetaverse.TeleportStatus status,OpenMetaverse.TeleportFlags flags)
-		{
-		Gtk.Application.Invoke(delegate {						
+
+        void Self_TeleportProgress(object sender, TeleportEventArgs e)
+        {
+		    Gtk.Application.Invoke(delegate {						
 						
-			Console.Write("TP update "+status.ToString()+"\n");
+			Console.Write("TP update "+e.Status.ToString()+"\n");
 			
-			this.label_info.Text=Message;
+			this.label_info.Text=e.Message;
 				
-			if(OpenMetaverse.TeleportStatus.Start==status)
+			if(OpenMetaverse.TeleportStatus.Start==e.Status)
 				progressbar1.Fraction=0.2;
 				
-			if(OpenMetaverse.TeleportStatus.Progress==status)
+			if(OpenMetaverse.TeleportStatus.Progress==e.Status)
 			{
 			     Console.Write("Progress\n");
-				progressbar1.Fraction+=0.2;
+				 progressbar1.Fraction+=0.2;
 			}	
 			
-			if(OpenMetaverse.TeleportStatus.Finished==status)
+			if(OpenMetaverse.TeleportStatus.Finished==e.Status)
 			{
 					progressbar1.Fraction=1.0;
 					GLib.Timeout.Add(1000,closewindow);
 					this.button_close.Sensitive=true;
 			}
 
-			if(OpenMetaverse.TeleportStatus.Cancelled==status)
+			if(OpenMetaverse.TeleportStatus.Cancelled==e.Status)
 			{
 					progressbar1.Fraction=1.0;
 					this.button_close.Sensitive=true;
 					this.label_info.Text="Teleport Cancelled";
 			}
 
-			if(OpenMetaverse.TeleportStatus.Failed==status)
+			if(OpenMetaverse.TeleportStatus.Failed==e.Status)
 			{
 					progressbar1.Fraction=1.0;
 					this.button_close.Sensitive=true;
@@ -159,6 +160,7 @@ namespace omvviewerlight
 		
 		bool closewindow()
 		{
+            MainClass.client.Self.TeleportProgress -= new EventHandler<TeleportEventArgs>(Self_TeleportProgress);
 			this.Destroy();
 			return false;
 		}

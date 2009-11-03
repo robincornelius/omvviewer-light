@@ -45,18 +45,15 @@ namespace omvviewerlight
 
         void MainClass_onDeregister()
         {
-            MainClass.client.Groups.OnGroupNames -= new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
-            MainClass.client.Avatars.OnAvatarNames -= new OpenMetaverse.AvatarManager.AvatarNamesCallback(onAvatarNames);
-
+            MainClass.client.Avatars.UUIDNameReply -= new EventHandler<UUIDNameReplyEventArgs>(Avatars_UUIDNameReply);
         }
 
         void MainClass_onRegister()
         {
-            MainClass.client.Groups.OnGroupNames += new OpenMetaverse.GroupManager.GroupNamesCallback(onGroupNames);
-            MainClass.client.Avatars.OnAvatarNames += new OpenMetaverse.AvatarManager.AvatarNamesCallback(onAvatarNames);
-
+            MainClass.client.Avatars.UUIDNameReply += new EventHandler<UUIDNameReplyEventArgs>(Avatars_UUIDNameReply);
         }
 
+ 
         public void Dispose()
         {
             MainClass.onRegister -= new MainClass.register(MainClass_onRegister);
@@ -109,11 +106,11 @@ namespace omvviewerlight
             }  
 		}
 
-		void onAvatarNames(Dictionary <UUID,string>names)
-		{
+        void Avatars_UUIDNameReply(object sender, UUIDNameReplyEventArgs e)
+        {
 			lock(av_names)
 			{
-				foreach(KeyValuePair <UUID,string> kvp in names)
+				foreach(KeyValuePair <UUID,string> kvp in e.Names)
 				{
 	                lock(getting)
 	                {
@@ -130,9 +127,5 @@ namespace omvviewerlight
 		
 		}
 		
-		void onGroupNames(Dictionary <UUID,string>groups)
-	    {
-			
-		}
 	}	
 }

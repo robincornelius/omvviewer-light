@@ -81,16 +81,17 @@ namespace omvviewerlight
         {
             if (MainClass.client != null)
             {
-                MainClass.client.Directory.OnEventsReply -= new OpenMetaverse.DirectoryManager.EventReplyCallback(onEvents);
-                MainClass.client.Directory.OnEventInfo -= new OpenMetaverse.DirectoryManager.EventInfoCallback(onEventInfo);
+                MainClass.client.Directory.DirEventsReply -= new EventHandler<DirEventsReplyEventArgs>(Directory_DirEventsReply);
+                MainClass.client.Directory.EventInfoReply -= new EventHandler<EventInfoReplyEventArgs>(Directory_EventInfoReply);
             }
         }
 
         void MainClass_onRegister()
         {
-            MainClass.client.Directory.OnEventsReply += new OpenMetaverse.DirectoryManager.EventReplyCallback(onEvents);
-            MainClass.client.Directory.OnEventInfo += new OpenMetaverse.DirectoryManager.EventInfoCallback(onEventInfo);
+            MainClass.client.Directory.DirEventsReply += new EventHandler<DirEventsReplyEventArgs>(Directory_DirEventsReply);
+            MainClass.client.Directory.EventInfoReply += new EventHandler<EventInfoReplyEventArgs>(Directory_EventInfoReply);
         }
+
 
         new public void Dispose()
         {
@@ -99,41 +100,40 @@ namespace omvviewerlight
             MainClass_onDeregister();
         }
 		
-		
-		void onEventInfo(OpenMetaverse.DirectoryManager.EventInfo anevent)
+        void Directory_EventInfoReply(object sender, EventInfoReplyEventArgs e)
 	    {
 				Gtk.Application.Invoke(delegate {
-				this.entry_name.Text=anevent.Name;
-				this.entry_date.Text=anevent.Date.ToString();
-				this.entry_location.Text=anevent.SimName;
-				this.entry_cat.Text=anevent.Category.ToString();
+				this.entry_name.Text=e.MatchedEvent.Name;
+				this.entry_date.Text=e.MatchedEvent.Date.ToString();
+				this.entry_location.Text=e.MatchedEvent.SimName;
+				this.entry_cat.Text=e.MatchedEvent.Category.ToString();
 				
-				AsyncNameUpdate ud=new AsyncNameUpdate(anevent.Creator,false);  
+				AsyncNameUpdate ud=new AsyncNameUpdate(e.MatchedEvent.Creator,false);  
 				ud.onNameCallBack += delegate(string namex,object[] values){this.entry_organiser.Text=namex;};
                 ud.go();
 	
-				this.entry_duration.Text=anevent.Duration.ToString();
-				this.textview_eventinfo.Buffer.Text=anevent.Desc;
-                selected_event=anevent;
+				this.entry_duration.Text=e.MatchedEvent.Duration.ToString();
+				this.textview_eventinfo.Buffer.Text=e.MatchedEvent.Desc;
+                selected_event=e.MatchedEvent;
 			    this.button_notify.Sensitive=false;
 			    this.button_teleport.Sensitive=true;
 				
 			});
 		}
-				
-				
-        void onEvents(UUID query,List <OpenMetaverse.DirectoryManager.EventsSearchData> matchedevents)
-		{
-				if(query!=queryid)
+
+
+        void Directory_DirEventsReply(object sender, DirEventsReplyEventArgs e)
+        {
+				if(e.QueryID!=queryid)
 					return;
 
-                events_found += matchedevents.Count;
+                events_found += e.MatchedEvents.Count;
 			
 				Gtk.Application.Invoke(delegate {
 
                 this.label_info.Text = "Search returned " + events_found.ToString() + " results";
 	   
-				foreach(OpenMetaverse.DirectoryManager.EventsSearchData anevent in matchedevents)
+				foreach(OpenMetaverse.DirectoryManager.EventsSearchData anevent in e.MatchedEvents)
 				{	
 					store.AppendValues(anevent.Name,anevent.Date.ToString(),anevent);
 				}
@@ -150,12 +150,11 @@ namespace omvviewerlight
 			this.button_notify.Sensitive=false;
 			this.button_teleport.Sensitive=false;
 						
-			//OpenMetaverse.ParcelCategory pcat;
-			//pcat=OpenMetaverse.ParcelCategory.Any;
-			queryid=UUID.Random();
 			OpenMetaverse.DirectoryManager.EventCategories selectcat;
             selectcat=(OpenMetaverse.DirectoryManager.EventCategories)Enum.Parse(typeof(OpenMetaverse.DirectoryManager.EventCategories),this.combobox_category.ActiveText);		
-		    MainClass.client.Directory.StartEventsSearch(entry_name.Text,this.checkbutton_mature.Active,"",0,selectcat,queryid);			
+		    
+            //FIXME
+            //queryid=MainClass.client.Directory.StartEventsSearch(entry_name.Text,this.checkbutton_mature.Active,"",0,selectcat);			
 			
 		}
 

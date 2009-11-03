@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace OpenMetaverse.GUI
@@ -36,6 +37,11 @@ namespace OpenMetaverse.GUI
     /// </summary>
     public class LocalChat : Panel
     {
+        /// <summary>
+        /// A file that output should be logged to (or null, to disable logging)
+        /// </summary>
+        public string LogFile = null;
+
         private GridClient _Client;
         private RichTextBox rtfOutput = new RichTextBox();
         private TextBox txtInput = new TextBox();
@@ -81,27 +87,45 @@ namespace OpenMetaverse.GUI
         /// </summary>
         /// <param name="name"></param>
         /// <param name="type"></param>
-        /// <param name="text"></param>
+        /// <param name="message"></param>
         /// <param name="color"></param>
-        public void LogChat(string name, ChatType type, string text, Color color)
+        public void LogChat(string name, ChatType type, string message, Color color)
         {
             if (!this.IsHandleCreated) return;
 
             if (this.InvokeRequired)
             {
-                this.BeginInvoke((MethodInvoker)delegate { LogChat(name, type, text, color); });
+                this.BeginInvoke((MethodInvoker)delegate { LogChat(name, type, message, color); });
             }
             else
             {
                 rtfOutput.SelectionStart = rtfOutput.Text.Length;
                 rtfOutput.SelectionColor = color;
                 DateTime now = DateTime.Now;
+                string output;
                 string volume;
-                if (type == ChatType.Shout) volume = " shouts";
-                else if (type == ChatType.Whisper) volume = " whispers";
-                else volume = string.Empty;
-                rtfOutput.SelectedText = string.Format("{0}[{1}:{2}] {3}{4}: {5}", Environment.NewLine, now.Hour.ToString().PadLeft(2, '0'), now.Minute.ToString().PadLeft(2, '0'), name, volume, text);
+
+                if (message.Length > 3 && message.Substring(0, 4).ToLower() == "/me ")
+                {
+                    string text = message.Substring(4);
+                    if (type == ChatType.Shout) volume = "(shouted) ";
+                    else if (type == ChatType.Whisper) volume = "(whispered) ";
+                    else volume = String.Empty;
+                    output = string.Format("{0}[{1}:{2}] {3}{4} {5}", Environment.NewLine, now.Hour.ToString().PadLeft(2, '0'), now.Minute.ToString().PadLeft(2, '0'), volume, name, text);
+                }
+                else
+                {
+                    if (type == ChatType.Shout) volume = " shouts";
+                    else if (type == ChatType.Whisper) volume = " whispers";
+                    else volume = String.Empty;
+                    output = string.Format("{0}[{1}:{2}] {3}{4}: {5}", Environment.NewLine, now.Hour.ToString().PadLeft(2, '0'), now.Minute.ToString().PadLeft(2, '0'), name, volume, message);
+                }
+
+                rtfOutput.SelectedText = output;                
                 rtfOutput.ScrollToCaret();
+
+                if (LogFile != null)
+                    File.AppendAllText(LogFile, output);
             }
         }
 
@@ -121,25 +145,29 @@ namespace OpenMetaverse.GUI
                 rtfOutput.SelectionStart = rtfOutput.Text.Length;
                 rtfOutput.SelectionColor = color;
                 DateTime now = DateTime.Now;
-                rtfOutput.SelectedText = string.Format("{0}[{1}:{2}] {3}", Environment.NewLine, now.Hour.ToString().PadLeft(2, '0'), now.Minute.ToString().PadLeft(2, '0'), text);
+                string output = string.Format("{0}[{1}:{2}] {3}", Environment.NewLine, now.Hour.ToString().PadLeft(2, '0'), now.Minute.ToString().PadLeft(2, '0'), text);
+                rtfOutput.SelectedText = output;
                 rtfOutput.ScrollToCaret();
+
+                if (LogFile != null)
+                    File.AppendAllText(LogFile, output);
             }
         }
 
         private void InitializeClient(GridClient client)
         {
             _Client = client;
-            _Client.Self.OnChat += new AgentManager.ChatCallback(Self_OnChat);
+            _Client.Self.ChatFromSimulator += new EventHandler<ChatEventArgs>(Self_ChatFromSimulator);
         }
 
-        void Self_OnChat(string message, ChatAudibleLevel audible, ChatType type, ChatSourceType sourceType, string fromName, UUID id, UUID ownerid, Vector3 position)
+        void Self_ChatFromSimulator(object sender, ChatEventArgs e)
         {
-            if (audible == ChatAudibleLevel.Fully && type != ChatType.StartTyping && type != ChatType.StopTyping)
+            if (e.AudibleLevel == ChatAudibleLevel.Fully && e.Type != ChatType.StartTyping && e.Type != ChatType.StopTyping)
             {
                 Color color;
-                if (sourceType == ChatSourceType.Agent) color = Color.FromKnownColor(KnownColor.ControlText);
+                if (e.SourceType == ChatSourceType.Agent) color = Color.FromKnownColor(KnownColor.ControlText);
                 else color = Color.FromKnownColor(KnownColor.GrayText);
-                LogChat(fromName, type, message, color);
+                LogChat(e.FromName, e.Type, e.Message, color);
             }
         }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using OpenMetaverse;
 
 namespace OpenMetaverse.TestClient
@@ -27,7 +28,12 @@ namespace OpenMetaverse.TestClient
 
                 if (target != null)
                 {
-                    Logger.Log("Light: " + target.Light.ToString(), Helpers.LogLevel.Info, Client);
+                    if (target.Text != String.Empty)
+                    {
+                        Logger.Log("Text: " + target.Text, Helpers.LogLevel.Info, Client);
+                    }
+                    if(target.Light != null)
+                        Logger.Log("Light: " + target.Light.ToString(), Helpers.LogLevel.Info, Client);
 
                     if (target.ParticleSys.CRC != 0)
                         Logger.Log("Particles: " + target.ParticleSys.ToString(), Helpers.LogLevel.Info, Client);
@@ -53,6 +59,24 @@ namespace OpenMetaverse.TestClient
                     {
                         Logger.Log("null", Helpers.LogLevel.Info, Client);
                     }
+
+                    AutoResetEvent propsEvent = new AutoResetEvent(false);
+                    EventHandler<ObjectPropertiesEventArgs> propsCallback =
+                        delegate(object sender, ObjectPropertiesEventArgs e)
+                        {
+                            Logger.Log(String.Format(
+                                "Category: {0}\nFolderID: {1}\nFromTaskID: {2}\nInventorySerial: {3}\nItemID: {4}\nCreationDate: {5}",
+                                e.Properties.Category, e.Properties.FolderID, e.Properties.FromTaskID, e.Properties.InventorySerial, 
+                                e.Properties.ItemID, e.Properties.CreationDate), Helpers.LogLevel.Info);
+                            propsEvent.Set();
+                        };
+
+                    Client.Objects.ObjectProperties += propsCallback;
+
+                    Client.Objects.SelectObject(Client.Network.CurrentSim, target.LocalID, true);
+
+                    propsEvent.WaitOne(1000 * 10, false);
+                    Client.Objects.ObjectProperties -= propsCallback;
 
                     return "Done.";
                 }

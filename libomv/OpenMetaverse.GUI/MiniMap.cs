@@ -43,7 +43,8 @@ namespace OpenMetaverse.GUI
         private UUID _MapImageID;
         private GridClient _Client;
         private Image _MapLayer;
-        private Point _MousePosition;
+        //warning CS0414: The private field `OpenMetaverse.GUI.MiniMap._MousePosition' is assigned but its value is never used
+        //private Point _MousePosition;
         ToolTip _ToolTip;
 
         /// <summary>
@@ -103,8 +104,13 @@ namespace OpenMetaverse.GUI
         private void InitializeClient(GridClient client)
         {
             _Client = client;
-            _Client.Grid.OnCoarseLocationUpdate += new GridManager.CoarseLocationUpdateCallback(Grid_OnCoarseLocationUpdate);
-            _Client.Network.OnCurrentSimChanged += new NetworkManager.CurrentSimChangedCallback(Network_OnCurrentSimChanged);
+            _Client.Grid.CoarseLocationUpdate += Grid_CoarseLocationUpdate;
+            _Client.Network.SimChanged += Network_OnCurrentSimChanged;
+        }
+
+        void Grid_CoarseLocationUpdate(object sender, CoarseLocationUpdateEventArgs e)
+        {
+            UpdateMiniMap(e.Simulator);
         }
 
         private void UpdateMiniMap(Simulator sim)
@@ -191,15 +197,11 @@ namespace OpenMetaverse.GUI
         void MiniMap_MouseMove(object sender, MouseEventArgs e)
         {
             _ToolTip.Hide(this);
-            _MousePosition = e.Location;
+            //warning CS0414: The private field `OpenMetaverse.GUI.MiniMap._MousePosition' is assigned but its value is never used
+            //_MousePosition = e.Location;
         }
 
-        void Grid_OnCoarseLocationUpdate(Simulator sim, List<UUID> newEntries, List<UUID> removedEntries)
-        {
-            UpdateMiniMap(sim);
-        }
-
-        void Network_OnCurrentSimChanged(Simulator PreviousSimulator)
+        void Network_OnCurrentSimChanged(object sender, SimChangedEventArgs e)
         {
             GridRegion region;
             if (Client.Grid.GetGridRegion(Client.Network.CurrentSim.Name, GridLayerType.Objects, out region))

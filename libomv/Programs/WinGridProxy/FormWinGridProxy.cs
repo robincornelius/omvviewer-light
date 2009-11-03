@@ -70,6 +70,10 @@ namespace WinGridProxy
         private int PacketsInBytes;
         private int PacketsOutCounter;
         private int PacketsOutBytes;
+        private List<ListViewItem> QueuedSessions;
+        private System.Threading.Timer SessionQueue;
+        private int SessionQueueInterval;
+        private bool monoRuntime;
 
         public FormWinGridProxy()
         {
@@ -80,6 +84,22 @@ namespace WinGridProxy
             if (FireEventAppender.Instance != null)
             {
                 FireEventAppender.Instance.MessageLoggedEvent += new MessageLoggedEventHandler(Instance_MessageLoggedEvent);
+            }
+
+            // Attempt to work around some mono bugs
+            monoRuntime = Type.GetType("Mono.Runtime") != null; // Officially supported way of detecting mono
+            if (monoRuntime)
+            {
+                SessionQueueInterval = 500;
+                SessionQueue = new System.Threading.Timer(new TimerCallback(SessionQueueWorker), null, SessionQueueInterval, SessionQueueInterval);
+                QueuedSessions = new List<ListViewItem>();
+                Font fixedFont = new Font(FontFamily.GenericMonospace, 9f, FontStyle.Regular, GraphicsUnit.Point);
+                richTextBoxDecodedRequest.Font =
+                    richTextBoxDecodedResponse.Font =
+                    richTextBoxNotationRequest.Font =
+                    richTextBoxNotationResponse.Font =
+                    richTextBoxRawRequest.Font =
+                    richTextBoxRawResponse.Font = fixedFont;
             }
 
             // populate the listen box with IPs
@@ -157,7 +177,7 @@ namespace WinGridProxy
             }
             else
             {
-                ListViewItem foundCap = listViewMessageFilters.FindItemWithText(cap.CapType);
+                ListViewItem foundCap = FindListViewItem(listViewMessageFilters, cap.CapType, false);
                 if (foundCap == null)
                 {
                     ListViewItem addedItem = listViewMessageFilters.Items.Add(new ListViewItem(cap.CapType, new ListViewGroup("Capabilities Messages")));
@@ -193,43 +213,30 @@ namespace WinGridProxy
                 session.Tag = request;
                 session.ImageIndex = (request is XmlRpcRequest) ? 1 : 0;
 
-                listViewSessions.Items.Add(session);
+                AddSession(session);
             }
         }
 
         void PacketAnalyzer_OnPacketLog(Packet packet, Direction direction, IPEndPoint endpoint)
         {
-            if (this.InvokeRequired)
+            PacketCounter++;
+
+            if (direction == Direction.Incoming)
             {
-                this.BeginInvoke(new MethodInvoker(delegate()
-                {
-                    PacketAnalyzer_OnPacketLog(packet, direction, endpoint);
-                }));
+                PacketsInCounter++;
+                PacketsInBytes += packet.Length;
             }
             else
             {
-                PacketCounter++;
-
-                if (direction == Direction.Incoming)
-                {
-                    PacketsInCounter++;
-                    PacketsInBytes += packet.Length;
-                }
-                else
-                {
-                    PacketsOutCounter++;
-                    PacketsOutBytes += packet.Length;
-                }
-
-
-                ListViewItem session = new ListViewItem(new string[] { PacketCounter.ToString(), "UDP", packet.Type.ToString(), packet.Length.ToString(), endpoint.ToString(), "binary udp" });
-                session.Tag = packet;
-                session.ImageIndex = (direction == Direction.Incoming) ? 0 : 1;
-                listViewSessions.Items.Add(session);
-
-                if (listViewSessions.Items.Count > 0 && AutoScrollSessions)
-                    listViewSessions.EnsureVisible(listViewSessions.Items.Count - 1);
+                PacketsOutCounter++;
+                PacketsOutBytes += packet.Length;
             }
+
+
+            ListViewItem session = new ListViewItem(new string[] { PacketCounter.ToString(), "UDP", packet.Type.ToString(), packet.Length.ToString(), endpoint.ToString(), "binary udp" });
+            session.Tag = packet;
+            session.ImageIndex = (direction == Direction.Incoming) ? 0 : 1;
+            AddSession(session);
         }
 
         void ProxyManager_OnMessageLog(CapsRequest req, CapsStage stage)
@@ -280,7 +287,7 @@ namespace WinGridProxy
                         session.ImageIndex = 0;
                     }
 
-                    listViewSessions.Items.Add(session);
+                    AddSession(session);
                 }
                 else
                 {
@@ -294,9 +301,6 @@ namespace WinGridProxy
                             addedItem.Checked = true;
                     }
                 }
-
-                if (listViewSessions.Items.Count > 0 && AutoScrollSessions)
-                    listViewSessions.EnsureVisible(listViewSessions.Items.Count - 1);
             }
         }
 
@@ -316,7 +320,9 @@ namespace WinGridProxy
                 InitProxyFilters();
 
                 proxy.Start();
-
+                
+                loadFilterSelectionsToolStripMenuItem.Enabled = saveFilterSelectionsToolStripMenuItem.Enabled = true;
+                
                 // enable any gui elements
                 toolStripDropDownButton5.Enabled =
                 toolStripMenuItemPlugins.Enabled = grpUDPFilters.Enabled = grpCapsFilters.Enabled = IsProxyRunning = true;
@@ -327,6 +333,7 @@ namespace WinGridProxy
             }
             else if (button1.Text.StartsWith("Stop") && IsProxyRunning.Equals(true))
             {
+                loadFilterSelectionsToolStripMenuItem.Enabled = saveFilterSelectionsToolStripMenuItem.Enabled = false;
                 // stop the proxy
                 proxy.Stop();
                 toolStripMenuItemPlugins.Enabled = grpUDPFilters.Enabled = grpCapsFilters.Enabled = IsProxyRunning = false;
@@ -360,7 +367,6 @@ namespace WinGridProxy
                 if (tag is string && tag.ToString().StartsWith("Packet Type:"))
                 {
                     Be.Windows.Forms.DynamicByteProvider data = new Be.Windows.Forms.DynamicByteProvider(Utils.StringToBytes(tag.ToString()));
-                    var ei = e.Item;
                     if (e.Item.ImageIndex == 1) // sent item
                     {
                         richTextBoxDecodedRequest.Text = String.Format("{0}", tag);
@@ -478,14 +484,29 @@ namespace WinGridProxy
                             }
                             rawRequest.AppendLine();
                         }
-                        rawRequest.AppendLine(Utils.BytesToString(capsData.RawRequest));
+                        
+                        string rawCapsData = string.Empty;
+                        try { rawCapsData = Utils.BytesToString(capsData.RawRequest); }
+                        catch (Exception) { }
 
-                        OSD requestOSD = OSDParser.DeserializeLLSDXml(capsData.RawRequest);
+                        rawRequest.AppendLine(rawCapsData);
 
-                        richTextBoxDecodedRequest.Text = TagToString(requestOSD, listViewSessions.FocusedItem.SubItems[2].Text);//.ToString();
+                        if (capsData.RequestHeaders["content-type"].Equals("application/octet-stream"))
+                        {
+                            richTextBoxDecodedRequest.Text = rawRequest.ToString();
+                            treeViewXMLRequest.Nodes.Clear();
+                            richTextBoxNotationRequest.Text = "Binary data cannot be formatted as notation";
+                        }
+                        else
+                        {
+                            OSD requestOSD = OSDParser.DeserializeLLSDXml(capsData.RawRequest);
+
+                            richTextBoxDecodedRequest.Text = TagToString(requestOSD, listViewSessions.FocusedItem.SubItems[2].Text);
+                            richTextBoxNotationRequest.Text = requestOSD.ToString();
+                            updateTreeView(rawCapsData, treeViewXMLRequest);
+                        }
+                        // these work for both binary and xml+llsd messages
                         richTextBoxRawRequest.Text = rawRequest.ToString();
-                        richTextBoxNotationRequest.Text = requestOSD.ToString();
-                        updateTreeView(Utils.BytesToString(capsData.RawRequest), treeViewXMLRequest);
                         Be.Windows.Forms.DynamicByteProvider data = new Be.Windows.Forms.DynamicByteProvider(capsData.RawRequest);
                         hexBoxRequest.ByteProvider = data;
                     }
@@ -670,7 +691,7 @@ namespace WinGridProxy
         {
             if (enableDisableFilterByNameToolStripMenuItem.Tag != null)
             {
-                ListViewItem found = listViewMessageFilters.FindItemWithText(enableDisableFilterByNameToolStripMenuItem.Tag.ToString());
+                ListViewItem found = FindListViewItem(listViewMessageFilters, enableDisableFilterByNameToolStripMenuItem.Tag.ToString(), false);
 
                 if (found != null)
                 {
@@ -678,7 +699,7 @@ namespace WinGridProxy
                 }
                 else
                 {
-                    found = listViewPacketFilters.FindItemWithText(enableDisableFilterByNameToolStripMenuItem.Tag.ToString());
+                    found = FindListViewItem(listViewPacketFilters, enableDisableFilterByNameToolStripMenuItem.Tag.ToString(), false);
 
                     if (found != null)
                         listViewPacketFilters.Items[found.Index].Checked = enableDisableFilterByNameToolStripMenuItem.Checked;
@@ -712,13 +733,13 @@ namespace WinGridProxy
 
                 if (strPacketOrMessage.Equals("Packets"))
                 {
-                    ListViewItem found = listViewPacketFilters.FindItemWithText(toolStripMenuItemSelectPacketName.Tag.ToString());
+                    ListViewItem found = FindListViewItem(listViewPacketFilters, toolStripMenuItemSelectPacketName.Tag.ToString(), false);
                     if (found != null)
                         ctxChecked = found.Checked;
                 }
                 else if (strPacketOrMessage.Equals("Messages"))// && listViewMessageFilters.Items.ContainsKey(toolStripMenuItemSelectPacketName.Tag.ToString()))
                 {
-                    ListViewItem found = listViewMessageFilters.FindItemWithText(toolStripMenuItemSelectPacketName.Tag.ToString());
+                    ListViewItem found = FindListViewItem(listViewMessageFilters, toolStripMenuItemSelectPacketName.Tag.ToString(), false);
                     if (found != null)
                         ctxChecked = found.Checked;
                 }
@@ -911,13 +932,13 @@ namespace WinGridProxy
                 for (int i = 0; i < sessionsArray.Count; i++)
                 {
                     OSDMap session = (OSDMap)sessionsArray[i];
-                    ListViewItem addedItem = listViewSessions.Items.Add(new ListViewItem(new string[] {
+                    ListViewItem addedItem = new ListViewItem(new string[] {
                         session["id"].AsString(), 
                         session["protocol"].AsString(),
                         session["packet"].AsString(),
                         session["size"].AsString(),
-                        session["host"].AsString()}));
-                    var id = addedItem.SubItems[1];
+                        session["host"].AsString()});
+                    AddSession(addedItem);
                     addedItem.ImageIndex = session["image_index"].AsInteger();
                     addedItem.BackColor = Color.GhostWhite; // give imported items a different color
                     addedItem.Tag = Utils.BytesToString(session["tag"].AsBinary());
@@ -955,24 +976,41 @@ namespace WinGridProxy
         /// </summary>
         /// <param name="message">The IMessage object</param>
         /// <returns>A formatted string containing the names and values of the source object</returns>
-        public static string IMessageToString(object message)
+        public static string IMessageToString(object message, int recurseLevel)
         {
             if (message == null)
                 return String.Empty;
 
             StringBuilder result = new StringBuilder();
             // common/custom types
-            result.AppendFormat("Message Type {0}" + System.Environment.NewLine, message.GetType().Name);
+            if (recurseLevel <= 0)
+            {
+                result.AppendFormat("Message Type: {0}" + System.Environment.NewLine, message.GetType().Name);
+            }
+            else
+            {
+                string pad = "              +--".PadLeft(recurseLevel + 3);
+                result.AppendFormat("{0} {1}" + System.Environment.NewLine, pad, message.GetType().Name);
+            }
+
+            recurseLevel++;
 
             foreach (FieldInfo messageField in message.GetType().GetFields())
             {
-
-                // a byte array
-                if (messageField.GetValue(message).GetType() == typeof(Byte[]))
+                // an abstract message class
+                if (messageField.FieldType.IsAbstract)
                 {
-                    result.AppendFormat("{0, 30}: ({1})" + System.Environment.NewLine,
-                    messageField.Name, messageField.FieldType.Name);
-                    result.AppendFormat("{0}" + System.Environment.NewLine, Utils.BytesToHexString((byte[])messageField.GetValue(message), string.Format("{0,30}", "")));
+                    result.AppendLine(IMessageToString(messageField.GetValue(message), recurseLevel));
+                }
+                // a byte array
+                else if (messageField.GetValue(message) != null && messageField.GetValue(message).GetType() == typeof(Byte[]))
+                {
+                    result.AppendFormat("{0, 30}:" + System.Environment.NewLine,
+                    messageField.Name);
+
+                    result.AppendFormat("{0}" + System.Environment.NewLine, 
+                        Utils.BytesToHexString((byte[])messageField.GetValue(message), 
+                        string.Format("{0,30}", "")));
                 }
 
                 // an array of class objects
@@ -982,26 +1020,26 @@ namespace WinGridProxy
                     result.AppendFormat("-- {0} --" + System.Environment.NewLine, messageField.FieldType.Name);
                     foreach (object nestedArrayObject in messageObjectData as Array)
                     {
-                        result.AppendFormat("     [{0}]" + System.Environment.NewLine, nestedArrayObject.GetType().Name);
+                        result.AppendFormat("{0,30}" + System.Environment.NewLine, "-- " + nestedArrayObject.GetType().Name + " --");
 
                         foreach (FieldInfo nestedField in nestedArrayObject.GetType().GetFields())
                         {
                             if (nestedField.FieldType.IsEnum)
                             {
-                                result.AppendFormat("{0, 30}: {1} {2} ({3})" + System.Environment.NewLine,
+                                result.AppendFormat("{0,30}: {1,-10} {2,-29} [{3}]" + System.Environment.NewLine,
                                     nestedField.Name,
                                     Enum.Format(nestedField.GetValue(nestedArrayObject).GetType(),
                                     nestedField.GetValue(nestedArrayObject), "D"),
-                                    nestedField.GetValue(nestedArrayObject),
+                                    "(" + nestedField.GetValue(nestedArrayObject) + ")",
                                     nestedField.GetValue(nestedArrayObject).GetType().Name);
                             }
                             else if (nestedField.FieldType.IsInterface)
                             {
-                                result.AppendLine(IMessageToString(nestedField.GetValue(nestedArrayObject)));
+                                result.AppendLine(IMessageToString(nestedField.GetValue(nestedArrayObject), recurseLevel));
                             }
                             else
                             {
-                                result.AppendFormat("{0, 30}: {1} ({2})" + Environment.NewLine,
+                                result.AppendFormat("{0, 30}: {1,-40} [{2}]" + Environment.NewLine,
                                  nestedField.Name,
                                  nestedField.GetValue(nestedArrayObject),
                                  nestedField.GetValue(nestedArrayObject).GetType().Name);
@@ -1013,19 +1051,20 @@ namespace WinGridProxy
                 {
                     if (messageField.FieldType.IsEnum)
                     {
-                        result.AppendFormat("{0, 30}: {1} {2} ({3})" + Environment.NewLine,
+                        result.AppendFormat("{0,30}: {1,-2} {2,-37} [{3}]" + Environment.NewLine,
                             messageField.Name,
-                            Enum.Format(messageField.GetValue(message).GetType(),
+                            Enum.Format(messageField.GetValue(message).GetType(), 
                             messageField.GetValue(message), "D"),
-                            messageField.GetValue(message), messageField.FieldType.Name);
+                            "(" + messageField.GetValue(message) + ")", 
+                            messageField.FieldType.Name);
                     }
                     else if (messageField.FieldType.IsInterface)
                     {
-                        result.AppendLine(IMessageToString(messageField.GetValue(message)));
+                        result.AppendLine(IMessageToString(messageField.GetValue(message), recurseLevel));
                     }
                     else
                     {
-                        result.AppendFormat("{0, 30}: {1} ({2})" + System.Environment.NewLine,
+                        result.AppendFormat("{0, 30}: {1,-40} [{2}]" + System.Environment.NewLine,
                         messageField.Name, messageField.GetValue(message), messageField.FieldType.Name);
                     }
                 }
@@ -1044,7 +1083,9 @@ namespace WinGridProxy
                 FilterEntry entry = new FilterEntry();
                 entry.Checked = item.Checked;
                 entry.pType = item.SubItems[1].Text;
-                Store.PacketSessions.Add(item.Text, entry);
+
+                if(!Store.PacketSessions.ContainsKey(item.Text))
+                    Store.PacketSessions.Add(item.Text, entry);
             }
 
             foreach (ListViewItem item in listViewMessageFilters.Items)
@@ -1052,7 +1093,8 @@ namespace WinGridProxy
                 FilterEntry entry = new FilterEntry();
                 entry.Checked = item.Checked;
                 entry.pType = item.SubItems[1].Text;
-                Store.MessageSessions.Add(item.Text, entry);
+                if(!Store.MessageSessions.ContainsKey(item.Text))
+                    Store.MessageSessions.Add(item.Text, entry);
             }
 
             Store.StatisticsEnabled = enableStatisticsToolStripMenuItem.Checked;
@@ -1078,7 +1120,7 @@ namespace WinGridProxy
                 listViewMessageFilters.BeginUpdate();
                 foreach (KeyValuePair<string, FilterEntry> kvp in Store.MessageSessions)
                 {
-                    ListViewItem foundMessage = listViewPacketFilters.FindItemWithText(kvp.Key);
+                    ListViewItem foundMessage = FindListViewItem(listViewPacketFilters, kvp.Key, false);
                     if (foundMessage == null)
                     {
                         ListViewItem addedItem = listViewMessageFilters.Items.Add(kvp.Key);
@@ -1090,6 +1132,10 @@ namespace WinGridProxy
                     {
                         foundMessage.Checked = kvp.Value.Checked;
                     }
+                    if (kvp.Value.pType.Equals("CapMessage"))
+                    {
+                        proxy.AddCapsDelegate(kvp.Key, kvp.Value.Checked);
+                    }
                 }
                 listViewMessageFilters.EndUpdate();
 
@@ -1097,7 +1143,7 @@ namespace WinGridProxy
                 listViewPacketFilters.BeginUpdate();
                 foreach (KeyValuePair<string, FilterEntry> kvp in Store.PacketSessions)
                 {
-                    ListViewItem foundPacket = listViewPacketFilters.FindItemWithText(kvp.Key);
+                    ListViewItem foundPacket = FindListViewItem(listViewPacketFilters, kvp.Key, false);
                     if (foundPacket == null)
                     {
                         ListViewItem addedItem = listViewPacketFilters.Items.Add(new ListViewItem(kvp.Key));
@@ -1107,6 +1153,10 @@ namespace WinGridProxy
                     else
                     {
                         foundPacket.Checked = kvp.Value.Checked;
+                    }
+                    if (kvp.Value.pType.Equals("UDP"))
+                    {
+                        proxy.AddUDPDelegate(packetTypeFromName(kvp.Key), kvp.Value.Checked);
                     }
                 }
                 listViewPacketFilters.EndUpdate();
@@ -1129,13 +1179,15 @@ namespace WinGridProxy
 
                     string name = packetTypes[i].Name;
 
+                    // warning CS0219: The variable `pType' is assigned but its value is never used
+                    // this is used to check for valid names.
                     PacketType pType;
 
                     try
                     {
                         pType = packetTypeFromName(name);
 
-                        ListViewItem found = listViewPacketFilters.FindItemWithText(name);
+                        ListViewItem found = FindListViewItem(listViewPacketFilters, name, false);
                         if (!String.IsNullOrEmpty(name) && found == null)
                         {
                             ListViewItem addedItem = listViewPacketFilters.Items.Add(new ListViewItem(name));
@@ -1148,9 +1200,6 @@ namespace WinGridProxy
                     }
                 }
             }
-
-            //listViewPacketFilters.Sort();
-
             listViewPacketFilters.EndUpdate();
         }
 
@@ -1258,7 +1307,7 @@ namespace WinGridProxy
                         message = OpenMetaverse.Messages.MessageUtils.DecodeEvent(key, data);
 
                     if (message != null)
-                        return IMessageToString(message);
+                        return IMessageToString(message, 0);
                     else
                         return "No Decoder for " + key + System.Environment.NewLine
                             + osd.ToString();
@@ -1514,6 +1563,89 @@ namespace WinGridProxy
                 else if (!String.IsNullOrEmpty(match.Groups["BlockCounter"].Value))
                     m_rtb.SelectionColor = Color.Green;
 
+            }
+        }
+
+        private void SessionQueueWorker(object sender)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new MethodInvoker(() => SessionQueueWorker(sender)));
+                return;
+            }
+
+            lock (QueuedSessions)
+            {
+                if (QueuedSessions.Count > 0)
+                {
+                    listViewSessions.BeginUpdate();
+                    listViewSessions.Items.AddRange(QueuedSessions.ToArray());
+                    
+                    if (AutoScrollSessions)
+                        listViewSessions.EnsureVisible(listViewSessions.Items.Count - 1);
+
+                    listViewSessions.EndUpdate();
+                    QueuedSessions.Clear();
+                }
+            }
+        }
+
+        private void DirectAddSession(ListViewItem item)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new MethodInvoker(() => DirectAddSession(item)));
+            }
+            else
+            {
+                listViewSessions.Items.Add(item);
+                if (AutoScrollSessions)
+                    listViewSessions.EnsureVisible(listViewSessions.Items.Count - 1);
+            }
+        }
+
+        private void AddSession(ListViewItem item)
+        {
+            if (!monoRuntime)
+            {
+                DirectAddSession(item);
+            }
+            else
+            {
+                lock (QueuedSessions)
+                {
+                    QueuedSessions.Add(item);
+                }
+            }
+        }
+
+        private void asDecodedTextToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                StringBuilder outString = new StringBuilder();
+                foreach (ListViewItem item in listViewSessions.Items)
+                {
+                    if (item.Tag is Packet)
+                    {
+                        outString.AppendLine(DecodePacket.PacketToString((Packet)item.Tag));
+                    }
+
+                    if (item.Tag is IMessage)
+                    {
+                        IMessage msg = (IMessage)item.Tag;
+                        outString.AppendLine(msg.Serialize().ToString());
+                    }
+
+                    try
+                    {
+                        File.WriteAllText(saveFileDialog1.FileName, outString.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Exception occurred trying to save session archive: " + ex);
+                    }
+                }
             }
         }
     }

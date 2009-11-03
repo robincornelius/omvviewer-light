@@ -73,20 +73,20 @@ namespace omvviewerlight
             //REFACTOR ME, MAINCLASS IS DUPLICATING
             if (MainClass.client != null)
             {
-                MainClass.client.Groups.OnCurrentGroups -= new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
-                MainClass.client.Groups.OnGroupJoined -= new OpenMetaverse.GroupManager.GroupJoinedCallback(onGroupJoined);
-                MainClass.client.Groups.OnGroupLeft -= new OpenMetaverse.GroupManager.GroupLeftCallback(onGroupLeft);
+                MainClass.client.Groups.CurrentGroups -= new EventHandler<CurrentGroupsEventArgs>(Groups_CurrentGroups);
+                MainClass.client.Groups.GroupJoinedReply -= new EventHandler<GroupOperationEventArgs>(Groups_GroupJoinedReply);
+                MainClass.client.Groups.GroupLeaveReply -= new EventHandler<GroupOperationEventArgs>(Groups_GroupLeaveReply);
             }
         }
 
         void MainClass_onRegister()
         {
             //REFACTOR ME, MAINCLASS IS DUPLICATING
-            MainClass.client.Groups.OnCurrentGroups += new OpenMetaverse.GroupManager.CurrentGroupsCallback(onGroups);
-            MainClass.client.Groups.OnGroupJoined += new OpenMetaverse.GroupManager.GroupJoinedCallback(onGroupJoined);
-            MainClass.client.Groups.OnGroupLeft += new OpenMetaverse.GroupManager.GroupLeftCallback(onGroupLeft);
-
+            MainClass.client.Groups.CurrentGroups += new EventHandler<CurrentGroupsEventArgs>(Groups_CurrentGroups);
+            MainClass.client.Groups.GroupJoinedReply += new EventHandler<GroupOperationEventArgs>(Groups_GroupJoinedReply);
+            MainClass.client.Groups.GroupLeaveReply += new EventHandler<GroupOperationEventArgs>(Groups_GroupLeaveReply);
         }
+
 
         new public void Dispose()
         {
@@ -100,10 +100,11 @@ namespace omvviewerlight
         }
 		
 
-		void onGroupJoined(UUID group,bool success)
+
+        void Groups_GroupJoinedReply(object sender, GroupOperationEventArgs e)
 		{
 			Gtk.Application.Invoke(delegate{				
-				if(success==true)
+				if(e.Success==true)
 				{
 					store.Clear();
 					this.groups_recieved.Clear();
@@ -111,10 +112,13 @@ namespace omvviewerlight
 				}			
 			});			
 		}
-		void onGroupLeft(UUID group,bool success)
+
+
+        
+        void Groups_GroupLeaveReply(object sender, GroupOperationEventArgs e)
 		{
 			Gtk.Application.Invoke(delegate{				
-				if(success==true)
+				if(e.Success==true)
 				{
 					store.Clear();
 					this.groups_recieved.Clear();
@@ -142,13 +146,13 @@ namespace omvviewerlight
 
         }
 
-		void onGroups(Dictionary<UUID,Group> groups)
-		{
+        void Groups_CurrentGroups(object sender, CurrentGroupsEventArgs e)
+        {
 			
 				Gtk.Application.Invoke(delegate {
 			    lock(this.groups_recieved)
                 {
-				foreach(KeyValuePair <UUID,Group> group in groups)
+				foreach(KeyValuePair <UUID,Group> group in e.Groups)
 				{
 					if(!this.groups_recieved.ContainsKey(group.Key))
 					{
