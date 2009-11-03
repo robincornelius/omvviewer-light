@@ -227,8 +227,7 @@ namespace omvviewerlight
 					this.entry_title.Text=ii.Name;
 				});
 				
-                //FIXME
-				//transfer_id=MainClass.client.Assets.RequestInventoryAsset(ii,true);
+                MainClass.client.Assets.RequestInventoryAsset(ii,true,new AssetManager.AssetReceivedCallback(this.asset_recieved));
 				Console.WriteLine("transfer Id is "+transfer_id);
 			}
 			else
@@ -260,20 +259,19 @@ namespace omvviewerlight
 				    this.entry_title.Text=ii.Name;
 			});
 			
-                //FIXME
-				//MainClass.client.Assets.RequestInventoryAsset(ii,true);
-		}
+                MainClass.client.Assets.RequestInventoryAsset(ii, true, new AssetManager.AssetReceivedCallback(this.asset_recieved));
+	
+        }
 		
-		void onAsset(AssetDownload transfer,Asset asset)
+        void asset_recieved(AssetDownload transfer, Asset asset)
         {
-			Console.WriteLine("Asset retrieved id "+asset.AssetID.ToString());
-			Console.WriteLine("target_asset"+this.target_asset.ToString());
-			if(transfer_id!=transfer.ID)
-				return;
-            //FIXME
-			//MainClass.client.Assets.OnAssetReceived -= new OpenMetaverse.AssetManager.AssetReceivedCallback(onAsset);
-			shownote(asset);
-		}
+            Console.WriteLine("Asset retrieved id " + asset.AssetID.ToString());
+            Console.WriteLine("target_asset" + this.target_asset.ToString());
+            if (transfer_id != transfer.ID)
+                return;
+            shownote(asset);
+
+        }
 	
 		void shownote(Asset asset)
 		{

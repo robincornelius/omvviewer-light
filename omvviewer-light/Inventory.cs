@@ -513,8 +513,12 @@ namespace omvviewerlight
 
             if (item is InventoryFolder)
             {
-                //MainClass.client.Appearance.WearOutfit(item.UUID,true);
-                //FIXME
+                //MainClass.client.Appearance.WearOutfit(item.UUID,true)
+                List <InventoryBase> items = MainClass.client.Inventory.FolderContents(item.UUID,MainClass.client.Self.AgentID,false,true,InventorySortOrder.ByName,10000);
+                if (items.Count > 0)
+                    MainClass.client.Appearance.WearOutfit(items, true);
+                else
+                    Console.WriteLine("Failed to fetch inventory of folder " + item.ToString());
             }
         }
 

@@ -325,14 +325,7 @@ namespace omvviewerlight
                 this.trying = false;
             }
         }
-		
-		void appearencethread()
-		{
-
-			Console.Write("Appearence thread go\n");
-			MainClass.client.Appearance.SetPreviousAppearance(true);
-        }
-		
+				
 		protected virtual void OnButton1Clicked (object sender, System.EventArgs e)
 		{
             MainClass.userlogout = true;

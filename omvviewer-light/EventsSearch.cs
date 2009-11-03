@@ -151,10 +151,16 @@ namespace omvviewerlight
 			this.button_teleport.Sensitive=false;
 						
 			OpenMetaverse.DirectoryManager.EventCategories selectcat;
-            selectcat=(OpenMetaverse.DirectoryManager.EventCategories)Enum.Parse(typeof(OpenMetaverse.DirectoryManager.EventCategories),this.combobox_category.ActiveText);		
-		    
-            //FIXME
-            //queryid=MainClass.client.Directory.StartEventsSearch(entry_name.Text,this.checkbutton_mature.Active,"",0,selectcat);			
+            selectcat=(OpenMetaverse.DirectoryManager.EventCategories)Enum.Parse(typeof(OpenMetaverse.DirectoryManager.EventCategories),this.combobox_category.ActiveText);
+
+            DirectoryManager.DirFindFlags flags = new DirectoryManager.DirFindFlags();
+            if(this.checkbutton_mature.Active)
+            {
+                flags |= DirectoryManager.DirFindFlags.FilterMature;
+                //flags|=DirectoryManager.DirFindFlags.AdultOnly;
+            }
+
+            queryid=MainClass.client.Directory.StartEventsSearch(entry_name.Text,flags,"",0,selectcat);			
 			
 		}
 

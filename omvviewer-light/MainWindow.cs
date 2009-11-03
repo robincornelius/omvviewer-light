@@ -314,26 +314,28 @@ public partial class MainWindow: Gtk.Window
         }
     }
 
-    void setappearance()
-    {
-
-        appearancesetting.WaitOne(30000, false);
-        appearancesetting.Reset();
-        Console.WriteLine("Setting appearance");
-        MainClass.client.Appearance.SetPreviousAppearance(true);
-        appearancesetting.Set();
-    }
-
     void Inventory_InventoryObjectOffered(object sender, InventoryObjectOfferedEventArgs e)
 	{
-        //FIXME
-        /*
-			Gtk.Application.Invoke(delegate {
-                MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.YesNo, false,details.FromAgentName + " has offered you\n"+details.Message+"\n Would you like to accept");
-                md.Response += delegate { md.Destroy(); };
+  			Gtk.Application.Invoke(delegate {
+                MessageDialog md = new MessageDialog(MainClass.win, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.YesNo, false,e.Offer+"\n Would you like to accept");
+                md.Response += delegate(object o,ResponseArgs args) 
+				{
+                    if (args.ResponseId == ResponseType.Yes)
+                    {
+                        e.Accept = true;
+                    }
+                    else
+                    {
+                        e.Accept = false;
+                    }
+                    md.Destroy(); 
+                };
+                
                 md.ShowAll();
-			});
-        */
+			    
+          
+            });
+        
 			
 	}
 
@@ -350,20 +352,6 @@ public partial class MainWindow: Gtk.Window
         }
    }
 
-
-//FIXME??
-	void onAvatarGroups(UUID avatarID, List<AvatarGroup> avatarGroupsi)
-	{
-		Console.WriteLine("On Avatar groups");
-		// Only interested in self here;
-		if(avatarID!=MainClass.client.Self.AgentID)
-			return;
-		
-		Console.WriteLine("GOt list for self");
-		avatarGroups.AddRange(avatarGroupsi);
-		
-	}
-	
    [GLib.ConnectBefore]
     void MainWindow_DeleteEvent(object o, DeleteEventArgs args)
     {
@@ -805,8 +793,6 @@ public partial class MainWindow: Gtk.Window
         {
             MainClass.client.Self.RequestBalance();
 			MainClass.client.Avatars.RequestAvatarProperties(MainClass.client.Self.AgentID);
-            Thread app = new Thread(new ThreadStart(setappearance));
-            app.Start();
 
 			Gtk.Application.Invoke(delegate
             {

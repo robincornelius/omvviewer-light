@@ -200,7 +200,6 @@ namespace omvviewerlight
             requestnewgridregion();
         }
 
-
         void mapclick(int x)
         {
             if (MainClass.win.map_widget == null)
@@ -211,6 +210,5 @@ namespace omvviewerlight
                 //MainClass.win.map_widget.changeregion(regions[x]);
         }
 
-		
 	}
 }

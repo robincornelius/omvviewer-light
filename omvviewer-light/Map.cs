@@ -205,14 +205,10 @@ namespace omvviewerlight
             running = false;
             if (MainClass.client != null)
             {
-                //FIXME
-                //MainClass.client.Objects.OnNewAvatar -= new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
                 MainClass.client.Network.SimChanged -= new EventHandler<SimChangedEventArgs>(Network_SimChanged);
                 MainClass.client.Self.TeleportProgress -= new EventHandler<TeleportEventArgs>(Self_TeleportProgress);
                 MainClass.client.Grid.GridRegion -= new EventHandler<GridRegionEventArgs>(Grid_GridRegion);
                 MainClass.client.Grid.CoarseLocationUpdate -= new EventHandler<CoarseLocationUpdateEventArgs>(Grid_CoarseLocationUpdate);
-                MainClass.client.Network.SimConnected -= new EventHandler<SimConnectedEventArgs>(Network_SimConnected);
-
                 
              }
             AutoPilot.onAutoPilotFinished -= new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
@@ -225,14 +221,10 @@ namespace omvviewerlight
             lastsim = UUID.Zero;
             requested = false;
 
-            //FIXME
-            //MainClass.client.Objects.OnNewAvatar += new OpenMetaverse.ObjectManager.NewAvatarCallback(onNewAvatar);
-
             MainClass.client.Network.SimChanged += new EventHandler<SimChangedEventArgs>(Network_SimChanged);
             MainClass.client.Self.TeleportProgress += new EventHandler<TeleportEventArgs>(Self_TeleportProgress);
             MainClass.client.Grid.GridRegion += new EventHandler<GridRegionEventArgs>(Grid_GridRegion);
             MainClass.client.Grid.CoarseLocationUpdate += new EventHandler<CoarseLocationUpdateEventArgs>(Grid_CoarseLocationUpdate);
-            MainClass.client.Network.SimConnected += new EventHandler<SimConnectedEventArgs>(Network_SimConnected);
 
             AutoPilot.onAutoPilotFinished += new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
        
@@ -243,11 +235,6 @@ namespace omvviewerlight
 
 
 
-        void Network_SimConnected(object sender, SimConnectedEventArgs e)
-        {
-            Logger.Log("OnSimConnected for " + e.Simulator.Name, Helpers.LogLevel.Info);
-            
-        }
 
         void Grid_CoarseLocationUpdate(object sender, CoarseLocationUpdateEventArgs e)
         {
@@ -404,17 +391,6 @@ namespace omvviewerlight
                     lastsim = this_maps_sim.ID;
 			}
 	    }
-
-		//FIXME			
-//		void onNewAvatar(Simulator simulator, Avatar avatar, ulong regionHandle, ushort timeDilation)
-//		{
-//			
-//	            Gtk.Application.Invoke(delegate
-//	                {
-//	                    drawavs();
-//	                });
-//		}
-
 			
 		void drawavs()
 		{

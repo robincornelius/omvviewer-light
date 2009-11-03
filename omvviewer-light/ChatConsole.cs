@@ -633,23 +633,26 @@ namespace omvviewerlight
 			if(MainClass.appsettings.notify_object_chat && e.SourceType==ChatSourceType.Object)
 				windownotify();
 
-//FIXME				
-//			if(e.Type==ChatType.Whisper)
-//				e.FromName=e.FromName+" whispers";
-//			if(e.Type==ChatType.Shout)
-//				e.FromName=e.FromName+" shouts";
+            string emote="";
+			if(e.Type==ChatType.Whisper)
+				emote=" whispers ";
+			if(e.Type==ChatType.Shout)
+				emote=" shouts ";
 	
 			if(e.SourceType==ChatSourceType.Agent)
 			{
 				Gtk.Application.Invoke(delegate {						
-                    displaychat(e.Message, e.FromName, avchat, bold);
+                    displaychat(e.Message, e.FromName+emote, avchat, bold);
 					if(e.SourceID!=MainClass.client.Self.AgentID)
 					{
 						if(lookatrunning==false)
 						{
-							this.lookat=UUID.Random();
-							//MainClass.client.Self.LookAtEffect(MainClass.client.Self.AgentID,id,Vector3d.Zero,LookAtType.Mouselook,lookat);
-							//GLib.Timeout.Add(3000,ClearLookAt);
+                            if(lookat!=UUID.Zero)
+                                MainClass.client.Self.LookAtEffect(MainClass.client.Self.AgentID, e.SourceID, Vector3d.Zero, LookAtType.Clear, lookat);
+                            this.lookat=UUID.Random();
+                    		MainClass.client.Self.LookAtEffect(MainClass.client.Self.AgentID,e.SourceID,Vector3d.Zero,LookAtType.AutoListen,lookat);
+
+                            GLib.Timeout.Add(3000,ClearLookAt);
 							lookatrunning=true;
 						}
 					}
@@ -668,7 +671,7 @@ namespace omvviewerlight
 			if(e.SourceType==ChatSourceType.Object)
 			{
 				Gtk.Application.Invoke(delegate {
-                    displaychat(e.Message, e.FromName, objectchat, objectchat);
+                    displaychat(e.Message, e.FromName+emote, objectchat, objectchat);
 					});
 				return;
 			}
@@ -676,9 +679,7 @@ namespace omvviewerlight
 			if(e.SourceType==ChatSourceType.System)
 			{
 				Gtk.Application.Invoke(delegate {
-                    //FIXME
-                    //e.FromName = "Secondlife ";
-                    displaychat(e.Message, e.FromName, systemchat, systemchat);		
+                    displaychat(e.Message, "Secondlife ", systemchat, systemchat);		
 				});
 				return;
 			}
@@ -689,7 +690,8 @@ namespace omvviewerlight
 		{
             Console.WriteLine("Clear lookat");
 			MainClass.client.Self.LookAtEffect(MainClass.client.Self.AgentID,UUID.Zero,Vector3d.Zero,LookAtType.Clear,UUID.Zero);
-			lookatrunning=false;
+            lookat = UUID.Zero;
+            lookatrunning=false;
 			return false;
 			
 		}
