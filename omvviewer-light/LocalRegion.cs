@@ -164,7 +164,7 @@ namespace omvviewerlight
                 requested = false;
                 cx = (uint)e.Region.X;
                 cy = (uint)e.Region.Y;
-                Logger.Log("Requesting neighbour grid",Helpers.LogLevel.Debug);
+                Logger.Log("Requesting neighbour grid "+(e.Region.X - 1).ToString()+","+(e.Region.Y - 1).ToString()+(e.Region.X + 1).ToString()+(e.Region.Y + 1).ToString(), Helpers.LogLevel.Debug);     
                 MainClass.client.Grid.RequestMapBlocks(GridLayerType.Objects, (ushort)(e.Region.X - 1), (ushort)(e.Region.Y - 1), (ushort)(e.Region.X + 1), (ushort)(e.Region.Y + 1), false);
             }
 
@@ -176,15 +176,17 @@ namespace omvviewerlight
             if (col < 0 || col > 2)
                 return;
 
+            Logger.Log("We found ("+row.ToString()+","+col.ToString()+")",Helpers.LogLevel.Debug);
+
             int index = (row * 3) + col;
 
-            maps[index].SetGridRegion(UUID.Zero, e.Region.RegionHandle);
-           
             Gtk.Tooltips name = new Gtk.Tooltips();
             name.SetTip(maps[index], e.Region.Name, "");
             name.Enable();		
 			regions[index]=e.Region;
-	
+    
+            maps[index].SetGridRegion( e.Region.RegionHandle);
+    
 			});
         }
 

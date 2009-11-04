@@ -291,13 +291,9 @@ namespace omvviewerlight
 				Gtk.Application.Invoke(delegate
 				{                   
                     store.Clear();
-				});
+                    av_tree.Clear(); // Bleh possible fuck up here with sequencing
+                });
 				
-                lock (av_tree)
-                {
-                   av_tree.Clear();
-                }
-
                 if (MainClass.client.Network.CurrentSim != null)
                  lastsim=MainClass.client.Network.CurrentSim.ID;
 			}

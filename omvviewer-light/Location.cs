@@ -79,14 +79,18 @@ namespace omvviewerlight
                     requested = false;
                     map1.SetAsWater();
                   //   map1.set_optimal_size(args.Allocation.Width);
-                     map1.SetGridRegion(MainClass.client.Network.CurrentSim.RegionID, MainClass.client.Network.CurrentSim.Handle);
+                     map1.SetGridRegion(MainClass.client.Network.CurrentSim.Handle);
                 }
             }
         }
 
         void Network_EventQueueRunning(object sender, OpenMetaverse.EventQueueRunningEventArgs e)
         {
-            this.map1.SetGridRegion(MainClass.client.Network.CurrentSim.RegionID, MainClass.client.Network.CurrentSim.Handle);
+            Gtk.Application.Invoke(delegate
+            {
+                if (e.Simulator.Handle == MainClass.client.Network.CurrentSim.Handle)
+                    this.map1.SetGridRegion(MainClass.client.Network.CurrentSim.Handle);
+            });
         }
 
         new public void Dispose()

@@ -650,11 +650,14 @@ public partial class MainWindow: Gtk.Window
 
 		
     void Self_TeleportProgress(object sender, TeleportEventArgs e)
-    {		
-      
-        Gtk.Application.Invoke(delegate {						
-			status_location.Text="Location: "+MainClass.client.Network.CurrentSim.Name+MainClass.prettyvector(MainClass.client.Self.SimPosition,2);	
-		});
+    {
+        if (e.Status == TeleportStatus.Finished)
+        {
+            Gtk.Application.Invoke(delegate
+            {
+                status_location.Text = "Location: " + MainClass.client.Network.CurrentSim.Name + MainClass.prettyvector(MainClass.client.Self.SimPosition, 2);
+            });
+        }
 	}
 			
 	void doicons(Parcel parcel)

@@ -66,10 +66,7 @@ namespace omvviewerlight
 		int lastwidth,lastheight;
 
         Simulator this_maps_sim = null;
-        UUID this_maps_regionID;
         ulong this_maps_region_handle=0;
-
-        bool requested = false;
 
         public event ClickMap onclickMap;
         public delegate void ClickMap();
@@ -86,9 +83,8 @@ namespace omvviewerlight
 			}
 		}
 
-        public void SetGridRegion(UUID regionID,ulong region_handle)
+        public void SetGridRegion(ulong region_handle)
         {
-            this_maps_regionID = regionID;
             Simulator sim;
             sim=MainClass.client.Network.Simulators.Find(delegate (Simulator dsim){ return (dsim.Handle == region_handle); });
 
@@ -104,7 +100,6 @@ namespace omvviewerlight
         public void SetAsWater()
         {
             this_maps_sim = null;
-            this_maps_regionID = UUID.Zero;
             objects_map_ID = UUID.Zero;
             terrain_map_ID = UUID.Zero;
             this_maps_region_handle = 0;
@@ -123,7 +118,6 @@ namespace omvviewerlight
         void SetMapSim(Simulator sim)
         {
             this_maps_sim=sim;
-       
         }
 		
 		public void setsize(int size)
@@ -189,15 +183,6 @@ namespace omvviewerlight
             GLib.Timeout.Add(10000, kickrefresh);			
 			targetpos.X=-1;
 			
-			if(MainClass.client!=null)
-			{
-				if(MainClass.client.Network.LoginStatusCode==OpenMetaverse.LoginStatus.Success)
-                {
-                       //  MainClass.client.Grid.RequestMapRegion(this_maps_sim.Name, GridLayerType.Objects);
-                       //  this.label1.Text = this_maps_sim.Name;
-					   //	MainClass.win.map_widget=this;
-       	         }
-             }	
 		}
 
         void MainClass_onDeregister()
@@ -206,9 +191,6 @@ namespace omvviewerlight
             running = false;
             if (MainClass.client != null)
             {
-                MainClass.client.Network.SimChanged -= new EventHandler<SimChangedEventArgs>(Network_SimChanged);
-                MainClass.client.Self.TeleportProgress -= new EventHandler<TeleportEventArgs>(Self_TeleportProgress);
-                MainClass.client.Grid.GridRegion -= new EventHandler<GridRegionEventArgs>(Grid_GridRegion);
                 MainClass.client.Grid.CoarseLocationUpdate -= new EventHandler<CoarseLocationUpdateEventArgs>(Grid_CoarseLocationUpdate);
                 
              }
@@ -220,22 +202,11 @@ namespace omvviewerlight
         {
 
             lastsim = UUID.Zero;
-            requested = false;
 
-            MainClass.client.Network.SimChanged += new EventHandler<SimChangedEventArgs>(Network_SimChanged);
-            MainClass.client.Self.TeleportProgress += new EventHandler<TeleportEventArgs>(Self_TeleportProgress);
-            MainClass.client.Grid.GridRegion += new EventHandler<GridRegionEventArgs>(Grid_GridRegion);
             MainClass.client.Grid.CoarseLocationUpdate += new EventHandler<CoarseLocationUpdateEventArgs>(Grid_CoarseLocationUpdate);
-
             AutoPilot.onAutoPilotFinished += new AutoPilot.AutoPilotFinished(onAutoPilotFinished);
        
         }
-
-
-
-
-
-
 
         void Grid_CoarseLocationUpdate(object sender, CoarseLocationUpdateEventArgs e)
         {
@@ -278,109 +249,49 @@ namespace omvviewerlight
             return true;
 
         }
-		
-        void Grid_GridRegion(object sender, GridRegionEventArgs e)
-		{
-
-            return;
-            if (current_region.RegionHandle != e.Region.RegionHandle)
-            {
-                //Nothing to do;
-                return;
-            }
-
-			current_region=e.Region;
-			this.objects_map_ID=e.Region.MapImageID;
-
-            Gtk.Application.Invoke(delegate
-            {
-                Gdk.Pixbuf pb = MainClass.GetResource("trying.png");
-                objects_map = new Gtk.Image(pb);
-                this.image.Pixbuf = pb;
-            });
-
-			TryGetImage tgi=new TryGetImage(this.objects_map,e.Region.MapImageID,350,350,true);
-            tgi.OnDecodeComplete += new TryGetImage.Decodecomplete(delegate()
-			{
-				  Gtk.Application.Invoke(delegate
-            {
-				lastheight=-1;
-				lastwidth=-1;
-                drawavs();
-            });
 				
-			});
-            tgi.go();
-		}
-		
         void update_map_for_region(ulong regionID)
         {
 
-
+            Logger.Log("Update map for region() handle " + regionID.ToString(),Helpers.LogLevel.Debug);
             if (regionID != this_maps_region_handle)
                 return;
 
-            if (requested == true)
-                return; 
-
             GridRegion region;
-            if(MainClass.win.grid_regions.TryGetValue(regionID,out region))
+            if (MainClass.win.grid_regions.TryGetValue(regionID, out region))
             {
-                current_region=region;
-                requested = true;
-								
-				this.objects_map_ID=region.MapImageID;
-				Gdk.Pixbuf pb= MainClass.GetResource("trying.png");
-				objects_map = new Gtk.Image(pb);
+                current_region = region;
 
-				this.image.Pixbuf=pb;
-                TryGetImage tgi=new TryGetImage(this.objects_map, region.MapImageID, 350, 350, true);
+                this.objects_map_ID = region.MapImageID;
+                Gdk.Pixbuf pb = MainClass.GetResource("trying.png");
+                objects_map = new Gtk.Image(pb);
+                int size = height < width ? height : width;
+                this.scalemap.Pixbuf = this.objects_map.Pixbuf.ScaleSimple(size, size, InterpType.Bilinear);
+
+                this.image.Pixbuf = pb;
+                TryGetImage tgi = new TryGetImage(this.objects_map, region.MapImageID, 350, 350, true);
                 tgi.OnDecodeComplete += delegate
                 {
                     Gtk.Application.Invoke(delegate
                     {
                         this.scalemap = new Gtk.Image();
-                        int size = height < width ? height : width;
-                        if (size < 25)
-                            size = 25; //meh!
+                        int size2 = height < width ? height : width;
+                        if (size2 < 25)
+                            size2 = 25; //meh!
 
-                        this.scalemap.Pixbuf = this.objects_map.Pixbuf.ScaleSimple(size, size, InterpType.Bilinear);
+                        this.scalemap.Pixbuf = this.objects_map.Pixbuf.ScaleSimple(size2, size, InterpType.Bilinear);
                         drawavs();
                     });
                 };
-  
+
                 tgi.go();
+            }
+            else
+            {
+                Logger.Log("Failed to find region in region cache", Helpers.LogLevel.Warning);
             }
         }
 
-        void Self_TeleportProgress(object sender, TeleportEventArgs e)
-	    {
-			if(e.Status==OpenMetaverse.TeleportStatus.Finished)
-			{
-
-                if (lastsim != null && this_maps_sim!=null)
-                    if (this_maps_sim.ID == lastsim)
-                        return;
-				
-			this.terrain_map_ID=UUID.Zero;
-			this.objects_map_ID=UUID.Zero;
-			this.forsale_map_ID=UUID.Zero;
-            requested = false;
-
-            // I can nill reference exception, and why is this even done here, this should only be
-            // done on a new simulator not just on any old teleport.
-            //MainClass.client.Grid.RequestMapRegion(this_maps_sim.Name, GridLayerType.Objects);
-
-			Gtk.Application.Invoke(delegate
-            {
-                 drawavs();
-            });
-
-                if (this_maps_sim != null)
-                    lastsim = this_maps_sim.ID;
-			}
-	    }
-			
 		void drawavs()
 		{
 				
@@ -457,15 +368,6 @@ namespace omvviewerlight
                 image.QueueDraw();
 			}
 		}
-
-        void Network_SimChanged(object sender, SimChangedEventArgs e)
-        {
-			MainClass.win.map_widget=this;
-            Gtk.Application.Invoke(delegate
-            {
-                basemap = new Gtk.Image(MainClass.GetResource("water.png"));
-            });
-        }
 	
 		void showme(Gdk.Pixbuf buf,Gdk.Pixbuf src,Vector3 pos)
 		{

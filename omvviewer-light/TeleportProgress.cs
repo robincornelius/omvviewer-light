@@ -118,42 +118,45 @@ namespace omvviewerlight
         {
 		    Gtk.Application.Invoke(delegate {						
 						
-			Console.Write("TP update "+e.Status.ToString()+"\n");
-			
-			this.label_info.Text=e.Message;
-				
-			if(OpenMetaverse.TeleportStatus.Start==e.Status)
-				progressbar1.Fraction=0.2;
-				
-			if(OpenMetaverse.TeleportStatus.Progress==e.Status)
-			{
-			     Console.Write("Progress\n");
-				 progressbar1.Fraction+=0.2;
-			}	
-			
-			if(OpenMetaverse.TeleportStatus.Finished==e.Status)
-			{
-					progressbar1.Fraction=1.0;
-					GLib.Timeout.Add(1000,closewindow);
-					this.button_close.Sensitive=true;
-			}
+			    Console.Write("TP update "+e.Status.ToString()+"\n");
+    			
+			    this.label_info.Text=e.Message;
+    				
+			    if(OpenMetaverse.TeleportStatus.Start==e.Status)
+				    progressbar1.Fraction=0.2;
+    				
+			    if(OpenMetaverse.TeleportStatus.Progress==e.Status)
+			    {
+			         Console.Write("Progress\n");
+                     if (progressbar1.Fraction < 1.0)
+                         progressbar1.Fraction += 0.2;
+                     else
+                         progressbar1.Fraction = 0.2;
+			    }	
+    			
+			    if(OpenMetaverse.TeleportStatus.Finished==e.Status)
+			    {
+					    progressbar1.Fraction=1.0;
+					    GLib.Timeout.Add(1000,closewindow);
+					    this.button_close.Sensitive=true;
+			    }
 
-			if(OpenMetaverse.TeleportStatus.Cancelled==e.Status)
-			{
-					progressbar1.Fraction=1.0;
-					this.button_close.Sensitive=true;
-					this.label_info.Text="Teleport Cancelled";
-			}
+			    if(OpenMetaverse.TeleportStatus.Cancelled==e.Status)
+			    {
+					    progressbar1.Fraction=1.0;
+					    this.button_close.Sensitive=true;
+					    this.label_info.Text="Teleport Cancelled";
+			    }
 
-			if(OpenMetaverse.TeleportStatus.Failed==e.Status)
-			{
-					progressbar1.Fraction=1.0;
-					this.button_close.Sensitive=true;
-					this.label_info.Text="Teleport FAILED, sorry";
-			}
+			    if(OpenMetaverse.TeleportStatus.Failed==e.Status)
+			    {
+					    progressbar1.Fraction=1.0;
+					    this.button_close.Sensitive=true;
+					    this.label_info.Text="Teleport FAILED, sorry";
+			    }
 
-				
-			this.QueueDraw();
+    				
+			    this.QueueDraw();
 			
 			});
 		}
