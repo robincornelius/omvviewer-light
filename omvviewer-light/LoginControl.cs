@@ -39,10 +39,13 @@ namespace omvviewerlight
 		LoginParams login;
 		bool loginbut=true;
 		bool trying;
-        
+        Gtk.TextTag [] logleveltag= new Gtk.TextTag[5];
+
 		public LoginControl()
 		{
 			this.Build();
+
+            build_tag_table();
 
             MainClass.onRegister += new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
@@ -281,13 +284,37 @@ namespace omvviewerlight
 
 		void onLogMessage(object obj, OpenMetaverse.Helpers.LogLevel level)
 		{
-			//if(level >= OpenMetaverse.Helpers.LogLevel.Warning)
+
 			{
 				Gtk.Application.Invoke(delegate {
-					this.textview_log.Buffer.InsertAtCursor(obj.ToString()+"\n");
-					this.textview_log.ScrollMarkOnscreen(textview_log.Buffer.InsertMark);
-					this.textview_log.QueueDraw();
-				});			
+
+                    Gtk.TextTag tag;
+
+                    switch (level)
+                    {
+                        case Helpers.LogLevel.Debug:
+                            tag = logleveltag[0];
+                            break;
+                        case Helpers.LogLevel.None:
+                            tag = logleveltag[1];
+                            break;
+                        case Helpers.LogLevel.Info:
+                            tag = logleveltag[2];
+                            break;
+                        case Helpers.LogLevel.Warning:
+                            tag = logleveltag[3];
+                            break;
+                        case Helpers.LogLevel.Error:
+                            tag = logleveltag[4];
+                            break;
+                        default:
+                            tag = logleveltag[1];
+                            break;
+                    }
+
+                    textview_log.Buffer.InsertWithTags(textview_log.Buffer.EndIter,obj.ToString()+"\n",tag);
+                    textview_log.ScrollToIter(textview_log.Buffer.EndIter, 0, false, 0, 0);
+                });			
 			}				
 			
 		}
@@ -471,6 +498,22 @@ namespace omvviewerlight
      			this.button_login.Sensitive=true;
 			    return false;
 		}
+
+        void build_tag_table()
+        {
+            logleveltag[0] = new Gtk.TextTag("Debug");
+            logleveltag[1] = new Gtk.TextTag("Info");
+            logleveltag[2] = new Gtk.TextTag("None");
+            logleveltag[3] = new Gtk.TextTag("Warning");
+            logleveltag[4] = new Gtk.TextTag("Error");
+
+            logleveltag[0].ForegroundGdk = new Gdk.Color(0,0,0);
+            logleveltag[1].ForegroundGdk = new Gdk.Color(38,34,232);
+            logleveltag[2].ForegroundGdk = new Gdk.Color(232,134,192);
+            logleveltag[3].ForegroundGdk = new Gdk.Color(243,147,10);
+            logleveltag[4].ForegroundGdk = new Gdk.Color(255, 0, 0);
+
+        }
 	
 	}
 }
