@@ -1,9 +1,9 @@
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{324CD9AB-535D-4780-A65D-34DC94D06BE1}</ProjectGuid>
+    <ProjectGuid>{E611FD76-C358-477E-AF29-165839D50529}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ApplicationIcon></ApplicationIcon>
@@ -22,25 +22,6 @@
     <FileUpgradeFlags>
     </FileUpgradeFlags>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>TRACE;DEBUG;VISUAL_STUDIO</DefineConstants>
-    <DocumentationFile></DocumentationFile>
-    <DebugSymbols>True</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <Optimize>False</Optimize>
-    <OutputPath>..\bin\</OutputPath>
-    <RegisterForComInterop>False</RegisterForComInterop>
-    <RemoveIntegerChecks>False</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <NoStdLib>False</NoStdLib>
-    <NoWarn>1591,1574,0419,0618</NoWarn>
-  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
@@ -52,7 +33,26 @@
     <DebugSymbols>False</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <Optimize>True</Optimize>
-    <OutputPath>..\bin\</OutputPath>
+    <OutputPath>../bin/</OutputPath>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <RemoveIntegerChecks>False</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>False</NoStdLib>
+    <NoWarn>1591,1574,0419,0618</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;DEBUG;VISUAL_STUDIO</DefineConstants>
+    <DocumentationFile></DocumentationFile>
+    <DebugSymbols>True</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>False</Optimize>
+    <OutputPath>../bin/</OutputPath>
     <RegisterForComInterop>False</RegisterForComInterop>
     <RemoveIntegerChecks>False</RemoveIntegerChecks>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
@@ -73,11 +73,11 @@
   <ItemGroup>
     <Compile Include="BlockingQueue.cs">
     </Compile>
+    <Compile Include="CRC32.cs">
+    </Compile>
     <Compile Include="CircularQueue.cs">
     </Compile>
     <Compile Include="Color4.cs">
-    </Compile>
-    <Compile Include="CRC32.cs">
     </Compile>
     <Compile Include="DoubleDictionary.cs">
     </Compile>
@@ -101,11 +101,11 @@
     </Compile>
     <Compile Include="TokenBucket.cs">
     </Compile>
+    <Compile Include="UUID.cs">
+    </Compile>
     <Compile Include="Utils.cs">
     </Compile>
     <Compile Include="UtilsConversions.cs">
-    </Compile>
-    <Compile Include="UUID.cs">
     </Compile>
     <Compile Include="Vector2.cs">
     </Compile>

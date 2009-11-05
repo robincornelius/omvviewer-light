@@ -1,3 +1,0 @@
-C:\omvviewer\trunk\bin\OpenMetaverse.Tests.dll
-C:\omvviewer\trunk\OpenMetaverse.Tests\obj\Release\ResolveAssemblyReference.cache
-C:\omvviewer\trunk\OpenMetaverse.Tests\obj\Release\OpenMetaverse.Tests.dll

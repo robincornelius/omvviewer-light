@@ -11,7 +11,7 @@
 			  <fileset basedir=".">
 			  </fileset>
 		  </copy>
-		  <csc target="library" debug="${build.debug}" unsafe="True" warnaserror="False" define="TRACE;DEBUG" nostdlib="False" main="" output="${build.dir}/${project::get-name()}.dll">
+		  <csc target="library" debug="${build.debug}" unsafe="True" warnaserror="False" define="TRACE" nostdlib="False" main="" doc="${build.dir}/OpenMetaverse.XML" output="${build.dir}/${project::get-name()}.dll">
 			  <resources prefix="OpenMetaverse" dynamicprefix="true" >
 			  </resources>
 			  <sources failonempty="true">
@@ -22,11 +22,12 @@
 				  <include name="Animations.cs" />
 				  <include name="AppearanceManager.cs" />
 				  <include name="AssemblyInfo.cs" />
+				  <include name="AssetCache.cs" />
 				  <include name="AssetManager.cs" />
 				  <include name="Avatar.cs" />
 				  <include name="AvatarManager.cs" />
-				  <include name="BitPack.cs" />
 				  <include name="BVHDecoder.cs" />
+				  <include name="BitPack.cs" />
 				  <include name="Caps.cs" />
 				  <include name="CapsToPacket.cs" />
 				  <include name="CoordinateFrame.cs" />
@@ -58,12 +59,13 @@
 				  <include name="Settings.cs" />
 				  <include name="Simulator.cs" />
 				  <include name="SoundManager.cs" />
+				  <include name="Sounds.cs" />
 				  <include name="TerrainCompressor.cs" />
 				  <include name="TerrainManager.cs" />
-				  <include name="TextureCache.cs" />
 				  <include name="TexturePipeline.cs" />
 				  <include name="ThreadUtil.cs" />
 				  <include name="UDPBase.cs" />
+				  <include name="UtilizationStatistics.cs" />
 				  <include name="_Packets_.cs" />
 				  <include name="_VisualParam_.cs" />
 				  <include name="Assets/Asset.cs" />
@@ -75,6 +77,7 @@
 				  <include name="Assets/AssetTypes/AssetAnimation.cs" />
 				  <include name="Assets/AssetTypes/AssetBodypart.cs" />
 				  <include name="Assets/AssetTypes/AssetClothing.cs" />
+				  <include name="Assets/AssetTypes/AssetGesture.cs" />
 				  <include name="Assets/AssetTypes/AssetLandmark.cs" />
 				  <include name="Assets/AssetTypes/AssetNotecard.cs" />
 				  <include name="Assets/AssetTypes/AssetPrim.cs" />
@@ -88,11 +91,7 @@
 				  <include name="Imaging/OpenJPEG.cs" />
 				  <include name="Imaging/TGALoader.cs" />
 				  <include name="Interfaces/IMessage.cs" />
-				  <include name="Interfaces/INetworkManager.cs" />
 				  <include name="Interfaces/IRendering.cs" />
-				  <include name="Messages/CableBeachAttributes.cs" />
-				  <include name="Messages/CableBeachHelpers.cs" />
-				  <include name="Messages/CableBeachMessages.cs" />
 				  <include name="Messages/LindenMessages.cs" />
 				  <include name="Messages/MessageEventDecoder.cs" />
 				  <include name="Messages/Messages.cs" />
@@ -107,6 +106,7 @@
 				  <include name="Voice/VoiceConnector.cs" />
 				  <include name="Voice/VoiceDefinitions.cs" />
 				  <include name="Voice/VoiceGateway.cs" />
+				  <include name="Voice/VoiceParticipant.cs" />
 				  <include name="Voice/VoiceSession.cs" />
 			  </sources>
 			  <references basedir="${project::get-base-directory()}">
@@ -119,10 +119,10 @@
 				  <include name="System.Xml.dll" />
 				  <include name="System.Data.dll" />
 				  <include name="System.Drawing.dll" />
-				  <include name="../bin/log4net.dll" />
 				  <include name="${build.dir}/OpenMetaverseTypes.dll" />
 				  <include name="${build.dir}/OpenMetaverse.StructuredData.dll" />
 				  <include name="${build.dir}/OpenMetaverse.Http.dll" />
+				  <include name="../bin/log4net.dll" />
 				  <include name="../bin/XMLRPC.dll" />
 			  </references>
             <nowarn>
@@ -138,5 +138,43 @@
 		  <delete dir="${obj.dir}" failonerror="false" />
 	  </target>
 	  <target name="doc" description="Creates documentation.">
+		  <property name="doc.target" value="" />
+		  <if test="${platform::is-unix()}">
+			  <property name="doc.target" value="Web" />
+		  </if>
+		  <ndoc failonerror="false" verbose="true">
+			  <assemblies basedir="${project::get-base-directory()}">
+				  <include name="${build.dir}/${project::get-name()}.dll" />
+			  </assemblies>
+			  <summaries basedir="${project::get-base-directory()}">
+				  <include name="${build.dir}/${project::get-name()}.xml"/>
+			  </summaries>
+			  <referencepaths basedir="${project::get-base-directory()}">
+				  <include name="${build.dir}" />
+			  </referencepaths>
+			  <documenters>
+				  <documenter name="MSDN">
+					  <property name="OutputDirectory" value="${build.dir}/doc/${project::get-name()}" />
+					  <property name="OutputTarget" value="${doc.target}" />
+					  <property name="HtmlHelpName" value="${project::get-name()}" />
+					  <property name="IncludeFavorites" value="False" />
+					  <property name="Title" value="${project::get-name()} SDK Documentation" />
+					  <property name="SplitTOCs" value="False" />
+					  <property name="DefaulTOC" value="" />
+					  <property name="ShowVisualBasic" value="True" />
+					  <property name="AutoDocumentConstructors" value="True" />
+					  <property name="ShowMissingSummaries" value="${build.debug}" />
+					  <property name="ShowMissingRemarks" value="${build.debug}" />
+					  <property name="ShowMissingParams" value="${build.debug}" />
+					  <property name="ShowMissingReturns" value="${build.debug}" />
+					  <property name="ShowMissingValues" value="${build.debug}" />
+					  <property name="DocumentInternals" value="False" />
+					  <property name="DocumentPrivates" value="False" />
+					  <property name="DocumentProtected" value="True" />
+					  <property name="DocumentEmptyNamespaces" value="${build.debug}" />
+					  <property name="IncludeAssemblyVersion" value="True" />
+				  </documenter>
+			  </documenters>
+		  </ndoc>
 	  </target>
 </project>

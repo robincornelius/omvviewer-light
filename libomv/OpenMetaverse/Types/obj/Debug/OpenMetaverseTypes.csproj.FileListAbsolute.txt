@@ -1,5 +1,0 @@
-C:\omvviewer\trunk\bin\OpenMetaverseTypes.dll
-C:\omvviewer\trunk\bin\OpenMetaverseTypes.pdb
-C:\omvviewer\trunk\OpenMetaverse\Types\obj\Debug\ResolveAssemblyReference.cache
-C:\omvviewer\trunk\OpenMetaverse\Types\obj\Debug\OpenMetaverseTypes.dll
-C:\omvviewer\trunk\OpenMetaverse\Types\obj\Debug\OpenMetaverseTypes.pdb
