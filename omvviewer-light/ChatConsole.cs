@@ -87,12 +87,16 @@ namespace omvviewerlight
         {
             textview_chat.Buffer.Clear();
 
-            MainClass.client.Self.ChatFromSimulator += new EventHandler<ChatEventArgs>(Self_ChatFromSimulator);
+            if(current_chat_type == chat_type.CHAT_TYPE_CHAT)
+                MainClass.client.Self.ChatFromSimulator += new EventHandler<ChatEventArgs>(Self_ChatFromSimulator);
+            
             MainClass.client.Self.IM += new EventHandler<InstantMessageEventArgs>(Self_IM);
             MainClass.client.Friends.FriendOffline += new EventHandler<FriendInfoEventArgs>(Friends_FriendOffline);
             MainClass.client.Friends.FriendOnline += new EventHandler<FriendInfoEventArgs>(Friends_FriendOnline);
             MainClass.client.Self.MoneyBalanceReply += new EventHandler<MoneyBalanceReplyEventArgs>(Self_MoneyBalanceReply);
-            MainClass.client.Self.GroupChatJoined += new EventHandler<GroupChatJoinedEventArgs>(Self_GroupChatJoined);
+            
+            if(current_chat_type==chat_type.CHAT_TYPE_CONFRENCE || current_chat_type==chat_type.CHAT_TYPE_GROUP_IM)
+                MainClass.client.Self.GroupChatJoined += new EventHandler<GroupChatJoinedEventArgs>(Self_GroupChatJoined);
 
         }
 
@@ -101,13 +105,16 @@ namespace omvviewerlight
         {
             if(MainClass.client!=null)
             {
-                MainClass.client.Self.ChatFromSimulator -= new EventHandler<ChatEventArgs>(Self_ChatFromSimulator);
+                if (current_chat_type == chat_type.CHAT_TYPE_CHAT)
+                    MainClass.client.Self.ChatFromSimulator -= new EventHandler<ChatEventArgs>(Self_ChatFromSimulator);
+                
                 MainClass.client.Self.IM -= new EventHandler<InstantMessageEventArgs>(Self_IM);
                 MainClass.client.Friends.FriendOffline -= new EventHandler<FriendInfoEventArgs>(Friends_FriendOffline);
                 MainClass.client.Friends.FriendOnline -= new EventHandler<FriendInfoEventArgs>(Friends_FriendOnline);
                 MainClass.client.Self.MoneyBalanceReply -= new EventHandler<MoneyBalanceReplyEventArgs>(Self_MoneyBalanceReply);
-
-                MainClass.client.Self.GroupChatJoined -= new EventHandler<GroupChatJoinedEventArgs>(Self_GroupChatJoined);
+    
+                if (current_chat_type == chat_type.CHAT_TYPE_CONFRENCE || current_chat_type == chat_type.CHAT_TYPE_GROUP_IM)
+                    MainClass.client.Self.GroupChatJoined -= new EventHandler<GroupChatJoinedEventArgs>(Self_GroupChatJoined);
    
             }
 
@@ -374,9 +381,9 @@ namespace omvviewerlight
             dosetup();
             MainClass.onRegister += new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
-            MainClass_onRegister();
 
             current_chat_type = chat_type.CHAT_TYPE_IM;
+            MainClass_onRegister();
 
 //			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
             im_target = target;
@@ -390,9 +397,9 @@ namespace omvviewerlight
             dosetup();
             MainClass.onRegister += new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+            current_chat_type = chat_type.CHAT_TYPE_GROUP_IM;
             MainClass_onRegister();
 
-            current_chat_type = chat_type.CHAT_TYPE_GROUP_IM;
 			im_target=target;
 
 //	        MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
@@ -409,11 +416,12 @@ namespace omvviewerlight
                 dosetup();
                 MainClass.onRegister += new MainClass.register(MainClass_onRegister);
                 MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+                current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
+    
                 MainClass_onRegister();
 
-            this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter, "Trying to join confrence chat session, please wait........\n");
-			  current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
-              this.im_target = UUID.Random();
+              this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter, "Trying to join confrence chat session, please wait........\n");
+	          this.im_target = UUID.Random();
               MainClass.client.Self.StartIMConference(targets, this.im_target);
 		}
 		
