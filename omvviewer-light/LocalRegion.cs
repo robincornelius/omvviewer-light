@@ -63,17 +63,6 @@ namespace omvviewerlight
             maps[7] = this.map8;
             maps[8] = this.map9;
 
-
-            maps[0].onclickMap += delegate { mapclick(0);};
-            maps[1].onclickMap += delegate { mapclick(1); };
-            maps[2].onclickMap += delegate { mapclick(2); };
-            maps[3].onclickMap += delegate { mapclick(3); };
-            maps[4].onclickMap += delegate { mapclick(4); };
-            maps[5].onclickMap += delegate { mapclick(5); };
-            maps[6].onclickMap += delegate { mapclick(6); };
-            maps[7].onclickMap += delegate { mapclick(7); };
-            maps[8].onclickMap += delegate { mapclick(8); };
-
             this.SizeAllocated+=new Gtk.SizeAllocatedHandler(onResize);
 
             if (MainClass.client != null) { MainClass_onRegister(); }
@@ -224,16 +213,5 @@ namespace omvviewerlight
                
             });           
         }
-
-        void mapclick(int x)
-        {
-            if (MainClass.win.map_widget == null)
-                return;
-            
-            //FIXME
-            //if (regions[x].Name != "")
-                //MainClass.win.map_widget.changeregion(regions[x]);
-        }
-
 	}
 }

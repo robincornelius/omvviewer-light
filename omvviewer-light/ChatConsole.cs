@@ -185,9 +185,14 @@ namespace omvviewerlight
 
 		public ChatConsole(InstantMessage im)
 		{
+            dosetup();
+
+            MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onRegister();
+            
             lock (MainClass.win.im_queue)
             {
-                dosetup();
 
                 if (im.Dialog==InstantMessageDialog.MessageFromAgent)
                 {
@@ -366,8 +371,13 @@ namespace omvviewerlight
 		
 		public ChatConsole(UUID target)
 		{
-			dosetup();
+            dosetup();
+            MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onRegister();
+
             current_chat_type = chat_type.CHAT_TYPE_IM;
+
 //			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
             im_target = target;
             if(!MainClass.win.im_windows.ContainsKey(target))
@@ -375,9 +385,13 @@ namespace omvviewerlight
 		}
 
 		public ChatConsole(UUID target,bool igroup)
-		{			
-            
-			dosetup();
+		{
+
+            dosetup();
+            MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+            MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+            MainClass_onRegister();
+
             current_chat_type = chat_type.CHAT_TYPE_GROUP_IM;
 			im_target=target;
 
@@ -392,10 +406,12 @@ namespace omvviewerlight
 		
 		public ChatConsole(List <UUID> targets)
 		{
-			  dosetup();
-			  this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter,"Trying to join confrence chat session, please wait........\n");
-//			  MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
-//            MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
+                dosetup();
+                MainClass.onRegister += new MainClass.register(MainClass_onRegister);
+                MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
+                MainClass_onRegister();
+
+            this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter, "Trying to join confrence chat session, please wait........\n");
 			  current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
               this.im_target = UUID.Random();
               MainClass.client.Self.StartIMConference(targets, this.im_target);
