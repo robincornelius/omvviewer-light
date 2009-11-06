@@ -1,7 +1,7 @@
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{455E7D70-1C85-4D7F-9F01-DC801B8B8C34}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -22,25 +22,6 @@
     <FileUpgradeFlags>
     </FileUpgradeFlags>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>TRACE;DEBUG;VISUAL_STUDIO</DefineConstants>
-    <DocumentationFile></DocumentationFile>
-    <DebugSymbols>True</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <Optimize>False</Optimize>
-    <OutputPath>..\bin\</OutputPath>
-    <RegisterForComInterop>False</RegisterForComInterop>
-    <RemoveIntegerChecks>False</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <NoStdLib>False</NoStdLib>
-    <NoWarn>1591,1574,0419,0618</NoWarn>
-  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
@@ -52,7 +33,26 @@
     <DebugSymbols>False</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <Optimize>True</Optimize>
-    <OutputPath>..\bin\</OutputPath>
+    <OutputPath>../bin/</OutputPath>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <RemoveIntegerChecks>False</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>False</NoStdLib>
+    <NoWarn>1591,1574,0419,0618</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;DEBUG;VISUAL_STUDIO</DefineConstants>
+    <DocumentationFile></DocumentationFile>
+    <DebugSymbols>True</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>False</Optimize>
+    <OutputPath>../bin/</OutputPath>
     <RegisterForComInterop>False</RegisterForComInterop>
     <RemoveIntegerChecks>False</RemoveIntegerChecks>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
@@ -144,45 +144,45 @@
     </Compile>
     <Compile Include="ResponseCookies.cs">
     </Compile>
-    <Compile Include="Exceptions\BadRequestException.cs">
+    <Compile Include="Exceptions/BadRequestException.cs">
     </Compile>
-    <Compile Include="Exceptions\ForbiddenException.cs">
+    <Compile Include="Exceptions/ForbiddenException.cs">
     </Compile>
-    <Compile Include="Exceptions\HttpException.cs">
+    <Compile Include="Exceptions/HttpException.cs">
     </Compile>
-    <Compile Include="Exceptions\InternalServerException.cs">
+    <Compile Include="Exceptions/InternalServerException.cs">
     </Compile>
-    <Compile Include="Exceptions\NotFoundException.cs">
+    <Compile Include="Exceptions/NotFoundException.cs">
     </Compile>
-    <Compile Include="Exceptions\UnauthorizedException.cs">
+    <Compile Include="Exceptions/UnauthorizedException.cs">
     </Compile>
-    <Compile Include="FormDecoders\FormDecoder.cs">
+    <Compile Include="FormDecoders/FormDecoder.cs">
     </Compile>
-    <Compile Include="FormDecoders\FormDecoderProvider.cs">
+    <Compile Include="FormDecoders/FormDecoderProvider.cs">
     </Compile>
-    <Compile Include="FormDecoders\HttpMultipart.cs">
+    <Compile Include="FormDecoders/HttpMultipart.cs">
     </Compile>
-    <Compile Include="FormDecoders\IFormDecoder.cs">
+    <Compile Include="FormDecoders/IFormDecoder.cs">
     </Compile>
-    <Compile Include="FormDecoders\MultipartDecoder.cs">
+    <Compile Include="FormDecoders/MultipartDecoder.cs">
     </Compile>
-    <Compile Include="FormDecoders\UrlDecoder.cs">
+    <Compile Include="FormDecoders/UrlDecoder.cs">
     </Compile>
-    <Compile Include="Handlers\FileHandler.cs">
+    <Compile Include="Handlers/FileHandler.cs">
     </Compile>
-    <Compile Include="Parser\BodyEventArgs.cs">
+    <Compile Include="Parser/BodyEventArgs.cs">
     </Compile>
-    <Compile Include="Parser\HeaderEventArgs.cs">
+    <Compile Include="Parser/HeaderEventArgs.cs">
     </Compile>
-    <Compile Include="Parser\HttpRequestParser.cs">
+    <Compile Include="Parser/HttpRequestParser.cs">
     </Compile>
-    <Compile Include="Parser\RequestLineEventArgs.cs">
+    <Compile Include="Parser/RequestLineEventArgs.cs">
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs">
+    <Compile Include="Properties/AssemblyInfo.cs">
     </Compile>
-    <Compile Include="Templates\ITemplateEngine.cs">
+    <Compile Include="Templates/ITemplateEngine.cs">
     </Compile>
-    <Compile Include="Templates\SmartyEngine.cs">
+    <Compile Include="Templates/SmartyEngine.cs">
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />

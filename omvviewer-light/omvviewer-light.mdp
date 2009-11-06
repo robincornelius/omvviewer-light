@@ -1,4 +1,4 @@
-<Project name="omvviewer-light" fileversion="2.0" language="C#" DefaultNamespace="omvviewerlight" clr-version="Net_2_0" targetFramework="2.0" ctype="DotNetProject">
+<Project name="omvviewer-light" fileversion="2.0" language="C#" DefaultNamespace="omvviewerlight" clr-version="Net_2_0" targetFramework="3.5" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <CustomCommands>
@@ -208,14 +208,14 @@
     <ProjectReference type="Gac" localcopy="True" refto="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <ProjectReference type="Gac" localcopy="True" refto="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <ProjectReference type="Assembly" localcopy="True" refto="bin/log4net.dll" />
-    <ProjectReference type="Assembly" localcopy="True" refto="bin/OpenMetaverseTypes.dll" />
     <ProjectReference type="Gac" localcopy="True" refto="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-    <ProjectReference type="Assembly" localcopy="True" refto="bin/OpenMetaverse.StructuredData.dll" />
     <ProjectReference type="Gac" localcopy="True" refto="gtk-dotnet, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <ProjectReference type="Assembly" localcopy="True" refto="bin/Tao.FreeGlut.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="bin/Tao.OpenGl.dll" />
-    <ProjectReference type="Assembly" localcopy="True" refto="bin/OpenMetaverse.dll" />
     <ProjectReference type="Gac" localcopy="True" refto="System.Xml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference type="Assembly" localcopy="True" specificVersion="False" refto="bin/OpenMetaverse.dll" />
+    <ProjectReference type="Assembly" localcopy="True" specificVersion="False" refto="bin/OpenMetaverse.StructuredData.dll" />
+    <ProjectReference type="Assembly" localcopy="True" specificVersion="False" refto="bin/OpenMetaverseTypes.dll" />
   </References>
   <LanguageParameters ApplicationIcon="." ctype="CSharpProjectParameters" />
 </Project>

@@ -1,156 +1,69 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>OpenMetaverse.GUI</name>
+        <name>/home/robin/omvviewer-light-stuff/omvviewer-light/libomv/bin/OpenMetaverse.GUI</name>
     </assembly>
     <members>
-        <member name="T:OpenMetaverse.GUI.MiniMap">
+        <member name="T:OpenMetaverse.GUI.AvatarList">
             <summary>
-            PictureBox GUI component for displaying a client's mini-map
+            ListView GUI component for viewing a client's nearby avatars list
             </summary>
         </member>
-        <member name="M:OpenMetaverse.GUI.MiniMap.#ctor">
+        <member name="M:OpenMetaverse.GUI.AvatarList.#ctor">
             <summary>
-            PictureBox control for an unspecified client's mini-map
+            TreeView control for an unspecified client's nearby avatar list
             </summary>
         </member>
-        <member name="M:OpenMetaverse.GUI.MiniMap.#ctor(OpenMetaverse.GridClient)">
+        <member name="E:OpenMetaverse.GUI.AvatarList.OnAvatarDoubleClick">
             <summary>
-            PictureBox control for the specified client's mini-map
+            Triggered when the user double clicks on an avatar in the list
             </summary>
         </member>
-        <member name="M:OpenMetaverse.GUI.MiniMap.SetMapLayer(System.Drawing.Bitmap)">
-            <summary>Sets the map layer to the specified bitmap image</summary>
-            <param name="mapImage"></param>
-        </member>
-        <member name="P:OpenMetaverse.GUI.MiniMap.Client">
+        <member name="E:OpenMetaverse.GUI.AvatarList.OnAvatarAdded">
             <summary>
-            Gets or sets the GridClient associated with this control
+            Triggered when a new avatar is added to the list
             </summary>
         </member>
-        <member name="T:OpenMetaverse.GUI.MessageBar">
+        <member name="E:OpenMetaverse.GUI.AvatarList.OnAvatarRemoved">
             <summary>
-            ToolStrip GUI component for displaying and switching between IM windows
+            Triggered when an avatar is removed from the list
             </summary>
         </member>
-        <member name="M:OpenMetaverse.GUI.MessageBar.#ctor">
-            <summary>
-            ToolStrip control for displaying and switching between an unspecified client's IM windows
-            </summary>
-        </member>
-        <member name="P:OpenMetaverse.GUI.MessageBar.Client">
+        <member name="P:OpenMetaverse.GUI.AvatarList.Client">
             <summary>
             Gets or sets the GridClient associated with this control
             </summary>
         </member>
-        <member name="T:OpenMetaverse.GUI.MessageBar.MessageBarButton">
+        <member name="P:OpenMetaverse.GUI.AvatarList.SelectedAvatar">
             <summary>
-            A ToolBarButton representing an IM session, including its associated window
+            Returns the current selected avatar in the tracked avatars list
             </summary>
         </member>
-        <member name="F:OpenMetaverse.GUI.MessageBar.MessageBarButton.TargetName">
-            <summary>Target avatar name</summary>
-        </member>
-        <member name="F:OpenMetaverse.GUI.MessageBar.MessageBarButton.TargetID">
-            <summary>Target avatar ID</summary>
-        </member>
-        <member name="F:OpenMetaverse.GUI.MessageBar.MessageBarButton.IMSessionID">
-            <summary>IM session ID</summary>
-        </member>
-        <member name="F:OpenMetaverse.GUI.MessageBar.MessageBarButton.Window">
-            <summary>Window for this IM session</summary>
-        </member>
-        <member name="M:OpenMetaverse.GUI.MessageBar.MessageBarButton.#ctor(System.String,OpenMetaverse.UUID,OpenMetaverse.UUID)">
-            <summary>
-            A class representing each IM session and its associated button and window objects
-            </summary>
-        </member>
-        <member name="T:OpenMetaverse.GUI.MessageBar.MessageWindow">
-            <summary>
-            A generic form for displaying text and accepting user input
-            </summary>
-        </member>
-        <member name="M:OpenMetaverse.GUI.MessageBar.MessageWindow.#ctor(System.String)">
-            <summary>
-            A generic form for displaying text and accepting user input
-            </summary>
-        </member>
-        <member name="M:OpenMetaverse.GUI.MessageBar.MessageWindow.LogText(System.String,System.Drawing.Color)">
-            <summary>
-            Thread-safe method for adding text of a specified color to the display output
-            </summary>
-            <param name="text"></param>
-            <param name="color"></param>
-        </member>
-        <member name="M:OpenMetaverse.GUI.MessageBar.MessageWindow.SetTitle(System.String)">
-            <summary>
-            Thread-safe method for setting the window title
-            </summary>
-            <param name="title"></param>
-        </member>
-        <member name="T:OpenMetaverse.GUI.StatusOutput">
-            <summary>
-            RichTextBox GUI component for displaying a client's status output
-            </summary>
-        </member>
-        <member name="F:OpenMetaverse.GUI.StatusOutput.LogFile">
-            <summary>
-            A file that output should be logged to (or null, to disable logging)
-            </summary>
-        </member>
-        <member name="P:OpenMetaverse.GUI.StatusOutput.Client">
-            <summary>
-            Gets or sets the GridClient associated with this control
-            </summary>
-        </member>
-        <member name="T:OpenMetaverse.GUI.InventoryTree">
-            <summary>
-            TreeView GUI component for browsing a client's inventory
-            </summary>
-        </member>
-        <member name="M:OpenMetaverse.GUI.InventoryTree.#ctor">
-            <summary>
-            TreeView control for an unspecified client's inventory
-            </summary>
-        </member>
-        <member name="M:OpenMetaverse.GUI.InventoryTree.#ctor(OpenMetaverse.GridClient)">
-            <summary>
-            TreeView control for the specified client's inventory
-            </summary>
-            <param name="client"></param>
-        </member>
-        <member name="M:OpenMetaverse.GUI.InventoryTree.ClearNodes">
+        <member name="M:OpenMetaverse.GUI.AvatarList.ClearItems">
             <summary>
             Thread-safe method for clearing the TreeView control
             </summary>
         </member>
-        <member name="M:OpenMetaverse.GUI.InventoryTree.CollapseNode(System.Windows.Forms.TreeNode)">
+        <member name="T:OpenMetaverse.GUI.TrackedAvatar">
             <summary>
-            Thread-safe method for collapsing a TreeNode in the control
-            </summary>
-            <param name="node"></param>
-        </member>
-        <member name="M:OpenMetaverse.GUI.InventoryTree.ExpandNode(System.Windows.Forms.TreeNode)">
-            <summary>
-            Thread-safe method for expanding a TreeNode in the control
-            </summary>
-            <param name="node"></param>
-        </member>
-        <member name="M:OpenMetaverse.GUI.InventoryTree.UpdateFolder(OpenMetaverse.UUID)">
-            <summary>
-            Thread-safe method for updating the contents of the specified folder UUID
-            </summary>
-            <param name="folderID"></param>
-        </member>
-        <member name="P:OpenMetaverse.GUI.InventoryTree.Menu">
-            <summary>
-            Gets or sets the context menu associated with this control
+            Contains any available information for an avatar in the simulator.
+            A null value for .Avatar indicates coarse data for an avatar outside of visible range.
             </summary>
         </member>
-        <member name="P:OpenMetaverse.GUI.InventoryTree.Client">
-            <summary>
-            Gets or sets the GridClient associated with this control
-            </summary>
+        <member name="F:OpenMetaverse.GUI.TrackedAvatar.Avatar">
+            <summary>Assigned if the avatar is within visible range</summary>
+        </member>
+        <member name="F:OpenMetaverse.GUI.TrackedAvatar.CoarseLocation">
+            <summary>Last known coarse location of avatar</summary>
+        </member>
+        <member name="F:OpenMetaverse.GUI.TrackedAvatar.ID">
+            <summary>Avatar ID</summary>
+        </member>
+        <member name="F:OpenMetaverse.GUI.TrackedAvatar.ListViewItem">
+            <summary>ListViewItem associated with this avatar</summary>
+        </member>
+        <member name="F:OpenMetaverse.GUI.TrackedAvatar.Name">
+            <summary>Populated by RequestAvatarName if avatar is not visible</summary>
         </member>
         <member name="T:OpenMetaverse.GUI.FriendList">
             <summary>
@@ -202,75 +115,109 @@
             Gets or sets the GridClient associated with this control
             </summary>
         </member>
-        <member name="T:OpenMetaverse.GUI.AvatarList">
+        <member name="T:OpenMetaverse.GUI.InventoryTree">
             <summary>
-            ListView GUI component for viewing a client's nearby avatars list
+            TreeView GUI component for browsing a client's inventory
             </summary>
         </member>
-        <member name="M:OpenMetaverse.GUI.AvatarList.#ctor">
+        <member name="M:OpenMetaverse.GUI.InventoryTree.#ctor">
             <summary>
-            TreeView control for an unspecified client's nearby avatar list
+            TreeView control for an unspecified client's inventory
             </summary>
         </member>
-        <member name="M:OpenMetaverse.GUI.AvatarList.ClearItems">
+        <member name="M:OpenMetaverse.GUI.InventoryTree.#ctor(OpenMetaverse.GridClient)">
             <summary>
-            Thread-safe method for clearing the TreeView control
+            TreeView control for the specified client's inventory
+            </summary>
+            <param name="client">
+            </param>
+        </member>
+        <member name="P:OpenMetaverse.GUI.InventoryTree.Menu">
+            <summary>
+            Gets or sets the context menu associated with this control
             </summary>
         </member>
-        <member name="E:OpenMetaverse.GUI.AvatarList.OnAvatarDoubleClick">
-            <summary>
-            Triggered when the user double clicks on an avatar in the list
-            </summary>
-        </member>
-        <member name="E:OpenMetaverse.GUI.AvatarList.OnAvatarAdded">
-            <summary>
-            Triggered when a new avatar is added to the list
-            </summary>
-        </member>
-        <member name="E:OpenMetaverse.GUI.AvatarList.OnAvatarRemoved">
-            <summary>
-            Triggered when an avatar is removed from the list
-            </summary>
-        </member>
-        <member name="P:OpenMetaverse.GUI.AvatarList.Client">
+        <member name="P:OpenMetaverse.GUI.InventoryTree.Client">
             <summary>
             Gets or sets the GridClient associated with this control
             </summary>
         </member>
-        <member name="P:OpenMetaverse.GUI.AvatarList.SelectedAvatar">
+        <member name="M:OpenMetaverse.GUI.InventoryTree.ClearNodes">
             <summary>
-            Returns the current selected avatar in the tracked avatars list
+            Thread-safe method for clearing the TreeView control
             </summary>
         </member>
-        <member name="T:OpenMetaverse.GUI.TrackedAvatar">
+        <member name="M:OpenMetaverse.GUI.InventoryTree.CollapseNode(System.Windows.Forms.TreeNode)">
             <summary>
-            Contains any available information for an avatar in the simulator.
-            A null value for .Avatar indicates coarse data for an avatar outside of visible range.
+            Thread-safe method for collapsing a TreeNode in the control
+            </summary>
+            <param name="node">
+            </param>
+        </member>
+        <member name="M:OpenMetaverse.GUI.InventoryTree.ExpandNode(System.Windows.Forms.TreeNode)">
+            <summary>
+            Thread-safe method for expanding a TreeNode in the control
+            </summary>
+            <param name="node">
+            </param>
+        </member>
+        <member name="M:OpenMetaverse.GUI.InventoryTree.UpdateFolder(OpenMetaverse.UUID)">
+            <summary>
+            Thread-safe method for updating the contents of the specified folder UUID
+            </summary>
+            <param name="folderID">
+            </param>
+        </member>
+        <member name="T:OpenMetaverse.GUI.LocalChat">
+            <summary>
+            Panel GUI component for interfacing with local chat
             </summary>
         </member>
-        <member name="F:OpenMetaverse.GUI.TrackedAvatar.Avatar">
-            <summary>Assigned if the avatar is within visible range</summary>
+        <member name="M:OpenMetaverse.GUI.LocalChat.#ctor">
+            <summary>
+            Panel control for an unspecified client's local chat interaction
+            </summary>
         </member>
-        <member name="F:OpenMetaverse.GUI.TrackedAvatar.CoarseLocation">
-            <summary>Last known coarse location of avatar</summary>
+        <member name="M:OpenMetaverse.GUI.LocalChat.#ctor(OpenMetaverse.GridClient)">
+            <summary>
+            Panel control for the specified client's local chat interaction
+            </summary>
         </member>
-        <member name="F:OpenMetaverse.GUI.TrackedAvatar.ID">
-            <summary>Avatar ID</summary>
+        <member name="F:OpenMetaverse.GUI.LocalChat.LogFile">
+            <summary>
+            A file that output should be logged to (or null, to disable logging)
+            </summary>
         </member>
-        <member name="F:OpenMetaverse.GUI.TrackedAvatar.ListViewItem">
-            <summary>ListViewItem associated with this avatar</summary>
+        <member name="P:OpenMetaverse.GUI.LocalChat.Client">
+            <summary>
+            Gets or sets the GridClient associated with this control
+            </summary>
         </member>
-        <member name="F:OpenMetaverse.GUI.TrackedAvatar.Name">
-            <summary>Populated by RequestAvatarName if avatar is not visible</summary>
+        <member name="M:OpenMetaverse.GUI.LocalChat.LogChat(System.String,OpenMetaverse.ChatType,System.String,System.Drawing.Color)">
+            <summary>
+            Adds text of a specified color to the display output
+            </summary>
+            <param name="name">
+            </param>
+            <param name="type">
+            </param>
+            <param name="message">
+            </param>
+            <param name="color">
+            </param>
+        </member>
+        <member name="M:OpenMetaverse.GUI.LocalChat.LogText(System.String,System.Drawing.Color)">
+            <summary>
+            Thread-safe method for adding text of a specified color to the display output
+            </summary>
+            <param name="text">
+            </param>
+            <param name="color">
+            </param>
         </member>
         <member name="M:OpenMetaverse.GUI.LoginPanel.#ctor">
             <summary>
             Panel control for an unspecified client's login preferences
-            </summary>
-        </member>
-        <member name="M:OpenMetaverse.GUI.LoginPanel.Login">
-            <summary>
-            Begins login sequence using the parameters defined in .LoginParams
             </summary>
         </member>
         <member name="P:OpenMetaverse.GUI.LoginPanel.Client">
@@ -303,43 +250,110 @@
             Complete start URI based on textbox value
             </summary>
         </member>
-        <member name="T:OpenMetaverse.GUI.LocalChat">
+        <member name="M:OpenMetaverse.GUI.LoginPanel.Login">
             <summary>
-            Panel GUI component for interfacing with local chat
+            Begins login sequence using the parameters defined in .LoginParams
             </summary>
         </member>
-        <member name="F:OpenMetaverse.GUI.LocalChat.LogFile">
+        <member name="T:OpenMetaverse.GUI.MessageBar">
+            <summary>
+            ToolStrip GUI component for displaying and switching between IM windows
+            </summary>
+        </member>
+        <member name="M:OpenMetaverse.GUI.MessageBar.#ctor">
+            <summary>
+            ToolStrip control for displaying and switching between an unspecified client's IM windows
+            </summary>
+        </member>
+        <member name="T:OpenMetaverse.GUI.MessageBar.MessageBarButton">
+            <summary>
+            A ToolBarButton representing an IM session, including its associated window
+            </summary>
+        </member>
+        <member name="M:OpenMetaverse.GUI.MessageBar.MessageBarButton.#ctor(System.String,OpenMetaverse.UUID,OpenMetaverse.UUID)">
+            <summary>
+            A class representing each IM session and its associated button and window objects
+            </summary>
+        </member>
+        <member name="F:OpenMetaverse.GUI.MessageBar.MessageBarButton.TargetName">
+            <summary>Target avatar name</summary>
+        </member>
+        <member name="F:OpenMetaverse.GUI.MessageBar.MessageBarButton.TargetID">
+            <summary>Target avatar ID</summary>
+        </member>
+        <member name="F:OpenMetaverse.GUI.MessageBar.MessageBarButton.IMSessionID">
+            <summary>IM session ID</summary>
+        </member>
+        <member name="F:OpenMetaverse.GUI.MessageBar.MessageBarButton.Window">
+            <summary>Window for this IM session</summary>
+        </member>
+        <member name="T:OpenMetaverse.GUI.MessageBar.MessageWindow">
+            <summary>
+            A generic form for displaying text and accepting user input
+            </summary>
+        </member>
+        <member name="M:OpenMetaverse.GUI.MessageBar.MessageWindow.#ctor(System.String)">
+            <summary>
+            A generic form for displaying text and accepting user input
+            </summary>
+        </member>
+        <member name="M:OpenMetaverse.GUI.MessageBar.MessageWindow.LogText(System.String,System.Drawing.Color)">
+            <summary>
+            Thread-safe method for adding text of a specified color to the display output
+            </summary>
+            <param name="text">
+            </param>
+            <param name="color">
+            </param>
+        </member>
+        <member name="M:OpenMetaverse.GUI.MessageBar.MessageWindow.SetTitle(System.String)">
+            <summary>
+            Thread-safe method for setting the window title
+            </summary>
+            <param name="title">
+            </param>
+        </member>
+        <member name="P:OpenMetaverse.GUI.MessageBar.Client">
+            <summary>
+            Gets or sets the GridClient associated with this control
+            </summary>
+        </member>
+        <member name="T:OpenMetaverse.GUI.MiniMap">
+            <summary>
+            PictureBox GUI component for displaying a client's mini-map
+            </summary>
+        </member>
+        <member name="M:OpenMetaverse.GUI.MiniMap.#ctor">
+            <summary>
+            PictureBox control for an unspecified client's mini-map
+            </summary>
+        </member>
+        <member name="M:OpenMetaverse.GUI.MiniMap.#ctor(OpenMetaverse.GridClient)">
+            <summary>
+            PictureBox control for the specified client's mini-map
+            </summary>
+        </member>
+        <member name="P:OpenMetaverse.GUI.MiniMap.Client">
+            <summary>
+            Gets or sets the GridClient associated with this control
+            </summary>
+        </member>
+        <member name="M:OpenMetaverse.GUI.MiniMap.SetMapLayer(System.Drawing.Bitmap)">
+            <summary>Sets the map layer to the specified bitmap image</summary>
+            <param name="mapImage">
+            </param>
+        </member>
+        <member name="T:OpenMetaverse.GUI.StatusOutput">
+            <summary>
+            RichTextBox GUI component for displaying a client's status output
+            </summary>
+        </member>
+        <member name="F:OpenMetaverse.GUI.StatusOutput.LogFile">
             <summary>
             A file that output should be logged to (or null, to disable logging)
             </summary>
         </member>
-        <member name="M:OpenMetaverse.GUI.LocalChat.#ctor">
-            <summary>
-            Panel control for an unspecified client's local chat interaction
-            </summary>
-        </member>
-        <member name="M:OpenMetaverse.GUI.LocalChat.#ctor(OpenMetaverse.GridClient)">
-            <summary>
-            Panel control for the specified client's local chat interaction
-            </summary>
-        </member>
-        <member name="M:OpenMetaverse.GUI.LocalChat.LogChat(System.String,OpenMetaverse.ChatType,System.String,System.Drawing.Color)">
-            <summary>
-            Adds text of a specified color to the display output
-            </summary>
-            <param name="name"></param>
-            <param name="type"></param>
-            <param name="message"></param>
-            <param name="color"></param>
-        </member>
-        <member name="M:OpenMetaverse.GUI.LocalChat.LogText(System.String,System.Drawing.Color)">
-            <summary>
-            Thread-safe method for adding text of a specified color to the display output
-            </summary>
-            <param name="text"></param>
-            <param name="color"></param>
-        </member>
-        <member name="P:OpenMetaverse.GUI.LocalChat.Client">
+        <member name="P:OpenMetaverse.GUI.StatusOutput.Client">
             <summary>
             Gets or sets the GridClient associated with this control
             </summary>
