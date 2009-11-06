@@ -155,16 +155,16 @@ namespace omvviewerlight
 			this.label_info.Text="Searching..........";
             places_found = 0;
 			
-			OpenMetaverse.DirectoryManager.DirFindFlags flags;
+			OpenMetaverse.DirectoryManager.DirFindFlags flags=0;
 			flags=OpenMetaverse.DirectoryManager.DirFindFlags.NameSort;
 			
-			if(this.checkbutton_mature.Active==false)
-			flags|=OpenMetaverse.DirectoryManager.DirFindFlags.PgSimsOnly;
-			
+            flags |= OpenMetaverse.DirectoryManager.DirFindFlags.IncludeAdult;
+            flags |= OpenMetaverse.DirectoryManager.DirFindFlags.IncludeMature;
+            flags |= OpenMetaverse.DirectoryManager.DirFindFlags.IncludePG;
+
 			OpenMetaverse.ParcelCategory pcat;
             pcat = OpenMetaverse.ParcelCategory.Any;
-			queryid=UUID.Random();
-			MainClass.client.Directory.StartPlacesSearch(flags,pcat,entry1.Text,"",MainClass.client.Self.ActiveGroup,queryid);
+			queryid=MainClass.client.Directory.StartPlacesSearch(flags,pcat,entry1.Text,"",MainClass.client.Self.ActiveGroup,queryid);
 		}
 
 		protected virtual void OnButtonTPClicked (object sender, System.EventArgs e)

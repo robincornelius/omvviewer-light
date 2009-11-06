@@ -156,8 +156,9 @@ namespace omvviewerlight
             DirectoryManager.DirFindFlags flags = new DirectoryManager.DirFindFlags();
             if(this.checkbutton_mature.Active)
             {
-                flags |= DirectoryManager.DirFindFlags.FilterMature;
-                //flags|=DirectoryManager.DirFindFlags.AdultOnly;
+                flags |= DirectoryManager.DirFindFlags.IncludePG;
+                flags |= DirectoryManager.DirFindFlags.IncludeAdult;
+                flags |= DirectoryManager.DirFindFlags.IncludeMature;
             }
 
             queryid=MainClass.client.Directory.StartEventsSearch(entry_name.Text,flags,"",0,selectcat);			

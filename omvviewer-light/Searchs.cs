@@ -105,8 +105,7 @@ namespace omvviewerlight
 			store.Clear();
 			this.label_info.Text="Searching..........";
             people_found = 0;
-		
-			queryid=UUID.Random();
+
             OpenMetaverse.DirectoryManager.DirFindFlags findFlags;
 			findFlags=OpenMetaverse.DirectoryManager.DirFindFlags.People;
 			string searchText;
@@ -114,7 +113,7 @@ namespace omvviewerlight
 			int queryStart=0;
 
 			store.Clear();
-			MainClass.client.Directory.StartPeopleSearch(searchText,queryStart);
+			queryid=MainClass.client.Directory.StartPeopleSearch(searchText,queryStart);
 		}
 
 		protected virtual void OnButton2Clicked (object sender, System.EventArgs e)
