@@ -1,12 +1,13 @@
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>10.0.20506</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1BB4F693-8DB4-4F8E-ADCA-46A56C908C64}</ProjectGuid>
+    <ProjectGuid>{085F646E-B306-4DA8-9092-FFEE7717146F}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon></ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>OpenMetaverse.Http</AssemblyName>
@@ -16,9 +17,11 @@
     <DelaySign>false</DelaySign>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder></AppDesignerFolder>
+    <AppDesignerFolder>
+    </AppDesignerFolder>
     <RootNamespace>OpenMetaverse.Http</RootNamespace>
-    <StartupObject></StartupObject>
+    <StartupObject>
+    </StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
   </PropertyGroup>
@@ -48,7 +51,8 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE;DEBUG;VISUAL_STUDIO</DefineConstants>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <DebugSymbols>True</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <Optimize>False</Optimize>
@@ -62,17 +66,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System">
-        <Name>System</Name>
+      <Name>System</Name>
     </Reference>
     <Reference Include="System.Xml">
-        <Name>System.Xml</Name>
+      <Name>System.Xml</Name>
     </Reference>
     <Reference Include="log4net">
-        <Name>log4net</Name>
+      <Name>log4net</Name>
       <HintPath>/home/robin/omvviewer-light-stuff/omvviewer-light/libomv/bin/log4net.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Security">
-        <Name>Mono.Security</Name>
+      <Name>Mono.Security</Name>
       <HintPath>/home/robin/omvviewer-light-stuff/omvviewer-light/libomv/bin/Mono.Security.dll</HintPath>
     </Reference>
   </ItemGroup>

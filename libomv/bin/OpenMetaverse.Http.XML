@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>/home/robin/omvviewer-light-stuff/omvviewer-light/libomv/bin/OpenMetaverse.Http</name>
+        <name>OpenMetaverse.Http</name>
     </assembly>
     <members>
         <member name="F:OpenMetaverse.Http.EventQueueClient.REQUEST_TIMEOUT">
@@ -20,16 +20,25 @@
         </member>
         <member name="F:OpenMetaverse.Http.EventQueueServer.BATCH_WAIT_INTERVAL">
             <summary>This interval defines the amount of time to wait, in milliseconds,
-            for new events to show up on the queue before sending a response to the
-            client and completing the HTTP request. The interval also specifies the
+            for new events to show up on the queue before sending a response to the 
+            client and completing the HTTP request. The interval also specifies the 
             maximum time that can pass before the queue shuts down after Stop() or the
             class destructor is called</summary>
         </member>
         <member name="F:OpenMetaverse.Http.EventQueueServer.MAX_EVENTS_PER_RESPONSE">
             <summary>Since multiple events can be batched together and sent in the same
-            response, this prevents the event queue thread from infinitely dequeueing
-            events and never sending a response if there is a constant stream of new
+            response, this prevents the event queue thread from infinitely dequeueing 
+            events and never sending a response if there is a constant stream of new 
             events</summary>
+        </member>
+        <member name="T:OpenMetaverse.Http.CapsRequestCallback">
+            <summary>
+            Delegate for handling incoming HTTP requests through a capability
+            </summary>
+            <param name="context">Client context</param>
+            <param name="request">HTTP request</param>
+            <param name="response">HTTP response</param>
+            <param name="state">User-defined state object</param>
         </member>
         <member name="T:OpenMetaverse.Http.Logger">
             <summary>
@@ -43,15 +52,6 @@
             <summary>
             Singleton instance of this class
             </summary>
-        </member>
-        <member name="T:OpenMetaverse.Http.CapsRequestCallback">
-            <summary>
-            Delegate for handling incoming HTTP requests through a capability
-            </summary>
-            <param name="context">Client context</param>
-            <param name="request">HTTP request</param>
-            <param name="response">HTTP response</param>
-            <param name="state">User-defined state object</param>
         </member>
     </members>
 </doc>

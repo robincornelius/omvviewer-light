@@ -1,12 +1,13 @@
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>10.0.20506</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{3FE41028-42FB-42A3-A05F-376A3F9AB327}</ProjectGuid>
+    <ProjectGuid>{D7DBC75C-26AF-4FB8-AAFA-6F43901712CA}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon></ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>OpenMetaverse</AssemblyName>
@@ -16,9 +17,11 @@
     <DelaySign>false</DelaySign>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder></AppDesignerFolder>
+    <AppDesignerFolder>
+    </AppDesignerFolder>
     <RootNamespace>OpenMetaverse</RootNamespace>
-    <StartupObject></StartupObject>
+    <StartupObject>
+    </StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
   </PropertyGroup>
@@ -48,7 +51,8 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE;DEBUG;VISUAL_STUDIO</DefineConstants>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <DebugSymbols>True</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <Optimize>False</Optimize>
@@ -62,26 +66,26 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System">
-        <Name>System</Name>
+      <Name>System</Name>
     </Reference>
     <Reference Include="System.Core">
-        <Name>System.Core</Name>
+      <Name>System.Core</Name>
     </Reference>
     <Reference Include="System.Xml">
-        <Name>System.Xml</Name>
+      <Name>System.Xml</Name>
     </Reference>
     <Reference Include="System.Data">
-        <Name>System.Data</Name>
+      <Name>System.Data</Name>
     </Reference>
     <Reference Include="System.Drawing">
-        <Name>System.Drawing</Name>
+      <Name>System.Drawing</Name>
     </Reference>
     <Reference Include="log4net">
-        <Name>log4net</Name>
+      <Name>log4net</Name>
       <HintPath>/home/robin/omvviewer-light-stuff/omvviewer-light/libomv/bin/log4net.dll</HintPath>
     </Reference>
     <Reference Include="XMLRPC">
-        <Name>XMLRPC</Name>
+      <Name>XMLRPC</Name>
       <HintPath>/home/robin/omvviewer-light-stuff/omvviewer-light/libomv/bin/XMLRPC.dll</HintPath>
     </Reference>
   </ItemGroup>

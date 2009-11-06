@@ -237,12 +237,19 @@ namespace omvviewerlight
 				
 					if(av_tree.TryGetValue(av.ID,out iter))
 					{
-						UUID id=av.Textures.GetFace(0).TextureID;
-						string client="";		
-						if(client_list.TryGetValue(id,out client))
-						{
-							store.SetValue(iter,3,client);							
-						}
+                        if (av.Textures == null)
+                        {
+                            store.SetValue(iter, 3, "Out of range");
+                        }
+                        else
+                        {
+                            UUID id = av.Textures.GetFace(0).TextureID;
+                            string client = "";
+                            if (client_list.TryGetValue(id, out client))
+                            {
+                                store.SetValue(iter, 3, client);
+                            }
+                        }
 					}
 										
 				});;
