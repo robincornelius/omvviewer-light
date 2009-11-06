@@ -79,7 +79,15 @@ namespace omvviewerlight
             {
                 Logger.Log("** Kill network manager ***",Helpers.LogLevel.Debug);
 
-                client.Network.Shutdown(NetworkManager.DisconnectType.ClientInitiated);
+                try
+                {
+                    client.Network.Shutdown(NetworkManager.DisconnectType.ClientInitiated);
+                }
+                catch (Exception e)
+                {
+                    Logger.Log("Exception thrown during network shutdown", Helpers.LogLevel.Error);
+                }
+             
                 doderegister();
             }
 

@@ -254,8 +254,15 @@ public partial class MainWindow: Gtk.Window
         MainClass.client.Network.SimChanged -= new EventHandler<SimChangedEventArgs>(Network_SimChanged);
         MainClass.client.Grid.GridRegion -= new EventHandler<GridRegionEventArgs>(Grid_GridRegion);
         MainClass.client.Self.AvatarSitResponse -= new EventHandler<AvatarSitResponseEventArgs>(Self_AvatarSitResponse);
-        MainClass.client.Groups.CurrentGroups -= new EventHandler<CurrentGroupsEventArgs>(Groups_CurrentGroups);
-     
+
+        try
+        {
+            MainClass.client.Groups.CurrentGroups -= new EventHandler<CurrentGroupsEventArgs>(Groups_CurrentGroups);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("FIXME - MainWindow onDeregister");
+        }
     }
 
     void MainClass_onRegister()

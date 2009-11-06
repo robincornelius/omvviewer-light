@@ -24,6 +24,7 @@ omvviewerlight a Text based client to metaverses such as Linden Labs Secondlife(
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using OpenMetaverse;
 using Gdk;
 using Gtk;
@@ -44,6 +45,7 @@ namespace omvviewerlight
 		Gtk.TextTag ownerobjectchat;
         Gtk.TextTag onoffline;
         Gtk.TextTag highlightchat;
+        Gtk.TextTag replaychat;
 
         Gtk.TextTag typing_tag;
 		TextMark preTyping;
@@ -60,7 +62,10 @@ namespace omvviewerlight
 		private UUID im_target=UUID.Zero;
 				
 		bool joined_group_chat=false;
-		
+
+        StreamWriter Log_Writer=null;
+        bool chat_log_loaded = false;
+
 		enum chat_type
 		{
 			CHAT_TYPE_NONE,
@@ -103,6 +108,7 @@ namespace omvviewerlight
         
         void MainClass_onDeregister()
         {
+            
             if(MainClass.client!=null)
             {
                 if (current_chat_type == chat_type.CHAT_TYPE_CHAT)
@@ -196,7 +202,6 @@ namespace omvviewerlight
 
             MainClass.onRegister += new MainClass.register(MainClass_onRegister);
             MainClass.onDeregister += new MainClass.deregister(MainClass_onDeregister);
-            MainClass_onRegister();
             
             lock (MainClass.win.im_queue)
             {
@@ -208,6 +213,10 @@ namespace omvviewerlight
                         //Plain IM
                         Logger.Log("Starting a direct IM " + im.IMSessionID.ToString(), Helpers.LogLevel.Info);
                         current_chat_type = chat_type.CHAT_TYPE_IM;
+                        MainClass_onRegister();
+                        
+                        loadchathistory(im.FromAgentName);
+
                         im_target = im.FromAgentID;
                         foreach (InstantMessage qim in MainClass.win.im_queue)
                         {
@@ -230,6 +239,10 @@ namespace omvviewerlight
                         //Group IM
                         Logger.Log("Starting a new group chat for session id " + im.IMSessionID.ToString(), Helpers.LogLevel.Info);
                         current_chat_type = chat_type.CHAT_TYPE_GROUP_IM;
+                        MainClass_onRegister();
+
+                        loadchathistory(MainClass.client.Groups.GroupName2KeyCache[im.IMSessionID]);
+                      
                         this.im_target = im.IMSessionID;
                         this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter, "Trying to join group chat session, please wait........\n");
                         Gtk.Timeout.Add(10000, kick_group_join);
@@ -246,6 +259,8 @@ namespace omvviewerlight
                         //Confrence IM
                         Logger.Log("Starting a new confrence chat for session id " + im.IMSessionID.ToString(), Helpers.LogLevel.Info);
                         current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
+                        MainClass_onRegister();
+        
                         this.im_target = im.IMSessionID;
                         show_group_list(im.IMSessionID);
                         MainClass.win.im_windows.Add(im.IMSessionID, this);
@@ -389,7 +404,9 @@ namespace omvviewerlight
             im_target = target;
             if(!MainClass.win.im_windows.ContainsKey(target))
                 MainClass.win.im_windows.Add(target, this);
-		}
+
+            loadchathistory(target,false);
+        }
 
 		public ChatConsole(UUID target,bool igroup)
 		{
@@ -404,7 +421,10 @@ namespace omvviewerlight
 
 //	        MainClass.client.Self.OnGroupChatJoin += new AgentManager.GroupChatJoinedCallback(onGroupChatJoin);
 //			MainClass.client.Self.OnInstantMessage += new OpenMetaverse.AgentManager.InstantMessageCallback(onIM);
-			this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter,"Trying to join group chat session, please wait........\n");
+
+            loadchathistory(target,true);
+
+            this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter,"Trying to join group chat session, please wait........\n");
 			joined_group_chat=false;
 			Gtk.Timeout.Add(10000,kick_group_join);
 			MainClass.client.Self.RequestJoinGroupChat(target);
@@ -419,6 +439,7 @@ namespace omvviewerlight
                 current_chat_type = chat_type.CHAT_TYPE_CONFRENCE;
     
                 MainClass_onRegister();
+                //loadchathistory(tabLabel.Text);
 
               this.textview_chat.Buffer.Insert(textview_chat.Buffer.EndIter, "Trying to join confrence chat session, please wait........\n");
 	          this.im_target = UUID.Random();
@@ -459,7 +480,11 @@ namespace omvviewerlight
             onoffline.Weight = Pango.Weight.Bold;
             onoffline.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_online);
 
-            highlightchat.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_highlight);   
+            highlightchat.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_highlight);
+
+            replaychat.ForegroundGdk = MainClass.appsettings.convertfromsetting(MainClass.appsettings.color_chat_replay);   
+            
+        
         }
 		
 		void onSettingsUpdate()
@@ -481,6 +506,7 @@ namespace omvviewerlight
             typing_tag = new Gtk.TextTag("typing");
             onoffline = new Gtk.TextTag("onoffline");
             highlightchat = new Gtk.TextTag("hightlight");
+            replaychat = new Gtk.TextTag("replay");
 
 			MainClass.appsettings.onSettingsUpdate+=new MySettings.SettingsUpdate(onSettingsUpdate);
 			
@@ -491,7 +517,8 @@ namespace omvviewerlight
 			textview_chat.Buffer.TagTable.Add(ownerobjectchat);
             textview_chat.Buffer.TagTable.Add(typing_tag);
             textview_chat.Buffer.TagTable.Add(onoffline);
-            textview_chat.Buffer.TagTable.Add(highlightchat);	    
+            textview_chat.Buffer.TagTable.Add(highlightchat);
+            textview_chat.Buffer.TagTable.Add(replaychat);
 
 		    settagtable();		
 		}
@@ -519,7 +546,10 @@ namespace omvviewerlight
 			
 			MainClass_onDeregister();            
             MainClass.win.getnotebook().SwitchPage -=  new SwitchPageHandler(onSwitchPage);
-			this.Destroy();	
+
+            if (Log_Writer != null)
+                Log_Writer.Close();
+            this.Destroy();	
 		}
 		
         void Self_IM(object sender, InstantMessageEventArgs e)
@@ -625,7 +655,13 @@ namespace omvviewerlight
                 }
     						
             redtab();
-			
+
+            if (chat_log_loaded == false)
+            {
+                if(current_chat_type==chat_type.CHAT_TYPE_IM)
+                    loadchathistory(e.IM.FromAgentName);
+            }
+
 			if(MainClass.appsettings.notify_IM && this.current_chat_type==chat_type.CHAT_TYPE_IM)
 				windownotify();
 
@@ -635,7 +671,24 @@ namespace omvviewerlight
             Gtk.Application.Invoke(delegate
             {
                 displaychat(e.IM.Message, e.IM.FromAgentName, avchat, bold); 
-			});	
+			});
+	
+            if(chat_type.CHAT_TYPE_IM==current_chat_type)
+                savechattohistoryfile("<" + e.IM.FromAgentName + "> " + e.IM.Message, e.IM.FromAgentName);
+
+
+            if (chat_type.CHAT_TYPE_GROUP_IM == current_chat_type)
+            {
+                if (tabLabel != null && tabLabel.Text != "Waiting...")
+                {
+                    savechattohistoryfile("<" + e.IM.FromAgentName + "> " + e.IM.Message, tabLabel.Text);
+                }
+                else
+                {
+
+                    savechattohistoryfile("<" + e.IM.FromAgentName + "> " + e.IM.Message, im_target);
+                }
+            }
 	
 			}
 
@@ -683,6 +736,11 @@ namespace omvviewerlight
 				return;
 			}
 
+            if (chat_log_loaded == false)
+                loadchathistory("chat");
+            else
+                savechattohistoryfile("<" + e.FromName + "> " + e.Message, "chat");
+
 			if(e.Type==ChatType.OwnerSay)
 			{
 				Gtk.Application.Invoke(delegate {
@@ -706,7 +764,7 @@ namespace omvviewerlight
 				});
 				return;
 			}
-			
+
 		}
 		
 		bool ClearLookAt()
@@ -729,6 +787,9 @@ namespace omvviewerlight
             {
                     MainClass.client.Self.InstantMessage(im_target, entry_chat.Text);
                     this.displaychat(entry_chat.Text, MainClass.client.Self.Name, avchat, bold);
+
+                    savechattohistoryfile("<you> " + entry_chat.Text, tabLabel.Text);
+
                     this.entry_chat.Text = "";
                     istypingsent = false;
                     return;
@@ -914,6 +975,9 @@ namespace omvviewerlight
 		
 	    bool StopTyping()
 	    {
+            if (MainClass.client == null)
+                return false;
+
             Logger.Log("Stop typing",Helpers.LogLevel.Debug);
             byte[] binaryBucket;
             binaryBucket = new byte[0];
@@ -922,6 +986,70 @@ namespace omvviewerlight
      			
             istypingsent=false;
 		    return false;	 
-      }	
+      }
+
+      void savechattohistoryfile(string chat, UUID source)
+      {
+          AsyncNameUpdate ad = new AsyncNameUpdate(source, true);
+          ad.onGroupNameCallBack += delegate(string namex, object[] values) { savechattohistoryfile(chat,namex); };
+          ad.go();
+      }
+
+      void savechattohistoryfile(string chat,string source)
+      {
+         if (Log_Writer == null)
+              return;
+
+          Logger.Log("saving chat history for " + source, Helpers.LogLevel.Info);
+
+          DateTime CurrTime = DateTime.Now;
+          string time = string.Format("[{0:D2}/{1:D2} {2:D2}:{3:D2}] ",CurrTime.Day,CurrTime.Month,CurrTime.Hour, CurrTime.Minute);
+
+          string logs = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) +System.IO.Path.DirectorySeparatorChar + "omvviewer-light" + System.IO.Path.DirectorySeparatorChar + "chats";
+          string file = logs + MainClass.client.Self.Name + System.IO.Path.DirectorySeparatorChar+source; 
+          Log_Writer.WriteLine(time+chat);
+          Log_Writer.Flush();
+      }
+
+      void loadchathistory(UUID key,bool group)
+      {
+
+          AsyncNameUpdate ad = new AsyncNameUpdate(key, group);
+   		  
+          if(group==false)
+            ad.onNameCallBack += delegate(string namex,object[] values){loadchathistory(namex);};
+          else
+            ad.onGroupNameCallBack += delegate(string namex,object[] values){loadchathistory(namex);};
+          
+          ad.go();
+      }
+
+      void loadchathistory(string source)
+      {
+          Logger.Log("loading chat history for " + source.ToString(),Helpers.LogLevel.Info);
+          chat_log_loaded = true;
+          string logs = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) +System.IO.Path.DirectorySeparatorChar + "omvviewer-light" + System.IO.Path.DirectorySeparatorChar + "chats";
+          string file = logs + System.IO.Path.DirectorySeparatorChar + MainClass.client.Self.Name + System.IO.Path.DirectorySeparatorChar + source; 
+
+          if (File.Exists(file) && source!="chat")
+          {
+              StreamReader SR = File.OpenText(file);
+              string data = SR.ReadToEnd();
+              SR.Close();
+              this.textview_chat.Buffer.InsertWithTags(this.textview_chat.Buffer.StartIter, data,replaychat);
+              Log_Writer = File.AppendText(file);
+          }
+          else
+          {
+              if(!Directory.Exists(logs))
+                Directory.CreateDirectory(logs);
+              if(!Directory.Exists(logs+System.IO.Path.DirectorySeparatorChar+MainClass.client.Self.Name))
+                  Directory.CreateDirectory(logs + System.IO.Path.DirectorySeparatorChar + MainClass.client.Self.Name);
+
+              FileStream FS=File.Create(file);
+              FS.Close();
+              Log_Writer = File.AppendText(file);
+          }
+       }
 	}
 }

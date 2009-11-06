@@ -271,6 +271,13 @@ namespace omvviewerlight
             set { this["color_chat_highlight"] = value; }
         }
 
+        [UserScopedSettingAttribute()]
+        public ulong color_chat_replay
+        {
+            get { return (((128 << 32) + 128) << 16) + 128; }
+            set { this["color_chat_highlight"] = value; }
+        }
+
         public Gdk.Color convertfromsetting(ulong col)
         {			
 			return new Gdk.Color((byte)((col & 0xFFFF00000000) >> 32 ), (byte)((col & 0x0000FFFF0000 )>> 16), (byte)(col & 0x00000000FFFF));
